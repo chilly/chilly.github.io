@@ -1,0 +1,1024 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>帐前卒专栏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="chillyc">
+    
+
+    
+    <meta property="og:type" content="website">
+<meta property="og:title" content="帐前卒专栏">
+<meta property="og:url" content="http://chillyc.info/page/24/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="帐前卒专栏">
+
+    
+    <link rel="alternative" href="/atom.xml" title="帐前卒专栏" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/images/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="帐前卒专栏">帐前卒专栏</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:chillyc.info">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/24/2010-05-24-design-pattern-chain-reponsibility/" title="design pattern CHAIN of reponsibility" itemprop="url">design pattern CHAIN of reponsibility</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-23T16:00:00.000Z" itemprop="datePublished"> Published 2010-05-24</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="design pattern CHAIN of reponsibility"></p>
+<p><meta name="_su_keywords" content="design pattern CHAIN of reponsibility"></p>
+<p><meta name="_su_title" content="design pattern CHAIN of reponsibility"></p>
+<meta name="views" content="603">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;cstdio&amp;gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern links all handler as a line, if previous handler can process a request, it wil not be</div><div class="line">	/// send to next handler. For example, if someone requested changing programming style, </div><div class="line">	/// this decision will be made by a programmer. </div><div class="line">	/// He will change his programming style without noticing his lead. </div><div class="line">	/// But if someone request changing the requirements, the programmer can not make this decision. </div><div class="line">	/// He will noticing his lead, and make his lead decided.</div><div class="line"></div><div class="line">	/// this is request class.</div><div class="line">	#define STYLE 0</div><div class="line">	#define REQIREMENT 1</div><div class="line">	class Request&#123;</div><div class="line">		public:</div><div class="line">			int type; // changing programming style or changing requirements?</div><div class="line"></div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	/// this class for processing request.</div><div class="line">	class Handler&#123;</div><div class="line">	private:</div><div class="line">		Handler* parent;</div><div class="line">	public:</div><div class="line">		Handler(Handler* p):parent(p)&#123;&#125;</div><div class="line">		virtual bool DoHandle(Request&amp;amp; r)=0;</div><div class="line">		void Process(Request&amp;amp; r);</div><div class="line">		virtual ~Handler()&#123;&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	void Handler::Process(Request&amp;amp; r)&#123;</div><div class="line">		if(!this-&amp;gt;DoHandle(r) &amp;amp;&amp;amp; NULL != parent)&#123;</div><div class="line">			parent-&amp;gt;Process(r);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	class Programmer: public Handler&#123;</div><div class="line">		public:</div><div class="line">		Programmer(Handler* p):Handler(p)&#123;&#125;</div><div class="line">		virtual bool DoHandle(Request&amp;amp; r);</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">	bool Programmer::DoHandle(Request&amp;amp; r)&#123;</div><div class="line">		if(r.type == STYLE)&#123;</div><div class="line">			printf(&quot;programmer: I can process changing programming style\n&quot;);</div><div class="line">			return true;</div><div class="line">		&#125;else&#123;</div><div class="line">			printf(&quot;programmer: I can not process this request. I will report this to my lead!\n&quot;);</div><div class="line">			return false;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	class Lead:public Handler&#123;</div><div class="line">		public:</div><div class="line">		Lead(Handler* p):Handler(p)&#123;&#125;</div><div class="line">		virtual bool DoHandle(Request&amp;amp; r);</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">	bool Lead::DoHandle(Request&amp;amp; r)&#123;</div><div class="line">		if(r.type == REQIREMENT)&#123;</div><div class="line">			printf(&quot;lead: I will process changing reqirements\n&quot;);</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">	pattern::Lead lead((pattern::Handler*)NULL);</div><div class="line">	pattern::Programmer programmer(&amp;amp;lead);</div><div class="line">	pattern::Request r;</div><div class="line">	r.type = STYLE;</div><div class="line">	programmer.Process(r);</div><div class="line">	r.type = REQIREMENT;</div><div class="line">	programmer.Process(r);</div><div class="line">	return 0;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/code/">code</a><a href="/tags/software-architecture-code/">software-architecture-code</a><a href="/tags/cc/">cc</a><a href="/tags/design/">design</a><a href="/tags/pattern/">pattern</a><a href="/tags/chain/">chain</a><a href="/tags/reposibility/">reposibility</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/23/5618652/" title="在ubuntu下生成大文件,并测试文件读写效率" itemprop="url">在ubuntu下生成大文件,并测试文件读写效率</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-23T13:40:00.000Z" itemprop="datePublished"> Published 2010-05-23</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在ubuntu或者其他的linux下生成大文件,必须使用编译参数  -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64.否<br>则生成的文件一定是2G左右的,原因是fseek,这个函数中的offset参数是一个long型的或者是size_t型的,在fseeko中是off_t,但是这个<br>off_t默认还是32位,只有加了  -D_FILE_OFFSET_BITS=64的宏定义才被作为64位对待.</p>
+<p>写了下面一段代码来生成大文件,传说有一种方法:直接跳转nG位置之后,然后写入一个字符.这种方法可能更快,不过我为了保守的生成文件,还是使用下面的一个写法:</p>
+<p>#include<stdio.h> #include<stdlib.h> #include<unistd.h> #include<string.h><br>void gen_file(const char <em>filename, int block_size, int count){ int is_exist =<br>0; FILE</em> file = fopen(filename,”w+b”); char <em> buf = NULL; int i=0; long long<br>size = block_size; if(file == NULL){ printf(“fatal error in gen_file:<br>fopen/n”); exit(1); } buf = (char </em>)malloc(sizeof(char)<em>block_size);<br>memset(buf,’1’,sizeof(char)</em>block_size); while(i++&lt;count){ if(i % 10 == 0){<br>printf(“count is %d, size is %lld/n”,i,size); } fwrite(buf,block_size,1,file);<br>size += block_size; fseeko(file,size,SEEK_SET); } fclose(file); free(buf); /<em><br>long long size = 1024</em>1024<em>1024; size </em>=10; fseeko(file,size,SEEK_SET);<br>fwrite(buf,block_size,1,file); fclose(file); free(buf); <em>/ } int main(){<br>printf(“size of char %d/n”,sizeof(char)); int block_size = 1024</em>1024<em>20; //<br>20M int count = 50; gen_file(“smallfile”,block_size,count</em>2);// gen 2G file<br>return 0; }</string.h></unistd.h></stdlib.h></stdio.h></p>
+<p>int block_size = 1024<em>1024</em>20; // 20M</p>
+<p>这个是每次写入的数据大小,gen_file(“smallfile”,block_size,count*2);第三个参数可以调节生成文件的大小.</p>
+<p>下面写了一个测试大文件和小文件的随机读写和顺序读写.</p>
+<p>#include<stdio.h> #include<time.h> #include<sys stat.h=""> #include<sys types.h=""></sys></sys></time.h></stdio.h></p>
+<p>#include<unistd.h> #include<stdlib.h> #include<sys time.h=""> #include<string.h><br>const int block_size = 8092; struct timeval start; struct timeval end; struct<br>timezone tz; void start_time(){ gettimeofday(&amp;start,&amp;tz); } void end_time(){<br>gettimeofday(&amp;end,&amp;tz); } void print_time(){ printf(“%lf sec/n”,(end.tv_sec-<br>start.tv_sec)+(double)(end.tv_usec-start.tv_usec)/1000000); } size_t<br>look_size(const char <em> filename){ struct stat st; stat(filename,&amp;st); return<br>st.st_size; } void read_blocks(FILE</em> file, off_t offset,int block_size){ int<br>where = offset<em>block_size; fseeko(file,where,0); } FILE</em> fopen_safe(const char</string.h></sys></stdlib.h></unistd.h></p>
+<ul>
+<li>filename){ FILE<em> file = fopen(filename,”r”); if(file == NULL){ printf(“fatal<br>error in random_read, open file”); exit(1); } return file; } void<br>random_read(const char </em> filename){ int random; size_t size; FILE<em> file =<br>fopen_safe(filename); size = look_size(filename)/block_size; random =<br>rand()%size; read_blocks(file,random,block_size); fclose(file); } void<br>order_read(const char </em>filename,int order){ size_t size; FILE<em> file =<br>fopen_safe(filename); size = look_size(filename)/block_size;<br>read_blocks(file,order%size,block_size); fclose(file); } void<br>random_test(const char </em> filename,int times){ int count = 0; start_time();<br>while(count++&lt;times){ // access Big File random_read(filename); } end_time();<br>print_time(); } void order_test(const char <em> filename, int times){ int count =<br>0; start_time(); while(count++&lt;times){ order_read(filename,count); }<br>end_time(); print_time(); } void random_test_diff(const char </em> basename,int<br>num,int times){ int count = 0; char <em>* names = malloc(sizeof(char)</em>num); int<br>len = strlen(basename); int i = 0; while( i &lt; num){ names[i] =<br>malloc(sizeof(char)<em>len+4); sprintf(names[i],”%s_%d”,basename,i); i++; }<br>start_time(); while(count++&lt;times){ if(count &lt; 900){ random_read(names[0]); }<br>else { if(count &lt; 960){ random_read(names[count%num]);<br>random_read(names[(count+1)%num]); } if(count &lt; 1000){<br>random_read(names[count%num]); random_read(names[(count+1)%num]);<br>random_read(names[(count+2)%num]); } } } end_time(); print_time(); } int<br>main(){ int i,count; int times = 1000; count = 0; // clock_t start,end;<br>srand(time(NULL)); char </em> filename=”bigfile”; //printf(“time is %lf”,((double<br>)(end-start))/CLOCKS_PER_SEC); random_test(filename,times);<br>order_test(filename,times); times = times; filename = “smallfile”;<br>random_test(filename,times); order_test(filename,times);<br>random_test_diff(filename,3,times); return 0; }</li>
+</ul>
+<p>当然你这里做测试的时候可以把gettimeofday替换为clock()或者time()函数,其中clock()是程序实际运行的时间,你感觉可能执行了七八秒<br>,其实程序只占用cpu执行了1秒.如果是time()函数或者gettimeofday()函数就是真正的运行时间也就是你感觉执行的时间.所以各有千秋,前者是为<br>了排除各种运行环境中的软件或者os的不同,单独检测程序的效率.后者是在系统环境中程序的执行时间.</p>
+<p>下面是我得到的结论,创建1个10G文件,创建3个2G小文件.<br>大文件 随机访问7.199645 sec<br>大文件 顺序访问0.013617 sec<br>单个小文件 随机访问5.119245 sec<br>小文件 顺序访问0.014190 sec<br>多个小文件的随机访问测试:90%的几率访问同一个小文件，6%访问两个小文件，4%访问3个小文件 9.791248<br>sec.并且90%几率发生在前,所以如果随机发生多个文件的随机访问,那么可能速度会更慢.这里慢的原因,是因为fopen.</p>
+<p>这也就是数据库为什么只有一个数据文件的原因.有时进行文件切分,反而不利于效率的提高.但是对于100G以上的大文件,是否这个结论又要改变了呢?我没有做过这个实<br>验.  </p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/测试/">测试</a><a href="/tags/ubuntu/">ubuntu</a><a href="/tags/random/">random</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/23/5617749/" title="csdn举办的云计算大会——总结思考篇" itemprop="url">csdn举办的云计算大会——总结思考篇</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-23T03:05:00.000Z" itemprop="datePublished"> Published 2010-05-23</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这次大会的演讲嘉宾的内容参差不齐，有好有坏。</p>
+<p>有时个人觉得听上面的人吹来吹去，不如听听各个展台的工程师是怎么做的。</p>
+<p>个人感觉csdn实在是没有钱。既然没有钱就不要打肿脸充胖子乱搞活动。中午就发个三明治。还不如不发餐卷，或者写自带午餐或者请到外面的成都小吃自己买饭吃。我实在<br>不知道处于什么目的，发一个精美的袋子，里面就一点点吃的。本以为是午餐前的餐点，后来才真的相信这就是午餐。</p>
+<p>传说第一届的午餐也是三明治，但是人家是不要钱的!另外第一、二天其实没有票也是可以去听的。当初实验室真不如把钱给我们算了。</p>
+<p>去那里发现许多人和我有同样的问题，有一部分解答了，有一部分还在思考研究中：</p>
+<p>１。服务器利用率的提高，是否是真正利用了？这部分利用率是用于虚拟化，还是用于真正的业务？VMware的工程师说，资源只用5%消耗在虚拟化上。这个5%并不随着<br>虚拟机的增多而线性增加。当然，我还是不信……</p>
+<p>２。当两台虚拟机在同一个机器中运行，是有公平的弹性机制(你不用时我用，我不用时你用，你我都用时对半分)，也就是balloom技术。至于这个技术是啥米，有待研<br>究，但是从xcp中看到了Memory Balloom,不知道是否是同样的东东。</p>
+<p>３。当应用需消耗大量资源的程序，如果在一台物理服务器上跑得很吃力，那么就别寻求云计算。</p>
+<p>４。程序必须有并发性。如果云计算平台能屏蔽分布式物理机带来的进程通信的影响，那么多进程的编程是必要的。如果云计算可以只把线程迁移到其他物理机器上，那就更好了<br>，不过我知道那是天方夜谭。</p>
+<p>５。如果我的物理机器都只是两核的，那么我也就不会虚拟出四核的机器。</p>
+<p>６。一台虚拟机器可以使用另外一台物理机器的存储资源(硬盘)？当时那个工程师说可以。那是因为那台物理机器开启了另外一个VM实例,还是没有开？</p>
+<p>７。chinaCache说Xen比vmware好，因为xen是os层虚拟化，vmware说vmware最好，因为vmware稳定。其实vmware传说也有自<br>己的os虚拟化技术。</p>
+<p>８。mysql在chinaCache中效率比EC2高３倍。因为它是一个机器中的本地存储，而EC2可以看作使用了存储网络，所以EC2会有线路传输带宽的消耗。我<br>个人认为chinaCache没有办法大量持续扩容的.否则性能会降低到EC2的水平。</p>
+<p>９。如果因为一台物理机中太多虚拟机共同消耗资源，而导致某些井喷业务不能响应，那么会将这些业务迁移到其他机器中。但是它的监控器都无法响应了，它怎么知道哪个业务<br>是井喷业务呢？</p>
+<p>10。以后会议别请高层了，乱忽悠。另外我不太清楚服务器是什么概念？如果是高级稳定机器来说，我们实验室就两台服务器。如果随便的pc机就可以做服务器，那归我管的<br>服务器就有4~5台。我觉得业界还没有统一服务器的概念。</p>
+<p>11。大云其实就是做了基于MapReduce的数据挖掘算法……</p>
+<p>12.中移动说现在已经可以支持5000台服务器，那是Yahoo的hadoop.其实我不太相信他有这么多机器。(他的服务器是啥概念？)</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/服务器/">服务器</a><a href="/tags/vmware/">vmware</a><a href="/tags/云计算/">云计算</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/10/2010-05-10-debug-postgresql/" title="how to debug PostgreSQL" itemprop="url">how to debug PostgreSQL</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-09T16:00:00.000Z" itemprop="datePublished"> Published 2010-05-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="postgresql debug"></p>
+<p><meta name="_su_keywords" content="postgresql debug"></p>
+<p><meta name="_su_title" content="postgresql debug"></p>
+<p><meta name="views" content="1123"><br>First, compile the source code use ./configure –prefix=XXXX –enable-debug &amp;&amp; CFLAGS=-O0</p>
+<p>then make and make install.</p>
+<h2><span style="color: #800000;">IF you want to RESTART PG</span></h2><br>Detected if there is an instance of Postgre server. If there is, kill it. use<br><br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ps -e | grep postgre</div><div class="line">// find id of the process</div><div class="line">kill -9 $processid</div></pre></td></tr></table></figure><br><br><br>to detect the pocess of postgresql and kill it.<br><br>then use:<br><br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">gdb postgresqlHomeDIR/bin/postgres -quiet</div><div class="line">// enter gdb then use</div><div class="line">set args -D DATADIR</div><div class="line">run</div></pre></td></tr></table></figure><br><br><br>here DATADIR and postgresqlDIR are your own directory.<br><h2><span style="color: #800000;">IF you don’t want to RESTART PG</span></h2>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// find postgres pid</div><div class="line">pid = `ps auxww | \</div><div class="line">    grep postgres: | \</div><div class="line">    grep -v -e &apos;grep postgres:&apos; -e &apos;postgres: stats&apos; -e &apos;postgres: writer&apos; -e &apos;postgres: archiver&apos; -e &apos;postgres: logger&apos; -e &apos;postgres: autovacuum&apos; | \</div><div class="line">    tee /dev/tty | \</div><div class="line">    awk &apos;&#123;print $2&#125;&apos;`</div><div class="line">gdb pid</div></pre></td></tr></table></figure>
+<p>then use</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./psql test</div></pre></td></tr></table></figure>
+<p>to test. Here test is  your database name.</p>
+<p>IF you want to debug contrib</p>
+<p>make &amp;&amp; make install in contrib/yourdir</p>
+<p>then go to gdb to file your shard lib to load symbol. Here XXX.so is your contrib share lib.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(gdb) file XXX.so</div></pre></td></tr></table></figure>
+<p>if not, when you use break somefunction, it will report:</p>
+<p>No symbol table is loaded.  Use the “file” command.<br>Make breakpoint pending on future shared library load? (y or [n])</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/code/">code</a><a href="/tags/symbol/">symbol</a><a href="/tags/postgresql/">postgresql</a><a href="/tags/debug/">debug</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/05/2010-05-05-design-pattern-flyweight/" title="design pattern -- flyweight" itemprop="url">design pattern -- flyweight</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-04T16:00:00.000Z" itemprop="datePublished"> Published 2010-05-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="software architecture
+design pattern "></p>
+<p><meta name="_su_keywords" content="design,pattern,flyweight,code"></p>
+<p><meta name="_su_title" content="flyweight,pattern,code,design"></p>
+<meta name="views" content="904">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div></pre></td><td class="code"><pre><div class="line">// flyweight.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">#include&amp;lt;map&amp;gt;</div><div class="line">namespace pattern&#123;</div><div class="line"></div><div class="line">	/// this is flyweight pattern </div><div class="line">	/// In text processing, there will be thousands of hundreds of characters.</div><div class="line">	/// If we construct too many this class instance, and </div><div class="line">	/// imaging this class will have many member variables, will the system be efficient? </div><div class="line">	/// So we just record the characters state, and not care about other part of character.</div><div class="line">	/// we shall save a lot of main memories, shall we?</div><div class="line">	/// If there are many characters, but  they are only in differnt place, we can reuse characters.</div><div class="line">	/// So there are Fly_Manager to record the shared objects or states.</div><div class="line">	/// All objects should be derived from Metadata class.</div><div class="line">	/// Graphdata is no-shared metadata. And Character is shared metadata.</div><div class="line">	/// In main function, you will see the difference between two of them.</div><div class="line"></div><div class="line">#ifndef STATE_H</div><div class="line">#define STATE_H</div><div class="line">	class State&#123;</div><div class="line">	private:</div><div class="line">		int font_num;</div><div class="line">		int style;</div><div class="line"></div><div class="line">	public:</div><div class="line">		void Set_Font_Num(int num)&#123;font_num = num;&#125;</div><div class="line">		void Set_Style(int style)&#123;this-&amp;gt;style = style;&#125;</div><div class="line">		int Get_Font_Num()&#123;return font_num;&#125;</div><div class="line">		int Get_Style()&#123;return style;&#125;</div><div class="line">		State()&#123;&#125;</div><div class="line">		State(int num,int style)&#123;</div><div class="line">			font_num = num; </div><div class="line">			this-&amp;gt;style = style;</div><div class="line">		&#125;</div><div class="line">		State(const State&amp;amp; state)&#123;</div><div class="line">			this-&amp;gt;font_num = state.font_num; </div><div class="line">			this-&amp;gt;style = state.style;</div><div class="line">		&#125;</div><div class="line">		State* operator = (const State&amp;amp; state)&#123;</div><div class="line">			this-&amp;gt;font_num = state.font_num; </div><div class="line">			this-&amp;gt;style = state.style;</div><div class="line">			return this;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef METADATA_H</div><div class="line">#define METADATA_H</div><div class="line">	class Metadata&#123;</div><div class="line">	public:</div><div class="line">		virtual void show()=0;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef character_H</div><div class="line">#define character_H</div><div class="line">	// share the basic information</div><div class="line">	// here you should image character has a huge infomation, </div><div class="line">	// and state is only a small part of this class</div><div class="line">	class character: public Metadata&#123;</div><div class="line">	private:</div><div class="line">		State state;</div><div class="line">	public:</div><div class="line">		// set state to default state</div><div class="line">		character():Metadata(),state(1,1)&#123;&#125;</div><div class="line">		~character()&#123;&#125;</div><div class="line">		void Set_State(State&amp;amp; state);</div><div class="line">		virtual void show();</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">	void character::Set_State(pattern::State&amp;amp; state)&#123;</div><div class="line">		this-&amp;gt;state = state;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	void character::show()&#123;</div><div class="line">		std::cout &amp;lt;&amp;lt; &quot;write a character font is &quot;&amp;lt;&amp;lt; state.Get_Font_Num()&amp;lt;&amp;lt; &quot; style is &quot;</div><div class="line">			&amp;lt;&amp;lt; state.Get_Style()&amp;lt;&amp;lt;std::endl; </div><div class="line">	&#125;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef GRAPHDATA_H</div><div class="line">#define GRAPHDATA_H</div><div class="line">	// not share </div><div class="line">	class Graphdata: public Metadata&#123;</div><div class="line">	private:</div><div class="line">		State state;</div><div class="line">	public:</div><div class="line">		Graphdata(State &amp;amp; state):Metadata(),state(state)&#123;&#125;</div><div class="line">		// font num is not used</div><div class="line">		Graphdata(int style):Metadata(),state(-1,style)&#123;&#125;</div><div class="line">		~Graphdata()&#123;&#125;;</div><div class="line">		virtual void show();</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line">	void Graphdata::show()&#123;</div><div class="line">		// only use its own state</div><div class="line">		std::cout&amp;lt;&amp;lt; &quot;print a graph! style is &quot;&amp;lt;&amp;lt;state.Get_Style()&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef FLYMANAGER_H</div><div class="line">#define FLYMANAGER_H</div><div class="line">	class Fly_Manager&#123;</div><div class="line">	public:</div><div class="line">		// suggest you should make it as private or protected</div><div class="line">		std::map&amp;lt;int,State&amp;gt; characters;</div><div class="line">		Fly_Manager()&#123;&#125;</div><div class="line">		void Set_I(int i, State&amp;amp; state);</div><div class="line">		State&amp;amp; Get_I(int i);</div><div class="line">		~Fly_Manager()&#123;&#125;</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Fly_Manager::Set_I(int i, State&amp;amp; state)&#123;</div><div class="line">		characters[i] = state;</div><div class="line">	&#125;</div><div class="line">	State&amp;amp; Fly_Manager::Get_I(int i)&#123;</div><div class="line">		return characters[i];</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Fly_Manager fm;</div><div class="line">	pattern::character c;</div><div class="line">	pattern::State s1(1,2);</div><div class="line">	pattern::State s2(2,3);</div><div class="line">	pattern::State s3(3,4);</div><div class="line">	fm.Set_I(0,s1);</div><div class="line">	fm.Set_I(1,s2);</div><div class="line">	fm.Set_I(2,s3);</div><div class="line">	pattern::Graphdata gd1(2);</div><div class="line">	pattern::Graphdata gd2(9);</div><div class="line">	for(int i = 0; i &amp;lt; 3; i++)&#123;</div><div class="line">		c.Set_State(fm.Get_I(i));</div><div class="line">		c.show();</div><div class="line">	&#125;</div><div class="line">	gd1.show();</div><div class="line">	gd2.show();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/code/">code</a><a href="/tags/software-architecture-code/">software-architecture-code</a><a href="/tags/cc/">cc</a><a href="/tags/design/">design</a><a href="/tags/pattern/">pattern</a><a href="/tags/flyweight/">flyweight</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/03/5552900/" title="unmountable boot volume 0x000000ED" itemprop="url">unmountable boot volume 0x000000ED</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-03T10:16:00.000Z" itemprop="datePublished"> Published 2010-05-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>昨天机器终于蓝屏了。产生了一个unmountable_boot_volume错误，大概是我管电源时突然断电所致。这个错误会停在0x000000ED位置。据微<br>软官方称是因为硬盘驱动器IDE写缓存时导致的内容不一致。最初断电后重启，画面一只能够停在windows图标上，并且硬盘没有动静。后来F8进入选择最近配置，结<br>果就报出了这个0x000000ED蓝屏，然后再try了下安全模式，发现依旧是蓝屏。</p>
+<p>微软提供的解决方案是把windows安装盘放进去，然后再进入recover console.进入后使用chkdsk<br>/r即可恢复。结果我放入windows安装盘，进入recover console, 提示曰：安装程序没有找到安装在此计算机上的硬盘驱动器。我后来想重装，结果<br>是一样的提示。（连windows都不能重装）。后来进入BIOS，使用硬盘检测，fail掉了。以为是硬件坏了….幸好安装了ubuntu,可以顺利进入ubu<br>ntu,这说明硬件是没有问题的。继续搜索发现windows xp的OEM版本在同样的问题下也不能进入recover<br>console.我发现自己每次都是走的最长路径。微软说OEM不能进入recover console,然后就没有任何解决方案了…唉~.</p>
+<p>无奈之下找了张番茄家园，可以进入DOS NTFS,然后选择DOS+NTFS的选项，进入后使用NTFSCHK,它说正在运行所以不能运行…无语，然后去win<br>dows/system32下找到chkdsk.exe 然后执行chkdsk /r,结果它说不能在DOS下运行..更加无语。无奈之后退出。</p>
+<p>然后在番茄中选择xp引导修复，反正也是碰碰运气，再选择正常启动，结果终于看到了蓝色的自检画面。</p>
+<p>之后检查了半个小时，终于进入了windows.</p>
+<p>对于OEM的用户，修复过程可能如下：</p>
+<p>使用番茄进入xp引导修复，选择正常启动或者前一次配置，然后done.</p>
+<p>非OEM的用户：</p>
+<p>使用windows安装盘，进入recover console,然后执行chkdsk c: /r /f 如果不行再使用fixboot</p>
+<p>要是没有ubuntu,真的以为硬盘坏掉了。windows系统实在是太霸道了,害我差点想把整个硬盘重新格式化。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/windows/">windows</a><a href="/tags/dos/">dos</a><a href="/tags/ubuntu/">ubuntu</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/03/2010-05-03-design-pattern-facade-pattern/" title="design pattern -- facade pattern" itemprop="url">design pattern -- facade pattern</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-02T16:00:00.000Z" itemprop="datePublished"> Published 2010-05-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="software architecture
+design pattern of facade"></p>
+<p><meta name="_su_keywords" content="facade,pattern,code,design"></p>
+<p><meta name="_su_title" content="facade,pattern,code,design"></p>
+<meta name="views" content="417">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">// Facade.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern is facade pattern</div><div class="line">	/// facade pattern is for hiding relationship and behavior of inner classes .</div><div class="line">	/// client or outer class should only connect with facade class.</div><div class="line">	/// But it will not forbid accessing inner classes.</div><div class="line">#ifndef INNERA_H</div><div class="line">#define INNERA_H</div><div class="line">	class Inner_A&#123;</div><div class="line">	public:</div><div class="line">		void Do()&#123;std::cout&amp;lt;&amp;lt;&quot;A&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">#ifndef INNERB_H</div><div class="line">#define INNERB_H</div><div class="line">	class Inner_B&#123;</div><div class="line">	public:</div><div class="line">		void Do()&#123;std::cout&amp;lt;&amp;lt;&quot;B&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef FACADE_H</div><div class="line">#define FACADE_H</div><div class="line">	class Facade&#123;</div><div class="line">	private:</div><div class="line">		Inner_A* a;</div><div class="line">		Inner_B* b;</div><div class="line">	public:</div><div class="line">		Facade()&#123;</div><div class="line">			a = new Inner_A();</div><div class="line">			b = new Inner_B();</div><div class="line"></div><div class="line">		&#125;</div><div class="line">		void Do()&#123;</div><div class="line">			a-&amp;gt;Do();</div><div class="line">			b-&amp;gt;Do();</div><div class="line">		&#125;</div><div class="line">		~Facade()&#123;</div><div class="line">			delete a;</div><div class="line">			delete b;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Facade f;</div><div class="line">	f.Do();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/code/">code</a><a href="/tags/software-architecture-code/">software-architecture-code</a><a href="/tags/cc/">cc</a><a href="/tags/design/">design</a><a href="/tags/pattern/">pattern</a><a href="/tags/facade/">facade</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/03/2010-05-03-design-pattern-composite-pattern/" title="design pattern--composite pattern" itemprop="url">design pattern--composite pattern</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-02T16:00:00.000Z" itemprop="datePublished"> Published 2010-05-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="this pattern is composite pattern.in this pattern, it like a tree to call the leaves function.so there is an entry of high level (Graph), and each class has a function called " draw"="" ,the="" composite="" class="" is="" "picture".and="" the="" leaves="" are="" "line"="" and="" "point"."=""></p>
+<p><meta name="_su_keywords" content="code,design,pattern,composite"></p>
+<p><meta name="_su_title" content="design pattern composite pattern"></p>
+<meta name="views" content="532">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div></pre></td><td class="code"><pre><div class="line">// composite.cpp : Defines the entry point for the console application.</div><div class="line">//</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">#include&amp;lt;string&amp;gt;</div><div class="line">#include&amp;lt;vector&amp;gt;</div><div class="line"></div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern is composite pattern.</div><div class="line">	/// in this pattern, it like a tree to call the leaves function.</div><div class="line">	/// so there is an entry of high level (Graph), and each class has a function called &quot;Draw&quot; </div><div class="line">	/// the composite class is &quot;Picture&quot;.</div><div class="line">	/// and the leaves are &quot;Line&quot; and &quot;Point&quot;.</div><div class="line">	/// This pattern is combine many objects together which have same functions </div><div class="line">	/// and have level structures .</div><div class="line">	/// And the composite class is like a manager.</div><div class="line">	/// It has the same function also. </div><div class="line">	/// Benefits of this pattern is : outer class will never know the composite relationship;</div><div class="line">	/// outer class will deal the composite class only, not all of innerclass. and composite class</div><div class="line">	/// and inner class have same functions or level structures.</div><div class="line">	/// Do you think the composite class like a facade in facade pattern?</div><div class="line">#ifndef GRAPH_H</div><div class="line">#define GRAPH_H</div><div class="line"></div><div class="line">	class Graph&#123;</div><div class="line">	protected:</div><div class="line">		std::string name;</div><div class="line"></div><div class="line">	public:</div><div class="line">		Graph(std::string name):name(name)&#123;std::cout&amp;lt;&amp;lt;&quot;graph &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;&quot; construct&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line"></div><div class="line">		virtual void Draw()=0;</div><div class="line">		virtual ~Graph()&#123;std::cout&amp;lt;&amp;lt; &quot;graph &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt; &quot; destroy&quot;&amp;lt;&amp;lt;std::endl;&#125;;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef PICTURE_H</div><div class="line">#define PICTURE_H</div><div class="line">	class Picture:public Graph&#123;</div><div class="line">	private:</div><div class="line">		std::vector&amp;lt;Graph*&amp;gt; list;</div><div class="line">	public:</div><div class="line">		Picture(std::string name):Graph(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Picture &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;&quot; construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		virtual void Add(Graph*);</div><div class="line">		virtual void Remove(Graph*);</div><div class="line">		virtual void Draw();</div><div class="line">		~Picture();</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line">	Picture::~Picture()&#123;</div><div class="line">		list.clear();</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;Picture destroy!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line">	void Picture::Add(pattern::Graph * g)&#123;</div><div class="line">		list.push_back(g);</div><div class="line">	&#125;</div><div class="line">	void Picture::Remove(pattern::Graph *g)&#123;</div><div class="line">		std::vector&amp;lt;Graph*&amp;gt;::iterator i=list.begin();</div><div class="line">		while(i!=list.end())&#123;</div><div class="line">			if(g==*i)&#123;</div><div class="line">				list.erase(i);</div><div class="line">				break;</div><div class="line">			&#125;</div><div class="line">			i++;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	void Picture::Draw()&#123;</div><div class="line">		std::vector&amp;lt;Graph*&amp;gt;::iterator i=list.begin();</div><div class="line">		while(i != list.end())&#123;</div><div class="line">			(*i)-&amp;gt;Draw();</div><div class="line">			i++;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef SHAPE_H</div><div class="line">#define SHAPE_H</div><div class="line">	/// Shape class is parent class of &quot;Line&quot; and &quot;Point&quot;</div><div class="line">	class Shape:public Graph&#123;</div><div class="line">	public:</div><div class="line">		virtual void Draw()=0;</div><div class="line">		Shape(std::string name):Graph(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Shape construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		virtual ~Shape()&#123;std::cout&amp;lt;&amp;lt;&quot;Shape destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line"></div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef POINT_H</div><div class="line">#define POINT_H</div><div class="line">	class Point:public Shape&#123;</div><div class="line">	public:</div><div class="line">		Point(std::string name):Shape(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Point construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		~Point()&#123;std::cout&amp;lt;&amp;lt;&quot;Point destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		virtual void Draw();</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Point::Draw()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;Draw a point!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef LINE_H</div><div class="line">#define LINE_H</div><div class="line">	class Line: public Shape&#123;</div><div class="line">	public:</div><div class="line">		Line(std::string name):Shape(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Line construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		~Line()&#123;std::cout&amp;lt;&amp;lt;&quot;Line destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		virtual void Draw();</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line">	void Line::Draw()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;Draw a line!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Line l (&quot;line&quot;);</div><div class="line">	pattern::Point p1 (&quot;point 1&quot;);</div><div class="line">	pattern::Point p2(&quot;point 2&quot;);</div><div class="line">	pattern::Picture pic(&quot;Picture&quot;);</div><div class="line">	pic.Add(&amp;amp;l);</div><div class="line">	pic.Add(&amp;amp;p1);</div><div class="line">	pic.Add(&amp;amp;p2);</div><div class="line"></div><div class="line">	pic.Draw();</div><div class="line">	// if you want destroy some shape, remove them first.</div><div class="line">	pic.Remove(&amp;amp;p1);</div><div class="line">	p1.~Point();</div><div class="line">	pic.Draw();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/code/">code</a><a href="/tags/software-architecture-code/">software-architecture-code</a><a href="/tags/cc/">cc</a><a href="/tags/design/">design</a><a href="/tags/pattern/">pattern</a><a href="/tags/composite/">composite</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/03/2010-05-03-design-pattern-decorator-pattern/" title="design pattern -- decorator pattern" itemprop="url">design pattern -- decorator pattern</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-02T16:00:00.000Z" itemprop="datePublished"> Published 2010-05-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_keywords" content="design,pattern, decorator,code"></p>
+<p><meta name="_su_title" content="design,pattern, decorator,code"></p>
+<meta name="views" content="426">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div></pre></td><td class="code"><pre><div class="line">// decorator.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern is decorator pattern.</div><div class="line">	/// In this pattern the super class should have default process functions.</div><div class="line">	/// for example: &quot;Read&quot; has default read word function, and it is useful in the future.</div><div class="line">	/// Read_Char, Read_Chinese, Decorator inherit Read class.</div><div class="line">	/// But those three subclass is not powerful to deal with sentences.</div><div class="line">	/// Then the subclass of Decorator will deal with sentences, but it dose not know every word.</div><div class="line">	/// So Sentence(Encode) pattern has become.</div><div class="line">	/// But decorator pattern is not only dealing with this situation but also enhance some classes</div><div class="line">	/// capacity without adding new classes.</div><div class="line">	/// is it something like Bridge?</div><div class="line">#ifndef READ_H</div><div class="line">#define READ_H</div><div class="line">	class Read&#123;</div><div class="line">	public:</div><div class="line">		Read()&#123;&#125;</div><div class="line">		virtual ~Read()&#123;&#125;</div><div class="line"></div><div class="line">		/// this is default process function.</div><div class="line">		/// and decorator class will use this function to read</div><div class="line">		virtual void ReadWord()&#123;std::cout&amp;lt;&amp;lt;&quot;default read!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		/// if the function is a pure virtual function,</div><div class="line">		/// decorator class need not inherit this class and</div><div class="line">		/// it just has an instance of Read as a member varible.</div><div class="line">		// virtual void ReadWord()=0;</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef READCHAR_H</div><div class="line">#define READCHAR_H</div><div class="line">	class Read_Char:public Read&#123;</div><div class="line">	public:</div><div class="line">		Read_Char():Read()&#123;&#125;</div><div class="line">		~Read_Char()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Char::ReadWord()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt; &quot;read a char&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef READCHINESE_H</div><div class="line">#define READCHINESE_H</div><div class="line">	class Read_Chinese:public Read&#123;</div><div class="line">	public:</div><div class="line">		Read_Chinese():Read()&#123;&#125;</div><div class="line">		~Read_Chinese()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Chinese::ReadWord()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;read a chinese word&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef DECORATOR_H</div><div class="line">#define DECORATOR_H</div><div class="line">	class Decorator:public Read&#123;</div><div class="line">	protected:</div><div class="line">		Read* r;</div><div class="line">	public:</div><div class="line">		Decorator():Read()&#123;r = NULL;&#125;</div><div class="line">		Decorator(Read* r):Read(),r(r)&#123;&#125;</div><div class="line">		virtual ~Decorator()&#123;if(r!=NULL) delete r;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Decorator::ReadWord()&#123;</div><div class="line">		if(NULL == r)</div><div class="line">			Read::ReadWord();</div><div class="line">		else</div><div class="line">			r-&amp;gt;ReadWord();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef READSENTENCE_H</div><div class="line">#define READSENTENCE_H</div><div class="line">	// this class is real work decorator class</div><div class="line">	class Read_Sentence:public Decorator&#123;</div><div class="line"></div><div class="line">	public:</div><div class="line">		Read_Sentence():Decorator()&#123;&#125;</div><div class="line">		Read_Sentence(Read* r):Decorator(r)&#123;&#125;</div><div class="line">		~Read_Sentence()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Sentence::ReadWord()&#123;</div><div class="line">		/// parent class method is called first!</div><div class="line">		Decorator::ReadWord();</div><div class="line">		/// then your method be called</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;read a sentence&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Read_Sentence rs1(new pattern::Read_Char());// read char</div><div class="line">	pattern::Read_Sentence rs2(new pattern::Read_Chinese());// read chinese</div><div class="line">	pattern::Read_Sentence rs3; // default read</div><div class="line">	rs1.ReadWord();</div><div class="line">	rs2.ReadWord();</div><div class="line">	rs3.ReadWord();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/code/">code</a><a href="/tags/software-architecture-code/">software-architecture-code</a><a href="/tags/cc/">cc</a><a href="/tags/design/">design</a><a href="/tags/pattern/">pattern</a><a href="/tags/decorator/">decorator</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/05/03/2010-05-03-design-pattern-bridge/" title="design pattern--bridge" itemprop="url">design pattern--bridge</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-05-02T16:00:00.000Z" itemprop="datePublished"> Published 2010-05-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="why use bridge pattern?If the original parent class is not suitable for being inherited by subclass, it will be refactor. And If there are some concepts are common, it will be abstracted as implement interface or abstract class."></p>
+<p><meta name="_su_keywords" content="design,pattern,bridge"></p>
+<p><meta name="_su_title" content="design pattern bridge pattern"></p>
+<meta name="views" content="465">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div></pre></td><td class="code"><pre><div class="line">// bridge.cpp : Defines the entry point for the console application.</div><div class="line">//</div><div class="line">/// author : chillyc</div><div class="line">/// email : chillycreator @t gmail.com</div><div class="line">/// uml:</div><div class="line">///                   _ </div><div class="line">///                  / \</div><div class="line">///                 /_ _\</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">namespace pattern&#123;</div><div class="line"></div><div class="line">/// why use bridge pattern?</div><div class="line">/// If the original parent class is not suitable for being inherited by subclass, </div><div class="line">/// it will be refactor. And If there are some concepts are common, </div><div class="line">/// it will be abstracted as implement interface or abstract class.</div><div class="line">/// for example: in KFC, there will be some softdrink to be sold, </div><div class="line">/// like coca cola, coff, and so on. And if you wish, you will add some additions like sugar,</div><div class="line">/// or ice into softdrinks. If we design the classes as sugar-cocacola, sugar-coff, ice-cocacola,</div><div class="line">/// and ice-coff. There will be four subclasses here. And in the future, is there add another</div><div class="line">/// additions? If yes, the system will add another two classes! But if use bridge pattern,</div><div class="line">/// it will add only one class called &quot;another additions&quot; inherited from addition class. </div><div class="line">/// This is benefits of this pattern.</div><div class="line"></div><div class="line">#ifndef ADDITION_H</div><div class="line">#define ADDITION_H</div><div class="line">	/// this is the implement class in Bridge pattern.</div><div class="line">	/// if you want add another additions, </div><div class="line">	/// inherit this class and the point of your class into Softdrink class.</div><div class="line">	/// Do you have better implements for just adding class here and not modifying Softdrink class?</div><div class="line">	class Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add()=0;</div><div class="line">		virtual ~Addition()&#123;&#125;;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef SUGAR_H</div><div class="line">#define SUGAR_H</div><div class="line">	class Sugar:public Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Sugar::Add()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;add sugar&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef ICE_H</div><div class="line">#define ICE_H</div><div class="line">	class Ice:public Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Ice::Add()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;add ice&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef SOFTDRINK_H</div><div class="line">#define SOFTDRINK_H</div><div class="line">	/// this class is the abstract class in Bridge pattern.</div><div class="line">	/// I consider there will be some other implement methods.</div><div class="line">	/// I use Addition objects as member variables, </div><div class="line">	/// and construct and destroy them in Softdrink.</div><div class="line">	/// But if there is no member variables of Addition, It will be ok.</div><div class="line">	/// for example: you can send Addition instances as parameters into Softdrink subclass.</div><div class="line">	/// But in Bridge pattern, the uml is aggregation between implement class and abstract class.</div><div class="line">	class Softdrink&#123;</div><div class="line">	public:</div><div class="line">		Softdrink();</div><div class="line">		virtual void drink()=0;</div><div class="line">		virtual ~Softdrink()=0;</div><div class="line">	protected:</div><div class="line">		Addition *sugar;</div><div class="line">		Addition *ice;</div><div class="line">		/// another additions add here!</div><div class="line">	&#125;;</div><div class="line">	Softdrink::~Softdrink()&#123;</div><div class="line">		if(NULL != sugar)&#123;</div><div class="line">			delete sugar;</div><div class="line">		&#125;</div><div class="line">		if(NULL != ice)&#123;</div><div class="line">			delete ice;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	Softdrink::Softdrink()&#123;</div><div class="line">		sugar = new Sugar();</div><div class="line">		ice = new Ice();</div><div class="line">	&#125;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef COFF_H</div><div class="line">#define COFF_H</div><div class="line"></div><div class="line">	class Coff: public Softdrink&#123;</div><div class="line">	public:</div><div class="line"></div><div class="line">		virtual void drink();</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Coff::drink()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;I am drinking coff!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">		sugar-&amp;gt;Add();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef COCA_H</div><div class="line">#define COCA_H</div><div class="line">	class Coca: public Softdrink&#123;</div><div class="line">	public:</div><div class="line">		virtual void drink();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Coca::drink()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;I am drinking coca cola!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">		ice-&amp;gt;Add();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line"></div><div class="line">	pattern::Coca coca;</div><div class="line">	coca.drink();</div><div class="line">	pattern::Coff coff;</div><div class="line">	coff.drink();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/code/">code</a><a href="/tags/software-architecture-code/">software-architecture-code</a><a href="/tags/cc/">cc</a><a href="/tags/design/">design</a><a href="/tags/pattern/">pattern</a><a href="/tags/bridge/">bridge</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/page/23/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/78/">78</a><a class="extend next" rel="next" href="/page/25/">Next<span></span></a>
+  </nav>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/编程/" title="编程">编程<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工作/" title="工作">工作<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>39</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/see-hear/" title="see-hear">see-hear<sup>37</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c">c<sup>36</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/code/" title="code">code<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/数据库/" title="数据库">数据库<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/blog/" title="blog">blog<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/cc/" title="cc">cc<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/null/" title="null">null<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/class/" title="class">class<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微软/" title="微软">微软<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活/" title="生活">生活<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c#">c#<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/google/" title="google">google<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c++">c++<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>18</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="blog.csdn.net/cctt_1" target="_blank" title="帐前卒专栏">帐前卒专栏</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 帐前卒专栏 <br/>
+			Without software, we are nothing.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1648789462" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="chillyc">chillyc</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>

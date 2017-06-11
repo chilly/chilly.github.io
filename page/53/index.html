@@ -1,0 +1,1081 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>帐前卒专栏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="chillyc">
+    
+
+    
+    <meta property="og:type" content="website">
+<meta property="og:title" content="帐前卒专栏">
+<meta property="og:url" content="http://chillyc.info/page/53/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="帐前卒专栏">
+
+    
+    <link rel="alternative" href="/atom.xml" title="帐前卒专栏" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/images/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="帐前卒专栏">帐前卒专栏</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:chillyc.info">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/27/2222507/" title="C#代码与javaScript函数的相互调用" itemprop="url">C#代码与javaScript函数的相互调用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-27T03:42:00.000Z" itemprop="datePublished"> Published 2008-03-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>C#代码与javaScript函数的相互调用</p>
+<p>问：<br>1.如何在JavaScript访问C#函数?<br>2.如何在JavaScript访问C#变量?<br>3.如何在C#中访问JavaScript的已有变量?<br>4.如何在C#中访问JavaScript函数?  </p>
+<p>问题1答案如下：<br>javaScript函数中执行C#代码中的函数：<br>方法一：1、首先建立一个按钮，在后台将调用或处理的内容写入button_click中;<br>2、在前台写一个js函数，内容为document.getElementById(“btn1”).click();<br>3、在前台或后台调用js函数，激发click事件，等于访问后台c#函数；</p>
+<p>方法二：1、函数声明为public<br>后台代码(把public改成protected也可以)<br>public string ss()<br>{<br>return(“a”);<br>}<br>2、在html里用&lt;%=fucntion()%&gt;可以调用<br>前台脚本  </p>
+<script language="javascript">  
+var a = "<%=ss()%>";  
+alert(a);  
+</script>  
+方法三：1、<script language="javascript">  
+<!--  
+function __doPostBack(eventTarget, eventArgument)  
+{  
+var theForm = document.Form1;       //指runat=server的form  
+theForm.__EVENTTARGET.value = eventTarget;  
+theFrom.__EVENTARGUMENT.value = eventArgument;  
+theForm.submit();  
+}  
+\-->  
+</script>  
+<input id="Button1" type="button" name="Button1" value="按钮" onclick="javascript:__doPostBack('Button1','')">  
+
+方法四：<script language="javascript">  
+function SubmitKeyClick()  
+{  
+if (event.keyCode == 13)  
+{  
+event.cancelBubble = true;  
+event.returnValue = false;  
+document.all.FunName.value="你要调用的函数名"；  
+document.form[0].submit();  
+}  
+}  
+</script>
+
+<p><input onkeypress="SubmitKeyClick()" id="aaa" type="text">  </p>
+<p><input type="hidden" name="FunName"> 〈！–用来存储你要调用的函数 –〉</p>
+<p>在.CS里有：<br>public Page_OnLoad()<br>{<br>if (!Page.IsPost())<br>{<br>string strFunName=Request.Form[“FunName”]!=null?Request.Form[“FunName”]:””;<br>//根据传回来的值决定调用哪个函数<br>switch(strFunName)<br>{<br>case “enter()”:<br>enter() ; //调用该函数<br>break;<br>case “其他”:<br>//调用其他函数<br>break;<br>default:<br>//调用默认函数<br>break;<br>}<br>}<br>}</p>
+<p>public void enter()<br>{<br>//……比如计算某值<br>}</p>
+<p>问题2.如何在JavaScript访问C#变量?<br>答案如下：<br>方法一：1、通过页面上隐藏域访问<input id="xx" type="hidden" runat="server"><br>方法二：1、如后台定义了PUBLIC STRING N;前台js中引用该变量的格式为’&lt;%=n%&gt;’或”+&lt;%=n%&gt;+”<br>方法三：1、或者你可以在服务器端变量赋值后在页面注册一段脚本<br>“<script language="javascript">var temp=” + tmp + “</script>“<br>tmp是后台变量，然后js中可以直接访问temp获得值。</p>
+<p>3.如何在C#中访问JavaScript的已有变量?</p>
+<p>答案如下：</p>
+<p>方法一：1、前台使用静态文本控件隐藏域，将js变量值写入其中；<br>2、后台用request[“id”]来获取值；</p>
+<p>方法二：可以用cookie或session</p>
+<p>4.如何在C#中访问JavaScript函数?<br>答案如下：<br>c#代码中执行javaScript函数：<br>方法一：1、  Page.RegisterStartupScript(“ggg”,”<script>SetVisible(1);</script>“);<br>方法二：使用Literal类，然后<br>private void Button2_Click(object sender, System.EventArgs e)<br>{<br>string str;<br>str=”<script language="javascript">“;<br>str+=”selectRange()”;<br>str+=”</script>“;<br>//Literal1.Visible=true;<br>Literal1.Text=str;  </p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/c/">c#</a><a href="/tags/button/">button</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/25/2215346/" title="湖大寝室被盗" itemprop="url">湖大寝室被盗</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-25T00:50:00.000Z" itemprop="datePublished"> Published 2008-03-25</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>湖大校园非常混乱。请看到这篇文章的还未上湖南大学，却励志要上湖南大学的小同学们想想清楚。因为是开放式校园，所以和外面的人接触很多。一栋宿舍里人来人往，非常多<br>人（还大多是外面的人）。 舍管阿姨根本不清楚哪个是哪个。</p>
+<p>财产安全问题是一个非常重要的问题。所以如果家里一贫如洗，可以来这里。小李子就是这样一个人。在他寝室里现在只有他和蟑螂两种生物。没钱。可是还是半夜被盗了。手法<br>非常残忍，将锁弄个残废。幸好小李子在熟睡中，如果他醒来，恐怕这个人的灵魂就要升天堂了。据不完全统计，现在还未丢财务。但是不清楚蟑螂少了几只，正在进一步的调查<br>中。</p>
+<p>混乱的校园…早点离开这个鬼地方才是上策。</p>
+<p>本篇是个人言论，非官方语言。小李子的官方报道正在出台中……</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/语言/">语言</a><a href="/tags/生物/">生物</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/17/2190806/" title="Simple s();与Simple s;的区别" itemprop="url">Simple s();与Simple s;的区别</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-17T02:34:00.000Z" itemprop="datePublished"> Published 2008-03-17</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/16/2187795/" title="ATC Education Taipan组（爆笑）记录" itemprop="url">ATC Education Taipan组（爆笑）记录</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-16T08:55:00.000Z" itemprop="datePublished"> Published 2008-03-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在一个小cube里，Annie坐在肮脏的黄色大气球上耐心的听着Cloud布道。chao拿着水果跑进cube，惊喜的大叫：“这球终于有人擦了！”</p>
+<p>晚上吃过晚饭，lynn挤进黄色大气球所在的cube里打星际。Cloud教导lynn如何打星际。“你可以把星际看成少女养成类游戏。点这个首饰盒可以…..”<br>。战争进行了n分钟后，chao准备利用虫族的房子穿过lynn的阵地，空投到wei家中。房子正穿越lynn阵地的过程中，lynn大叫：“这一片飞的是什么东西？<br>！”于是，行踪败露。下一个n分钟后，Cloud很兴奋的说：“lynn努力将自己的人口保持在19.”又过了几分钟，xibei让lynn的兵都出去进攻。xibe<br>i:”把兵都A出去。”lynn:”怎么A？”</p>
+<p>xibei教lynn玩完星际的几天后。大家准备去Sohail的家中。正在路途xibei抬头看到了Sohail住的宾馆。于是叫道：“大家A过去！”</p>
+<p>军军打完CS的几天后。接到面试别人的通知。和定浩，以及旁听的傻傻的chao在大黄球曾滚过的cube正讨论如何面死那应聘者。军军：“他的专业是CS（compu<br>ter science）计算机科学，我们应该考些CS<br>fundamental的知识。”“好呀！”chao附和道。“比如：如何买枪，换子弹….”军军接下去说。（CS也是种游戏）</p>
+<p>wei和Shawn在某处打照面。“You are so strong！”wei说。“You are so<br>handsome！”shawn说。似乎每天的照面频率很高。但是见面语却没有变过。</p>
+<p>gencheng和chao在某处打照面。“吃饭去？”chao说。“好呀！”gencheng说。似乎这两个人只有在吃饭前才有机会见面。</p>
+<p>老大和他的小弟在B1的中餐厅使劲嚼着那香辣土豆丝。小弟说：“老大，我那个bug解决了。给你说了下代码，你就知道哪里可能有bug，真是太厉害了！”老大：“你的<br>怕马匹的功夫也越来越厉害了。”小弟：“你怎么知道我是在拍马屁？不愧是老大！”老大：“好，你又拍了一个。”</p>
+<p>shawn，wei，xibei，chao等帮内核心人物强烈要求帮主要对个人的负债进行一次清零操作。（每次个人账单都是红色标记也挺没有面子的。）lynn也跟随<br>大众的一起要求清零。帮主冷冷的对lynn说：“你刚存了100元，就从你开始清零吧。”</p>
+<p>Annie请客，自己忙了一天，煮了一大锅东西。吃饭的时候，Annie问chao：“这个猪蹄怎么样？”“不错，我更喜欢吃丸子。”chao应道。Annie又问：<br>“你最喜欢吃什么？”“丸子！”chao用筷子捞了一圈又一圈，“不过现在没有了！”chao沮丧的说。（只有丸子是不用加工，直接放入锅里煮的！）</p>
+<p>晚上8点左右，chao’s mentor shu和chao在红色小气球的cube里讨论visualDiff的实现细节。“第四个值是Alpha值，手机上有吗？<br>”“没有！”shu很肯定的回答。“我想把它去掉，如果使用循环，每隔4个就要把那个值去掉，这样进行判断，很费时间。”chao说。“你为什么不写四条顺序语句，代<br>替那个判断呢？”shu慢条斯理的说。chao沉思了一会，“手机上不需要这个值是吗？”chao说。“嗯。”“那我为什么要判读那个值是不是第四个呢？”…..<br>(chao自己已经迷糊了…而shu则是在迷茫….)</p>
+<p>要做自动化压力测试了。chao知道压力测试肯定能测到问题。所以chao在自己的msn上改签名为：“ruijun让我肩负起搞死dengshan的重要使命！”d<br>engshan是dev lead，这个项目要发布了，所以他要负责修复bug，但是他又想去休假。但是谁知道，被dengshan点出自动化压力测试那个程序写的有<br>问题。于是不是chao搞死了dengshan，而是dengshan整死了chao，当然ruijun也顺带被整死。于是chao星期六星期天和ruijun一起不<br>亦乐乎、忙死忙活地做着自动化压力测试，而dengshan舒服的在家中休假。</p>
+<p>未完待续中…..</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/测试/">测试</a><a href="/tags/手机/">手机</a><a href="/tags/游戏/">游戏</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/15/2185914/" title="孙子说--摘录" itemprop="url">孙子说--摘录</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-15T13:46:00.000Z" itemprop="datePublished"> Published 2008-03-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>所谓诡道，便是“是”装作“否”<br>忍让<br>化不利为有利<br>久战不利<br>胜敌而益强<br>充分利用各种手段进行斗争<br>知敌强弱，知己强弱，方能选择最佳策略<br>要懂得分权，这样可以避免牵制用兵，不懂军政，将帅不一<br>求胜：1.何时战，2.多少兵。3政、军、民有无共同的信念4我方准备充足，敌方准备不足5君主不干预有才能的</p>
+<p>将领<br>胜兵先胜，而后求战；败兵先战，而后求胜（胜者先创造必胜的条件，然后再与敌作战；败者先与敌作战，然</p>
+<p>后再侥幸求胜）<br>是否立于不败之地，操之在己；能否趁可乘之机，操之在敌<br>用兵之道无定法<br>风林火山阴雷（其疾如风，其徐如林，侵掠如火，不动如山，难知如阴，动如雷霆）<br>我专敌分<br>必死可杀，必生可虏，忿速可侮，链结可辱，爱民可烦  五种危险<br>通挂支隘险远  五地形<br>用兵作战六败：走，弛，陷，崩，乱，北<br>走：兵力相当，却以一攻十<br>弛：军队强大，指挥官能力欠缺<br>陷：指挥官能力强，但是军队差<br>崩：将帅无法控制骄横的高级军官<br>乱：管束不严，军纪不整<br>北：用兵无重点，料敌无方<br>有利才行动，无利则不妄动<br>击敌之不防<br>强与弱各司其职<br>始如处女，敌人开户，后如脱兔，敌不及拒<br>火攻有五：火人，火积，火辎，火库，火队<br>合于利而动<br>慎用兵<br>五间：乡间，内间，反间，死间，生间</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/13/2177477/" title="link2005错误" itemprop="url">link2005错误</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-13T07:32:00.000Z" itemprop="datePublished"> Published 2008-03-13</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>VC++的链接错误LNK2005  </p>
+<p>编程中经常能遇到LNK2005错误——重复定义错误，其实LNK2005错误并不是一个很难解决的错误。弄清楚它形成的原因，就可以轻松解决它了。  </p>
+<p>造成LNK2005错误主要有以下几种情况：<br>1． 重复定义全局变量。可能存在两种情况：<br>A、 对于一些初学编程的程序员，有时候会以为需要使用全局变量的地方就可以使用定义申明一下。其实这是错误的，全局变量是针对整个工程的。正确的应该是在一个CPP<br>文件中定义如下：int   g_Test;那么在使用的CPP文件中就应该使用：extern   int   g_Test即可，如果还是使用int<br>g_Test，那么就会产生LNK2005错误，一般错误错误信息类似：AAA.obj   error   LNK2005   int   book<br>c？book@@3HA   already   defined   in   BBB.obj。切记的就是不能给变量赋值否则还是会有LNK2005错误。<br>这里需要的是“声明”，不是“定义”！根据C++标准的规定，一个变量是声明，必须同时满足两个条件，否则就是定义：<br>(1)声明必须使用extern关键字；(2)不能给变量赋初值<br>所以，下面的是声明:<br>extern   int   a;<br>下面的是定义<br>int   a;   int   a   =   0;   extern   int   a   =0;<br>B、对于那么编程不是那么严谨的程序员，总是在需要使用变量的文件中随意定义一个全局变量，并且对于变量名也不予考虑，这也往往容易造成变量名重复，而造成LNK20<br>05错误。  </p>
+<p>2． 头文件的包含重复。往往需要包含的头文件中含有变量、函数、类的定义，在其它使用的地方又不得不多次包含之，如果头文件中没有相关的宏等防止重复链接的措施，那<br>么就会产生LNK2005错误。解决办法是在需要包含的头文件中做类似的处理：#ifndef   MY_H_FILE       //如果没有定义这个宏  </p>
+<p>#define   MY_H_FILE       //定义这个宏<br>…….       //头文件主体内容<br>…….  </p>
+<p>#endif<br>上面是使用宏来做的，也可以使用预编译来做，在头文件中加入：  </p>
+<p>#pragma   once<br>//头文件主体<br>3． 使用第三方的库造成的。这种情况主要是C运行期函数库和MFC的库冲突造成的。具体的办法就是将那个提示出错的库放到另外一个库的前面。另外选择不同的C函数库<br>，可能会引起这个错误。微软和C有两种C运行期函数库，一种是普通的函数库：LIBC.LIB，不支持多线程。另外一种是支持多线程的：msvcrt.lib。如果一<br>个工程里，这两种函数库混合使用，可能会引起这个错误，一般情况下它需要MFC的库先于C运行期函数库被链接，因此建议使用支持多线程的msvcrt.lib。所以在<br>使用第三方的库之前首先要知道它链接的是什么库，否则就可能造成LNK2005错误。如果不得不使用第三方的库，可以尝试按下面所说的方法修改，但不能保证一定能解决<br>问题，前两种方法是微软提供的：<br>A、 选择VC菜单Project-&gt;Settings-&gt;Link-&gt;Catagory选择Input，再在Ignore   libraries<br>的Edit栏中填入你需要忽略的库，如：Nafxcwd.lib;Libcmtd.lib。然后在Object/library<br>Modules的Edit栏中填入正确的库的顺序，这里需要你能确定什么是正确的顺序，呵呵，God   bless   you！<br>B、 选择VC菜单Project-&gt;Settings-&gt;Link页，然后在Project<br>Options的Edit栏中输入/verbose:lib，这样就可以在编译链接程序过程中在输出窗口看到链接的顺序了。<br>C、 选择VC菜单Project-&gt;Settings-&gt;C/C++页，Catagory选择Code   Generation后再在User<br>Runtime   libraray中选择MultiThread   DLL等其他库，逐一尝试。<br>关于编译器的相关处理过程，参考：<br><a href="http://www.donews.net/xzwenlan/archive/2004/12/23/211668.aspx" target="_blank" rel="external">http://www.donews.net/xzwenlan/archive/2004/12/23/211668.aspx</a>  </p>
+<p>这就是我所遇到过的LNK2005错误的几种情况，肯定还有其他的情况也可能造成这种错误，所以我不希望你在看完这篇文章以后，再遇到LNK2005错误时候，不动脑<br>筋的想对号入座的排除错误。编程的过程就是一个思考的过程，所以还是多多开动你的头脑，那样收获会更多！</p>
+<p>注意：头文件中只是全局变量和函数的声明，严禁定义。只有模板类中重载运算符除外…. 这是我得到的结论。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/多线程/">多线程</a><a href="/tags/generation/">generation</a><a href="/tags/mfc/">mfc</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/12/2174638/" title="模板类的小问题（链接失败）" itemprop="url">模板类的小问题（链接失败）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-12T13:44:00.000Z" itemprop="datePublished"> Published 2008-03-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>今天上午做模板类。结果还发现了大大小小的问题。</p>
+<p>希望自己的模板变的越来越规范，所以强迫自己把模板类中的函数的定义和声明分开。 而且放在了不同的文件里。</p>
+<p>下面是大概的写法。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>template  &lt; class  type  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>class  A<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  :<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>friend ostream  &amp; operator  &lt;&lt; (ostream  &amp; , A  &lt; type  &gt;&amp; );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>A();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>….<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>然后在另一个.cpp中这样定义</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>template  &lt; class  type  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>ostream  &amp; operator  &lt;&lt; (ostream  &amp; os,A  &lt; type  &gt;&amp; a)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>os  &lt;&lt; a….  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  os;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>template  &lt; class  type  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> A<br>&lt; type  &gt; ::A()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>….<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>template  &lt; class  type  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>void  A  &lt; type  &gt; ::test()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>….<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>在main函数中这样调用</p>
+<p>A<int> a();</int></p>
+<p>a.test();</p>
+<p>cout &lt;&lt; a;</p>
+<p>结果链接失败..报的错误好像是link2019.</p>
+<p>不清楚为啥，后来同时在main的文件中include A.h 和A.cpp可以解决构造函数和Test()函数reference的问题。</p>
+<p>然后又将重载&lt;&lt;的函数放在类的定义中才解决了link2019链接错误.</p>
+<p>但是我还是想把这个重载的函数声明和定义分开写，不知道哪位高手可以指点一下。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/class/">class</a><a href="/tags/reference/">reference</a><a href="/tags/include/">include</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/11/2170908/" title="给作业加个数字签名" itemprop="url">给作业加个数字签名</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-11T12:15:00.000Z" itemprop="datePublished"> Published 2008-03-11</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>当了数据结构的助教，还要修改作业。在学生们的作业本上留下了对错号。但是没有写其他的东西。为了防止有学生来冒充我的笔迹来自行打对错号，然后声称没有给分这种现象<br>的发生。我花了一个小时做了一个数字签名。因为我的笔迹很烂，很容易模仿。</p>
+<p>代码如下：基本原理使用的Hash散列。所以不知道签名数据的人，绝对可能从自己作业的签名中获取签名数据，自然也不可能去冒充一个签名。</p>
+<p>我使用的mysql的散列函数</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  “  stdafx.h  “<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  &lt; iostream  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  &lt; string  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>using  namespace  std;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>int  iHTLen;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>mySql hash<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>unsigned  int  Hash (  const  char  <em>  keys,  const  int  len)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>const  char  </em>  key  =  keys;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Hash function for character keys<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  length  =  len;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  nr  =  1  , nr2  =  4  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (length  --  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>nr  ^=  (((nr  &amp; 63  )  +  nr2)  <em>  (  </em>  key  ++  ))  +  (nr  &lt;&lt; 8  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>nr2  +=  3  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  ((unsigned  int  ) nr)  %  iHTLen;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>just Test the consequence are correct or not<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>bool  TestHashValue(  const  unsigned  int  hashValue[],  int  len)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; len; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  j  =  i  +  1  ; j  &lt; len; j  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (hashValue[i]  ==  hashValue[j])<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  false  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  true  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>guarantee the input values are not the same<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>bool  TestPreValue(  const  string  students[],  int  len)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; len; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  j  =  i  +  1  ; j  &lt; len; j  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (students[i]  ==  students[j])<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  false  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  true  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>unsigned  int  Hash(  string  studentName,  string  date,  string  signer)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  len  =  studentName.length()  +  date.length()  +  signer.length();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char  <em>  sign  =  new  char  [len];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>memset(sign,  0  ,len);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>strcpy(sign,studentName.c_str());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>strcat(sign,date.c_str());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>strcat(sign,signer.c_str());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  Hash(sign,len);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>int  _tmain(  int  argc, _TCHAR  </em>  argv[])<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  num  =  0  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cin  &gt;&gt; num;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>string  <em>  students  =  new  string  [num];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>string  signName;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>string  date;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; num; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cin  &gt;&gt; students[i];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cin  &gt;&gt; date;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cin  &gt;&gt; signName;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cin  &gt;&gt; iHTLen;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>bool  isGoon  =  TestPreValue(students,num);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  !  isGoon)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  students’ names are the same?  “  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>exit(  2  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>unsigned  int  </em>  signNum  =  new  unsigned  int  [num];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; num; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>signNum[i]  =  Hash(students[i],signName,date);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>bool  isSuccess  =  TestHashValue(signNum,num);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  !  isSuccess)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  please change the last value and run again!  “  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>exit(  2  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; num; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; students[i]  &lt;&lt; “  “  &lt;&lt; signNum[i]  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  0  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>幸好没有重名的学生。(<em>^__^</em>) 嘻嘻……</p>
+<p>以上的代码使用VS2005的编译器。不过数据不方便透露，所以大家看懂代码可以自己输入自己的签名数据。大家不必在意Hash函数是如何去写的。因为我也不清楚为什<br>么这样写。</p>
+<p>以后改作业可以省心了。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/string/">string</a><a href="/tags/date/">date</a><a href="/tags/作业/">作业</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/10/2164540/" title="去旅游？" itemprop="url">去旅游？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-10T11:35:00.000Z" itemprop="datePublished"> Published 2008-03-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>请点点吃饭。气氛依旧很不愉快，发现从来没有和她吃饭愉快的时候。 期间提到想去旅游，问我支持不支持。点点给我的每一个想法都很新奇，远远超出我的想象空间。旅游是<br>个好事情可以增长眼界，锻炼胆识。不过要是一个人去，我想还不如躺在自己的床上睡觉舒服。发现自己不喜欢旅游。因为很累，而且要去看风景识人文，为何不在互联网上取得<br>呢？因为自己每到一个地方，总是发现还没有网上的照片好看。比如说天津。只是感觉校园很大，而且有种很“自卑”的感觉。她还说不想去实习。问了为啥，答曰害怕。仔细想<br>想，这些想法间矛盾很多。一个人去旅游是为了锻炼胆识，而不去实习却因为害怕孤独。真的想不通。她很希望得到我的支持。我说可以，但是你要给我拿出计划和方案出来。只<br>有个想法，估计谁都不会同意的。可恰恰相反，她的同学和家人竟然都欣然同意。看来是自己的想法太不合群了。于是就在郁郁中结束了吃饭这个活动。</p>
+<p>知难行易，知易行难。不清楚这句话对不对，也不清楚是不是自己书读的太多，反而束缚了自己的手脚。的确有很多想法和自己想法不同，就会招到自己的排挤。但是自己从没有<br>强迫别人改变他的想法。不过我清楚的知道：做一件事情，如果没有计划和方案，还能顺利的进行，那真的是上天眷顾！希望上天多多眷顾我一下……</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/照片/">照片</a><a href="/tags/互联网/">互联网</a><a href="/tags/旅游/">旅游</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2008/03/09/2159816/" title="死亡之旅（摘要）" itemprop="url">死亡之旅（摘要）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2008-03-09T07:49:00.000Z" itemprop="datePublished"> Published 2008-03-09</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>死亡之旅即为那些时间要求提高50％，预算减少50％，人员减少50%，功能增加50％的项目。按常规来说根本达不成目标的项目<br>小型的项目成功的概率最大，大型项目就是真的死亡之旅了。</p>
+<p>产生的原因：人人都是傻瓜。只是在不同的时间对不同的事物成为傻瓜。<br>不要对项目做出乐观的估计。<br>刚刚起步的公司容易换海军陆战队综合症</p>
+<p>成为死亡之旅的原因并不在于技术，而在于荒谬的进度。</p>
+<p>项目就像场婚姻，开始时，我们通常天真而充满希望。但随着现实的慢慢介入，我们不得不重新调整自己对这种关系的期望.</p>
+<p>以为无比的自信，死亡之旅项目团队才能够完成传统项目团队无能为力的任务。<br>年轻人不会放弃的乐观，精力以及专注于某一问题的能力。。。还有他们的天真。。。</p>
+<p>向团队授权。</p>
+<p>加入死亡之旅，要在其中一个方面（功能，成本，时间）上有机动性。并承认是死亡之旅。</p>
+<p>没有爬过富士山的人是傻瓜，爬过两次富士山的人更傻。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/任务/">任务</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/page/52/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/51/">51</a><a class="page-number" href="/page/52/">52</a><span class="page-number current">53</span><a class="page-number" href="/page/54/">54</a><a class="page-number" href="/page/55/">55</a><span class="space">&hellip;</span><a class="page-number" href="/page/78/">78</a><a class="extend next" rel="next" href="/page/54/">Next<span></span></a>
+  </nav>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/编程/" title="编程">编程<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工作/" title="工作">工作<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>39</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/see-hear/" title="see-hear">see-hear<sup>37</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c">c<sup>36</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/code/" title="code">code<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/数据库/" title="数据库">数据库<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/blog/" title="blog">blog<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/cc/" title="cc">cc<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/null/" title="null">null<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/class/" title="class">class<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微软/" title="微软">微软<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活/" title="生活">生活<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c#">c#<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/google/" title="google">google<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c++">c++<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>18</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="blog.csdn.net/cctt_1" target="_blank" title="帐前卒专栏">帐前卒专栏</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 帐前卒专栏 <br/>
+			Without software, we are nothing.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1648789462" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="chillyc">chillyc</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>

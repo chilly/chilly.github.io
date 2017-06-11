@@ -1,0 +1,553 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>stl upper_bound函数实现 | 帐前卒专栏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="chillyc">
+    
+
+    
+    <meta name="description" content="写了一个upper_bound的实现。其中递归使用二分法求解最上界，虽然写的完全不像STL的风格，但是练手还是可以的。 #include #include #include #includeusing namespace std; int UpperBound(int* a, int start, int end , const int&amp;amp;value){ int mid = 0; int i">
+<meta name="keywords" content="up,distance,iterator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="stl upper_bound函数实现">
+<meta property="og:url" content="http://chillyc.info/2010/07/13/5732637/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="写了一个upper_bound的实现。其中递归使用二分法求解最上界，虽然写的完全不像STL的风格，但是练手还是可以的。 #include #include #include #includeusing namespace std; int UpperBound(int* a, int start, int end , const int&amp;amp;value){ int mid = 0; int i">
+<meta property="og:updated_time" content="2017-06-11T09:40:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="stl upper_bound函数实现">
+<meta name="twitter:description" content="写了一个upper_bound的实现。其中递归使用二分法求解最上界，虽然写的完全不像STL的风格，但是练手还是可以的。 #include #include #include #includeusing namespace std; int UpperBound(int* a, int start, int end , const int&amp;amp;value){ int mid = 0; int i">
+
+    
+    <link rel="alternative" href="/atom.xml" title="帐前卒专栏" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/images/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="帐前卒专栏">帐前卒专栏</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:chillyc.info">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2010/07/13/5732637/" title="stl upper_bound函数实现" itemprop="url">stl upper_bound函数实现</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2010-07-13T11:50:00.000Z" itemprop="datePublished"> Published 2010-07-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+		<p>写了一个upper_bound的实现。其中递归使用二分法求解最上界，虽然写的完全不像STL的风格，但是练手还是可以的。</p>
+<p>#include<iostream> #include<iterator> #include<cstring> #include<cassert><br>using namespace std; int UpperBound(int* a, int start, int end , const int&amp;<br>value){ int mid = 0; int index = 0; int up_index = 0; if(a[end]<value) 特判比最后一个数大时，end+1="" return="" end+1;="" 这里是经典的二分="" while(start<="end){" mid="start" +="" (end="" -="" start)="" 2;="" if(a[mid]="=" value){="" index="mid" 1;="" 去递归的找一下上界="" up_index="UpperBound(a,mid+1,end,value);" 如果找到的上界比现在的还小，那么就用现在的=""><br>index? up_index : index; } else if(a[mid]&lt;value){ start = mid+1; } else{ end =<br>mid-1; // 记录上界 index = mid; } } return index; }</value)></cassert></cstring></iterator></iostream></p>
+<p>如果原数组中没有存在那个元素，就根本没有调用那个递归程序，递归只有在出现多个此元素时才会调用。另外中间递归调用段地方还可以改写为：</p>
+<p>if(a[mid] == value){ index = mid + 1; /<em> up_index =<br>UpperBound(a,mid+1,end,value); return up_index &gt; index? up_index : index; </em>/<br>// 因为只有在递归调用中start&gt;end时，才会返回一个index = 0 return (mid+1&gt;end) ? index :<br>UpperBound(a,mid+1,end,value); }</p>
+<p>这样写完后写一下测试代码,顺便wrap一层upper_bound：</p>
+<p>int upper_bound(int <em> a,int n, const int&amp; value){ // 使用宏可以在编译时去除 #ifdef TEST<br>// pre-condition assert(NULL != a &amp;&amp; n&gt;0); // check the array a is sorted by<br>elements for(int i = 1; i &lt; n; i++){ assert(a[i-1]&lt;=a[i]); } int </em> tmp_a = new<br>int[n]; memcpy(tmp_a,a,sizeof(int)*n); #endif int index =<br>UpperBound(a,0,n-1,value); #ifdef TEST // post-condition //check whether the<br>array is changed or not for(int i = 0; i &lt; n; i++) assert(a[i] == tmp_a[i]);<br>if(index == 0){ // min assert(a[index]&gt;value); } else if(index == n){ // max<br>assert(a[index-1]&lt;=value); } else{ assert(a[index]&gt;value &amp;&amp;<br>a[index-1]&lt;=value); } delete [] tmp_a; #endif return index; }</p>
+<p>如果希望别人不调用UpperBound而只调用upper_bound,可以使用static 关键字， 将UpperBound限制在只在本文件中使用。别人调用<br>就只能调用upper_bound()函数。不过STL的教学源码比我这精简的多，根本无须使用递归。真正的STL源码变量名称会使用下划线__作为起始。</p>
+<p>template <class forwarditerator,="" class="" t=""> ForwardIterator upper_bound (<br>ForwardIterator first, ForwardIterator last, const T&amp; value ) {<br>ForwardIterator it; iterator_traits<forwarditerator>::distance_type count,<br>step; count = distance(first,last); while (count&gt;0) { it = first;<br>step=count/2; advance (it,step); if (!(value&lt;<em>it)) // or: if<br>(!comp(value,</em>it)), for the comp version { first=++it; count-=step+1; } else<br>count=step; } return first; }</forwarditerator></class></p>
+<p>这里的advance()函数定义类似:</p>
+<p>template<class iterator,="" class="" distance=""> void advance(Iterator&amp; i, Distance<br>n); 类似于 i = x.begin()+n; i is an iterator of x</class></p>
+<p>最后把主函数贴上做结：</p>
+<p>int main(int argc, char* argv[]) { // 这里你可以使用random的方法进行测试。 int x[] =<br>{1,2,3,4,5,5,5,5,9}; vector<int> v(x,x+9); sort(v.begin(),v.end()); cout &lt;&lt;<br>(int)(upper_bound(v.begin(),v.end(),9)-v.begin()); cout &lt;&lt; upper_bound(x,9,9);<br>return 0; }</int></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/up/">up</a><a href="/tags/distance/">distance</a><a href="/tags/iterator/">iterator</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://chillyc.info/2010/07/13/5732637/" data-title="stl upper_bound函数实现 | 帐前卒专栏" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2010/07/16/2010-07-16-quick-sort/" title="Quick Sort">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Quick Sort</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2010/07/11/5727277/"  title="HashMap 将object 当做key传入">
+ <strong>下一篇：</strong><br/> 
+ <span>HashMap 将object 当做key传入
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/编程/" title="编程">编程<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工作/" title="工作">工作<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>39</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/see-hear/" title="see-hear">see-hear<sup>37</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c">c<sup>36</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/code/" title="code">code<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/数据库/" title="数据库">数据库<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/blog/" title="blog">blog<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/cc/" title="cc">cc<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/null/" title="null">null<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/class/" title="class">class<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微软/" title="微软">微软<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活/" title="生活">生活<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c#">c#<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/google/" title="google">google<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c++">c++<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>18</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="blog.csdn.net/cctt_1" target="_blank" title="帐前卒专栏">帐前卒专栏</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 帐前卒专栏 <br/>
+			Without software, we are nothing.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1648789462" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="chillyc">chillyc</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

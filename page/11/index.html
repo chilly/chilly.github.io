@@ -1,0 +1,1135 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>帐前卒专栏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="chillyc">
+    
+
+    
+    <meta property="og:type" content="website">
+<meta property="og:title" content="帐前卒专栏">
+<meta property="og:url" content="http://chillyc.info/page/11/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="帐前卒专栏">
+
+    
+    <link rel="alternative" href="/atom.xml" title="帐前卒专栏" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/images/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="帐前卒专栏">帐前卒专栏</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:chillyc.info">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/11/21/8206024/" title="今夜Server再次上线" itemprop="url">今夜Server再次上线</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-11-20T16:02:00.000Z" itemprop="datePublished"> Published 2012-11-21</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>今夜Server再次上线</p>
+<p>在喧嚣的城市中噼里啪啦的敲着键盘</p>
+<p>上线群里激烈的讨论</p>
+<p>上线前</p>
+<p>没有人能知道上线后的情况</p>
+<p>每个人都是自祈多福</p>
+<p>没有环境能模拟线上</p>
+<p>正如同只能走一遍的人生</p>
+<p>修正编译上线再修正</p>
+<p>这是程序不是人生</p>
+<p>人生就是上线一直跑</p>
+<p>直到硬件崩溃</p>
+<p>幸运抑或不幸</p>
+<p>现在0:01分</p>
+<p>mm入睡</p>
+<p>哥却独醒</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/工作/">工作</a><a href="/tags/server/">server</a><a href="/tags/上线/">上线</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/11/09/8166067/" title="HttpClient 卡死 response 为null" itemprop="url">HttpClient 卡死 response 为null</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-11-09T05:38:00.000Z" itemprop="datePublished"> Published 2012-11-09</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>经常遇到HttpClient 发送请求后莫名卡死， 然后经历很长一段时间后，返回response 为null。</p>
+<p>这里设置了retry, 另外connect time 也设置的挺长的。但是还是出现了这个问题。</p>
+<p>开始以为是Server的问题，Server不稳定导致了HttpClient无法连接。后来发现其实不是这个问题。这个问题的其实是必现的，如果将链接请求数调小的<br>话。但是发送的请求都在一个线程中，不会是线程争抢导致。后来找了许久，才发现，是连接忘记了关闭。</p>
+<p>在HttpClient 4.0+的版本，正确的关闭连接如下：</p>
+<pre><code>EntityUtils.consumeQuietly(response.getEntity());
+</code></pre><p>记得这个最好放在finally块中。</p>
+<p>在HttpClient 3.0+版本中，正确的关闭如下：</p>
+<pre><code>private static void close(HttpMethod method) {
+    if (method != null) {
+        method.releaseConnection();
+    }
+}
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/3/">3</a><a href="/tags/4/">4</a><a href="/tags/httpclient/">httpclient</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/09/28/8026849/" title="解决 ant Junit testcase failed 自动检测类名" itemprop="url">解决 ant Junit testcase failed 自动检测类名</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-09-27T16:54:00.000Z" itemprop="datePublished"> Published 2012-09-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>今天过去写的testcase在ant执行时failed，但是在源文件中直接以application方式运行却没有错。</p>
+<p>原因在于下面两句话：</p>
+<pre><code>public static Set&lt;Class&lt;? extends XXX&gt;&gt; getPluginsInSameDir(Class&lt;?&gt; clazz) {
+        String dirPath = clazz.getPackage().getName().replace(&quot;.&quot;, &quot;/&quot;);
+        System.out.println(dirPath);
+        URL path = clazz.getClassLoader().getResource(dirPath);
+        System.out.println(path.toExternalForm());
+.....
+}
+</code></pre><p>第一句是要得到那个类所在的包路径，第二句是要得到那个包所在的具体路径。</p>
+<p>以application方式运行得到的结果是：</p>
+<p><strong> aa/bb/cc<br>file:/D:/works/project/bin/aa/bb/cc </strong><br>以ant方式执行Junit testcase得到的结果是：</p>
+<p><strong> aa/bb/cc<br>file:/D:/works/project/build/classes/aa/bb/cc </strong><br>这两个结果差别还是蛮大的。关键问题是classLoader()那个家伙的查找资源的方式。这里解决问题的最简单方式:</p>
+<p>就是那个testcase中传入的Class&lt;?&gt;clazz的包路径不要在testcase代码中出现（可以在src代码路径中出现），那么ant执行testca<br>se时，就又会找到原来的/bin目录。</p>
+<p>例如工程结果是：</p>
+<pre><code>src/java
+            | aa     
+                  | bb
+                        | cc
+                             |YourClass.java
+src/test
+            | aa
+                  | bb
+                        | cc
+                             | TestYourClass.java
+</code></pre><p>你这里就不应该将YourClass.class作为参数传入进刚才的函数中。不应该像这样</p>
+<pre><code>getPluginsInSameDir(YourClass.class); 
+</code></pre><p>最简单的做法是：</p>
+<pre><code>src/java
+            | aa     
+                  | bb
+                        | cc
+                             |YourClass.java
+src/test
+            | aa
+                  | bb
+                        | ccs
+                             | TestYourClass.java
+</code></pre><p>这是非常的土的方法。</p>
+<p>你当然可以尝试修改一下getClassLoader().getResource()这句话。</p>
+<p>这个问题产生的原因是：</p>
+<p>ant执行JUnit时，执行TestYourClass, 这时加载的classLoader()是junit的classLoader(),<br>这个会首先在自己的包路径中查找是否有该路径，如果存在就返回了。</p>
+<p>另外一种解决方法是:</p>
+<pre><code>ProtectionDomain pd = clazz.getProtectionDomain();
+CodeSource cs = pd.getCodeSource();
+String location = cs.getLocation().getFile();
+</code></pre><p>这样就能真正的通过那个类找到那个类 编译为class文件所在的目录。  </p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ant/">ant</a><a href="/tags/junit/">junit</a><a href="/tags/classloader/">classloader</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/09/10/7962332/" title="中国软件开发者大会——第一天" itemprop="url">中国软件开发者大会——第一天</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-09-10T03:52:00.000Z" itemprop="datePublished"> Published 2012-09-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>其实 <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前卒 </a> 自己就听了第一天，第二天把票让给了其他的同事。</p>
+<p>第一天总结为 easy -&gt; difficult, and difficult -&gt; easy.</p>
+<p>1. 为啥是easy -&gt; difficult. 是因为简单的事情都被做完了，只剩下难事需要做。要想发文章，要想上讲台，你再讲如何写HTML, 如何写C语<br>言，这早就out了。你要讲还是在同构的集群上做分布式开发，大家一听就厌倦了，也难登讲台了。要不就换个名词，吸引下眼球，要么就做得和别人不一样。做别人以前没有<br>做过的事情。这就可以讲了。所以开发会越来越复杂。</p>
+<p>2. 为啥是difficult -&gt; easy. 就是以前手工干的事情，现在可以机器做，而且及时手工做也需要便捷。比如飞机上的几百个钮，如果你的软件也做上<br>上百个按钮在那里，肯定没有人用了。你给一个按钮，做完所有的事情，那多简单。软件需要傻瓜化，就像windows, ubuntu占领了绝大多数桌面端一样。</p>
+<p>下面 <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐 前卒 </a> 用有道云笔记记录下来了基本的内容:</p>
+<p>1. 我从KDD那个部分开始听的, KDD, 这次加入了时间维度，我记得过去推荐算法中是有考虑时间维度的。当然对KDD比赛没有了解，不做讨论。</p>
+<p>2. 下面是AMD的异构模型。其准备将java字节码转义为openCL语言，然后在各个平台上通用。当让能直接支持java字节码的还是让它跑java.<br>这个只能说语言的通用性，但是对于性能不一的异构集群，如何使用同一套代码完全发挥各个机器的优势，这又是以后的难点吧。如果只Print hello world,<br>这个自然够用了。</p>
+<p>3. 下面有电信的平台商来推广自己的天翼开发平台。不管怎么说，各个运营商的流量是相当的强劲。不过基本被几大应用所占据。一般小应用对于流量也不敏感。 <a href="http://chillyc.info"><br>帐前 卒 </a> 查看了一下天翼的API, 发现还是有很多不错的API, 授权也可以使用通用的Oauth2.0,<br>API中也有不错的。 如果现在对于各个API的流量免费的话，貌似有合作的空间。</p>
+<p>4. 下面是盛大的来讲webOS东西，感觉没啥收获。貌似就是Linux + (JS, CSS, HTML) 渲染引擎。</p>
+<p>5. 另外Amazon的truk听起来貌似不错，各位可以在上面挣点小钱。</p>
+<p>6. 下面是twitter的部分。使用 <a href="http://incubator.apache.org/mesos/" target="_blank" rel="external"> mesos </a> 来控制资源分配，<br>另外支付宝使用的 <a href="http://www.openstack.org/" target="_blank" rel="external"> OpenStack </a> , 这两个都是开源的可以学习一下。</p>
+<p>7. 支付宝系统的演化做得不错，每一步都合乎常理，另外最上层的GTM应该也需要放在不同的IDC上进行分布式。否则挂了就全挂了。<br>如果GTM是自己做的转发机制的话。另外支付宝做的mile database, 其实就是simple的分布式分片数据库，<br>原理和我当年参与的项目是一模一样的。另外支付宝在支付时没有使用锁，使用try, commit, cancel机制，这着实让 <a href="http://chillyc.info"> 帐 前 卒
+</a> 惊奇了一番。要知道，即使这样很有可能有数据不一致的风险呀.<br>除非系统在try的时候就把序列号加入到各个节点中，并且判断了是否可串行化。否则怎么可能try 完了直接commit, 结果就是对的呢？</p>
+<p>8. netflix 在云基础(Amazon S3)之上做了视频流，算是cloud的应用成功范例。另外其无上限年假的确很神奇。不过我知道进去那里的员工，如<br>果真的这样休假，肯定被开除了。因为netflix还有一条做得足够好的员工是肯定会被开除的。只有做得非常好，才能留下来。这么说无上限的年假基本就是fake的.</p>
+<p>9. 圆桌会议上讲的就是虚幻的了。其讨论关于云计算的问题，基本和我过去总结的一篇blog类似。大家可以 <a href="http://blog.csdn.net/cctt_1/article/details/6147369" target="_blank" rel="external"> 猛击这里
+</a> 以及 <a href="http://blog.csdn.net/cctt_1/article/details/5944297" target="_blank" rel="external"> 猛击那里
+</a> 。</p>
+<p>另外转载注明是 <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前卒专栏 </a> 的。</p>
+<p>其实即使说转载注明这句话，或许还是会被抹去的。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/语言/">语言</a><a href="/tags/api/">api</a><a href="/tags/平台/">平台</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/08/27/7910667/" title="延安客车罐车相撞引发的联想" itemprop="url">延安客车罐车相撞引发的联想</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-08-27T01:32:00.000Z" itemprop="datePublished"> Published 2012-08-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>客车罐车相撞，业内人士认为应该把卧铺客车这个车种取消。</p>
+<p>飞机相撞，我个人认为应该把飞机这个交通工具取消。<br>火车相撞，我个人认为应该把火车这个交通工具取消。</p>
+<p>汽车相撞，我个人认为应该把汽车这个交通工具取消。</p>
+<p>经个人经验所得，骑自行车和走路，也有撞到老人的风险。</p>
+<p>所以应该让我国废除各种车辆，人民采用匍匐的前进方式，这样能有效减少各种灾难。</p>
+<p>我觉得很快业内人士就会认可这一有效地建议。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/工具/">工具</a><a href="/tags/联想/">联想</a><a href="/tags/交通/">交通</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/08/12/7857627/" title="c/c++ error C2614: illegal member initialization:  is not a base or member" itemprop="url">c/c++ error C2614: illegal member initialization:  is not a base or member</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-08-12T10:52:00.000Z" itemprop="datePublished"> Published 2012-08-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这个错误是因为在初始化列表中初始化了非成员函数或者非基类</p>
+<p>错误示例：</p>
+<pre><code>class A
+{
+protected:
+int size;
+}
+
+class B: public A 
+{
+B(const A&amp; a): ok(0), size(a)
+{
+    // error, 因为初始化了 size
+    // size 是 a的成员函数，虽然被B所继承，但是仍然不能在初始化列表中初始化。
+}
+private :
+int ok;
+}
+</code></pre><p>改成：</p>
+<pre><code>class A
+{
+protected:
+int size;
+}
+
+class B: public A 
+{
+B(const A&amp; a): ok(0)
+{
+    // success
+    size = a.size;
+}
+private :
+int ok;
+}
+</code></pre><p>这样就完全没有问题~</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/class/">class</a><a href="/tags/c/">c</a><a href="/tags/initialization/">initialization</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/08/12/7857605/" title="c/c++ error C2663 overloads have no legal conversion for &#39;this&#39; pointer" itemprop="url">c/c++ error C2663 overloads have no legal conversion for &#39;this&#39; pointer</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-08-12T10:44:00.000Z" itemprop="datePublished"> Published 2012-08-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这个错误很大可能是由 const 类型的变量调用了非const类型的函数。</p>
+<p>例如:</p>
+<pre><code>class A
+{
+public:
+    int size() {// return somthing};
+};
+
+class B
+{
+public:
+     int getSize(const A&amp; a)
+     {
+           // error. a是const类型，必须调用const function.
+           return a.size()
+     }
+};
+</code></pre><p>改为：</p>
+<pre><code>class A
+{
+public:
+    int size() const 
+    {
+          // return something.
+    }
+};
+
+class B
+{
+public:
+     int getSize(const A&amp; a)
+     {
+           // success
+           return a.size()
+     }
+};
+</code></pre><p>这样就没有错误了.</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/class/">class</a><a href="/tags/c/">c</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/08/07/7840950/" title="Linux，MAC下使用有道云笔记发送长微博" itemprop="url">Linux，MAC下使用有道云笔记发送长微博</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-08-07T14:17:00.000Z" itemprop="datePublished"> Published 2012-08-07</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>最近有道云笔记实现了客户端长微博发送的功能。但是客户端只有windows版的。对于linux,<br>mac的用户，还需要再等一段时间。现在教大家如何使用web页面发送长微博.</p>
+<p>首先用chrome打开note.youdao.com 登陆后， 然后F12， 点击放大镜<br><img src="http://my.csdn.net/uploads/201208/07/1344352073_3470.jpg" alt=""> , 然后点击第二栏的缩略图<br><img src="http://my.csdn.net/uploads/201208/07/1344352092_4054.jpg" alt=""> ，然后看到这样一串<br><img src="http://my.csdn.net/uploads/201208/07/1344352104_7139.jpg" alt=""> 。将字串中的data-note-<br>id代替url中的p参数（note.youdao.com/yws/mapi/weibo/share?p=/a89GEFgoLuA/0240F3E037874<br>7DAB9A01ED4348EC0B0&amp;weibo=sina&amp;any=PC&amp;method=gen）。然后将该url贴入浏览器，然后就会得到Json串，将js<br>on串中的url贴入到浏览器，就可以发送长微博了.</p>
+<p>现在有道云笔记的长微博中还存在有些不足。</p>
+<p>1.是有些字体的缺失，会替换为默认字体。</p>
+<p>2.是某些特殊的html标签，解析不是很好。导致了整个图生成的相当诡异。特别是html中带有<table>标签的图，生成的都会有多多少少的问题。这个或许在后<br>续的版本中有些改善。</table></p>
+<p>3.是因为有道云笔记自身的编辑器导致了有些html格式不标准。看起来有时候字体很诡异。</p>
+<p>个人认为有道云笔记还有一些可以改进的地方。</p>
+<p>1. 一个功能可能隐藏在某个细小的角落里。或者要点击多次才能找到可用的功能。</p>
+<p>例如分享笔记链接中，要找到取消笔记链接。这多多少少要找一会。</p>
+<p>2. 开始的时候，不是码龙很难使用。虽然有介绍</p>
+<p>3.笔记附件不是让人很满意。因为同一个附件，放入笔记中会变成多个附件。这个很不爽，至少让我身边使用的人很不爽。</p>
+<p>有道云笔记其他方面都还不错，继续关注使用中。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/linux/">linux</a><a href="/tags/浏览器/">浏览器</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/07/08/2012-07-08-java-mail-api-problem/" title="JAVA Mail API problem" itemprop="url">JAVA Mail API problem</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-07-08T15:07:00.000Z" itemprop="datePublished"> Published 2012-07-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <ul>
+<li>text/html mime 没有base64 编码问题</li>
+</ul>
+<p>java mail api 使用MimeBodyPart.setDataHandler()不能对text/html进行正常的base64编码而是使用quote-printable编码。 错误的样本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// add headers 不能在最前面，一定要放在后面，否则可能不能正确编码</div><div class="line">mimeBody.addHeader(&quot;Content-Type&quot;, &quot;text/html; charset=utf-8&quot;);</div><div class="line">mimeBody.addHeader(&quot;Content-Transfer-Encoding&quot;, &quot;base64&quot;);</div><div class="line">DataHandler textDataHandler = new DataHandler(new ByteArrayDataSource(</div><div class="line">                message.getBytes(&quot;utf-8&quot;), &quot;text/html; charset=utf-8&quot;));</div><div class="line">mimeBody.setDataHandler(textDataHandler);</div></pre></td></tr></table></figure>
+<p>正确的样本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">DataHandler textDataHandler = new DataHandler(new ByteArrayDataSource(</div><div class="line">                message.getBytes(&quot;utf-8&quot;), &quot;text/html; charset=utf-8&quot;));</div><div class="line">mimeBody.setDataHandler(textDataHandler);</div><div class="line">// add headers 一定要放在后面，否则可能不能正确编码</div><div class="line">mimeBody.addHeader(&quot;Content-Type&quot;, &quot;text/html; charset=utf-8&quot;);</div><div class="line">mimeBody.addHeader(&quot;Content-Transfer-Encoding&quot;, &quot;base64&quot;);</div></pre></td></tr></table></figure>
+<ul>
+<li>发送到新浪等邮箱，图片看不到</li>
+</ul>
+<p>rfc2045-2047中并没有规定Content-ID的形式必须是: Content-ID:<cid>的形式。但是新浪的邮箱服务解析得比较严格。所以在JavaMail Api 中使用MimeBodyPart 对其进行setContentID时必须加上”&lt;&gt;”。否则图片会看不到。例如:   </cid></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">MimeBodyPart tmpBodyPart = new MimeBodyPart();</div><div class="line">tmpBodyPart.setContentID(&quot;&lt;&quot;+attachment.getFileid()+&quot;&gt;&quot;);</div></pre></td></tr></table></figure>
+<ul>
+<li>html格式正文被163等邮箱当作附件，但是某些邮箱解析正常</li>
+</ul>
+<p>这是因为html格式的正文并不是MultiPart中的MimeBodyPart，而MultiPart的第一个MimeBodyPart可能是附件。在添加html正文时可以这样写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//将html正文放入到mimBodyPart中</div><div class="line">String html=&quot;&lt;html&gt;xxxx&lt;/html&gt;&quot;;</div><div class="line">MimeBodyPart mimeBody = new MimeBodyPart();</div><div class="line">mimeBody.setText(html, &quot;utf-8&quot;);     </div><div class="line">mimeBody.addHeader(&quot;Content-Type&quot;, &quot;text/html; charset=utf-8&quot;);</div><div class="line">mimeBody.addHeader(&quot;Content-Transfer-Encoding, &quot;base64&quot;);</div><div class="line"></div><div class="line">//创建mixed 和 related两种mime subType</div><div class="line">Multipart mPartRelated = new MimeMultipart(&quot;related&quot;);</div><div class="line">Multipart mPartMixed = new MimeMultipart(&quot;mixed&quot;);</div><div class="line">mPartRelated.addBodyPart(mimeBody);</div><div class="line">MimeBodyPart mimeBodyPart = new MimeBodyPart();</div><div class="line">mimeBodyPart.setContent(mPartRelated);</div><div class="line">// 设置为第一个 bodyPart,这样就不会再变为附件。</div><div class="line">mPartMixed.addBodyPart(mimeBodyPart, 0);</div><div class="line"></div><div class="line">// mPartMix就是最后要set到mimeMessage中的内容。</div></pre></td></tr></table></figure>
+<ul>
+<li>inline图片当作附件，或者inline图片在某些邮箱中显示了两次</li>
+</ul>
+<p>有些是邮箱会将这个作为feature,但是有些不是。这时要使用这些邮箱来发一封类似的邮件来看到底是那个邮箱的独特功能还是你的bug. 如果是你的错误，那应该是你将inline图片和html直接包到mime/mixed中，其实应该放入到mime/related中的。 所以把这个错误改正，应该就ok.</p>
+<ul>
+<li>邮件中的文本，线上打开乱码</li>
+</ul>
+<p>这是因为发送邮件的编码问题。文本的charset不要编码为utf-8，因为这样可能有非utf-8的文本放入到邮件中发送。所以要写二进制编码 Content-Type: application/octet-stream 然后使用base64编码。 这样大部分编码就解决了。但是qq等其他客户端会有问题，这是他们自己的问题.</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java-mail-email-API-problem-base64-mime-picture/">java, mail, email, API, problem, base64, mime, picture</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/07/08/2012-07-08-java-zheng-ze-shi/" title="java 正则式" itemprop="url">java 正则式</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2012-07-08T14:52:00.000Z" itemprop="datePublished"> Published 2012-07-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>摸索多次终于写出正确的java的关于email匹配的正则式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import java.util.regex.Pattern;</div><div class="line">import java.util.regex.Matcher;</div><div class="line">Pattern emailPattern = Pattern.compile(&quot;^[\\w\\!#\\$%\&apos;\\*\\+/=\\?&#123;\\|&#125;\\~\\^\\.\\-_]+@[\\w\\.\\-]+$&quot;);</div><div class="line">Matcher m = emailPattern.matcher(&quot;xx@xxx.com&quot;);</div><div class="line">if(m.matches())&#123;</div><div class="line">  // if match</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意其中的”-“，”+”等,这个在正则式中有特殊含义，如果”-“放在[]的中间，则表示从哪个字符到哪个字符,例如:[A-Z]。如果仅仅想表示”-“可能会出现，那么还要进行转移，所以就有”\-“这样的形式。 上面正则式的意思是：以字母或者数字\w或者以!#$’*+/=?{|}~^.-_开头的1…n个字符，1个@字符，以字母或者数字或者.-结尾的字符串.</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java-正则式-正则表达式/">java, 正则式, 正则表达式</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/page/10/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/78/">78</a><a class="extend next" rel="next" href="/page/12/">Next<span></span></a>
+  </nav>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/编程/" title="编程">编程<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工作/" title="工作">工作<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>39</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/see-hear/" title="see-hear">see-hear<sup>37</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c">c<sup>36</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/code/" title="code">code<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/数据库/" title="数据库">数据库<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/blog/" title="blog">blog<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/cc/" title="cc">cc<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/null/" title="null">null<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/class/" title="class">class<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微软/" title="微软">微软<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活/" title="生活">生活<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c#">c#<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/google/" title="google">google<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c++">c++<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>18</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="blog.csdn.net/cctt_1" target="_blank" title="帐前卒专栏">帐前卒专栏</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 帐前卒专栏 <br/>
+			Without software, we are nothing.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1648789462" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="chillyc">chillyc</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>

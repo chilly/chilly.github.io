@@ -1,0 +1,1598 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>帐前卒专栏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="chillyc">
+    
+
+    
+    <meta property="og:type" content="website">
+<meta property="og:title" content="帐前卒专栏">
+<meta property="og:url" content="http://chillyc.info/page/9/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="帐前卒专栏">
+
+    
+    <link rel="alternative" href="/atom.xml" title="帐前卒专栏" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/images/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="帐前卒专栏">帐前卒专栏</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:chillyc.info">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/03/31/8743257/" title="杀生 影评" itemprop="url">杀生 影评</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-03-31T08:19:00.000Z" itemprop="datePublished"> Published 2013-03-31</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这个部影片插叙+倒叙+正常叙…让我想起《时间碎片》这部影片。不过看完杀生，最后记住的不过是这样两句话：</p>
+<p>1. 哀莫大于心死</p>
+<p>2. 死即是生</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/杀生/">杀生</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/03/29/8738477/" title="学习一下golang   练习70  web crawler (网络爬虫)" itemprop="url">学习一下golang   练习70  web crawler (网络爬虫)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-03-29T14:01:00.000Z" itemprop="datePublished"> Published 2013-03-29</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>之前找了有下web crawler的练习答案. 貌似中文的不多。另外golang.org自从在外面之后， <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前卒
+</a> 每次上都需要到那里都要花些功夫。国内的也有一个移植的（ <a href="http://www.aqee.net/go/a-tour-of-go/#1" target="_blank" rel="external"> 猛击这里
+</a> ）。</p>
+<p>最近支付宝的页面也被爬虫爆出来了。不过这应该很久之前的事情了。因为看到了google的搜索，还有2012年8月份的。估计上支付宝那个shenghuo.ali<br>pay.com这个domain自从上线就没有加robots.txt. 有兴趣的可以在google上使用 site:shenghuo.alipay.com<br>or 查看 shenghuo.alipay.com/robots.txt.</p>
+<p>言归正传, golang的问题是这样的：</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+type Fetcher interface {
+        // Fetch 返回 URL 的 body 内容，并且将在这个页面上找到的 URL 放到一个 slice 中。
+    Fetch(url string) (body string, urls []string, err error)
+}
+
+// Crawl 使用 fetcher 从某个 URL 开始递归的爬取页面，直到达到最大深度。
+func Crawl(url string, depth int, fetcher Fetcher) {
+        // TODO: 并行的抓取 URL。
+        // TODO: 不重复抓取页面。
+        // 下面并没有实现上面两种情况：
+    if depth &lt;= 0 {
+        return
+    }
+    body, urls, err := fetcher.Fetch(url)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    fmt.Printf(&quot;found: %s %q\n&quot;, url, body)
+    for _, u := range urls {
+        Crawl(u, depth-1, fetcher)
+    }
+    return
+}
+
+func main() {
+    Crawl(&quot;http://golang.org/&quot;, 4, fetcher)
+}
+// fakeFetcher 是返回若干结果的 Fetcher。
+type fakeFetcher map[string]*fakeResult
+
+type fakeResult struct {
+    body string
+    urls     []string
+}
+
+func (f *fakeFetcher) Fetch(url string) (string, []string, error) {
+    if res, ok := (*f)[url]; ok {
+        return res.body, res.urls, nil
+    }
+    return &quot;&quot;, nil, fmt.Errorf(&quot;not found: %s&quot;, url)
+}
+
+// fetcher 是填充后的 fakeFetcher。
+var fetcher = &amp;fakeFetcher{
+    &quot;http://golang.org/&quot;: &amp;fakeResult{
+        &quot;The Go Programming Language&quot;,
+        []string{
+            &quot;http://golang.org/pkg/&quot;,
+            &quot;http://golang.org/cmd/&quot;,
+        },
+    },
+    &quot;http://golang.org/pkg/&quot;: &amp;fakeResult{
+        &quot;Packages&quot;,
+        []string{
+            &quot;http://golang.org/&quot;,
+            &quot;http://golang.org/cmd/&quot;,
+            &quot;http://golang.org/pkg/fmt/&quot;,
+            &quot;http://golang.org/pkg/os/&quot;,
+        },
+    },
+    &quot;http://golang.org/pkg/fmt/&quot;: &amp;fakeResult{
+        &quot;Package fmt&quot;,
+        []string{
+            &quot;http://golang.org/&quot;,
+            &quot;http://golang.org/pkg/&quot;,
+        },
+    },
+    &quot;http://golang.org/pkg/os/&quot;: &amp;fakeResult{
+        &quot;Package os&quot;,
+        []string{
+            &quot;http://golang.org/&quot;,
+            &quot;http://golang.org/pkg/&quot;,
+        },
+    },
+}
+</code></pre><p>然后下面是 <a href="http://chillyc.info"> 小卒 </a> 的解答。最主要的是改写原来的函数。同步map,<br>然后父节点应在全部子节点退出后再退出。用channel当banner派上用场。当然golang还提供了锁和其他的同步机制。不过 <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前 卒
+</a> 还是先用channel吧。另外最好先看看golang的memory model.</p>
+<p>下面 <a href="http://chillyc.info"> 帐 前卒 </a> 的代码：</p>
+<pre><code>package main
+
+import (
+  &quot;fmt&quot;
+)
+
+type Fetcher interface {
+        // Fetch 返回 URL 的 body 内容，并且将在这个页面上找到的 URL 放到一个 slice 中。
+  Fetch(url string) (body string, urls []string, err error)
+}
+var lockx = make(chan int,1)
+// 同步通信使用
+func LockFun(f func()) {
+  lockx&lt;-1
+  f()
+  &lt;-lockx
+}
+var visited map[string]bool = make(map[string]bool)
+// Crawl 使用 fetcher 从某个 URL 开始递归的爬取页面，直到达到最大深度。
+func Crawl(url string, depth int, fetcher Fetcher, banner chan int) {
+
+  if depth &lt;= 0 || visited[url] {
+    banner&lt;-1
+    return
+  }
+  body, urls, err := fetcher.Fetch(url)
+  LockFun(func(){
+    visited[url]=true
+  })
+  fmt.Printf(&quot;found: %s %q\n&quot;, url, body)
+  if err != nil {
+    fmt.Println(err)
+    banner&lt;-1
+    return
+  }
+  subBanner := make(chan int, len(urls))
+  for _, u := range urls {
+     // 并行吧～～ 
+      go Crawl(u, depth-1, fetcher, subBanner);
+  }
+  for i:=0; i &lt; len(urls); i++ {
+    // subBanner用来防止退出
+    &lt;-subBanner
+  }
+  // banner用于让父节点退出
+  banner&lt;-1
+  return
+}
+
+func main() {
+  mainBanner := make(chan int,1)
+  Crawl(&quot;http://golang.org/&quot;, 4, fetcher, mainBanner)
+  &lt;-mainBanner
+}
+// fakeFetcher 是返回若干结果的 Fetcher。
+type fakeFetcher map[string]*fakeResult
+
+type fakeResult struct {
+  body string
+  urls     []string
+}
+
+func (f *fakeFetcher) Fetch(url string) (string, []string, error) {
+  if res, ok := (*f)[url]; ok {
+    return res.body, res.urls, nil
+  }
+  return &quot;&quot;, nil, fmt.Errorf(&quot;not found: %s&quot;, url)
+}
+
+// fetcher 是填充后的 fakeFetcher。
+var fetcher = &amp;fakeFetcher{
+  &quot;http://golang.org/&quot;: &amp;fakeResult{
+    &quot;The Go Programming Language&quot;,
+    []string{
+      &quot;http://golang.org/pkg/&quot;,
+      &quot;http://golang.org/cmd/&quot;,
+    },
+  },
+  &quot;http://golang.org/pkg/&quot;: &amp;fakeResult{
+    &quot;Packages&quot;,
+    []string{
+      &quot;http://golang.org/&quot;,
+      &quot;http://golang.org/cmd/&quot;,
+      &quot;http://golang.org/pkg/fmt/&quot;,
+      &quot;http://golang.org/pkg/os/&quot;,
+    },
+  },
+  &quot;http://golang.org/pkg/fmt/&quot;: &amp;fakeResult{
+    &quot;Package fmt&quot;,
+    []string{
+      &quot;http://golang.org/&quot;,
+      &quot;http://golang.org/pkg/&quot;,
+    },
+  },
+  &quot;http://golang.org/pkg/os/&quot;: &amp;fakeResult{
+    &quot;Package os&quot;,
+    []string{
+      &quot;http://golang.org/&quot;,
+      &quot;http://golang.org/pkg/&quot;,
+    },
+  },
+}
+</code></pre><p>觉得没有找到类似python的遍历list但是不需要获取值的方法例如 for <em>, </em> := range urls {}<br>这样就是错误的。另外golang也不能加入不需要的包，变量。帐 前 卒觉得这点…太洁癖了。</p>
+<p>暂时就这样吧。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/golang/">golang</a><a href="/tags/crawler/">crawler</a><a href="/tags/爬虫/">爬虫</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/03/22/8706293/" title="typename的使用问题" itemprop="url">typename的使用问题</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-03-22T06:48:00.000Z" itemprop="datePublished"> Published 2013-03-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>今天发现一个问题，有一个函数</p>
+<p>foo(typename list<t>::iterator it) {</t></p>
+<p>}</p>
+<p>这里如果去掉typename编译有问题。 因为iterator 是一个模版。</p>
+<p>template<class t=""></class></p>
+<p>class list {</p>
+<p>typename MyIter iterator;</p>
+<p>}</p>
+<p>如果类似这样的定义，那么list<t>::iterator前面就需要typename.</t></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c/">c++</a><a href="/tags/typename/">typename</a><a href="/tags/template/">template</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/03/22/8706269/" title="Velocity 模版问题 值无法显示" itemprop="url">Velocity 模版问题 值无法显示</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-03-22T06:37:00.000Z" itemprop="datePublished"> Published 2013-03-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>今天发现一个velocity的问题。 如果传入velocity的对象中没有对某一个field有getter<br>setter方法，那么即使那个field是public的，velocity也得不到值。 加上getter settter 方法，就ok了。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/velocity/">velocity</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/03/06/8640546/" title="win7下Intel Graphics Accelerator Drivers for Windows Vista(R) 已经停止响应" itemprop="url">win7下Intel Graphics Accelerator Drivers for Windows Vista(R) 已经停止响应</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-03-06T01:12:00.000Z" itemprop="datePublished"> Published 2013-03-06</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Win7下显示器经常黑屏。有时候从黑屏进化到蓝屏。并且右下角有如下显示：</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAABQCAYAAAAX4L50AAAgAElE
+QVR4Ae19CXxV1Z3/F8Wlla2K7bSQvJcXNotsw1THQgghgEDoTK1BNsGEReUzLsVSFRBkx7pRkBm0LE
+Epeyr+W0AFsrE4ta3DErVseXl5wZlpbWcQrUsLyf/3O+eee8+9796X90KCIXMP5N2z/M5v+Z5zfme5
+797XopYC/OAj4CPgI+Aj0GwRuKLZWuYb5iPgI+Aj4CMgEGjphsOrr76K6upqfPzxx27Ffp6PgI+Aj4
+CPQBNAoHXr1khJScEPfvCDuNq0cB7dPPfcc7j11lvRs2dPtGnTJm5lv9BHwEfAR8BH4MtD4Ny5czh2
+7Bjefvtt/OhHP/JUxObof/GLX4jZ4ZZbbvGs4Bf4CPgI+Aj4CDQtBH7729+iqqoKubm5rorZjm7C4T
+ByckbCvz3ripWf6SPgI+Aj0CQR6NWrN4qLiz11szn6L774AtdcczUR+1/E8UTML/AR8BHwEWhiCFx1
+VUv87W9/89TK5ug9qfwCHwEfAR8BH4Emj8CFCxdMHa+88koz7n+90oTCj/gI+Aj4CFzeCPzlL38B/3
+HQnb7v6C/vdvW19xHwEfARMBHgr8VzcDp739GbEPkRHwEfAR+Byx8Bp7Nni2LO6GtqLn9DfQt8BHwE
+fAT+LyLw+9//HjfddJN44JUfpFLBX9ErJPyrj4CPgI9AM0CAnb0z+I7eiYif9hHwEfARuEwRUMc2Tv
+Vjjm6cBMmkwxUVqAifRnW0Gn/6059E1fbt2yMlNQXpoU4Ipacnw86n9RHwEfARaDII/Pznr5i63H33
+RDN+OUQaZEV/9uxZ7N27B3v37cO5jz9Fp67fxu3D/0n8cZzzuIxpmNYPF4tANR4bsRNrztTB5+2D6D
+hiI/0dhPczc3Xw0IuZ34PvIqLnNWK8+DnS/Tn5LQJTjLCp/va48jSZJxI5hzUPbsQ/bz+XCLGd5hLj
+hzPv4p/jtBdj8djbdhWbSop1c2Ic2b4ztj/EUVi0dRz741R1LdKdu+70XYk9Mrme+tNJVF59+eq83O
+IxK/ramuSeij370VmUlZTgL599jr7duuNr9JKdK48cRk11VDypdVXbtvhaSgAdOnVFxX//J0rpMd3M
+rCy0a9vOTR8jjwbTwzsxvyIOia0ogFd29kOWyvvNIaQsqFKphK7j547DU+oVP6712+LJl3IwBe/h+/
+cdxTsOrn3zRuI1es2Em96Sd902SR5tECnchYz1HzkkAKpcPbnMPyVQ67x5btOdcRkncammQe+itykk
+OwPV062bN2a+HvlOKsbPP4CHt6WQrd4vvCtZtgkTi/SKdcRdZZ9DRQQYP74j2aj1ye/0wyvZxP+51L
+r19RTLuGk8PelcCj6I4lcVATy8vHXyPAz8+j/X5iJ0d9HJK6s2BSODO9H/QeDA8u4IanTcxyYWBfDk
+XR+RHbFtmUwbWv1SCkimrqjh2v5UIvq31U7h6Efom9ImMdxpHMg+eBT9RxzVLI8T9dBj46YNGD9ugq
+jIV05zYKes8kVGAh9u9RU/rs7l9e6bceTHOPo4tK5Fv/vtb6STv/4G3LDvDVwXSMUfNhTg6r/7JlrQ
+U1qf/td/ou33voc2x47gK1mD8e4n58B1Bg8e6spPz7Q5X71AjwvHpmdQ/JZ+qCbHf1EhvZc2OKrx+M
+hjGjt9YpEOfKcobYMpy8fRZKCCrNepg0pTQ+oTipVtiwVzc1Dt/m4iG51rQtnuhgt0va3aYmLRF84f
+uE9mZo31O5Gy3kxZEWOgZE0fR47Myo4Xi5GtiD+oxk52qKBJe6TbpH0AKY7JxO5wZLucHq9N4Ip33C
+u32QFsNGkYsx6ocCw8Jjp1iukvOg+TmYwUxerOBYn0DQen+MkO1B+njwRI9x8WapMz9Y2M9aCFSz9M
+0fqmk5kdT2epTLNTX+4oapD2N3k6F0gefY/oLX2pDWmh15B4ejl7U80kIrqzdzr5JNgkRXpRjj5cEU
+a4MoK/p5V8+7cPod199+KaQACfffoposuXo4bemfO1e/Lw1fnzUUsvTDu/6kWEsofhWPgkuG4oPRRX
+2Y0LNmkDLh5pIF5h/coqjiJjpL4SoBW9yakKzoHeN0MV1uFgDpHj2thOm0SMiSKDdwSxKyvFVVyF89
+ac3n2bMF8jaMiODY9JQRPXqNHIv0fwTnZPZN2ScvGTdj00FVjyJLPAquyJL7eLNTMYFYwdYBxHanFu
+wJjXJF0R6yDn2/qP+yKgATVLmtU7vKCopp2mWDzVMa5M7tpEnYT/sJ0ImLzsEeXsdedsp0g8pTt7rs
+XpxgwX5egrKk+j/Y1fR9s/043Xv3yCj+mdyOzovz59Oj798EN8TI/itnp8Fr5CFlQXFaH02FHcEgih
+/Te+Dq5bl6P3HFg6Iq4rV52gnvGYFVoiK3qW9RFOV7SFWMV/cA7H0Q6364O9Hx09YJO1whIr17YY+W
+gdTp5Zq9W6GMwRjOSjJMFbdm4mcW6b5YREg/glPiqLnaC4jgjZKmK/eh0j2akcq1HD2XRLYPfi5CPT
+1XiRjq765rWVSS/npSrb2kplxrm6rqgvgaMTdpylBbZ2zHjRWDns7NAdr+3sbmbKHVPPmKMir3yz4s
+VELsYmA6Nu1B/FCj21HCnLyH/cdU7u8IzjVS/9S5YdwHE6Rj1A/zIOBLUFlYdBhjyPUpGtO2Wnk1fO
+P179plAW4+hraR2eaDhDj9vyzdYWbx3Ef+54DdfQO5Fr6Ljma2PH4vp584D/+R+0aHkFql98Eb+iVf
+03WrTA+WA6buwxHqdPvE/rfS9ZdIZKStTSAbR1QuehlfFO5Rqxf/iYzsh3YUGFB21d2ek9UEZnmWm3
+3Iao6FBKfgcs3dkBxc9vwvdTc7Bj500A3VhLWRjFuDlj8NTyMZjM+rI9Z87ieHoq7u1Adc+wfZzLfC
+ybBo7qgeX3H8DqfxyO0DY67x/UDzuYnvV7+y2kEl/30BZzXxxOR0MSNwsfoy7hNXD6GETp2KT4+S3I
+K07F+p3fxSBmduY92mJraU1AZeHryIwyD6M9xMG/1DuQOxxRj2MkKYMHZA6W3mLowHxF/cTaT0gU7W
+zI5vpvV4mdXF+BGeULfu66C7w2McKafOah4a33IXE0T3hHH0kRVPYPiYGgFzrJmpzLMca7SOCq1WJe
+/bhU10HqUltbhcdGHgK4j9xKJB1aoSuO4o23b8NATlOo/HfauVC7PKjjJ0oa5sMVX2Ltla+kMk5iRb
+1e5Xhf++YxPlr7ifaqX/sLPGj85JD844y7MRZrqU+8k96W9pkSWy/9uf8PJFUrC+kjZlfuZUOqaD1u
+Ra8wbtx4bNoUs20T5OzsuTyZ4ORVHx7JyItx9MlU5q9Q9v1OO5yPVKLFN/8OH9Ivnfz3o48i+MknuG
+b8eFzXrh3+5+WXhZMPEOMb6O/8qeNo26ad+fXLePI2LdxCa99EQqpB1JrOyMdoZ+SOuuTs7rg/ihx2
+lh0dZSopaMpjbraqYmAXUtdbKZuOYtB/hHcCKUhjkg8oTp1TxK0qQMfueD4visz7t1AuOzDN6dz6XU
+TJOQNy0jo9znASev0znGiLkJcNVDesnfCIqiRzh7yRoHMS8TR25jG59gzl1MXE1oFxJIx4YqTVY4x9
+RlUbNnZ29pSYiVQW2b3JTZso8ka65VM90uNSBp7YduS2JmfCE2Q8ySkYSrblHaomR89t3A6d0qkHVd
+NPdN7aWlSspBuMGHSznIzjsfoSypSd8URzv3jBg6A+7c949M1IRShabuNafIiApgXcI4WpAntbISWK
+n38d4bsc41ot3JzEelqMd2qDBILuzJ2OmtN6eTx2el19AkmGRzz+bmUX5egVw/N//QJ/oqexPqOM62
++7DX9t1QrXtWwp3p52zY034ls33IDr/vxnnKdy+kkrVa3Oq3AqxsrHk1isgD1KuexQisfqjWf91/EI
++ts7jnCI1taXOSsnxx3/eRxEJh0reOlWWfguVYgitdjSKZMc1NwX+1sZFEvL7Y+5B3ZhV0YP90F+Jk
+pTSg8872Y/TyA2bpwwjos4ynVpUPAx0gsPvwUsp4nDuRLlYkfwsonJBj1CO4VHePLZglQ6mpr74hjs
+8JxoJON4/JRop7OsLDyIBYEemItyst8ILm2iipr6dVA/WoQsrEYx7SAGoTWyM9piwYEoKnN5gqzGHu
+on4+ZoE31TNygJ/erT/tzPaG6kMacJImf8QjH1uTmp2LWwHMW51J95gqw6h0oiq+S+TWOlTKsiohXl
+yBxpnzCcJDKtForupW65uoN2K/fKczp5ptN5NZazvyhHzw9DfXTuLNq0ux6fkwP/Gr1bof3Eibhh5E
+j88eBBsd39yrBhGEI/YFtCv2fY4Q9/wFXBNFGH63oFHuy2lSw77E1t5bGKsdLdlSFXVaAVcFkeraye
+r3Y4dDq3FkcrvDr2CCl0BrzwINbQEYpa4SunrtfgDht9ROXIowymS12o8oyrOBJwHHUYuwgHJR1PlM
+sjpgq7fEVXvI06KNmY5rSXCCqrHavAM+dwgvI7GZVFXdpJ8AqIRgTyHmbsdBvi7BYMHnwJ00SYR5Na
+bPgIC2g3ssBRkMgK0FGFJjz7bqIy2hbrH0lF+GEeoGeTO4rzPJJxSm3ktGiPthgqJsK26EttEKZd2C
+BKp3Gfq/hIOKi0t6tpx0o7OrfJvF4qynaNPbo8ZFt4WKwd+V8Cfs72t3SzYtyfxfEm7YqmzHkLdxRW
+I4d3rIwjTwJVxpGrVUX2q1wDj4DXUZ1WoR5R3UEnWp3ruAWvfDfa+uRdlKPv0LEjPvzjH9CKnPeN9I
+Pi10+ejPbk5P/8zjt4bdQo8H3CzOJitB40CDn0o+Mb8vJwW49eog7X9Qw0GE4sfB1r4h2xqMrU0I+s
+B60w7aui4ucPYRN33DiDKI0mied5krj/LYSMs2yxcu1nPydXW1CxQlHHFkq+cY11ctzJDpKzbkur77
+Z4kMwNm3XUJDQGQw/RamRbNabYzox5pUfntjvl9n7Kj3tgFx2V8EpmEDn+ogO8vfV6DoHrtkUO3ch8
+hxz9g8v7k9M8iKIz3c3JzFSjjkjI9Xyeb/y+i0562xiTWc4/Sn3rYOtSrA9IeWxlYcUrXpfjKwcX58
+7AUfzlJTvSeXM67U5+/TGm0HEPOliOH4foOIL6KK9gGybEHl2KoxW+r8SytSDxutmxONIIKPrOevsx
+pb3USvXNs+L1i+ntbx/HfG9JrObV+OYxW01jtiIV4wZF8cKvyTZ6piE2cD8lH8AFFY4JLYbYuPcVxy
+XFVDEyGttBe8lNNj/G0dck8SBJWjCEktISfItuyH76/ntodeIEzrdpg22jR4OOInE9/f12yBAMLi1F
+tLwc3+iYgs++3R1/otck9OieBS9Zge/chufueR0D7z+EtF9+F1msE/+nq7gxRvEa2kHU1JzD2qfLUX
+PPCEz6FqcN82kHkFecgoJfdrTL4Hp8g0fUlbSBH/TDnP27kfdcCiLTjZZmeaEeKP3ptxEUZGcw858O
+SfmCB/MmvUTZx1j7w93YKXhSISTtZoqNnT0aS/GWWPmy7kRCPM5h9UOH8HvSecd3KONbPdBn2iE8dh
+vRGpNSyTJZvoTqFC3bivwSIQjLt9+MgR15J0Dyl7WybCM2yq7w9nJsyuqBSIeoIbcVJi0bRjsI6uz3
+V0tG6lO/B6LbW30W74TaISjwVsTWlW+96RiWbKUVF9V/TrWB0MdoL9UmVnWXmMSmD03wsk/IdE1tW9
+J9NN3reA//TFvwwy41ZRa3xzDxxK7VpyQP0Wc0HbgNOFh0Mq1/ChJhuyS22k7ytDlA6gSCF5HK/kmc
+bPi1QloqOc2qs0TXitq7DbrQkdop+iLDqWLuI44+qity0fGPxUNnXW7T+orBk9uPx5QXDlzch/vonW
+5O1FKshPrnCiK28WG+ROLE3qrljDnbn+oyj9qzWB0zvs+Ib2T1uacflnSsRXDxMRT9QI1Fgy+N/+Bi
+7utt0Cd0jvqNPpYt2ZFfkI95+Ry1wTC7/7BImk0sxtEnYxl/PbKyshLhP/4X0rOyUfVvK1H57LN03M
+AnxsBV9JdC38LZNWAAWqV3RreHpuMw7QCCgWCdX60M3tkfcw7sxh56RFs6VBfN6PhjIW3LIrbOSI6W
+GpmdrGc9G6vWmEwr5p3kbGd+13K2NpKEE+zky9Fp1WhytEYlfsScnCZjEuastxw6d/g2lt1ThYGb38
+d9t9LE8sH7WFEC6py7EXxZThaR6VSPO+/mcsykc10egDbb6Js+hwnxh0gmH30U8IT1Nq0W9UArocgv
+VYacnE6Pdbc3coaOa+jBt6Aij3s9gz2k79jZalKMS+xRSF9JJXC6jfVwKoTRjl9+26orBjK0ydYqaq
+jY5sVbwZM19eAYljEO0IG1E7+0VPrq7MtRlFC7ZKEjlv6SJi+2gXgXxNlxOgWzU80H9Xe1IHESONM8
+PsLJyXCyuDRp9/Y//PIhHM7Sxzf320PYzIsSMea/i4IswmTZGRMTgVFJG8yhMThZjUEaU3f801axUB
+g7ux+wmHiQYdyOkV969LlLY/glk3JRjp617PsP/4D9ZaWo+PwLpM16AteWv4evv38UFyrDuILKr0gL
+4dt0XPMpreTZyX/l2mtEnbotJAf8UxoQHNhZugV2Xo6BEvlFOTZz53Dki+rCIQL0rKA9KGf71hlaVR
+ur+nA5BpLT1sNYM1GNfOo4euiTwSkexPb9X8lbvLLQjlm+G6tz8M7hNFkZ3JxOzcjmexEFb1GnpvNI
+2clVASAci5haaVKcHueehFUlToyPhmiVM9Zuh3cFw3HpBPREZjdKHz/zsfntEr3YGRdtlqTTc/Jo6L
+TajQUX2zlnTa9rARGLn619DXaiX1A/tU3YdlGOlJpQE20XueCJWRQ4uDZKsoHa3zahsrOeRrs6fedJ
+ymdN74extNsOGhMgt49YGGmGRX5dJZw8Z20mJ6/C4ZfLUXKnYzegCpvZ9aIdfbt2bTEgcyDe+d3vUE
+5HMu2DKbjxln8QX6FkrPhmLZ/j83ENr+R5YuA6XkHOyG6l1XbHG5YrXhslO/jp5DS1TLU9M7OIxpzp
+zUxADEYt7XZ0YxXzUYHqIMbRjVVIDy1Zxy28fZyzile75PQoWCtFrYKKCv09BjKtAPNLWK6xclYd36
+g7dvZwb6chVsCOYxuuZ65aDSY8iMaebYBVYEfcd08b2ha7tJEhynmJq7+TOE46pr2dNoq65BhoFxIT
+DCciVtyiUO2C6OuqMcRWhpxojcmcV9F8VHCr7BcL41WkJ291PWyOzWIvY+LhuxQ85LaAcdKq40Nz5R
+tD4JHh1DnR9jPozP7bwO1v9PVutEvfEWM/LzRGoBMdnwaX8fhvK45Sddw9V+7GSj9foeGYRFR2c7jS
+tx35NEyGRYsW4cc/fkwlk77KVyKE8cGZM/gzPy1L4YYb2oNvvIZoZV/Xk7BJC/QreCNQz+MNnqRWpD
+rPZh0OoNEHhDF5Zuh62HWI6xS9UalniZRtP+py0wfCydjp6inSUU1MYFG691LnsY2hFx9pxqFNnJ9D
+ET/ZZBF45pmf4LrrrgP/shT/yhRfOX3llVcixtH/aEb9HX2TRcBXzEfAR8BHoJkj8Nyz3o6ej9H94C
+PgI+Aj4CPQjBHwHX0zblzfNB8BHwEfAUbAd/R+P/AR8BHwEWjmCPiOvpk3sG+ej4CPgI9AzNcrbU+4
++fj4CPgI+Aj4CFz2CDTNFX3ZTHqdayDuX+66iAF+BAW58WkFr9y19LMbHGLpnyijF+Gt+75dnqB30s
+7EfuKwf7a7PEsnISjmg2V40kTWIpdszl1X4mGPlB3DlDMYL9M+V4pLkFmCJ9Lj6HgJNLCLYH2+j4KI
+PVekBNYeZS7kTSerqWHcCMh86W1jjXn2C80lxKzom4phvWeXoXBS0F0dcmy5FaooiPzCKno0PJkwDu
+sqlmIAVWHnu9qoasmkAZXLT7rovHmQ7TEo+2B20WvIDxpJ24U7SiYW6y9m6TMXRYWTbVQqwfKzBTHr
+VEU6Uf3dln6STpctJ5pJ/Cp7R8hOX2DPMeQGtFxLHjBmXRUWZWqFjR51YuO0s9EVaEQBhm1d1+P04q
+xGlHO5sHa2Nevd9Nu7at0PsZjbsLB5tWGTdfRHFmeik+Pxc72L9559n55MMr4Jk9KtnzQZs05Wt8kk
+JzmVs3mFsTqEQtalTyf6hRv+QT56Id7q7+OJoa9JR8k0M4DnyJkHbJMDEXIQq5QAjoiEZZecWF7D6U
+l2Ry7I6vior5MOTHqNJpQAVqSXJeDk5WCteLABJgTGIHsButHkctqcXHhCXYuAwK0OgxuyODgZhRXu
+E2+9xUSK6P35fdB7yx7sJ0fPi4jLJzRgOzuMtvVTY6duy3PQozHaxikjTrqq4jB6p6fFobg8i5qso7
+dW1y7A2lb0LuVxs/RVuiTkVe6P8FP6rddKWrUvR7q+Wq86Tb9glE3Ouoh+2swK6VN/Csygo4rMpcBq
+cmDkDPWVs0VJMaPzKjm8U5HxStvqfwtNPr1nr0cOvVxVn4gkr3EYamPqvbIXZC6reUf1S5gkRzJDOn
+n7DiILi5rJyqmq+FfAiJ/ioa6Z2FNGu0VzMruEMDd1UTRWThd1ogmfxo2xo27qKjcX/a5wGsI3Y5vC
+n1hde53TT6LVuHg1aiXW3ul+Xu56xn/nGpSudZzFkww+OpHy8rCFXn+0ONvgyfSnf4+uaQHxWmR0SU
+MK41PLr1AN4J5/qcWkO7+PFcfnYEqGgVvJ4/azfsOG2SXyVaxSbxUP4p5tEZxcY7wubXQBtuUNlHmn
+KN/2twT9VduQfH4FbP+FTFOKffsUbSlm9qYW7T0H+7ZNkrqqOvqV6is9amqKMZvOsteutfTOXVtJfY
+Dz5RHUlkmEB2ERETw438Jc0krbySr3vlO5D7tqNYx0Xcy4bMvZJQZ/Ja9yjbh3odqTcZT900Gv4az6
+L5tZU2TZ1WlWsawreD6OUlO2u00RW1/R6ZUO6lqJffRzWMOzAug/eCy2rFBYqXJ3/hJjNyy96BlhxZ
+OvXnQObOJiyTzqbudO6br9HvxNPA0djX6q2kNcUwdheO9NeFO0owsfs21kmd6/RHsoW5K0PZG2LJ0V
+AB+JSl+g7LVjXBcONludeDRy2unL9XTTXNHTzH/yFK2UEwj52yMu5/MlmDMqjKnbJ9Pv9zjDZJzMV3
+lE1zkfJ2aV4oGKgfRbswU4uShLFYrr/icWYuuSINS7KrsQzRpFQXqu2RvE3iE7LDmG7tGCO7A6tAML
+MxUxrcD3HkbXIUErw4jtDx9Hb4zFcLoHUFCwB0uXbI6h4YzepOe2/CDF+iDEFw5VlVg9YyC2inOhPp
+jJTj8gixL/PIylFQ9JzKvW4q7B01EwiHSnSSQ0aiDCD0QMOxivFQiZMmilTuVzQqrcQ2LkNB1bdbIK
+hYyFxlHWWKyhtlZHHVun7KE08RPUxJ9uoDxLadGOtJPrMmUmhnjRx5Q77VqBgqlZjv5i9YGT+UGbjj
+OWdCNddpi6WYWOWNlL9LsDI7GPcQ8MxegpK1BUNRn5oh08+CNefiIY190WiWLp3s5yXJiYMLadZ8Zp
+KwcmSSRtelLfkIF23g+MxdKVRYjm8ziOoGj3YYx+gMdakrZzf0ugLQcsitDYDmJluhpnLm3UiDgkAV
+nSpDEr+qQ5NHgFAnfUWvrxNQ7sSO5AQRXHvfK5jAI1wF0uX7Fgh6vn738iSB1W/e0hpxERzpMb+eSQ
+PVoZ0ZAeQc4nGvFHK2/b+R11oJU0A2wl57NfamF8UqesGImpmdxRVFkEFSc0B23Sl9Av/o1EV0qn5w
+9FuGKoKW/fLDrznVVqpqWTlxXDq++Qug7ON5w855NjG6xso+sTJZK4zk+aIMgBihDIphWXR4WyPTTh
+6TIGYilNMCfCEY8KHtmBydgmMC3AaAfJ6DWW0xc3wxdNBqgNRZtNiZ0AbfSZ99GOZjP2limmCdjFNt
+EO6Nn8oKokr4EQtclmTOms+p+9WE/t37sZvUdkG5N9FoaMPozXiyOSxIt/vPxEME6gLWzYkAPLrwNL
+0yY33WKwBez8zdoJROzjwJNPJk2aR3bSpEksq4rw+pGxGJJJ8WRtT6Itbco3Og42aY2aaIKOPgsLHz
+iNwXGcVLRgOl4fscxYMRE+PGOv7BQ7WKkoNX+HWK3PMQb/gEXG8YaAlQdyEKJMrAY1R8LHH2pHIGbx
+OzBnr35KT0588E4Mp9XtvlnHsVKfZGiFFx7Cq5AsTKUy4Xi4o5JDp1MhM3QNBRGlFTwGhYw8sn0RaH
+KQznrwEjpSWjLQmHyUw+EJoxuGLNphTgBqEgId/ahJaQ150NFDskxZDRZhXNTEZ1z1CchVjj5gXQk8
+MrldCYsZWCbt2jeHdj6XKlBbCPuW0b0Ybg+Fv1N+CfbSZG+1UxBTRPolx+TvrBcnnSjGidKxqAbB0u
+6g41jgXWTsfvRx4E1sTZrR4p3ArPus3VUyttM4TKwtvTWxlzQADnaGjZ6KcfTiZ9PoLOlLvWYswc+w
+AusifCLJx8msD13pX03pTAymY4at9wQMHSuxbsZODHtGnklLvQ1aw46MBSVIW3mH5Md5GIufnajECf
+rbM7OP5E+Ces8sEXknThTgLpZVQ98KYae7dyjlv4rJ7I9JF1IFr8/IR+3qV5GXUouUex5ClyXTDf6k
+z0ogO6MWpbR7YGe9dW8JSlcvpEPcQeLcnHUM0919titcm46sFNaXzpOFvgOxQNPN0knKqq2ppB1AOl
+IN28x2YgYURDqyBitPPIHJpINZrtGz/myHLJOyJcZGnih2iWcMxV1HFuJnpaou2zhTnHXL9lE2WOVS
+xkBMngnabWhtIPTR7aY6ulwur6Qjn95P4GmjrSNFO8Vxj8RJ0jO2ysbIuum0wxgrsFf6uNpFtnMQfG
+JsKsG6dZWoJQzXCTsDyNtagsd7H0ZFJcnUcBTxUt7lWP2J+5TsP5uxh+t78U843wPjmPo6HcmtB5Ym
+VgbvGQeZ1WEAABa+SURBVIyDsreUj6dyqK8aGDj5Kzr96qShsdtlynE8ro9VJ43eNsQrY8oTwO6X8L
+PdwDC6ByL0Sdb2RNuS5NnGRkPhoGPSiHGC0jO09Cz5kgsyF7yKTD66ceoxYAlODLAyy+ZmIfwvlViY
+auUhWoGTWlIcATyTg9E/XotBW7OpZDPu7Wqt3u+ic2AOR5ZmoetSGQc5mCkYiIU0cMlFixAJH0YXOh
+rhX6EY9kwl8k2ZTDdQEkWL8MaRzThC/O9aTYN+QSnmdM3HvcRvzwKq6wiZeZMpp9SR652sWr8CJ4c/
+7/0NH66aOhlbaVXpFqrW/wD3irIsOlsn2zQsY+mDGDS8D56amoZtrP/WyVi49wnaKaSJoyamZxsVPr
+H1rZxA3qs4MWitqPuUlS0mV8/6A+7F4/+ahaFdF4kavUfT0ZlWl6N3YQ+6Er4ysMNdQv0mmUBtZ7NJ
+8gAmI7SG7Jxq8KLdkt7vlISyfdSPqMwucyAG047q3n2lhK8X/6CHXGe+F8ZOvl50hqZxsXRpZ1rszO
+mqjQcxmfHXh5ML27jvqCrch6h9kuKRmo1hWISnuhL++niztVkdttN4SKQtlZrWlTBuIBwsnl9OLOZ9
+9A89RF8I/xJD2dw0wxEloIThfFTH0evySnhrXtCFCU0eo3+G0FbpENjxrQm9Ss5qFkaH7zXqkHMeXU
+FbcO7Y0lHLzmo4AS8d2RksGOiQyfIeAZ55lSYGjmfhKTrXpl9Z1ZwSy9iDwSfuRdgsd7DhZO+x5NiA
+wYbunMX6D10qn87ytpkpm1uQWIpJPu5k1dzs9u3xEXBHYMWKZxP/4ZEv29G7m+Dn+gg4EfAdvRMRP/
+1/G4F4jj7mjP7/NlS+9T4CPgI+As0PgZgz+hrjZkjzM9W3qHkhQA+sbQmTSXQDrbZ5WeZb4yPQ0Aj4
+K/qGRtTn5yPgI+Aj0MQQ8B19E2sQXx0fAR8BH4GGRsB39A2NqM/PR8BHwEegiSFw+Tv66DqM6XYnXo
+7WA9n9s3HT6HXG6xbqUb+xqlyMTY2lk41vGZ7sFsJNdfyNWR+x1YquvxNP7teyksI/gpdHJ9nOzH+u
+8Ui0JtY1mgytKwOXTA/79s8N2XHgqqLN42Gq214//GM0VDbztdvsup/kJTpnm5o8WX8d63i0RiXuDw
+m3jynIj9QHgZibsRcufLl3tg7MS8c0rMO78zJNe6peyUXOGyOwa9Mk82ELM894wKnmfC0uXDCrJBYR
+d/FqcZ5sTrZqYgLcqdxsZMoGscldpMgV/MMPErYBvDIuG08f1Yh7zTbxZf1eDBVh48SgRqBHB2Duex
+WYq2c54ixrFt3Yt/oTvf/n9a4IDqPBfa/+qyzA7d3kA1GCxSh721tsjacW3dq5ah3Gj1gMYQ7V3xV6
+ATk/UTI24ybziZ0xWPXeYmRYTK1YvyHIvZdeepY3ABMDVvZFxfotwrs1s3Fzt1mmXBPbfo7+SnbB0/
+YItdcMWH28Pvi7WNIxhF7cRqznbsJwTin60bgT/XO7Tm/gRuOlczCgtalGw/rr7c1jS09rpCJKbfbo
+U9xG+Vr7OIko7YmJC62f5YlAjKP3pLxEBRnZY4BVFaiiZw3leIug7A3qEDSKy6ommYMwSk+p9hr2LA
+KBIDa+N+kSadcwYoSN9++hAZWpOR1pZ+60QrIJCdjEgz8b4WkVmOfquRy60sCaJSbLTCqIiMLcF626
+PLhz6I8n2Ix5Ragkx/JKZqGJt4ObcAZF2VZ9Z3lM+sBqPN1lKN6duJhaNhcFaYU2vXlicOaxTgnLYI
+eQX4HxBVJyr8ecExXjZTwCTSRi0jMnA03bEel4WkvG8tEKvaIHyLnfb/8JsGnd9XQ2bv6JrKy3gRc7
+t/yksCEGnvZS2c2aU79ZLLIqqB9IvNI2eUyMbkqJvDLM6z4JhSK+xbTTJBcLinQUzKR3GmiLC7NcRQ
+jD8ZVT4yw2FKF/TQSBJufokZqOXkd3a069CuGjY5A7agvCfDwjvH8ElSf74Pb8YCI2Nj0aeodGLiah
+6AANIuWkq4rxJtl5v0o3sNYHChajM00KAj4X3mLyKVIFQUyc1hU3F5RhIjn+iw/kNFZtoYlZvU8AKL
+w/3XAGFvfcF624e+wwnrY54j54dDdNRq7EVbZdS6/H1uF2B119nayDTWwyYzHepZ0DhwPzclGZr02Y
+vPsoSMdGN1y3T7I5XTtjstWekXQqxt54uujcbRPXFq3dDPyj5JS572xfTPrz6r8C2XEmacYktPRB+q
+GWScjpLnHSxal4r8es/qLy/Gv9ELiiftUasVZgEG7vdVg6dRZzYA8KRw1FfqgPCouM81bhFLsijb0W
+d9bus3FAqMSriVy88gqtqLqni7/xr0REifzgcpkvyh2rLtoz2MtNvjxg02HxknTzpFAqJHnj1tEuRK
+6clOybtfqaEhTNRPYocnbKHq5XthtHyU7h5202ufFk+fLohR2mki2xsOwz9aMVPE+MoVS7FlbKcMQh
+bRrgCfck76y8g5Ct46nFraMT1n8G3qR36KsQmFhIjpBWjY6/uncm7Fj0epoDVcxtV0m/6zFLtq3Yli
+BMjTYU2dym8xI837fxuYgE70ocmMh0ER7tFcs3Ufxjaxo5gXR0NtuY+5QaR44aYuKqAOPIOxynTlWV
+J9A5lC6PWd6bitQq7m9j6OVyzMeBK+VkzDPajVf0rvZSG79IO3s/NBgCTW9FjyAyh/XB0+QE52XQeW
+HRFvrpscUIpFag1xvGkQ69tMx0ijFQ0KqPz6F5RcUOc4Q6guCOTEc8dFzxruiA0nlPM99+JstPcUee
+GJRcebBT5+dz3VSaaI6G2e1RGU0+p3qR86iMUK8NCh17DStCgOX9pCvRF2pHMpKV8zMjfzZ6jVDHN+
+rYxmX1TDxnufDMeK8IIdvRDTnrAmAJDRzhrsUqbDayxZk074q62l6RzPpYq2rpEDeKioam7ASO7hE3
+qvVs3Y6YFaJWKM7ojXQ03BX3TyPoK+2rbI3cisbbzltUDRTjNn8BId4V0HlZCC+YO0nV7xpIUKOwSR
+R/Jdxqb8oxjlBUWdUrL+DUY89insrwuHZOC8aURMNAKBs4RVceHwFa4b/ZBehMi6yMzAqcMmqI4yNx
+jyhT5hxd7K/oDWwa+xLj6GtrahpbZp38UwcMR8/XT6OqJhWVJ3ojlFeD2pQs3F47A2WRPKTt24KeoS
+n0ylLSlW748D965yw/I0m8e+PRvAxZxnV60m+80Ttra/e/icKes7CrH8UNE/sPolcMnjDqHjTK706V
+dVnLflPwaM/BKNq/EE+yTj95Ewfm0iyx7zhuX/IAwjOLUHX3IKHj7XlULyUNnbEY07ofx6O7tmNCah
+xThW6LBe/+qfTGy6OjMU3pptvkyZP0pv/CNmFPKibMzUP05Ttx89PirWlUSPYxLtHTONkzhHyBEesk
+6+auOoUn+wMH53fGtHUlmPBkJhcaIRWhnsdpLqtBfzc7bLJVHeuaevc2/JyS3Eb95y4kIU9gFQNfOx
+qryheBxMaGaAHGzyTGSk+bDEoQLpa9WnXGi9vYuMo+wbIkvS1t8I7Sa6IRzED+oysws7QSEyYEkNb5
+MFaJON043j4a2XOJp8BWk1VntAobxg/G08c0wu32c38uMc/FuU9uzEcq6x736Ib6Nduo9LFho8kyoj
+r+nMX2qvamH0EwcKY2rn0T0charPpJF0wrTxXtJVkYeKu2EDxqERqgdDDKSaH+c7ehP/F8Q+hXiQ3/
+RuNj6XakFYzCK7VdcbQ2XfTLVXgW5XMDhowMPFm+BuixEqE4Y6Up+COJx+X9GePom4Q5qSF0ObYXUT
+qTfwMjsDSVtaKB2OUIiqK0qj7ZG8PyA5dIVZpoWD791uWwnrtRGS1D+OQIehNlkDJXouygrmMmdV5y
+nnTgsWF8Z/Q4RoPTsxMHaOfSW+xc8kO7cSz3AXfnR8c8CfHkwZuzBHh0H8rLCRuRrpAYKTzZDJlj++
+z/JP0ua48pmJ8tHb8sjCB8jHYBbhVsteMkWIeCEDaaE0gQEzYuEhNLD3m3zla5J+m+0batsBXXI3EE
+T+d0FjdXe8YccMt2TU0dAcwsRnRCPvpn02RbFKFJaS9OPjqV2rE+IUA2nsIEUZX7Ab0NlpyeOenHYK
+LJyF2DchMrLV/0p3q8VdaUFaSjFLI3X+fJcR5TWzEtB2ISiJ18qawHv9OaJ+chKCqk/lAHKNENM/AG
+fUliI/ebJ7cjdcMoGsMnUJS2HRttAsown/qc6AZGG7FGehD9gSZgP1w8Ak3vjF7YRGfYuVtRVECOat
+gg0znxQCwsWo0wOf/MZB1Qf/r63LElKCDHLAMNwlXixewyaZTP3EATiQoH6Zsipix2zOTUZ65EYZcQ
+6WSkV9G3B5SONLA2CP482PfRbuCIda9B8dSuqZkj0LNwJWa+Qf45P1Mr0aKJ8qTjrGO0OlxqDIwonf
+nri0rautAkpfG1RTNpZdsbhasKrGcKaD9unmrZaJNIsE4u5P2fPEWTkfxblSudDKc3XsygLpyCHjTR
+2eXxRCvlbJwQ1DQpE04rjfsQT+Cgm/+MTf9FwtEeLDqBYZnxHQzvgsbrfUXjbkajxWKhknRfNRlcZM
+TEX07awl5myfmiDxv8aYLhnR2fp8+nry1tINt69KBdSReaeEQ7LQLmTxGTn+WrHTy5OrUBfw1a9UFe
+bMwMP0CT9wP0TTqtb9Hurgc5edCOspxW9bk8wRn9ga/cJ0B5Vn8wFk49OmO+OX5ZoB8SRaCJOnoac+
+zUC7eiS5o24NgZU550tImaqOhoZbyKeE7jTsx/tEIaRkcbZuCV8xp0eXqwUU40dK68irfVBg07Zhw7
+QvcMpFOWaWKjnEJqPtKKFH85UOQAMoXYI2KXcIScU5yJy5On3BEIe2hwRvtPpW9lLEGOsK0zDbCu6G
+lK44mzjklnwrOy/vwyWYudQe4Qj10G+ceQ8ydATGFm5GDRVhMrM7OxIuwsds3SbObdg7aS1uXSir3Q
+tI0nZY2OnNMqPGCtwPV6ZrxKrJDNdjfztQjxGZ+zG8OWWv1HK73oaFL4K3uFg+V+LdtFHNmdHI3ck7
+SbYwfKkztNABPURGzsLgQddMfroT63gRovLCunAtMEDxpb9I2vHO6nVPVgZTp2kUOXY4PKsvdaY476
+bxHtLG07G15w8aRD7XtS+wKDhxZ+tgsCMT88cu99P3Qh87MuewSqCzCBfs5v8c8TcTy0grqbJkI+ck
+jxsJz5xaygHbS0w/iVkkcDfwJ9L3qD2nHQlv57z/C9hNH412P2M/uDCzrjX1yOdhzcZVKXYRBEifds
+Og9Wskx+gnYQygzbMkuVDq6cZSY5r6NznbutMiy4O4w8ZZuzusBmN4bysZ0TPy6j46wNJk/GejCetW
+9FnByttLI3CfyjC0bRVzztughMyHlL2ywdev54n4kbfZtB6LbndpVHdvecgl8obXRsdLuorXu9mG61
+vUHP7fK9ygdwND9s7zs6H6I124vribKgidGd/3YKc61thcHZvzACP3vpp4n/8Ijv6JtvpzEHmulk3G
+3lgfZSmhrc7jR+ro+Aj0DTQiCeo2/ZtFT1tWlMBFInbJevCahDSP+5pzyPbOqo6hf7CPgINEEEmuwZ
+fRPEylfJR8BHwEfgskTAd/SXZbP5SvsI+Aj4CCSOQMzRTQ09IOEHHwEfAR8BH4Hmg4C/om8+belb4i
+PgI+Aj4IqA7+hdYfEzfQR8BHwEmg8CvqNvPm3pW+Ij4CPgI+CKgO/oXWHxM30EfAR8BJoPArabsddc
+cw3++sVfcfXVVzcfC31LfAR8BHwEmjkC58//DVdddZWnlbYVfVpaGk6d/r0nsV/gI+Aj4CPgI9D0ED
+hx8n2kp9OPv3gEm6PPzc3FkcO/wZEjv8Wnn33qUcXP9hHwEfAR8BFoCgiwn2Z/zX67urraU6WWt2T0
+MwrFz3eIH2uY2ro1Dh4qxV8++cS1Yq1rbmxmi9isBsnxkn+p5VnGKI0aW4PG4m9Z4sd8BC4HBOoaCW
+pENqYt3/pmR/x933/E332zgyUmGcEOI/7jP36Nw++8LXglyqZVq1ZISUnBsuUviHpXXX0NQHyvvfYr
+uIqO4K+84gq0aNECLf5f8Zv8Ozwy8K/ccMy48i/21Fy4gM8/+wwffvghZdfig2i1oPnzh39SlYwr17
+OixF1LsGxKG1myyFHuoGdekp3FlMRLIaLMyleCLBkiZsijuBDFH1zHLlfV5TLJX+UIISJPoMJYCKWY
+zihjUlsl4i3/SyaGTZZenO0m37JF8GYy4ity1VWvKWQoQcpWxddIMw8zcJklg7Nlij7lfzPHlEs5iq
+PelpYtZimzs2hdUiKLPtw04DLTZkVhJ1TVDSFSrqUHF9t1URU414uVorlkV09F3Aqc9jjTyWotZciu
+SnFNpOzbzE/LNNmTXE201bOsfK3YrOXGySzkiCKw2FCmwcl+MauJbM1HaFGrrmDMlCRA/jfrm0Id+Y
+Y4k06pZmY4Ik76lG9+A5OnPOygSizp5LVmzXKc+e8/yso2PS2tRMxK2gS1v/FGke5Ajp9D+/ZfJ4d/
+La4gZ9/yrWP/ITK5E/CAE//4Sn/8lGzNhfP44osvRP65/z3L+OF//8hOX1STHyIuuoyWyU1Hpsj/dO
+UU/RPW8Syjyk0CUVcUG1wsEVIfoZ+hmynNIiKektcVLeSJlLhS3hX0j/UwJIq4Vk1K4wzDKBllmeTa
+DXkCC/5ZNcoTcboyGDVcx6gnjSN5QhZJFfro8oUKph4sRzCpZb11G1kOl9C1hi2VlIKtNETY2oLslC
+LoKrBlPsxTYs0xDrKekCQz6FNwZNs4ZlyVrXwVQbBTtYkPCRN/ir8hiwWwxLpDC8MSgz9VELKEfJGw
+dBHMWDeDK8vmf4ZMqQeViQyVz7QeemisDI6eF9GPjFIp3lBC6eJa0yFXYEj2KiwdNqp+I1qA2pgNFe
+yZzimH0maZkC0zmE61nySw0hYPJpK8TawFM+pbykbBSKZUHhdJqPnTwpfbgDGXZSYVRwwlZdT1U2eu
+E4jhavDU8oUMTstGp4u7XO79bKExjAy7SJghT160hBHVRIlobLaeI7UxVJH2U63jFZX4/PPP6+3sdR
+2Yz+Gj5bj2q9fJbFO8GVEm6dVEnLU7cTqM1m3b4dj7J/DV61qJBryq5dVoQQ6p5d8uyFceMCvTsTFo
+1PjKuaHllfjbXz/HtW2uwyf/+zFaXf81UW5Jk4pY6ggZplJmE4qGohRfzT/mIh0Vx/RBxi0luqNgLH
+XiPlljOGDuwDIYV3J87Nwlb+bFccojQyVf4yrIGRpV34hxknjyPx6IjIHAhAbiBZ70ai7gAu1wOO8C
+4abwkoOW5Rn6CzulXKnPlaKMSs1/rDfLUcGwVPyeJtsnefJVOnsSZghgLgYn3pYxdmwn2SgmFpbAih
+iSBH+RppjBgvNYtrCPEOZ8tqWG7GR5opTlGYG15v/8wTIkvizbypciBJGgUzGjosiTPAyrWSYLlsLF
+lUULPYRsoSHliyJxEXJZqqkDS2EdZJ4g4nIZifm0LIopsmcwoTTInu+W8mBqwscR9kB0Ffby1WhTs4
+2N147I/ubOULChIloPaHw4LgPXZRkiR0S1uKzBA0fK5iqsh7hIOtkXuCIXGkEAaeBt4Cx9soaxEye9
+vuJjY2snUH1VNZrizGxVXJUxO0kvYiJbF29yNiLSQqZlu/nKPIXpIl6fDyXP1I2Y/O5EJWppNT6lni
+t7pQereF74mlq0IofNbcLyRNsqojhXto3rf4Wc/HkaSy2vaknXGrHQ/f88KTEe0A0y1QAAAABJRU5E
+rkJggg==" alt=""></p>
+<p>现在支持直接黏贴图片了？</p>
+<p>这个问题的解决的解决方法就是升级驱动。下个 <a href="http://www.drivergenius.com/" target="_blank" rel="external"> 驱动精灵 </a> 什么的，然后就可以修复了。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/驱动/">驱动</a><a href="/tags/黑屏/">黑屏</a><a href="/tags/蓝屏/">蓝屏</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/03/05/8639903/" title="JAVA 快速实现webService （同步逻辑）" itemprop="url">JAVA 快速实现webService （同步逻辑）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-03-05T14:09:00.000Z" itemprop="datePublished"> Published 2013-03-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>今天因为需要调用第三方的接口些fake service, 用于testcase. 该第三方使用的是soap的webservice模式。</p>
+<p>首先是创建service。</p>
+<pre><code>package myws;
+
+import java.io.IOException;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.ws.Endpoint;
+
+/**
+ *
+ * @author 帐前卒
+ *
+ */
+@WebService(
+        name=&quot;HELLO&quot;,
+        targetNamespace=&quot;http://chillyc.info/api&quot;, 
+        serviceName=&quot;API&quot;, 
+        portName=&quot;PortName&quot;)
+public class WebServiceHolder {
+    @WebMethod
+    @WebResult(name=&quot;return&quot;)
+    public String hello(@WebParam(name=&quot;name&quot;)String name) {
+        return &quot;hello&quot; + name;
+    }
+
+    public static void main(String[] args) throws IOException {
+        Endpoint.publish(&quot;http://localhost:80/fake/ws&quot;, new WebServiceHolder());
+        System.in.read();
+    }
+}
+</code></pre><p>这里写System.in.read();是希望服务在那里卡死。基本上所有的server都是类似死循环的写法。所以我这里就偷懒使用IO.</p>
+<p>这里要注意的是@WebService annotation. 其中 name是指这个portType 叫什么。<br>targetNameSpace这个在所有的后续调用中名字都是一致的。serviceName就是服务的名称。portName<br>其实就是提供服务的端口名称（这里对服务本身的调用没有什么关系）。如果没有name, 那么java会默认使用WebServiceHolder<br>也就类名称作为name.</p>
+<p>运行后，在浏览器中打开</p>
+<pre><code>http://localhost:80/fake/ws?wsdl
+</code></pre><p>然后就可以看到wsdl文件。</p>
+<pre><code>This XML file does not appear to have any style information associated with it. The document tree is shown below.
+&lt;!--
+ Published by JAX-WS RI at http://jax-ws.dev.java.net. RI&apos;s version is JAX-WS RI 2.1.6 in JDK 6. 
+--&gt;
+&lt;!--
+ Generated by JAX-WS RI at http://jax-ws.dev.java.net. RI&apos;s version is JAX-WS RI 2.1.6 in JDK 6. 
+--&gt;
+&lt;definitions xmlns:soap=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot; xmlns:tns=&quot;http://chillyc.info/api&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns=&quot;http://schemas.xmlsoap.org/wsdl/&quot; targetNamespace=&quot;http://chillyc.info/api&quot; name=&quot;API&quot;&gt;
+&lt;types&gt;
+&lt;xsd:schema&gt;
+&lt;xsd:import namespace=&quot;http://chillyc.info/api&quot; schemaLocation=&quot;http://localhost/fake/ws?xsd=1&quot;/&gt;
+&lt;/xsd:schema&gt;
+&lt;/types&gt;
+&lt;message name=&quot;hello&quot;&gt;
+&lt;part name=&quot;parameters&quot; element=&quot;tns:hello&quot;/&gt;
+&lt;/message&gt;
+&lt;message name=&quot;helloResponse&quot;&gt;
+&lt;part name=&quot;parameters&quot; element=&quot;tns:helloResponse&quot;/&gt;
+&lt;/message&gt;
+&lt;message name=&quot;getReturnInfo&quot;&gt;
+&lt;part name=&quot;parameters&quot; element=&quot;tns:getReturnInfo&quot;/&gt;
+&lt;/message&gt;
+&lt;message name=&quot;getReturnInfoResponse&quot;&gt;
+&lt;part name=&quot;parameters&quot; element=&quot;tns:getReturnInfoResponse&quot;/&gt;
+&lt;/message&gt;
+&lt;portType name=&quot;HELLO&quot;&gt;
+&lt;operation name=&quot;hello&quot;&gt;
+&lt;input message=&quot;tns:hello&quot;/&gt;
+&lt;output message=&quot;tns:helloResponse&quot;/&gt;
+&lt;/operation&gt;
+&lt;operation name=&quot;getReturnInfo&quot;&gt;
+&lt;input message=&quot;tns:getReturnInfo&quot;/&gt;
+&lt;output message=&quot;tns:getReturnInfoResponse&quot;/&gt;
+&lt;/operation&gt;
+&lt;/portType&gt;
+&lt;binding name=&quot;PortNameBinding&quot; type=&quot;tns:HELLO&quot;&gt;
+&lt;soap:binding transport=&quot;http://schemas.xmlsoap.org/soap/http&quot; style=&quot;document&quot;/&gt;
+&lt;operation name=&quot;hello&quot;&gt;
+&lt;soap:operation soapAction=&quot;&quot;/&gt;
+&lt;input&gt;
+&lt;soap:body use=&quot;literal&quot;/&gt;
+&lt;/input&gt;
+&lt;output&gt;
+&lt;soap:body use=&quot;literal&quot;/&gt;
+&lt;/output&gt;
+&lt;/operation&gt;
+&lt;operation name=&quot;getReturnInfo&quot;&gt;
+&lt;soap:operation soapAction=&quot;&quot;/&gt;
+&lt;input&gt;
+&lt;soap:body use=&quot;literal&quot;/&gt;
+&lt;/input&gt;
+&lt;output&gt;
+&lt;soap:body use=&quot;literal&quot;/&gt;
+&lt;/output&gt;
+&lt;/operation&gt;
+&lt;/binding&gt;
+&lt;service name=&quot;API&quot;&gt;
+&lt;port name=&quot;PortName&quot; binding=&quot;tns:PortNameBinding&quot;&gt;
+&lt;soap:address location=&quot;http://localhost/fake/ws&quot;/&gt;
+&lt;/port&gt;
+&lt;/service&gt;
+&lt;/definitions&gt;
+</code></pre><p>大家自己对照刚才的那些name, serviceName等，在wsdl文件中的什么地方。</p>
+<p>然后是写一个stub作为调用的接口。</p>
+<pre><code>package myws;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
+
+/**
+ *
+ * @author 帐前卒
+ *
+ */
+@WebService(targetNamespace = &quot;http://chillyc.info/api&quot;, name=&quot;HELLO&quot;)
+public interface WebServiceAPI {
+    String hello(@WebParam(name=&quot;name&quot;)String name);
+
+}
+</code></pre><p>这里要注意的是 那个hello函数，必须与webService发布的函数名相一致(要看wdsl文件中的名字。)<br>另外WebParam中的name也需要和发布函数中的参数名字一致。<br>这里WebService中传入了两个值。其中name就是刚才WebService中的name. 其实就是wsdl中的portType.<br>如果这里写错了。就会有Undefined port type：{<a href="http://chillyc.info/api}Name">http://chillyc.info/api}Name</a>. 这个错误。所以要小心。</p>
+<p>另外写个可执行的类。</p>
+<pre><code>package myws;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+
+/**
+ *
+ * @author 帐前卒
+ *
+ */
+public class Client {
+    public static void main(String[] args) throws MalformedURLException {
+        WebServiceAPI api = Service.create(
+                new URL(&quot;http://localhost:80/fake/ws?wsdl&quot;),
+                new QName(&quot;http://chillyc.info/api&quot;, &quot;API&quot;))
+                .getPort(WebServiceAPI.class);
+        System.out.println(api.hello(&quot;sss&quot;));
+    }
+}
+</code></pre><p>这里URL中的就是wsdl文件的地址。 QName传入的就是targetNamespace 和 serviceName.<br>另外getPort就填入刚才的stub. 然后直接调用stub中的接口就能得到结果。</p>
+<p>done.</p>
+<p>简单快速，搭建和写client 也就是10分钟搞定。当然这只是起步</p>
+<p>这个方法适用于JDK6及以上，其他版本未知。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/exception/">exception</a><a href="/tags/webservice/">webservice</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/03/04/8632642/" title="JAVA 远程debug" itemprop="url">JAVA 远程debug</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-03-04T02:48:00.000Z" itemprop="datePublished"> Published 2013-03-04</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>开启JVM的远程Debug模式, 在启动JVM的时候加上参数:</p>
+<pre><code>// 非阻塞方式，这样启动jvm后，可以再任意时间attach到server上
+-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=11312,server=y,suspend=n
+// 阻塞debug，启动JVM后，需要远程连接attach到相应的端口，JVM才会继续执行。
+-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=11312,server=y,suspend=y
+</code></pre><p>第二条特别适合调试类初始化的程序模块。</p>
+<p>在eclipse中，bug项里有Debug Configurations… 选中。然后选中remove java application, 新建一个</p>
+<p>Project就是你要远程调试的 JAVA源码文件工程。  HOST就是那个server所在的机器名或者IP。 PORT就是<br>上面的address项11312。Connection Type就写Standard. 然后点击debug就可以。</p>
+<p>如果debug后，有连接错误。 1. 要查看server或者service是否已经启动。 2. 要看是否配置正确。3.检测端口是否被其他程序占用了。</p>
+<p>如果上面的检测完毕，还是连接失败。那么重启eclipse 或者 重启server. 这两个方法就可以解决问题。</p>
+<p>另外</p>
+<pre><code>-Xnoagent
+这一个选项在远程debug中一般不需要。其含义为Disables VM support for oldjdb。禁用旧的java debug。
+</code></pre><p>下面是各个options的详解。摘自 <a href="http://docs.oracle.com/javase/1.4.2/docs/tooldocs/windows/jdb.html" target="_blank" rel="external"><br>http://docs.oracle.com/javase/1.4.2/docs/tooldocs/windows/jdb.html
+</a><br><code>-Xdebug</code></p>
+<p>Enables debugging support in the VM</p>
+<p><code>-Xrunjdwp:transport=dt_shmem,server=y,suspend=n</code></p>
+<p>Loads in-process debugging libraries and specifies the kind of connection to<br>be made.</p>
+<p><code>-Xnoagent</code></p>
+<p>Disables VM support for <strong> oldjdb </strong></p>
+<p><code>-Djava.compiler=NONE</code></p>
+<p>Disables the JIT compiler. This is required for debugging under the classic VM</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/debug/">debug</a><a href="/tags/远程/">远程</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/02/27/8619554/" title="笔试面试题 —— 天平称重与二进制" itemprop="url">笔试面试题 —— 天平称重与二进制</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-02-27T14:38:00.000Z" itemprop="datePublished"> Published 2013-02-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有人曾问 <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前卒 </a> 一道题：至少需要多少个砝码，才能称出1~50g物体？</p>
+<p>这道题有两个变种：</p>
+<p>1.至少需要多少砝码(左物右码)，才能称出1~50g物体？</p>
+<p>2.至少需要多少砝码(砝码可以放在任意一边)，才能称出1~50g物体？</p>
+<p>第一问可以变为: 至少多少个数字相加，可以表示1~50之间的任意数。又可以演变为：如何快速的从一堆苹果中取出你想要的个数？</p>
+<p>第一问对于每个数字其实就是两种状态，加、不加。也就是1,0. 对应的公式就是,对于任意数x</p>
+<pre><code>x = 1*a0 + 2*a1 + 4*a2...+2^k*ak   (a0...ak 可取0或者1)
+</code></pre><p>也就是计算机界常见的2进制表示法。当全部ai都取1时，那么1+2+4…+2^k = 2^(k+1) - 1 &gt;= x, 将x=50带入，k+1即为所求。</p>
+<p>所以第一问的答案就是 log(50+1)  取上整</p>
+<p><a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前 卒 </a> 这样解决了第一问，那么第二问应该就是第一问的变种。</p>
+<p>因为砝码可以放左边、右边、不放。那么就有三种状态(-1,1,0). 这就是如何用三种状态来标示一个数。那么</p>
+<pre><code>x = 1*a0 + 3*a1 + 9*a2 + ... + 3^k*ak 其中ai可以取-1,0,1
+</code></pre><p>当全部ai都取1时，那么1+3+9…+3^k = (3^(k+1) - 1)/2 &gt;=x, 把x=50带入，那么k+1即为所求</p>
+<p>所以第二问的答案是 log3(x*2+1) 取上整 为 5</p>
+<p><a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐 前 卒 </a> 又想起快速幂级运算</p>
+<p>a^k 如果一次乘个a,那么需要乘k次。如果使用二分法 那么 只需要乘log(k)取上整次就可以做完。</p>
+<p>a^0</p>
+<p>a^1</p>
+<p>a^2</p>
+<p>a^3</p>
+<p>a^4</p>
+<p>a^5</p>
+<p>1</p>
+<p>a^1</p>
+<p>a^2</p>
+<p>a1*a^2</p>
+<p>1*a^4</p>
+<p>a^1 * a^4</p>
+<p>这样表示就会发现其实a^k 其实就是把k表示为2进制的形式。</p>
+<p>5 就是 101   就是 a^1 * a^4</p>
+<p>下面写就比较好写程序了。</p>
+<pre><code>total=1; // total就是所求，k就是幂，a就是底数
+while(k) {
+     if (k&amp;1) total*=a;
+     a*=a;
+     k&gt;&gt;=1;
+}
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/算法/">算法</a><a href="/tags/面试/">面试</a><a href="/tags/笔试/">笔试</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/02/27/8619221/" title="新版有道云笔记3.1版本客户端无法登陆 解决方法" itemprop="url">新版有道云笔记3.1版本客户端无法登陆 解决方法</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-02-27T12:34:00.000Z" itemprop="datePublished"> Published 2013-02-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>因为新版的采用的HTTPS的方式。更加安全。但是国内的一些DNS运营商，似乎对HTTPS的方法做了特殊处理。</p>
+<p>这里要再感谢Google的8.8.8.8 DNS.</p>
+<p>如果自家网络实在链接不上 <a href="https://note.youdao.com" target="_blank" rel="external"> https://note.youdao.com </a> ,<br>那么配置一下自己的DNS，改为8.8.8.8,而不要使用的默认的。就可以链接成功。</p>
+<p><a href="http://www.ha97.com/category/microsoft/windows" target="_blank" rel="external"> windows </a> 下设置：</p>
+<p>对于宽带拨号用户，在“设置”-“网络连接”中找到宽带上网的连接，打开网络连接属性，选择Interner协议（ <a href="http://www.ha97.com/tag/tcpip" target="_blank" rel="external"> TCP/IP
+</a> ）（win7与vista的用户请选择TCP/ <a href="http://www.ha97.com/tag/ipv4" target="_blank" rel="external"> IPv4
+</a><br>协议）的属性页里，不要选择自动获取DNS，而要选择“使用下面的DNS服务器地址”，首选DNS服务器和备用DNS服务器分别设置为<br>8.8.8.8和8.8.4.4，完成后断开网络重新连接上网即可。如图所示：</p>
+<p><img src="http://img.my.csdn.net/uploads/201302/27/1361968715_2302.jpg" alt=""><br><img src="http://img.my.csdn.net/uploads/201302/27/1361968724_6622.jpg" alt=""><br>然后就可以访问了..</p>
+<p>如果还不行记得清理一下DNS缓存： 命令如下</p>
+<p>ipconfig /flushdns  </p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/有道云笔记/">有道云笔记</a><a href="/tags/登陆/">登陆</a><a href="/tags/https/">https</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2013/02/25/8610479/" title="服务兼容/数据迁移" itemprop="url">服务兼容/数据迁移</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2013-02-25T10:20:00.000Z" itemprop="datePublished"> Published 2013-02-25</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>最近在整理登陆模块的数据兼容和服务兼容。有几点值得注意的地方：</p>
+<p>1. 数据库表格式不一致。这需要格式转换非常令人头痛。</p>
+<p>2. 旧服务不下线，新服务上线后，新的验证机制旧的server不兼容。新验证与旧的验证难以分离。web端和其他各端使用的验证方式不一致，或者说发布/更新速<br>度不一致。</p>
+<p>3. 新的cookie会通过某些途径进入到web端。我x</p>
+<p>4. 新的服务在某些情况下，需要依赖旧的服务。</p>
+<p>这真是令人头痛的一件事。</p>
+<p>解决方法：</p>
+<p>1. 新服务在旧服务之前做验证，或者在认证串中加入版本信息。</p>
+<p>2. 新server引入旧服务的所有表，但是只读。不能通过引入表解决的。在旧的server上加http等接口同时限制ip.新server访问这些接口。</p>
+<p>3. nginx 将旧接口映射到新接口。</p>
+<p>另外需要开始时，设计好错误码，错误码一旦冲突，并且各个客户端使用了，这就不好办了。另外各个客户端也需要对新旧认证做兼容处理。悲催呀.</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/page/8/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/78/">78</a><a class="extend next" rel="next" href="/page/10/">Next<span></span></a>
+  </nav>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/编程/" title="编程">编程<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工作/" title="工作">工作<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>39</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/see-hear/" title="see-hear">see-hear<sup>37</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c">c<sup>36</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/code/" title="code">code<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/数据库/" title="数据库">数据库<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/blog/" title="blog">blog<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/cc/" title="cc">cc<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/null/" title="null">null<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/class/" title="class">class<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微软/" title="微软">微软<sup>22</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/生活/" title="生活">生活<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c#">c#<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/google/" title="google">google<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c/" title="c++">c++<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>18</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="blog.csdn.net/cctt_1" target="_blank" title="帐前卒专栏">帐前卒专栏</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 帐前卒专栏 <br/>
+			Without software, we are nothing.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1648789462" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="chillyc">chillyc</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>
