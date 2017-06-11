@@ -40,7 +40,7 @@
 				<h1 class="site-name"><a href="/" title="帐前卒专栏">帐前卒专栏</a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -56,7 +56,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:chillyc.info">
 					</form>
 					
@@ -74,25 +74,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2010/04/02/5446286/" title="linux pthread_join使用" itemprop="url">linux pthread_join使用</a>
+      <a href="/2006/12/17/1446910/" title="《疯狂农场》带来的启示" itemprop="url">《疯狂农场》带来的启示</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
 		
   <p class="article-time">
-    <time datetime="2010-04-02T14:01:00.000Z" itemprop="datePublished"> Published 2010-04-02</time>
+    <time datetime="2006-12-17T10:36:00.000Z" itemprop="datePublished"> 发表于 2006-12-17</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>这个函数没有什么好说的。其实就两个参数，第一个是线程变量，第二个是线程返回值。其函数原型为:</p>
-<p>int pthread_join(pthread_t thread,void** result);</p>
-<p>不过查阅许多网上资料，依旧没有使用result这个形参的。一般的使用为pthread_join(thread,NULL);于是自己在想那个NULL能做啥米用<br>。于是写下下面的代码：</p>
-<p>#include <stdio.h> #include <pthread.h> int count =0; // 初始化mutex变量。<br>pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; void <em> print_count(int);<br>int main() { const int num = 10; pthread_t threads[num]; int i=0; for(i=0; i&lt;<br>num; i++){ //第一个参数是pthread_t变量，第二个是pthread_t变量的属性<br>//第三个是pthread_t需要执行的函数，其函数原型为 // void</em> (<em>startfun)(void</em>) //<br>所以传入的是一个返回void<em>的函数(这里当然可以转换) // 并且接受的是void</em>的参数，所以需要把i转换为void <em><br>pthread_create(&amp;threads[i],NULL,print_count,(void</em>)i); } void<em> result = NULL;<br>for(i=0; i &lt; num; i++){ // 这里就是同步得到结果。打印的是线程执行的状态，0为成功。非0失败 printf(“end<br>%d;/n”,pthread_join(threads[i],&amp;result)); if(result == NULL){<br>printf(“NULL/n”); } else{ // 这里打印的是pthread_t执行完print_count后返回的结果。<br>printf(“%x/n”,result); } } return 0; }<br>//这里返回的类型是void</em>，因为pthread_create中的函数指针为void<em> //这里的参数int<br>i,可有可无，如果没有pthread_create中就使用NULL作为参数。 void </em> print_count(int i){ // 设置mutex锁<br>pthread_mutex_lock(&amp;mutex); printf(“thread: %d—&gt; count %d/n”,i,count);<br>count++; sleep(2); printf(“thread: %d—&gt; count %d/n”,i,count); // 释放锁<br>pthread_mutex_unlock(&amp;mutex); //这里是返回值, void <em> result就可以被赋值了..否则为result = NULL<br>return (void</em>)count; }</pthread.h></stdio.h></p>
-<p>另外值得注意的是pthread_join()中第二个参数不要乱传。如果非NULL,可能造成segment failure.</p>
-<p>另外这里如果使用c++进行编译可能会有void<em><br>(</em>)(int)不能转换为void<em>(</em>)(void<em>)的问题。这是因为c++编译器要求太严格了。只好改动函数签名为void </em><br>print_count(void *);之后再进行转换。现在终于知道为啥这么多人都喜欢在linux下使用c了。</p>
+        <p>1。Strong man stands up for himself。The Stronger man Stands up for<br>others。强者保护自己，更强的保护他人。  我们每个人都希望成为强者，希望鹤立鸡群。但是这之后呢？有没有想过为别人做点什么呢？</p>
+<p>2。Everyone can help you in particular time。结交的每一个人都可能在特定的时期帮你一把。<br>有时自己感觉结交了些朋友。但感觉他们的用处不大。但是请记住上面的那句话。每个朋友都有帮你的时候。</p>
+<p>3。Team Work can deal with trouble which  one cannot deal with.团队能解决一个人不能解决的问题。<br>当我们忙不过来的时候，有没有考虑一下团队协作。将任务拆分交给团队来处理，即使团队还不成熟，也可以帮助自己解决一些棘手问题。记得一个问题：当中午吃饭的时候，上<br>面派给你紧急任务，要你下午几点完成。这时你将怎么处理？最佳答案是：吃饭的时候简单拆分下任务，和自己的同事们一起完成这个任务。</p>
+<p><a href="http://news.xinhuanet.com/ent/2006-07/28/content_4889121.htm" target="_blank" rel="external"> <img src="http://news.xinhuanet.com/ent/2006-07/28/xinsrc_4220703281452328
+1765342.jpg" alt="《疯狂牧场》海报"> </a></p>
+<p>片名：  Barnyard: The Original Party Animals<br>译名：  疯狂牧场/疯狂农庄<br>导演：  史蒂夫·奥德科克 Adam McKay<br>配音：  凯文·詹姆斯 Kevin James<br>萨姆·艾略特 Sam Elliott<br>丹尼·格洛弗 Danny GloverSacha Baron Cohen<br>科特妮·考克斯 Courteney CoxGary Cole<br>类型：  动画/喜剧/家庭<br>片长：  暂无<br>级别：  PG级<br>出品：  派拉蒙<br>上映日期：  2006年8月4日</p>
 
         
         
@@ -106,7 +106,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/null/">null</a><a href="/tags/linux/">linux</a><a href="/tags/join/">join</a>
+  <span></span> <a href="/tags/任务/">任务</a><a href="/tags/up/">up</a>
   </div>
 
 </div>
@@ -134,31 +134,192 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2010/04/02/5445250/" title="广义表的定义" itemprop="url">广义表的定义</a>
+      <a href="/2006/12/15/1444057/" title="“技术工作”感悟" itemprop="url">“技术工作”感悟</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
 		
   <p class="article-time">
-    <time datetime="2010-04-02T08:07:00.000Z" itemprop="datePublished"> Published 2010-04-02</time>
+    <time datetime="2006-12-15T05:39:00.000Z" itemprop="datePublished"> 发表于 2006-12-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>转自 <a href="http://blog.csdn.net/lpioneer/archive/2008/01/16/2046940.aspx" target="_blank" rel="external"> http://blog.csdn.net/lpioneer/archive/2008/01/16/2046940.aspx
+        <p>工作是为了吃饭，吃饭是为了更好的工作。或者换过来说：吃饭是为了工作，工作是为了吃更好的饭。</p>
+<p>先进的未必是最好的，更未必是成功的，谁死在最后，谁就是王者</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/工作/">工作</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2006/12/08/1435288/" title="csdn记数器停止了" itemprop="url">csdn记数器停止了</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2006-12-08T12:32:00.000Z" itemprop="datePublished"> 发表于 2006-12-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>发现csdn blog中的网页的记数器停止了。</p>
+<p>现在连写blog都没有激情了。。。。。。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/blog/">blog</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2006/12/04/1428754/" title="院刊青春缘代码---介绍本院" itemprop="url">院刊青春缘代码---介绍本院</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2006-12-04T00:22:00.000Z" itemprop="datePublished"> 发表于 2006-12-04</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>出来第二期院刊。。。。。介绍本院。。。。。。。</p>
+<p>不过感觉办得还是与期望差了些。。。不过大一的办成这样应该也算可以。。。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2006/12/03/1427585/" title="软件体系结构 构件和软件复用" itemprop="url">软件体系结构 构件和软件复用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2006-12-03T02:50:00.000Z" itemprop="datePublished"> 发表于 2006-12-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>一<br>在业界，软件体系结构和建筑学的设计框架可以类比。如果把软件体系结构类比做建筑学的蓝图，那构件就可以比作一砖一瓦，或者更大概念如：庭院，花园等。软件体系结构之<br>所以可以独立于软件的数据结构和软件的算法，是因为业界把软件的数据结构和算法看做了烧砖的方法，或设计庭院的思想。但没有扩展到整个软件系统。一个软件系统是庞杂的<br>。但是分治之后的东西仍然用到了最基本的软件算法和数据结构思想。之所以也有些人说SA可以不用，是因为算法和数据结构的扩张有代替现在的SA的可能。完美的构件是可<br>以进行黑箱复用的。不太完美的复用构件就是白盒复用，要在原来代码的基础上做些必要的改动。软件工程的思想正是体现在软件流程、软件模块和软件文档的复用之上。否则也<br>就没有工程的说法。但是又有人提出软件体系结构复用的思想。这应该被认为是迄今为止最大粒度的复用。如果建筑师可以把自己以前的建筑蓝图拿来稍作修改就可以进行多次施<br>工，那么软件架构师们为什么不能拿过去的系统设计方案稍作修改并实施到新的项目中去？但是很可惜，没有一个企业的业务流程和另一个企业是完全相同的。所以软件体系结构<br>的复用起来比建筑蓝图的复用要复杂的多。软件体系结构直接决定了软件系统的运行框架,其优劣不但决定了软件系统是否可以满足针对此软件的功能需求,而且还决定了这些功<br>能需求是否能被合理、高效地实现,即也决定了软件系统基本的非功能属性[1].每个用户的非功能属性多多少少的有所不同，也就决定着软件体系结构的复用的复杂性。软件<br>体系结构是描述软件单元(element)、软件单元的属性(property)以及这些单元之间关系(relationship)的结构[2].这里的软件单元应该<br>就是构件。软件体系结构是构建计算机软件实践的基础，与建筑师设定建筑项目的设计原则和目标，作为绘图员画图的基础一样。没有蓝图就不能构建出雄伟的大厦。没有好的体<br>系结构也就不能构造出庞大的系统。但是对于小型的系统，体系结构的思想似乎是一种多余。对于大厦，我们应该有建筑蓝图，但是对于建造小茅屋，似乎再画草图就是一种多余<br>。软件体系结构表示了一个软件系统的高层结构，主要特点有：1）软件体系结构是一个高层次上的抽象，它并不涉及具体的系统结构（比如B/S还是C/S），也不关心具体<br>的实现。2）软件体系结构必须支持系统所要求的功能，在设计软件体系结构的时候，必须考虑系统的动态行为。3）在设计软件体系结构的时候，必须考虑有现有系统的兼容性<br>、安全性和可靠性。同时还要考虑系统以后的扩展性和伸缩性。所以有时候必须在多个不同方向的目标中进行决策。[3]抽象的东西之所以对我们有指导的意义。是因为我们可<br>以运用这个抽象的东西对具体问题做具体分析。法无定法，也就是这个道理。</p>
+<p>[1] Bass L, Clements P, Kazman R. Software Architecture in Practice. Addison-<br>Wesley, 1998.<br>[2] Sun CA, Jin MZ, Liu C. Overviews on software architecture research.<br>Journal of Software, 2002,13(7):1228−1237 (in Chinese with English abstract).<br><a href="http://www.jos.org.cn/1000-9825/13/1228.pdf" target="_blank" rel="external"> http://www.jos.org.cn/1000-9825/13/1228.pdf
+</a><br>[3] <a href="http://www.itisedu.com/phrase/200602281725525.html" target="_blank" rel="external"> http://www.itisedu.com/phrase/200602281725525.html
 </a></p>
-<p>广义表(Lists，又称列表)是线性表的推广。即广义表中放松对表元素的原子限制，容许它们具有其自身结构。</p>
-<p><strong> 1、广义表定义 </strong><br>广义表是n(n≥0)个元素a1，a2，…，ai，…，an的有限序列。<br>其中：<br>①ai–或者是原子或者是一个广义表。<br>②广义表通常记作：<br>Ls=( a1，a2，…，ai，…，an)。<br>③Ls是广义表的名字，n为它的长度。<br>④若ai是广义表，则称它为Ls的子表。<br>注意：<br>①广义表通常用圆括号括起来，用逗号分隔其中的元素。<br>②为了区分原子和广义表，书写时用大写字母表示广义表，用小写字母表示原子。<br>③若广义表Ls非空(n≥1)，则al是LS的表头，其余元素组成的表(a1，a2，…，an)称为Ls的表尾。<br>④广义表是递归定义的</p>
-<p><strong> 2、广义表表示 </strong><br>（1）广义表常用表示<br>① E=()<br>E是一个空表，其长度为0。<br>② L=(a，b)<br>L是长度为2的广义表，它的两个元素都是原子，因此它是一个线性表<br>③ A=(x，L)=(x，(a，b))<br>A是长度为2的广义表，第一个元素是原子x，第二个元素是子表L。<br>④ B=(A，y)=((x，(a，b))，y)<br>B是长度为2的广义表，第一个元素是子表A，第二个元素是原子y。<br>⑤ C=(A，B)=((x，(a，b))，((x，(a，b))，y))<br>C的长度为2，两个元素都是子表。<br>⑥ D=(a，D)=(a，(a，(a，(…))))<br>D的长度为2，第一个元素是原子，第二个元素是D自身，展开后它是一个无限的广义表。</p>
-<p>（2）广义表的深度<br>一个表的”深度”是指表展开后所含括号的层数。<br>【例】表L、A、B、C的深度为分别为1、2、3、4，表D的深度为∞。</p>
-<p>（3）带名字的广义表表示<br>如果规定任何表都是有名字的，为了既表明每个表的名字，又说明它的组成，则可以在每个表的前面冠以该表的名字，于是上例中的各表又可以写成：<br>①E()<br>②L(a，b)<br>③A(x，L(a，b))<br>④B(A(x，L(a，b))，y)<br>⑤C(A(x，l(a，b))，B(A(x，L(a，b))，y))<br>⑥D(a，D(a，D(…)))</p>
-<p>（4）广义表的图形表示<br>（a）广义表的图形表示：<br>①图中的分支结点对应广义表<br>②非分支结点一般是原子<br>③但空表对应的也是非分支结点。<br>【例】下图给出了几个广义表的图形表示。<br><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/lpioneer/%7BCA68B4E4-D76B-45
-21-9E58-0533AA5C011A%7D.bmp" alt=""><br>（b）广义表的图形形状划分：<br>①与树对应的广义表称为纯表，它限制了表中成分的共享和递归<br>②允许结点共享的表称再入表<br>【例】上图(d),子表A是共享结点，它既是C的一个元素，又是子表B的元素；<br>③允许递归的表称为递归表<br>【例】上图(e)，表D是其自身的子表。</p>
-<p>（5）递归表、再入表、纯表、线性表之间的关系满足：<br><img src="http://hi.csdn.net/attachment/201004/2/1050_1270195893kM9N.gif" alt="wu"><br>广义表不仅是线性表的推广，也是树的推广。</p>
-<p><strong> 3、广义表运算   
-</strong> 由于广义表是对线性表和树的推广，并且具有共享和递归特性的广义表可以和有向图(见第7章)建立对应，因此广义表的大部分运算与这些数据结构上的运算类似。<br>在此，只讨论广义表的两个特殊的基本运算：取表头head(Ls)和取表尾tail(Ls)。<br>根据表头、表尾的定义可知：任何一个非空广义表的表头是表中第一个元素，它可以是原子，也可以是子表，而其表尾必定是子表。<br>【例】<br>head(L)=a， tail(L)=(b)<br>head(B)=A， tail(B)=(y)<br>由于tail(L)是非空表，可继续分解得到：<br>head(tail(L))=b， tail(tail(L))=()<br>对非空表A和(y)，也可继续分解。<br>注意:<br>广义表()和(())不同。前者是长度为0的空表，对其不能做求表头和表尾的运算；而后者是长度为l的非空表(只不过该表中惟一的一个元素是空表)，对其可进行分解，<br>得到的表头和表尾均是空表()。</p>
+<p>二</p>
+<p>构件的概念类似于通用模块的定义。如同小时候我们玩的积木一样，可以松散连接，自由组合。但是业界还没有真正的这样的一个标准来制定构件，让它能同积木一样好用。实际<br>上我们使用的“构件”还要进行一些修改之后才能满足一个系统的要求。构件应该是系统中实际存在的可更换部分，它实现特定的功能，符合一套接口标准并实现一组接口。【1<br>】<br>软件复用一直被视为改善软件工程的重要手段，软件复用是将已有的软件及其有效成分用于构造新的软件或系统。它不仅是对软件程序的复用，还包括对软件生产过程中其它劳动<br>成果的复用。因此，软件复用包括软件产品复用和软件过程复用两部分的内容。借此来提高生产率，改善产品的质量。软件复用一般又分为源码级复用和二进制级复用。【2】也<br>就是白盒复用和黑盒复用<br>黑盒复用指对已有产品或构件不需作任何修改，直接进行复用，这是理想的复用方式。白盒复用指根据用户需求对已有产品进行适应性修改后才可使用。【3】<br>无论白盒复用还是黑盒复用，都需要花费一定的代价熟悉和掌握被复用的软件系统。作为经济上的考虑，要求复用的代价必须大大小于重新开发的代价，否则就不应该考虑。<br>之所以业界使用构件这个概念，也是为了扩大复用的粒度。因为曾经的函数和过程已经不能满足日益庞大的软件的需要。</p>
+<p>【1】 <a href="http://www.itisedu.com/phrase/200604161439595.html" target="_blank" rel="external"> http://www.itisedu.com/phrase/200604161439595.html
+</a><br>【2】 <a href="http://arch.pconline.com.cn/pcedu/empolder/life/0403/343931.html" target="_blank" rel="external"> http://arch.pconline.com.cn/pcedu/empolder/life/0403/343931.html
+</a><br>【3】 <a href="http://www.tongtech.com/jsqy/yqxwview.asp?id=209" target="_blank" rel="external"> http://www.tongtech.com/jsqy/yqxwview.asp?id=209
+</a></p>
 
         
         
@@ -172,7 +333,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/数据结构/">数据结构</a><a href="/tags/c/">c</a><a href="/tags/图形/">图形</a>
+  <span></span> <a href="/tags/产品/">产品</a><a href="/tags/算法/">算法</a><a href="/tags/数据结构/">数据结构</a>
   </div>
 
 </div>
@@ -200,28 +361,135 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2010/03/30/2010-03-30-how-to-get-through-firewall-great/" title="how to get through firewall (Great)" itemprop="url">how to get through firewall (Great)</a>
+      <a href="/2006/11/21/1401688/" title="软件工程所要解决的问题" itemprop="url">软件工程所要解决的问题</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
 		
   <p class="article-time">
-    <time datetime="2010-03-29T16:00:00.000Z" itemprop="datePublished"> Published 2010-03-30</time>
+    <time datetime="2006-11-21T07:28:00.000Z" itemprop="datePublished"> 发表于 2006-11-21</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><meta name="_edit_last" content="1"></p>
-<p><meta name="views" content="631"><br>This is graph for getting through firewall.  This is another method for climbing over the wall.</p>
-<p>Phase1. setup the connection between client and server by three-way handshake. when server send ACK and seq to the client. Client should let the wall know this connection is over. So client send FIN and seq to server. The wall get it, and consider the connection from client is over. Because the wall is not based on status. Then server get it, and find the seq of  package is wrong. And server send the RESET package to client. The wall get the package and consider the connection from server is over. Client receive and ignore the RESET package, and then it send the ACK and seq+1 to server.  The connection between client and server is established. However, the connection between client and server is over from viewpiont of the wall. The wall will not exam contents of the connection. So we can get though the wall!</p>
-<p>
+        <p>个人认为软件工程所要解决的问题有3个：</p>
+<p>1、程序（代码）连接－－－并行开发</p>
+<p>2、需求变动－－－软件变动</p>
+<p>3、人员交流</p>
+
         
         
         <p class="article-more-link">
           
-            <a href="/2010/03/30/2010-03-30-how-to-get-through-firewall-great/#more">Read More</a>
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2006/11/18/1394288/" title="大学4年" itemprop="url">大学4年</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2006-11-18T07:21:00.000Z" itemprop="datePublished"> 发表于 2006-11-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>大一时认为鱼与熊掌可以兼得；</p>
+<p>大二时渐渐了解鱼与熊掌不可兼得；</p>
+<p>大三时知道什么是鱼什么是熊掌；</p>
+<p>大四时有人去煮鱼，有人去炖熊掌。</p>
+<p>而我想喝些别人的鱼汤再去炖熊掌。。。。。。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2006/11/10/1377720/" title="如何学习数据结构－－致刚上大二的学弟学妹" itemprop="url">如何学习数据结构－－致刚上大二的学弟学妹</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
+		
+  <p class="article-time">
+    <time datetime="2006-11-10T07:50:00.000Z" itemprop="datePublished"> 发表于 2006-11-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>数据结构其实是从各种应用中抽象出来的东西。刚开始学习的时候可能感觉有些费力。而且不知道学了有什么用处。这对于大二的学生来说，是很正常的事。而且大二刚学会c与<br>c＋＋，对模版，指针的编程可能还有些困难。但是只要从简单的做起，从最基本的线性表开始编程，也还是会有突破的。但要切忌：绝对不能比这书本敲代码，即使书本已经帮<br>你实现了。因为那样写出来的代码不是自己的。要学会自己思考着写代码，写自己的代码。</p>
+<p>数据结构的精髓就在于它的思想。而并不是编程怎样实现。因为现在c＋＋，java，c＃都已经帮你实现好了这些数据结构。要学会怎么利用这些数据结构来解决现实中的问<br>题。而不是单单只会编一个栈或着一个树之类的。</p>
+<p>在学数据结构的时候，可以把思路放开扩些。看看现实中什么地方用到了这些数据结构。也多想想这些数据结构将会用在什么地方。</p>
+<p>现在要编写数据结构的代码，不一定非用指针不可，也不一定非用模版。链表可以用数组代替，指针可以用数组下标代替。虽然写出来的程序不通用。但是却可以掌握了某种数据<br>结构的特性。（虽然在一定的情况下，数组不能代替链表）</p>
+<p>数据结构本来就应该用在应用中间。当没有任何需求的时候，任何数据结构都是垃圾。所以我主张大家学数据结构的时候先写main来进行测试。将想实现的功能先放在mai<br>n中，然后在一点点的实现自己的数据结构。</p>
+
+        
+        
+        <p class="article-more-link">
           
        </p>
     </div>
@@ -231,7 +499,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/see-hear/">see-hear</a><a href="/tags/open-source/">open-source</a><a href="/tags/ack/">ack</a><a href="/tags/connection/">connection</a><a href="/tags/firewall/">firewall</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/编程/">编程</a><a href="/tags/数据结构/">数据结构</a>
   </div>
 
 </div>
@@ -259,42 +527,29 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2010/03/26/5421050/" title="mysql中使用InnoDB还是MyISAM ?" itemprop="url">mysql中使用InnoDB还是MyISAM ?</a>
+      <a href="/2006/10/27/1353672/" title="上士闻道" itemprop="url">上士闻道</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
 		
   <p class="article-time">
-    <time datetime="2010-03-26T13:27:00.000Z" itemprop="datePublished"> Published 2010-03-26</time>
+    <time datetime="2006-10-27T11:40:00.000Z" itemprop="datePublished"> 发表于 2006-10-27</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>自己经常使用sqlserver,不怎么使用mysql.所以也对mysql不咋米了解。这里转两个帖子关于mysql中的InnoDB和MyIsAM的介绍，个人觉<br>得还是不错的。</p>
-<p>转载自 <a href="http://database.51cto.com/" target="_blank" rel="external"> http://database.51cto.com </a> 2009-05-19 09:58<br>邵宗文  IT168</p>
-<p>链接：<a href="http://database.51cto.com/art/200905/122382.htm" target="_blank" rel="external">http://database.51cto.com/art/200905/122382.htm</a></p>
-<h3 id="浅谈MySQL存储引擎选择-InnoDB还是MyISAM"><a href="#浅谈MySQL存储引擎选择-InnoDB还是MyISAM" class="headerlink" title="浅谈MySQL存储引擎选择 InnoDB还是MyISAM"></a>浅谈MySQL存储引擎选择 InnoDB还是MyISAM</h3><p>MyISAM<br>是MySQL中默认的存储引擎，一般来说不是有太多人关心这个东西。决定使用什么样的存储引擎是一个很tricky的事情，但是还是值我们去研究一下，这<br>里的文章只考虑 MyISAM 和InnoDB这两个，因为这两个是最常见的。</p>
-<p>下面先让我们回答一些问题：<br>◆你的数据库有外键吗？<br>◆你需要事务支持吗？<br>◆你需要全文索引吗？<br>◆你经常使用 什么样的查询模式？<br>◆你的数据有多大？</p>
-<p>思考上面这些问题可以让你找到合适的方向，但那并不是绝对的。如果你需要事务处理或是外键，那么InnoDB 可能是比较好的方式。如果你需要全文索引，那么通常来说<br>MyISAM是好的选择，因为这是系统内建的，然而，我们其实并不会经常地去测试两百万行记录。所以，就算是慢一点，我们可以通过使用Sphinx从<br>InnoDB中获得全文索引。</p>
-<p>数据的大小，是一个影响你选择什么样存储引擎的重要因素，大尺寸的数据集趋向于选择InnoDB方式，因为其支持事务处理和故障恢复。数据库的在小<br>决定了故障恢复的时间长短，InnoDB可以利用事务日志进行数据恢复，这会比较快。而MyISAM可能会需要几个小时甚至几天来干这些事，InnoDB<br>只需要几分钟。</p>
-<p>您操作数据库表的习惯可能也会是一个对性能影响很大的因素。比如： COUNT() 在 MyISAM 表中会非常快，而在InnoDB<br>表下可能会很痛苦。而主键查询则在InnoDB下会相当相当的快，但需要小心的是如果我们的主键太长了也会导致性能问题。大批的inserts<br>语句在MyISAM下会快一些，但是updates 在InnoDB 下会更快一些——尤其在并发量大的时候。</p>
-<p>所以，到底你检使用哪一个呢？根据经验来看，如果是一些小型的应用或项目，那么MyISAM 也许会更适合。当然，在大型的环境下使用MyISAM<br>也会有很大成功的时候，但却不总是这样的。如果你正在计划使用一个超大数据量的项目，而且需要事务处理或外键支持，那么你真的应该直接使用InnoDB方<br>式。但需要记住InnoDB 的表需要更多的内存和存储，转换100GB 的MyISAM 表到InnoDB 表可能会让你有非常坏的体验。</p>
-<p>转载自 <a href="http://database.51cto.com/" target="_blank" rel="external"> http://database.51cto.com </a> 2009-05-19 09:58<br>邵宗文  IT168</p>
-<p>链接：<a href="http://database.51cto.com/art/200905/124370.htm" target="_blank" rel="external">http://database.51cto.com/art/200905/124370.htm</a></p>
-<h3 id="InnoDB还是MyISAM-再谈MySQL存储引擎的选择"><a href="#InnoDB还是MyISAM-再谈MySQL存储引擎的选择" class="headerlink" title="InnoDB还是MyISAM 再谈MySQL存储引擎的选择"></a>InnoDB还是MyISAM 再谈MySQL存储引擎的选择</h3><p>两种类型最主要的差别就是Innodb 支持事务处理与外键和行级锁.而MyISAM不支持.所以MyISAM往往就容易被人认为只适合在小项目中使用。</p>
-<p>我作为使用MySQL的用户角度出发，Innodb和MyISAM都是比较喜欢的，但是从我目前运维的数据库平台要达到需求：99.9%的稳定性，<br>方便的扩展性和高可用性来说的话，MyISAM绝对是我的首选。</p>
-<p>原因如下：</p>
-<p>1、首先我目前平台上承载的大部分项目是读多写少的项目，而MyISAM的读性能是比Innodb强不少的。</p>
-<p>2、MyISAM的索引和数据是分开的，并且索引是有压缩的，内存使用率就对应提高了不少。能加载更多索引，而Innodb是索引和数据是紧密捆绑<br>的，没有使用压缩从而会造成Innodb比MyISAM体积庞大不小。</p>
-<p>3、从平台角度来说，经常隔1，2个月就会发生应用开发人员不小心update一个表where写的范围不对，导致这个表没法正常用了，这个时候<br>MyISAM的优越性就体现出来了，随便从当天拷贝的压缩包取出对应表的文件，随便放到一个数据库目录下，然后dump成sql再导回到主库，并把对应的<br>binlog补上。如果是Innodb，恐怕不可能有这么快速度，别和我说让Innodb定期用导出xxx.sql机制备份，因为我平台上最小的一个数据<br>库实例的数据量基本都是几十G大小。</p>
-<p>4、从我接触的应用逻辑来说，select count(*) 和order by<br>是最频繁的，大概能占了整个sql总语句的60%以上的操作，而这种操作Innodb其实也是会锁表的，很多人以为Innodb是行级锁，那个只是<br>where对它主键是有效，非主键的都会锁全表的。</p>
-<p>5、还有就是经常有很多应用部门需要我给他们定期某些表的数据，MyISAM的话很方便，只要发给他们对应那表的frm.MYD,MYI的文件，让<br>他们自己在对应版本的数据库启动就行，而Innodb就需要导出xxx.sql了，因为光给别人文件，受字典数据文件的影响，对方是无法使用的。</p>
-<p>6、如果和MyISAM比insert写操作的话，Innodb还达不到MyISAM的写性能，如果是针对基于索引的update操作，虽然<br>MyISAM可能会逊色Innodb,但是那么高并发的写，从库能否追的上也是一个问题，还不如通过多实例分库分表架构来解决。</p>
-<p>7、如果是用MyISAM的话，merge引擎可以大大加快应用部门的开发速度，他们只要对这个merge表做一些select<br>count(*)操作，非常适合大项目总量约几亿的rows某一类型(如日志，调查统计)的业务表。</p>
-<p>当然Innodb也不是绝对不用，用事务的项目如模拟炒股项目，我就是用Innodb的，活跃用户20多万时候，也是很轻松应付了，因此我个人也是<br>很喜欢Innodb的，只是如果从数据库平台应用出发，我还是会首选MyISAM。</p>
-<p>另外，可能有人会说你MyISAM无法抗太多写操作，但是我可以通过架构来弥补，说个我现有用的数据库平台容量：主从数据总量在几百T以上，每天十 多亿<br>pv的动态页面，还有几个大项目是通过数据接口方式调用未算进pv总数，(其中包括一个大项目因为初期memcached没部署,导致单台数据库每天处理<br>9千万的查询)。而我的整体数据库服务器平均负载都在0.5-1左右。</p>
+        <p>上士闻道，勤而行之；中士闻道，若存若亡；下士闻道，大笑之——弗笑，不足以为道。</p>
+<p>翻译成现代文:</p>
+<p>优等学生听人讨论道以后，学以致用，勤奋实践；<br>中等学生听人讨论道以后，将信将疑，辩证推敲；<br>一般学生听人讨论道以后，断章取义，驳斥讥笑；</p>
+<p>天下评注:<br>其实，讥笑是必须的，因为没有经历讥笑或怀疑的阶段是无法真正领会“道”的。就像大家嘴上经常说的：<br>最近的道路也许乍眼看去格外得昏暗曲折。<br>前进的道路可能暂时导致无奈地远离目标。<br>平坦的道路有时暗藏隐密众多的陷阱障碍。</p>
+<p>小卒观点:</p>
+<p>感觉中士之道更值得自己学习,毕竟这世上的理论不能全盘否认,也不能全盘肯定.听说最近西南交大的一名硕士生在理论上证明爱因斯坦的相对论有误,并且也认为牛顿的万有<br>引力要改正.很多理学专家和他辩论几个小时,仍然未果.如果那个硕士是正确的,那就意味这我们曾经学过的各种物理书籍都将变为一堆废纸.不过如果他错了有能怎么样呢?<br>不过是真理愈辩愈名罢了.但是不过结果怎样,我们都不应该大笑之.毕竟,人家那气魄和胆识也是我们常人说没有的.</p>
+<p>天下语论”亲朋友众”:</p>
+<p>第一类人是用缘分沟通的，叫做亲。<br>第二类人是用兴趣沟通的，叫做朋。<br>第三类人是用机锋沟通的，叫做友。<br>第四类人是用权势压迫，用利益引诱的，叫做众。</p>
+<p>小卒观点:</p>
+<p>看后认为这可谓至理名言.透彻的分析了人与人之间的关系.每当我们见面打招呼的时候,都可以用这四条标准来衡量自己身边的人.虽然口头上说是朋友.但是不是呢?用以上<br>四条分析过后就彻底明白了.</p>
 
         
         
@@ -305,11 +560,6 @@
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/mysql/">mysql</a><a href="/tags/数据库/">数据库</a><a href="/tags/引擎/">引擎</a>
-  </div>
 
 </div>
 
@@ -336,24 +586,21 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2010/03/24/5412585/" title="bzr" itemprop="url">bzr</a>
+      <a href="/2006/10/08/1325762/" title="《时空捍将》留给程序员的启示" itemprop="url">《时空捍将》留给程序员的启示</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
 		
   <p class="article-time">
-    <time datetime="2010-03-24T08:33:00.000Z" itemprop="datePublished"> Published 2010-03-24</time>
+    <time datetime="2006-10-08T04:44:00.000Z" itemprop="datePublished"> 发表于 2006-10-08</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>首先使用sudo ssh-keygen -t rsa 生成key，key分公私钥，公钥是,然后使用launchpad登录,然后出现</p>
-<p>Warning: Permanently added ‘bazaar.launchpad.net,91.189.90.11’ (RSA) to the<br>list of known hosts.<br>Permission denied (publickey).<br>bzr: ERROR: Connection closed: Unexpected end of message. Please check<br>connectivity and permissions, and report a bug if problems persist.</p>
-<p>这样之后使用ssh-agent bash清洗一下。然后再使用ssh-add<br>key.这里key是私钥。这里添加的话是普通权限的user的key.当然如果你真想添加，然么就要改下key的访问权限。</p>
-<p>如果使用sudo ssh-agent bash,之后就变为root用户。添加一致。</p>
-<p>之后再使用 sudo bzr launchpad-login [username]   这里的 username是在launchpad.org中注册的。<br>然后再sudo bzr lp:XXX dir, lp:XXX是分支名，dir是将分支存放在某个目录下。</p>
+        <p>1.  Please drop the wickedness programmes or projects even if they are<br>perfact.  放弃或停止邪恶的完美代码。程序员们或许感觉有段代码写的很经典就继续保留或使用，但希望那些代码不是邪恶的。正如过去的“大脑”病毒一样。代码<br>写的很完美，但是却是人类邪恶智慧的结晶。电影中同样造出了拥有智力的邪恶代码，编制者极力的保留这段代码，但最终还是害人害己，没有一个好的下场。</p>
+<p>2.  There is no perfact thing in the world.  不知道什么才是完美。但是这世上的确没有完美的东西。程序也罢，人也<br>好。总是有各自的缺点。正如程序中没有bug一样，人也不可能没有任何缺点。拥有智力的代码终究被人删除。其放在人类世界中的炸弹也被人拆除。没有什么可以做到完美。<br>因为这世上根本没有完美。</p>
 
         
         
@@ -364,587 +611,6 @@
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/report/">report</a><a href="/tags/bash/">bash</a><a href="/tags/permissions/">permissions</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2010/03/23/2010-03-23-ubuntu-10-04-belta-released/" title="ubuntu 10.04 beta released" itemprop="url">ubuntu 10.04 beta released</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
-		
-  <p class="article-time">
-    <time datetime="2010-03-22T16:00:00.000Z" itemprop="datePublished"> Published 2010-03-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p><meta name="_edit_last" content="1"></p>
-<p><meta name="views" content="1242"><br>download:<br><a href="http://releases.ubuntu.com/releases/10.04/ubuntu-10.04-beta1-desktop-i386.iso" target="_blank" rel="external">desktop(32 bit)</a></p>
-<p><a href="http://releases.ubuntu.com/releases/10.04/ubuntu-10.04-beta1-server-i386.iso" target="_blank" rel="external">server(32 bit)</a></p>
-<p><a href="http://releases.ubuntu.com/releases/10.04/" target="_blank" rel="external">Ubuntu 10.04 LTS (Lucid Lynx) Beta 1</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/open-source/">open-source</a><a href="/tags/project/">project</a><a href="/tags/release/">release</a><a href="/tags/ubuntu/">ubuntu</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2010/03/23/2010-03-23-listening-songs/" title="listening songs~" itemprop="url">listening songs~</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
-		
-  <p class="article-time">
-    <time datetime="2010-03-22T16:00:00.000Z" itemprop="datePublished"> Published 2010-03-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p><meta name="_edit_last" content="1"></p>
-<p><meta name="views" content="636"><br>use douban: <a href="http://douban.fm/radio" target="_blank" rel="external">http://douban.fm/radio</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/see-hear/">see-hear</a><a href="/tags/listen/">listen</a><a href="/tags/song/">song</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2010/03/21/5402004/" title="用编译原理编写计算器程序中需要注意的问题" itemprop="url">用编译原理编写计算器程序中需要注意的问题</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
-		
-  <p class="article-time">
-    <time datetime="2010-03-21T10:29:00.000Z" itemprop="datePublished"> Published 2010-03-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>计算器程序有优先级。所以文法归于必须有先后顺序。也就是高优先级的先规约，低优先级的后规约。也就是在写文法时，见到高优先级便扩展。</p>
-<p>例如: -+在*/之后扩展</p>
-<p>Express = Express ‘+’ F | Express ‘-’ F F = T ‘*’ T | T ‘/‘ T T = terminal</p>
-<p>这就完事了吗？no…因为这样很有可能产生shift/reduce文法错误。解决方法为:</p>
-<p>Express = Express ‘+’ F | Express ‘-‘ F | F F = F ‘*’ T | F ‘/‘ T | T T = num</p>
-<h1 id="这里num和terminal一致。都为终结符"><a href="#这里num和terminal一致。都为终结符" class="headerlink" title="这里num和terminal一致。都为终结符"></a>这里num和terminal一致。都为终结符</h1><p>这样做完之后，不会出现shift/reduce错误。我觉得解决shift/reduce可能有某种规律，例如在左递归文法中,每句几乎都是以非终结符开始，并以终<br>结符结束。并且在最后一种扩展中添加下一个非终结符。当然这对于简单文法可能是成立的。至少这样不会有错。但是如果这个是文法的话，计算器不会终止。也就是说如果执行<br>1+2*3-4/5,则在最后一个低优先级符号处结束。也就是说最后规约为7-0.8,之后不会继续规约。所以这里必须将明确的结束符告诉程序。例如下一段中最终的结<br>束符为=或者回车：</p>
-<p>Value = Express ‘/n’ | Express ‘=’ Express = Express ‘+’ F | Express ‘-‘ F | F<br>F = F ‘*’ T | F ‘/‘ T | T T = num</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/express/">express</a><a href="/tags/扩展/">扩展</a><a href="/tags/terminal/">terminal</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2010/03/18/5393914/" title="yacc lex 使用中错误信息解决解决方案" itemprop="url">yacc lex 使用中错误信息解决解决方案</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
-		
-  <p class="article-time">
-    <time datetime="2010-03-18T11:19:00.000Z" itemprop="datePublished"> Published 2010-03-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>ex3.y: In function ‘yyerror’:<br>ex3.y:32: warning: incompatible implicit declaration of built-in function<br>‘printf’</p>
-<p>这一条是因为.y缺少头文件。在.y文件中需要在%{….%}之中写入#include</p>
-<p><stdio.h>等头文件。如果只有printf那就只用这个头文件就行了。</stdio.h></p>
-<p>ex3.l: In function ‘yylex’:<br>ex3.l:11: error: ‘yylval’ undeclared (first use in this function)<br>ex3.l:11: error: (Each undeclared identifier is reported only once<br>ex3.l:11: error: for each function it appears in.)</p>
-<p>这一条信息是由于yylval 对于lex不可见造成的。原因yacc调用yylex()读取token,lex读到一个token就将这个token返回，但这个t<br>oken同时可能有值。此值必须保留在yylval中。但是古老的yacc不让lex见到，那么就需要extern YYSTPYE<br>yylval.传说这就需要加在y.tab.h中。但是经我测试这是不行的。(我也不知道为啥偏偏就我这么倒霉。)我在加上extern YYSTPYE<br>yylval之后产生如下错误：</p>
-<p>ex3.l:5: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘<strong>attribute</strong>’ before<br>‘yylval’<br>ex3.l: In function ‘yylex’:</p>
-<p>…不过还有救，我不使用byacc,而改用bison。之后去掉extern YYSTPYE yylval再编译：</p>
-<p>ex3.y: In function ‘yyparse’:<br>ex3.y:26: warning: format ‘%s’ expects type ‘char *’, but argument 2 has type<br>‘YYSTYPE’</p>
-<p>这是因为YYSTYPE这个变量是int型的。所以要在.y文件的%{….%}中添加两行</p>
-<p>typedef char* string; #define YYSTPYE string</p>
-<p>然后编译成功，却冒出了:</p>
-<p>ex3.l: In function ‘yylex’:<br>ex3.l:10: warning: assignment makes integer from pointer without a cast</p>
-<p>这肯定是yylval=strdup(yytext);处没有进行强制转换。于是改为yylval=(int)strdup(yytext);就ok了。但这里的问题<br>是yylval应该是一个YYSTYPE的变量。但是却必须转换为int型，确实有些诡异。之后又尝试在gcc中添加-Wstrict-<br>prototypes来查看此错误。结果发现又报一错:warning: function declaration isn’t a<br>prototype.这个错误的确是自己从来不喜欢写void造成的。将main()改为main(void)<br>即可。</p>
-<p>首先要有flex 和 bison两个东东，没有就yum或者apt-get</p>
-<p>最终的两个文件和编译命令为：</p>
-<p>ex3.l文件：</p>
-<p>%{ #include <stdio.h> #include “ex3.tab.h” %} name [a-zA-Z][a-zA-Z0-9]<em> age<br>[1-9][0-9]</em> eq = %% {name} {yylval=(int)strdup(yytext); return NAME;} {age}<br>{yylval=(int)strdup(yytext); return AGE;} {eq} {return EQ;} %% int yywrap() {<br>return 1; }</stdio.h></p>
-<p>ex3.y文件</p>
-<p>%{ typedef char* string; #define YYSTYPE string #include <stdio.h> #include</stdio.h></p>
-<p><string.h> int main(void) { // extern int yyparse(void); yyparse(); return 0;<br>} int yyerror(char * msg) { printf(“%s is error in line”,msg); } %} %token<br>NAME EQ AGE %% file : record file | record ; record : NAME EQ NAME {<br>printf(“%s’s age is equal with %s./n”,$1,$3); } | NAME EQ AGE {<br>printf(“ssssss/n”); } ; %%</string.h></p>
-<p>这之后执行:</p>
-<p>root@chico-laptop:~/compiler# bison -d ex3.y root@chico-laptop:~/compiler#<br>flex ex3.l root@chico-laptop:~/compiler# cc -Wstrict-prototypes lex.yy.c<br>ex3.tab.c -o test root@chico-laptop:~/compiler# ./test</p>
-<p>input:</p>
-<p>AA = BB</p>
-<p>output:</p>
-<p>AA’s age is equal with BB.</p>
-<p>简单的东西算是完成了</p>
-<p>但是还有一个问题没有解决,为啥使用bison就可以解决问题，而使用byacc就不行呢？我看了下bison生成的ex3.tab.h文件，其中有几句话：</p>
-<p>#if ! defined YYSTYPE &amp;&amp; ! defined YYSTYPE_IS_DECLARED typedef int YYSTYPE; #<br>define yystype YYSTYPE /<em> obsolescent; will be withdrawn </em>/ # define<br>YYSTYPE_IS_DECLARED 1 # define YYSTYPE_IS_TRIVIAL 1 #endif extern YYSTYPE<br>yylval;</p>
-<p>直接将上面的话贴入byacc生成的y.tab.h即可编译通过。不过即使你在其中更改 typedef char*<br>YYSTYPE;lex程序还是会将yylval默认为int型。</p>
-<p>不过想要通过c＋＋编译的话，还需要做些改动。</p>
-<p>ex4.y</p>
-<p>%{ #include<iostream> #include<string> using namespace std; typedef char<em><br>strings; #define YYSTYPE strings extern “C” { int yyparse(void); int<br>yylex(void); int yydebug; int yyerror(const char</em>); } int main(void) { //<br>extern int yyparse(void); yydebug=1; yyparse(); return 0; } int yyerror(const<br>char * msg) { printf(“%s is error in line”,msg); } %} %token NAME EQ AGE %%<br>file : record file | record ; record : NAME EQ NAME { printf(“%s’s age is<br>equal with %s./n”,$1,$3); } | NAME EQ AGE { printf(“ssssss/n”); } ; %%</string></iostream></p>
-<p>ex4.l</p>
-<p>%{ #include <stdio.h> #include “ex4.tab.h” %} name [a-zA-Z][a-zA-Z0-9]<em> age<br>[1-9][0-9]</em> eq = %% {name} {yylval=(int)strdup(yytext); return NAME;} {age}<br>{yylval=(int)strdup(yytext); return AGE;} {eq} {return EQ;} %% int<br>yywrap(){return 1;}</stdio.h></p>
-<p>编译指令：</p>
-<p>root@chico-laptop:~/compiler# bison -d ex4.y root@chico-laptop:~/compiler#<br>flex ex4.l root@chico-laptop:~/compiler# cc -c lex.yy.c -o lex.yy.o root<br>@chico-laptop:~/compiler# c++ lex.yy.o ex4.tab.c -o ex4test</p>
-<p>常见的编译error和warning有:</p>
-<p>ex4.tab.c:1519: warning: deprecated conversion from string constant to ‘char<em>’<br>这里去查看了一下ex4.tab.c发现是函数yyerror的问题，将int yyerror(char</em>)改为int yyerror(const<br>char*)即可。</p>
-<p>另外不要typedef char* string;这可能会重，不定义又会报出：</p>
-<p>ex4.y: In function ‘int yyparse()’:<br>ex4.y:36: warning: cannot pass objects of non-POD type ‘struct<br>std::basic_string<char, std::char_traits<char="">, std::allocator<char> &gt;’<br>through ‘…’; call will abort at runtime</char></char,></p>
-<p>所以改为typedef char* strings;</p>
-<p>另外lex.yy.c要先用cc或gcc编译为.o文件,然后在用g++或c++联合编译。  </p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/function/">function</a><a href="/tags/yacc/">yacc</a><a href="/tags/token/">token</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2010/03/18/5391920/" title="yacc与lex入门" itemprop="url">yacc与lex入门</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="chillyc" target="_blank" itemprop="author">chillyc</a>
-		
-  <p class="article-time">
-    <time datetime="2010-03-18T03:20:00.000Z" itemprop="datePublished"> Published 2010-03-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>转自 <a href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#author" target="_blank" rel="external"> Ashish Bansal
-</a> ( <a href="mailto:abansal@ieee.org?subject=Yacc%20%E4%B8%8E%20Lex%20%E
-5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8&amp;cc=abansal@ieee.org" target="_blank" rel="external"><br>abansal@ieee.org </a> ), 软件工程师, Sapient 公司</p>
-<p>Lex</p>
-<p>Lex 是一种生成扫描器的工具。扫描器是一种识别文本中的词汇模式的程序。这些词汇模式（或者常规表达式）在一种特殊的句子结构中定义，这个我们一会儿就要讨论。</p>
-<p>一种匹配的常规表达式可能会包含相关的动作。这一动作可能还包括返回一个标记。当 Lex<br>接收到文件或文本形式的输入时，它试图将文本与常规表达式进行匹配。它一次读入一个输入字符，直到找到一个匹配的模式。如果能够找到一个匹配的模式，Lex<br>就执行相关的动作（可能包括返回一个标记）。另一方面，如果没有可以匹配的常规表达式，将会停止进一步的处理，Lex 将显示一个错误消息。</p>
-<p>Lex 和 C 是强耦合的。一个 <em> .lex </em> 文件（Lex 文件具有 <em> .lex </em> 的扩展名）通过 lex 公用程序来传递，并生成 C<br>的输出文件。这些文件被编译为词法分析器的可执行版本。</p>
-<p>Lex 的常规表达式</p>
-<p>常规表达式是一种使用元语言的模式描述。表达式由符号组成。符号一般是字符和数字，但是 Lex 中还有一些具有特殊含义的其他标记。 下面两个表格定义了 Lex<br>中使用的一些标记并给出了几个典型的例子。</p>
-<p>用 Lex 定义常规表达式</p>
-<p><strong> 字符 </strong><br><strong> 含义 </strong></p>
-<p><strong> A-Z, 0-9, a-z </strong><br>构成了部分模式的字符和数字。</p>
-<p><strong> . </strong><br>匹配任意字符，除了 /n。</p>
-<p><strong> - </strong><br>用来指定范围。例如：A-Z 指从 A 到 Z 之间的所有字符。</p>
-<p><strong> [ ] </strong><br>一个字符集合。匹配括号内的 <em> 任意 </em> 字符。如果第一个字符是 <strong> ^ </strong> 那么它表示否定模式。例如: [abC] 匹配 a, b, 和<br>C中的任何一个。</p>
-<hr>
-<p>匹配 <em> 0个 </em> 或者多个上述的模式。</p>
-<p><strong> + </strong><br>匹配 <em> 1个 </em> 或者多个上述模式。</p>
-<p><strong> ? </strong><br>匹配 <em> 0个或1个 </em> 上述模式。</p>
-<p><strong> $ </strong><br>作为模式的最后一个字符匹配一行的结尾。</p>
-<p><strong> { } </strong><br>指出一个模式可能出现的次数。 例如: A{1,3} 表示 A 可能出现1次或3次。</p>
-<p><strong> / </strong><br>用来转义元字符。同样用来覆盖字符在此表中定义的特殊意义，只取字符的本意。</p>
-<p><strong> ^ </strong><br>否定。</p>
-<p><strong> | </strong><br>表达式间的逻辑或。</p>
-<p><strong> “&lt;一些符号&gt;” </strong><br>字符的字面含义。元字符具有。</p>
-<p><strong> / </strong><br>向前匹配。如果在匹配的模版中的“/”后跟有后续表达式，只匹配模版中“/”前面的部分。如：如果输入 A01，那么在模版 A0/1 中的 A0 是匹配的。</p>
-<p><strong> ( ) </strong><br>将一系列常规表达式分组。</p>
-<p>常规表达式举例</p>
-<p><strong> 常规表达式 </strong><br><strong> 含义 </strong></p>
-<p>joke[rs]</p>
-<p>匹配 jokes 或 joker。</p>
-<p>A{1,2}shis+</p>
-<p>匹配 AAshis, Ashis, AAshi, Ashi。</p>
-<p>(A[b-e])+</p>
-<p>匹配在 A 出现位置后跟随的从 b 到 e 的所有字符中的 0 个或 1个。</p>
-<p>注：这小朋友将A{1,2}shis*写为了A{1,2}shis+。</p>
-<p>Lex 中的标记声明类似 C 中的变量名。每个标记都有一个相关的表达式。（下表中给出了标记和表达式的例子。）使用这个表中的例子，我们就可以编一个字数统计的程<br>序了。我们的第一个任务就是说明如何声明标记。</p>
-<p>标记声明举例</p>
-<p><strong> 标记 </strong><br><strong> 相关表达式 </strong><br><strong> 含义 </strong></p>
-<p>数字(number)</p>
-<p>([0-9])+</p>
-<p>1个或多个数字</p>
-<p>字符(chars)</p>
-<p>[A-Za-z]</p>
-<p>任意字符</p>
-<p>空格(blank)</p>
-<p>“ “</p>
-<p>一个空格</p>
-<p>字(word)</p>
-<p>(chars)+</p>
-<p>1个或多个 <em> chars </em></p>
-<p>变量(variable)</p>
-<p>(字符)+(数字)<em>(字符)</em>(数字)*</p>
-<p>Lex 编程</p>
-<p>Lex 编程可以分为三步：</p>
-<ol>
-<li>以 Lex 可以理解的格式指定模式相关的动作。 </li>
-<li>在这一文件上运行 Lex，生成扫描器的 C 代码。 </li>
-<li>编译和链接 C 代码，生成可执行的扫描器。 </li>
-</ol>
-<p>注意: 如果扫描器是用 Yacc 开发的解析器的一部分，只需要进行第一步和第二步。关于这一特殊问题的帮助请阅读 <a href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#9" target="_blank" rel="external"> Yacc
-</a> 和 <a href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#15" target="_blank" rel="external"> 将 Lex 和<br>Yacc 结合起来 </a><br>部分。</p>
-<p>现在让我们来看一看 Lex 可以理解的程序格式。一个 Lex 程序分为三个段：第一段是 C 和 Lex 的全局声明，第二段包括模式（C<br>代码），第三段是补充的 C 函数。 例如, 第三段中一般都有 main() 函数。这些段以%%来分界。 那么，回到字数统计的 Lex<br>程序，让我们看一下程序不同段的构成。</p>
-<p>C 和 Lex 的全局声明</p>
-<p>这一段中我们可以增加 C 变量声明。这里我们将为字数统计程序声明一个整型变量，来保存程序统计出来的字数。我们还将进行 Lex 的标记声明。</p>
-<p><strong> 字数统计程序的声明 </strong><br>           %{<br>            int wordCount = 0;<br>            %}<br>            chars [A-za-z/_/‘/./“]<br>            numbers ([0-9])+<br>            delim [“ “/n/t]<br>            whitespace {delim}+<br>            words {chars}+<br>            %%<br>两个百分号标记指出了 Lex 程序中这一段的结束和三段中第二段的开始。</p>
-<p>Lex 的模式匹配规则</p>
-<p>让我们看一下 Lex 描述我们所要匹配的标记的规则。（我们将使用 C 来定义标记匹配后的动作。）继续看我们的字数统计程序，下面是标记匹配的规则。</p>
-<p><strong> 字数统计程序中的 Lex 规则 </strong><br>           {words} { wordCount++; /<em><br>            increase the word count by one</em>/ }<br>            {whitespace} { /<em> do<br>            nothing</em>/ }<br>            {numbers} { /<em> one may<br>            want to add some processing here</em>/ }<br>            %%<br>C 代码</p>
-<p>Lex 编程的第三段，也就是最后一段覆盖了 C 的函数声明（有时是主函数）。注意这一段必须包括 yywrap() 函数。 Lex<br>有一套可供使用的函数和变量。 其中之一就是 yywrap。一般来说，yywrap() 的定义如下例。我们将在 <a href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#8" target="_blank" rel="external"> 高级 Lex
-</a> 中探讨这一问题。</p>
-<p><strong> 字数统计程序的 C 代码段 </strong><br>           void main()<br>            {<br>            yylex(); /<em> start the<br>            analysis</em>/<br>            printf(“ No of words:<br>            %d/n”, wordCount);<br>            }<br>            int yywrap()<br>            {<br>            return 1;<br>            }<br>上一节我们讨论了 Lex 编程的基本元素，它将帮助你编写简单的词法分析程序。 在 <a href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#8" target="_blank" rel="external"> 高级 Lex
-</a> 这一节中我们将讨论<br>Lex 提供的函数，这样你就能编写更加复杂的程序了</p>
-<p>将它们全部结合起来</p>
-<p><em> .lex </em> 文件是 Lex 的扫描器。它在 Lex 程序中如下表示：</p>
-<pre><code>$ lex &lt;file name.lex&gt;  
-</code></pre><p>这生成了 lex.yy.c 文件，它可以用 C 编译器来进行编译。它还可以用解析器来生成可执行程序，或者在链接步骤中通过选项�ll 包含 Lex 库。</p>
-<p>这里是一些 Lex 的标志：</p>
-<ul>
-<li><em> -c </em> 表示 C 动作，它是缺省的。 </li>
-<li><em> -t </em> 写入 lex.yy.c 程序来代替标准输出。 </li>
-<li><em> -v </em> 提供一个两行的统计汇总。 </li>
-<li><em> -n </em> 不打印 -v 的汇总。 </li>
-</ul>
-<p>高级 Lex</p>
-<p>Lex 有几个函数和变量提供了不同的信息，可以用来编译实现复杂函数的程序。下表中列出了一些变量和函数，以及它们的使用。 详尽的列表请参考 Lex 或<br>Flex 手册（见后文的 <a href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#resources" target="_blank" rel="external"> 资源
-</a> ）。</p>
-<p>Lex 变量</p>
-<p>yyin</p>
-<p>FILE* 类型。 它指向 lexer 正在解析的当前文件。</p>
-<p>yyout</p>
-<p>FILE* 类型。 它指向记录 lexer 输出的位置。 缺省情况下，yyin 和 yyout 都指向标准输入和输出。</p>
-<p>yytext</p>
-<p>匹配模式的文本存储在这一变量中（char*）。</p>
-<p>yyleng</p>
-<p>给出匹配模式的长度。</p>
-<p>yylineno</p>
-<p>提供当前的行数信息。（lexer不一定支持。）</p>
-<p>Lex 函数</p>
-<p>yylex()</p>
-<p>这一函数开始分析。 它由 Lex 自动生成。</p>
-<p>yywrap()</p>
-<p>这一函数在文件（或输入）的末尾调用。如果函数的返回值是1，就停止解析。 因此它可以用来解析多个文件。代码可以写在第三段，这就能够解析多个文件。 方法是使用<br>yyin 文件指针（见上表）指向不同的文件，直到所有的文件都被解析。最后，yywrap() 可以返回 1 来表示解析的结束。</p>
-<p>yyless(int n)</p>
-<p>这一函数可以用来送回除了前�n? 个字符外的所有读出标记。</p>
-<p>yymore()</p>
-<p>这一函数告诉 Lexer 将下一个标记附加到当前标记后。</p>
-<p>对 Lex 的讨论就到这里。下面我们来讨论 Yacc…</p>
-<p>Yacc</p>
-<p>Yacc 代表 Yet Another Compiler Compiler。 Yacc 的 GNU 版叫做<br>Bison。它是一种工具，将任何一种编程语言的所有语法翻译成针对此种语言的 Yacc 语 法解析器。它用巴科斯范式(BNF, Backus Naur<br>Form)来书写。按照惯例，Yacc 文件有 .y 后缀。编译行如下调用 Yacc 编译器：</p>
-<pre><code>$ yacc &lt;options&gt;  
- &lt;filename ending with .y&gt;  
-</code></pre><p>在进一步阐述以前，让我们复习一下什么是语法。在上一节中，我们看到 Lex<br>从输入序列中识别标记。如果你在查看标记序列，你可能想在这一序列出现时执行某一动作。这种情况下有效序列的规范称为语法。Yacc<br>语法文件包括这一语法规范。它还包含了序列匹配时你想要做的事。</p>
-<p>为了更加说清这一概念，让我们以英语为例。 这一套标记可能是：名词, 动词,<br>形容词等等。为了使用这些标记造一个语法正确的句子，你的结构必须符合一定的规则。一个简单的句子可能是名词+动词或者名词+动词+名词。(如 I care.<br>See spot run.)</p>
-<p>所以在我们这里，标记本身来自语言（Lex），并且标记序列允许用 Yacc 来指定这些标记(标记序列也叫语法)。</p>
-<p><img src="http://www.ibm.com/i/c.gif" alt=""></p>
-<p><strong> 终端和非终端符号 </strong><br><strong> 终端符号 </strong> : 代表一类在语法结构上等效的标记。终端符号有三种类型： </p>
-<p><em> 命名标记 </em> : 这些由 <em> %token </em> 标识符来定义。按照惯例，它们都是大写。</p>
-<p><em> 字符标记 </em> : 字符常量的写法与 C 相同。例如, – 就是一个字符标记。</p>
-<p><em> 字符串标记 </em> : 写法与 C 的字符串常量相同。例如，”&lt;&lt;” 就是一个字符串标记。</p>
-<p>lexer 返回命名标记。</p>
-<p><strong> 非终端符号 </strong> : 是一组非终端符号和终端符号组成的符号。按照惯例，它们都是小写。 在例子中，file 是一个非终端标记而 NAME 是一个终端标记。 </p>
-<p>。</p>
-<p>用 Yacc 编写语法</p>
-<p>如同 Lex 一样, 一个 Yacc 程序也用双百分号分为三段。它们是：声明、语法规则和 C 代码。 我们将解析一个格式为 姓名 =<br>年龄的文件作为例子，来说明语法规则。我们假设文件有多个姓名和年龄，它们以空格分隔。 在看 Yacc 程序的每一段时，我们将为我们的例子编写一个语法文件。</p>
-<p>C 与 Yacc 的声明</p>
-<p>C 声明可能会定义动作中使用的类型和变量，以及宏。还可以包含头文件。每个 Yacc<br>声明段声明了终端符号和非终端符号（标记）的名称，还可能描述操作符优先级和针对不同符号的数据类型。 lexer (Lex)<br>一般返回这些标记。所有这些标记都必须在 Yacc 声明中进行说明。</p>
-<p>在文件解析的例子中我们感兴趣的是这些标记：name, equal sign, 和 age。Name 是一个完全由字符组成的值。 Age<br>是数字。于是声明段就会像这样：</p>
-<p><strong> 文件解析例子的声明 </strong><br>           %  </p>
-<pre><code>#typedef char* string; /*  
-to specify token types as char* */  
-#define YYSTYPE string /*  
-a Yacc variable which has the value of returned token */  
-%}  
-%token NAME EQ AGE  
-%%  
-</code></pre><p>你可能会觉得 YYSTYPE 有点奇怪。但是类似 Lex, Yacc 也有一套变量和函数可供用户来进行功能扩展。 YYSTYPE 定义了用来将值从<br>lexer 拷贝到解析器或者 Yacc 的 yylval （另一个 Yacc 变量）的类型。默认的类型是 int。 由于字符串可以从 lexer<br>拷贝，类型被重定义为 char*。 关于 Yacc 变量的详细讨论，请参考 Yacc 手册（见 <a href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#resources" target="_blank" rel="external"> 资源
-</a> ）。</p>
-<p>Yacc 语法规则</p>
-<p>Yacc 语法规则具有以下一般格式：</p>
-<pre><code>result: components { /*  
- action to be taken in C */ }  
- ;  
-</code></pre><p>在这个例子中，result 是规则描述的非终端符号。Components 是根据规则放在一起的不同的终端和非终端符号。 如果匹配特定序列的话<br>Components 后面可以跟随要执行的动作。 考虑如下的例子：</p>
-<pre><code>param : NAME EQ NAME {  
- printf(&quot;/tName:%s/tValue(name):%s/n&quot;, $1,$3);}  
-     | NAME EQ VALUE{  
-     printf(&quot;/tName:%s/tValue(value):%s/n&quot;,$1,$3);}  
- ;  
-</code></pre><p>如果上例中序列 NAME EQ NAME 被匹配，将执行相应的 { } 括号中的动作。 这里另一个有用的就是 $1 和 $3 的使用, 它们引用了标记<br>NAME 和 NAME（或者第二行的 VALUE）的值。 lexer 通过 Yacc 的变量 yylval 返回这些值。标记 NAME 的 Lex<br>代码是这样的：</p>
-<pre><code>char [A-Za-z]  
- name {char}+  
- %%  
- {name} { yylval = strdup(yytext);  
- return NAME; }  
-</code></pre><p>这里yylval=strdup(yytext);需要进行强制转换。否则有warning.</p>
-<p>文件解析例子的规则段是这样的：</p>
-<p><strong> 文件解析的语法 </strong><br>           file : record file<br>            | record<br>            ;<br>            record: NAME EQ AGE {<br>            printf(“%s is now %s years old!!!”, $1, $3);}<br>            ;<br>            %%<br>附加 C 代码</p>
-<p>现在让我们看一下语法文件的最后一段，附加 C 代码。（这一段是可选的，如果有人想要略过它的话：）一个函数如 main() 调用 yyparse()<br>函数（Yacc 中 Lex 的 yylex() 等效函数）。 一般来说，Yacc 最好提供 yyerror(char msg) 函数的代码。<br>当解析器遇到错误时调用 yyerror(char msg)。错误消息作为参数来传递。 一个简单的 yyerror( char* ) 可能是这样的：</p>
-<pre><code>int yyerror(char* msg)  
- {  
- printf(&quot;Error: %s  
- encountered at line number:%d/n&quot;, msg, yylineno);  
- }  
-</code></pre><p>yylineno 提供了行数信息。</p>
-<p>这一段还包括文件解析例子的主函数：</p>
-<p><strong> 附加 C 代码 </strong><br>           void main()<br>            {<br>                yyparse();<br>            }<br>            int yyerror(char* msg)<br>            {<br>            printf(“Error: %s<br>            encountered /n”, msg);<br>要生成代码，可能用到以下命令：</p>
-<pre><code>$ yacc _d &lt;filename.y&gt;  
-</code></pre><p>这里的命令有误：其实为 yacc -d <filename.y></filename.y></p>
-<p>这生成了输出文件 y.tab.h 和 y.tab.c，它们可以用 UNIX 上的任何标准 C 编译器来编译（如 gcc）。</p>
-<p>命令行的其他常用选项</p>
-<ul>
-<li><em> ‘-d’ ,’–defines’ </em> : 编写额外的输出文件，它们包含这些宏定义：语法中定义的标记类型名称，语义的取值类型 <em> YYSTYPE </em> , 以及一些外部变量声明。如果解析器输出文件名叫 ‘name.c’, 那么 ‘-d’ 文件就叫做 ‘name.h’。 如果你想将 <em> yylex </em> 定义放到独立的源文件中，你需要 ‘name.h’, 因为 <em> yylex </em> 必须能够引用标记类型代码和 <em> yylval </em> 变量。 </li>
-<li><em> ‘-b file-prefix’ ,’–file-prefix=prefix’ </em> : 指定一个所有Yacc输出文件名都可以使用的前缀。选择一个名字，就如输入文件名叫 ‘prefix.c’. </li>
-<li><em> ‘-o outfile’ ,’–output-file=outfile’ </em> : 指定解析器文件的输出文件名。其他输出文件根据 ‘-d’ 选项描述的输出文件来命名。 </li>
-</ul>
-<p>Yacc 库通常在编译步骤中自动被包括。但是它也能被显式的包括，以便在编译步骤中指定 <em> �ly </em> 选项。这种情况下的编译命令行是：</p>
-<pre><code>$ cc &lt;source file  
- names&gt; -ly  
-</code></pre><p>将 Lex 与 Yacc 结合起来</p>
-<p>到目前为止我们已经分别讨论了 Lex 和 Yacc。现在让我们来看一下他们是怎样结合使用的。</p>
-<p>一个程序通常在每次返回一个标记时都要调用 <em> yylex() </em> 函数。只有在文件结束或者出现错误标记时才会终止。</p>
-<p>一个由 Yacc 生成的解析器调用 <em> yylex() </em> 函数来获得标记。 <em> yylex() </em> 可以由 Lex 来生成或完全由自己来编写。 对于由<br>Lex 生成的 lexer 来说，要和 Yacc 结合使用，每当 Lex 中匹配一个模式时都必须返回一个标记。 因此 Lex 中匹配模式时的动作一般格式为：</p>
-<pre><code>{pattern} { /* do smthg*/  
- return TOKEN_NAME; }  
-</code></pre><p>于是 Yacc 就会获得返回的标记。当 Yacc 编译一个带有 <em>d 标记的 </em> .y <em> 文件时，会生成一个头文件，它对每个标记都有 </em> #define<br><em> 的定义。 如果 Lex 和 Yacc 一起使用的话，头文件必须在相应的 Lex 文件 </em> .lex _ 中的 C 声明段中包括。</p>
-<p>让我们回到名字和年龄的文件解析例子中，看一看 Lex 和 Yacc 文件的代码。</p>
-<p><strong> Name.y - 语法文件 </strong><br>           %<br>            typedef char* string;  </p>
-<pre><code>#define YYSTYPE string  
-%}  
-%token NAME EQ AGE  
-%%  
-file : record file  
-| record  
-;  
-record : NAME EQ AGE {  
-printf(&quot;%s is %s years old!!!/n&quot;, $1, $3); }  
-;  
-%%  
-int main()  
-{  
-yyparse();  
-return 0;  
-}  
-int yyerror(char *msg)  
-{  
-printf(&quot;Error  
-encountered: %s /n&quot;, msg);  
-}  
-</code></pre><p><strong> Name.lex - Lex 的解析器文件 </strong><br>           %{  </p>
-<pre><code>#include &quot;y.tab.h&quot;  
-#include &lt;stdio.h&gt;  
-#include &lt;string.h&gt;  
-extern char* yylval;  
-%}  
-char [A-Za-z]  
-num [0-9]  
-eq [=]  
-name {char}+  
-age {num}+  
-%%  
-{name} { yylval = strdup(yytext);  
-return NAME; }  
-{eq} { return EQ; }  
-{age} { yylval = strdup(yytext);  
-return AGE; }  
-%%  
-int yywrap()  
-{  
-return 1;  
-}  
-</code></pre><p>作为一个参考，我们列出了 <em> y.tab.h </em> , Yacc 生成的头文件。</p>
-<p><strong> y.tab.h - Yacc 生成的头文件 </strong></p>
-<pre><code># define NAME 257  
- # define EQ 258  
- # define AGE 259  
-</code></pre><p>当然即使你执行了yacc -d <filename.y>,也执行了lex <filename.l>, 并且执行了gcc y.tab.c lex.yy.c<br>-o <filename> -ly</filename></filename.l></filename.y></p>
-<p>还是有可能会报错。 <a href="http://blog.csdn.net/cctt_1/archive/2010/03/18/5393914.aspx" target="_blank" rel="external"> 欲知解决方案请参考我的下篇文章
-</a> 。</p>
-<p>我们对于 Lex 和 Yacc的讨论到此为止。今天你想要编译什么语言呢？</p>
-<p>参考资料</p>
-<ul>
-<li>您可以参阅本文在 developerWorks 全球站点上的 <a href="http://www.ibm.com/developerworks/library/l-lex.html?S_TACT=105AGX52&amp;S_CMP=cn-a-l" target="_blank" rel="external"> 英文原文 </a> . </li>
-<li><a href="http://www.amazon.com/exec/obidos/ASIN/1565920007/qid=966761542/sr=1-1/102-9713829-1677713" target="_blank" rel="external"> Lex and Yacc </a> , Levine, Mason 和 Branson, O�Reilly 及其合作公司，2nd Ed。 </li>
-<li><a href="http://www.amazon.com/exec/obidos/ASIN/0132373971/qid=966761701/sr=1-2/102-9713829-1677713" target="_blank" rel="external"> Program Development in UNIX </a> , J. T. Shen, Prentice-Hall India。 </li>
-<li><a href="http://www.amazon.com/exec/obidos/ASIN/0201100886/o/qid=966761739/sr=2-1/102-9713829-1677713" target="_blank" rel="external"> Compilers: Principles, Techniques and Tools </a> , Ahoo, Sethi 和 Ullman, Addison-Wesley Pub. Co., 1985，11。 </li>
-<li><a href="http://tinf2.vub.ac.be/~dvermeir/courses/compilers/" target="_blank" rel="external"> Lex and Yacc and compiler writing </a> 指导。 </li>
-<li>Java 版的 Lex 指导, 叫做 <a href="http://bmrc.berkeley.edu/courseware/cs164/fall99/assignment/a1/tutorial.html" target="_blank" rel="external"> Jlex </a> 。 </li>
-<li>使用 Lex 和 Yacc 的 <a href="http://www.cs.man.ac.uk/~pjj/cs2111/ex5_hint.html" target="_blank" rel="external"> formalizing a grammar </a> 实例。 </li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/yacc/">yacc</a><a href="/tags/终端/">终端</a><a href="/tags/whitespace/">whitespace</a>
-  </div>
 
 </div>
 
@@ -967,14 +633,14 @@ return 1;
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/26/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/78/">78</a><a class="extend next" rel="next" href="/page/28/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/26/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><a class="extend next" rel="next" href="/page/28/">Next<span></span></a>
   </nav>
 
 </div>
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
@@ -984,87 +650,87 @@ return 1;
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/编程/" title="编程">编程<sup>40</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>31</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/工作/" title="工作">工作<sup>40</sup></a></li>
+				<li><a href="/tags/工作/" title="工作">工作<sup>18</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>39</sup></a></li>
+				<li><a href="/tags/编程/" title="编程">编程<sup>18</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/see-hear/" title="see-hear">see-hear<sup>37</sup></a></li>
+				<li><a href="/tags/数据库/" title="数据库">数据库<sup>16</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c/" title="c">c<sup>36</sup></a></li>
+				<li><a href="/tags/算法/" title="算法">算法<sup>16</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/算法/" title="算法">算法<sup>35</sup></a></li>
+				<li><a href="/tags/微软/" title="微软">微软<sup>15</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/code/" title="code">code<sup>34</sup></a></li>
+				<li><a href="/tags/string/" title="string">string<sup>15</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/数据库/" title="数据库">数据库<sup>25</sup></a></li>
+				<li><a href="/tags/c/" title="c#">c#<sup>14</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/blog/" title="blog">blog<sup>25</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>14</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/cc/" title="cc">cc<sup>25</sup></a></li>
+				<li><a href="/tags/面试/" title="面试">面试<sup>12</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/null/" title="null">null<sup>24</sup></a></li>
+				<li><a href="/tags/blog/" title="blog">blog<sup>12</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/class/" title="class">class<sup>23</sup></a></li>
+				<li><a href="/tags/class/" title="class">class<sup>12</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>22</sup></a></li>
+				<li><a href="/tags/数据结构/" title="数据结构">数据结构<sup>8</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/微软/" title="微软">微软<sup>22</sup></a></li>
+				<li><a href="/tags/测试/" title="测试">测试<sup>8</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>21</sup></a></li>
+				<li><a href="/tags/null/" title="null">null<sup>8</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/生活/" title="生活">生活<sup>21</sup></a></li>
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>8</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c/" title="c#">c#<sup>20</sup></a></li>
+				<li><a href="/tags/c/" title="c">c<sup>8</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/google/" title="google">google<sup>20</sup></a></li>
+				<li><a href="/tags/google/" title="google">google<sup>7</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c/" title="c++">c++<sup>18</sup></a></li>
+				<li><a href="/tags/delete/" title="delete">delete<sup>7</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>18</sup></a></li>
+				<li><a href="/tags/编译器/" title="编译器">编译器<sup>7</sup></a></li>
 			
 		
 		</ul>
@@ -1072,7 +738,7 @@ return 1;
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -1088,11 +754,11 @@ return 1;
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
   <div class="weiboshow">
-  <p class="asidetitle">Weibo</p>
+  <p class="asidetitle">新浪微博</p>
     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
 </div>
 
@@ -1232,7 +898,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
