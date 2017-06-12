@@ -1,0 +1,1800 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="编程,算法,null," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在网上搜索了很多红黑树的资源，发现自己看代码的能力还是有些欠缺。很多都看不懂，后来找到一篇英文红黑树文献，终于弄明白了红黑树的删除插入是怎么做的。但是那片文献好像还有些漏洞，其中有一种删除情况，他并没有考虑到。如果大家想看的话可以搜索下 “red-black trees” ,由 prof. LynTurbak所写。因为时间关系，插入算法只是实现了非CLR算法。删除算法我也不知道叫什么名字(文献里没">
+<meta name="keywords" content="编程,算法,null">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程练习——红黑树（RedBlackTree）">
+<meta property="og:url" content="http://chillyc.info/2008/09/09/2905246/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="在网上搜索了很多红黑树的资源，发现自己看代码的能力还是有些欠缺。很多都看不懂，后来找到一篇英文红黑树文献，终于弄明白了红黑树的删除插入是怎么做的。但是那片文献好像还有些漏洞，其中有一种删除情况，他并没有考虑到。如果大家想看的话可以搜索下 “red-black trees” ,由 prof. LynTurbak所写。因为时间关系，插入算法只是实现了非CLR算法。删除算法我也不知道叫什么名字(文献里没">
+<meta property="og:updated_time" content="2017-06-11T12:06:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="编程练习——红黑树（RedBlackTree）">
+<meta name="twitter:description" content="在网上搜索了很多红黑树的资源，发现自己看代码的能力还是有些欠缺。很多都看不懂，后来找到一篇英文红黑树文献，终于弄明白了红黑树的删除插入是怎么做的。但是那片文献好像还有些漏洞，其中有一种删除情况，他并没有考虑到。如果大家想看的话可以搜索下 “red-black trees” ,由 prof. LynTurbak所写。因为时间关系，插入算法只是实现了非CLR算法。删除算法我也不知道叫什么名字(文献里没">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2008/09/09/2905246/"/>
+
+
+
+
+
+  <title>编程练习——红黑树（RedBlackTree） | 帐前卒专栏</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/09/09/2905246/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">编程练习——红黑树（RedBlackTree）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2008-09-09T16:48:00+08:00">
+                2008-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在网上搜索了很多红黑树的资源，发现自己看代码的能力还是有些欠缺。很多都看不懂，后来找到一篇英文红黑树文献，终于弄明白了红黑树的删除插入是怎么做的。但是那片文<br>献好像还有些漏洞，其中有一种删除情况，他并没有考虑到。如果大家想看的话可以搜索下 “red-black trees” ,由 prof. Lyn<br>Turbak所写。因为时间关系，插入算法只是实现了非CLR算法。删除算法我也不知道叫什么名字(文献里没有讲)。但是删除结果依旧符合红黑树。</p>
+<p>建立红黑树节点的时候，考虑到因为经常要和一个节点的父亲节点打交道，所以采用了在节点里添加父亲节点的指针的方法。这样即方便也提高效率。另外也好调试。如果一味采<br>用递归..估计人会看疯掉的。插入的时候，采用的是先插入删除的时候红色节点，然后在判断是否违反红红条件。违反的话就左旋右旋进行调整。否则就插入成功。删除的时候<br>先删除节点，这个过程和删除二叉查找树节点一致。删除时要看真正要删除的节点是否是根节点，是否是黑色节点。因为红色节点和根节点删除不会调整树形。如果删除的是黑色<br>节点，那么要看替换他的节点（这里的替换一定是左子树树根，因为如果有右子树，那么被删除的也不会是这个节点，记住二叉查找树的删除过程）是否是黑色节点（这里如果左<br>子树为空，那他也是黑色节点）。如果是黑色节点，那么一定要调整树的结构，否则就直接染色。调整树结构时要考虑的情况就非常多了。一共有9种情况需要考虑。</p>
+<p>下面是代码部分，删除时如何调整在代码注释中。至于insert操作，看看文献就应该会做了。</p>
+<ol>
+<li>/* </li>
+<li><ul>
+<li>create RBNode class for construction RBTree </li>
+</ul>
+</li>
+<li><ul>
+<li>create by chico chen </li>
+</ul>
+</li>
+<li><ul>
+<li>date: 2008/09/04 </li>
+</ul>
+</li>
+<li><ul>
+<li>如需转载注明出处 </li>
+</ul>
+</li>
+<li>*/ </li>
+<li><ol>
+<li>template&lt; class  T&gt;</li>
+</ol>
+</li>
+<li>#define RED 0 </li>
+<li>#define BLACK 1 </li>
+<li>class  RBNode </li>
+<li>{ </li>
+<li>public  : </li>
+<li><ol>
+<li>T data; </li>
+</ol>
+</li>
+<li>RBNode<t>* left; </t></li>
+<li>RBNode<t>* right; </t></li>
+<li>RBNode<t>* parent; </t></li>
+<li>int  color; </li>
+<li><ol>
+<li>RBNode(T&amp; data) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>this  -&gt;data = data; </li>
+<li>left = NULL; </li>
+<li>right = NULL; </li>
+<li>parent = NULL; </li>
+<li>color = RED; </li>
+<li>} </li>
+<li>RBNode(T&amp; data, RBNode<t><em> left, RBNode<t></t></em> right, RBNode<t>* parent) </t></t></li>
+<li>{ </li>
+<li>this  -&gt;data = data; </li>
+<li>this  -&gt;left = left; </li>
+<li>this  -&gt;right = right; </li>
+<li>this  -&gt;parent = parent; </li>
+<li>color = RED; </li>
+<li>} </li>
+<li><ol>
+<li>~RBNode() </li>
+</ol>
+</li>
+<li>{ </li>
+<li>this  -&gt;left =  this  -&gt;right =  this  -&gt;parent = NULL; </li>
+<li>color = RED; </li>
+<li>} </li>
+<li>}; </li>
+</ol>
+<p>下面是红黑树代码</p>
+<ol>
+<li>/* </li>
+<li><ul>
+<li>this is red-black-tree code </li>
+</ul>
+</li>
+<li><ul>
+<li>this code is not efficent in inserting </li>
+</ul>
+</li>
+<li>* </li>
+<li><ul>
+<li>create by chico chen </li>
+</ul>
+</li>
+<li><ul>
+<li>date: 2008/09/04 </li>
+</ul>
+</li>
+<li><ul>
+<li>如需转载注明出处 </li>
+</ul>
+</li>
+<li>*/ </li>
+<li><ol>
+<li>#include “RBNode.h” </li>
+</ol>
+</li>
+<li><ol>
+<li>template&lt; class  T&gt;</li>
+</ol>
+</li>
+<li>class  RBTree </li>
+<li>{ </li>
+<li><ol>
+<li>private  : </li>
+</ol>
+</li>
+<li>RBNode<t>* root; </t></li>
+<li>public  : </li>
+<li>RBTree() </li>
+<li>{ </li>
+<li>this  -&gt;root = NULL; </li>
+<li>} </li>
+<li>~RBTree() </li>
+<li>{ </li>
+<li>clearTree(  this  -&gt;root); </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>void  print() </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>print(  this  -&gt;root,0); </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>void  insert(T&amp; data) </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol>
+<li>RBNode<t>* node =  new  RBNode<t>(data); </t></t></li>
+</ol>
+</li>
+<li>insertNode(node); </li>
+<li>} </li>
+<li><ol>
+<li>void  deleteKey(T&amp; data) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>deleteNode(data); </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>bool  RBTreeTest() </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>try </li>
+<li>{ </li>
+<li>getBlackNum(  this  -&gt;root); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>catch  (…) </li>
+<li>{ </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li>return  true  ; </li>
+<li>} </li>
+<li><ol>
+<li>private  : </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>void  print(RBNode<t>* subRoot,  int  num) </t></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (subRoot != NULL) </li>
+<li>{ </li>
+<li>print(subRoot-&gt;right,num+3); </li>
+<li>for  (  int  i = 0; i &lt; num; i++) </li>
+<li>{ </li>
+<li>cout &lt;&lt; “ “  ; </li>
+<li>} </li>
+<li>cout &lt;&lt; subRoot-&gt;data&lt;&lt; “(“  &lt;<subroot->color&lt;&lt; “)”  &lt;&lt;endl; </subroot-></li>
+<li>print(subRoot-&gt;left,num+3); </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>void  clearTree(RBNode<t>* subRoot) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (subRoot == NULL) </li>
+<li>return  ; </li>
+<li>clearTree(subRoot-&gt;left); </li>
+<li>clearTree(subRoot-&gt;right); </li>
+<li>delete subRoot; </li>
+<li>} </li>
+<li><ol>
+<li>RBNode<t><em> deleteMin(RBNode<t></t></em> subRoot,RBNode<t>** parent) </t></t></li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol>
+<li>while  (subRoot != NULL) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>parent = &subRoot; </li>
+<li>if  (subRoot-&gt;right != NULL) </li>
+<li>{ </li>
+<li>subRoot = subRoot-&gt;right; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>break  ; </li>
+<li>} </li>
+<li>} </li>
+<li>return  subRoot; </li>
+<li>} </li>
+<li><ol>
+<li>void  deleteNode(T&amp; data) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (root == NULL) </li>
+<li>{ </li>
+<li>throw  “Empty tree”  ; </li>
+<li>} </li>
+<li>RBNode<t>* subRoot = root; </t></li>
+<li>while  (subRoot != NULL) </li>
+<li>{ </li>
+<li>if  (subRoot-&gt;data &gt; data) </li>
+<li>{ </li>
+<li>subRoot = subRoot-&gt;left; </li>
+<li>} </li>
+<li>else  if  (subRoot-&gt;data &lt; data) </li>
+<li>{ </li>
+<li>subRoot = subRoot-&gt;right; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>// find the data </li>
+<li>// use the midOrder last one which is before the data node to replace </li>
+<li>RBNode<t>* inParent = subRoot; </t></li>
+<li>RBNode<t>* deleteNode = deleteMin(subRoot-&gt;left,&amp;inParent); </t></li>
+<li>RBNode<t>* realDelete = NULL; </t></li>
+<li>if  (deleteNode != NULL) </li>
+<li>{ </li>
+<li>subRoot-&gt;data = deleteNode-&gt;data;  // copy </li>
+<li>realDelete = deleteNode; </li>
+<li>//real delete </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>realDelete = subRoot; </li>
+<li>//real delete </li>
+<li>} </li>
+<li>if  (realDelete-&gt;parent == NULL) </li>
+<li>{ </li>
+<li>// delete root </li>
+<li>delete realDelete; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>// nothing at realDelete-&gt;right </li>
+<li>RBNode<t>* parent = realDelete-&gt;parent; </t></li>
+<li>RBNode<t>* subATree = NULL; </t></li>
+<li>if  (parent-&gt;left == realDelete) </li>
+<li>{ </li>
+<li>parent-&gt;left = realDelete-&gt;left; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>parent-&gt;right = realDelete-&gt;left; </li>
+<li>} </li>
+<li>subATree = realDelete-&gt;left; </li>
+<li>if  (realDelete-&gt;left != NULL) </li>
+<li>{ </li>
+<li>realDelete-&gt;left-&gt;parent = parent; </li>
+<li>} </li>
+<li>int  color = realDelete-&gt;color; </li>
+<li>delete realDelete; </li>
+<li>if  (color == BLACK &amp;&amp;</li>
+<li>(subATree == NULL || subATree-&gt;color == BLACK)) </li>
+<li>{ </li>
+<li><ol>
+<li><ol>
+<li>deleteRebuild(subATree,parent); </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>} </li>
+<li>else  if  (color == BLACK &amp;&amp; subATree-&gt;color == RED) </li>
+<li>{ </li>
+<li>subATree-&gt;color = BLACK; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>// do nothing </li>
+<li>} </li>
+<li>break  ; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>/* delete them if you want </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>* </li>
+<li>//     x(r)                c(r) </li>
+<li>//     /  /                /  / </li>
+<li>//   `a(b) b(b) –&gt;     x(b)   b(b) </li>
+<li>//         /            / </li>
+<li>//        c(r)         a(b) </li>
+<li>// LRL means L-&gt; double black is at left, and rotate is RL </li>
+<li>RBNode<t><em> LRLCaseA(RBNode<t></t></em> x) </t></li>
+<li>{ </li>
+<li>RLRotate(x,x-&gt;right,x-&gt;right-&gt;left); </li>
+<li>x-&gt;color = BLACK; </li>
+<li>return x-&gt;parent; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>//     x(r)                 b(r) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//     /  /                 /  / </li>
+<li>//   `a(b) b(b)   –&gt;    x(b)   c(b) </li>
+<li>//          /             / </li>
+<li>//           c(r)       a(b) </li>
+<li>RBNode<t><em> LLLCaseA(RBNode<t></t></em> x) </t></li>
+<li>{ </li>
+<li>RRRotate(x,x-&gt;right); </li>
+<li>x-&gt;color = BLACK; </li>
+<li>x-&gt;parent-&gt;color = RED; </li>
+<li>x-&gt;parent-&gt;right-&gt;color = BLACK; </li>
+<li>return x-&gt;parent; </li>
+<li>} </li>
+<li><ol>
+<li>//     x(r)                b(r) </li>
+</ol>
+</li>
+<li>//     /  /                /  / </li>
+<li>//   b(b) `a(b)–&gt;       c(b) x(b) </li>
+<li>//    /                         / </li>
+<li>//  c(r)                        a(b) </li>
+<li>RBNode<t><em> RLLCaseA(RBNode<t></t></em> x) </t></li>
+<li>{ </li>
+<li>LLRotate(x,x-&gt;left); </li>
+<li>x-&gt;color = BLACK; </li>
+<li>x-&gt;parent-&gt;color = RED; </li>
+<li>x-&gt;parent-&gt;left-&gt;color = BLACK; </li>
+<li>return x-&gt;parent; </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>//     x(r)                c(r) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//     /  /                /  / </li>
+<li>//   b(b) `a(b)–&gt;       b(b) x(b) </li>
+<li>//    /                         / </li>
+<li>//    c(r)                        a(b) </li>
+<li>RBNode<t><em> RLRCaseA(RBNode<t></t></em> x) </t></li>
+<li>{ </li>
+<li>LRRotate(x,x-&gt;left,x-&gt;left-&gt;right); </li>
+<li>x-&gt;color = BLACK; </li>
+<li><ol>
+<li>return x-&gt;parent; </li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>//     x(r)                     x(b) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//     /  /                     /  / </li>
+<li>//   `a(b) c(b)        -&gt;     a(b) c(r) </li>
+<li>//         /   /                  /   / </li>
+<li>//        d(b)  e(b)            d(b)  e(b) </li>
+<li>RBNode<t><em> LCaseB(RBNode<t></t></em> x) </t></li>
+<li>{ </li>
+<li>x-&gt;color = BLACK; </li>
+<li>x-&gt;right-&gt;color = RED; </li>
+<li>} </li>
+<li><ol>
+<li>//     x(r)                     x(b) </li>
+</ol>
+</li>
+<li>//     /  /                     /  / </li>
+<li>//    c(b) `a(b)       -&gt;     c(r) a(b) </li>
+<li>//   /   /                   /   / </li>
+<li>// d(b)  e(b)              d(b)  e(b) </li>
+<li>RBNode<t><em> RCaseB(RBNode<t></t></em> x) </t></li>
+<li>{ </li>
+<li>x-&gt;color = BLACK; </li>
+<li>x-&gt;left-&gt;color = RED; </li>
+<li>} </li>
+<li><ol>
+<li>//     x(b)                    c(b) </li>
+</ol>
+</li>
+<li>//     /  /                    /  / </li>
+<li>//  `a(b)  c(r)      -&gt;     x(r)  e(b) </li>
+<li>//        /   /             /  / </li>
+<li>//       d(b)  e(b)      `a(b)  d(b) </li>
+<li>RBNode<t><em> LCaseC(RBNode<t></t></em> x) </t></li>
+<li>{ </li>
+<li>RRRotate(x,x-&gt;right); </li>
+<li>x-&gt;color = RED; </li>
+<li>x-&gt;parent-&gt;color = BLACK; </li>
+<li>return  x-&gt;parent; </li>
+<li>} </li>
+<li><ol>
+<li>//     x(b)                    c(b) </li>
+</ol>
+</li>
+<li>//     /  /                    /  / </li>
+<li>//   c(r) `a(b)     -&gt;       d(b) x(r) </li>
+<li>//   /   /                        /  / </li>
+<li>//  d(b)  e(b)                  e(b) `a(b) </li>
+<li>RBNode<t><em> RCaseC(RBNode<t></t></em> x) </t></li>
+<li>{ </li>
+<li>LLRotate(x,x-&gt;left); </li>
+<li>x-&gt;color = RED; </li>
+<li>x-&gt;parent-&gt;color = BLACK; </li>
+<li>return  x-&gt;parent; </li>
+<li>} </li>
+<li>* </li>
+<li>*/ </li>
+<li><ol>
+<li>bool  isBlack(RBNode<t>* node) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol>
+<li>if  (node == NULL || node-&gt;color == BLACK) </li>
+</ol>
+</li>
+<li>return  true  ; </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li><ol>
+<li>void  rebuild(RBNode<t>* node) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (node-&gt;parent-&gt;data &gt; node-&gt;data) </li>
+<li>{ </li>
+<li>node-&gt;parent-&gt;left = node; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>node-&gt;parent-&gt;right = node; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>/* </li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ul>
+<li>There are 9 cases we will meet. The cases of the double black node at the right is ignored. </li>
+</ul>
+</li>
+<li><ul>
+<li>(b) means black node, (db) means double black node, (r) means red node </li>
+</ul>
+</li>
+<li><ul>
+<li><ol>
+<li>(b)              2   (b)           3 (b) </li>
+</ol>
+</li>
+</ul>
+</li>
+<li><ul>
+<li>/   /                 /  /            /  / </li>
+</ul>
+</li>
+<li><ul>
+<li>(db)  (b)             (db)  (b)       (db)  (b) </li>
+</ul>
+</li>
+<li><ul>
+<li>/  /                  / /             / / </li>
+</ul>
+</li>
+<li><ul>
+<li>(b)  (b)             (r)  (b)        (b)  (r) </li>
+</ul>
+</li>
+<li>* </li>
+<li><ul>
+<li><ol>
+<li>(b)              5   (b)           6 (r) </li>
+</ol>
+</li>
+</ul>
+</li>
+<li><ul>
+<li>/   /                 /  /            /  / </li>
+</ul>
+</li>
+<li><ul>
+<li>(db)  (b)             (db)  (r)       (db)  (b) </li>
+</ul>
+</li>
+<li><ul>
+<li>/  /                  / /             / / </li>
+</ul>
+</li>
+<li><ul>
+<li>(r)  (r)             (b)  (b)        (b)  (b) </li>
+</ul>
+</li>
+<li>* </li>
+<li><ul>
+<li><ol>
+<li>(r)              8   (r)           9 (r) </li>
+</ol>
+</li>
+</ul>
+</li>
+<li><ul>
+<li>/   /                 /  /            /  / </li>
+</ul>
+</li>
+<li><ul>
+<li>(db)  (b)             (db)  (b)       (db)  (b) </li>
+</ul>
+</li>
+<li><ul>
+<li>/  /                  / /             / / </li>
+</ul>
+</li>
+<li><ul>
+<li>(r)  (b)             (b)  (r)        (r)  (r) </li>
+</ul>
+</li>
+<li>* </li>
+<li><ul>
+<li>case 1,6: up the black, if the parent is black then call the function again until the </li>
+</ul>
+</li>
+<li><ul>
+<li>double black node is root, else blacken the parent. </li>
+</ul>
+</li>
+<li><ul>
+<li>case 2,4,7,9: call the RLRotate, if the parent of the double </li>
+</ul>
+</li>
+<li><ul>
+<li>node is black, up the black and call the function again, else </li>
+</ul>
+</li>
+<li><ul>
+<li>blacken the parent. </li>
+</ul>
+</li>
+<li><ul>
+<li>case 3,8: call the LLRotate, the same as case 2. </li>
+</ul>
+</li>
+<li><ul>
+<li>case 5: call LLRotate, change as    (b)   then end. </li>
+</ul>
+</li>
+<li><ul>
+<li>/   / </li>
+</ul>
+</li>
+<li><ul>
+<li>(b)    (b) </li>
+</ul>
+</li>
+<li><ul>
+<li>/ / </li>
+</ul>
+</li>
+<li><ul>
+<li>(b)  (r) </li>
+</ul>
+</li>
+<li>* </li>
+<li>*/ </li>
+<li>void  deleteRebuild(RBNode<t><em> node,RBNode<t></t></em> parent) </t></li>
+<li>{ </li>
+<li>if  (parent == NULL) </li>
+<li>{ </li>
+<li>// root, delete the black </li>
+<li>return  ; </li>
+<li>} </li>
+<li>if  (parent-&gt;left == node) </li>
+<li>{ </li>
+<li>RBNode<t>* brother = parent-&gt;right; </t></li>
+<li>RBNode<t>* nephewA = brother-&gt;left; </t></li>
+<li>RBNode<t>* nephewB = brother-&gt;right; </t></li>
+<li><ol>
+<li>if  (isBlack(nephewA) &amp;&amp; isBlack(nephewB) &amp;&amp; isBlack(brother)) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>// case 1,6 </li>
+<li>brother-&gt;color = RED; </li>
+<li>if  (parent-&gt;color == BLACK) </li>
+<li>{ </li>
+<li>deleteRebuild(parent,parent-&gt;parent); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>parent-&gt;color = BLACK; </li>
+<li>return  ; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>else  if  (!isBlack(nephewA)) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>// case 2,4,7,9 </li>
+<li>RBNode<t>* tempRoot = RLRotate(parent,brother,nephewA); </t></li>
+<li>// rebuild </li>
+<li>rebuild(tempRoot); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (!isBlack(nephewB)) </li>
+<li>{ </li>
+<li>// case 3,8 </li>
+<li>RBNode<t>* tempRoot = RRRotate(parent,brother); </t></li>
+<li>rebuild(tempRoot); </li>
+<li>nephewB-&gt;color = BLACK; </li>
+<li>brother-&gt;color = RED; </li>
+<li>} </li>
+<li>else  if  (!isBlack(brother)) </li>
+<li>{ </li>
+<li>// case 5 </li>
+<li>RBNode<t>* tempRoot = RRRotate(parent,brother); </t></li>
+<li>rebuild(tempRoot); </li>
+<li>brother-&gt;color = BLACK; </li>
+<li>nephewA-&gt;color = RED; </li>
+<li>return  ; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>// unknown </li>
+<li>throw  “none excption, about there is no red or black”  ; </li>
+<li>} </li>
+<li><ol>
+<li>if  (parent-&gt;color == BLACK) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>// case 2,3,4 </li>
+<li>deleteRebuild(parent,parent-&gt;parent); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>// case 7,8,9 </li>
+<li>parent-&gt;color = BLACK; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>RBNode<t>* brother = parent-&gt;left; </t></li>
+<li>RBNode<t>* nephewA = brother-&gt;right; </t></li>
+<li>RBNode<t>* nephewB = brother-&gt;left; </t></li>
+<li><ol>
+<li>if  (isBlack(nephewA) &amp;&amp; isBlack(nephewB) &amp;&amp; isBlack(brother)) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>brother-&gt;color = RED; </li>
+<li>if  (parent-&gt;color == BLACK) </li>
+<li>{ </li>
+<li>deleteRebuild(parent,parent-&gt;parent); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>parent-&gt;color = BLACK; </li>
+<li>return  ; </li>
+<li>} </li>
+<li>} </li>
+<li>else  if  (!isBlack(nephewA)) </li>
+<li>{ </li>
+<li>RBNode<t>* tempRoot = LRRotate(parent,brother,nephewA); </t></li>
+<li>// rebuild </li>
+<li>rebuild(tempRoot); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (!isBlack(nephewB)) </li>
+<li>{ </li>
+<li>RBNode<t>* tempRoot = LLRotate(parent,brother); </t></li>
+<li>rebuild(tempRoot); </li>
+<li>nephewB-&gt;color = BLACK; </li>
+<li>brother-&gt;color = RED; </li>
+<li>} </li>
+<li>else  if  (!isBlack(brother)) </li>
+<li>{ </li>
+<li>RBNode<t>* tempRoot = LLRotate(parent,brother); </t></li>
+<li>rebuild(tempRoot); </li>
+<li>nephewA-&gt;color = RED; </li>
+<li>brother-&gt;color = BLACK; </li>
+<li>return  ; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>throw  “none excption, about there is no red or black”  ; </li>
+<li>} </li>
+<li><ol>
+<li>if  (parent-&gt;color == BLACK) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>deleteRebuild(parent,parent-&gt;parent); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>parent-&gt;color = BLACK; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>void  insertNode(RBNode<t>* node) </t></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol>
+<li>if  (root == NULL) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>root = node; </li>
+<li>node-&gt;color = BLACK; </li>
+<li>return  ; </li>
+<li>} </li>
+<li>RBNode<t>* subRoot = root; </t></li>
+<li>RBNode<t>* insertPoint = NULL; </t></li>
+<li>while  (subRoot!=NULL) </li>
+<li>{ </li>
+<li>insertPoint = subRoot; </li>
+<li>if  (subRoot-&gt;data &gt; node-&gt;data) </li>
+<li>{ </li>
+<li>// insert left </li>
+<li>subRoot = subRoot-&gt;left; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;data &lt; node-&gt;data) </li>
+<li>{ </li>
+<li>subRoot = subRoot-&gt;right; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>throw  “same key”  ; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>if  (insertPoint-&gt;data &gt; node-&gt;data) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>insertPoint-&gt;left = node; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>insertPoint-&gt;right = node; </li>
+<li>} </li>
+<li>node-&gt;parent = insertPoint; </li>
+<li><ol>
+<li><ol>
+<li>insertRebuild(node); </li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+<li>//        a                   b </li>
+<li>//       /                  /   / </li>
+<li>//      b        -&gt;        c     a </li>
+<li>//     / </li>
+<li>//    c </li>
+<li>RBNode<t><em> LLRotate(RBNode<t></t></em> a, RBNode<t>* b) </t></t></li>
+<li>{ </li>
+<li>if  (b-&gt;right != NULL) </li>
+<li>{ </li>
+<li>b-&gt;right-&gt;parent = a; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>a-&gt;left = b-&gt;right; </li>
+<li>b-&gt;right = a; </li>
+<li>b-&gt;parent = a-&gt;parent; </li>
+<li>a-&gt;parent = b; </li>
+<li>return  b; </li>
+<li>} </li>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+<li>//        a                      b </li>
+<li>//          /                  /   / </li>
+<li>//            b        -&gt;     a     c </li>
+<li>//              / </li>
+<li>//                c </li>
+<li>RBNode<t><em> RRRotate(RBNode<t></t></em> a, RBNode<t>* b) </t></t></li>
+<li>{ </li>
+<li>if  (b-&gt;left != NULL) </li>
+<li>{ </li>
+<li>b-&gt;left-&gt;parent = a; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>a-&gt;right = b-&gt;left; </li>
+<li>b-&gt;left = a; </li>
+<li>b-&gt;parent = a-&gt;parent; </li>
+<li>a-&gt;parent = b; </li>
+<li><ol>
+<li><ol>
+<li>return  b; </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//        a                      c </li>
+<li>//          /                  /   / </li>
+<li>//            b        -&gt;     a     b </li>
+<li>//           /                 / </li>
+<li>//          c                   d </li>
+<li>//         / </li>
+<li>//        d </li>
+<li>RBNode<t><em> RLRotate(RBNode<t></t></em> a, RBNode<t><em> b, RBNode<t></t></em> c) </t></t></li>
+<li>{ </li>
+<li><ol>
+<li>if  (c-&gt;right != NULL) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>c-&gt;right-&gt;parent = b; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>b-&gt;left = c-&gt;right; </li>
+<li>c-&gt;right = b; </li>
+<li>b-&gt;parent = c; </li>
+<li>if  (c-&gt;left != NULL) </li>
+<li>{ </li>
+<li>c-&gt;left-&gt;parent = a; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>a-&gt;right = c-&gt;left; </li>
+<li>c-&gt;left = a; </li>
+<li>c-&gt;parent = a-&gt;parent; </li>
+<li>a-&gt;parent = c; </li>
+<li><ol>
+<li>return  c; </li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+<li>//        a                      c </li>
+<li>//       /                     /   / </li>
+<li>//      b              -&gt;     b     a </li>
+<li>//       /                         / </li>
+<li>//        c                       d </li>
+<li>//         / </li>
+<li>//          d </li>
+<li>RBNode<t><em> LRRotate(RBNode<t></t></em> a, RBNode<t><em> b, RBNode<t></t></em> c) </t></t></li>
+<li>{ </li>
+<li>if  (c-&gt;left != NULL) </li>
+<li>{ </li>
+<li>c-&gt;left-&gt;parent = b; </li>
+<li><ol>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>b-&gt;right = c-&gt;left; </li>
+<li>c-&gt;left = b; </li>
+<li>b-&gt;parent = c; </li>
+<li>if  (c-&gt;right!= NULL) </li>
+<li>{ </li>
+<li>c-&gt;right-&gt;parent = a; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>a-&gt;left = c-&gt;right; </li>
+<li>c-&gt;right = a; </li>
+<li>c-&gt;parent = a-&gt;parent; </li>
+<li>a-&gt;parent = c; </li>
+<li><ol>
+<li>return  c; </li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li>// node is not the root </li>
+</ol>
+</li>
+<li>void  insertRebuild(RBNode<t>* node) </t></li>
+<li>{ </li>
+<li>RBNode<t>* parent = NULL; </t></li>
+<li>RBNode<t>* grandParent = NULL; </t></li>
+<li>while  (node-&gt;parent != NULL) </li>
+<li>{ </li>
+<li>parent = node-&gt;parent; </li>
+<li><ol>
+<li>if  (parent-&gt;color == RED)  // here means there must be a grandparent </li>
+</ol>
+</li>
+<li>{ </li>
+<li>grandParent = parent-&gt;parent; </li>
+<li>grandParent-&gt;color = BLACK; </li>
+<li><ol>
+<li>if  (grandParent-&gt;left == parent) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (parent-&gt;left == node) </li>
+<li>{ </li>
+<li>//LLRotate </li>
+<li>node-&gt;color = BLACK; </li>
+<li>node = LLRotate(grandParent,parent); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>//LRRotate </li>
+<li>parent-&gt;color = BLACK; </li>
+<li>node = LRRotate(grandParent,parent,node); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li><ol>
+<li>if  (parent-&gt;left == node) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>//RLRotate </li>
+<li>parent-&gt;color = BLACK; </li>
+<li>node = RLRotate(grandParent,parent,node); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>//RRRotate </li>
+<li>node-&gt;color = BLACK; </li>
+<li>node = RRRotate(grandParent,parent); </li>
+<li>} </li>
+<li>} </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>break  ; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>if  (node-&gt;parent == NULL) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>node-&gt;color = BLACK; </li>
+<li>this  -&gt;root = node; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>rebuild(node); </li>
+<li>/*if(node-&gt;parent-&gt;data &gt; node-&gt;data) </li>
+<li>{ </li>
+<li>node-&gt;parent-&gt;left = node; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>node-&gt;parent-&gt;right = node; </li>
+<li>}*/ </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>int  getBlackNum(RBNode<t>* subRoot) </t></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (subRoot == NULL) </li>
+<li>{ </li>
+<li>return  1; </li>
+<li>} </li>
+<li>int  left = getBlackNum(subRoot-&gt;left); </li>
+<li>int  right = getBlackNum(subRoot-&gt;right); </li>
+<li>if  (left != right) </li>
+<li>{ </li>
+<li>throw  “wrong”  ; </li>
+<li>} </li>
+<li>if  (subRoot-&gt;color == BLACK) </li>
+<li>{ </li>
+<li><ol>
+<li>return  1+left; </li>
+</ol>
+</li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>return  left; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>}; </li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/null/" rel="tag"># null</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2008/08/27/2840419/" rel="next" title="返回值优化问题">
+                <i class="fa fa-chevron-left"></i> 返回值优化问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2008/09/18/2949118/" rel="prev" title="在ubuntu 8.04上安装postgresql 8.3核心">
+                在ubuntu 8.04上安装postgresql 8.3核心 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/zqz.jpg"
+               alt="帐前卒" />
+          <p class="site-author-name" itemprop="name">帐前卒</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">634</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">626</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

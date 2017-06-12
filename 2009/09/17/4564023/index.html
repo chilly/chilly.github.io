@@ -1,0 +1,727 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="centos,image,xen," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Eucalyptus配置篇参考我的blog:  Eucalyptus安装到centos 5.3配置日志  配置完Eucalyptus之后，下一步要做的就是加载image到VMs。image的下载可以使用这个路径：  Ubuntu-image  然后去你自己搭建的云上: https://localhost：8443，在证书选项卡出下载证书。过程和  使用Eucalyptus  一致 。 然后先建一个">
+<meta name="keywords" content="centos,image,xen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Eucalyptus安装到centos5.3加载image日志">
+<meta property="og:url" content="http://chillyc.info/2009/09/17/4564023/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="Eucalyptus配置篇参考我的blog:  Eucalyptus安装到centos 5.3配置日志  配置完Eucalyptus之后，下一步要做的就是加载image到VMs。image的下载可以使用这个路径：  Ubuntu-image  然后去你自己搭建的云上: https://localhost：8443，在证书选项卡出下载证书。过程和  使用Eucalyptus  一致 。 然后先建一个">
+<meta property="og:updated_time" content="2017-06-11T12:18:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Eucalyptus安装到centos5.3加载image日志">
+<meta name="twitter:description" content="Eucalyptus配置篇参考我的blog:  Eucalyptus安装到centos 5.3配置日志  配置完Eucalyptus之后，下一步要做的就是加载image到VMs。image的下载可以使用这个路径：  Ubuntu-image  然后去你自己搭建的云上: https://localhost：8443，在证书选项卡出下载证书。过程和  使用Eucalyptus  一致 。 然后先建一个">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2009/09/17/4564023/"/>
+
+
+
+
+
+  <title>Eucalyptus安装到centos5.3加载image日志 | 帐前卒专栏</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/17/4564023/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Eucalyptus安装到centos5.3加载image日志</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-09-17T19:26:00+08:00">
+                2009-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Eucalyptus配置篇参考我的blog: <a href="http://blog.csdn.net/cctt_1/archive/2009/09/17/4562908.aspx" target="_blank" rel="external"> Eucalyptus安装到centos 5.3配置日志
+</a></p>
+<p>配置完Eucalyptus之后，下一步要做的就是加载image到VMs。image的下载可以使用这个路径： <a href="http://www.eucalyptussoftware.com/downloads/eucalyptus-images/euca-
+ubuntu-9.04-x86_64.tar.gz" target="_blank" rel="external"> Ubuntu-image
+</a></p>
+<p>然后去你自己搭建的云上: <a href="https://localhost：8443，在证书选项卡出下载证书。过程和" target="_blank" rel="external">https://localhost：8443，在证书选项卡出下载证书。过程和</a> <a href="http://blog.csdn.net/cctt_1/archive/2009/09/14/4550332.aspx" target="_blank" rel="external"> 使用Eucalyptus
+</a> 一致 。</p>
+<p>然后先建一个目录,然后将你的admin的证书放入这个文件夹中，设置下证书和此文件夹的访问权限。在生成一个admin的privatekey。这几步可以参见 <a href="http://blog.csdn.net/cctt_1/archive/2009/09/14/4550332.aspx" target="_blank" rel="external"><br>安装Eucalyptus日志中的第4步(到 add key结束，后面的可以不做)
+</a> 。</p>
+<p>然后解压刚才下载的Ubuntu-image, cd到你的解压目录下开始敲命令:</p>
+<p>首先要加密image,然后制作manifest.xml：</p>
+<pre><code>euca-bundle-image -i xen-kernel/vmlinuz-2.6.27.21-0.1-xen --kernel true (这里xen可以改为kvm如果你装的是  
+
+kvm的虚拟机。另外vmlinuz的版本可能不一致，需要自己调整一下,kvm的好像是generic的).然后再执行下面的命令将kernel  
+
+添加到Walrus中:  
+
+euca-upload-bundle -b ubuntu-kernel-bucket -m /tmp/vmlinuz-2.6.27.21-0.1-xen.manifest.xml  
+
+下一步将kernel注册到Eucalyptus中:  
+
+euca-register ubuntu-kernel-bucket/vmlinuz-2.6.27.21-0.1-xen.manifest.xml  
+
+以上这两句中ubuntu-kernel-bucket并不在当前目录下。但是放心的敲好了..注册成功后会给你一个kenerlID（EKI  
+
+这个要记下）.下几步是加载和注册ramdisk,几乎和kenerl类似：  
+
+euca-bundle-image -i xen-kernel/initrd-2.6.27.21-0.1-xen --ramdisk true  
+
+euca-upload-bundle -b ubuntu-ramdisk-bucket -m /tmp/initrd-2.6.27.21-0.1-xen.manifest.xml  
+
+euca-register ubuntu-ramdisk-bucket/initrd-2.6.27.21-0.1-xen.manifest.xml  
+这里也会打印ramdiskID（$ERI 这里也要记下）,然后加载并注册image，其中这里的$EKI和$ERI就是上一步打印出来  
+的语句:  
+euca-bundle-image -i euca-ubuntu-9.04-x86_64ubuntu.9-04.x86-64.img --kernel $EKI --ramdisk $ERI  
+euca-upload-bundle -b ubuntu-image-bucket -m /tmp/ubuntu.9-04.x86-64.img.manifest.xml  
+euca-register ubuntu-image-bucket/ubuntu.9-04.x86-64.img.manifest.xml  
+结束。这里你应该能看到一个emi,这个就是传说中的imageID.  
+下面你可以用另一台机器输入https://XXXIP:8443来访问了..并且可以[使用euca2ools](http://blog.csdn.net/cctt_1/archive/2009/09/14/4550332.aspx)
+
+来使用这个云了！  
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/centos/" rel="tag"># centos</a>
+          
+            <a href="/tags/image/" rel="tag"># image</a>
+          
+            <a href="/tags/xen/" rel="tag"># xen</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2009/09/17/4562908/" rel="next" title="Eucalyptus安装到centos5.3配置日志">
+                <i class="fa fa-chevron-left"></i> Eucalyptus安装到centos5.3配置日志
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2009/09/17/4564340/" rel="prev" title="弹性计算云Eucalyptus安装及使用（centos5.3版）">
+                弹性计算云Eucalyptus安装及使用（centos5.3版） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/zqz.jpg"
+               alt="帐前卒" />
+          <p class="site-author-name" itemprop="name">帐前卒</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">634</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">626</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

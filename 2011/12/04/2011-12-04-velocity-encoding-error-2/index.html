@@ -1,0 +1,707 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,exception,error,see-hear,charset,encoding,velocity," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="First, set some properties for velocity engine. Set vm file reading path. use file read-mode not resource read-mode.// set velocity path, if you don’t do these, you will get Resource not fou">
+<meta name="keywords" content="java,exception,error,see-hear,charset,encoding,velocity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="velocity encoding charset error">
+<meta property="og:url" content="http://chillyc.info/2011/12/04/2011-12-04-velocity-encoding-error-2/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="First, set some properties for velocity engine. Set vm file reading path. use file read-mode not resource read-mode.// set velocity path, if you don’t do these, you will get Resource not fou">
+<meta property="og:updated_time" content="2017-06-11T12:06:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="velocity encoding charset error">
+<meta name="twitter:description" content="First, set some properties for velocity engine. Set vm file reading path. use file read-mode not resource read-mode.// set velocity path, if you don’t do these, you will get Resource not fou">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2011/12/04/2011-12-04-velocity-encoding-error-2/"/>
+
+
+
+
+
+  <title>velocity encoding charset error | 帐前卒专栏</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/12/04/2011-12-04-velocity-encoding-error-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">velocity encoding charset error</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2011-12-04T00:00:00+08:00">
+                2011-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="There is a solution for solve velocity encoding or charset error."></p>
+<p><meta name="_su_keywords" content="encoding, charset, error, velocity"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_title" content="encoding, charset, velocity, error, exception, java, web"></p>
+<p><meta name="views" content="64"></p>
+<p><meta name="_wp_old_slug" content="velocity-encoding-error"></p>
+<p></p><p>   First, set some properties for velocity engine. Set vm file reading path. use file read-mode not resource read-mode.<br><br><br><br>// set velocity path, if you don’t do these, you will get Resource not found exception.<br><br>Properties p = new Properties();<br><br>p.setProperty(“resource.loader”, “file”);<br><br>p.setProperty(“class.resource.loader.class”,”org.apache.velocity.runtime.resource.loader.FileResourceLoader”);<br><br>// where is your vms path, set it<br><br>p.setProperty(“file.resource.loader.path”, realPath + “/vm”);<br><br>// set output encoding<br><br>// nearly almost articals said the following will work, but it won’t<br><br>p.setProperty(Velocity.INPUT_ENCODING, Constant.DEFAULT_ENCODING);<br><br>p.setProperty(Velocity.OUTPUT_ENCODING, Constant.DEFAULT_ENCODING);<br><br>p.setProperty(“contentType”, “text/html;charset=”+Constant.DEFAULT_ENCODING);<br><br>Velocity.init(p);<br><br><br><br>   The above code should be write in beginning of use any of velocity objects. In Spring or Java web application, you should write them into Servlet context listener.<br><br>   If you use ascii word. There will no error encoding. But if you use gb2312 or UTF-8. You will find something weird. The above code dose not work. So I use response output to solve those encoding problem. In web application, we always use response.getOutputStream() to write something back. But now, we should construct output stream to write correct encoding word to the page. So velocity can encoding them correctly. The following code will help you.<br><br><br><br>String encoding = “utf-8”;<br><br>// If you use UTF-8 encoding in your application<br><br>Writer writer = new PrintWriter(new PrintStream(resp.getOutputStream(), true, encoding));<br><br>// velocity will find abc.vm in your file path folder.<br><br>String pageName = “abc”;<br><br>Template template = Velocity.getTemplate(pageName);<br><br>VelocityContext context = new VelocityContext();<br><br>context.put(“test”, new String(“hello”.getBytes(encoding), encoding));<br><br>// here velocity will use the writer to write correct encoding words to response stream. So we can see the correct words showed by our page.<br><br>template.merge(context, writer);<br><br><br><br>   If you use jetty to run your web application, it works fine.<br><br>   But maybe you use windows resin to run war package. Sometimes, error encoding comes again. There is something wrong with your resin application. You should change config file in resin conf folder. In conf/resin.xml( resin 4.0+ ), add &lt;character-encoding&gt;UTF-8&lt;/character-encoding&gt;  in  &lt; web-app-default &gt;. Like following:<br></p>
+<p><blockquote><br>&lt; web-app-default &gt;<br><br>    &lt;character-encoding&gt;UTF-8&lt;/character-encoding&gt;<br><br>…<br><br>&lt; /web-app-default &gt;<br><br></blockquote><br>   And you should use correct charset to start your resin. Else resin will use default charset of your operation system.</p><p></p>
+<p><blockquote><p>java -Dfile.encoding=UTF-8 -jar lib/resin.jar </p></blockquote></p>
+<p></p><p>   Addition, if you use spring framework, don’t forget the encoding filter :<br></p>
+<p><blockquote><br>&lt;filter&gt;<br><br>    &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;<br><br>        &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;<br><br>        &lt;init-param&gt;<br><br>            &lt;param-name&gt;encoding&lt;/param-name&gt;<br>            &lt;param-value&gt;UTF-8&lt;/param-value&gt;<br>        &lt;/init-param&gt;<br><br>    &lt;/filter&gt;<br><br>    &lt;filter-mapping&gt;<br><br>        &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;<br><br>        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;<br><br>    &lt;/filter-mapping&gt;<br><br></blockquote><br>   In encoding or charset error. You should consider the following :</p><p></p>
+<li>  <b>environment (like resin, jetty, eclipse and etc.)</b></li><br><li>  <b>Input (from outside, like user input, or reading from database )</b></li><br><li>  <b>Output (to outside, like page presented, or writing to database or file)</b></li><br><li>  <b>Process (maybe you encode words twice or more, or encode them to some other different charset)</b></li>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/exception/" rel="tag"># exception</a>
+          
+            <a href="/tags/error/" rel="tag"># error</a>
+          
+            <a href="/tags/see-hear/" rel="tag"># see-hear</a>
+          
+            <a href="/tags/charset/" rel="tag"># charset</a>
+          
+            <a href="/tags/encoding/" rel="tag"># encoding</a>
+          
+            <a href="/tags/velocity/" rel="tag"># velocity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2011/11/27/7017312/" rel="next" title="spring ServletConfig() 或者ServletContext 不存在解决方案">
+                <i class="fa fa-chevron-left"></i> spring ServletConfig() 或者ServletContext 不存在解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2011/12/22/2011-12-22-csdn-hacked/" rel="prev" title="CSDN hacked">
+                CSDN hacked <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/zqz.jpg"
+               alt="帐前卒" />
+          <p class="site-author-name" itemprop="name">帐前卒</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">634</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">626</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,2188 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="编程,null,c," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="AVLTree本身就是二叉查找树。为了保证查找效率在O(nlogn),所以有时要对树高进行必要的调整。 AVLTree拥有自己的法则使得插入、删除、查找都在O(nlogn)时间内完成。 下面写了一个AVLTreeNode类，好像和TreeNode类一样。 下面写AVLTree类，这个类重要的地方在与插入和删除操作。查找操作和BinarySearchTree一致。但是至今还没有找到一个有效的方法来使">
+<meta name="keywords" content="编程,null,c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程练习——平衡树（AVLTree）">
+<meta property="og:url" content="http://chillyc.info/2008/08/19/2797126/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="AVLTree本身就是二叉查找树。为了保证查找效率在O(nlogn),所以有时要对树高进行必要的调整。 AVLTree拥有自己的法则使得插入、删除、查找都在O(nlogn)时间内完成。 下面写了一个AVLTreeNode类，好像和TreeNode类一样。 下面写AVLTree类，这个类重要的地方在与插入和删除操作。查找操作和BinarySearchTree一致。但是至今还没有找到一个有效的方法来使">
+<meta property="og:updated_time" content="2017-06-11T12:06:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="编程练习——平衡树（AVLTree）">
+<meta name="twitter:description" content="AVLTree本身就是二叉查找树。为了保证查找效率在O(nlogn),所以有时要对树高进行必要的调整。 AVLTree拥有自己的法则使得插入、删除、查找都在O(nlogn)时间内完成。 下面写了一个AVLTreeNode类，好像和TreeNode类一样。 下面写AVLTree类，这个类重要的地方在与插入和删除操作。查找操作和BinarySearchTree一致。但是至今还没有找到一个有效的方法来使">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2008/08/19/2797126/"/>
+
+
+
+
+
+  <title>编程练习——平衡树（AVLTree） | 帐前卒专栏</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/08/19/2797126/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">编程练习——平衡树（AVLTree）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2008-08-19T17:30:00+08:00">
+                2008-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>AVLTree本身就是二叉查找树。为了保证查找效率在O(nlogn),所以有时要对树高进行必要的调整。</p>
+<p>AVLTree拥有自己的法则使得插入、删除、查找都在O(nlogn)时间内完成。</p>
+<p>下面写了一个AVLTreeNode类，好像和TreeNode类一样。</p>
+<p>下面写AVLTree类，这个类重要的地方在与插入和删除操作。查找操作和BinarySearchTree一致。但是至今还没有找到一个有效的方法来使用Binar<br>ySearchTree中的Search。除非将Search方法抽象为一个接口。</p>
+<p>暂时先不管太多。</p>
+<p>先看左旋和右旋操作。</p>
+<ol>
+<li>// return the subRoot </li>
+<li>//        a                   b </li>
+<li>//       /                  /   / </li>
+<li>//      b        -&gt;        c     a </li>
+<li>//     / </li>
+<li>//    c </li>
+<li>AVLNode<t><em> LLRotate(AVLNode<t></t></em> a, AVLNode<t>* b) </t></t></li>
+<li>{ </li>
+<li>a-&gt;setLeft(b-&gt;getRight()); </li>
+<li>b-&gt;setRight(a); </li>
+<li><ol>
+<li>a-&gt;setAHeight(0); </li>
+</ol>
+</li>
+<li>b-&gt;setAHeight(0); </li>
+<li>//a-&gt;setAHeight(getAVLHeight(a)); </li>
+<li>//b-&gt;setAHeight(getAVLHeight(b)); </li>
+<li>return  b; </li>
+<li>} </li>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+<li>//        a                      b </li>
+<li>//          /                  /   / </li>
+<li>//            b        -&gt;     a     c </li>
+<li>//              / </li>
+<li>//                c </li>
+<li>AVLNode<t><em> RRRotate(AVLNode<t></t></em> a, AVLNode<t>* b) </t></t></li>
+<li>{ </li>
+<li>a-&gt;setRight(b-&gt;getLeft()); </li>
+<li>b-&gt;setLeft(a); </li>
+<li><ol>
+<li>a-&gt;setAHeight(0); </li>
+</ol>
+</li>
+<li>b-&gt;setAHeight(0); </li>
+<li>//a-&gt;setAHeight(getAVLHeight(a)); </li>
+<li>//b-&gt;setAHeight(getAVLHeight(b)); </li>
+<li>return  b; </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//        a                      c </li>
+<li>//          /                  /   / </li>
+<li>//            b        -&gt;     a     b </li>
+<li>//           /                 / </li>
+<li>//          c                   d </li>
+<li>//         / </li>
+<li>//        d </li>
+<li>AVLNode<t><em> RLRotate(AVLNode<t></t></em> a, AVLNode<t><em> b, AVLNode<t></t></em> c) </t></t></li>
+<li>{ </li>
+<li><ol>
+<li>b-&gt;setLeft(c-&gt;getRight()); </li>
+</ol>
+</li>
+<li>c-&gt;setRight(b); </li>
+<li>a-&gt;setRight(c-&gt;getLeft()); </li>
+<li>c-&gt;setLeft(a); </li>
+<li><ol>
+<li><ol>
+<li>//a-&gt;setAHeight(getAVLHeight(a)); </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//c-&gt;setAHeight(getAVLHeight(c)); </li>
+<li>//b-&gt;setAHeight(getAVLHeight(b)); </li>
+<li><ol>
+<li>if  (c-&gt;getAbsoluteAHeight() == 1) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (b-&gt;getAHeight() == 0) </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(-1); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(0); </li>
+<li>} </li>
+<li>a-&gt;setAHeight(1); </li>
+<li>c-&gt;setAHeight(0); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>if  (b-&gt;getAHeight() == 0) </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(-1); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(0); </li>
+<li>} </li>
+<li>a-&gt;setAHeight(0); </li>
+<li>c-&gt;setAHeight(0); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>return  c; </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+<li>//        a                      c </li>
+<li>//       /                     /   / </li>
+<li>//      b              -&gt;     b     a </li>
+<li>//       /                         / </li>
+<li>//        c                       d </li>
+<li>//         / </li>
+<li>//          d </li>
+<li>AVLNode<t><em> LRRotate(AVLNode<t></t></em> a, AVLNode<t><em> b, AVLNode<t></t></em> c) </t></t></li>
+<li>{ </li>
+<li>b-&gt;setRight(c-&gt;getLeft()); </li>
+<li>c-&gt;setLeft(b); </li>
+<li>a-&gt;setLeft(c-&gt;getRight()); </li>
+<li>c-&gt;setRight(a); </li>
+<li><ol>
+<li><ol>
+<li>//a-&gt;setAHeight(getAVLHeight(a)); </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//c-&gt;setAHeight(getAVLHeight(c)); </li>
+<li>//b-&gt;setAHeight(getAVLHeight(b)); </li>
+<li><ol>
+<li>if  (c-&gt;getAbsoluteAHeight() == 1) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (b-&gt;getAHeight() == 0) </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(1); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(0); </li>
+<li>} </li>
+<li><ol>
+<li>a-&gt;setAHeight(-1); </li>
+</ol>
+</li>
+<li>c-&gt;setAHeight(0); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li><ol>
+<li>if  (b-&gt;getAHeight() == 0) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>b-&gt;setAHeight(1); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(0); </li>
+<li>} </li>
+<li>a-&gt;setAHeight(0); </li>
+<li>c-&gt;setAHeight(0); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>return  c; </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>} </li>
+<li>这里旋转后调整平衡因子是关键部分。这是我自己总结的方法，经少量测试暂时没有出现问题。这个调整方法好像与大多数书本和网络程序的方法不一致。不清楚到底哪个是正确的。但是如果不使用这种直接赋值的方法，可以使用递归查找树高的方法保障万无一失的解决这个问题。这里使用的  右树高减左树高得平衡因子  的方法。 </li>
+</ol>
+<p>下面给出这样的两个函数，其中getAVLHeight是核心方法。</p>
+<ol>
+<li>int  getHeight(AVLNode<t>* node) </t></li>
+<li>{ </li>
+<li>if  (node == NULL) </li>
+<li>{ </li>
+<li>return  0; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>int  leftHeight = getHeight(node-&gt;getLeft()); </li>
+<li>int  rightHeight = getHeight(node-&gt;getRight()); </li>
+<li>if  (leftHeight &gt; rightHeight) </li>
+<li>{ </li>
+<li>return  leftHeight+1; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>return  rightHeight+1; </li>
+<li>} </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>int  getAVLHeight(AVLNode<t>* node) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (node == NULL) </li>
+<li>{ </li>
+<li>return  0; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>int  leftHeight = getHeight(node-&gt;getLeft()); </li>
+<li>int  rightHeight = getHeight(node-&gt;getRight()); </li>
+<li>return  rightHeight - leftHeight; </li>
+<li>} </li>
+<li>} </li>
+<li>删除、插入操作有点复杂。 </li>
+</ol>
+<p>插入操作：</p>
+<p>1.先找到可能要调整的那个节点A，这里的可能要调整的节点即为插入路径中平衡因子为+1或者为-<br>1的点。（这里一定要记得不要自作聪明的认为如果向左插入，+1节点就不会是可能节点）</p>
+<p>2.插入应该插入的节点，调整从A至目标节点的平衡因子。并且记录是否增长了子树树高（是否插入节点没有兄弟节点）。</p>
+<p>3.插入后查看是否增长子树树高，如果增长树高，再查看A是否已经不平衡。如果不平衡，调整，否则，插入完成。</p>
+<p>（这里要注意A节点为树根的情况，或者无A节点的情况）</p>
+<p>因为下面的程序首先将树根设定为可能要调整的节点A，所以没有出现无A节点的情况。</p>
+<p>以上三点，我看过很多教科书，发现讲解有些含糊，或者本身就是略写。这里并没有采用递归操作。</p>
+<ol>
+<li>void  insertNode(AVLNode<t>* node) </t></li>
+<li>{ </li>
+<li>AVLNode<t>* subRoot =  this  -&gt;head; </t></li>
+<li>if  (subRoot == NULL) </li>
+<li>{ </li>
+<li>subRoot = node; </li>
+<li>return  ; </li>
+<li>} </li>
+<li>AVLNode<t>* ppoRoot = NULL; </t></li>
+<li>AVLNode<t>* poRoot = NULL; </t></li>
+<li>AVLNode<t>* pRoot = NULL; </t></li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>poRoot = subRoot; </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>while  (subRoot != NULL) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>pRoot = subRoot; </li>
+<li>if  (subRoot-&gt;getData() &gt; node-&gt;getData()) </li>
+<li>{ </li>
+<li><ol>
+<li>if  (isPossibleNode(subRoot-&gt;getLeft(),node)) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>poRoot = subRoot-&gt;getLeft(); </li>
+<li>ppoRoot = subRoot; </li>
+<li>} </li>
+<li>subRoot = subRoot-&gt;getLeft(); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getData() &lt; node-&gt;getData()) </li>
+<li>{ </li>
+<li><ol>
+<li>if  (isPossibleNode(subRoot-&gt;getRight(),node)) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>poRoot = subRoot-&gt;getRight(); </li>
+<li>ppoRoot = subRoot; </li>
+<li>} </li>
+<li>subRoot = subRoot-&gt;getRight(); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>throw  “the same key”  ; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>bool  isChangeHeight =  false  ; </li>
+</ol>
+</li>
+<li>if  (pRoot-&gt;getData() &gt; node-&gt;getData()) </li>
+<li>{ </li>
+<li><ol>
+<li>pRoot-&gt;setLeft(node); </li>
+</ol>
+</li>
+<li>if  (pRoot-&gt;getRight() == NULL) </li>
+<li>{ </li>
+<li>isChangeHeight =  true  ; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>pRoot-&gt;setAHeight(pRoot-&gt;getAHeight()-1); </li>
+<li>} </li>
+<li>} </li>
+<li>else  if  (pRoot-&gt;getData() &lt; node-&gt;getData()) </li>
+<li>{ </li>
+<li><ol>
+<li>pRoot-&gt;setRight(node); </li>
+</ol>
+</li>
+<li>if  (pRoot-&gt;getLeft() == NULL) </li>
+<li>{ </li>
+<li>isChangeHeight =  true  ; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>pRoot-&gt;setAHeight(pRoot-&gt;getAHeight()+1); </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>if  (poRoot != NULL &amp;&amp; isChangeHeight) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>// s-&gt;a update Height </li>
+<li>subRoot = poRoot; </li>
+<li>while  (subRoot != node) </li>
+<li>{ </li>
+<li>if  (subRoot-&gt;getData() &gt; node-&gt;getData()) </li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()-1); </li>
+<li><ol>
+<li>subRoot = subRoot-&gt;getLeft(); </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getData() &lt; node-&gt;getData()) </li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()+1); </li>
+<li><ol>
+<li>subRoot = subRoot-&gt;getRight(); </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>subRoot = poRoot; </li>
+</ol>
+</li>
+<li>AVLNode<t>* a = poRoot; </t></li>
+<li>AVLNode<t>* b = NULL; </t></li>
+<li>AVLNode<t>* c = NULL; </t></li>
+<li>AVLNode<t>* tempRoot = NULL; </t></li>
+<li>if  (a-&gt;getAbsoluteAHeight() &gt; 1) </li>
+<li>{ </li>
+<li>if  (subRoot-&gt;getData() &gt; node-&gt;getData()) </li>
+<li>{ </li>
+<li>b = subRoot-&gt;getLeft(); </li>
+<li>if  (a-&gt;getAHeight()* b-&gt;getAHeight() &gt; 0) </li>
+<li>{ </li>
+<li>//LLRotate </li>
+<li>tempRoot = LLRotate(a,b); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>//LRRotate </li>
+<li>c = b-&gt;getRight(); </li>
+<li>tempRoot =LRRotate(a,b,c); </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getData() &lt; node-&gt;getData()) </li>
+<li>{ </li>
+<li>b = subRoot-&gt;getRight(); </li>
+<li>if  (a-&gt;getAHeight()* b-&gt;getAHeight() &gt; 0) </li>
+<li>{ </li>
+<li>//RRRotate </li>
+<li>tempRoot = RRRotate(a,b); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>//RLRotate </li>
+<li>c = b-&gt;getLeft(); </li>
+<li>tempRoot =RLRotate(a,b,c); </li>
+<li>} </li>
+<li>} </li>
+<li>if  (ppoRoot!=NULL) </li>
+<li>{ </li>
+<li>if  (ppoRoot-&gt;getData() &gt; tempRoot-&gt;getData()) </li>
+<li>{ </li>
+<li>ppoRoot-&gt;setLeft(tempRoot); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>ppoRoot-&gt;setRight(tempRoot); </li>
+<li>} </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>this  -&gt;head = tempRoot; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+</ol>
+<p>再看删除操作。</p>
+<p>采用的是 <a href="http://www.cs.uga.edu/~eileen/2720/Notes/AVLTrees-II.ppt" target="_blank" rel="external"> http://www.cs.uga.edu/~eileen/2720/Notes/AVLTrees-II.ppt
+</a> 这个ppt介绍的删除操作。</p>
+<p>因为删除操作要反遍历到树根，所以这里无奈采用是递归操作。</p>
+<p>bool deleteNode(AVLNode<t><em> subRoot, AVLNode<t></t></em> prev, T&amp; node);</t></p>
+<p>这个操作返回值：如果子树树高变化，那么返回true,否则返回false。</p>
+<p>1.如果子树为Null，函数返回false</p>
+<p>2.比较subRoot里的data值和node中的data值。</p>
+<p>A.如果subRoot-&gt;data&lt;<br>node.data,需要递归下右子树，如果这个递归返回true,将subRoot的平衡因子调整为-1，如果为false就return false。</p>
+<p>B.subRoot-&gt;data &gt;<br>node.data需要递归下左子树，如果这个递归返回true,将subRoot的平衡因子调整为+1，如果为false就return false。</p>
+<p>C.subRoot-&gt;data == node.data.</p>
+<p>1）如果此时subRoot只有一个孩子或者没有孩子，那么删除时树高一定会改变。另外做一个简单的删除操作即可。该左孩子代替此节点还是右孩子代替它，如何代替其实<br>和BinarySearchTree一样。再return true</p>
+<p>2）如果有两个孩子，去左子树中找到替代品，然后将这个subRoot的数据域完全变为此替代品后，去左子树中用再用deleteNode方法将替代品删除。如果de<br>leteNode操作返回true，那么显然subRoot的平衡因子要加1.</p>
+<p>3.如果subRoot的平衡因子已经为2或者-2，那么以subRoot为根开始调整。</p>
+<p>A.如果调整后subRoot平衡因子为0，return true</p>
+<p>B.不为0，return false。</p>
+<p>下面是实际代码</p>
+<ol>
+<li>bool  deleteNode(AVLNode<t><em> subRoot, AVLNode<t></t></em> prev, T&amp; node) </t></li>
+<li>{ </li>
+<li>if  (subRoot == NULL) </li>
+<li>{ </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li>bool  isChangeHeight =  false  ; </li>
+<li>if  (subRoot-&gt;getData() &gt; node) </li>
+<li>{ </li>
+<li>isChangeHeight = deleteNode(subRoot-&gt;getLeft(),subRoot,node); </li>
+<li>if  (isChangeHeight) </li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()+1); </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getData() &lt; node) </li>
+<li>{ </li>
+<li>isChangeHeight = deleteNode(subRoot-&gt;getRight(),subRoot,node); </li>
+<li>if  (isChangeHeight) </li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()-1); </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>AVLNode<t>* assignNode = NULL; </t></li>
+<li>if  (subRoot-&gt;getLeft() == NULL &amp;&amp; subRoot-&gt;getRight() == NULL) </li>
+<li>{ </li>
+<li>// no child </li>
+<li><ol>
+<li>isChangeHeight =  true  ; </li>
+</ol>
+</li>
+<li>deleteNode(subRoot,prev,assignNode); </li>
+<li>return  isChangeHeight; </li>
+<li>} </li>
+<li>else  if  (subRoot-&gt;getLeft() == NULL &amp;&amp; subRoot-&gt;getRight() != NULL) </li>
+<li>{ </li>
+<li>// no left child </li>
+<li>isChangeHeight =  true  ; </li>
+<li>assignNode = subRoot-&gt;getRight(); </li>
+<li>deleteNode(subRoot,prev,assignNode); </li>
+<li>return  isChangeHeight; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getRight() == NULL &amp;&amp; subRoot-&gt;getLeft() != NULL) </li>
+<li>{ </li>
+<li>// no right chlid </li>
+<li>isChangeHeight =  true  ; </li>
+<li>assignNode = subRoot-&gt;getLeft(); </li>
+<li>deleteNode(subRoot,prev,assignNode); </li>
+<li>return  isChangeHeight; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>// have both children </li>
+<li>assignNode = getMaxNode(subRoot-&gt;getLeft()); </li>
+<li>T data = assignNode-&gt;getData(); </li>
+<li>bool  isChange = deleteNode(subRoot-&gt;getLeft(),subRoot,data); </li>
+<li>cout &lt;&lt; “use “  &lt;&lt; data&lt;&lt; “ replace “  &lt;&lt; subRoot-&gt;getData()&lt;&lt;endl; </li>
+<li>subRoot-&gt;setData(data);  // copy all data to subRoot </li>
+<li><ol>
+<li>if  (isChange) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()+1); </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>if  (subRoot-&gt;getAbsoluteAHeight() == 2) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>AVLNode<t>* a = subRoot; </t></li>
+<li>AVLNode<t>* b = NULL; </t></li>
+<li>AVLNode<t>* c = NULL; </t></li>
+<li>AVLNode<t>* tempRoot = NULL; </t></li>
+<li>if  (subRoot-&gt;getAHeight() == 2) </li>
+<li>{ </li>
+<li>// move to left </li>
+<li>b = subRoot-&gt;getRight(); </li>
+<li>switch  (b-&gt;getAHeight()) </li>
+<li>{ </li>
+<li>case  1: </li>
+<li>tempRoot = RRRotate(a,b); </li>
+<li>isChangeHeight =  true  ; </li>
+<li>break  ; </li>
+<li>case  -1: </li>
+<li>c = b-&gt;getLeft(); </li>
+<li>tempRoot = RLRotate(a,b,c); </li>
+<li>isChangeHeight =  true  ; </li>
+<li>break  ; </li>
+<li>case  0: </li>
+<li>tempRoot = RRRotate(a,b); </li>
+<li>isChangeHeight =  false  ; </li>
+<li>break  ; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getAHeight() == -2) </li>
+<li>{ </li>
+<li>// move to right </li>
+<li>b = subRoot-&gt;getLeft(); </li>
+<li>switch  (b-&gt;getAHeight()) </li>
+<li>{ </li>
+<li>case  1: </li>
+<li>c = b-&gt;getRight(); </li>
+<li>tempRoot = LRRotate(a,b,c); </li>
+<li>isChangeHeight =  true  ; </li>
+<li><ol>
+<li>break  ; </li>
+</ol>
+</li>
+<li>case  -1: </li>
+<li>tempRoot = LLRotate(a,b); </li>
+<li>isChangeHeight =  true  ; </li>
+<li>break  ; </li>
+<li>case  0: </li>
+<li>tempRoot = LLRotate(a,b); </li>
+<li>isChangeHeight =  false  ; </li>
+<li>break  ; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>if  (prev == NULL) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>this  -&gt;head = tempRoot; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>if  (prev-&gt;getData() &gt; tempRoot-&gt;getData()) </li>
+<li>{ </li>
+<li>prev-&gt;setLeft(tempRoot); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>prev-&gt;setRight(tempRoot); </li>
+<li>} </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>return  isChangeHeight; </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+</ol>
+<p>最后贴上AVLTree的完整类代码</p>
+<ol>
+<li>#include “AVLNode.h” </li>
+<li><ol>
+<li>template&lt; class  T&gt;</li>
+</ol>
+</li>
+<li>class  AVLTree </li>
+<li>{ </li>
+<li>private  : </li>
+<li>AVLNode<t>* head; </t></li>
+<li><ol>
+<li>int  getHeight(AVLNode<t>* node) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (node == NULL) </li>
+<li>{ </li>
+<li>return  0; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>int  leftHeight = getHeight(node-&gt;getLeft()); </li>
+<li>int  rightHeight = getHeight(node-&gt;getRight()); </li>
+<li>if  (leftHeight &gt; rightHeight) </li>
+<li>{ </li>
+<li>return  leftHeight+1; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>return  rightHeight+1; </li>
+<li>} </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>int  getAVLHeight(AVLNode<t>* node) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (node == NULL) </li>
+<li>{ </li>
+<li>return  0; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>int  leftHeight = getHeight(node-&gt;getLeft()); </li>
+<li>int  rightHeight = getHeight(node-&gt;getRight()); </li>
+<li>return  rightHeight - leftHeight; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>void  clearSubTree(AVLNode<t>* node) </t></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (node != NULL) </li>
+<li>{ </li>
+<li>clearSubTree(node-&gt;getLeft()); </li>
+<li>clearSubTree(node-&gt;getRight()); </li>
+<li>delete node; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>void  printTree(AVLNode<t>* subTree,  int  count) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (subTree!=NULL) </li>
+<li>{ </li>
+<li><ol>
+<li>printTree(subTree-&gt;getRight(), count+1); </li>
+</ol>
+</li>
+<li>for  (  int  i = 0; i &lt; count; i++) </li>
+<li>{ </li>
+<li>cout &lt;&lt; “   “  ; </li>
+<li>} </li>
+<li>cout &lt;<subtree->getData()&lt;&lt;endl; </subtree-></li>
+<li>printTree(subTree-&gt;getLeft(),count+1); </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>void  printInMidOrder(AVLNode<t>* subTree) </t></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (subTree!=NULL) </li>
+<li>{ </li>
+<li>printInMidOrder(subTree-&gt;getLeft()); </li>
+<li><ol>
+<li><ol>
+<li>cout &lt;<subtree->getData()&lt;&lt;endl; </subtree-></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>printInMidOrder(subTree-&gt;getRight()); </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>bool  isPossibleNode(AVLNode<t><em> node, AVLNode<t></t></em> comNode) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (node != NULL &amp;&amp; node-&gt;getAbsoluteAHeight() == 1) </li>
+<li>{ </li>
+<li>return  true  ; </li>
+<li>} </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li><ol>
+<li>void  insertNode(AVLNode<t>* node) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>AVLNode<t>* subRoot =  this  -&gt;head; </t></li>
+<li>if  (subRoot == NULL) </li>
+<li>{ </li>
+<li>subRoot = node; </li>
+<li>return  ; </li>
+<li>} </li>
+<li>AVLNode<t>* ppoRoot = NULL; </t></li>
+<li>AVLNode<t>* poRoot = NULL; </t></li>
+<li>AVLNode<t>* pRoot = NULL; </t></li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>poRoot = subRoot; </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>while  (subRoot != NULL) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>pRoot = subRoot; </li>
+<li>if  (subRoot-&gt;getData() &gt; node-&gt;getData()) </li>
+<li>{ </li>
+<li><ol>
+<li>if  (isPossibleNode(subRoot-&gt;getLeft(),node)) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>poRoot = subRoot-&gt;getLeft(); </li>
+<li>ppoRoot = subRoot; </li>
+<li>} </li>
+<li>subRoot = subRoot-&gt;getLeft(); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getData() &lt; node-&gt;getData()) </li>
+<li>{ </li>
+<li><ol>
+<li>if  (isPossibleNode(subRoot-&gt;getRight(),node)) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>poRoot = subRoot-&gt;getRight(); </li>
+<li>ppoRoot = subRoot; </li>
+<li>} </li>
+<li>subRoot = subRoot-&gt;getRight(); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>throw  “the same key”  ; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>bool  isChangeHeight =  false  ; </li>
+</ol>
+</li>
+<li>if  (pRoot-&gt;getData() &gt; node-&gt;getData()) </li>
+<li>{ </li>
+<li><ol>
+<li>pRoot-&gt;setLeft(node); </li>
+</ol>
+</li>
+<li>if  (pRoot-&gt;getRight() == NULL) </li>
+<li>{ </li>
+<li>isChangeHeight =  true  ; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>pRoot-&gt;setAHeight(pRoot-&gt;getAHeight()-1); </li>
+<li>} </li>
+<li>} </li>
+<li>else  if  (pRoot-&gt;getData() &lt; node-&gt;getData()) </li>
+<li>{ </li>
+<li><ol>
+<li>pRoot-&gt;setRight(node); </li>
+</ol>
+</li>
+<li>if  (pRoot-&gt;getLeft() == NULL) </li>
+<li>{ </li>
+<li>isChangeHeight =  true  ; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>pRoot-&gt;setAHeight(pRoot-&gt;getAHeight()+1); </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>if  (poRoot != NULL &amp;&amp; isChangeHeight) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>// s-&gt;a update Height </li>
+<li>subRoot = poRoot; </li>
+<li>while  (subRoot != node) </li>
+<li>{ </li>
+<li>if  (subRoot-&gt;getData() &gt; node-&gt;getData()) </li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()-1); </li>
+<li><ol>
+<li>subRoot = subRoot-&gt;getLeft(); </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getData() &lt; node-&gt;getData()) </li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()+1); </li>
+<li><ol>
+<li>subRoot = subRoot-&gt;getRight(); </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>subRoot = poRoot; </li>
+</ol>
+</li>
+<li>AVLNode<t>* a = poRoot; </t></li>
+<li>AVLNode<t>* b = NULL; </t></li>
+<li>AVLNode<t>* c = NULL; </t></li>
+<li>AVLNode<t>* tempRoot = NULL; </t></li>
+<li>if  (a-&gt;getAbsoluteAHeight() &gt; 1) </li>
+<li>{ </li>
+<li>if  (subRoot-&gt;getData() &gt; node-&gt;getData()) </li>
+<li>{ </li>
+<li>b = subRoot-&gt;getLeft(); </li>
+<li>if  (a-&gt;getAHeight()* b-&gt;getAHeight() &gt; 0) </li>
+<li>{ </li>
+<li>//LLRotate </li>
+<li>tempRoot = LLRotate(a,b); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>//LRRotate </li>
+<li>c = b-&gt;getRight(); </li>
+<li>tempRoot =LRRotate(a,b,c); </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getData() &lt; node-&gt;getData()) </li>
+<li>{ </li>
+<li>b = subRoot-&gt;getRight(); </li>
+<li>if  (a-&gt;getAHeight()* b-&gt;getAHeight() &gt; 0) </li>
+<li>{ </li>
+<li>//RRRotate </li>
+<li>tempRoot = RRRotate(a,b); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>//RLRotate </li>
+<li>c = b-&gt;getLeft(); </li>
+<li>tempRoot =RLRotate(a,b,c); </li>
+<li>} </li>
+<li>} </li>
+<li>if  (ppoRoot!=NULL) </li>
+<li>{ </li>
+<li>if  (ppoRoot-&gt;getData() &gt; tempRoot-&gt;getData()) </li>
+<li>{ </li>
+<li>ppoRoot-&gt;setLeft(tempRoot); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>ppoRoot-&gt;setRight(tempRoot); </li>
+<li>} </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>this  -&gt;head = tempRoot; </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//        a                   b </li>
+<li>//       /                  /   / </li>
+<li>//      b        -&gt;        c     a </li>
+<li>//     / </li>
+<li>//    c </li>
+<li>AVLNode<t><em> LLRotate(AVLNode<t></t></em> a, AVLNode<t>* b) </t></t></li>
+<li>{ </li>
+<li>a-&gt;setLeft(b-&gt;getRight()); </li>
+<li>b-&gt;setRight(a); </li>
+<li><ol>
+<li>a-&gt;setAHeight(0); </li>
+</ol>
+</li>
+<li>b-&gt;setAHeight(0); </li>
+<li>//a-&gt;setAHeight(getAVLHeight(a)); </li>
+<li>//b-&gt;setAHeight(getAVLHeight(b)); </li>
+<li>return  b; </li>
+<li>} </li>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+<li>//        a                      b </li>
+<li>//          /                  /   / </li>
+<li>//            b        -&gt;     a     c </li>
+<li>//              / </li>
+<li>//                c </li>
+<li>AVLNode<t><em> RRRotate(AVLNode<t></t></em> a, AVLNode<t>* b) </t></t></li>
+<li>{ </li>
+<li>a-&gt;setRight(b-&gt;getLeft()); </li>
+<li>b-&gt;setLeft(a); </li>
+<li><ol>
+<li>a-&gt;setAHeight(0); </li>
+</ol>
+</li>
+<li>b-&gt;setAHeight(0); </li>
+<li>//a-&gt;setAHeight(getAVLHeight(a)); </li>
+<li>//b-&gt;setAHeight(getAVLHeight(b)); </li>
+<li>return  b; </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//        a                      c </li>
+<li>//          /                  /   / </li>
+<li>//            b        -&gt;     a     b </li>
+<li>//           /                 / </li>
+<li>//          c                   d </li>
+<li>//         / </li>
+<li>//        d </li>
+<li>AVLNode<t><em> RLRotate(AVLNode<t></t></em> a, AVLNode<t><em> b, AVLNode<t></t></em> c) </t></t></li>
+<li>{ </li>
+<li><ol>
+<li>b-&gt;setLeft(c-&gt;getRight()); </li>
+</ol>
+</li>
+<li>c-&gt;setRight(b); </li>
+<li>a-&gt;setRight(c-&gt;getLeft()); </li>
+<li>c-&gt;setLeft(a); </li>
+<li><ol>
+<li><ol>
+<li>//a-&gt;setAHeight(getAVLHeight(a)); </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//c-&gt;setAHeight(getAVLHeight(c)); </li>
+<li>//b-&gt;setAHeight(getAVLHeight(b)); </li>
+<li><ol>
+<li>if  (c-&gt;getAbsoluteAHeight() == 1) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (b-&gt;getAHeight() == 0) </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(-1); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(0); </li>
+<li>} </li>
+<li>a-&gt;setAHeight(1); </li>
+<li>c-&gt;setAHeight(0); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>if  (b-&gt;getAHeight() == 0) </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(-1); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(0); </li>
+<li>} </li>
+<li>a-&gt;setAHeight(0); </li>
+<li>c-&gt;setAHeight(0); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>return  c; </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li>// return the subRoot </li>
+</ol>
+</li>
+<li>//        a                      c </li>
+<li>//       /                     /   / </li>
+<li>//      b              -&gt;     b     a </li>
+<li>//       /                         / </li>
+<li>//        c                       d </li>
+<li>//         / </li>
+<li>//          d </li>
+<li>AVLNode<t><em> LRRotate(AVLNode<t></t></em> a, AVLNode<t><em> b, AVLNode<t></t></em> c) </t></t></li>
+<li>{ </li>
+<li>b-&gt;setRight(c-&gt;getLeft()); </li>
+<li>c-&gt;setLeft(b); </li>
+<li>a-&gt;setLeft(c-&gt;getRight()); </li>
+<li>c-&gt;setRight(a); </li>
+<li><ol>
+<li><ol>
+<li>//a-&gt;setAHeight(getAVLHeight(a)); </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//c-&gt;setAHeight(getAVLHeight(c)); </li>
+<li>//b-&gt;setAHeight(getAVLHeight(b)); </li>
+<li><ol>
+<li>if  (c-&gt;getAbsoluteAHeight() == 1) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (b-&gt;getAHeight() == 0) </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(1); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(0); </li>
+<li>} </li>
+<li><ol>
+<li>a-&gt;setAHeight(-1); </li>
+</ol>
+</li>
+<li>c-&gt;setAHeight(0); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li><ol>
+<li>if  (b-&gt;getAHeight() == 0) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>b-&gt;setAHeight(1); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>b-&gt;setAHeight(0); </li>
+<li>} </li>
+<li>a-&gt;setAHeight(0); </li>
+<li>c-&gt;setAHeight(0); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>return  c; </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>AVLNode<t><em> getMaxNode(AVLNode<t></t></em> subRoot) </t></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (subRoot == NULL) </li>
+<li>{ </li>
+<li>return  NULL; </li>
+<li>} </li>
+<li>if  (subRoot-&gt;getRight() == NULL) </li>
+<li>{ </li>
+<li>return  subRoot; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>return  getMaxNode(subRoot-&gt;getRight()); </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>void  deleteNode(AVLNode<t><em> subRoot, AVLNode<t></t></em> prev,AVLNode<t>* assignNode) </t></t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (prev == NULL) </li>
+<li>{ </li>
+<li>this  -&gt;head = assignNode; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>if  (prev-&gt;getLeft() == subRoot) </li>
+<li>{ </li>
+<li>prev-&gt;setLeft(assignNode); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (prev-&gt;getRight() == subRoot) </li>
+<li>{ </li>
+<li>prev-&gt;setRight(assignNode); </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li>delete subRoot; </li>
+</ol>
+</li>
+<li>} </li>
+<li><ol>
+<li>bool  deleteNode(AVLNode<t><em> subRoot, AVLNode<t></t></em> prev, T&amp; node) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (subRoot == NULL) </li>
+<li>{ </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li>bool  isChangeHeight =  false  ; </li>
+<li>if  (subRoot-&gt;getData() &gt; node) </li>
+<li>{ </li>
+<li>isChangeHeight = deleteNode(subRoot-&gt;getLeft(),subRoot,node); </li>
+<li>if  (isChangeHeight) </li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()+1); </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getData() &lt; node) </li>
+<li>{ </li>
+<li>isChangeHeight = deleteNode(subRoot-&gt;getRight(),subRoot,node); </li>
+<li>if  (isChangeHeight) </li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()-1); </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>AVLNode<t>* assignNode = NULL; </t></li>
+<li>if  (subRoot-&gt;getLeft() == NULL &amp;&amp; subRoot-&gt;getRight() == NULL) </li>
+<li>{ </li>
+<li>// no child </li>
+<li><ol>
+<li>isChangeHeight =  true  ; </li>
+</ol>
+</li>
+<li>deleteNode(subRoot,prev,assignNode); </li>
+<li>return  isChangeHeight; </li>
+<li>} </li>
+<li>else  if  (subRoot-&gt;getLeft() == NULL &amp;&amp; subRoot-&gt;getRight() != NULL) </li>
+<li>{ </li>
+<li>// no left child </li>
+<li>isChangeHeight =  true  ; </li>
+<li>assignNode = subRoot-&gt;getRight(); </li>
+<li>deleteNode(subRoot,prev,assignNode); </li>
+<li>return  isChangeHeight; </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getRight() == NULL &amp;&amp; subRoot-&gt;getLeft() != NULL) </li>
+<li>{ </li>
+<li>// no right chlid </li>
+<li>isChangeHeight =  true  ; </li>
+<li>assignNode = subRoot-&gt;getLeft(); </li>
+<li>deleteNode(subRoot,prev,assignNode); </li>
+<li>return  isChangeHeight; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>// have both children </li>
+<li>assignNode = getMaxNode(subRoot-&gt;getLeft()); </li>
+<li>T data = assignNode-&gt;getData(); </li>
+<li>bool  isChange = deleteNode(subRoot-&gt;getLeft(),subRoot,data); </li>
+<li>cout &lt;&lt; “use “  &lt;&lt; data&lt;&lt; “ replace “  &lt;&lt; subRoot-&gt;getData()&lt;&lt;endl; </li>
+<li>subRoot-&gt;setData(data);  // copy all data to subRoot </li>
+<li><ol>
+<li>if  (isChange) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>subRoot-&gt;setAHeight(subRoot-&gt;getAHeight()+1); </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li>if  (subRoot-&gt;getAbsoluteAHeight() == 2) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>AVLNode<t>* a = subRoot; </t></li>
+<li>AVLNode<t>* b = NULL; </t></li>
+<li>AVLNode<t>* c = NULL; </t></li>
+<li>AVLNode<t>* tempRoot = NULL; </t></li>
+<li>if  (subRoot-&gt;getAHeight() == 2) </li>
+<li>{ </li>
+<li>// move to left </li>
+<li>b = subRoot-&gt;getRight(); </li>
+<li>switch  (b-&gt;getAHeight()) </li>
+<li>{ </li>
+<li>case  1: </li>
+<li>tempRoot = RRRotate(a,b); </li>
+<li>isChangeHeight =  true  ; </li>
+<li>break  ; </li>
+<li>case  -1: </li>
+<li>c = b-&gt;getLeft(); </li>
+<li>tempRoot = RLRotate(a,b,c); </li>
+<li>isChangeHeight =  true  ; </li>
+<li>break  ; </li>
+<li>case  0: </li>
+<li>tempRoot = RRRotate(a,b); </li>
+<li>isChangeHeight =  false  ; </li>
+<li>break  ; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getAHeight() == -2) </li>
+<li>{ </li>
+<li>// move to right </li>
+<li>b = subRoot-&gt;getLeft(); </li>
+<li>switch  (b-&gt;getAHeight()) </li>
+<li>{ </li>
+<li>case  1: </li>
+<li>c = b-&gt;getRight(); </li>
+<li>tempRoot = LRRotate(a,b,c); </li>
+<li>isChangeHeight =  true  ; </li>
+<li><ol>
+<li>break  ; </li>
+</ol>
+</li>
+<li>case  -1: </li>
+<li>tempRoot = LLRotate(a,b); </li>
+<li>isChangeHeight =  true  ; </li>
+<li>break  ; </li>
+<li>case  0: </li>
+<li>tempRoot = LLRotate(a,b); </li>
+<li>isChangeHeight =  false  ; </li>
+<li>break  ; </li>
+<li>} </li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>if  (prev == NULL) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>this  -&gt;head = tempRoot; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>if  (prev-&gt;getData() &gt; tempRoot-&gt;getData()) </li>
+<li>{ </li>
+<li>prev-&gt;setLeft(tempRoot); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>prev-&gt;setRight(tempRoot); </li>
+<li>} </li>
+<li>} </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>return  isChangeHeight; </li>
+</ol>
+</li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>public  : </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>AVLTree(T&amp; data) </li>
+<li>{ </li>
+<li>head =  new  AVLNode<t>(data); </t></li>
+<li>} </li>
+<li><ol>
+<li>AVLTree(AVLNode<t>* head) </t></li>
+</ol>
+</li>
+<li>{ </li>
+<li>clearSubTree(  this  -&gt;head); </li>
+<li>this  -&gt;head = head; </li>
+<li>} </li>
+<li><ol>
+<li>~AVLTree() </li>
+</ol>
+</li>
+<li>{ </li>
+<li>clearSubTree(head); </li>
+<li>} </li>
+<li><ol>
+<li>void  printTree() </li>
+</ol>
+</li>
+<li>{ </li>
+<li>printTree(  this  -&gt;head,0); </li>
+<li>} </li>
+<li><ol>
+<li>void  printInMidOrder() </li>
+</ol>
+</li>
+<li>{ </li>
+<li>printInMidOrder(  this  -&gt;head); </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>void  insertNode(T&amp; data) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>insertNode(  new  AVLNode<t>(data)); </t></li>
+<li><ol>
+<li>} </li>
+</ol>
+</li>
+<li><ol>
+<li>void  deleteNode(T&amp; data) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>deleteNode(  this  -&gt;head,NULL,data); </li>
+<li>} </li>
+<li>/<em>bool isUnbalancePoint(AVLNode<t></t></em> node, AVLNode<t>* compareNode) </t></li>
+<li>{ </li>
+<li><ol>
+<li>if(node-&gt;getAbsoluteAHeight() == 1) </li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol>
+<li>if(node-&gt;getAHeight == 1 &amp;&amp; node-&gt;getData() &lt; compareNode-&gt;getData() ) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>return true; </li>
+<li>} </li>
+<li>else if(node-&gt;getAHeight == -1 &amp;&amp; node-&gt;getData() &gt; compareNode-&gt;getData()) </li>
+<li>{ </li>
+<li>return true; </li>
+<li>} </li>
+<li>} </li>
+<li>return false; </li>
+<li>}*/ </li>
+<li><ol>
+<li><ol>
+<li>}; </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+            <a href="/tags/null/" rel="tag"># null</a>
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2008/08/19/2794565/" rel="next" title="编程练习——二叉查找树（BinarySearchTree）">
+                <i class="fa fa-chevron-left"></i> 编程练习——二叉查找树（BinarySearchTree）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2008/08/19/2797586/" rel="prev" title="创造练习——自适应树(self-adjusting Tree)">
+                创造练习——自适应树(self-adjusting Tree) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/zqz.jpg"
+               alt="帐前卒" />
+          <p class="site-author-name" itemprop="name">帐前卒</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">634</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">626</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
