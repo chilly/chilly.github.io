@@ -295,7 +295,19 @@
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -326,23 +338,30 @@
       
         
           
-          我只是记点流水帐，不是技术文档。
-1。首先找到文档  http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2
- 看看安装前需要准备什么。
-2。去  http://open.eucalyptus.com/downloads
- 下载一个安装包。我使用的是centos5.3
-3.因为下载时间过慢，所以顺便下载了一个  euca2ools
-。按照文档的指示安装。结果说缺少swig.然后使用yum upgrade,再yum install swig.
-4.安装完毕后，使用下面的命令：
-sudo -s rpm -Uvh python25
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/09/14/4550332/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>我只是记点流水帐，不是技术文档。</p>
+<p>1。首先找到文档 <a href="http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2" target="_blank" rel="external"> http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2
+</a> 看看安装前需要准备什么。</p>
+<p>2。去 <a href="http://open.eucalyptus.com/downloads" target="_blank" rel="external"> http://open.eucalyptus.com/downloads
+</a> 下载一个安装包。我使用的是centos5.3</p>
+<p>3.因为下载时间过慢，所以顺便下载了一个 <a href="http://open.eucalyptus.com/wiki/Euca2oolsCentosInstall" target="_blank" rel="external"> euca2ools
+</a><br>。按照文档的指示安装。结果说缺少swig.然后使用yum upgrade,再yum install swig.</p>
+<p>4.安装完毕后，使用下面的命令：</p>
+<p>sudo -s rpm -Uvh python25-libs-2.5.1-bashton1.i386.rpm<br>python25-2.5.1-bashton1.i386.rpm euca2ools-1.0-1.i386.rpm<br>//后面三个是euca2ools中的三个文件。</p>
+<p>安装成功后配置证书：证书的下载要现注册一个帐号。证书获得可以参考 <a href="http://blog.csdn.net/cctt_1/archive/2009/09/14/4550353.aspx" target="_blank" rel="external"> 我的blog
+</a><br>.然后解压证书。并输入以下命令（进入/.euca后执行解压命令）：</p>
+<p>mkdir ~/.euca cd ~/.euca chmod 0700 ~/.euca chmod 0600 ~/.euca/* . eucarc<br>//最后一个配置环境文件。你只要找到相应的eucarc文件即可。</p>
+<p>然后你就可以使用那些命令了..例如euca-XXXX。例如输入euca-describle-images 传说就能看到自己的image<br>ID.但是我却没有看到。不过我还是继续尝试命令。euca-add-keypair mykey &gt; mykey.private<br>.然后就可以看到生成了mykey.private。之后在chmod 0600 mykey.private 这句只不过是为了安全。之后euca-run-<br>instances -k mykey -n <numbers of="" instance="" you="" want=""> <image id=""><br>这个命令里我还是没有imageID.不过imageID可以从 <a href="https://mayhem9.cs.ucsb.edu:8443/#images" target="_blank" rel="external"> https://mayhem9.cs.ucsb.edu:8443/#images
+</a> 得到,也可以使用euca-describle-images<br>-a.然后你会看到如下的输出内容：</image></numbers></p>
+<p>IMAGE   eki-D29C1495    ttylinux-kernel/vmlinuz-2.6.16.33-xen.manifest.xml<br>admin   available       public  x86_64  kernel<br>IMAGE   emi-2D08128F    ttylinux-image/ttylinux.img.manifest.xml        admin<br>available       public  x86_64  machine<br>IMAGE   eki-A70313EB    vdebian-kernel/vmlinuz-2.6.24-19-xen.manifest.xml<br>admin   available       public  x86_64  kernel<br>IMAGE   eri-002A152F    vdebian-ramdisk/initrd.img-2.6.24-19-xen.manifest.xml<br>admin   available       public  x86_64  ramdisk<br>IMAGE   emi-E8D41123    vdebian-image/vdebian.img.manifest.xml  admin<br>available       public  x86_64  machine<br>IMAGE   eki-300A15CA    ttylinux-<br>kernel-i386/vmlinuz-2.6.16.33-xen.manifest.xml admin   available       public<br>i386    kernel<br>IMAGE   emi-7D1B13CD    ttylinux-image-i386/ttylinux.img.manifest.xml   admin<br>available       public  i386    machine<br>IMAGE   eki-00C81523    vdebian-kernel-i386/vmlinuz-2.6.24-19-xen.manifest.xml<br>admin   available       public  i386    kernel<br>IMAGE   eri-5FB81668    vdebian-<br>ramdisk-i386/initrd.img-2.6.24-19-xen.manifest.xml      admin   available<br>public  i386    ramdisk<br>IMAGE   emi-33E9125A    vdebian-image-i386/vdebian.img.manifest.xml     admin<br>available       public  i386    machine<br>IMAGE   emi-EDBC1AC5    public-euca-test-3-1241020869/public-euca-<br>test-3-1241020869.raw.manifest.xml    yan     available       public  i386<br>machine<br>IMAGE   emi-042211C4    my-images-bkt/ttylinux.img.manifest.xml iravana<br>available       public  i386    machine<br>IMAGE   eki-618C1258    kernel2627/vmlinuz-2.6.27.21-0.1-xen.manifest.xml<br>admin   available       public  i386    kernel<br>IMAGE   eri-5C861240    ramdisk2627/initrd-2.6.27.21-0.1-xen.manifest.xml<br>admin   available       public  i386    ramdisk<br>IMAGE   emi-AD9013E6    ubuntu-jaunty/ubuntu.9-04.x86-64.img.manifest.xml<br>admin   available       public  i386    machine<br>IMAGE   emi-6BDF15B8<br>server-668309-1243550256/server-668309-1243550256.raw.manifest.xml      arania<br>available       public  i386    machine<br>IMAGE   emi-EFBB13FA<br>pmor-696423-1245204942/pmor-696423-1245204942.raw.manifest.xml  itatc<br>available       public  i386    machine<br>IMAGE   emi-73201BF6    dpe-eucalyptus-745793-1246037237/dpe-<br>eucalyptus-745793-1246037237.raw.manifest.xml      jjones  available<br>public  i386    machine<br>IMAGE   emi-D0F719CB    steve13-test2-880525-1250176080/steve13-test2-880525-1<br>250176080.raw.manifest.xml        SteveL  available       public  i386<br>machine<br>IMAGE   emi-916B1414    test-bundled-vol-ubuntu-ec2/image.manifest.xml  admin<br>available       public  x86_64  machine<br>IMAGE   emi-7D7E0EC5    test-bundle-11/image.manifest.xml       admin<br>available       public  x86_64  machine</p>
+<p>第二列就是你可以使用的image.不过有些可能没有kernel,有些没有random disk,可能不能使用。所以最好去那个网站上  <a href="https://mayhem9.cs.ucsb.edu:8443/#images" target="_blank" rel="external"><br>https://mayhem9.cs.ucsb.edu:8443/#images
+</a> 找合适的。找到后，按照上面的命令输入:euca-run-<br>instances -k mykey -n 1 emi-AD9013E6 我选择生成一个ubuntu的实例。然后会看到如下的输出：</p>
+<p>RESERVATION     r-3C7907AD      chico   chico-default<br>INSTANCE        i-3BCA0634      emi-AD9013E6    0.0.0.0 0.0.0.0 pending<br>2009-09-14T07:31:05.127Z        eki-618C1258    eri-5C861240<br>看到第二行为instance,就是你生成的instance，它的id为 i-3BCA0634.然后你可以看它的具体描述：传说需要自己配这个实例的IP,不过我<br>使用的是Eucalyptus已经搭建起来的云，所以就不用配置了。看看这个实例的描述,使用命令euca-describle-<br>instances,看到如下的输出:</p>
+<p>RESERVATION     r-3C7907AD      chico   default<br>INSTANCE        i-3BCA0634      emi-AD9013E6    128.111.45.39   128.111.45.39<br>pending         0       m1.small        2009-09-14T07:31:05.127Z        epc<br>eki-618C1258    eri-5C861240<br>这个和上面的差不多。但是你可以看到那个实例ID后面有 128.111.45.39<br>128.111.45.39，如果是亚马逊的弹性计算云，前面的就是外部IP，后面的就是内部ip. Eucalyptus可能简单些，就有一个ip.那我们怎么登录<br>上去呢？亚马逊的使用方法是http://<host>/。Eucalyptus使用的是如下命令:ssh -i mykey.private root<br>@<accessible-instance-ip> 如果我敲的话就是：ssh -i mykey.private<br>root@128.111.45.39输入命令后再根据提示输入yes.你将看到:</accessible-instance-ip></host></p>
+<p>Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by<br>applicable law.  </p>
+<p>To access official Ubuntu documentation, please visit:<br><a href="http://help.ubuntu.com/" target="_blank" rel="external">http://help.ubuntu.com/</a><br>Last login: Sun May 10 18:38:38 2009 from localhost.localdomain<br>root@ubuntu:~#<br>哈哈～得到另一个新的操作系统！还有一个好处就是增加了很多硬盘空间。你可以使用df<br>-lh查看以下。所有的ubuntu命令都可以在那上面使用了！使用完毕后，别忘记关掉instances.使用命令:euca-terminate-<br>instances <instance1 id=""> <instance2 id="">,就可以关闭所有的instance.如果你再次使用euca-<br>describle-instances查看那些实例，状态应该会被标记为terminate.</instance2></instance1></p>
+<p>对我们个人而言。Eucalyptus以及亚马逊的弹性云EC2都让你多了控制网上电脑的能力。但是对于灰鸽子的制造者来说，他们提供了24小时服务，并且是合法的，<br>不过缺点就是要收费。</p>
+
+          
         
       
     </div>
@@ -421,7 +440,19 @@ sudo -s rpm -Uvh python25
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -452,19 +483,63 @@ sudo -s rpm -Uvh python25
       
         
           
-          yum是什么yum = Yellow dog Updater, Modified主要功能是更方便的添加/删除/更新RPM包.它能自动解决包的倚赖性问题.它能便于管理大量系统的更新问题
-yum特点可以同时配置多个资源库(Repository)简洁的配置文件(/etc/yum.conf自动解决增加或删除rpm包时遇到的倚赖性问题使用方便保持与RPM数据库的一致性
-yum安装CentOS自带(yum-*.noarch.rpm)  
-#rpm -ivh yum-*.noarch.rpm在第一次启用yum之前首先需要导入系统的RPM-GPG-KEY：  
-#rpm –import /usr/share/
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/09/14/4550295/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>yum是什么<br>yum = Yellow dog Updater, Modified<br>主要功能是更方便的添加/删除/更新RPM包.<br>它能自动解决包的倚赖性问题.<br>它能便于管理大量系统的更新问题</p>
+<p>yum特点<br>可以同时配置多个资源库(Repository)<br>简洁的配置文件(/etc/yum.conf<br>自动解决增加或删除rpm包时遇到的倚赖性问题<br>使用方便<br>保持与RPM数据库的一致性</p>
+<p>yum安装<br>CentOS自带(yum-*.noarch.rpm)  </p>
+<p>#rpm -ivh yum-*.noarch.rpm<br>在第一次启用yum之前首先需要导入系统的RPM-GPG-KEY：  </p>
+<p>#rpm –import /usr/share/doc/centos-release-3(4)/RPM-GPG-KEY-CentOS-3(4)</p>
+<p>yum指令<br>注:当第一次使用yum或yum资源库有更新时,yum会自动下载所有所需的headers放置于/var/cache/yum目录下,所需时间可能较长.</p>
+<p>rpm包的更新<br>检查可更新的rpm包  </p>
+<p>#yum check-update<br>更新所有的rpm包  </p>
+<p>#yum update<br>更新指定的rpm包,如更新kernel和kernel source  </p>
+<p>#yum update kernel kernel-source<br>大规模的版本升级,与yum update不同的是,连旧的淘汰的包也升级  </p>
+<p>#yum upgrade</p>
+<p>rpm包的安装和删除<br>安装rpm包,如xmms-mp3  </p>
+<p>#yum install xmms-mp3<br>删除rpm包,包括与该包有倚赖性的包  </p>
+<p>#yum remove licq<br>注:同时会提示删除licq-gnome,licq-qt,licq-text</p>
+<p>yum暂存(/var/cache/yum/)的相关参数<br>清除暂存中rpm包文件  </p>
+<p>#yum clean packages<br>清除暂存中rpm头文件  </p>
+<p>#yum clearn headers<br>清除暂存中旧的rpm头文件  </p>
+<p>#yum clean oldheaders<br>清除暂存中旧的rpm头文件和包文件  </p>
+<p>#yum clearn 或#yum clearn all<br>注:相当于yum clean packages + yum clean oldheaders</p>
+<p>包列表<br>列出资源库中所有可以安装或更新的rpm包  </p>
+<p>#yum list<br>列出资源库中特定的可以安装或更新以及已经安装的rpm包  </p>
+<p>#yum list mozilla#yum list mozilla*<br>注:可以在rpm包名中使用匹配符,如列出所有以mozilla开头的rpm包<br>列出资源库中所有可以更新的rpm包  </p>
+<p>#yum list updates<br>列出已经安装的所有的rpm包  </p>
+<p>#yum list installed<br>列出已经安装的但是不包含在资源库中的rpm包  </p>
+<p>#yum list extras<br>注:通过其它网站下载安装的rpm包</p>
+<p>rpm包信息显示(info参数同list)<br>列出资源库中所有可以安装或更新的rpm包的信息  </p>
+<p>#yum info<br>列出资源库中特定的可以安装或更新以及已经安装的rpm包的信息  </p>
+<p>#yum info mozilla#yum info mozilla*<br>注:可以在rpm包名中使用匹配符,如列出所有以mozilla开头的rpm包的信息<br>列出资源库中所有可以更新的rpm包的信息  </p>
+<p>#yum info updates<br>列出已经安装的所有的rpm包的信息  </p>
+<p>#yum info installed<br>列出已经安装的但是不包含在资源库中的rpm包的信息  </p>
+<p>#yum info extras<br>注:通过其它网站下载安装的rpm包的信息</p>
+<p>搜索rpm包<br>搜索匹配特定字符的rpm包  </p>
+<p>#yum search mozilla<br>注:在rpm包名,包描述等中搜索<br>搜索有包含特定文件名的rpm包  </p>
+<p>#yum provides realplay</p>
+<p>增加资源库<br>例如:增加rpm.livna.org作为资源库<br>安装Livna.org rpms GPG key  </p>
+<p>#rpm –import <a href="http://rpm.livna.org
+/RPM-LIVNA-GPG-KEY" target="_blank" rel="external"> http://rpm.livna.org/RPM-LIVNA-GPG-KEY </a><br>检查GPG Key  </p>
+<h1 id="rpm-qa-gpg-pubkey"><a href="#rpm-qa-gpg-pubkey" class="headerlink" title="rpm -qa gpg-pubkey*"></a>rpm -qa gpg-pubkey*</h1><p>显示Key信息  </p>
+<p>#rpm -qi gpg-pubkey-a109b1ec-3f6e28d5<br>(注:如果要删除Key,使用#rpm -e gpg-pubkey-a109b1ec-3f6e28d5)</p>
+<p>yum常用的命令</p>
+<h1 id="yum-install-xxx-安装xxx软件"><a href="#yum-install-xxx-安装xxx软件" class="headerlink" title="yum install xxx            安装xxx软件"></a>yum install xxx            安装xxx软件</h1><h1 id="yum-info-xxx-查看xxx软件的信息"><a href="#yum-info-xxx-查看xxx软件的信息" class="headerlink" title="yum info xxx                查看xxx软件的信息"></a>yum info xxx                查看xxx软件的信息</h1><h1 id="yum-remove-xxx-删除软件包"><a href="#yum-remove-xxx-删除软件包" class="headerlink" title="yum remove xxx        删除软件包"></a>yum remove xxx        删除软件包</h1><h1 id="yum-list-列出软件包"><a href="#yum-list-列出软件包" class="headerlink" title="yum list                        列出软件包"></a>yum list                        列出软件包</h1><h1 id="yum-clean-清除缓冲和就的包"><a href="#yum-clean-清除缓冲和就的包" class="headerlink" title="yum clean                    清除缓冲和就的包"></a>yum clean                    清除缓冲和就的包</h1><h1 id="yum-provides-xxx-以xxx为关键字搜索包（提供的信息为关键字）"><a href="#yum-provides-xxx-以xxx为关键字搜索包（提供的信息为关键字）" class="headerlink" title="yum provides xxx        以xxx为关键字搜索包（提供的信息为关键字）"></a>yum provides xxx        以xxx为关键字搜索包（提供的信息为关键字）</h1><h1 id="yum-search-xxx-搜索软件包（以名字为关键字）"><a href="#yum-search-xxx-搜索软件包（以名字为关键字）" class="headerlink" title="yum search xxx           搜索软件包（以名字为关键字）"></a>yum search xxx           搜索软件包（以名字为关键字）</h1><h1 id="yum-groupupdate-xxx"><a href="#yum-groupupdate-xxx" class="headerlink" title="yum groupupdate xxx"></a>yum groupupdate xxx</h1><h1 id="yum-grouplist-xxx"><a href="#yum-grouplist-xxx" class="headerlink" title="yum grouplist xxx"></a>yum grouplist xxx</h1><h1 id="yum-groupremove-xxx"><a href="#yum-groupremove-xxx" class="headerlink" title="yum groupremove xxx"></a>yum groupremove xxx</h1><p>这三个都是一组为单位进行升级 列表和删除的操作。。比如 “Mysql Database”就是一个组会同时操作相关的所有软件包；</p>
+<h1 id="yum-update-系统升级"><a href="#yum-update-系统升级" class="headerlink" title="yum update                系统升级"></a>yum update                系统升级</h1><h1 id="yum-list-available-列出所有升级源上的包；"><a href="#yum-list-available-列出所有升级源上的包；" class="headerlink" title="yum list available        列出所有升级源上的包；"></a>yum list available        列出所有升级源上的包；</h1><h1 id="yum-list-updates-列出所有升级源上的可以更新包；"><a href="#yum-list-updates-列出所有升级源上的可以更新包；" class="headerlink" title="yum list updates         列出所有升级源上的可以更新包；"></a>yum list updates         列出所有升级源上的可以更新包；</h1><h1 id="yum-list-installed-列出已经安装的包；"><a href="#yum-list-installed-列出已经安装的包；" class="headerlink" title="yum list installed         列出已经安装的包；"></a>yum list installed         列出已经安装的包；</h1><h1 id="yun-update-kernel-升级内核；"><a href="#yun-update-kernel-升级内核；" class="headerlink" title="yun update kernel       升级内核；"></a>yun update kernel       升级内核；</h1><p>yum常用的源</p>
+<p>1) 自动选择最快的源</p>
+<p>由于yum中有的mirror速度是非常慢的，如果yum选择了这个mirror，这个时候yum就会非常慢，对此，可以下载fastestmirror插件，它会自<br>动选择最快的mirror：</p>
+<p>#yum install yum-fastestmirror</p>
+<p>配置文件：（一般不用动）/etc/yum/pluginconf.d/fastestmirror.conf</p>
+<p>你的yum镜像的速度测试记录文件：/var/cache/yum/timedhosts.txt</p>
+<p>(2)使用图形界面的yum</p>
+<p>如果觉得命令行的yum不方便，那么可以使用图形化的yumex，这个看起来更方便，因为可以自由地选择软件仓库：</p>
+<p>#yum install yumex</p>
+<p>然后在系统工具中就可以看到yum extender了。实际上系统自带的“添加/删除程序“也可以实现图形化的软件安装，但有些yumex的功能它没有</p>
+<p>如果你想更新源可以使用以下的方法：</p>
+<p>cd /etc/yum.repos.d<br>mv CentOS-Base.repo CentOS-Base.repo.save<br>wget <a href="http://centos.ustc.edu.cn/CentOS-Base.repo.5" target="_blank" rel="external">http://centos.ustc.edu.cn/CentOS-Base.repo.5</a><br>mv CentOS-Base.repo.5 CentOS-Base.repo</p>
+<p>这是更新成为中科大的源，其他源如下：</p>
+<p>163:  <a href="http://mirrors.163.com/.help/CentOS-Base-163.repo" target="_blank" rel="external">http://mirrors.163.com/.help/CentOS-Base-163.repo</a></p>
+
+          
         
       
     </div>
@@ -543,7 +618,19 @@ yum安装CentOS自带(yum-*.noarch.rpm)
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -574,15 +661,15 @@ yum安装CentOS自带(yum-*.noarch.rpm)
       
         
           
-          说检查点,其实就是对过去历史的记录，可以认为是log.不过这里进行了简化.举例来说,我现在又一段文本.文本里放有一堆堆的链接地址.我现在的任务是下载那些地址中的内容.另外因为网络的问题或者网站的问题,每次下载可能不会非常的成功.有可能出现断链或者socket异常错误。不过不管产生什么样的错误，我都希望我的程序能够一直跑下去。或者能停掉后，继续从为下载的链接处跑。而不是从开始的地方跑。这个问题非常简单。因为这些链接是上下文无关的（上下文有关的情况要另外分析）。所以我只要记录程序运行停止前的最后一条，就有希望能够延续前面的工作。这里实现中使用的是记录原有的链接，大家也可以使用计数器的方法来记录。代
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/09/04/4519251/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>说检查点,其实就是对过去历史的记录，可以认为是log.不过这里进行了简化.举例来说,我现在又一段文本.文本里放有一堆堆的链接地址.我现在的任务是下载那些地址<br>中的内容.另外因为网络的问题或者网站的问题,每次下载可能不会非常的成功.有可能出现断链或者socket异常错误。不过不管产生什么样的错误，我都希望我的程序能<br>够一直跑下去。或者能停掉后，继续从为下载的链接处跑。而不是从开始的地方跑。这个问题非常简单。因为这些链接是上下文无关的（上下文有关的情况要另外分析）。所以我<br>只要记录程序运行停止前的最后一条，就有希望能够延续前面的工作。这里实现中使用的是记录原有的链接，大家也可以使用计数器的方法来记录。代码如下：  </p>
+<h1 id="这个异常是原文本内容中未出现检查点内容出现造成的-class-CheckPointMissContentError-pass"><a href="#这个异常是原文本内容中未出现检查点内容出现造成的-class-CheckPointMissContentError-pass" class="headerlink" title="这个异常是原文本内容中未出现检查点内容出现造成的 class CheckPointMissContentError: pass"></a>这个异常是原文本内容中未出现检查点内容出现造成的 class CheckPointMissContentError: pass</h1><p>将文件读取指针fd移至到检查点对应的内容处 # check point 的规则为，读取文件一行或者多行，进行操作后，将此一行或多行送入 #<br>检查文件check_point中。以后再次运行程序，即可从该检查点处继续运行。 def GoCheckPoint(fd,check_point): if<br>not os.path.isfile(check_point): f_check = open(check_point,’w’)<br>f_check.close() f_check = open(check_point,’r’) lines = f_check.readlines() if<br>len(lines) &gt; 0: check_content = lines[-1] #找到检查点最后一行 check_content =<br>check_content.strip(‘ /n/r’) # go to check point while True: content =<br>fd.readline() if content == ‘’: # eof raise CheckPointMissContentError if<br>content.strip(‘ /n/r’) == check_content: break f_check.close()#关闭检查点</p>
+<p>有了上面一段还是不够的，需要下面的代码补充：</p>
+<h1 id="伪代码-def-Download-downloadlist-sleep-time-if-os-path-isfile-downloadlist"><a href="#伪代码-def-Download-downloadlist-sleep-time-if-os-path-isfile-downloadlist" class="headerlink" title="伪代码 def Download(downloadlist,sleep_time): if os.path.isfile(downloadlist):"></a>伪代码 def Download(downloadlist,sleep_time): if os.path.isfile(downloadlist):</h1><p>f = open(downloadlist) # check_point file name，这里为自动生成一个检查点文件 check_point =<br>file[0:file.rfind(‘.’)]+’_check.txt’ Util.GoCheckPoint(f,check_point)</p>
+<p>#这就是上面代码中的GoCheckPoint函数 f_check = open(check_point,’a’)# 以追加方式写入 try: while<br>True: content = f.readline() if content == ‘’: # eof break content =<br>content.strip(‘ /n/r’) if content != ‘’: # has download url<br>time.sleep(sleep_time) DownloadOper(path,url)</p>
+<p>#这里是伪代码..可以认为是urllib.request.retrieve()函数或者是urllib.request.urlopen()啥的 #<br>作为响应的操作后再将内容写入检查点文件 f_check.write(content+’/n’) f_check.flush() #<br>必须的，否则会缓存，不会写入硬盘中 except : # 蹦个异常也不怕,以后再次按F5执行即可 raise Exception() return<br>Util.FAILURE # 这是我设置的常量，大家认为是0或者1就可以了 finally: f.close() f_check.close()# 关闭文件<br>print(‘Downloading is done……………………’) return Util.SUCCESS</p>
+<p>执行完操作之后再写入到检查点文件中。以后程序挂掉，只要检查点文件还在，就可以延续前面的工作。不过这里的检查点相对于数据库中事务处理的检查点还是太简单了点。</p>
+
+          
         
       
     </div>
@@ -661,7 +748,19 @@ yum安装CentOS自带(yum-*.noarch.rpm)
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -692,17 +791,25 @@ yum安装CentOS自带(yum-*.noarch.rpm)
       
         
           
-          python socket.error: [Errno 10054] 远程主机强迫关闭了一个现有的连接。问题解决方案：
-前几天使用python读取网页。因为对一个网站大量的使用urlopen操作，所以会被那个网站认定为攻击行为。有时就不再允许下载。导致urlopen()后，request.read()一直卡死在那里。最后会抛出errno 10054.
-这个错误是connection reset by peer.也就是传说的远端主机重置了此连接。原因可能是socket超时时间过长；也可能是request =urllib.request.urlopen(url)之后，没有进行request.clo
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/09/02/4512103/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>python socket.error: [Errno 10054] 远程主机强迫关闭了一个现有的连接。问题解决方案：</p>
+<p>前几天使用python读取网页。因为对一个网站大量的使用urlopen操作，所以会被那个网站认定为攻击行为。有时就不再允许下载。导致urlopen()后，r<br>equest.read()一直卡死在那里。最后会抛出errno 10054.</p>
+<p>这个错误是connection reset by peer.也就是传说的远端主机重置了此连接。原因可能是socket超时时间过长；也可能是request =<br>urllib.request.urlopen(url)之后，没有进行request.close()操作；也可能是没有sleep几秒，导致网站认定这种行为是攻<br>击。</p>
+<p>具体解决方案如下面的代码：</p>
+<p>import socket import time timeout = 20<br>socket.setdefaulttimeout(timeout)#这里对整个socket层设置超时时间。后续文件中如果再使用到socket，不必再设置<br>sleep_download_time = 10 time.sleep(sleep_download_time) #这里时间自己设定 request =<br>urllib.request.urlopen(url)#这里是要读取内容的url content = request.read()#读取，一般会在这里报异常<br>request.close()#记得要关闭</p>
+<p>因为urlopen之后的read()操作其实是调用了socket层的某些函数。所以设置socket缺省超时时间，就可以让网络自己断掉。不必在read()处一<br>直等待。</p>
+<p>当然你也可以再外层再写几个try,except,例如：</p>
+<p>try: time.sleep(self.sleep_download_time) request =<br>urllib.request.urlopen(url) content = request.read() request.close() except<br>UnicodeDecodeError as e: print(‘—–UnicodeDecodeError url:’,url) except<br>urllib.error.URLError as e: print(“—–urlError url:”,url) except<br>socket.timeout as e: print(“—–socket timout:”,url)</p>
+<p>一般来说就莫有问题了。我测试了几千个网页的下载，然后才说出此话。不过如果是下载成千上万的，我做了下测试，ms还是会跳出这个异常。可能是time.sleep(<br>)的时间太短，也可能是网络突然中断。我使用urllib.request.retrieve()测试了一下，发现不停的下载数据，总会有失败的情况出现。</p>
+<p>简单的处理方法是：首先参照的我的文章： <a href="http://blog.csdn.net/cctt_1/archive/2009/09/04/4519251.aspx" target="_blank" rel="external"> python检查点简单实现
+</a><br>。先做一个检查点。然后将以上会跑出异常的那段代码while True一下。参见下面的伪代码：</p>
+<p>def Download_auto(downloadlist,fun,sleep_time=15): while True: try: # 外包一层try<br>value = fun(downloadlist,sleep_time) # 这里的fun是你的下载函数，我当函数指针传进来。 # 只有正常执行方能退出。<br>if value == Util.SUCCESS: break except : # 如果发生了10054或者IOError或者XXXError<br>sleep_time += 5</p>
+<p>#多睡5秒，重新执行以上的download.因为做了检查点的缘故，上面的程序会从抛出异常的地方继续执行。防止了因为网络连接不稳定带来的程序中断。<br>print(‘enlarge sleep time:’,sleep_time)</p>
+<p>不过对于找不到相应的网页，又要做另外的一番处理：</p>
+<h1 id="打印下载信息-def-reporthook-blocks-read-block-size-total-size-if-not"><a href="#打印下载信息-def-reporthook-blocks-read-block-size-total-size-if-not" class="headerlink" title="打印下载信息 def reporthook(blocks_read, block_size, total_size): if not"></a>打印下载信息 def reporthook(blocks_read, block_size, total_size): if not</h1><p>blocks_read: print (‘Connection opened’) if total_size &lt; 0: print (‘Read %d<br>blocks’ % blocks_read) else: # 如果找不到，页面不存在，可能totalsize就是0，不能计算百分比<br>print(‘downloading:%d MB, totalsize:%d MB’ %<br>(blocks_read*block_size/1048576.0,total_size/1048576.0)) def<br>Download(path,url): #url =<br>‘<a href="http://downloads.sourceforge.net/sourceforge/alliancep2p/Alliance-v1.0.6.jar" target="_blank" rel="external">http://downloads.sourceforge.net/sourceforge/alliancep2p/Alliance-v1.0.6.jar</a>‘</p>
+<p>#filename = url.rsplit(“/“)[-1] try: # python自带的下载函数<br>urllib.request.urlretrieve(url, path, reporthook) except IOError as e: #<br>如果找不到，好像会引发IOError。 print(“download “,url,”/nerror:”,e) print(“Done:%s/nCopy<br>to:%s” %(url,path))</p>
+<p>如果大家还是遇到了问题…请再评论里注上其他解决方案。</p>
+
+          
         
       
     </div>
@@ -781,7 +888,19 @@ yum安装CentOS自带(yum-*.noarch.rpm)
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -812,19 +931,234 @@ yum安装CentOS自带(yum-*.noarch.rpm)
       
         
           
-          vsFTPd 服务器初学者指南（欢迎大家参与补充） 作者：  北南南北，正在修订之中 来自：   LinuxSir.Org  (此处为文章地址) 摘要：  vsFTPD是一款小巧易用FTP服务器程序；本文面向初学者的一点疑问，能让初学者在最短的时间内学会最简单的vsftpd服务器的架设；本文应该算是初学者练手篇；正在更新之中；本文基于 vsftpd-2.0.3； 
- 欢迎大家共同修订本教程，有些功能的实现，需要大家参与；  您可以以留言的形式参与，我会每天把大家的留言整理加入文档；谢谢。 
- 目录 
- 1、vsFTPd，目前常用FTP服务器套件；  2、ftp 用户管理解说； 
- 2.1、匿名
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/08/31/4503394/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="vsFTPd-服务器初学者指南（欢迎大家参与补充）"><a href="#vsFTPd-服务器初学者指南（欢迎大家参与补充）" class="headerlink" title="vsFTPd 服务器初学者指南（欢迎大家参与补充）"></a>vsFTPd 服务器初学者指南（欢迎大家参与补充）</h2><p><strong> 作者： </strong> 北南南北，正在修订之中<br><strong> 来自： </strong> <a href="http://www.linuxsir.org/main/?q=node/152" target="_blank" rel="external"> LinuxSir.Org </a> (此处为文章地址)<br><strong> 摘要： </strong> vsFTPD是一款小巧易用FTP服务器程序；本文面向初学者的一点疑问，能让初学者在最短的时间内学会最简单的vsftpd服务器的架设；本文应该算是初学者练手篇；正在更新之中；本文基于 vsftpd-2.0.3； </p>
+<p><strong> 欢迎大家共同修订本教程，有些功能的实现，需要大家参与； </strong> 您可以以留言的形式参与，我会每天把大家的留言整理加入文档；谢谢。 </p>
+<p><strong> 目录 </strong></p>
+<p><a href="http://www.linuxsir.org/main/?q=node/152#1" target="_blank" rel="external"> 1、vsFTPd，目前常用FTP服务器套件； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#2" target="_blank" rel="external"> 2、ftp 用户管理解说； </a></p>
+<p><a href="http://www.linuxsir.org/main/?q=node/152#2.1" target="_blank" rel="external"> 2.1、匿名ftp 用户和用户组的理解； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#2.2" target="_blank" rel="external"> 2.2、匿名ftp 用户和ftp用户组是否可以删除； </a></p>
+<p><a href="http://www.linuxsir.org/main/?q=node/152#3" target="_blank" rel="external"> 3、vsFTPd的安装； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#4" target="_blank" rel="external"> 4、vsFTPd的服务器的启动和关闭； </a></p>
+<p><a href="http://www.linuxsir.org/main/?q=node/152#4.1" target="_blank" rel="external"> 4.1、vsFTPd服务器启动和关闭的通用方法； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#4.2" target="_blank" rel="external"> 4.2、在Fedora/Redhat/CentOS中vsFTPd 服务器的启动和关闭：
+</a></p>
+<p><a href="http://www.linuxsir.org/main/?q=node/152#5" target="_blank" rel="external"> 5、vsFTPd的服务器和防火墙及SELINUX的关系； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#6" target="_blank" rel="external"> 6、500 OOPS: vsftpd: refusing to run with writable anonymous root
+</a><br><a href="http://www.linuxsir.org/main/?q=node/152#7" target="_blank" rel="external"> 7、关于vsFTPd配置文件的说明； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#8" target="_blank" rel="external"> 8、关于vsFTPd服务器的一些常用功能的实现； </a></p>
+<p><a href="http://www.linuxsir.org/main/?q=node/152#8.1" target="_blank" rel="external"> 8.1、关于匿名上传下载的实现； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#8.2" target="_blank" rel="external"> 8.2、关于添加本地用户及打开读写权限示例； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#8.4" target="_blank" rel="external"> 8.4、如何实现虚拟路径？ </a><br><a href="http://www.linuxsir.org/main/?q=node/152#8.5" target="_blank" rel="external"> 8.5、打开vsFTP服务器的日志功能； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#8.6" target="_blank" rel="external"> 8.6、如何定制欢迎信息； </a><br><a href="http://www.linuxsir.org/main/?q=node/152#8.7" target="_blank" rel="external"> 8.7、硬盘空间有限，如何把帐号ftp默认的路径/var/ftp更改到别处？
+</a><br><a href="http://www.linuxsir.org/main/?q=node/152#8.8" target="_blank" rel="external"> 8.8、如何让vsFTP服务器限制链接数，以及每个IP最大的链接数？
+</a><br><a href="http://www.linuxsir.org/main/?q=node/152#8.9" target="_blank" rel="external"> 8.9、如何限制传输速度？ </a><br><a href="http://www.linuxsir.org/main/?q=node/152#8.10" target="_blank" rel="external"> 8.10、如何有选择的把用户限制在家目录中呢？ </a></p>
+<p><strong><br>+++++++++++++++++++++++++++++++++++++++++++<br>正文<br>+++++++++++++++++++++++++++++++++++++++++++  
+</strong></p>
+<p><strong> 1、vsFTPd，目前常用FTP服务器套件； </strong></p>
+<p>vsFTPd是一款在Linux发行版中最受推崇的FTP服务器程序；特点是小巧轻快，安全易用；能让其自身特点得发发挥和掌握，也然最主要的是会用；</p>
+<p>目前在开源操作系统中常用的FTPD套件主要有ProFTPD、PureFTPd和wuftpd等；至于哪个FTP服务器套件更好，哪个是你最熟悉的，哪个就是最好的<br>；</p>
+<p><strong> 2、ftp 用户管理解说； </strong></p>
+<p>FTP服务器对用户的管理，在默认的情况下是根据 /etc/passwd及/etc/group<br>来进行的，所以我们一定要了解Linux系统用户和用户组的管理，用户和用户组的管理是一切应用的的基础，有的弟兄不想去了解基础的东西，就想一步成架好<br>各种服务器，事实证明这种学习方法是最不明智的；虽然在您可能在几分钟启动了ftp服务器，但遇到问题时，您不一定能知道是哪里出错；所以基础还是极为重 要的；</p>
+<p><strong> 推荐文章： </strong> <a href="http://www.linuxsir.org/main/?q=node/91" target="_blank" rel="external"> 《Linux 用户（user）和用户组（group）管理概述》 </a></p>
+<p><strong> 2.1、匿名ftp 用户和用户组的理解； </strong></p>
+<p>当我们访问各大FTP上访问时，可能我们不去想我们以什么身份登录的，如果他的FTP允许匿名登录的话；比如我们在浏览器上打入；</p>
+<p><code>ftp://mirrors.kernel.org  
+或  
+ftp://ftp:ftp@mirrors.kernel.org</code></p>
+<p>我们会发现上面的两行最终都能访问，而且显示的结果也完全一样，最终都跳到 ftp://mirrors.kernel.org<br>地址；那我们访问这个FTP时，是不是有用户和密码呢？是的，也是需要在的，只是在服务器端允许匿名访问，而匿名访问的用户名和密码都是ftp，只是我们<br>因为匿名访问，没有感觉到他有用户名和密码罢了。第二个地址就是以ftp用户，密码也是ftp来访问 ftp://mirrors.kernel.org；</p>
+<p>如果我们以ftp命令连接 mirrors.kernel.org 时，我们会发现需要输入用户ftp，密码ftp才能访问；</p>
+<p>在FTP服务器中，匿名用户的用户名和密码都是ftp ；这个用户可以在您的操作系统中的 /etc/passwd 中能找得到；可能有类似下面的一行；</p>
+<p><code>ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</code></p>
+<p><strong> 说明： </strong></p>
+<p>/etc/passwd 是系统用户的配置文件；/etc/group是系统用户组配置文件，您可以通过 <a href="http://www.linuxsir.org/main/?q=node/91" target="_blank" rel="external"> 《Linux<br>用户（user）和用户组（group）管理概述》 </a><br>及其相关文档中了解一些用户管理的一些基础知识；</p>
+<p>在ftp用户这行中，我们看到七个字段，每个字段写字段之间用:号分割；</p>
+<p>ftp 是用户名<br>x 是密码字段，是隐藏的；<br>14 是用户的UID字段，可以自己来设定，不要和其它用户的UID相同，否则会造成系统安全问题；<br>50 用用户组的GID，可以自己设定，不要和其它用户组共用FTP的GID，否则会造成系统全全问题；<br>FTP User 是用户说明字段；<br>/var/ftp 是ftp用户的家目录，可以自己来定义；<br>/sbin/nologin 这是用户登录SHELL ，这个也是可以定义的，/sbin/nologin<br>表示不能登录系统；系统虚拟帐号（也被称为伪用户）一般都是这么设置。比如我们把ftp用户的/sbin/nologin 改为 /bin/bash<br>，这样ftp用户通过本地或者远程工具ssh或telnet以真实用户身份登录到系统。这样做对系统来说是不安全的；如果您认为一个用户没有太大的必要登<br>录到系统，就可以只给他FTP帐号的权限，也就是说只给他FTP的权限，而不要把他的SHELL设置成 /bin/bash 等；</p>
+<p><strong> 关于ftp用户组的理解： </strong></p>
+<p>我们查看 /etc/group 的时候，会发现类似这样一条；</p>
+<p><code>ftp:x:50:</code></p>
+<p>/etc/group 是用户组的管理配置文件，上面这行表示用户组ftp，x是密码段，50是GID；我们对照在/etc/passwd中的ftp那行得知ftp用<br>户是属于ftp用户组的，因为ftp用户那行中的GID和ftp用户组的GID是相同的；</p>
+<p><strong> 2.2、匿名ftp 用户和ftp用户组是否可以删除 </strong></p>
+<p>在一般情况下是不能把/etc/passwd和/etc/group<br>中有把ftp用户和用户组的行删除的，因为FTP服务器是需要他们来对FTP用户实现管理，在默认的情况下。</p>
+<p>虽然不能删除，但对/etc/passwd及/etc/group中的ftp用户及ftp用户组的一些相关的东西是能修改的；比如我们可以把ftp<br>用户的家目录改掉，也可以把ftp用户的UID改掉 … …<br>前提是你对用户管理有所了解，系统用户管理是一切应用基础之一，可能初学Linux的弟兄并不了解用户管理的重要性，但慢慢您就会发现这个道理；</p>
+<p><strong> 3、vsFTPd的安装； </strong></p>
+<p>在最新的各大发行版中的安装盘中都有vsFTPd的软件包，您用相应发行版提供的软件包管理工具就能安装上；当然您可以到各大发行版的FTP镜像中<br>找到vsftpd的软件包；当然也能用软件包的管理工具在线安装；vsftpd的软件包本来不大，花不了多长时间，两分钟就够了吧；因为本文是初学者教<br>程，我严重推荐您用发行版提供的软件来安装，不推荐您自己来编译源码包的安装方式；</p>
+<p><strong> 如果您用的是Fedora 或Redhat 系统，可以用下面的命令在线安装； </strong></p>
+<p><code>[root@localhost ~]# yum install vsftpd</code></p>
+<p><strong> 如果是debian 类系统，可以用apt 来在线安装； </strong></p>
+<p><code>[root@localhost ~]# apt-get install vsftpd</code></p>
+<p><strong> 如果您是RPM的系统，也可以找到vsftpd-xxxx.rpm 的包来通过rpm命令来安装； </strong></p>
+<p><code>[root@localhost ~]# rpm -ivh vsftpd*.rpm</code></p>
+<p><strong> 您可以下载源码包来安装 </strong></p>
+<p>比如我们下载的是 vsftpd-2.0.3.tar.gz ；</p>
+<p><code>[root@localhost ~]# tar zxvf vsftpd-2.0.3.tar.gz  
+[root@localhost ~]# cd vsftpd-2.0.3  
+[root@localhost ~]# make ;make install  
+[root@localhost ~]# cp vsftpd.conf /etc</code></p>
+<p>然后修改/etc/vsftpd.conf ，在配置文件的最后一行加入下面一行；</p>
+<p><code>listen=yes</code></p>
+<p>源码包安装的方法，如果您的系统是RPM包管理的系统，可以删除/etc/xinetd.d/vsftpd 这个文件；然后启动xinetd 服务器；</p>
+<p><code>[root@localhost ~]# /etc/init.d/xinetd restart  
+停止 xinetd：                                              [  确定  ]  
+启动 xinetd：                                              [  确定  ]</code></p>
+<p>vsFTPd运行有两种模式，在RPM包管理的系重审统，大多是由Fedora/Redhat<br>开发而来，对于这样的系统有xinted服务器一说；对于非RPM包管理的系统，一般没有xinted这一说。为了保证本文档的统一，我们都不要用<br>xinetd模式，而用initd运行模式来启动和管理服务器，也就是独立运行模式； 至于什么是xinted和inted 模式，您可以参考 <a href="http://www.linuxsir.org/bbs/showthread.php?t=42075" target="_blank" rel="external"> 《<br>用vsFTPd自架Linux网络安装服务器》 </a></p>
+<p><strong> 4、vsFTPd的服务器的启动和关闭； </strong></p>
+<p>vsFTPd服务器启动和关闭是极容易的；我们可以直接把服务器运行调到后台运行；这是几乎所有服务器管理的运行方式；</p>
+<p><strong> 4.1、vsFTPd服务器启动和关闭的通用方法； </strong></p>
+<p>运行vsftpd命令，要用到root权限，如果您当前操作用户并非是root，可以用su切换到root权限；关于root权限的切换，您有两种方式，一种是su，<br>另一种是sudo； <strong> 请参考： </strong> <a href="http://www.linuxsir.org/main/?q=node/104" target="_blank" rel="external"> 《Linux 系统中的超级权限的控制》
+</a></p>
+<p><strong> vsFTPd服务器的运行； </strong></p>
+<p><code>[root@localhost ~]# /usr/sbin/vsftpd &amp;  
+[root@localhost ~]# /usr/local/sbin/vsftpd &amp;</code></p>
+<p><strong> vsFTPd服务器是否运行起来； </strong></p>
+<p>我们可以通过pgrep vsftpd 来查看vsftpd是否运行起来；</p>
+<p><code>[root@localhost ~]# pgrep vsftpd  
+4248</code></p>
+<p>上面显示vsFTPd服务器运行起来了，您可以通过ftp命令、lftp工具或gftp或其它的FTP客户端来测试连接；</p>
+<p><strong> vsFTPd 服务器关闭： </strong></p>
+<p>我们用pkill vsftpd 来杀死vsftpd进程，这样就把vsFTPd关闭，用psgrep vsftpd<br>来查看进程，如果没有进程，证明vsFTPd已经关掉；当然也要用到root权限。</p>
+<p><code>[root@localhost ~]# pkill vsftpd  
+[root@localhost ~]# pgrep vsftpd</code></p>
+<p><strong> 4.2、在Fedora/Redhat/CentOS中vsFTPd 服务器的启动和关闭： </strong></p>
+<p>在Fedora/Redhat/CentOS中，也可以用下面的方法来启动vsFTPd；当然也要用到root权限；</p>
+<p><code>[root@localhost beinan]# /etc/init.d/vsftpd start  
+为 vsftpd 启动 vsftpd：                                    [  确定  ]</code></p>
+<p>重新启动vsFTPd用下面的命令；</p>
+<p><code>[root@localhost beinan]# /etc/init.d/vsftpd restart  
+关闭 vsftpd：                                              [  确定  ]  
+为 vsftpd 启动 vsftpd：                                    [  确定  ]</code></p>
+<p>关掉vsFTPd服务器，应该用下面的命令；</p>
+<p><code>[root@localhost beinan]# /etc/init.d/vsftpd stop  
+关闭 vsftpd：                                              [  确定  ]</code></p>
+<p><strong> 5、vsFTPd的服务器和防火墙及SELINUX的关系；（重要） </strong></p>
+<p>我在论坛上看到有些弟兄说vsFTPd服务器启动正常，但却不能访问或用户不能上传文件，我感觉应该是防火墙或SELINUX的事；可能FTPD服<br>务器被防火墙或SELINUX的安全机制防住了。所以您必须要让防火墙通过ftp，当然也要让SELINUX通过ftp服务器才行；</p>
+<p>在Fedora/Redhat/CentOS中，您要设置一下防火墙，可以把防火墙关掉，或者在自定义中让ftp “通过”防火墙；</p>
+<p><code>[root@localhost ~]# system-config-securitylevel-tui</code></p>
+<p>或者运行一下如下的命令，清除防火墙规则（通用）；</p>
+<p><code>[root@localhost beinan]# iptables -F</code></p>
+<p>关于SELINUX服务器的解说<br>，可能老手或新手对SELINUX都有点麻烦，建议您SELINUX；或者让vsFTPd服务器跳过SELINUX启动；也就是说要用到 <strong> <a href="http://www.linuxsir.org/main/?q=node/152#4.1" target="_blank" rel="external"><br>4.1、vsFTPd服务器启动和关闭的通用方法； </a> </strong><br>；这在Fedora/Redhat/CentOS中这样启动vsFTPd服务器是有效的；</p>
+<p>当然您可也可以关掉SELINUX，在/etc/selinux/config 配置文件如下；</p>
+<p>` /etc/selinux/config  </p>
+<h1 id="This-file-controls-the-state-of-SELinux-on-the-system"><a href="#This-file-controls-the-state-of-SELinux-on-the-system" class="headerlink" title="This file controls the state of SELinux on the system."></a>This file controls the state of SELinux on the system.</h1><h1 id="SELINUX-can-take-one-of-these-three-values"><a href="#SELINUX-can-take-one-of-these-three-values" class="headerlink" title="SELINUX= can take one of these three values:"></a>SELINUX= can take one of these three values:</h1><h1 id="enforcing-SELinux-security-policy-is-enforced"><a href="#enforcing-SELinux-security-policy-is-enforced" class="headerlink" title="enforcing - SELinux security policy is enforced."></a>enforcing - SELinux security policy is enforced.</h1><h1 id="permissive-SELinux-prints-warnings-instead-of-enforcing"><a href="#permissive-SELinux-prints-warnings-instead-of-enforcing" class="headerlink" title="permissive - SELinux prints warnings instead of enforcing."></a>permissive - SELinux prints warnings instead of enforcing.</h1><h1 id="disabled-SELinux-is-fully-disabled"><a href="#disabled-SELinux-is-fully-disabled" class="headerlink" title="disabled - SELinux is fully disabled."></a>disabled - SELinux is fully disabled.</h1><p>SELINUX=Disabled  #这样就把SELINUX服务器关掉了，请重新启动系统；  </p>
+<h1 id="SELINUXTYPE-type-of-policy-in-use-Possible-values-are"><a href="#SELINUXTYPE-type-of-policy-in-use-Possible-values-are" class="headerlink" title="SELINUXTYPE= type of policy in use. Possible values are:"></a>SELINUXTYPE= type of policy in use. Possible values are:</h1><h1 id="targeted-Only-targeted-network-daemons-are-protected"><a href="#targeted-Only-targeted-network-daemons-are-protected" class="headerlink" title="targeted - Only targeted network daemons are protected."></a>targeted - Only targeted network daemons are protected.</h1><h1 id="strict-Full-SELinux-protection"><a href="#strict-Full-SELinux-protection" class="headerlink" title="strict - Full SELinux protection."></a>strict - Full SELinux protection.</h1><p>SELINUXTYPE=targeted `</p>
+<p><strong> 6、500 OOPS: vsftpd: refusing to run with writable anonymous root </strong></p>
+<p>如果我们已经把vsFTPd服务器启动好了，但登录测试是会出现类似下面的提示；</p>
+<p>500 OOPS: vsftpd: refusing to run with writable anonymous root</p>
+<p>这表示ftp用户的家目录的权限不对，应该改过才对；</p>
+<p><code>[root@localhost ~]# more /etc/passwd |grep ftp  
+ftp:x:1000:1000:FTP User:/var/ftp:/sbin/nologin</code></p>
+<p>我们发现ftp用户的家目录在/var/ftp，就是这个/var/ftp的权限不对所致，这个目录的权限是不能打开所有权限的；是您运行了chmod 777<br>/var/ftp所致；如果没有ftp用户这个家目录，当然您要自己建一个；</p>
+<p>如下FTP用户的家目录是不能针对所有用户、用户组、其它用户组完全开放；</p>
+<p><code>[root@localhost ~]# ls -ld /var/ftp  
+drwxrwxrwx  3 root root 4096 2005-03-23  /var/ftp</code></p>
+<p><strong> 修正这个错误，应该用下面的办法； </strong></p>
+<p><code>[root@localhost ~]# chown  root:root /var/ftp  
+[root@localhost ~]# chmod  755 /var/ftp</code></p>
+<p>有的弟兄可能会说，那匿名用户的可读、可下载、可上传怎么办呢？这也简单，在/var/ftp下再建一个目录，权限是777的就行了，再改一改vsftpd.conf<br>就OK了；没有什么难的；</p>
+<p>vsFTPd出于安全考虑，是不准让ftp用户的家目录的权限是完全没有限制的，您可以去读一下vsFTPd的文档就明白的了；否则也不能称为最安全的FTP服务器了<br>，对不对？</p>
+<p><strong> 7、关于vsFTPd配置文件的说明； </strong></p>
+<p>vsftpd.conf是vsFTPd服务器的配置文件，此文件一般是/etc/vsftpd.conf或/etc/vsftpd/vsftpd.conf<br>，以系统为准吧。。</p>
+<p>vsftpd.conf配置文件就是vsFTPd服务器的全局控制文件，此配置文件中，每行应该算做一个规则；前面带有#号的服务器不会解释，这和apache<br>的配置文件类似；#后所接的内容一般是说明性的，或者是关掉某些功能的选项；</p>
+<p>vsftpd.conf<br>这个配置文件并不包括所有您想实现的功能，有些功能的实现，我们要自己动手来解决，我们要学会查vsFTPd的文档和FAQ等，虽然是英文的，但都是比较<br>简单的；我们要习惯看洋文文档，为什么呢？因为Linux本来就是洋人厉害，重量级的软件都是洋人的。呵，兄弟不要抱怨，谁让我们落后了呢？</p>
+<p><strong> 注意： </strong> 修改完配置文件后，一定要重启vsFTPd服务器才能生效，切记~~ </p>
+<p><strong> 8、关于vsFTPd服务器的一些常用功能的实现； </strong></p>
+<p><strong> 8.1、关于匿名上传下载的实现； </strong></p>
+<p>关于匿名上传，其实也比较简单，首先我们要修改一下vsftpd.conf ，此文件位于<br>/etc/目录下，可能是/etc/vsftpd.conf，也可能是/etc/vsftpd/vsftpd.conf文件。以您的系统环境为准；</p>
+<p><strong> 首先：我们要改一下vsftpd.conf，确保有以下几行； </strong></p>
+<p><code>anonymous_enable=YES  
+anon_upload_enable=YES  
+anon_mkdir_write_enable=YES  
+anon_umask=022</code></p>
+<p><strong> 其次：在ftp用户家目录的下建一个文件夹，并修改其权限为完全开放； </strong></p>
+<p>ftp用户的家目录在哪？我们前面已经说了，要通过/etc/passwd来查看；也可以通过finger ftp来查看；</p>
+<p><code>[root@localhost beinan]# finger ftp  
+Login: ftp                              Name: FTP User  
+Directory: /var/ftp                     Shell: /sbin/nologin</code></p>
+<p>这说明ftp用户的家目录在/var/ftp<br>，我们要在这个目录下建一个目录，然后把他的权限设置为任何用户可读可写可执行就行了；一般的情况下，在发行版中，有一个/var/ftp/pub的目<br>录，如果没有，您也可以自己建一个；把配置文件改好后，只要把/var/ftp下的任何一个目录的权限打开，都可以用来匿名上传和下载；</p>
+<p>比如您想让匿名用户上传和下载都在/var/ftp/pub，就可以把/var/ftp/pub的权限打开，如果没有这个目录，您要自己建一个；</p>
+<p><code>[root@localhost ~]# mkdir /var/ftp/pub  
+[root@localhost ~]# chmod 777 /var/ftp/pub</code></p>
+<p>这样上传的时候传到pub目录就OK了，对不对？？</p>
+<p><strong> 8.2、关于添加本地用户及打开读写权限示例； </strong></p>
+<p>FTP用户一般是不能登录系统的，这也是为了安全。在系统中，没有权限登录系统的用户一般也被称之为虚拟用户；虚拟用户也是要写进/etc<br>/passwd中；这只是一种虚拟用户的方法，但说实在的并不是真正的虚拟用户，只是把他登录SHELL的权限去掉了，所以他没有能力登录系统；</p>
+<p>如果我们想把beinan这个用户目录定位在/opt/beinan这个目录中，并且不能登录系统；我们应该如下操作</p>
+<p><code>[root@localhost ~]# adduser -d /opt/beinan -g ftp -s /sbin/nologin beinan  
+[root@localhost ~]# passwd beinan  
+Changing password for user beinan.  
+New password:  
+Retype new password:  
+passwd: all authentication tokens updated successfully.  
+[root@localhost ~]#</code></p>
+<p>其实这还是不够的，还要改一下配置文件vsftpd.conf ，以确保本地虚拟用户能有读写权限；</p>
+<p><code>local_enable=YES  
+write_enable=YES  
+local_umask=022</code></p>
+<p><strong> 8.4、如何实现虚拟路径？ </strong></p>
+<p><strong> 比如： </strong></p>
+<p><code>/home/a 映射为 ftp://localhost/a  
+/home/b/c 则为 ftp://localhost/c</code></p>
+<p>其实这个不能说是vsFTPd的内容，其实我们早就接触过了，可能我们没有注意，我们可以通过如下的方法来实现。</p>
+<p><code>[root@localhost ~]# mount --bind [原有的目录] [新目录]</code></p>
+<p>比如我的ftp的默认目录是/var/ftp，我想把/mnt/LinG/WinSoft文件夹，映射到/var/ftp目录中，我就如下操作</p>
+<p>我们要先在/var/ftp目录中建一个目录</p>
+<p><code>[root@localhost ~]# mkdir /var/ftp/WinSoft</code></p>
+<p>然后执行mount命令</p>
+<p><code>[root@localhost ~]# mount --bind /mnt/LinG/WinSoft /var/ftp/WinSoft</code></p>
+<p>这样就OK了。</p>
+<p><strong> 8.5、打开vsFTP服务器的日志功能； </strong></p>
+<p>把下面xferlog_file前面的#号对掉，也就是把vsftp的log功能打开，这样我们就能在/var/log目录下查看vsftpd.log。这是vsFT<br>P的日志功能，这对于我们来说是极为重要的。</p>
+<p><code>xferlog_file=/var/log/vsftpd.log</code></p>
+<p><strong> 8.6、如何定制欢迎信息； </strong></p>
+<p>如何定制欢迎信息，也就是我们登入有些FTP之后，会出现类似：欢迎您来到LinuxSir<br>FTP，在这里，您会得到最真诚的帮助，如果有什么问题和建议，请来信，多谢。</p>
+<p>实现这个并不难，我们可以查看vsftpd.conf文件中，是否有这行。</p>
+<p><code>dirmessage_enable=YES  
+message_file=.message</code></p>
+<p>如果没有就加上，如果dirmessage_enable=YES前面有#号，就把#号去掉。其实FTP信息默认的就是.message，所以可以不加<br>message_file= 来指定。自己指定也行，无所谓的事；</p>
+<p>然后我们制定一个.message文件，写上您想要写的东西，比如是.message的内容是如下的：</p>
+<p><code>\--欢迎您来到LinuxSir FTP！  
+\--在这里，您会得到最真诚的帮助；  
+\--如果有什么问题和建议，请来信，多谢。</code></p>
+<p>我们可以用编辑器来写这个.message，我想这个过程就不用说了吧。</p>
+<p>然后我们把.message这个文件复制到各个用户的家目录中。比如我的FTP的一个用户是beinan，这个用户所在的家目录是/opt/beinan<br>我们就要把.message放在/opt/beinan这个目录下。如果系统用户ftp，他的目录就是/var/ftp这个目录，这个是默认的，当匿名用<br>户登入时就访问的是/var/ftp这个目录。我们要让匿名用户能看到欢迎信息。就要把.message放在/var/ftp目录中。其它的用户，也无非<br>就是类似的操作。</p>
+<p><strong> 8.7、硬盘空间有限，如何把帐号ftp默认的家目录更改到别处？ </strong></p>
+<p>我的硬盘空间有限，如何把帐号ftp默认的路径/var/ftp更改到别处？或者是，我的linux所有的目录都放在/根分区，因为空间紧张，我能否把ftp这个用户<br>的默认路径放到别的分区？？</p>
+<p>对于ftp这个用户的管理，我们应该查看/etc/passwd ，然后修改ftp用户那行；</p>
+<p><code>ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</code></p>
+<p>比如我们想把ftp用户的家目录改为/opt/ftp，则要把类似上一行改为</p>
+<p><code>ftp:x:14:50:FTP User:/opt/ftp:/sbin/nologin</code></p>
+<p>然后我们要建立ftp用户的新的家目录；</p>
+<p><code>[root@localhost ~]# mkdir /opt/ftp  
+[root@localhost ~]# chmod 755 /opt/ftp  
+[root@localhost ~]# chown root:root /opt/ftp</code></p>
+<p>如果默认的ftp磁盘空间紧张，我们其实也可以用虚拟路径映射的方法来解决；也就是mount –bind的办法；看情况吧，哪个适合就是最好的方法；</p>
+<p><strong> 8.8、如何让vsFTP服务器限制链接数，以及每个IP最大的链接数？ </strong></p>
+<p>应该改vsFTPd服务器的配制文件vsftpd.conf，加入下面的两行：</p>
+<p><code>max_clients=数字  
+max_per_ip=数字</code></p>
+<p><strong> 举例： </strong> 我想让我的vsFTP最大支持链接数为100个，每个IP，最多能支持5个链接，所以我应该在vsftpd.conf中加上如下的两行： </p>
+<p><code>max_clients=100  
+max_per_ip=5</code></p>
+<p>改好了配制文件，不要忘记启动vsftp服务器。<br><strong> 8.9、如何限制传输速度？ </strong><br><code>anon_max_rate=数字</code></p>
+<p>注：这是匿名的速度</p>
+<p><code>local_max_rate=数字</code></p>
+<p>注：这是vsFTP服务器上本地用户的速度</p>
+<p>注：这个数字的单位是byte，所以我们要计算一下。比如我想让匿名用户和vsFTP上的用户都以80KB下载，所以这个数字应该是1024x80=81920<br>所以我们要在vsftpd.conf中加入下面的两行</p>
+<p><code>anon_max_rate=81920  
+local_max_rate=81920</code></p>
+<p><strong> 8.10、如何有选择的把用户限制在家目录中呢？ </strong></p>
+<p>我们要自己建一个文件，在/etc目录中或/etc/vsftpd目录中（假如您的vsftpd配置文件都是放在这个目录的话）；</p>
+<p><code>#touch /etc/vsftpd.chroot_list</code></p>
+<p>以beinan和nanbei这两个用户限制在他们所在的家目录中，而其它的FTP用户不做此限制。</p>
+<p>在vsftpd.chroot_list这个文件中，把beinan和nanbei添上去就行，注意，每个用户占一行。</p>
+<p><code>beinan  
+nanbei</code></p>
+<p>然后改/etc/vsftpd/vsftpd.conf文件，找如下的两行</p>
+<p><code>chroot_list_enable=YES  
+chroot_list_file=/etc/vsftpd.chroot_list</code></p>
+<p>如果没有这样的两行，就可以自己添加上去也是一样的。</p>
+<p>设置好后，重新vsFTPD服务器。</p>
+<p>补充一之补充：如何把系统内所有的FTP用户都限制在家目录中呢？？经juliaugong兄的提示，我查找了vsFTPd的洋文说明，证明这个选项是一刀切的解决所<br>有的用户都能限制在家目录中</p>
+<p>我们可以通过更改vsftpd.conf文件，加入如下的一行</p>
+<p><code>chroot_local_user=YES</code></p>
+<p>改完配制文件，不要忘记重启vsFTPd服务器；</p>
+<p><strong> 8.11、如何让绑定IP到vsFTPd？ </strong></p>
+<p>如何让绑定IP到vsFTPd？也就是说，如何让用户只能通过某个IP来访问FTP。其实这个功能很有意思。如果绑定的是内网的IP，外部是没有办法访问的。如果绑定<br>的是对外服务的IP，内网也只能通过对外服务的IP来访问FTP</p>
+<p>在vsftpd.conf中加一行，以我的局域网为例，请看第一帖中的操作环境，这样外网就不能访问我的FTP了，内网也可能通过192.168.0.2来访问FTP<br>；</p>
+<p><code>listen_address=192.168.0.2</code></p>
+<p>注：近来  使用centos配置ftp，很是不顺。第一次怎么连都连不上，好像没有设置listen端口。第二次本机可以连，其他机器不能连。第三次看了此篇文章，<br>原来防火墙没有开放ftp.  </p>
+
+          
         
       
     </div>
@@ -903,7 +1237,19 @@ yum安装CentOS自带(yum-*.noarch.rpm)
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -934,16 +1280,22 @@ yum安装CentOS自带(yum-*.noarch.rpm)
       
         
           
-          这篇文章写于搜索n多版本依旧不能解决我的问题。很多vbs版本调用迅雷的写法为：
-Set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) //找到那个Agent dll Call ThunderAgent.AddTask(“http://www.hxit.net/files/bjhyn.mp3&quot;,&quot;北京欢迎你.mp3&quot;,&quot;c:/a/“,“”,”http://www.readlog.cn&quot;,1,0,5) //创建下载任务 Call ThunderAgent.CommitTasks(1)//提交
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/08/24/4479739/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>这篇文章写于搜索n多版本依旧不能解决我的问题。很多vbs版本调用迅雷的写法为：</p>
+<p>Set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) //找到那个Agent dll Call T<br>hunderAgent.AddTask(“<a href="http://www.hxit.net/files/bjhyn.mp3&quot;,&quot;北京欢迎你.mp3&quot;,&quot;c:/a/" target="_blank" rel="external">http://www.hxit.net/files/bjhyn.mp3&quot;,&quot;北京欢迎你.mp3&quot;,&quot;c:/a/</a>“,<br>“”,”<a href="http://www.readlog.cn&quot;,1,0,5" target="_blank" rel="external">http://www.readlog.cn&quot;,1,0,5</a>) //创建下载任务 Call ThunderAgent.CommitTasks(1)<br>//提交任务请求 Call ThunderAgent.AddTask(“<a href="http://file.fzone.cn/upload2/hompyFile/200" target="_blank" rel="external">http://file.fzone.cn/upload2/hompyFile/200</a><br>7/28/921524670987.wma”,”放羊的星星.wma”,”c:/a/b/c/“,””,”<a href="http://www.readlog.cn&quot;,1,0" target="_blank" rel="external">http://www.readlog.cn&quot;,1,0</a>,<br>5) Call ThunderAgent.CommitTasks(1) Set ThunderAgent =</p>
+<p>这里介绍一下AddTask函数。这个函数第一个参数是要下载的url；第二个参数是要保存的文件名；第三个是保存路径；第四个是引用url；第五个是1，0，-1(<br>1为立即下载，0为手工下载，-1为默认，但是不管是哪个，你都要看到弹出的框框，然后手工点击一下。)；第五个为是否只从原地址下载0为不是，1为是；第六个为下载<br>的线程个数。</p>
+<p>这段代码保存为*.vbs就可以了。然后在迅雷里设置-&gt;高级-&gt;通过IE右键菜单“使用迅雷下载”的对勾去掉。如果使用5.9版本，你可以在监控那里把监控IE去掉<br>。这样写我测试过xunlei 5.9是没有任何问题。不过一旦运行这个，就会弹出一个对话框然后你必须点击确认后才可以下载。我的需求就在于把这次的确认去掉。找了<br>好久依旧没有解决问题。无奈之中碰到了运气。</p>
+<p>1.首先下载一个5.1.4.174版本的迅雷。</p>
+<p>2.从迅雷安装目录下搜索geturl.htm.如果找到你就知道咋做了。</p>
+<p>3.写以下脚本*.vbs.这里使用的自己的url.</p>
+<p>set ThunderApi = CreateObject(“Xunleibho.CatchRightClick.1”) DownloadInfo =<br>“#<em>01#</em>“ + “<a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external">http://blog.csdn.net/cctt_1</a>“ + “#<em>02#</em>“ + “” + “#<em>03#</em>“ +<br>“hello.mp3”+ “#<em>04#</em>thunder_backwnd#<em>05#</em>“ retValue =<br>ThunderApi.sendUrl(DownloadInfo) set ThunderApi = Nothing</p>
+<p>这里的第一个#<em>01#</em>后面跟的是要下载的url,#<em>02#</em>后面是引用的url,第三个是注释内容。第四个是后台下载（不用更改）。</p>
+<p>4.启动迅雷，然后双击这个vbs文件即可。</p>
+<p>不过以上方法有个缺陷，就是不能将文件下载到想保存的目录。只能保存到默认文件目录中。入想使用5.1.4.174版本希望保存到自己想要保存的目录的话。调用和第一<br>个脚本类似的方法。不过要稍微做些改动。脚本如下：</p>
+<p>set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) Call ThunderAgent.AddT<br>ask(“<a href="http://blog.csdn.net/cctt_1&quot;,&quot;俺的url&quot;,&quot;c:/a/&quot;,&quot;&quot;,&quot;&quot;,1,0,5" target="_blank" rel="external">http://blog.csdn.net/cctt_1&quot;,&quot;俺的url&quot;,&quot;c:/a/&quot;,&quot;&quot;,&quot;&quot;,1,0,5</a>) Call<br>ThunderAgent.Committasks() Call ThunderAgent.AddTask(“<a href="http://blog.csdn.net/cct" target="_blank" rel="external">http://blog.csdn.net/cct</a><br>t_1/archive/2009/05/06/4153465.aspx”,”还是俺的blog”,”c:/a/b/c/“,””,””,1,0,5) Call<br>ThunderAgent.CommitTasks() Set ThunderAgent = Nothing</p>
+<p>这里可以看到为CommitTasks，而非CommitTasks2()</p>
+<p>看到这篇的各位，有没有提供更好的方法调用迅雷？既可以不弹出那个框框，又可以保存到相应地址的？先行谢过。</p>
+
+          
         
       
     </div>
@@ -1022,7 +1374,19 @@ Set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) //找到那个Agent 
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1053,16 +1417,23 @@ Set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) //找到那个Agent 
       
         
           
-          1.首先下载一个xampplite,这个是  sourceforge.net上的开源项目。主要是为了集成apache,mysql,php方便用的.解压到某个盘符的根目录下。点击xampp-control.exe然后再弹出的小窗口中选择Setup.然后一直回车即可。然后选中apache,mysql前面的复选框。然后startapache和mysql.之后在IE上输入127.0.0.1。如果看到XAMPP的网页。就代表安装成功。
-2.如果你是xp的系统，那么在C:/WINDOWS/system32/drivers/etc下有个hosts文件。里面有一行为 127.0.0.1localhost，然后
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/08/23/4475288/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>1.首先下载一个xampplite,这个是  sourceforge.net<br>上的开源项目。主要是为了集成apache,mysql,php方便用的.解压到某个盘符的根目录下。点击xampp-<br>control.exe然后再弹出的小窗口中选择Setup.然后一直回车即可。然后选中apache,mysql前面的复选框。然后start<br>apache和mysql.之后在IE上输入127.0.0.1。如果看到XAMPP的网页。就代表安装成功。</p>
+<p>2.如果你是xp的系统，那么在C:/WINDOWS/system32/drivers/etc下有个hosts文件。里面有一行为 127.0.0.1<br>localhost，然后你可以再添加两行 127.0.0.1                ns.net，和127.0.0.1<br>admin.ns.net。那么下次你使用ns.net也就是127.0.0.1，使用admin.ns.net也一样。</p>
+<p>3.去你刚才安装apache的目录下找到 apache/conf/extra这个文件夹中的httpd-vhosts.conf，在其中添加几行。</p>
+<p><directory "d:="" eclipse="" workspace="" ns_admin"=""> AllowOverride FileInfo Order<br>allow,deny Allow from all </directory> <virtualhost *:80=""> ServerAdmin<br>webmaster@efilm.com DocumentRoot “D:/eclipse/workspace/ns_admin” ServerName<br>admin.ns.net ServerAlias static.admin.ns.net CustomLog “logs/admin.ns.net-<br>access.log” common ErrorLog “logs/admin.ns.net-error.log” </virtualhost></p>
+<p>Directory和你的DocumentRoot需要对应。必须为你的发布目录（含有index.html），servername就是刚才hosts文件中的某一<br>个。其他的照葫芦画瓢即可。</p>
+<p>如果你想使用多虚拟主机，并且使用同一个IP。</p>
+<p>那么就应该在hosts文件中再添上一句。127.0.0.1 www.xxx.com  static.xxx.com xxx.com</p>
+<p>在apache目录的apache/conf/extra中的httpd-vhosts.conf，添加如同上面一样的一段，如下面的样子：</p>
+<p><directory "d:="" eclipse="" workspace="" ns_shop"=""> AllowOverride FileInfo Order<br>allow,deny Allow from all </directory> <virtualhost *:80=""> ServerAdmin<br>webmaster@efilm.com ##这里是你的一个虚拟主机的主页所在 DocumentRoot<br>“D:/eclipse/workspace/ns_shop” ## serverName一般没有www,不过你真要想写也可以 ServerName<br>xxx.com ServerAlias www.xxx.com static.xxx.com</virtualhost></p>
+<p>##以下这两句其实是在apache的log目录中多增加两个log文件。 CustomLog “logs/www.xxx.com-access.log”<br>common ErrorLog “logs/www.xxx.com-error.log”  <a href="Directory
+&quot;D:/eclipse/workspace/ns_admin&quot;">Directory
+&quot;D:/eclipse/workspace/ns_admin&quot;</a> AllowOverride FileInfo Order allow,deny Allow<br>from all  <virtualhost *:80=""> ServerAdmin webmaster@efilm.com</virtualhost></p>
+<p>##这里是你的另一个虚拟主机的主页所在 DocumentRoot “D:/eclipse/workspace/ns_admin” ServerName<br>admin.ns.net ServerAlias static.admin.ns.net CustomLog “logs/admin.ns.net-<br>access.log” common ErrorLog “logs/admin.ns.net-error.log” </p>
+<p>但是你可能会遇到输入www.xxx.com可以出来ns_shop目录中的内容。但是输入admin.ns.net却依旧是ns_shop中的内容。只是咋回事呢？<br>原因有两个。一个是apache会自动的将找不到的域名按照第一个域名匹配。如果是这个错误，你可以调整下上面配置的两块内容的位置，让ns_shop在下，ns_a<br>dmin在上。这里一定要重启apache，如果找到了admin.ns.net，这就说明你的admin.ns.net没有配错。l另外也可以看看你的apach<br>log.如果有log生成，那可能是第二个原因：</p>
+<h1 id=""><a href="#" class="headerlink" title=" "></a> </h1><h1 id="Use-name-based-virtual-hosting"><a href="#Use-name-based-virtual-hosting" class="headerlink" title="Use name-based virtual hosting."></a>Use name-based virtual hosting.</h1><h1 id="-1"><a href="#-1" class="headerlink" title=" "></a> </h1><p>##NameVirtualHost *:80   把这里去掉##。因为使用的name-based,所以不能再有此注释。</p>
+
+          
         
       
     </div>
@@ -1141,7 +1512,19 @@ Set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) //找到那个Agent 
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1172,25 +1555,20 @@ Set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) //找到那个Agent 
       
         
           
-          1.下载到了网页内容，  发现了linux下同名文件夹可以覆盖同名文件的问题  。
-2.解析了网页，可以得到网页的各种信息。但是有些网页的编码虽然是写utf-8但是终究不是。很是懊恼
-3.因为海底电缆断了。下载还是个问题。  中文的解析还没有开始。
-4.增加downlist 和 imagelist方便图片和包的下载。
-5.增加cvsOsvnlist方便代码的下载
-6.准备和cvs,svn整合。下载代码资源。
-7.迅雷下载时会被网站封锁，没有办法万般无奈下，只好使用的自己的下载函数。
-8.准备做多线程下载
-9.希望将config map文件格式化为XML。
-－－－－－－－－－－－－－－
-1.迅雷
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/08/21/4468673/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>1.下载到了网页内容，  发现了linux下同名文件夹可以覆盖同名文件的问题  。</p>
+<p>2.解析了网页，可以得到网页的各种信息。但是有些网页的编码虽然是写utf-8但是终究不是。很是懊恼</p>
+<p>3.因为海底电缆断了。下载还是个问题。  中文的解析还没有开始。</p>
+<p>4.增加downlist 和 imagelist方便图片和包的下载。</p>
+<p>5.增加cvsOsvnlist方便代码的下载</p>
+<p>6.准备和cvs,svn整合。下载代码资源。</p>
+<p>7.迅雷下载时会被网站封锁，没有办法万般无奈下，只好使用的自己的下载函数。</p>
+<p>8.准备做多线程下载</p>
+<p>9.希望将config map文件格式化为XML。</p>
+<p>－－－－－－－－－－－－－－</p>
+<p>1.迅雷还是不能下载，即使是单线程。有的包下到一半就再也不动了。</p>
+<p>2.现在将3M一下的使用自己的程序下载，3M以上的包移出，等待日后下载。</p>
+
+          
         
       
     </div>
@@ -1269,7 +1647,19 @@ Set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) //找到那个Agent 
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1300,17 +1690,21 @@ Set ThunderAgent = CreateObject(“ThunderAgent.Agent.1”) //找到那个Agent 
       
         
           
-          对于python的字符串来说。如果是a = ‘abc’,这就是代表是一个正常的字符串类型为str。如果是a= b’abc’这就代表着一个bytesobject。对于bytes object来说，可以使用decode而非encode;对于正常字符串而言可以使用encode，但是却不能使用decode.如果想将bytesobject直接转换为字符串型，可以使用str()或者repr()。但是这里对于已经进行编码的字符串而言，这样做没有任何好处。
-今天碰到一个一个问题，使用python取得网页内容的时候：
-request = urllib.request.urlopen(‘http://www.cs
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/08/16/4453243/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>对于python的字符串来说。如果是a = ‘abc’,这就是代表是一个正常的字符串类型为str。如果是a= b’abc’这就代表着一个bytes<br>object。对于bytes object<br>来说，可以使用decode而非encode;对于正常字符串而言可以使用encode，但是却不能使用decode.如果想将bytes<br>object直接转换为字符串型，可以使用str()或者repr()。但是这里对于已经进行编码的字符串而言，这样做没有任何好处。</p>
+<p>今天碰到一个一个问题，使用python取得网页内容的时候：</p>
+<p>request = urllib.request.urlopen(‘<a href="http://www.csdn.net" target="_blank" rel="external">http://www.csdn.net</a>‘) content =<br>request.read()</p>
+<p>这里content就是一个bytes object.如果使用正则式title[/d/D]*?title就会失效，抛出exception,说不能将findal<br>l(),finditer()等函数用在bytes object上。所以要进行decode()</p>
+<p>代码如下：</p>
+<p>import urllib.request import re request =<br>urllib.request.urlopen(‘<a href="http://www.csdn.net" target="_blank" rel="external">http://www.csdn.net</a>‘) content = request.read() reg =<br>re.compile(‘title[/d/D]*?title’) print(reg.findall(content.decode(‘utf-8’)))</p>
+<p>如果想搜索中文，正则式中也可以放入中文。</p>
+<p>还有一点不好的地方，就在于这个decode()中到底放入什么编解码方式。这取决于那个网页的信息了。一般都会给出。csdn.net给出的就是charset=u<br>tf-8.也可以使用下面的代码得到编解码方式：</p>
+<p>request = urllib.request.urlopen(‘<a href="http://www.csdn.net" target="_blank" rel="external">http://www.csdn.net</a>‘) information =<br>request.info() print(information)</p>
+<p>可惜的一点是，这里的information是字符串型。传说它是 <code>http.client.HTTPMessage的实例并且</code> 继承 <code>了email.
+message.Message。根据文档说是用information.get_charset()就能得到编码是啥类型。可惜我没有试出来，返回值为None.使
+用csdn的例子可以得到info的信息为：</code></p>
+<p>Server: nginx/0.6.36<br>Date: Sun, 16 Aug 2009 15:51:04 GMT<br>Content-Type: text/html; charset=utf-8<br>Connection: close<br>Vary: Accept-Encoding<br>Cache-Control: max-age=604800<br>Content-Length: 109205<br>Content-Location: <a href="http://www.csdn.net/index.htm" target="_blank" rel="external">http://www.csdn.net/index.htm</a><br>Last-Modified: Sat, 15 Aug 2009 11:11:04 GMT<br>Accept-Ranges: bytes<br>ETag: “f4756814991dca1:aa9”<br>X-Powered-By: ASP.NET<br>X-UA-Compatible: IE=EmulateIE7<br>Age: 19<br>X-Cache: HIT from FECACHE<br>X-Cache-Lookup: HIT from FECACHE:80<br>Via: 1.0 cachedev.CSDN.NET (WebCache)</p>
+
+          
         
       
     </div>
@@ -1389,7 +1783,19 @@ request = urllib.request.urlopen(‘http://www.cs
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1420,32 +1826,25 @@ request = urllib.request.urlopen(‘http://www.cs
       
         
           
-           惟此文章莫评论 
-上：晚风清徐
-下：晨露微漾
-上：斜倚阑珊赏明月，心微醉，不觉晓
-下：正立江湖尝百味，身疲惫，不服老
-上：爱晚红枫随风凋
-下：天涯海角共誓存
-上:春草知晖，夏荷凝露，秋菊披霜，冬梅听雪
-下:东篱采菊，西湖赏月，南国摘红，北冥戏鱼
-上：风摘枯叶点地声
-下：水起涟漪复归镜
-上：天之繁星，望而莫及；夜之灯火，寂已失温
-下：地之蝼蚁，触却难解；云之雾滴，伤而未泣
-青山醉卧小池边，生宣倦懒木几案
-蜂鸟歇鸣归屋檐，伊人抱枕还未眠
-你我本不一，缘何念为一，心生魔障起，不可泄天机
-自观烟雨楼，冥想雷无休，幻化飞舞蝶，静心几菲求
+            <p><strong> 惟此文章莫评论 </strong></p>
+<p>上：晚风清徐</p>
+<p>下：晨露微漾</p>
+<p>上：斜倚阑珊赏明月，心微醉，不觉晓</p>
+<p>下：正立江湖尝百味，身疲惫，不服老</p>
+<p>上：爱晚红枫随风凋</p>
+<p>下：天涯海角共誓存</p>
+<p>上:春草知晖，夏荷凝露，秋菊披霜，冬梅听雪</p>
+<p>下:东篱采菊，西湖赏月，南国摘红，北冥戏鱼</p>
+<p>上：风摘枯叶点地声</p>
+<p>下：水起涟漪复归镜</p>
+<p>上：天之繁星，望而莫及；夜之灯火，寂已失温</p>
+<p>下：地之蝼蚁，触却难解；云之雾滴，伤而未泣</p>
+<p>青山醉卧小池边，生宣倦懒木几案</p>
+<p>蜂鸟歇鸣归屋檐，伊人抱枕还未眠</p>
+<p>你我本不一，缘何念为一，心生魔障起，不可泄天机</p>
+<p>自观烟雨楼，冥想雷无休，幻化飞舞蝶，静心几菲求</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2009/08/16/4451015/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1539,10 +1938,10 @@ request = urllib.request.urlopen(‘http://www.cs
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">626</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 

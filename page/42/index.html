@@ -295,7 +295,19 @@
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -326,20 +338,29 @@
       
         
           
-          输入两个串：
-string midOrder = “HDIBJEKALFMCNGO”;string firstOrder = “ABDHIEJKCFLMGNO”;
-输出一棵二叉树。
-算法思想很简单，在先序中的第一个节点一定是根节点，此节点在中序中的位置可以将中序分为左右两棵子树。如：
-根为A,中序分为：HDIBJEK     A   LFMCNGO,这两棵子树在使用同样的方法就生成一棵树。
- //核心算法Node    SetTree(  string  &amp; midOrder,  string  &amp; firstOrder)  …  {if  (midOrder.length()
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/21/1957075/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>输入两个串：</p>
+<p>string midOrder = “HDIBJEKALFMCNGO”;<br>string firstOrder = “ABDHIEJKCFLMGNO”;</p>
+<p>输出一棵二叉树。</p>
+<p>算法思想很简单，在先序中的第一个节点一定是根节点，此节点在中序中的位置可以将中序分为左右两棵子树。如：</p>
+<p>根为A,中序分为：HDIBJEK     A   LFMCNGO,这两棵子树在使用同样的方法就生成一棵树。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>核心算法<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>Node  <em>  SetTree(  string  &amp; midOrder,  string  &amp; firstOrder)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (midOrder.length()  ==  1  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  new  Node(midOrder);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>string  node  =  firstOrder.substr(  0  ,  1  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Node  </em>  n  =  new  Node(node);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>size_t i  =  midOrder.find(node);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>size_t j  =  firstOrder.find(midOrder.substr(i  -  1  ,  1  ));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>n  -&gt; left  =  SetTree(midOrder.substr(  0  ,i),firstOrder.substr(  1  ,i));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>n  -&gt; right  =  SetTree(midOrder.substr(i  +  1  ,midOrder.length()  -  i<br>-  1  ),firstOrder.substr(j  +  1  ,firstOrder.length()  -  j  -  1  ));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  n;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>中序遍历和后序遍历生成树的算法类似实现。</p>
+<p>这里因为每次递归会生成多份string,也创建了大量的额外空间，所以改进此算法，只提供下标即可：</p>
+<p>Node<t><em> CreateTreeHelp(const char</em> pre_order, int p_start, int p_end, const<br>char<em> in_order, int i_start, int i_end){ if(p_end &lt; p_start || i_end &lt;<br>i_start) return NULL; char subroot_data = pre_order[p_start]; int index =<br>find(in_order,i_start, i_end,subroot_data); index += i_start; Node<t></t></em> subroot<br>= new Node<t>(subroot_data); //<br>这里用先序的第一个节点切分中序，中序的左部节点的个数再切分先序，将中序的左部和先序的去除第一个节点，切分后的部分出入递归。 subroot-&gt;left =<br>CreateTreeHelp(pre_order,p_start+1,p_start+index-<br>i_start,in_order,i_start,index-1); // 用先序的第一个节点切分中序，中序的右部传入，将前面切分先序的第二部分传入<br>subroot-&gt;right = CreateTreeHelp(pre_order,p_start+index-<br>i_start+1,p_end,in_order,index+1,i_end); return subroot; }</t></t></p>
+<p>如果思考不清晰，这部分调试起来还是比较困难。需要打印每次递归的信息，最后先使用小数据量，然后打印出来，而不要用gdb调试。源程序是这样打印的：</p>
+<p>TreeNode<t><em> CreateTreeHelp(const char</em> pre_order, int p_start, int p_end,<br>const char<em> in_order, int i_start, int i_end, int tabs){ for(int i = 0; i &lt;<br>tabs; i++){ cout &lt;&lt; “.”; } cout &lt;<endl; if(p_end="" <="" p_start="" ||="" i_end="" i_start)="" return="" null;="" char="" subroot_data="pre_order[p_start];" int="" index="find(in_order,i_start," i_end,subroot_data);="" +="i_start;" treenode<int=""></endl;></em><br>subroot = new TreeNode<int>(subroot_data); const char <em> tmp =<br>pre_order+p_start; while(</em>tmp != pre_order[p_end+1]){ cout &lt;&lt; <em>tmp&lt;&lt;” “;<br>tmp++; } cout &lt;&lt; endl; tmp = in_order+i_start; while(</em>tmp !=<br>in_order[i_end+1]){ cout &lt;&lt; *tmp&lt;&lt;” “; tmp++; } cout &lt;&lt; endl; cout &lt;&lt;<br>“index:”&lt;<index<<endl; cout="" <<="" "p_start:"<<p_start<<"="" p_end:"<<p_end<<"="" i_start:"<<i_start<<"="" i_end:"<<i_end<<endl;="" subroot-="">left =<br>CreateTreeHelp(pre_order,p_start+1,p_start+index-<br>i_start,in_order,i_start,index-1,tabs+2); subroot-&gt;right =<br>CreateTreeHelp(pre_order,p_start+index-<br>i_start+1,p_end,in_order,index+1,i_end,tabs+2); return subroot; }</index<<endl;></int></t></p>
+<p>另外贴上其中的find函数，这里的count其实是找对于start来说的相对位置(师兄说下面这段代码写的很烂，但是烂的凑在一起，竟然没有错，这让我想到了独孤<br>九剑)：</p>
+<p>int find(const char<em> str, int start, int end,const char&amp; c){ int count = -1;<br>str = str+start; int len = end-start; while(‘/0’ != </em>str &amp;&amp; count &lt;=len){<br>count++; if(c == *str) return count; str++; } return -1; }</p>
+<p>这是为什么呢？因为里面使用到多个判断标准..所以改为：</p>
+<p>int find(const char<em> str, int start, int end,const char&amp; c){ int count = -1;<br>str = str+start; const char</em> str_end = str+end+1; while(<em>str_end != </em>str){<br>count++; if(c == *str++) return count; } return -1; }</p>
+
+          
         
       
     </div>
@@ -418,7 +439,19 @@ string midOrder = “HDIBJEKALFMCNGO”;string firstOrder = “ABDHIEJKCFLMGNO�
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -449,18 +482,11 @@ string midOrder = “HDIBJEKALFMCNGO”;string firstOrder = “ABDHIEJKCFLMGNO�
       
         
           
-           龟虽寿    
-曹操  
-神龟虽寿，犹有竟时。腾蛇乘雾，终为土灰。老骥伏枥，志在千里；烈士暮年，壮心不已。盈缩之期，不但在天；养怡之福，可得永年。幸甚至哉，歌以咏志。
+            <p><strong> 龟虽寿 </strong>   </p>
+<p>曹操  </p>
+<p>神龟虽寿，犹有竟时。<br>腾蛇乘雾，终为土灰。<br>老骥伏枥，志在千里；<br>烈士暮年，壮心不已。<br>盈缩之期，不但在天；<br>养怡之福，可得永年。<br>幸甚至哉，歌以咏志。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/18/1947996/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -539,7 +565,19 @@ string midOrder = “HDIBJEKALFMCNGO”;string firstOrder = “ABDHIEJKCFLMGNO�
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -570,17 +608,18 @@ string midOrder = “HDIBJEKALFMCNGO”;string firstOrder = “ABDHIEJKCFLMGNO�
       
         
           
-          在微软结识了很多朋友，现在在做polit，没有什么程序要写。所以每天吃吃喝喝忙的不亦乐乎。加入了饭团，还有了个老大。于是近几个星期整天跟在老大后面混口饭吃，也准备学Wei和Shawn来个10元包月套餐。也可以跟在老大去去健身房。反正最近也要把健身卡用完。想想再过一个月就要离开他们，还真是恋恋不舍。准备为饭团中的各位做传，以示缅怀。
-瑞军老大：饭团的组建者之一。在外漂泊了多年，现归顺微软。在他那里了解到更多的人世沧桑、世态炎凉。因为年龄最大，所以阅历很广。不过依然是一个80后的人。现在是Super Dev。同时也是非常有创意，非常幽默的一个人。他的MSN的头像就是Super dog.
-Lynn：
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/16/1942387/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>在微软结识了很多朋友，现在在做polit，没有什么程序要写。所以每天吃吃喝喝忙的不亦乐乎。加入了饭团，还有了个老大。于是近几个星期整天跟在老大后面混口饭吃，<br>也准备学Wei和Shawn来个10元包月套餐。也可以跟在老大去去健身房。反正最近也要把健身卡用完。<br>想想再过一个月就要离开他们，还真是恋恋不舍。准备为饭团中的各位做传，以示缅怀。</p>
+<p>瑞军老大：饭团的组建者之一。在外漂泊了多年，现归顺微软。在他那里了解到更多的人世沧桑、世态炎凉。因为年龄最大，所以阅历很广。不过依然是一个80后的人。现在是<br>Super Dev。同时也是非常有创意，非常幽默的一个人。他的MSN的头像就是Super dog.</p>
+<p>Lynn：饭团中最活跃的一个人。因为出身就是PM，所以活跃也是非常应该的事情。前几个星期见到我后的口头蝉：“本来多乖的小孩，被瑞军带了几天，就…..”。<br>最近的口头蝉：“你太勤奋了，比你老大都勤奋。你怎么能比你老大还勤奋呢？”PM的职责就是增加团队凝聚力，活跃团队气氛。所以Lynn是一个非常出色的PM。至少我<br>认为是这样：）瑞军肯定不这样想，因为Lynn把太多工作都给他做了。Lynn对瑞军的口头蝉：“这是我们团队的dev，交给他什么他都能做出来。”于是啥东西都让他<br>做了。写在这里发现对Lynn描述的篇幅远远的超过了瑞军。因为她是我另一个老大。一个是有文化的老大，一个是“没文化”的老大。最搞笑的事就是某天晚上，我和瑞军一<br>起“欣赏“Lynn的人脸识别论文。</p>
+<p>Wei: 饭团里又一个Strong Dev.说他strong，是因为他非常的爱说：“You are so strong!”.对付他的两句话：“you are<br>so handsome!” or “ you are stronger than me!”.他自己没事写写windows<br>mobile的小程序，然后每次吃饭都要展示一下。Cool Feature.</p>
+<p>Shawn:“人品极差”，他这样形容自己。近几次饭团聚会，提要要10月包月的人。现在主管Symbian平台的程序测试。非常喜欢讲笑话的一个人。每次讲笑话，头<br>句一定是：“小明…….”。我们强烈要求换个主人公。于是某天，主人公变为了我。</p>
+<p>西北：很有可能会成为我师兄的一个人。如果只有一句来描述他，这实在是不给他面子，加上这一句，正好是俩句话。…….西北看了会疯的…..西北很生气，后<br>果???</p>
+<p>根城：现在FTE中最小的一个。不过套用Lynn的话，我永远都比他小。所以因为我的存在，我就是整个饭团中最小的。所以Lynn说，我是他们所有人的小弟。他一定是<br>晚上留下来在b1吃饭的。所以每天晚上还都有个伴去吃饭。</p>
+<p>Annie：测试组的大姐。一旦测试有啥问题，他们一定说，把你大姐找来。Annie写文档的功底是非常非常强的。而且她曾经pass了IBM等多家大公司的面试。最<br>后止步在微软。所以一有空，她就会到我们的做题沙龙里凑热闹，然后她就会变成热闹的中心了。</p>
+<p>Cloud：中午只吃玉米减肥的人。结果就是越减越肥。也是我们当中打foosball最好的前锋。顺便一提：Annie是最好的后卫，我可能只能打过瑞军。不过我已<br>经极大的满足了。我偶然赢了Annie一次，还兴奋了半天。Cloud除了foosball之外，还是个题库。所以做题沙龙老是先让他出几个题。</p>
+<p>大家在饭团里吃的都非常的开心。吃饭的时候大家不停的笑就对了，最好吃的不笑，否则要喷饭的！</p>
+
+          
         
       
     </div>
@@ -659,7 +698,19 @@ Lynn：
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -690,15 +741,28 @@ Lynn：
       
         
           
-          int  StrCmp(  const  char    des,  const  char    src)  …  {int  c;if  (des  ==  NULL  ||  src  ==  NULL)throw  “  NULL point  “  ;int  len1  =  strlen(des);int  len2  =  strlen(src);if  (len1  !=  len2)  …  {return  len1  -  len2; }while  (    des  !=  ‘  /0  ‘  )  …  {if  ((c  =  (    des  ++  -  
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/15/1937921/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>int  StrCmp(  const  char  <em>  des,  const  char  </em>  src)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  c;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (des  ==  NULL  ||  src  ==  NULL)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>throw  “  NULL point  “  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  len1  =  strlen(des);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  len2  =  strlen(src);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (len1  !=  len2)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  len1  -  len2;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (  <em>  des  !=  ‘  /0  ‘  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  ((c  =  (  </em>  des  ++  -  *  src  ++  ))  !=  0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  c;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  c;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>测试用例：</p>
+<p>1.字符串为AscII串，并且src和des不为空，测试中以src和des长度分类</p>
+<p>2.字符串为高AscII串…..</p>
+<p>3.字符串为DBCS串</p>
+<p>4.字符串中包含DBCS和ASCII</p>
+<p>5.src或者des为NULL</p>
+<p>6.src和des为””</p>
+
+          
         
       
     </div>
@@ -777,7 +841,19 @@ Lynn：
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -808,17 +884,39 @@ Lynn：
       
         
           
-          char    ItoA(  int  value,  char    dest,  int  r)  …  {if  (value  &lt; 0  &amp;&amp; r  !=  10  )throw  “  Exception  “  ;int  flag  =  1  ;if  (value  &lt; 0  )  …  {flag  =  -  1  ;value  =  -  value; }char    map  =  “  0123456789abcdef  “  ;char    reDest  =  dest;do  …  {
+            <p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>char  <em>  ItoA(  int  value,  char  </em>  dest,  int  r)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (value  &lt; 0  &amp;&amp; r  !=  10  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>throw  “  Exception  “  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  flag  =  1  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (value  &lt; 0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>flag  =  -  1  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>value  =  -  value;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char  <em>  map  =  “  0123456789abcdef  “  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char  </em>  reDest  =  dest;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>do<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></p>
+<ul>
+<li>dest  ++  =  map[value  %  r];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }  while  (value  /=  r);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (flag  ==  -  1  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>dest  ++  =  ‘  -  ‘  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>dest  =  ‘  /0  ‘  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  len  =  strlen(reDest);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  , j  =  len  -  1  ; i  &lt; j; i  ++  , j  --  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>swap(reDest[i],reDest[j]);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  reDest;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</li>
+</ul>
+<p>测试用例：</p>
+<p>1.10进制 正数，负数，0</p>
+<p>2.16进制 正数</p>
+<p>3.0进制 （Crash）</p>
+<p>4.进制为负</p>
+<p>5.负16进制</p>
+<p>6.传入的char数组长度小于生成的数字长度</p>
+<p>7.20进制</p>
+<p>8.dest为NULL</p>
+<p>9.value 为 2^31-1 或 -2^31</p>
 
-dest  ++  =  map[va
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/15/1937901/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
@@ -897,7 +995,19 @@ dest  ++  =  map[va
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -928,16 +1038,9 @@ dest  ++  =  map[va
       
         
           
-          非常坎坷的过了mentor的面试。虽然题目非常的简单，但是讨论很长时间。唉。不应该把面试看的这么难。应该抓住最基本的东西去做。然后下午又和整个团队玩面试游戏。出了很多面试题，就这样把一下午的时间都消磨干净了。因为整个team在做pilot所以大家都有空闲时间。因为又不能去玩其他的游戏，所以只是在cubic里做了大量的面试题。最值得高兴的是，在今晚8点半到9点之间，玮出了道95年的计算机竞赛题决赛题，虽然大费周折，但是还是把它做出来了。
+            <p>非常坎坷的过了mentor的面试。虽然题目非常的简单，但是讨论很长时间。唉。不应该把面试看的这么难。应该抓住最基本的东西去做。然后下午又和整个团队玩面试游戏<br>。出了很多面试题，就这样把一下午的时间都消磨干净了。因为整个team在做pilot所以大家都有空闲时间。因为又不能去玩其他的游戏，所以只是在cubic里做了<br>大量的面试题。最值得高兴的是，在今晚8点半到9点之间，玮出了道95年的计算机竞赛题决赛题，虽然大费周折，但是还是把它做出来了。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/14/1937472/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1016,7 +1119,19 @@ dest  ++  =  map[va
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1047,15 +1162,9 @@ dest  ++  =  map[va
       
         
           
-          今天Lynn做host，的的确确开心了一把。第一个游戏测试记忆，结果只有玮唱了首Happybirthday。第二个游戏是模拟游戏。五个人，每个人拥有自己的角色。并分配了任务。只能靠字条通信，通信的模式是：A &lt;-&gt;B,B&lt;-&gt;C , B&lt;-&gt;D,B&lt;-&gt;E；那个团队先解决了任务，哪个团队获胜。因为我们是第一次玩，并且不清楚各自的角色。我是A，发了多个任务消息给B（Shawn）但是他迟迟不回我。Annie是D，老是发无效消息骚扰B。其实任务很简单，只是找到5个人都有的Symbol。但是Shawn一直不发消息给我。所以我也不清楚发什么给他。即便如此，
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/13/1933677/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>今天Lynn做host，的的确确开心了一把。第一个游戏测试记忆，结果只有玮唱了首Happy<br>birthday。第二个游戏是模拟游戏。五个人，每个人拥有自己的角色。并分配了任务。只能靠字条通信，通信的模式是：A &lt;-&gt;B,B&lt;-&gt;C , B&lt;-&gt;D,<br>B&lt;-&gt;E；那个团队先解决了任务，哪个团队获胜。因为我们是第一次玩，并且不清楚各自的角色。我是A，发了多个任务消息给B（Shawn）但是他迟迟不回我。Ann<br>ie是D，老是发无效消息骚扰B。其实任务很简单，只是找到5个人都有的Symbol。但是Shawn一直不发消息给我。所以我也不清楚发什么给他。即便如此，他还是<br>猜中了任务。最后我问他，为什么不向我要任务，或者说你不清楚任务？他的回答让我当场晕倒，“忘了”。无语，Shawn很happy的回着Annie的无聊消息，把我<br>给忘了。Lynn最后解释这个游戏是干啥的：B is PM, C, D, E are Devs and Tests, A is<br>custom.PM竟然把客户忘记了。o,my God! 不过从这个小游戏中很清楚的知道，PM是至关重要的人物，不光要分配任务，而且要和客户打交道。并且在De<br>v和Test不知道干什么的时候，就应该让他们忙忙其他的，不要让他们老来烦自己。</p>
+
+          
         
       
     </div>
@@ -1134,7 +1243,19 @@ dest  ++  =  map[va
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1165,17 +1286,108 @@ dest  ++  =  map[va
       
         
           
-          最近比较闲，抽空练练爪子：
-多路归并
-void  MergeLines(  int    temp,  int    A,  int  left,  int  right) //其中temp是临时存储空间，A是真正的存放数据空间，left是数组的最左下标，right是数组的最右下标。  …  {//  先判断些特殊的边界条件if  (right  -  left  &lt; 1  )return  ;if  (right  -  left  ==  1  )  …  {if  (A[right]  &gt; A[left])  …  {swap(A[right],A[left]); }retu
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/13/1932790/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>最近比较闲，抽空练练爪子：</p>
+<p>多路归并</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>void  MergeLines(  int  <em>  temp,  int  </em>  A,  int  left,  int  right)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>其中temp是临时存储空间，A是真正的存放数据空间，left是数组的最左下标，right是数组的最右下标。<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  先判断些特殊的边界条件<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (right  -  left  &lt; 1  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (right  -  left  ==  1  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (A[right]  &gt; A[left])<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>swap(A[right],A[left]);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  mid  =  (right  -  left)  /  2  +  left;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>MergeLines(  &amp; temp[  0  ],  &amp; A[  0  ],left,mid);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>MergeLines(  &amp; temp[mid  +  1  ],  &amp; A[mid  +  1  ],  0  ,right  -  mid  -<br>1  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  真正的归并开始（这里可以看做已经做到最后一步）<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  k  =  0  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  i  =  0  ,j  =  mid  +  1  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (i  &lt;=  mid  &amp;&amp; j  &lt;=  right)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (A[i]  &gt; A[j])<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>temp[k  ++  ]  =  A[i  ++  ];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>temp[k  ++  ]  =  A[j  ++  ];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (i  &gt; mid)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (j  &lt;=  right)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>temp[k  ++  ]  =  A[j  ++  ];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (i  &lt;=  mid)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>temp[k  ++  ]  =  A[i  ++  ];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  重新将值赋回A数组<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (i  =  0  ; i  &lt; k;i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>A[i]  =  temp[i];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>使用一个串中相同的字母再生成新串，打印所有的串。比如“abc”有“bac”“bca”….等等。</p>
+<p>这段代码的想法是{a,b,c},拿到{a}，将{b,c}去递归。如果拿到{b},将{a,c}去递归。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>void  All(  string  pre,  char  <em>  str,  int  len)  //<br>pre是前缀，str是真正的串，len是串的长度（除去’/ 0’）<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>这里注意str必须是一个new出来的字符串数组，不能是字符串常量数组。<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>开始的调用可以这样写All(“”,str,strlen(str));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  </em>  str  ==  ‘  / 0  ‘  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (len  ==  1  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; pre  &lt;&lt; str[  0  ]  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; len; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (i  ==  0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>All(pre  +  str[  0  ],  &amp; str[  1  ],len  -  1  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (i  !=  0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>swap(str[i],str[  0  ]);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>All(pre  +  str[  0  ],  &amp; str[  1  ],len  -  1  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>swap(str[i],str[  0  ]);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>上面的函数可以进一步改写:这里的List就是{‘a’,’b’},currentIndex = 0;k = len -1,len = List的元素个数。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>void  All(  char  *  List,  int  currentIndex,  int  k,  int  len)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (currentIndex  ==  k)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; len; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; List[i];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  currentIndex; i  &lt;=  k; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>swap(List[currentIndex],List[i]);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>All(List, currentIndex  +  1  , k,len);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>swap(List[currentIndex],List[i]);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>现在有一张纸币，但是现在有一堆个数无限的硬币（1角，2角，5角），兑换硬币</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>void  past(  int  i)  //  这里的i是最初的钱的价值（兑换成角，1元就是10角….）不过这里还是使用了穷举…:&lt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  u  =  0  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  j  =  0  ; j  &lt;=  i; j  +=  5  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  x  =  0  ; x  &lt;=  i; x  +=  2  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  c  =  0  ; c  &lt;=  i;c  +=  1  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (j  +  x  +  c  ==  i)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  <5,2,1> “  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; j  /  5  &lt;&lt; “  ,  “  &lt;&lt; x  /  2  &lt;&lt; “  ,  “  &lt;&lt; c  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>u  ++  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></5,2,1></p>
+<p>不过写的代码自我感觉变量命名和函数命名不规范。这的确是今后要大大改进的地方。而且效率还很低。</p>
+<p>因为硬币的穷举算法效率很低，所以用背包法重写代码：</p>
+<p>如果输入的dest是10角，那么这里的srcSet应该含有10/1个1角，10/2个2角，10/5个5角。currentIndex是srcSet的下标，sr<br>cLen是srcSet的大小，subSet是符合条件的数据,num是subSet的集合中现含的元素个数。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>int  match(  int  <em>  srcSet,  int  currentIndex,  int  srcLen,  int  dest,<br>int  </em>  subSet,  int  num)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (currentIndex  ==  srcLen)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  -  1  ;</p>
+<p>if(dest-srcSet[currentIndex] &lt; 0)<br>return -1;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (dest  -  srcSet[currentIndex]  ==  0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>subSet[num  ++  ]  =  srcSet[currentIndex];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; num  &lt;&lt; “  number match the dest, they are:  “  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; num; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; subSet[i]  &lt;&lt; “  “  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  num;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>subSet[num]  =  srcSet[currentIndex];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  number  =  match(srcSet,currentIndex  +  1  ,srcLen,dest  -<br>srcSet[currentIndex],subSet,num  +  1  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (number  &lt;=  0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  match(srcSet,currentIndex  +  1  ,srcLen,dest,subSet,num);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  match(srcSet,currentIndex  +  1  ,srcLen,dest,subSet,num);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>但是该算法仍然有的缺陷是最后返回的一定是-1。所以只好在程序运行过程中打印出结果。这里要求数组srcSet是从小到大排列的。虽然算法的复杂度没有降低，但是运<br>行的时间可能会加快。但是在最差情况下，比上面的穷举效率还低。而且多使用了空间。感觉类似于迷宫问题。虽然可以用A*但是最差情况下，比穷举还低。</p>
+
+          
         
       
     </div>
@@ -1254,7 +1466,19 @@ void  MergeLines(  int    temp,  int    A,  int  left,  int  right) //其中temp
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1285,15 +1509,9 @@ void  MergeLines(  int    temp,  int    A,  int  left,  int  right) //其中temp
       
         
           
-          今天碰到一个问题。运行的时候Server和Client端可以正常通讯，但是调试的时候去在Stream.Read()那里卡死。看Client端的代码，发现有很多的thread.Sleep()操作。于是把Thread.Sheep()中的参数值调大了些，向networkStream中写数据不像过去那么快，结果调试就pass了。百思不得其解，瑞军老大说：“StreamRead是不是同一个？”就这一句话解决了JAME（j2me自动化测试框架）多个月来的稳定问题。原因在于用同一个NetworkStream New出多个StreamReader。一旦有一个StreamReader实例调用的一次Read()函
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/12/1932096/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>今天碰到一个问题。运行的时候Server和Client端可以正常通讯，但是调试的时候去在Stream.Read()那里卡死。看Client端的代码，发现有很<br>多的thread.Sleep()操作。于是把Thread.Sheep()中的参数值调大了些，向networkStream中写数据不像过去那么快，结果调试就p<br>ass了。百思不得其解，瑞军老大说：“StreamRead是不是同一个？”就这一句话解决了JAME（j2me<br>自动化测试框架）多个月来的稳定问题。原因在于用同一个NetworkStream New出多个StreamReader。一旦有一个StreamReader实例<br>调用的一次Read()函数。那么它将把当前缓存区中的内容全部都拿到自己的私有缓存区中。用微软的refactor工具看的源码 ：）<br>，那么另外的StreamReader实例就不可能再得到缓存区的内存。其结果就是在Read()处挂死。</p>
+
+          
         
       
     </div>
@@ -1372,7 +1590,19 @@ void  MergeLines(  int    temp,  int    A,  int  left,  int  right) //其中temp
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1403,16 +1633,9 @@ void  MergeLines(  int    temp,  int    A,  int  left,  int  right) //其中temp
       
         
           
-          昨天和瑞军老大一起看编程珠玑。顺便讨论下问题。听到我和老大再讨论黑豆白豆的农民问题时，Annie过来凑热闹。我给她出了道老大给我出的手机T9输入法。没过多久便认输了。然后老大给她出了道90%九十程序员会错的二分查找。Annie又写了一段时间。在这段时间内和瑞军，Cloud讨论Annie给我们出的另类二分法。结果我们讨论了半天无果。最后问问Annie，才发现题目没有听清楚。所有人都当场晕倒。后来大家又讨论google面试云云。給我的感觉是3点：位运算，函数规范，归类。
+            <p>昨天和瑞军老大一起看编程珠玑。顺便讨论下问题。听到我和老大再讨论黑豆白豆的农民问题时，Annie过来凑热闹。我给她出了道老大给我出的手机T9输入法。没过多久<br>便认输了。然后老大给她出了道90%九十程序员会错的二分查找。Annie又写了一段时间。在这段时间内和瑞军，Cloud讨论Annie给我们出的另类二分法。结果<br>我们讨论了半天无果。最后问问Annie，才发现题目没有听清楚。所有人都当场晕倒。<br>后来大家又讨论google面试云云。給我的感觉是3点：位运算，函数规范，归类。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/12/12/1932070/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1506,10 +1729,10 @@ void  MergeLines(  int    temp,  int    A,  int  left,  int  right) //其中temp
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">626</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 

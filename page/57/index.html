@@ -295,7 +295,19 @@
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -326,21 +338,464 @@
       
         
           
-          看下面的这段代码，摘自《Java Examples in a Nutsbell》（java实例技术手册）：
-就是一个简单的通用的多线程服务器
-这个例子可以通过配置参数：
-java je3.net.Server -control www 3333 je3.net.Server$HTTPMirror 5555
-来启动，然后再ie中输入：  http://localhost:5555  就可以看到效果。
-写一个policy文件放在同根目录下：叫server.policy
-grant{permission java.net.SocketPermission “*:1024-4444”,”connect
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/17/1532313/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>看下面的这段代码，摘自《Java Examples in a Nutsbell》（java实例技术手册）：</p>
+<p>就是一个简单的通用的多线程服务器</p>
+<p>这个例子可以通过配置参数：</p>
+<p>java je3.net.Server -control www 3333 je3.net.Server$HTTPMirror 5555</p>
+<p>来启动，然后再ie中输入： <a href="http://localhost:5555" target="_blank" rel="external"> http://localhost:5555 </a> 就可以看到效果。</p>
+<p>写一个policy文件放在同根目录下：叫server.policy</p>
+<p>grant{<br>permission java.net.SocketPermission “*:1024-4444”,”connect,accept”;<br>permission java.io.FilePermission “E://workspace//j2ee1.3//-“, “read”;<br>};</p>
+<p>下面加上jvm虚拟机参数</p>
+<p>java -Djava.security.manager -Djava.security.policy=server.policy</p>
+<p>je3.net.Server -control www 3333 je3.net.Server$HTTPMirror 5555再次启动。</p>
+<p>按道理，本不应该启动。因为端口5555并没有得到连接许可。但是很可惜输入 <a href="http://localhost:5555" target="_blank" rel="external"> http://localhost:5555
+</a> 还是可以看到结果。因为在java的sdk中暗含了java.policy文件。那就把它改为-<br>Djava.security.policy==server.policy应该就可以了。结果跑不了了。原因就在policy文件中的permission<br>java.net.SocketPermission “<em>:1024-4444”,”connect,accept”; 其实，我一直不太清楚listen<br>，accept，connect的区别在什么地方。但是这里的例子说明你只用permission java.net.SocketPermission “</em>:10<br>24-4444”,”listen”;就可以了。端口该闭的就闭了。如果用accept和connect反而没有什么用。不知道java的安全性高在什么地方。因为j<br>ava.policy文件中从1024以上的端口全都使用了listen。所以以后要配置端口时一定要注意。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> /<em>*/  /</em><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></p>
+<ul>
+<li>Copyright (c) 2004 David Flanagan.  All rights reserved.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This code is from the book Java Examples in a Nutshell, 3nd Edition.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>It is provided AS-IS, WITHOUT ANY WARRANTY either expressed or implied.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>You may study, use, and modify it for any non-commercial purpose,<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>including teaching and use in open-source projects.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>You may distribute it non-commercially as long as you retain this notice.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>For a commercial use license, or to purchase the book,<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>please visit  <a href="http://www.davidflanagan.com/javaexamples3" target="_blank" rel="external">http://www.davidflanagan.com/javaexamples3</a>.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> <em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>package  je3.net;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>import  java.io.  </em>  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>import  java.net.  <em>  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>import  java.util.  </em>  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>import  java.util.logging.  <em>  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> /** </em>/  /**<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This class is a generic framework for a flexible, multi-threaded server.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>It listens on any number of specified ports, and, when it receives a<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>connection on a port, passes input and output streams to a specified Service<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>object which provides the actual service.  It can limit the number of<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>concurrent connections, and logs activity to a specified stream.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> public  class  Server  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>A main() method for running the server as a standalone program.  The<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>command-line arguments to the program should be pairs of servicenames<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>and port numbers.  For each pair, the program will dynamically load the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>named Service class, instantiate it, and tell the server to provide<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>that Service on the specified port.  The special -control argument<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>should be followed by a password and port, and will start special<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>server control service running on the specified port, protected by the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>specified password.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  static  void  main(String[] args)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> try  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (args.length  &lt; 2  )  //  Check number of arguments<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>throw  new  IllegalArgumentException(  “  Must specify a service  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Create a server object that has a limit of 10 concurrent<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  connections, and logs to a Logger at the Level.INFO level<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Prior to Java 1.4 we did this: new Server(System.out, 10);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Server s  =  new  Server(Logger.getLogger(Server.  class  .getName()),<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Level.INFO,  10  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Parse the argument list<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  i  =  0  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> while  (i  &lt; args.length)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> if  (args[i].equals(  “  -control  “  ))  …  {<br>//  Handle the -control arg<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>i  ++  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String password  =  args[i  ++  ];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  port  =  Integer.parseInt(args[i  ++  ]);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  add control service<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>s.addService(  new  Control(s, password), port);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Otherwise start a named service on the specified port.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Dynamically load and instantiate a Service class<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String serviceName  =  args[i  ++  ];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Class serviceClass  =  Class.forName(serviceName);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Service service  =  (Service)serviceClass.newInstance();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  port  =  Integer.parseInt(args[i  ++  ]);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>s.addService(service, port);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> catch  (Exception e)  …  {  //  Display a message<br>if anything goes wrong<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.err.println(  “  Server:  “  +  e);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.err.println(  “  Usage: java Server  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  [-control <password> <port>]  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  [<servicename> <port> … ]  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.exit(  1  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  This is the state for the server<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Map services;  //  Hashtable mapping ports to Listeners<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Set connections;  //  The set of current connections<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  maxConnections;  //  The concurrent connection limit<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>ThreadGroup threadGroup;  //  The threadgroup for all our threads<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  This class was originally written to send logging output to a stream.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  It has been retrofitted to also support the java.util.logging API of<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Java 1.4.  You can use either, neither, or both.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>PrintWriter logStream;  //  Where we send our logging output to<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Logger logger;  //  A Java 1.4 logging destination<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Level logLevel;  //  the level to log messages at<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></port></servicename></port></password></li>
+<li>This is the Server() constructor.  It must be passed a stream<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>to send log output to (may be null), and the limit on the number of<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>concurrent connections.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  Server(OutputStream logStream,  int<br>maxConnections)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  (maxConnections);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>setLogStream(logStream);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>log(  “  Starting server  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This constructor added to support logging with the Java 1.4 Logger class<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  Server(Logger logger, Level logLevel,  int<br>maxConnections)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  (maxConnections);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>setLogger(logger, logLevel);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>log(  “  Starting server  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This constructor supports no logging<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  Server(  int  maxConnections)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>threadGroup  =  new  ThreadGroup(Server.  class  .getName());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .maxConnections  =  maxConnections;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>services  =  new  HashMap();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>connections  =  new  HashSet(maxConnections);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>A public method to set the current logging stream.  Pass null<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>to turn logging off.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  synchronized  void<br>setLogStream(OutputStream out)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (out  !=  null  ) logStream  =  new  PrintWriter(out);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else  logStream  =  null  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Set the current Logger and logging level. Pass null to turn logging off.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  synchronized  void  setLogger(Logger<br>logger, Level level)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .logger  =  logger;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .logLevel  =  level;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong>  Write the specified string to the log<br><em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> protected  synchronized  void  log(String s)  …<br>{<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (logger  !=  null  ) logger.log(logLevel, s);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> if  (logStream  !=  null  )  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>logStream.println(  “  [  “  +  new  Date()  +  “  ]  “  +  s);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>logStream.flush();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /** </em>/  /<strong>  Write the specified object to the log<br>*/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> protected  void  log(Object o)  …  {<br>log(o.toString()); }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /</strong> <em>/  /*</em><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This method makes the server start providing a new service.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>It runs the specified Service object on the specified port.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  synchronized  void  addService(Service service,  int  port)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>throws  IOException<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Integer key  =  new  Integer(port);  //  the hashtable key<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Check whether a service is already on that port<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (services.get(key)  !=  null  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>throw  new  IllegalArgumentException(  “  Port  “  +  port  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  already in use.  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Create a Listener object to listen for connections on the port<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Listener listener  =  new  Listener(threadGroup, port, service);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Store it in the hashtable<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>services.put(key, listener);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Log it<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>log(  “  Starting service  “  +  service.getClass().getName()  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  on port  “  +  port);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Start the listener running.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>listener.start();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This method makes the server stop providing a service on a port.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>It does not terminate any pending connections to that service, merely<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>causes the server to stop accepting new connections<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  synchronized  void  removeService(  int<br>port)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Integer key  =  new  Integer(port);  //  hashtable key<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Look up the Listener object for the port in the hashtable<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>final  Listener listener  =  (Listener) services.get(key);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (listener  ==  null  )  return  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Ask the listener to stop<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>listener.pleaseStop();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Remove it from the hashtable<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>services.remove(key);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  And log it.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>log(  “  Stopping service  “  +  listener.service.getClass().getName()  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  on port  “  +  port);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This nested Thread subclass is a “listener”.  It listens for<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>connections on a specified port (using a ServerSocket) and when it gets<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>a connection request, it calls the servers addConnection() method to<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>accept (or reject) the connection.  There is one Listener for each<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Service being provided by the Server.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  class  Listener  extends  Thread  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>ServerSocket listen_socket;  //  The socket to listen for connections<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  port;  //  The port we’re listening on<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Service service;  //  The service to provide on that port<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>volatile  boolean  stop  =  false  ;  //  Whether we’ve been asked to stop<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>The Listener constructor creates a thread for itself in the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>threadgroup.  It creates a ServerSocket to listen for connections<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>on the specified port.  It arranges for the ServerSocket to be<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>interruptible, so that services can be removed from the server.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  Listener(ThreadGroup group,  int  port, Service service)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>throws  IOException<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>super  (group,  “  Listener:  “  +  port);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>listen_socket  =  new  ServerSocket(port);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  give it a non-zero timeout so accept() can be interrupted<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>listen_socket.setSoTimeout(  5000  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .port  =  port;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .service  =  service;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This is the polite way to get a Listener to stop accepting<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>connections<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <strong>  */<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  void  pleaseStop()  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .stop  =  true  ;  //  Set the stop flag<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .interrupt();  //  Stop blocking in accept()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> try  …  { listen_socket.close(); }  //  Stop<br>listening.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> catch  (IOException e)  …  {}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /</strong> <em>/  /*</em><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>A Listener is a Thread, and this is its body.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Wait for connection requests, accept them, and pass the socket on<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>to the addConnection method of the server.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  void  run()  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> while  (  !  stop)  …  {  //  loop until we’re<br>asked to stop.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> try  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Socket client  =  listen_socket.accept();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>addConnection(client, service);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> catch  (InterruptedIOException e)  …  {}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> catch  (IOException e)  …  {log(e);}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This is the method that Listener objects call when they accept a<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>connection from a client.  It either creates a Connection object<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>for the connection and adds it to the list of current connections,<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>or, if the limit on connections has been reached, it closes the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>connection.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> protected  synchronized  void  addConnection(Socket<br>s, Service service)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  If the connection limit has been reached<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> if  (connections.size()  &gt;=  maxConnections)  …<br>{<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> try  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Then tell the client it is being rejected.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>PrintWriter out  =  new  PrintWriter(s.getOutputStream());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  Connection refused;  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  the server is busy; please try again later.  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.flush();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  And close the connection to the rejected client.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>s.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  And log it, of course<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>log(  “  Connection refused to  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>s.getInetAddress().getHostAddress()  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  :  “  +  s.getPort()  +  “  : max connections reached.  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> }  catch  (IOException e)  …  {log(e);}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  …  {  //  Otherwise, if the limit has not<br>been reached<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Create a Connection thread to handle this connection<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Connection c  =  new  Connection(s, service);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Add it to the list of current connections<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>connections.add(c);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Log this new connection<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>log(  “  Connected to  “  +  s.getInetAddress().getHostAddress()  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  :  “  +  s.getPort()  +  “  on port  “  +  s.getLocalPort()  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  for service  “  +  service.getClass().getName());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  And start the Connection thread to provide the service<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>c.start();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>A Connection thread calls this method just before it exits.  It removes<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>the specified Connection from the set of connections.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> protected  synchronized  void<br>endConnection(Connection c)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>connections.remove(c);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>log(  “  Connection to  “  +  c.client.getInetAddress().getHostAddress()  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  :  “  +  c.client.getPort()  +  “  closed.  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong>  Change the current connection limit<br><em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  synchronized  void  setMaxConnections(  int<br>max)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>maxConnections  =  max;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /** </em>/  /**<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This method displays status information about the server on the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>specified stream.  It can be used for debugging, and is used by the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Control service later in this example.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  synchronized  void<br>displayStatus(PrintWriter out)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Display a list of all Services that are being provided<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Iterator keys  =  services.keySet().iterator();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> while  (keys.hasNext())  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Integer port  =  (Integer) keys.next();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Listener listener  =  (Listener) services.get(port);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  SERVICE  “  +  listener.service.getClass().getName()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>+  “  ON PORT  “  +  port  +  “  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Display the current connection limit<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  MAX CONNECTIONS:  “  +  maxConnections  +  “  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Display a list of all current connections<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Iterator conns  =  connections.iterator();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> while  (conns.hasNext())  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Connection c  =  (Connection)conns.next();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  CONNECTED TO  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>c.client.getInetAddress().getHostAddress()  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  :  “  +  c.client.getPort()  +  “  ON PORT  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>c.client.getLocalPort()  +  “  FOR SERVICE  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>c.service.getClass().getName()  +  “  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This class is a subclass of Thread that handles an individual<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>connection between a client and a Service provided by this server.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Because each such connection has a thread of its own, each Service can<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>have multiple connections pending at once.  Despite all the other<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>threads in use, this is the key feature that makes this a<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>multi-threaded server implementation.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  class  Connection  extends  Thread  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Socket client;  //  The socket to talk to the client through<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Service service;  //  The service being provided to that client<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This constructor just saves some state and calls the superclass<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>constructor to create a thread to handle the connection.  Connection<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>objects are created by Listener threads.  These threads are part of<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>the server’s ThreadGroup, so all Connection threads are part of that<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>group, too.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  Connection(Socket client, Service service)<br>…  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>super  (  “  Server.Connection:  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>client.getInetAddress().getHostAddress()  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  :  “  +  client.getPort());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .client  =  client;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .service  =  service;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This is the body of each and every Connection thread.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>All it does is pass the client input and output streams to the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>serve() method of the specified Service object.  That method is<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>responsible for reading from and writing to those streams to<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>provide the actual service.  Recall that the Service object has<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>been passed from the Server.addService() method to a Listener<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>object to the addConnection() method to this Connection object, and<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>is now finally being used to provide the service.  Note that just<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>before this thread exits it always calls the endConnection() method<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>to remove itself from the set of connections<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  void  run()  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> try  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>InputStream in  =  client.getInputStream();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>OutputStream out  =  client.getOutputStream();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>service.serve(in, out);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> catch  (IOException e)  …  {log(e);}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> finally  …  { endConnection(  this  ); }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Here is the Service interface that we have seen so much of.  It defines<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>only a single method which is invoked to provide the service.  serve()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>will be passed an input stream and an output stream to the client.  It<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>should do whatever it wants with them, and should close them before<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>returning.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>All connections through the same port to this service share a single<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Service object.  Thus, any state local to an individual connection must<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>be stored in local variables within the serve() method.  State that<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>should be global to all connections on the same port should be stored<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>in instance variables of the Service class.  If the same Service is<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>running on more than one port, there will typically be different<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Service instances for each port.  Data that should be global to all<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>connections on any port should be stored in static variables.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Note that implementations of this interface must have a no-argument<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>constructor if they are to be dynamically instantiated by the main()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>method of the Server class.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  interface  Service  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  void  serve(InputStream in, OutputStream out)  throws  IOException;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>A very simple service.  It displays the current time on the server<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>to the client, and closes the connection.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  static  class  Time  implements  Service<br>…  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  void  serve(InputStream i, OutputStream o)<br>throws  IOException  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>PrintWriter out  =  new  PrintWriter(o);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  new  Date()  +  “  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>i.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This is another example service.  It reads lines of input from the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>client, and sends them back, reversed.  It also displays a welcome<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>message and instructions, and closes the connection when the user<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>enters a ‘.’ on a line by itself.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  static  class  Reverse  implements  Service<br>…  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  void  serve(InputStream i, OutputStream o)<br>throws  IOException  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>BufferedReader in  =  new  BufferedReader(  new  InputStreamReader(i));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>PrintWriter out  =<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>new  PrintWriter(  new  BufferedWriter(  new  OutputStreamWriter(o)));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  Welcome to the line reversal server.  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  Enter lines.  End with a ‘.’ on a line by itself.  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> for  (;;)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  &gt; “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.flush();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String line  =  in.readLine();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  ((line  ==  null  )  ||  line.equals(  “  .  “  ))  break  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  j  =  line.length()  -  1  ; j  &gt;=  0  ; j  --  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(line.charAt(j));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>in.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This service is an HTTP mirror, just like the HttpMirror class<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>implemented earlier in this chapter.  It echos back the client’s<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>HTTP request<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  static  class  HTTPMirror  implements<br>Service  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  void  serve(InputStream i, OutputStream o)<br>throws  IOException  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>BufferedReader in  =  new  BufferedReader(  new  InputStreamReader(i));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>PrintWriter out  =  new  PrintWriter(o);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  HTTP/1.0 200  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  Content-Type: text/plain  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String line;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> while  ((line  =  in.readLine())  !=  null  )  …<br>{<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (line.length()  ==  0  )  break  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(line  +  “  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>in.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This service demonstrates how to maintain state across connections by<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>saving it in instance variables and using synchronized access to those<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>variables.  It maintains a count of how many clients have connected and<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>tells each client what number it is<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  static  class  UniqueID  implements<br>Service  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  int  id  =  0  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  synchronized  int  nextId()  …  {  return<br>id  ++  ; }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  void  serve(InputStream i, OutputStream o)<br>throws  IOException  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>PrintWriter out  =  new  PrintWriter(o);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  You are client #:  “  +  nextId()  +  “  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>i.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This is a non-trivial service.  It implements a command-based protocol<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>that gives password-protected runtime control over the operation of the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>server.  See the main() method of the Server class to see how this<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>service is started.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>The recognized commands are:<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>password: give password; authorization is required for most commands<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>add:      dynamically add a named service on a specified port<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>remove:   dynamically remove the service running on a specified port<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>max:      change the current maximum connection limit.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>status:   display current services, connections, and connection limit<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>help:     display a help message<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>quit:     disconnect<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This service displays a prompt, and sends all of its output to the user<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>in capital letters.  Only one client is allowed to connect to this<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>service at a time.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  static  class  Control  implements  Service<br>…  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Server server;  //  The server we control<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String password;  //  The password we require<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>boolean  connected  =  false  ;  //  Whether a client is already connected<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Create a new Control service.  It will control the specified Server<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>object, and will require the specified password for authorization<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>Note that this Service does not have a no argument constructor,<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>which means that it cannot be dynamically instantiated and added as<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>the other, generic services above can be.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  Control(Server server, String password)<br>…  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .server  =  server;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>this  .password  =  password;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> /<strong> */  /</strong><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>This is the serve method that provides the service.  It reads a<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>line the client, and uses java.util.StringTokenizer to parse it<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>into commands and arguments.  It does various things depending on<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>the command.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> <em>  </em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  void  serve(InputStream i, OutputStream o)<br>throws  IOException  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Setup the streams<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>BufferedReader in  =  new  BufferedReader(  new  InputStreamReader(i));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>PrintWriter out  =  new  PrintWriter(o);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String line;  //  For reading client input lines<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Has the user has given the password yet?<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>boolean  authorized  =  false  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  If there is already a client connected to this service, display<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  a message to this client and close the connection.  We use a<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  synchronized block to prevent a race condition.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> synchronized  (  this  )  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> if  (connected)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  ONLY ONE CONTROL CONNECTION ALLOWED.  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else  connected  =  true  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  This is the main loop: read a command, parse it, and handle it<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> for  (;;)  …  {  //  infinite loop<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  &gt; “  );  //  Display a prompt<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.flush();  //  Make it appear right away<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>line  =  in.readLine();  //  Get the user’s input<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (line  ==  null  )  break  ;  //  Quit if we get EOF.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> try  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Use a StringTokenizer to parse the user’s command<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>StringTokenizer t  =  new  StringTokenizer(line);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  !  t.hasMoreTokens())  continue  ;  //  if input was empty<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Get first word of the input and convert to lower case<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String command  =  t.nextToken().toLowerCase();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Now compare to each of the possible commands, doing the<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  appropriate thing for each command<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> if  (command.equals(  “  password  “  ))  …  {<br>//  Password command<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String p  =  t.nextToken();  //  Get the next word<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> if  (p.equals(  this  .password))  …  {  //  Is<br>it the password?<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  OK  “  );  //  Say so<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>authorized  =  true  ;  //  Grant authorization<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else  out.print(  “  INVALID PASSWORD  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  if  (command.equals(  “  add  “  ))  …  {<br>//  Add Service command<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Check whether password has been given<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  !  authorized) out.print(  “  PASSWORD REQUIRED  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Get the name of the service and try to<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  dynamically load and instantiate it.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Exceptions will be handled below<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String serviceName  =  t.nextToken();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Class serviceClass  =  Class.forName(serviceName);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Service service;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> try  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>service  =  (Service)serviceClass.newInstance();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> catch  (NoSuchMethodError e)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>throw  new  IllegalArgumentException(<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  Service must have a  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  no-argument constructor  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  port  =  Integer.parseInt(t.nextToken());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  If no exceptions occurred, add the service<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>server.addService(service, port);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  SERVICE ADDED  “  );  //  acknowledge<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  if  (command.equals(  “  remove  “  ))  …<br>{  //  Remove service<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  !  authorized) out.print(  “  PASSWORD REQUIRED  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  port  =  Integer.parseInt(t.nextToken());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>server.removeService(port);  //  remove the service<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  SERVICE REMOVED  “  );  //  acknowledge<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  if  (command.equals(  “  max  “  ))  …  {<br>//  Set connection limit<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  !  authorized) out.print(  “  PASSWORD REQUIRED  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  max  =  Integer.parseInt(t.nextToken());<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>server.setMaxConnections(max);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  MAX CONNECTIONS CHANGED  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  if  (command.equals(  “  status  “  ))  …<br>{  //  Status Display<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  !  authorized) out.print(  “  PASSWORD REQUIRED  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else  server.displayStatus(out);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> else  if  (command.equals(  “  help  “  ))  …  {<br>//  Help command<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Display command syntax.  Password not required<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  COMMANDS:  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  password <password> “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  add <service> <port> “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  remove <port> “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  max <max-connections> “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  status  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  help  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>“  quit  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else  if  (command.equals(  “  quit  “  ))  break  ;  //  Quit command.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else  out.print(  “  UNRECOGNIZED COMMAND  “  );  //  Error<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> catch  (Exception e)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  If an exception occurred during the command, print an<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  error message, then output details of the exception.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.print(  “  ERROR WHILE PARSING OR EXECUTING COMMAND:  “  +<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>e  +  “  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Finally, when the loop command loop ends, close the streams<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  and set our connected flag to false so that other clients can<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  now connect.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>connected  =  false  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>out.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>in.close();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></max-connections></port></port></service></password></li>
+</ul>
+
+          
         
       
     </div>
@@ -419,7 +874,19 @@ grant{permission java.net.SocketPermission “*:1024-4444”,”connect
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -450,21 +917,37 @@ grant{permission java.net.SocketPermission “*:1024-4444”,”connect
       
         
           
-          一般来说equals()方法是比较两个对象值的。
-例如比较两个Integer 对象
-  public  class  Equalival  …  {  public  static  void  main(String[] args)  …  {Integer n1  =  new  Integer(  47  );Integer n2  =  new  Integer(  47  );System.out.println(n1.equals(n2)); } }
-打印true
-//Thinking in Java中的例子
-＝＝操作符是用来比较引用是否相等
-public  class  Equa
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/17/1532296/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>一般来说equals()方法是比较两个对象值的。</p>
+<p>例如比较两个Integer 对象</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> public  class  Equalival  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  static  void  main(String[] args)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Integer n1  =  new  Integer(  47  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Integer n2  =  new  Integer(  47  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.out.println(n1.equals(n2));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>打印true</p>
+<p>//Thinking in Java中的例子</p>
+<p>＝＝操作符是用来比较引用是否相等</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>public  class  Equalival<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> public  static  void  main(String[] args)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Integer n1  =  new  Integer(  47  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Integer n2  =  new  Integer(  47  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.out.println(n1  ==  n2);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.out.println(n1  !=  n2);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>打印false，true</p>
+<p>感觉以上的例子并没有说明什么看看下面的这个String的例子：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>public  class  TestRef<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  static  void  main(String[] args)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String s  =  new  String(  “  a  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (s  ==  “  a  “  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.out.println(  “  true1  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (s.equals(  “  a  “  ))<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.out.println(  “  true2  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>String ss  =  “  a  “  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (ss  ==  “  a  “  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.out.println(  “  true3  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (ss.equals(  “  a  “  ))<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>System.out.println(  “  true4  “  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>这个打印true2，true3，true4。因为new String时在堆中生成了空间给“a”，对于第一次的s==“a”时，栈分配空间给”a”，并把”a”当<br>成一个匿名的对象。赋值ss=”a”，意味着在栈中分配了空间给”a”，并把”a”这个匿名的对象引用赋给ss。，所以s与”a”的引用不等。而”a”再次出现在代码<br>中时，编译器查找到先前的“a”对象，而不是再分配内存给”a”。所以ss与”a”的引用是相等的。但不管引用是否相等，其值都是”a”，这便看出了equals()<br>的威力。</p>
+
+          
         
       
     </div>
@@ -543,7 +1026,19 @@ public  class  Equa
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -574,23 +1069,16 @@ public  class  Equa
       
         
           
-          下载地址：
-   http://ss.hnu.cn/newweb/students/yuankan/download/
-  院刊2.rar 
-将地址贴到迅雷。。。。
-或者访问  http://ss.hnu.cn/newweb/students/yuankan/index.htm
-
-大一们参与进来了，感觉但是人多但力不足。。。虽然经历了培训，大一们的动手能力还是不行。
-现在看来，大一的家伙们成长了很多。。
+            <p>下载地址：</p>
+<p><em> </em> <a href="http://ss.hnu.cn/newweb/students/yuankan/download/" target="_blank" rel="external"> http://ss.hnu.cn/newweb/students/yuankan/download/
+</a> <em> 院刊2.rar </em></p>
+<p>将地址贴到迅雷。。。。</p>
+<p>或者访问 <a href="http://ss.hnu.cn/newweb/students/yuankan/index.htm" target="_blank" rel="external"> http://ss.hnu.cn/newweb/students/yuankan/index.htm
+</a></p>
+<p>大一们参与进来了，感觉但是人多但力不足。。。虽然经历了培训，大一们的动手能力还是不行。</p>
+<p>现在看来，大一的家伙们成长了很多。。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/17/1532282/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -669,7 +1157,19 @@ public  class  Equa
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -700,20 +1200,13 @@ public  class  Equa
       
         
           
-          下载地址：
- http://ss.hnu.cn/newweb/students/yuankan/download/
- 军训特刊终.rar
-将此文件名粘贴到迅雷即可。。。。
-真怀念创办院刊的时候。。。
+            <p>下载地址：</p>
+<p><a href="http://ss.hnu.cn/newweb/students/yuankan/download/" target="_blank" rel="external"> http://ss.hnu.cn/newweb/students/yuankan/download/
+</a> 军训特刊终.rar</p>
+<p>将此文件名粘贴到迅雷即可。。。。</p>
+<p>真怀念创办院刊的时候。。。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/17/1532278/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -792,7 +1285,19 @@ public  class  Equa
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -823,17 +1328,10 @@ public  class  Equa
       
         
           
-          不知道为什么我每次选择都是允许匿名评论，隔一段时间就变成不允许匿名评论了。。。。
-不知道是不是bug？？
+            <p>不知道为什么我每次选择都是允许匿名评论，隔一段时间就变成不允许匿名评论了。。。。</p>
+<p>不知道是不是bug？？</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/15/1530606/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -912,7 +1410,19 @@ public  class  Equa
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -943,19 +1453,12 @@ public  class  Equa
       
         
           
-          培训了半年，大一的终于可以自己办一期了。看来交接的时候快到了。期待那一天。。。。
-电子院刊下载地址：  http://ss.hnu.cn/newweb/students/yuankan/download/
- 青春缘代码3.rar
-直接把地址粘到迅雷上即可。
+            <p>培训了半年，大一的终于可以自己办一期了。看来交接的时候快到了。期待那一天。。。。</p>
+<p>电子院刊下载地址： <a href="http://ss.hnu.cn/newweb/students/yuankan/download/" target="_blank" rel="external"> http://ss.hnu.cn/newweb/students/yuankan/download/
+</a> 青春缘代码3.rar</p>
+<p>直接把地址粘到迅雷上即可。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/12/1527299/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1034,7 +1537,19 @@ public  class  Equa
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1065,18 +1580,11 @@ public  class  Equa
       
         
           
-          csdn的blog在1280*1024的显示模式下界面会出现重复部分.
-大家可以在1280*1024的分辨率下看看我的blog.就会发现那个显示错误.
-当然也可能是我选择的这个模版有问题.
+            <p>csdn的blog在1280*1024的显示模式下界面会出现重复部分.</p>
+<p>大家可以在1280*1024的分辨率下看看我的blog.就会发现那个显示错误.</p>
+<p>当然也可能是我选择的这个模版有问题.</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/07/1523649/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1155,7 +1663,19 @@ public  class  Equa
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1186,18 +1706,12 @@ public  class  Equa
       
         
           
-          昨天坐了20个小时的火车。幸好是卧铺要不就有可能挂在车上了。袋子太重了，而且只能手提。只得全当锻炼身体。 今天又感受了一次什么叫肌肉拉伤。
-春运多少年了，铁路的状况也就没有缓解。也不知道铁路部门知不知道什么叫路由算法。如果让法学院的学生分析或者会说没有人道主义精神。如果让机械院的分析或许会说这火车跑的很慢，再快些就有可能缓解。自己是学计算机的于是就想到了路由算法。
-在火车上碰到了几学生。有中南的有华东的。没有想到那华东的竟然还是同一所高中的，而且还和我同行。这一路也挺无聊，在车上打了几个小时的牌去消磨时光。
-在学校里不知道有没有机器用。sit的机房被封了，才开了两个月。。。不知道学院到底想干什
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/04/1520512/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>昨天坐了20个小时的火车。幸好是卧铺要不就有可能挂在车上了。袋子太重了，而且只能手提。只得全当锻炼身体。 今天又感受了一次什么叫肌肉拉伤。</p>
+<p>春运多少年了，铁路的状况也就没有缓解。也不知道铁路部门知不知道什么叫路由算法。如果让法学院的学生分析或者会说没有人道主义精神。如果让机械院的分析或许会说这火<br>车跑的很慢，再快些就有可能缓解。自己是学计算机的于是就想到了路由算法。</p>
+<p>在火车上碰到了几学生。有中南的有华东的。没有想到那华东的竟然还是同一所高中的，而且还和我同行。这一路也挺无聊，在车上打了几个小时的牌去消磨时光。</p>
+<p>在学校里不知道有没有机器用。sit的机房被封了，才开了两个月。。。不知道学院到底想干什么。至如今只得用小李子的机器上上网，写写blog了。不知道学生会能不能<br>分台机器让我上上网。。。</p>
+
+          
         
       
     </div>
@@ -1276,7 +1790,19 @@ public  class  Equa
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1307,18 +1833,14 @@ public  class  Equa
       
         
           
-          失败检讨自己,成功感谢大家.洞悉人性兴衰谁人定,胜败岂无凭吾任天下之智力,以道御之,无所不胜实事求是,唯才是举,不拘一格,来者不拒不得务虚名,而处实祸处理:名与实,得与才,廉与贪(重用清官,不避小贪),降与叛(招降纳叛,不计前嫌),大德与小节(抓大放小,不拘小节)
-成大业者不要追求什么清一色不要选错老板知人善任,唯才所宜知道哪些人是人才,知道哪些人是哪方面的人才或哪种类型的人才,知道把这些人放在什么位置上最适合.推诚取信,用人不疑令行禁止,赏罚分明(立下显赫功劳,奖励到位)刘备有英雄之志,有英雄之气,有英雄之魂,有英雄之义
-做事情一丝不苟从政条件:背景,关系,圈子
-真心诚意以情感人 推心置腹以
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/02/27/1516119/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>失败检讨自己,成功感谢大家.<br>洞悉人性<br>兴衰谁人定,胜败岂无凭<br>吾任天下之智力,以道御之,无所不胜<br>实事求是,唯才是举,不拘一格,来者不拒<br>不得务虚名,而处实祸<br>处理:名与实,得与才,廉与贪(重用清官,不避小贪),降与叛(招降纳叛,不计前嫌),大德与小节(抓大放小,不拘小节)</p>
+<p>成大业者不要追求什么清一色<br>不要选错老板<br>知人善任,唯才所宜<br>知道哪些人是人才,知道哪些人是哪方面的人才或哪种类型的人才,知道把这些人放在什么位置上最适合.<br>推诚取信,用人不疑<br>令行禁止,赏罚分明(立下显赫功劳,奖励到位)<br>刘备<br>有英雄之志,有英雄之气,有英雄之魂,有英雄之义</p>
+<p>做事情一丝不苟<br>从政条件:背景,关系,圈子</p>
+<p>真心诚意以情感人 推心置腹以诚待人<br>开诚布公以理服人 言行一致以信取人<br>令行禁止以法制人 设身处地以宽容人<br>扬人责己以功归人 论功行赏以奖励人</p>
+<p>知道人才需要什么..</p>
+<p>聪明,随和,真诚,深沉  </p>
+
+          
         
       
     </div>
@@ -1397,7 +1919,19 @@ public  class  Equa
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1428,16 +1962,9 @@ public  class  Equa
       
         
           
-          整天呆在家里,上网看看blog.竟也把James Gosling的blog找到了.但是还是没有把他的邮箱找到.算了以后再找吧. 在家里真的不能静下心去学英语.在学校还好,至少觉得英语无聊的时候不会去上网也不会去看电视.(因为没有电脑也没有电视)在家里什么都有,也就什么都干不成.还是自己的意志力不够.放假休息休息吧.又总感觉无聊.真的是闲得无聊了……想哭…….
+            <p>整天呆在家里,上网看看blog.竟也把James Gosling的blog找到了.但是还是没有把他的邮箱找到.算了以后再找吧. 在家里真的不能静下心去学英语<br>.在学校还好,至少觉得英语无聊的时候不会去上网也不会去看电视.(因为没有电脑也没有电视)在家里什么都有,也就什么都干不成.还是自己的意志力不够.放假休息休息<br>吧.又总感觉无聊.真的是闲得无聊了……想哭…….</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/02/27/1515683/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1531,10 +2058,10 @@ public  class  Equa
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">626</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 

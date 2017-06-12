@@ -295,7 +295,19 @@
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -326,19 +338,36 @@
       
         
           
-          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="views" content="1573"><br>In Postgresql, If you want to do something like “select Hello(a) from A;”. You should define your own function Hello().</p>
+<p>First, go to postgresql root directory and go into contrib file folder. Create your own directory, and add hello.h , hello.c, Makefile, hello.sql.in and uninstall_Hello.sql.in</p>
+<p>Makefile is like the following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">MODULE_big  = Hello // this is module name</div><div class="line">OBJS = Hello.o // those will be create by execute &quot;make&quot;</div><div class="line"></div><div class="line">DATA_built = hello.sql // install your function using this sql file</div><div class="line">DATA = uninstall_Hello.sql</div><div class="line">SHLIB_LINK = $(BE_DLLLIBS)</div><div class="line"></div><div class="line">ifdef USE_PGXS // this is a build infrastructure of extentions in postgreSQL</div><div class="line">PGXS = $(shell pg_config --pgxs)</div><div class="line">include $(PGXS)</div><div class="line">else</div><div class="line">subdir = contrib/Hello // here is your code files</div><div class="line">top_builddir = ../..</div><div class="line">include $(top_builddir)/src/Makefile.global</div><div class="line">include $(top_srcdir)/contrib/contrib-global.mk</div><div class="line">endif</div><div class="line"></div><div class="line">// the following code fragment is copying content of *.sql.in into *.sql</div><div class="line">%.sql: %.source</div><div class="line">	rm -f $@; \</div><div class="line">	C=`pwd`; \</div><div class="line">	sed -e &quot;s:_OBJWD_:$$C:g&quot; &amp;lt; $&amp;lt; &amp;gt; $@</div></pre></td></tr></table></figure>
+<p>Attention!!! In Makefile those command should be with no blank at end.<br>Here we can write hello.sql.in:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">SET search_path = public; --you should add this code first.</div><div class="line">--functions</div><div class="line">--take care of those functions, if those functions are used for data input and out, their args or return type must be cstring or varchar</div><div class="line"></div><div class="line">-- arg type is cstring</div><div class="line">CREATE OR REPLACE FUNCTION hello_in(cstring)</div><div class="line">   RETURNS HelloS</div><div class="line">   AS &apos;MODULE_PATHNAME&apos;</div><div class="line">   LANGUAGE C IMMUTABLE STRICT;</div><div class="line">-- return type is cstring</div><div class="line">CREATE OR REPLACE FUNCTION hello_out(HelloS)</div><div class="line">   RETURNS cstring</div><div class="line">   AS &apos;MODULE_PATHNAME&apos;</div><div class="line">   LANGUAGE C IMMUTABLE STRICT;</div><div class="line"></div><div class="line">--data type</div><div class="line">CREATE TYPE HelloS (</div><div class="line">   internallength = 52,</div><div class="line">   input = hello_in,</div><div class="line">   output = hello_out,</div><div class="line">   alignment = double</div><div class="line">);</div><div class="line">--size is 52 bytes and alignment is 8 bytes.</div><div class="line">--if you don&apos;t know its real size, use internallength = VARIABLE</div><div class="line">--if you want use binary array as its input and out, you should use receive=XXX_function, and send = XXX_function</div><div class="line"></div><div class="line">--outer function</div><div class="line">--this function can use kinds of types</div><div class="line">CREATE OR REPLACE FUNCTION Hello(HelloS)</div><div class="line">   RETURNS cstring</div><div class="line">   AS &apos;MODULE_PATHNAME&apos;</div><div class="line">   LANGUAGE C IMMUTABLE STRICT;</div></pre></td></tr></table></figure>
+<p>Here is the uninstall_Hello.sql.in:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SET search_path = public;</div><div class="line"></div><div class="line">DROP FUNCTION hello_in(cstring);</div><div class="line">DROP FUNCTION hello_out(HelloS);</div><div class="line">DROP TYPE HelloS;</div><div class="line">DROP FUNCTION Hello(HelloS);</div></pre></td></tr></table></figure>
+<p>In hello.h</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#ifndef HELLO_H</div><div class="line">#define HELLO_H</div><div class="line">#include&amp;lt;stdio.h&amp;gt;</div><div class="line">#include&amp;lt;stdlib.h&amp;gt;</div><div class="line"></div><div class="line">#include &quot;postgres.h&quot;</div><div class="line">#include &quot;fmgr.h&quot;</div><div class="line">#include &quot;funcapi.h&quot;</div><div class="line">// you should take care of the order of those head files!!!</div><div class="line"></div><div class="line">typedef struct&#123;</div><div class="line">	char content[52];</div><div class="line">&#125;HelloS;</div><div class="line"></div><div class="line">Datum		hello_in(PG_FUNCTION_ARGS);</div><div class="line">Datum		hello_out(PG_FUNCTION_ARGS);</div><div class="line">Datum               Hello(PG_FUNCTION_ARGS);</div><div class="line"></div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>hello.c</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#include “hello.h”</div><div class="line"></div><div class="line">#ifndef MOD_FOR_PG</div><div class="line">PG_MODULE_MAGIC;</div><div class="line">#endif</div><div class="line"></div><div class="line">PG_FUNCTION_INFO_V1(hello_in);</div><div class="line">Datum</div><div class="line">hello_in(PG_FUNCTION_ARGS)</div><div class="line">&#123;</div><div class="line">	// get args[0]</div><div class="line">	char * str = PG_GETARG_CSTRING(0);</div><div class="line">    HelloS * hs = palloc(sizeof(HelloS));</div><div class="line">    if(NULL != str)&#123;</div><div class="line">        strcpy(hs-&amp;gt;content,str);</div><div class="line">        PG_RETURN_POINTER(hs)</div><div class="line">    &#125;</div><div class="line">    PG_RETURN_NULL();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">PG_FUNCTION_INFO_V1(hello_out);</div><div class="line">Datum</div><div class="line">hello_out(PG_FUNCTION_ARGS)</div><div class="line">&#123;</div><div class="line">	// get args[0]</div><div class="line">    Hello * hs = PG_GETARG_POINTER(0);</div><div class="line"></div><div class="line">    if(NULL != hs)&#123;</div><div class="line">        char * content = palloc(sizeof(HelloS));</div><div class="line">        strcpy(content,hs-&amp;gt;content);</div><div class="line">        PG_RETURN_CSTRING(content);</div><div class="line">    &#125;</div><div class="line">    PG_RETURN_CSTRING(&quot;&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">PG_FUNCTION_INFO_V1(Hello);</div><div class="line">Datum</div><div class="line">Hello(PG_FUNCTION_ARGS)</div><div class="line">&#123;</div><div class="line">   HelloS* hs = PG_GETARG_POINTER(0);</div><div class="line"> if(NULL != hs)&#123;</div><div class="line">    char * res = palloc(sizeof(HelloS));</div><div class="line">    sprintf(res,&quot;hello %s&quot;,hs-&amp;gt;content);</div><div class="line">    PG_RETURN_CSTRING(res);</div><div class="line"> &#125;</div><div class="line"> PG_RETURN_CSTRING(&quot;hello nobody&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Then cd your folder contrib/Hello, make, and make install</p>
+<p>Then start psql to execute :</p>
+<p>create table A(a HelloS);</p>
+<p>insert into A values(‘cc’);</p>
+<p>insert into A values(‘ff’);</p>
+<p>select Hello(a) from A;</p>
+<p>result:</p>
+<p>Hello cc</p>
+<p>Hello ff</p>
+<p>select * from A;</p>
+<p>result:</p>
+<p>cc</p>
+<p>ff</p>
 
-In Postgresql, If you want to do something like “select Hello(a) from A;”. You should define your own function Hello().
-First, go to postgresql root directory and go into contrib file folder. Create your own directory, and add hello.h , hello.c, Makefile, hello.sql.in and uninstall_Hello.sql.in
-Ma
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/09/03/2010-09-03-postgresql-function-define/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
@@ -417,7 +446,19 @@ Ma
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -448,23 +489,19 @@ Ma
       
         
           
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_keywords" content="LNK2019"></p>
+<p><meta name="views" content="2408"><br>Today I have found this problem :</p>
+<p><span style="color: #800000;">error LNK2019: unresolved external symbol <strong>imp</strong>gethostname@8 referenced in function _wmain </span></p>
+<p><span style="color: #800000;">and </span></p>
+<p><span style="color: #800000;">fatal error LNK1120: 1 unresolved externals </span></p>
+<p>code fragment is :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// if this code fragment can be compiled, the result will not be your expected.</div><div class="line"></div><div class="line">#include &quot;stdafx.h&quot;</div><div class="line">#include &amp;lt;iostream&amp;gt;</div><div class="line">#include &amp;lt;WinSock2.h&amp;gt;</div><div class="line">using namespace std;</div><div class="line">int _tmain(int argc, _TCHAR* argv[])</div><div class="line">&#123;</div><div class="line">	const int len = 256;</div><div class="line">	char buffer[len];</div><div class="line">	int a = gethostname(buffer,len);</div><div class="line">	cout &amp;lt;&amp;lt;ａ&amp;lt;&amp;lt;endl; // a will be -1</div><div class="line">	cout &amp;lt;&amp;lt; buffer&amp;lt;&amp;lt;endl; // buffer will be filled with unreadable code.</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p></p><h3><strong>What’s wrong? </strong></h3><br>If you don’t add <span style="color: #000080;">#include &lt;WinSock2.h&gt;</span>, the compiler will report :  <span style="color: #800000;">error C3861: ‘gethostname’: identifier not found </span>. But after you adding this header, it will report above error again.  First, you should add the header &lt;afxext.h&gt; into stdafx.h, then compile the code again. Code will be compiled without any error. Then run this code fragment, and the result is not my expected. a is -1, and the buffer is filled with messy code. If you use WSAGetLastError() function to see it error code, the error code will be WSANOTINITIALISED. Yes, I have not initialized. So we should call WSAStartup() first and then gethostname. And WSAStartup() will check DLL version. And after having gotten hostname, don’t forget to call WSACleanup(). Here is the whole code:<p></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">#include &quot;stdafx.h&quot;</div><div class="line">//#include &amp;lt;winsock.h&amp;gt;</div><div class="line">#include &amp;lt;iostream&amp;gt;</div><div class="line">#include &amp;lt;WinSock2.h&amp;gt; // use winsock2.h is ok</div><div class="line">using namespace std;</div><div class="line">int _tmain(int argc, _TCHAR* argv[])</div><div class="line">&#123;</div><div class="line">	const int len = 256;</div><div class="line">	char buffer[len];</div><div class="line">	WORD wVersionRequested;</div><div class="line">	WSADATA wsaData;</div><div class="line">	wVersionRequested = MAKEWORD(2,2); //version 2.2 </div><div class="line">	int err = WSAStartup(wVersionRequested,&amp;amp;wsaData);</div><div class="line">	if (0 != err) return 1;</div><div class="line">	if ( LOBYTE( wsaData.wVersion ) != 2 ||</div><div class="line">        HIBYTE( wsaData.wVersion ) != 2 ) &#123;</div><div class="line">               // only support version 2.2 of Windows Sockets </div><div class="line">			WSACleanup();</div><div class="line">			return 1;</div><div class="line">	&#125;</div><div class="line">	// get hostname</div><div class="line">	int a = gethostname(buffer,len);</div><div class="line">	/* if there is an error. use WSAGetLastError to find it.</div><div class="line">	int errcode = WSAGetLastError();</div><div class="line">	switch(errcode)&#123;</div><div class="line">	 ....</div><div class="line">	&#125;*/</div><div class="line">	cout &amp;lt;&amp;lt; buffer&amp;lt;&amp;lt;endl;</div><div class="line">	WSACleanup();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
           
-
-
-Today I have found this problem :
-error LNK2019: unresolved external symbol impgethostname@8 referenced in function _wmain 
-and 
-fatal error LNK1120: 1 unresolved externals 
-code fragment is :
-123456789101112131415// if this code fragment can be compiled, the result will not be your expected.#inc
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/09/02/2010-09-02-error-lnk2019/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -543,7 +580,19 @@ code fragment is :
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -574,18 +623,17 @@ code fragment is :
       
         
           
-          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="views" content="542"><br>the macro #define is the biggest hidden bug in c. You should always remember macro-function is like code paster. And it will slow down your system in some special situations, such as macro recursion. If you macro define some function use BIG characters.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#define FUN1(a,b) a*b</div><div class="line">#define FUN2(a) a++;\</div><div class="line">     a*=a;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">	int a = 2;</div><div class="line">	int b = 3;</div><div class="line">	FUN1(a,5+1); // =&amp;gt; 2*5+1</div><div class="line">        if(a&amp;gt;2)FUN2(a); //=&amp;gt; if(a&amp;gt;2) a++;a*=a;</div><div class="line"></div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>strcpy() will copy “\0”, and it is dangerous when you copy two points.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">int main()&#123;</div><div class="line">	char str1[] = &quot;abcd&quot;;</div><div class="line">	char str2[] = &quot;12&quot;;</div><div class="line">	strcpy(str1,str2); // ok, str1 equals &quot;12&quot;</div><div class="line">	char *st1 = &quot;abcd&quot;;</div><div class="line">	char *st2 = &quot;12&quot;;</div><div class="line">	strcpy(st1,st2); //crash!! st1 points to static const string</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>param as point or array style. Although they are differnt styles, they are the same.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">int size1(char a[])&#123;</div><div class="line">	cout &amp;lt;&amp;lt; sizeof(a);</div><div class="line">&#125;</div><div class="line">int size2(char* a)&#123;</div><div class="line">	cout &amp;lt;&amp;lt; sizeof(a);</div><div class="line">&#125;</div><div class="line">int main()&#123;</div><div class="line">	char a[] = &quot;abcdef&quot;;</div><div class="line">	char *b = &quot;abcdef&quot;;</div><div class="line">	size1(a); //  =&amp;gt; sizeof(char*)</div><div class="line">	size1(b); //  =&amp;gt; sizeof(char*)</div><div class="line">	size2(a); //  =&amp;gt; sizeof(char*)</div><div class="line">	size2(b);//  =&amp;gt; sizeof(char*)</div><div class="line">	cout &amp;lt;&amp;lt; sizeof(a)&amp;lt;&amp;lt;endl; // =&amp;gt;strlen(a)+1</div><div class="line">	cout &amp;lt;&amp;lt; sizeof(b)&amp;lt;&amp;lt;endl; // sizeof(char*)</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// There are 5 segments in codes, DATA, BSS, TEXT, heap, stack</div><div class="line">// DATA stores all globel variables, and those variables are defined.</div><div class="line">// BSS stores all globel variables, but those variables are not defined.</div><div class="line">// const variables are in TEXT, and codes are in this segment also.</div><div class="line">// heap store (malloc, calloc,realloc, new) data</div><div class="line">// stack store function params, local variables.</div><div class="line"></div><div class="line">int a; // a is in BSS</div><div class="line">int b = 3; // b is in DATA</div><div class="line">int fun(int c)&#123; // c is in stack, when the function is called.</div><div class="line">	return 0; </div><div class="line">&#125;</div><div class="line">int main()&#123;</div><div class="line">	const int c = 4; // c is in TEXT</div><div class="line">	a = 4; // move to DATA</div><div class="line">	int x = 4; // in stack</div><div class="line">	int * p = malloc(sizeof(int)); // *p is in heap. but p is in stack.</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
-the macro #define is the biggest hidden bug in c. You should always remember macro-function is like code paster. And it will slow down your system in some special situations, such as macro recursion. If you macro define some function use BIG characters.
-123456789101112#define FUN1(a,b) a*b#define 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/08/13/2010-08-13-trickies-bugs/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
@@ -664,7 +712,19 @@ the macro #define is the biggest hidden bug in c. You should always remember mac
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -695,21 +755,17 @@ the macro #define is the biggest hidden bug in c. You should always remember mac
       
         
           
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_description" content="Optimize QuickSort"></p>
+<p><meta name="_su_keywords" content="Optimize,Quick,Sort"></p>
+<p><meta name="_su_title" content="Quick Sort"></p>
+<p><meta name="views" content="851"><br>the simplest quick sort is like following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">int Partition(int * a, int start, int end)&#123;</div><div class="line">    swap(a[start],a[start+rand()%(end-start+1)]);</div><div class="line">    int p = a[start];</div><div class="line">    while(start&amp;lt;end)&#123;</div><div class="line">        while(start&amp;lt;end &amp;amp;&amp;amp; a[end] &amp;gt;= p) end--;</div><div class="line">        swap(a[start],a[end]);</div><div class="line">        while(start&amp;lt;end &amp;amp;&amp;amp; a[start]&amp;lt;= p) start++;</div><div class="line">        swap(a[start],a[end];)</div><div class="line">    &#125;</div><div class="line">    return start;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void QuickSort(int * a, int start, int end)&#123;</div><div class="line"></div><div class="line">     if(end-start&amp;gt;=1)&#123;</div><div class="line">         int mid = Partition(a,start, end);</div><div class="line">         QuickSort(a,start,mid-1);</div><div class="line">         QuickSort(a,mid+1,end);</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>But If you want do some optimization in QuickSort, first when the number of elements is small than 10, do insert sort not quick sort. Second, To find the near-like middle element of array, and not use the random one. Third, when the array is already sorted , do not use quick sort. and Reduce the function call. You will the following codes:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">void QuickSort(int *a, int start, int end)&#123;</div><div class="line"></div><div class="line">    if(end - start &amp;lt;= 0 ) // or you can throw some exceptions!</div><div class="line">       return ;</div><div class="line"></div><div class="line">// if the number of element is less than 8, do insert sort;</div><div class="line"></div><div class="line">    if(end - start&amp;lt;7)&#123;</div><div class="line"></div><div class="line">      for(int i = start; i &amp;lt;= end; i++)&#123;</div><div class="line"></div><div class="line">         for(int j = i; j &amp;gt; start &amp;amp;&amp;amp; a[j] &amp;lt; a[j-1]; j--)</div><div class="line"></div><div class="line">             swap(a[j],a[j-1]);</div><div class="line"></div><div class="line">      &#125;</div><div class="line"></div><div class="line">      return;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">// check if the array is sorted.</div><div class="line"></div><div class="line">    bool isSorted = true;</div><div class="line">    for(int i = start; i &amp;lt; end; i++)&#123;</div><div class="line">       if(a[i]&amp;gt;a[i+1])</div><div class="line">         isSorted = false;</div><div class="line">    &#125;</div><div class="line">    if(isSorted)</div><div class="line">      return;</div><div class="line"></div><div class="line">// get the near-like middle element, use 3 point middle method.</div><div class="line"></div><div class="line">    int dm = start+(end-start)/2;</div><div class="line"></div><div class="line">    int dl, dh;</div><div class="line"></div><div class="line">    if(end-start&amp;lt;40)&#123;</div><div class="line"></div><div class="line">       int d = (end-start+1)/8;</div><div class="line"></div><div class="line">       dl = mid(a, start,start+d,start+2*d);</div><div class="line"></div><div class="line">       dm = mid(a,dm-d,dm,dm+d);</div><div class="line"></div><div class="line">       dh = mid(a,end-2*d,end-d, end);</div><div class="line"></div><div class="line">       dm = mid(a,dl,dm,dh);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">// do partition</div><div class="line"></div><div class="line">    swap(a[start],a[dm]);</div><div class="line"></div><div class="line">    int low=start, high = end, p = a[start];</div><div class="line">    while(low&amp;lt;high)&#123;</div><div class="line">        while(low &amp;lt; high &amp;amp;&amp;amp; a[high]&amp;gt;= p) high--;</div><div class="line">        swap(a[low],a[high]);</div><div class="line">        while(low&amp;lt;high &amp;amp;&amp;amp; a[low]&amp;lt;= p) low ++;</div><div class="line">        swap(a[low],a[high]);</div><div class="line">    &#125;</div><div class="line">    QuickSort(a,start, low-1);</div><div class="line">    QuickSort(a,low+1,end);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
           
-
-
-
-
-the simplest quick sort is like following:
-123456789101112131415161718192021222324#include&amp;lt;iostream&amp;gt;using namespace std;int Partition(int * a, int start, int end)&#123;    swap(a[start],a[start+rand()%(end-start+1)]);    int p = a[start];    while(start&amp;lt;end)&#123;        wh
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/07/16/2010-07-16-quick-sort/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -788,7 +844,19 @@ the simplest quick sort is like following:
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -819,17 +887,19 @@ the simplest quick sort is like following:
       
         
           
+            <p><meta name="_edit_last" content="1"></p>
+<p>&lt;meta name=”_su_description” content=”这篇文章是写如何在界面上只输出一行，而不用写到另外一行的方法。中文不知道专业名称是什么，英语也不知道怎么说这个才能被搜索到。</p>
+<p>this article is about how to print one row only, and do not need to write to another row. I don’t know how to describe it in Chinese or English. And I also don’t know this article how to be searched.” /&gt;</p>
+<p><meta name="_su_keywords" content="c++,fflush,\n,\r,output,printf"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_title" content="print only display one row process bar"></p>
+<p><meta name="views" content="690"><br>这篇文章是写如何在界面上只输出一行，而不用写到另外一行的方法。中文不知道专业名称是什么，英语也不知道怎么说这个才能被搜索到。</p>
+<p>this article is about how to print one row only, and do not need to write infos to another row. I don’t know how to describe it in Chinese or English. And I also don’t know this article how to be searched.</p>
+<p>This effect is like use wget to downloading files. You will see the process bar moving. How to display this effect? Use the following code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;cstdio&amp;gt;</div><div class="line">#include&amp;lt;unistd.h&amp;gt;</div><div class="line">using namespace std;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">    printf(&quot;====&amp;gt;\r&quot;);</div><div class="line">    fflush(stdout);       #flush buffer</div><div class="line">    sleep(2);             # wait</div><div class="line">    printf(&quot;======&amp;gt;\r&quot;);</div><div class="line">    fflush(stdout);</div><div class="line">    sleep(3);</div><div class="line">    printf(&quot;========&amp;gt;\n&quot;);</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>In the above code, ‘\r’ is “Enter” character, and ‘\n’ is “newline” character. If input ‘\n’ into printf(), it will go to a new line. If input ‘\r’ into printf(), the output cursor will go to the beginning. If you do not use fflush(stdout); you will never your output without ‘\n’.</p>
+
           
-&lt;meta name=”_su_description” content=”这篇文章是写如何在界面上只输出一行，而不用写到另外一行的方法。中文不知道专业名称是什么，英语也不知道怎么说这个才能被搜索到。
-this article is about how to print one row only, and do not need to write to another row. I don’t know how to describe it in Chinese or English. And I also don’t know this article how to be searc
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/07/09/2010-07-09-print-display-row/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -908,7 +978,19 @@ this article is about how to print one row only, and do not need to write to ano
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -939,23 +1021,23 @@ this article is about how to print one row only, and do not need to write to ano
       
         
           
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="how to use bit operator and simple +-*/ to get absolute number."></p>
+<p><meta name="_su_keywords" content="bit,operator,absolute,complement,number,priority"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_title" content="bit operators absolute complement number priority"></p>
+<p><meta name="views" content="1060"></p>
+<p><meta name="_wp_old_slug" content="absolute-numberinteger"><br>How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&nbsp; )</p>
+<p><ul><br>    <li>if number &gt;= 0 , then number &gt;&gt; 31 == 0</li><br></ul></p>
+<p><ul><br>    <li>if number &lt; 0&nbsp;&nbsp; , then number &gt;&gt; 31 == 0xFFFFFFFF</li><br></ul><br>If some number exclusive or( xor ) 0xFFFFFFFF means each bit becomes its “opposite” number. (1 becomes 0, and 0 becomes 1).And If a number xor 0x00000000 means nothing happened to this number. So:</p>
+<p><ul><br>    <li>number ^ 0xFFFFFFFF = ~number</li><br>    <li>number ^ 0x00000000 = number</li><br></ul><br>In this question, you should also know something about<a href="http://en.wikipedia.org/wiki/Signed_number_representations#Ones.27_complement" target="_blank" rel="external"> complement number(see two’s complement)</a>. When a number is negative, |number| = ~number +1 or you can use |number| = !number + 1. When a number is positive, |number| = number.</p>
+<p>If you know above, then the goal of |x| = (x^(x&gt;&gt;31))+(~(x&gt;&gt;31)+1).</p>
+<p>(x^(x&gt;&gt;31)) means:</p>
+<p><ul><br>    <li>x &gt;= 0, x^(x&gt;&gt;31) = x^0x00000000 = x</li><br>    <li>x &lt; 0, x^(x&gt;&gt;31) = x^0xFFFFFFFF = ~x</li><br></ul><br>And (~(x&gt;&gt;31)+1)means:</p>
+<p><ul><br>    <li>x &gt;= 0, ~(x&gt;&gt;31)+1 = 0xFFFFFFFF+1 = 0</li><br>    <li>x &lt; 0, ~(x&gt;&gt;31)+1 = 0x00000000+1 = 1</li><br></ul><br>And we should take care of those brackets, because the priorities of operators are: ~ <span style="color: rgb(128, 0, 0); font-size: 16pt;"><strong>&gt;</strong></span> */ <span style="color: rgb(153, 51, 0); font-size: 16pt;"><strong>&gt;</strong></span> + - <strong><span style="color: rgb(153, 51, 0); font-size: 16pt;">&gt;</span></strong> bit operators(&amp;,^,|)</p>
+<table><br><tbody><br><tr><br><th>Level</th><br><th>Operator</th><br><th>Description</th><br><th>Grouping</th><br></tr><br><tr><br><td>1</td><br><td><tt>::</tt></td><br><td>scope</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>2</td><br><td><tt>() [] . -&gt; ++ – dynamic_cast static_cast  reinterpret_cast const_cast typeid</tt></td><br><td>postfix</td><br><td>Left-to-right</td><br></tr><br><tr><br><td rowspan="3">3</td><br><td><tt>++ – ~ ! sizeof new delete</tt></td><br><td>unary  (prefix)</td><br><td rowspan="3">Right-to-left</td><br></tr><br><tr><br><td><tt><em> &amp;</em></tt></td><br><td>indirection and reference (pointers)</td><br></tr><br><tr><br><td><tt>+ -</tt></td><br><td>unary sign operator</td><br></tr><br><tr><br><td>4</td><br><td><tt>(type)</tt></td><br><td>type casting</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>5</td><br><td><tt>. -&gt;<em></em></tt></td><br><td>pointer-to-member</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>6</td><br><td><tt> / %</tt></td><br><td>multiplicative</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>7</td><br><td><tt>+ -</tt></td><br><td>additive</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>8</td><br><td><tt>&lt;&lt; &gt;&gt;</tt></td><br><td>shift</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>9</td><br><td><tt>&lt; &gt; &lt;= &gt;=</tt></td><br><td>relational</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>10</td><br><td><tt>== !=</tt></td><br><td>equality</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>11</td><br><td><tt>&amp;</tt></td><br><td>bitwise AND</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>12</td><br><td><tt>^</tt></td><br><td>bitwise XOR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>13</td><br><td><tt>|</tt></td><br><td>bitwise OR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>14</td><br><td><tt>&amp;&amp;</tt></td><br><td>logical AND</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>15</td><br><td><tt>||</tt></td><br><td>logical OR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>16</td><br><td><tt>?:</tt></td><br><td>conditional</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>17</td><br><td><tt>= *= /= %= += -= &gt;&gt;= &lt;&lt;= &amp;= ^= |=</tt></td><br><td>assignment</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>18</td><br><td><tt>,</tt></td><br><td>comma</td><br><td>Left-to-right</td><br></tr><br></tbody><br></table>
+
           
-
-
-
-
-
-How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&nbsp; )
-    if number &gt;= 0 , then number &gt;&gt; 31 == 0
-    if number &lt; 0&nbsp;&nbsp; , then number &gt;&gt; 31 == 0xFFFFFFFFIf some number exclusive or( xor ) 0xFFFFFFFF means e
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/07/07/2010-07-07-absolute-valueinteger/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1034,7 +1116,19 @@ How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1065,21 +1159,29 @@ How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.
       
         
           
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_description" content="c language , memory allocation about malloc function , calloc function and realloc function, free function and new and delete. "></p>
+<p><meta name="views" content="1100"></p>
+<p><meta name="_su_title" content="memory allocation in c"></p>
+<p><meta name="_su_keywords" content="memory, allocation,malloc,calloc,realloc,free,new,delete,c,c++"><br>In c language, there are three methods for memory allocation: malloc(), calloc(), realloc(). And one method to free memory: free().</p>
+<p>The <strong>malloc</strong> function prototype is :<strong> void* malloc(size_t size);</strong> This function will allocates a block of <em>size</em> bytes of memory, returning a pointer to  the beginning of the block. <span style="color: #ff0000;">Attention:</span> this function is only for allocating memory! So the initial value of these memory will be Non-Zero. Maybe sometimes, it will be zero. Code for example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;stdio.h&amp;gt;</div><div class="line">#include&amp;lt;stdlib.h&amp;gt;</div><div class="line">int main()&#123;</div><div class="line"></div><div class="line">	int * a = NULL;</div><div class="line">	a = malloc(sizeof(int)*4);</div><div class="line">	// like int a[4], but those memory is in heap</div><div class="line">	for(int i = 0; i&amp;lt; 4; i++)</div><div class="line">		printf(&quot;%d &quot;,a[i]);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>The <strong>realloc</strong> function prototype is :<strong> void<em> realloc(void</em> ptr, size_t size);</strong> This function will reallocates a block of <em>size</em> bytes of memory,  returning a pointer to  the beginning of the block. If size is zero and ptr is not <strong>NULL</strong>, it will be used as <strong>free()</strong>. If prt is NULL and size is not zero, it will be used as <strong>malloc()</strong>. If ptr is NULL and size is zero, return value is some kind of memory which contains zero elements! Wooo~~~~. Look at the following codes:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">char * p = NULL;</div><div class="line">printf(&quot;%x&quot;,(int)p); // will output 0</div><div class="line"></div><div class="line">p = (char*)realloc(p,0);</div><div class="line">printf(&quot;%x&quot;,(int)p); // will output non-zero</div><div class="line"></div><div class="line">p = (char*)realloc(p,0);</div><div class="line">printf(&quot;%x&quot;,(int)p);</div></pre></td></tr></table></figure>
+<p>why?! Because if this function is called successfully, it will return non-zero memory address. And you will see the third output <strong>subtract </strong>the second output will be<strong> 16 bytes</strong>. If ptr is not NULL , and size is non-zero, and current block can simply expand without moving,  the return value is the same as ptr. But there is not enough space for simply expand, it will execute<strong> free(ptr) and return malloc(size)</strong>. This function will become very <span style="color: #ff0000;">dangerous!</span></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">char * k = (char*)realloc(NULL,100);</div><div class="line">char * kbigger = (char*)realloc(k,104);</div><div class="line">char * kbiggest = (char*)realloc(k,106); &lt;span style=&quot;color: #ff0000;&quot;&gt;// crash!&lt;/span&gt;</div></pre></td></tr></table></figure>
+<p>Safety called will be like the following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">char * k = (char*)realloc(NULL,100);</div><div class="line">k = (char*)realloc(k,4); // k&apos;s address is not changed</div><div class="line">k = (char*)realloc(k,104); // k&apos;s address is changed</div></pre></td></tr></table></figure>
+<p>If there is not enough free memory to be allocated, this function will return NULL.<span style="color: #ff0000;">Attention:</span> this function will not initialize those memory also.</p>
+<p><strong>calloc</strong>‘s prototype is void* calloc(int num, size_t size).</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">char* p = (char*)calloc(20,sizeof(char));</div><div class="line"></div><div class="line">// it is equal to</div><div class="line"></div><div class="line">char* p = (char*)malloc(20*sizeof(char));</div><div class="line">memset(p,0,20*sizeof(char));</div></pre></td></tr></table></figure>
+<p><span style="color: #ff0000;">But calloc is efficient!</span></p>
+<p><span style="color: #ff0000;"> <strong> </strong><span style="color: #000000;"><strong>free</strong> function is to delete memory which has been allocated. But free function will not assign the point to zero.</span></span></p>
+<p><span style="color: #ff0000;"><span style="color: #000000;"></span></span><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">char * p = (char*)calloc(100);</div><div class="line"></div><div class="line">p[0] = &apos;a&apos;;</div><div class="line">printf(&quot;%c&quot;,p[0]);   // output &apos;a&apos;</div><div class="line">printf(&quot;%x&quot;,(int)p);</div><div class="line">free(p);</div><div class="line">printf(&quot;%c&quot;,p[0]); // output nothing</div><div class="line">printf(&quot;%x&quot;,(int)p); // the value is the same as the first.</div></pre></td></tr></table></figure></p>
+<p>And all of those functions will not recommend to be used in c++, because those functions will not initialize class structure or v_ptr. free() function will not destruct parent class when sub class is destructed. In c++, maybe should always use <strong>new</strong> and <strong>delete</strong>!</p>
+
           
-
-
-
-
-In c language, there are three methods for memory allocation: malloc(), calloc(), realloc(). And one method to free memory: free().
-The malloc function prototype is : void* malloc(size_t size); This function will allocates a block of size bytes of memory, returning a pointer to  the beginning o
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/07/05/2010-07-05-memory-allocation/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1158,7 +1260,19 @@ The malloc function prototype is : void* malloc(size_t size); This function will
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1189,21 +1303,40 @@ The malloc function prototype is : void* malloc(size_t size); This function will
       
         
           
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="try...catch...exception in c++, and it describe how to use it.  the philosophy of exceptions."></p>
+<p><meta name="_su_keywords" content="c,c++,exception,throw, catch,try"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_title" content="try...catch...exception in c++"></p>
+<p><meta name="views" content="2645"><br>if you will throw something, you should catch it as the same type. like following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">int main()&#123;</div><div class="line">    try&#123;</div><div class="line">        throw 20;</div><div class="line">    &#125;catch(int i)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;Exception Num is NO.&quot;&amp;lt;&amp;lt;i&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line">    try&#123;</div><div class="line">        throw &apos;X&apos;;</div><div class="line">    &#125;catch(char c)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;this exception is a char:&quot;&amp;lt;&amp;lt;c&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    try&#123;</div><div class="line">        throw &quot;abc&quot;;</div><div class="line">    &#125;catch(const char * e)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;this is string exception:&quot;&amp;lt;&amp;lt;e&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    try&#123;</div><div class="line">        int *d = new int(65);</div><div class="line">        throw d;</div><div class="line">    &#125;catch(const int * e)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;this is int point exception:&quot;&amp;lt;&amp;lt;*e&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line">    /* ok, catch will handle everything, if you throw correct type.*/</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>and if you want create classes for exceptions. You should add #include&lt;exception&gt; and inherit exception class, and then override the function “<strong>what</strong>“.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">#include&amp;lt;exception&amp;gt;</div><div class="line">using namespace std;</div><div class="line"></div><div class="line">/// this exception class is from #include&amp;lt;exception&amp;gt;</div><div class="line">/// you should override the function what() to generate your exception string</div><div class="line">class MyException: public exception&#123;</div><div class="line">    virtual const char* what() const throw()&#123;</div><div class="line">        return &quot;myExceptions!!!!!!!&quot;;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">class SubException: public MyException&#123;</div><div class="line">    virtual const char* what()const throw()&#123;</div><div class="line">        return &quot;sub exception !!!!!!&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">    try&#123;</div><div class="line">        throw MyException();</div><div class="line">    &#125;catch(exception&amp;amp; e)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; e.what()&amp;lt;&amp;lt;endl;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    try&#123;</div><div class="line">        throw SubException();</div><div class="line">    &#125;catch(bad_alloc&amp;amp;)&#123;</div><div class="line">        // this will not occur, just test this type.</div><div class="line">        // if it is occured, your computer will be locked.</div><div class="line">        cout &amp;lt;&amp;lt; &quot;nothing&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;catch(exception&amp;amp; e)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; e.what()&amp;lt;&amp;lt;endl;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>There are some standard exceptions in exception.h. These exceptions are:</p>
+<p><strong>bad_alloc</strong></p>
+<p>A bad_alloc is thrown by new if an allocation failure occurs.</p>
+<p><strong>bad_cast</strong></p>
+<p>A bad_cast is thrown by dynamic_cast when it fails with a referenced  type.</p>
+<p><strong>bad_exception</strong></p>
+<p>A bad_exception is thrown when an exception type doesn’t match any  catch</p>
+<p><strong>bad_typeid</strong></p>
+<p>A bad_typeid is thrown by typeid</p>
+<p><strong>ios_base::failure</strong></p>
+<p>An ios_base::failure is thrown by functions in the iostream library.</p>
+<p>in #include&lt;stdexecpt&gt; can use these exception:<br>class <strong>logic_error</strong>; // :  public exception<br>class <strong>domain_error</strong>; // :  public logic_error<br>class <strong>invalid_argument</strong>; // : public logic_error<br>class<strong> length_error</strong>; // :  public logic_error<br>class <strong>out_of_range</strong>; // :  public logic_error<br>class <strong>runtime_error</strong>; // :  public exception<br>class <strong>range_error</strong>; // :  public runtime_error<br>class <strong>overflow_error</strong>; // :  public runtime_error<br>class <strong>underflow_error</strong>; // :  public runtime_error</p>
+<p>If you don’t know which kind of exception will occur. you should use <strong>catch(…)</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">try&#123;</div><div class="line">        srand(time(NULL));</div><div class="line">        int i = rand()%4;</div><div class="line"></div><div class="line">        switch(i)&#123;</div><div class="line">            case 0:</div><div class="line">                throw; // terminate called without an active exception</div><div class="line">                       // Aborted, ... will not catch it.</div><div class="line">                break;</div><div class="line">            case 1:</div><div class="line">                throw &apos;x&apos;;</div><div class="line">                break;</div><div class="line">            case 2:</div><div class="line">                throw 50;</div><div class="line">                break;</div><div class="line">            case 3:</div><div class="line">                throw &quot;my string&quot;;</div><div class="line">                break;</div><div class="line">            default:</div><div class="line">                break;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;catch(...)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;I don&apos;t know which exception will occur!&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>But when i == 0, the program will execute throw;, and it will exit and print:</p>
+<p><blockquote>terminate called without an active exception</blockquote></p>
+<p>Aborted<br><strong>You should specify something to throw. throw; is only be used within catch clauses.</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">try&#123;</div><div class="line">        try&#123;</div><div class="line">            throw 2;</div><div class="line">        &#125;catch(int i)&#123;</div><div class="line">            throw; // here I use it again!</div><div class="line">        &#125;</div><div class="line">    &#125;catch(...)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;re-throw it!!!!&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>you can declare your functions using throw(). But it is just declare!  you can throw everything! But you declare it will throw bad_exception, and use set_unexpected(), it will process some unexpected exceptions.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">void foo() throw(int,bad_exception)&#123;</div><div class="line"></div><div class="line">    throw &quot;abc&quot;;</div><div class="line">&#125;</div><div class="line">void myunexpected()&#123;</div><div class="line">    cout &amp;lt;&amp;lt; &quot;I get unexpected exceptions!&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    throw;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// in main</div><div class="line"></div><div class="line">    set_unexpected(myunexpected);</div><div class="line">    try&#123;</div><div class="line">        foo();</div><div class="line">    &#125;catch(int)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;catch a integer&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;catch(bad_exception&amp;amp;)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;bad_exception&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line">    // you can use catch(...)</div></pre></td></tr></table></figure>
+<p>output is</p>
+<p><blockquote>I get unexpected exceptions!<br>bad_exception</blockquote><br>If the program or your function can not process some kind of situation. you should throw something out.  Sometime, someone argued that it will reduce the usability. But If you don’t stop the processing(program or function), it will create a disaster.  Remember, by all means, throw it! But should we catch those exceptions and how we catch those? e….as your wish. Some bug will not appear, if you use not appropriate catch and process those exceptions in unsuitable way. If your program have some bug, and it is difficult to find, please delete all catches!</p>
+<p>In some languages which have finally clauses. But in c++, it dose not have finally clauses.</p>
+
           
-
-
-
-
-if you will throw something, you should catch it as the same type. like following:
-1234567891011121314151617181920212223242526int main()&#123;    try&#123;        throw 20;    &#125;catch(int i)&#123;        cout &amp;lt;&amp;lt; &quot;Exception Num is NO.&quot;&amp;lt;&amp;lt;i&amp;lt;&amp;lt;
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/06/30/2010-06-30-try-catch-exception-c/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1282,7 +1415,19 @@ if you will throw something, you should catch it as the same type. like followin
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1313,19 +1458,16 @@ if you will throw something, you should catch it as the same type. like followin
       
         
           
-          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="views" content="536"></p>
+<p><meta name="_wp_old_slug" content="copy"><br>copy from <a href="http://www.javaperformancetuning.com/news/qotm030.shtml" target="_blank" rel="external">http://www.javaperformancetuning.com/news/qotm030.shtml</a></p>
+<p><strong>What does <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> do?</strong></p>
+<p>This is probably best explained by comparing the effects that <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> and <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> have on a method. <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> is a  field modifier, while <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> modifies code blocks and  methods. So we can specify three variations of a simple accessor using those two  keywords:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">         int i1;              int geti1() &#123;return i1;&#125;</div><div class="line">volatile int i2;              int geti2() &#123;return i2;&#125;</div><div class="line">         int i3; synchronized int geti3() &#123;return i3;&#125;</div></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">geti1()</div></pre></td></tr></table></figure> accesses the value currently stored in <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> <em>in the current thread</em>. Threads can have local copies of variables, and  the data does not have to be the same as the data held in other threads. In  particular, another thread may have updated <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> in it’s thread, but the  value in the current thread could be different from that updated value. In  fact Java has the idea of a “main” memory, and this is the memory that holds the  current “correct” value for variables. Threads can have their own copy of data  for variables, and the thread copy can be different from the “main” memory.  So in fact, it is possible for the “main” memory  to have a value of 1 for <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure>, for thread1 to have a value of 2 for <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> and for thread2 to  have a value of 3 for <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> if thread1 and thread2 have both updated <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> but those updated value has not yet been propagated to “main” memory or  other threads.</p>
+<p>On the other hand, <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">geti2()</div></pre></td></tr></table></figure> effectively accesses the value  of <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i2</div></pre></td></tr></table></figure> from “main” memory. A <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> variable is not allowed to  have a local copy of a variable that is different from the value currently held in “main”  memory. Effectively, a variable declared <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> must have it’s data  synchronized across all threads, so that whenever you access or update the variable in any thread, all  other threads immediately see the same value. Of course, it is likely that <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> variables have a higher access and update overhead than “plain”  variables, since the reason threads can have their own copy of data is for better efficiency.</p>
+<p>Well if <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> already synchronizes data across threads,  what is <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> for? Well there are two differences. Firstly <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> obtains and releases locks on monitors which  can force only one thread at a time to execute a code block, if both threads use  the same monitor (effectively the same object lock). That’s the fairly well known  aspect to <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure>. But <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> also  synchronizes memory. In fact <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> synchronizes the whole of thread  memory with “main” memory. So executing <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">geti3()</div></pre></td></tr></table></figure> does the following:</p>
+<p><ol><br>    <li>The thread acquires the lock on the monitor for object <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">this</div></pre></td></tr></table></figure> (assuming the monitor is unlocked, otherwise the thread waits until the  monitor is unlocked).</li><br>    <li>The thread memory flushes <em>all</em> its variables, i.e. it  has all of its variables effectively read from “main” memory (JVMs can use dirty sets to optimize  this so that only “dirty” variables are flushed, but conceptually this is the same. See  section 17.9 of the Java language specification).</li><br>    <li>The code block is executed (in this case setting the return  value to the current value of <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i3</div></pre></td></tr></table></figure>, which may have just been reset from “main”  memory).</li><br>    <li>(Any changes to variables would normally now be written out to  “main” memory, but for <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">geti3()</div></pre></td></tr></table></figure> we have no changes.)</li><br>    <li>The thread releases the lock on the monitor for object <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">this</div></pre></td></tr></table></figure>.</li><br></ol><br>So where <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> only synchronizes the value of one  variable between thread memory and “main” memory, <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> synchronizes  the value of all variables between thread memory and “main” memory, and locks and  releases a monitor to boot. Clearly <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> is likely to have  more overhead than <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure>.</p>
 
-copy from http://www.javaperformancetuning.com/news/qotm030.shtml
-What does 1volatile do?
-This is probably best explained by comparing the effects that 1volatile and 1synchronized have on a method. 1volatile is a  field modifier, while 1synchronized modifies code blocks and  methods. So we can spe
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/06/21/2010-06-21-volatile-do/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
@@ -1404,7 +1546,19 @@ This is probably best explained by comparing the effects that 1volatile and 1syn
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1435,21 +1589,26 @@ This is probably best explained by comparing the effects that 1volatile and 1syn
       
         
           
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="the inside of sizeof
+the inside of memory alignment"></p>
+<p><meta name="_su_keywords" content="c++, sizeof, double, int, align,memory"></p>
+<p><meta name="_su_title" content="c++, sizeof, double, int, align,memory"></p>
+<p><meta name="views" content="1054"><br>I use c++ in linux which is gcc version 4.4.1 (Ubuntu 4.4.1-4ubuntu9).</p>
+<p>I considered that c++ memory alignment is like the following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">// pseudo-code of memory alignment</div><div class="line">remove_all_static_varibles();</div><div class="line">int max= 0;</div><div class="line">foreach(element in struct)</div><div class="line">    find_the_max_memory_used(element,&amp;amp;max);</div><div class="line">int align = max &amp;gt; default? default: max;</div><div class="line">// if max memory used for element is larger than the default, use default.</div><div class="line">int memory = sum(memory_used(elements));</div><div class="line"></div><div class="line">if(memory%align != 0)</div><div class="line">// here will execute alignment!</div><div class="line">&#123;</div><div class="line">    memory = (memory/align + 1 )*align;</div><div class="line">&#125;</div><div class="line">if(memory == 0)</div><div class="line">    memory = 1;</div><div class="line">return memory;</div></pre></td></tr></table></figure>
+<p>vc++ use #pragma_pack(n) set the default.if there are three char in a struct, like:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">typedef struct&#123;</div><div class="line">	char a;</div><div class="line">	char b;</div><div class="line">	char c;</div><div class="line">&#125;X;</div><div class="line">sizeof(X); // it will be 3</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">typedef struct&#123;</div><div class="line">	char a;</div><div class="line">	short b;</div><div class="line"></div><div class="line">&#125;Y;</div><div class="line">sizeof(Y); // here will be 4</div><div class="line"></div><div class="line">typedef struct&#123;</div><div class="line">	char a;</div><div class="line">	int b;</div><div class="line">&#125;Z;</div><div class="line"></div><div class="line">sizeof(Z); // here will be 8</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">typedef struct&#123;</div><div class="line">	double a;</div><div class="line">	char b;</div><div class="line">&#125;W;</div><div class="line">sizeof(W);</div><div class="line">// it will be 12, the align is 4</div><div class="line">// when the max memory used is larger</div><div class="line">// than 4, it will be 4</div></pre></td></tr></table></figure>
+<p>if the class or struct is empty, sizeof(it) will be 1.</p>
+<p>But if there are static varibles in classes or structs, you can remove it!. like:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class A&#123;</div><div class="line">	static int a;</div><div class="line"></div><div class="line">&#125;;</div><div class="line">sizeof(A); // it will be 1</div></pre></td></tr></table></figure>
+<p>in class there will be many class functions. But A class is thought as A struct and many functions set. sizeof(A class) will compute the size of struct.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">class ZZ&#123;</div><div class="line">    public:</div><div class="line">        ZZ()&#123;</div><div class="line">            int a = 3;</div><div class="line">            cout &amp;lt;&amp;lt; &quot;I am ZZ&quot;&amp;lt;&amp;lt;endl;</div><div class="line">            cout &amp;lt;&amp;lt; a&amp;lt;&amp;lt;endl;</div><div class="line">        &#125;</div><div class="line">        ~ZZ()&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    int c;</div><div class="line">&#125;;</div><div class="line">sizeof(ZZ); // will be 4;</div><div class="line">/* it is like a struct and two member functions.</div><div class="line">struct ZZ&#123;</div><div class="line">	int c;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">ZZ@ZZ() is name mingling</div><div class="line">ZZ@ZZ()&#123;</div><div class="line">	int a = 3;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;I am ZZ&quot;&amp;lt;&amp;lt;endl;</div><div class="line">        cout &amp;lt;&amp;lt; a&amp;lt;&amp;lt;endl;</div><div class="line">&#125;</div><div class="line">ZZ@~ZZ()&#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>but when we meet the virtual member functions and virtual derived class, it will be different.</p>
+
           
-
-
-
-I use c++ in linux which is gcc version 4.4.1 (Ubuntu 4.4.1-4ubuntu9).
-I considered that c++ memory alignment is like the following:
-1234567891011121314151617// pseudo-code of memory alignmentremove_all_static_varibles();int max= 0;foreach(element in struct)    find_the_max_memory_used(element,&
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/06/17/2010-06-17-sizeof-c/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1543,10 +1702,10 @@ I considered that c++ memory alignment is like the following:
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">626</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 

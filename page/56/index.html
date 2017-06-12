@@ -295,7 +295,19 @@
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -326,24 +338,39 @@
       
         
           
-          sizeof()用于查看变量 所占的空间。例如：
-sizeof(int) // 4
-sizeof(float)// 4
-sizeof(double)//8
-sizeof(char) //1
-char * p = new char[20];sizeof(p)//这里是p指针所占的空间故为4
-char * p = “google”;sizeof(p);//这里是p指针指向字符串常量，但sizeof()的结果仍然为4
-char *p [20];//这时sizeof()为80 ＝ 20 × 4
-char p[20];sizeof(p);//这里的结果为20 ＝ 20 × 1
-sizeof()使用了编译
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/04/14/1564747/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>sizeof()用于查看变量 所占的空间。例如：</p>
+<p>sizeof(int) // 4</p>
+<p>sizeof(float)// 4</p>
+<p>sizeof(double)//8</p>
+<p>sizeof(char) //1</p>
+<p>char * p = new char[20];sizeof(p)//这里是p指针所占的空间故为4</p>
+<p>char * p = “google”;sizeof(p);//这里是p指针指向字符串常量，但sizeof()的结果仍然为4</p>
+<p>char *p [20];//这时sizeof()为80 ＝ 20 × 4</p>
+<p>char p[20];sizeof(p);//这里的结果为20 ＝ 20 × 1</p>
+<p>sizeof()使用了编译器生成的符号表的缘故。编译器的符号表类似于下面的形式，将所有的变量和其类型都记录在表中。</p>
+<p>变量                  类型             大小</p>
+<p>p                        char             10———-(数组)</p>
+<p>a                        char              1</p>
+<p>b                       double          8</p>
+<p>d                       point              4</p>
+<p>当要sizeof（变量）时，sizeof就会查取符号表。如果是单一类型的变量就会直接输出此类型变量的所占大小。并且也可以同时知道这个变量是否是数组。</p>
+<p>但是Class类型稍稍有些不同，以下代码：</p>
+<p>class A<br>{<br>public:<br>int a;<br>int b;<br>private:<br>int c;<br>protected:<br>char d;<br>double x;<br>};</p>
+<p>sizeof(A)//24.为什么不是 3*4+1+8 = 21? 因为编译器要做优化，所以采用的是4Byte一体，也就符合我们常说的32位机的原理。也就是<br>机器的cpu可以同时处理32位二进制。所以地址线也做成了32位方便传输。编译器就将A优化为24Byte.但这只是对于32位机器有效。Vista等支持64位机<br>器。所以以后的VS2008等高级版本可能要将这个优化为可以被8B整除的字节数。</p>
+<p>在字符表中，编译器大概会如此存储：类名  分隔符  变量名，这样即保证变量不会重名，又可以知道是那个类中的变量。</p>
+<p>A::a      int         4</p>
+<p>A::b      int         4</p>
+<p>A::c       int         4</p>
+<p>A::d      char      1</p>
+<p>A::x      double   8</p>
+<p>当调用sizeof(A)的时候，编译器会去寻找A类的所有变量，相加后如果不能被4整除，将变为最接近的4的倍数。</p>
+<p>strlen()用于返回字符串的长度。但是不包括最后的’/0’</p>
+<p>char * p = “google”; strlen(p);//结果为6</p>
+<p>char * p = new char [20];<br>strlen(p)//???这里结果不能确定，原因是不知道何处有’/0’,strlen是查找到’/0’结束</p>
+<p>strlen（）函数的大概写法：</p>
+<p>int strlen(const char <em> strSrc)<br>{<br>if(strSrc == NULL)<br>throw “NULL point…”;<br>int i = 0;<br>while(</em>strSrc++!=’/0’)<br>i++;<br>return i;<br>}</p>
+
+          
         
       
     </div>
@@ -422,7 +449,19 @@ sizeof()使用了编译
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -453,22 +492,15 @@ sizeof()使用了编译
       
         
           
-          不动者厚地，不息者高天。  无穷者日月，长在者山川。
-松柏与龟鹤，其寿皆千年。
-早出向朝市，暮已归下泉。形质及寿命，危脆若浮烟。
-尧舜与周孔，古来称圣贤。借问今何在，一去亦不还。
-我无不死药，万万随化迁。所未定知者，修短迟速间。
-幸及身健日，当歌一尊前。何必待人劝，持此自为欢。
-嗟嗟群物中，而人独不然。
+            <p>不动者厚地，不息者高天。  无穷者日月，长在者山川。</p>
+<p>松柏与龟鹤，其寿皆千年。</p>
+<p>早出向朝市，暮已归下泉。形质及寿命，危脆若浮烟。</p>
+<p>尧舜与周孔，古来称圣贤。借问今何在，一去亦不还。</p>
+<p>我无不死药，万万随化迁。所未定知者，修短迟速间。</p>
+<p>幸及身健日，当歌一尊前。何必待人劝，持此自为欢。</p>
+<p>嗟嗟群物中，而人独不然。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/04/08/1556541/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -547,7 +579,19 @@ sizeof()使用了编译
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -578,17 +622,41 @@ sizeof()使用了编译
       
         
           
-          要显示中文必须使用unsigned char型，如果使用char 就装不下了。
-然后要明白一个unsigned char 其实只是装了一个中文字符的一半。打印的时候如果只打印一个unsignedchar有可能什么都看不到。所以逆转的时候要把两个unsigned char看成一个整体来交换。代码如下：
-#include  &lt; iostream  &gt;using  namespace  std;int  main(  void  ){unsigned  char    string1  =  new  unsigned  char  [  20  ];unsigned  char    
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/04/07/1555411/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>要显示中文必须使用unsigned char型，如果使用char 就装不下了。</p>
+<p>然后要明白一个unsigned char 其实只是装了一个中文字符的一半。打印的时候如果只打印一个unsigned<br>char有可能什么都看不到。所以逆转的时候要把两个unsigned char看成一个整体来交换。代码如下：</p>
+<p>#include  &lt; iostream  &gt;<br>using  namespace  std;<br>int  main(  void  )<br>{<br>unsigned  char  <em>  string1  =  new  unsigned  char  [  20  ];<br>unsigned  char  </em>  b ,  <em>  p;<br>b  =  p  =  string1;<br>while  (  </em>  p)<br>{  </p>
+<p>p  ++  ;  </p>
+<p>}  </p>
+<p>p  =  p  -  2  ;<br>while  (p  &gt; b)<br>{<br>swap(  <em>  p,  </em>  b);<br>p  ++  ;<br>b  ++  ;<br>swap(  <em>  p,  </em>  b);<br>p  =  p  -  3  ;  //  转到下一个中文字符的第一个unsigned char<br>b  ++  ;<br>}<br>cout  &lt;&lt; string1;<br>return  0  ;<br>}</p>
+<p>其中的while（*p）{p++;}p-=2;也可以用p = &amp;string1[strlen(string1)-2]代替。。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>char  <em>  Reverse(  const  char  </em>  str)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (str  ==  NULL)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>throw  “  Null point  “  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  size  =  strlen(str);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (size  ==  0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  “”  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>const  char  <em>  p  =  str;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char  </em>  newStr  =  new  char  [size  +  1  ];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char  <em>  temp  =  newStr;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (  </em>  p  ++  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>p  =  p  -  2  ;  //  到达末尾的非’/0’字符<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  i  =  0  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (p  !=  str  &amp;&amp; i  &lt; size )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>unsigned  char  <em>  x  =  (unsigned  char  </em>  )p;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (  *  x  &gt; 0x7f  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  DBCS<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></p>
+<ul>
+<li>temp  ++  =  *–  p;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>temp  ++  =  *++  p;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>p  =  p  -  2  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>i  +=  2  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  SBCS<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>temp  ++  =  *  p  --  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>i  ++  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (i  &lt; size)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>temp  ++  =  *  str;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>temp  =  ‘  /0  ‘  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  newStr;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</li>
+</ul>
+<p>同时发现一个CSDN插入代码的bug。当插入代码中出现‘/0’的时候就会截断。所以我只能用’//0’代替了。</p>
+<p>当字符串中有DBCS双字节字符时，使用同时转换两个。当有SBCS单字节字符串时转换一个。</p>
+<p>（但是有些DBCS字符是占用两个以上空间的。但是没有考虑）这只是个简单的转换。</p>
+
+          
         
       
     </div>
@@ -667,7 +735,19 @@ sizeof()使用了编译
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -698,16 +778,17 @@ sizeof()使用了编译
       
         
           
-          Character values of type unsigned char have a range from 0 to 0xFFhexadecimal. A signed char has range 0x80 to 0x7F. These ranges translate to 0to 255 decimal, and –128 to +127 decimal, respectively. The /J compiler optionchanges the default from signed to unsigned.  
-char 是无符号的unsigned char 是无符号的,里
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/04/07/1555319/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>Character values of type unsigned char have a range from 0 to 0xFF<br>hexadecimal. A signed char has range 0x80 to 0x7F. These ranges translate to 0<br>to 255 decimal, and –128 to +127 decimal, respectively. The /J compiler option<br>changes the default from signed to unsigned.  </p>
+<p>char 是无符号的<br>unsigned char 是无符号的,里面全是正数  </p>
+<p>两者都作为字符用的话是没有区别的，但当整数用时有区别：<br>char 整数范围为-128到127，<br>而unsigned char 整数范围为0到255  </p>
+<p>多数情况下，char ,signed char 、unsigned char 类型的数据具有相同的特性然而当你把一个单字节的数赋给一个大整型数域时,便会看到<br>它们在符号扩展上的差异。另一个区别表现在当把一个介于128和255之间的数赋给signed char<br>变量时编译器必须先进行数值转化，同样还会出现警告。若使用十六进制进行赋值使用unsigned char<br>要方便一些.根据编译器具体实现情况不同，char要么和signed char等同，要么和unsigned char等同.  </p>
+<p>unsigned char<em>跟char </em>是一样的。  </p>
+<p>功能：统计字符串里面的汉字的个数 （gb2312编码内码大于0xa0）  </p>
+<p>char szText[]= “12345你好”;  </p>
+<p>l= strlen(szText);<br>int sum=0;<br>for (int i=0; i&lt; l; i++)<br>if (szText[i] &gt; 0xa0)<br>sum++;<br>sum/=2;  </p>
+<p>这样你根本统计出到任何汉字，<br>因为char是有符号的，打最大就是127，超过就变成复数了。比如7f 是127，那么80就是-1了。<br>这时候你一定要写成<br>unsigned char szText[]= “12345你好”;</p>
+
+          
         
       
     </div>
@@ -786,7 +867,19 @@ char 是无符号的unsigned char 是无符号的,里
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -817,20 +910,13 @@ char 是无符号的unsigned char 是无符号的,里
       
         
           
-          这期的是动漫专刊，感觉要办刊物就要办的活些。让其他的成员也办几期。这次是动漫专刊，也花了点点不少精力。不过我认为是至今为止办的最好的一期了。
-下载地址：
- http://ss.hnu.cn/newweb/students/yuankan/download/
-  青春缘代码动漫专刊.rar 
-同样贴到迅雷上即可。
+            <p>这期的是动漫专刊，感觉要办刊物就要办的活些。让其他的成员也办几期。这次是动漫专刊，也花了点点不少精力。不过我认为是至今为止办的最好的一期了。</p>
+<p>下载地址：</p>
+<p><a href="http://ss.hnu.cn/newweb/students/yuankan/download/" target="_blank" rel="external"> http://ss.hnu.cn/newweb/students/yuankan/download/
+</a> <em> 青春缘代码动漫专刊.rar </em></p>
+<p>同样贴到迅雷上即可。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/04/06/1554256/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -909,7 +995,19 @@ char 是无符号的unsigned char 是无符号的,里
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -940,16 +1038,34 @@ char 是无符号的unsigned char 是无符号的,里
       
         
           
-          vc＋＋中的多线程编程：
-HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个句柄hMutex  =  CreateMutex( NULL,  //  no security attributesFALSE,  //  initially not owned “MutexToProtectDatabase  “  );  //  name of mutex //这个句柄只想信号量，第一个参数一半为NULL，第二个（初始化时是否被获得）false为现在可以被任何人使用 //第三个参数是为信号量起名，方便以后查找该信号量
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/04/01/1548345/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>vc＋＋中的多线程编程：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个句柄<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>hMutex  =  CreateMutex( NULL,  //  no security attributes<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>FALSE,  //  initially not owned<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> “<br>MutexToProtectDatabase  “  );  //  name of mutex<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>这个句柄只想信号量，第一个参数一半为NULL，第二个（初始化时是否被获得）false为现在可以被任何人使用<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>第三个参数是为信号量起名，方便以后查找该信号量<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> if<br>(hMutex  ==  NULL)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Check for error.一般不必这样用。<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>BOOL FunctionToWriteToDatabase(HANDLE hMutex)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>DWORD dwWaitResult;  //  Request ownership of mutex.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>dwWaitResult  =  WaitForSingleObject(<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>hMutex,  //  handle to mutex<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>5000L  );  //  five-second time-out interval<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> switch  (dwWaitResult)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  The thread got mutex ownership.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>case  WAIT_OBJECT_0:<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> <strong>try  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Write to the database.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> </strong>finally  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Release ownership of the mutex object.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> if  (  !  ReleaseMutex(hMutex))  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Deal with error.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> break  ; }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Cannot get mutex ownership due to time-out.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>case  WAIT_TIMEOUT:<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  FALSE;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Got ownership of the abandoned mutex object.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>case  WAIT_ABANDONED:<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  FALSE;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  TRUE;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>DWORD dwWaitResult  只是为了判断信号量的归谁所有。  WaitForSingleObject() 相当与P（）操作，参数有两个：第一个是<br>信号量，第二个是等待时间。INFINITE代表无限等待。5000L代表等待5秒，如果5秒内获得信号量，dwWaitResult＝＝<br>WAIT_OBJECT_0，如果5秒没有得到信号量，则dwWaitResult＝＝  WAIT_TIMEOUT，而<br>WAIT_ABANDONED代表操作失败。  ReleaseMutex(hMutex）相当于V（）操作。参数为信号量。</p>
+<p>如果希望在一个函数中启动线程并调用该函数，应该这样写代码</p>
+<p>void reading(void* name)；这个函数一定要是void的返回类型。然后可以在调用函数中这样写：</p>
+<p>_beginthread(&amp;reading,0,(void*)english); 其中第一参数是要调用函数的函数指针。第二个函数是线程优先级一般为0。第三个<br>参数是个void指针，一般用来传函数的参数。如果想传多个参数只要把那个指针指向一个结构体就可以。到函数那里再转换为相应的结构体指针就可以了。</p>
+<p>Sleep（5000L）；这个函数一般是用来让线程睡眠的。参数是unsigned long，现在是睡5秒。<br>这只是多线程的编程常用到的几个函数。对于多线程编程还要注意同步和死锁，在这篇文字就不讨论了。</p>
+
+          
         
       
     </div>
@@ -1028,7 +1144,19 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1059,20 +1187,88 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
       
         
           
-          用Eclipse3.1 + Myeclipse4.0 + Tomcat5.0 + j2sdk1.5搭建J2EE开发环境(转自http://hdfyq.diy.myrice.com/)
-一、安装j2sdk1.5，设定环境变量。
-我的安装目录是  D:/j2sdk  。 所以设定环境变量如下：
-操作： My Computer(右键) —-&gt; Properties —-&gt; Advanced —-&gt; EnvironmentVariables :
+            <p>用Eclipse3.1 + Myeclipse4.0 + Tomcat5.0 + j2sdk1.5<br>搭建J2EE开发环境(转自<a href="http://hdfyq.diy.myrice.com/" target="_blank" rel="external">http://hdfyq.diy.myrice.com/</a>)</p>
+<p>一、安装j2sdk1.5，设定环境变量。</p>
+<p>我的安装目录是 <strong> D:/j2sdk </strong> 。 所以设定环境变量如下：</p>
+<p>操作： My Computer(右键) —-&gt; Properties —-&gt; Advanced —-&gt; Environment<br>Variables :</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/1.PNG" alt=""></p>
+<p>设定环境变量为：<br>1. (新建)JAVA_HOME: D:/j2sdk<br>2. (新建)CLASSPATH: .;D:/j2sdk/lib/dt.jar;D:/j2sdk/lib/tools.jar<br>(注意：点号不能省略，表示当前目录)<br>3. 编辑PATH的变量值，在后面加上 ;%JAVA_HOME%/bin （注意：要有分号隔开）<br>到这里，j2sdk安装完毕，用命令简单测试一下: java -version</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/2.PNG" alt=""></p>
+<p>二、安装Tomcat5.0</p>
+<p>去下载一个Tomcat的zip版， 我用的是 jakarta-tomcat-5.0.28.zip ， 不下安装版的目的是可以使用多个Tomcat。</p>
+<p>直接解压缩到 G 盘：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/3.PNG" alt=""></p>
+<p>三、安装Eclipse3.1</p>
+<p>下载地址： <a href="http://www.eclipse.org/downloads/index.php" target="_blank" rel="external"> http://www.eclipse.org/downloads/index.php
+</a> 找到下面的页面：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/4.PNG" alt=""></p>
+<p>找个亚洲的服务器下载,速度会快一点。在flashget中如下：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/5.PNG" alt=""></p>
+<p>直接解压缩就可以用了，我是解压缩在 G 盘：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/6.PNG" alt=""></p>
+<p>到这里， Eclipse3.1 安装完毕。</p>
+<p>四、安装 Myeclipse4.0 (myeclipse不是免费的，所以我们先下载一个试用版，再去网上下载一个注册机)</p>
+<p>下载版本： MyEclipse Enterprise Workbench 4.0 GA for Windows 98/2000/XP (8/29/2005)<br>如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/7.PNG" alt=""></p>
+<p>在flashget下载中显示如下：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/8.PNG" alt=""></p>
+<p>下载完成后，开始安装：</p>
+<p>1. 选择你的eclipse所在目录，其它都点下一步，默认安装。</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/9.PNG" alt=""></p>
+<p>2.安装完毕之后，找到myeclipse的安装目录， 如下图所示：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/10.PNG" alt=""></p>
+<p>3. 将features和plugins这2个目录复制出来。这样做的目的是为了在一台电脑上可以使用多个独立的eclipse开发平台。如下图所示：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/11.PNG" alt=""></p>
+<p>4. 将刚才安装的 myeclipse 删除（反安装）。</p>
+<p>5. 将第3步复制的features和plugins这2个目录, 覆盖到 G</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/12.PNG" alt=""></p>
+<p>解释一下上面做的原因： 因为myeclipse是eclipse的插件，所以只要把features和plugins这2个目录覆盖在eclipse的相应目录，e<br>clipse会自动认出这些插件。</p>
+<p>到这一步，myeclipse算是安装完毕。 G 盘目录如下：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/13.PNG" alt=""></p>
+<p>五、破解myeclipse4.0</p>
+<p>1.去google搜索下载一个注册机。如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/14.PNG" alt=""></p>
+<p>2. 输入名字，算号，如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/15.PNG" alt=""></p>
+<p>3.运行eclipse.exe, 设定同目录下的workspace， 如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/16.PNG" alt=""></p>
+<p>4.myeclipse插件已经被自动认出，如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/17.PNG" alt=""></p>
+<p>5. 点击 Window —-&gt; Preferences —-&gt; Subscription —-&gt; Enter Subscription,<br>输入注册码，破解myeclipse，下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/18.PNG" alt=""></p>
+<p>到这里，myeclipse破解完毕。</p>
+<p>六、设定myeclipse的 jdk 和 tomcat 服务器。</p>
+<p>1. 增加一个jre， 点击 Window —-&gt; Preferences —-&gt; Installed JREs —-&gt; Add<br>如下图：（找到自己的j2sdk安装目录）</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/19.PNG" alt=""></p>
+<p>2. 指定Tomcat服务器，Window —-&gt; Preferences —-&gt; Tomcat5,<br>并设定该tomcat所用的jre为我们上一步新增的。如下面2个图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/20.PNG" alt=""></p>
+<p><img src="http://hdfyq.diy.myrice.com/images/21.PNG" alt=""></p>
+<p>到这一步，我们的开发环境就搭建完毕了。</p>
+<p>七、新建一个项目来试一试？</p>
+<p>1. 点击 File —-&gt; New —-&gt; Project , 选择Web Project， 再点下一步， 如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/22.PNG" alt=""></p>
+<p>2. 在 Project Name 中输入test， 点 finish。 如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/23.PNG" alt=""></p>
+<p>3. 开发工具自动生成了test项目。 如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/24.PNG" alt=""></p>
+<p>4.点击 WebRoot —-&gt; (右键)New —-&gt; JSP , 新建一个 JSP 页面 （hello.jsp）， 如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/25.PNG" alt=""></p>
+<p>5. 编辑器生成的是jsp文件是按模板生成的， 简单修改一下， 代码如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/26.PNG" alt=""></p>
+<p>6. 再用同样的方法， 新建一个叫 hello_result.jsp 的JSP文件， 代码如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/27.PNG" alt=""></p>
+<p>7. deploy（部署）这个test项目。 如下图： （用黑线画了的按钮就是 deploy 的按钮） ， 在弹出窗口点 Add， 部署test项目。</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/28.PNG" alt=""></p>
+<p>8. 启动Tomcat服务器。如下图： （用黑线画了的按钮就是 启动Tomcat 的按钮）</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/29.PNG" alt=""></p>
+<p>9. Tomcat 启动输出信息如下图：</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/30.PNG" alt=""></p>
+<p>10. 网页访问和结果图.</p>
+<p><img src="http://hdfyq.diy.myrice.com/images/31.PNG" alt=""></p>
+<p><img src="http://hdfyq.diy.myrice.com/images/32.PNG" alt=""></p>
+<p>大家可以去eclipse的workspace目录下看看test项目的代码，也可以去Tomcat的webapps目录下，看看部署之后的 test项目的结构。</p>
 
-设定环境变量为：1. (新建)JAVA_HOME: D:/j2sdk2. (新建)CLASSPATH: .;D:/j2sdk/lib/dt
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/29/1545814/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
@@ -1151,7 +1347,19 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1182,21 +1390,73 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
       
         
           
-          RSA 算法：其中加密encode和解密decode中的效率可以提高的log（n）
-但是这个算法只是原型，只能对数字加密，对字符串加密时要将转换成AScII码的东东进行拆分才可以。要按位加密。当q，p过大时，将有溢出。改进的可以自己写一个大数类。但没有时间了，暂时就做成这个样子吧。
+            <p>RSA 算法：<br>其中加密encode和解密decode中的效率可以提高的log（n）</p>
+<p>但是这个算法只是原型，只能对数字加密，对字符串加密时要将转换成AScII码的东东进行拆分才可以。要按位加密。当q，p过大时，将有溢出。改进的可以自己写一个大<br>数类。但没有时间了，暂时就做成这个样子吧。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  &lt; iostream  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  &lt; string  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  &lt; ctime  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  “  math.h  “<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>using  namespace  std;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>bool  isPrime(  long  );  //  the number is prime and return true, else return<br>false;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  gcd(  long  a,  long  b);  //  find a number which the two number a and<br>b divide exactly.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  publicKey(  long  p,  long  q);  //  using p, q to calculate the public<br>key e.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  privateKey(  long  e,  long  Qn);  //  using e ,Qn to calculate the<br>private key d.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  generKey(  const  long  p,  const  long  q,  long  <em>  pubKey,  long  </em><br>priKey);  //  get the public key and private key. And return n = p<em>q.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>char</em> encode(char <em>,long n,long pubKey);  //  encode the Text<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>char </em> decode(char <em>,long n,long priKey);  //  decode the Text which has been<br>encoded.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  encode(  long  ,  long  n,  long  pubKey);  //  encode the Text<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  decode(  long  ,  long  n,  long  priKey);  //  decode the Text which<br>has been encoded.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>int  main()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  p,q;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  pubKey ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  priKey ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>bool  pass  =  true  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (pass)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  input two prime numbers! and the two numbers are bigger than two<br>!!  “  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cin  &gt;&gt; p  &gt;&gt; q;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  srand(time(0));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  q = rand();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  p = rand();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (isPrime(p)  &amp;&amp; isPrime(q))<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>pass  =  false  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  p =  “  &lt;&lt; p  &lt;&lt; “  q =  “  &lt;&lt; q  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  n  =  generKey(p,q,  &amp; pubKey,  &amp; priKey);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  n:  “  &lt;&lt; n  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  input the number for encoding!  “  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  num;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cin  &gt;&gt; num;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  cout &lt;&lt; decode(encode(txt,n,pubKey),n,priKey);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  enText  =  encode(num,n,pubKey);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  encode the Text:  “  &lt;&lt; enText  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  decode the Text:  “  &lt;&lt; decode(enText,n,priKey)  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  0  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>bool  isPrime(  long  a)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (a  &gt; 2  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  b  =  2  ,c  =  sqrt(a);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (; b  &lt; c; b  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (a  %  b  ==  0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  false  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  true  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  false  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  gcd(  long  a,  long  b)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int  x  =  a  %  b;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (x  ==  0  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  b;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>else<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  gcd(b,x);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  publicKey(  const  long  p,  const  long  q,  const  long  Qn)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>srand(time(  0  ));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  e  =  rand();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (e  &gt;=  Qn)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>e  =  3  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (gcd(e,Qn)  !=  1  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>e  ++  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (e  &gt;=  Qn)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>e  =  3  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  e:  “  &lt;&lt; e  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  e;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  privateKey(  const  long  e,  const  long  Qn)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>srand(time(  0  ));<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  d  =  rand();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (d  &gt;=  Qn)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>d  =  3  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>while  (e  </em>  d  %  Qn  !=  1  ||  e  ==  d)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>d  ++  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>if  (d  &gt;=  Qn)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>d  =  3  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>cout  &lt;&lt; “  d:  “  &lt;&lt; d  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  d;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  generKey(  const  long  p,  const  long  q,  long  <em>  pubKey,  long  </em><br>priKey)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  n  =  p  <em>  q;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  Qn  =  (p  -  1  )  </em>  (q  -  1  );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></p>
+<ul>
+<li>pubKey  =  publicKey(p,q,Qn);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""></li>
+<li>priKey  =  privateKey(  <em>  pubKey,Qn);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  n;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> /**/  /</em><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char <em> encode(char </em> txt,long n,long pubKey)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>{<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int length = strlen(txt);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char<em> text = new char[length];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>strcpy(text,txt);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for(int i = 0; i &lt; length; i++)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>{<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>text[i] =(int) pow(text[i],pubKey) % n;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return text;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char </em> decode(char <em> txt,long n,long priKey)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>{<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>int length = strlen(txt);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>char</em> text = new char[length];<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>strcpy(text,txt);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for(int i = 0; i &lt; length; i++)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>{<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>text[i] = (int)pow(text[i],priKey) % n;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return text;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>}<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> <em>/<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  encode(  long  num,  long  n,  long  pubKey)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  tmp  =  1  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; pubKey; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>tmp  </em>=  num ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>tmp  %=  n;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  tmp;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>long  decode(  long  num,  long  n,  long  priKey)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>long  tmp  =  1  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>for  (  int  i  =  0  ; i  &lt; priKey; i  ++  )<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>tmp  *=  num ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>tmp  %=  n;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  tmp;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</li>
+</ul>
 
-#include  &lt; iostream  &gt;
-#include  &lt; string  &gt;
-#include  &lt; ctime  &gt;
-#include  “  math.h  “using  namespace  std;bool  isPrime(  long  );  //
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/29/1545379/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
@@ -1275,7 +1535,19 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1306,19 +1578,14 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
       
         
           
-          当初成立编辑部，后来发现人员倒是招缆了一批。经过培训感觉还是可以的。
-下学期面临换届，感觉应该留下来什么方针政策。否则就失去了创建此部的目的。新一届要走的路应该是：
-宣传，招新，培训，任留。
-宣传将为招新做铺垫。招的新人估计也没有什么高人。那就要进行多次培训。培训中做几个小点的项目。每个人的表现如何领导者都一一在目。然后就是下届将由谁来领导。表现好的将留在本部。差的就说byebye。尽量多的挽留培训出来的人，这样对下一届的编辑部也有好处。这些被培训出来的人可以留在下届继续培训新人。这样编辑部的工作才会有延续性。
-这4步中的重中之重在于培训。培训的好坏将对下届产生深远的影响。当然管理者要知人用人
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/25/1540411/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <p>当初成立编辑部，后来发现人员倒是招缆了一批。经过培训感觉还是可以的。</p>
+<p>下学期面临换届，感觉应该留下来什么方针政策。否则就失去了创建此部的目的。新一届要走的路应该是：</p>
+<p>宣传，招新，培训，任留。</p>
+<p>宣传将为招新做铺垫。招的新人估计也没有什么高人。那就要进行多次培训。培训中做几个小点的项目。每个人的表现如何领导者都一一在目。然后就是下届将由谁来领导。表现<br>好的将留在本部。差的就说byebye。尽量多的挽留培训出来的人，这样对下一届的编辑部也有好处。这些被培训出来的人可以留在下届继续培训新人。这样编辑部的工作才<br>会有延续性。</p>
+<p>这4步中的重中之重在于培训。培训的好坏将对下届产生深远的影响。当然管理者要知人用人。对部下充分的信任这是必要的。否则谁为你买命的干活？</p>
+<p>想来编辑部也算得上学生会中管理的较好的部门。人多手杂也相当不好管理。而且没有自己的办公室。啥时候也向院里要一间。这要算是历史遗留问题了。留给下届解决好了。还<br>有办纸制院刊的问题也要留给下届了。希望能打消上级的那些念头。</p>
+
+          
         
       
     </div>
@@ -1397,7 +1664,19 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
             
           </span>
 
@@ -1428,16 +1707,9 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
       
         
           
-          不知道是什么原因。或者本没有把计数器做好。。
+            <p>不知道是什么原因。或者本没有把计数器做好。。</p>
 
           
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2007/03/18/1532551/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -1531,10 +1803,10 @@ HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个�
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">626</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
