@@ -1,0 +1,855 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据库,MongoDB,结构," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="今天写写 MongoDB的事情。这货是一个document-orientied, 基本上使用的json进行交互的。他把那个形式很像json的东西叫做BJSON. 里面有一些mongoDB自己定义的数据类型。这种数据形式在传输存储很方便。  首先介绍一下MongoDB的数据结构        database : 这个和mysql中的database一致。 默认使用的local, 可以自己创建新的。">
+<meta name="keywords" content="数据库,MongoDB,结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="十分钟了解MongoDB">
+<meta property="og:url" content="http://chillyc.info/2014/19087307/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="今天写写 MongoDB的事情。这货是一个document-orientied, 基本上使用的json进行交互的。他把那个形式很像json的东西叫做BJSON. 里面有一些mongoDB自己定义的数据类型。这种数据形式在传输存储很方便。  首先介绍一下MongoDB的数据结构        database : 这个和mysql中的database一致。 默认使用的local, 可以自己创建新的。">
+<meta property="og:image" content="http://img.blog.csdn.net/20140211213153265">
+<meta property="og:image" content="http://img.blog.csdn.net/20140211213157453">
+<meta property="og:image" content="http://img.blog.csdn.net/20140211213532765">
+<meta property="og:image" content="http://img.blog.csdn.net/20140211213542078">
+<meta property="og:image" content="http://img.blog.csdn.net/20140211213211218">
+<meta property="og:image" content="http://img.blog.csdn.net/20140211213215515">
+<meta property="og:image" content="http://img.blog.csdn.net/20140211213238656">
+<meta property="og:image" content="http://img.blog.csdn.net/20140211213243265">
+<meta property="og:updated_time" content="2017-06-12T02:33:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="十分钟了解MongoDB">
+<meta name="twitter:description" content="今天写写 MongoDB的事情。这货是一个document-orientied, 基本上使用的json进行交互的。他把那个形式很像json的东西叫做BJSON. 里面有一些mongoDB自己定义的数据类型。这种数据形式在传输存储很方便。  首先介绍一下MongoDB的数据结构        database : 这个和mysql中的database一致。 默认使用的local, 可以自己创建新的。">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20140211213153265">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2014/19087307/"/>
+
+
+
+
+
+  <title>十分钟了解MongoDB | 帐前卒专栏</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/19087307/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">十分钟了解MongoDB</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-02-11T21:51:00+08:00">
+                2014-02-11
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/19087307/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2014/19087307/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天写写 MongoDB的事情。这货是一个document-orientied, 基本上使用的json进行交互的。他把那个形式很像json的东西叫做<br>BJSON. 里面有一些mongoDB自己定义的数据类型。这种数据形式在传输存储很方便。</p>
+<p><strong> 首先介绍一下MongoDB的数据结构  </strong></p>
+<p><strong>   
+</strong></p>
+<p>database : 这个和mysql中的database一致。 默认使用的local, 可以自己创建新的。例如 在shell中写 db.xxx<br>然后就自动创建了xxx 这个collection</p>
+<p>collection: 这个概念和mysql中的table保持一致。</p>
+<p>document: 这个和mysql里的row或者 record保持一致。</p>
+<p>这个是MongoDB的三个最主要的结构。</p>
+<p>下面是如何使用。</p>
+<p><strong> 下载安装  </strong><br>首先去 www.mongoDB.org 上下载一个mongoDB的最新版。然后解压到某个目录。然后使用命令行进入到该目录下。</p>
+<p>创建 数据存储文件夹，这里可以直接创建一个 /data/db的文件夹（mkdir -p /data/db）。然后在命令行里执行如下命令启动mongodb<br>server.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mongod --dbpath ./data/db</div></pre></td></tr></table></figure></p>
+<p>这样mongoDB就启动了，一般端口为 27017. 你可以使用help来修改Port等。这里就不过多介绍。</p>
+<p>然后重新开一个命令窗口，使用命令进入到该目录下，执行下面语句启动mongoDB client.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mongo</div></pre></td></tr></table></figure>
+<p>如果使用的都是默认端口，这里就可以正常启动了。如果你修改了mongoDB server的端口，这里需要改成一致的。</p>
+<p><strong> 数据库CRUD(Create, Retrieve, Update, Delete)操作  </strong><br>下面就是命令行选择database, 创建collection, 存储document。首先：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">db</div><div class="line">查看需要现有的database.</div><div class="line">show dbs</div><div class="line"></div><div class="line">使用ooo作为database</div><div class="line">use ooo;</div><div class="line"></div><div class="line">如果这里不写use ooo,那默认就是local.</div></pre></td></tr></table></figure>
+<p>然后是数据库的操作了：</p>
+<p><strong> 1. 插入 </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">var a = &#123;&quot;value&quot;:1,&quot;value2&quot;:[&apos;a&apos;,&apos;b&apos;]&#125;</div><div class="line">var b = &#123;&quot;value&quot;:2&#125;</div><div class="line">var c = &#123;&quot;str&quot;:‘aaa’&#125;</div><div class="line">插入数据,xxxx是collection</div><div class="line">db.xxxx.save(a);</div><div class="line">下面也是插入数据</div><div class="line">db.xxxx.insert(b);</div><div class="line">db.xxxx.insert(c);</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20140211213153265" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140211213157453" alt=""><br><strong><br>2. 查看数据  </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">获取全部数据</div><div class="line">db.xxxx.find()</div><div class="line">获取一个数据</div><div class="line">db.xxxx.findOne()</div><div class="line"></div><div class="line">查询特定的记录</div><div class="line"></div><div class="line">db.xxxx.find(&#123;&quot;value&quot;:1&#125;)</div></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20140211213532765" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140211213542078" alt=""><br><strong> 3.更新操作 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">db.xxxx.update(</div><div class="line">   &#123; value: &#123; $lt: 18 &#125; &#125;,</div><div class="line">   &#123; $set: &#123; status: &quot;A&quot; &#125; &#125;,</div><div class="line">   &#123; multi: true &#125;</div><div class="line">)</div><div class="line"></div><div class="line">这里 &#123; value: &#123; $lt: 18 &#125; &#125;,是说  value &lt; 18,  &#123; $set: &#123; status: &quot;A&quot; &#125; &#125;,是说要set status 为A, 如果没有那个域，则创建出来。</div><div class="line">&#123; multi: true &#125; 则是处理多个。</div></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20140211213211218" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140211213215515" alt=""><br><strong> 4. 删除操作  </strong></p>
+<p><strong>   
+</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">db.xxxx.remove(&#123;&quot;value&quot;:1&#125;)</div><div class="line">删除value 为1 的document.</div></pre></td></tr></table></figure>
+<p>这里看起来非常简单。</p>
+<p><img src="http://img.blog.csdn.net/20140211213238656" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140211213243265" alt=""></p>
+<p><strong> 结束语 </strong><br>MongoDB的强大之处在于 JSON串里想写什么就可以写什么。<br>相同的collection中document可以完全不相同。（但是为了后期的维护，还是尽量相同。）这是稀疏数据库的一大优势。</p>
+<p>建索引MongoDB有很多种，可以建立unique 索引， TTL 索引（数据会过期失效,默认为此索引）， 多列组合索引，空间索引，全文索引和hash索引。<br>这里的多列索引和mysql的一致。对于全文索引，mongoDB建议不要在生产环境（线上环境）中使用，因为这个建索引很慢，性价比不高。</p>
+<p>对于mongoDB来说，他的索引可以使用{“backgroup”:true}来进行后台异步创建，也可以使用前台索引。但是前台索引会对性能造成极大的影响，所以<br>mongoDB官方文档建议新起一个mongoDB server的实例进行创建。然后使用副本启动的方法将创建好的索引作为副本启动。</p>
+<p>对于mongoDB，安全性做的比较粗略。也是对于操作，对于database等特殊数据需要分配权限。因为没有视图等概念，这些安全性做的比mysql来说粒度大了<br>一些。但是mongoDB支持SSL<br>方式访问，也支持kerberos认证。不过Kerberos认证现在只有微软那边在用，之前K3,K4被破,人心惶惶。现在不知道情况如何。</p>
+<p>今天就先介绍这么多吧。  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      帐前卒
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://chillyc.info/2014/19087307/" title="十分钟了解MongoDB">http://chillyc.info/2014/19087307/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+            <a href="/tags/MongoDB/" rel="tag"># MongoDB</a>
+          
+            <a href="/tags/结构/" rel="tag"># 结构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/18990301/" rel="next" title="个人微博">
+                <i class="fa fa-chevron-left"></i> 个人微博
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/19119101/" rel="prev" title="黑掉github之我见， 漏洞vs钓鱼">
+                黑掉github之我见， 漏洞vs钓鱼 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/zqz.jpg"
+               alt="帐前卒" />
+          <p class="site-author-name" itemprop="name">帐前卒</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">635</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">629</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+var sc_project=11368238; 
+var sc_invisible=1; 
+var sc_security="85975d8a"; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="web analytics"
+href="http://statcounter.com/" target="_blank"><img
+class="statcounter"
+src="//c.statcounter.com/11368238/0/85975d8a/1/" alt="web
+analytics"></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 92082, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 92082, xid: "2014/19087307/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/92082/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

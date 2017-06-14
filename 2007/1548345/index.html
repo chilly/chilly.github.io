@@ -1,0 +1,897 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="编程,多线程,vc++," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="vc＋＋中的多线程编程： HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个句柄hMutex  =  CreateMutex( NULL,  //  no security attributesFALSE,  //  initially not owned “MutexToProtectDatabase  “  );">
+<meta name="keywords" content="编程,多线程,vc++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vc++多线程编程">
+<meta property="og:url" content="http://chillyc.info/2007/1548345/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="vc＋＋中的多线程编程： HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个句柄hMutex  =  CreateMutex( NULL,  //  no security attributesFALSE,  //  initially not owned “MutexToProtectDatabase  “  );">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif">
+<meta property="og:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+<meta property="og:updated_time" content="2017-06-12T02:33:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vc++多线程编程">
+<meta name="twitter:description" content="vc＋＋中的多线程编程： HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个句柄hMutex  =  CreateMutex( NULL,  //  no security attributesFALSE,  //  initially not owned “MutexToProtectDatabase  “  );">
+<meta name="twitter:image" content="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2007/1548345/"/>
+
+
+
+
+
+  <title>vc++多线程编程 | 帐前卒专栏</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1548345/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">vc++多线程编程</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-04-01T14:51:00+08:00">
+                2007-04-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2007/1548345/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2007/1548345/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>vc＋＋中的多线程编程：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个句柄<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>hMutex  =  CreateMutex( NULL,  //  no security attributes<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>FALSE,  //  initially not owned<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> “<br>MutexToProtectDatabase  “  );  //  name of mutex<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>这个句柄只想信号量，第一个参数一半为NULL，第二个（初始化时是否被获得）false为现在可以被任何人使用<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> //<br>第三个参数是为信号量起名，方便以后查找该信号量<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> if<br>(hMutex  ==  NULL)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Check for error.一般不必这样用。<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>BOOL FunctionToWriteToDatabase(HANDLE hMutex)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>DWORD dwWaitResult;  //  Request ownership of mutex.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>dwWaitResult  =  WaitForSingleObject(<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>hMutex,  //  handle to mutex<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>5000L  );  //  five-second time-out interval<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> switch  (dwWaitResult)  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  The thread got mutex ownership.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>case  WAIT_OBJECT_0:<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> <strong>try  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Write to the database.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> </strong>finally  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Release ownership of the mutex object.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicato
+rs/ContractedSubBlock.gif" alt=""> if  (  !  ReleaseMutex(hMutex))  …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Deal with error.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> break  ; }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Cannot get mutex ownership due to time-out.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>case  WAIT_TIMEOUT:<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  FALSE;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>//  Got ownership of the abandoned mutex object.<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>case  WAIT_ABANDONED:<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  FALSE;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB
+lockEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  TRUE;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>DWORD dwWaitResult  只是为了判断信号量的归谁所有。  WaitForSingleObject() 相当与P（）操作，参数有两个：第一个是<br>信号量，第二个是等待时间。INFINITE代表无限等待。5000L代表等待5秒，如果5秒内获得信号量，dwWaitResult＝＝<br>WAIT_OBJECT_0，如果5秒没有得到信号量，则dwWaitResult＝＝  WAIT_TIMEOUT，而<br>WAIT_ABANDONED代表操作失败。  ReleaseMutex(hMutex）相当于V（）操作。参数为信号量。</p>
+<p>如果希望在一个函数中启动线程并调用该函数，应该这样写代码</p>
+<p>void reading(void* name)；这个函数一定要是void的返回类型。然后可以在调用函数中这样写：</p>
+<p>_beginthread(&amp;reading,0,(void*)english); 其中第一参数是要调用函数的函数指针。第二个函数是线程优先级一般为0。第三个<br>参数是个void指针，一般用来传函数的参数。如果想传多个参数只要把那个指针指向一个结构体就可以。到函数那里再转换为相应的结构体指针就可以了。</p>
+<p>Sleep（5000L）；这个函数一般是用来让线程睡眠的。参数是unsigned long，现在是睡5秒。<br>这只是多线程的编程常用到的几个函数。对于多线程编程还要注意同步和死锁，在这篇文字就不讨论了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      帐前卒
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://chillyc.info/2007/1548345/" title="vc++多线程编程">http://chillyc.info/2007/1548345/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+            <a href="/tags/多线程/" rel="tag"># 多线程</a>
+          
+            <a href="/tags/vc/" rel="tag"># vc++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2007/1545814/" rel="next" title="jdk1.5+myeclipse+tomcat5.0+eclipse配置安装发布手册">
+                <i class="fa fa-chevron-left"></i> jdk1.5+myeclipse+tomcat5.0+eclipse配置安装发布手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2007/1554256/" rel="prev" title="湖南大学软件学院院刊－动漫专刊">
+                湖南大学软件学院院刊－动漫专刊 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/zqz.jpg"
+               alt="帐前卒" />
+          <p class="site-author-name" itemprop="name">帐前卒</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">635</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">629</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+var sc_project=11368238; 
+var sc_invisible=1; 
+var sc_security="85975d8a"; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="web analytics"
+href="http://statcounter.com/" target="_blank"><img
+class="statcounter"
+src="//c.statcounter.com/11368238/0/85975d8a/1/" alt="web
+analytics"></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 92082, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 92082, xid: "2007/1548345/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/92082/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

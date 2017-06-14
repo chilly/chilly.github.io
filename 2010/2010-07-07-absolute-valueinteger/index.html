@@ -1,0 +1,831 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="c,code,math,absolute,bit,complement,priority," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&amp;nbsp; )     if number &amp;gt;= 0 , then number &amp;gt;&amp;gt; 31 == 0     if number &amp;lt; 0&amp;nbsp">
+<meta name="keywords" content="c,code,math,absolute,bit,complement,priority">
+<meta property="og:type" content="article">
+<meta property="og:title" content="get absolute value(integer)">
+<meta property="og:url" content="http://chillyc.info/2010/2010-07-07-absolute-valueinteger/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&amp;nbsp; )     if number &amp;gt;= 0 , then number &amp;gt;&amp;gt; 31 == 0     if number &amp;lt; 0&amp;nbsp">
+<meta property="og:updated_time" content="2017-06-12T02:33:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="get absolute value(integer)">
+<meta name="twitter:description" content="How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&amp;nbsp; )     if number &amp;gt;= 0 , then number &amp;gt;&amp;gt; 31 == 0     if number &amp;lt; 0&amp;nbsp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2010/2010-07-07-absolute-valueinteger/"/>
+
+
+
+
+
+  <title>get absolute value(integer) | 帐前卒专栏</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-07-07-absolute-valueinteger/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">get absolute value(integer)</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-07-07T00:00:00+08:00">
+                2010-07-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2010/2010-07-07-absolute-valueinteger/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2010/2010-07-07-absolute-valueinteger/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="how to use bit operator and simple +-*/ to get absolute number."></p>
+<p><meta name="_su_keywords" content="bit,operator,absolute,complement,number,priority"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_title" content="bit operators absolute complement number priority"></p>
+<p><meta name="views" content="1060"></p>
+<p><meta name="_wp_old_slug" content="absolute-numberinteger"><br>How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&nbsp; )</p>
+<p><ul><br>    <li>if number &gt;= 0 , then number &gt;&gt; 31 == 0</li><br></ul></p>
+<p><ul><br>    <li>if number &lt; 0&nbsp;&nbsp; , then number &gt;&gt; 31 == 0xFFFFFFFF</li><br></ul><br>If some number exclusive or( xor ) 0xFFFFFFFF means each bit becomes its “opposite” number. (1 becomes 0, and 0 becomes 1).And If a number xor 0x00000000 means nothing happened to this number. So:</p>
+<p><ul><br>    <li>number ^ 0xFFFFFFFF = ~number</li><br>    <li>number ^ 0x00000000 = number</li><br></ul><br>In this question, you should also know something about<a href="http://en.wikipedia.org/wiki/Signed_number_representations#Ones.27_complement" target="_blank" rel="external"> complement number(see two’s complement)</a>. When a number is negative, |number| = ~number +1 or you can use |number| = !number + 1. When a number is positive, |number| = number.</p>
+<p>If you know above, then the goal of |x| = (x^(x&gt;&gt;31))+(~(x&gt;&gt;31)+1).</p>
+<p>(x^(x&gt;&gt;31)) means:</p>
+<p><ul><br>    <li>x &gt;= 0, x^(x&gt;&gt;31) = x^0x00000000 = x</li><br>    <li>x &lt; 0, x^(x&gt;&gt;31) = x^0xFFFFFFFF = ~x</li><br></ul><br>And (~(x&gt;&gt;31)+1)means:</p>
+<p><ul><br>    <li>x &gt;= 0, ~(x&gt;&gt;31)+1 = 0xFFFFFFFF+1 = 0</li><br>    <li>x &lt; 0, ~(x&gt;&gt;31)+1 = 0x00000000+1 = 1</li><br></ul><br>And we should take care of those brackets, because the priorities of operators are: ~ <span style="color: rgb(128, 0, 0); font-size: 16pt;"><strong>&gt;</strong></span> */ <span style="color: rgb(153, 51, 0); font-size: 16pt;"><strong>&gt;</strong></span> + - <strong><span style="color: rgb(153, 51, 0); font-size: 16pt;">&gt;</span></strong> bit operators(&amp;,^,|)</p>
+<table><br><tbody><br><tr><br><th>Level</th><br><th>Operator</th><br><th>Description</th><br><th>Grouping</th><br></tr><br><tr><br><td>1</td><br><td><tt>::</tt></td><br><td>scope</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>2</td><br><td><tt>() [] . -&gt; ++ – dynamic_cast static_cast  reinterpret_cast const_cast typeid</tt></td><br><td>postfix</td><br><td>Left-to-right</td><br></tr><br><tr><br><td rowspan="3">3</td><br><td><tt>++ – ~ ! sizeof new delete</tt></td><br><td>unary  (prefix)</td><br><td rowspan="3">Right-to-left</td><br></tr><br><tr><br><td><tt><em> &amp;</em></tt></td><br><td>indirection and reference (pointers)</td><br></tr><br><tr><br><td><tt>+ -</tt></td><br><td>unary sign operator</td><br></tr><br><tr><br><td>4</td><br><td><tt>(type)</tt></td><br><td>type casting</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>5</td><br><td><tt>. -&gt;<em></em></tt></td><br><td>pointer-to-member</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>6</td><br><td><tt> / %</tt></td><br><td>multiplicative</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>7</td><br><td><tt>+ -</tt></td><br><td>additive</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>8</td><br><td><tt>&lt;&lt; &gt;&gt;</tt></td><br><td>shift</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>9</td><br><td><tt>&lt; &gt; &lt;= &gt;=</tt></td><br><td>relational</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>10</td><br><td><tt>== !=</tt></td><br><td>equality</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>11</td><br><td><tt>&amp;</tt></td><br><td>bitwise AND</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>12</td><br><td><tt>^</tt></td><br><td>bitwise XOR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>13</td><br><td><tt>|</tt></td><br><td>bitwise OR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>14</td><br><td><tt>&amp;&amp;</tt></td><br><td>logical AND</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>15</td><br><td><tt>||</tt></td><br><td>logical OR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>16</td><br><td><tt>?:</tt></td><br><td>conditional</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>17</td><br><td><tt>= *= /= %= += -= &gt;&gt;= &lt;&lt;= &amp;= ^= |=</tt></td><br><td>assignment</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>18</td><br><td><tt>,</tt></td><br><td>comma</td><br><td>Left-to-right</td><br></tr><br></tbody><br></table>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      帐前卒
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://chillyc.info/2010/2010-07-07-absolute-valueinteger/" title="get absolute value(integer)">http://chillyc.info/2010/2010-07-07-absolute-valueinteger/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+            <a href="/tags/code/" rel="tag"># code</a>
+          
+            <a href="/tags/math/" rel="tag"># math</a>
+          
+            <a href="/tags/absolute/" rel="tag"># absolute</a>
+          
+            <a href="/tags/bit/" rel="tag"># bit</a>
+          
+            <a href="/tags/complement/" rel="tag"># complement</a>
+          
+            <a href="/tags/priority/" rel="tag"># priority</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2010/2010-07-05-memory-allocation/" rel="next" title="memory allocation in c">
+                <i class="fa fa-chevron-left"></i> memory allocation in c
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2010/2010-07-09-print-display-row/" rel="prev" title="print only display one row">
+                print only display one row <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/zqz.jpg"
+               alt="帐前卒" />
+          <p class="site-author-name" itemprop="name">帐前卒</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">635</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">629</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+var sc_project=11368238; 
+var sc_invisible=1; 
+var sc_security="85975d8a"; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="web analytics"
+href="http://statcounter.com/" target="_blank"><img
+class="statcounter"
+src="//c.statcounter.com/11368238/0/85975d8a/1/" alt="web
+analytics"></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 92082, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 92082, xid: "2010/2010-07-07-absolute-valueinteger/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/92082/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
