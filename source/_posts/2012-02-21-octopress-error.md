@@ -3,7 +3,7 @@ layout: post
 title: "octopress error, rake generate"
 date: 2012-02-21 20:00
 comments: true
-tags: SyntaxError, octopress, error, rake generate
+tags: ["SyntaxError", "octopress", "error", "rake generate"]
 ---
 Today, I met the following problem. I wrote an article, and use `rake generate` to generate the site. Then the console reports:
 {% blockquote %}
