@@ -271,6 +271,221 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/8962322/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/8962322/" itemprop="url">Spring MultipartResolver 或者 ServletFileUpload 冲突导致获取不到http数据/Multipart数据为空</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-05-22T21:10:00+08:00">
+                2013-05-22
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:51+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果不知道MultipartResolver 或者ServletFileUpload 的，请 <a href="http://blog.csdn.net/cctt_1/article/details/8800964" target="_blank" rel="external"> 点击这里
+</a></p>
+<p>如果同时使用了MultipartResolver<br>和ServletFileUpload，就会在iter.hasNext()返回false.然后整个循环就跳出去了。</p>
+<pre><code>if (isMultipart) {
+            DiskFileItemFactory factory = new DiskFileItemFactory(1024 * 1024 * 20, null);
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            upload.setHeaderEncoding(&quot;UTF-8&quot;);
+            upload.setSizeMax(1024 * 1024 * 20);
+
+            List&lt;FileItem&gt; fileItems = upload.parseRequest(req);
+            Iterator&lt;FileItem&gt; iter = fileItems.iterator();
+            // 这里获取不到任何FileItem
+            while (iter.hasNext()) {
+                FileItem item = (FileItem) iter.next();
+                if (item.isFormField()) {
+                    String name = item.getFieldName();
+                    String value = item.getString(&quot;UTF-8&quot;);
+                    request.put(name, value);
+                } else {
+                    byte[] filebytes = item.get();
+                    if (StringUtils.isBlank(item.getName())) {
+                        continue;
+                    }
+
+                    request.put(item.getFieldName(), new String(filebyte, &quot;utf-8&quot;));
+                }
+            }
+        }
+}
+</code></pre><p>整个问题产生的原因是Spring框架先调用了MultipartResolver 来处理http multi-part的请求。这里http<br>multipart的请求已经消耗掉。后面又交给ServletFileUpload ，那么ServletFileUpload 就获取不到相应的multi-<br>part请求。</p>
+<p>如果帐前 卒想快速解决这个问题。解决方法是加入帐前卒的  multipartResolver,  来单独处理某些请求。这些请求需要特判。例如下面的代码：</p>
+<pre><code>package example;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+/**
+ * @author 帐前卒
+ */
+public class MyMultipartResolver extends CommonsMultipartResolver {
+    private String excludeUrls;   
+    private String[] excludeUrlArray;
+
+    public String getExcludeUrls() {
+        return excludeUrls;
+    }
+    public void setExcludeUrls(String excludeUrls) {
+        this.excludeUrls = excludeUrls;
+        this.excludeUrlArray = excludeUrls.split(&quot;,&quot;);
+    }
+    /**
+     * 这里是处理Multipart http的方法。如果这个返回值为true,那么Multipart http body就会MyMultipartResolver 消耗掉.如果这里返回false
+     * 那么就会交给后面的自己写的处理函数处理例如刚才ServletFileUpload 所在的函数
+     * @see org.springframework.web.multipart.commons.CommonsMultipartResolver#isMultipart(javax.servlet.http.HttpServletRequest)
+     */
+    @Override
+    public boolean isMultipart(HttpServletRequest request) {
+        for (String url: excludeUrlArray) {
+            // 这里可以自己换判断
+            if (request.getRequestURI().contains(url)) {
+                return false;
+            }
+        }
+
+        return super.isMultipart(request);
+    }
+
+}
+</code></pre><p>然后在web.xml中这样写：</p>
+<pre><code>&lt;bean id=&quot;multipartResolver&quot; class=&quot;example.MyMultipartResolver&quot;&gt;
+&lt;property name=&quot;excludeUrls&quot; value=&quot;example&quot;/&gt;
+&lt;!-- url中带有example的http请求就不会被multipartResolver先解析--&gt;
+&lt;/bean&gt;
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/8948669/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -406,18 +621,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -689,6 +892,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/8743257/">
@@ -820,18 +1035,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1798,6 +2001,18 @@ rkJggg==" alt=""></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/8639903/">
@@ -2066,169 +2281,6 @@ public class Client {
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/8632642/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/8632642/" itemprop="url">JAVA 远程debug</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-03-04T10:48:00+08:00">
-                2013-03-04
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>开启JVM的远程Debug模式, 在启动JVM的时候加上参数:</p>
-<pre><code>// 非阻塞方式，这样启动jvm后，可以再任意时间attach到server上
--Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=11312,server=y,suspend=n
-// 阻塞debug，启动JVM后，需要远程连接attach到相应的端口，JVM才会继续执行。
--Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=11312,server=y,suspend=y
-</code></pre><p>第二条特别适合调试类初始化的程序模块。</p>
-<p>在eclipse中，bug项里有Debug Configurations… 选中。然后选中remove java application, 新建一个</p>
-<p>Project就是你要远程调试的 JAVA源码文件工程。  HOST就是那个server所在的机器名或者IP。 PORT就是<br>上面的address项11312。Connection Type就写Standard. 然后点击debug就可以。</p>
-<p>如果debug后，有连接错误。 1. 要查看server或者service是否已经启动。 2. 要看是否配置正确。3.检测端口是否被其他程序占用了。</p>
-<p>如果上面的检测完毕，还是连接失败。那么重启eclipse 或者 重启server. 这两个方法就可以解决问题。</p>
-<p>另外</p>
-<pre><code>-Xnoagent
-这一个选项在远程debug中一般不需要。其含义为Disables VM support for oldjdb。禁用旧的java debug。
-</code></pre><p>下面是各个options的详解。摘自 <a href="http://docs.oracle.com/javase/1.4.2/docs/tooldocs/windows/jdb.html" target="_blank" rel="external"><br>http://docs.oracle.com/javase/1.4.2/docs/tooldocs/windows/jdb.html
-</a><br><code>-Xdebug</code></p>
-<p>Enables debugging support in the VM</p>
-<p><code>-Xrunjdwp:transport=dt_shmem,server=y,suspend=n</code></p>
-<p>Loads in-process debugging libraries and specifies the kind of connection to<br>be made.</p>
-<p><code>-Xnoagent</code></p>
-<p>Disables VM support for <strong> oldjdb </strong></p>
-<p><code>-Djava.compiler=NONE</code></p>
-<p>Disables the JIT compiler. This is required for debugging under the classic VM</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2278,7 +2330,7 @@ public class Client {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">635</span>
+                <span class="site-state-item-count">636</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2291,7 +2343,7 @@ public class Client {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">629</span>
+                <span class="site-state-item-count">633</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2350,7 +2402,7 @@ public class Client {
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

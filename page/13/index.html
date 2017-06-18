@@ -271,6 +271,157 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/2012-02-01-jstack-jmap-resin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/2012-02-01-jstack-jmap-resin/" itemprop="url">jstack jmap resin</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2012-02-01T20:41:00+08:00">
+                2012-02-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Today, I use <code>jstack</code>, <code>jmap</code>, and <code>resin</code> to look up why my server is deading in stress test. And I also find printing information into log is useful. You can print log in entrance of function and exit of function.<br>jstack is a tool which is looked up stack of system, specailly in threads. It is mainly for looking up dead lock and some functions which are executed too slowly.<br>jmap is a tool which is looked up current memory of system or some memery jvm can not delete immediately.<br>You can use jstack like this:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jstack -l [pid]</div></pre></td></tr></table></figure></p>
+<p>If you know pid of the process, you can see what’s the situation of stacks in process. If you want to see the detail, looking at those stacks.<br>jmap is used like this:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jmap -heap [pid]</div></pre></td></tr></table></figure></p>
+<p>Today, Big niu Qiao tells me about JVM GC policy.<br>There are New Generation, Old Generate and Perm Generation in JVM. You can find them in jmap command. And New Generation are new objects. And Old Generation are old objects which are still be refered. Eden Space stores new generate objects. And From Space stores still alive objects after gc once. To space stores objects which are not refered and in From space before gc once. If an objects is in From Space many times, it will be moved to Old Generation by JVM. Perm Generation are static objects and Classes.<br>By the way, if your application runs in resin, you should look up those logs of resin, for example, jvm-default.log. The log file contains GC log information. If GC throws overMemory exception, you should modify your configuration of resin (resin.xml in resin4.0+). Modify or add:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;jvm-arg&gt;-Xmx1024&lt;/jvm-arg&gt;</div><div class="line">``` </div><div class="line">This means set JVM heap space to 1G.</div><div class="line">&lt;!-- more --&gt;  </div><div class="line">今天使用了一下jstack, jmap来查看系统为啥在压力测试中缓慢的挂掉。我发现还是很有用的还有就是打log.函数入口和函数出口都打log。    </div><div class="line">jstack是查看系统现在卡在那里，特别是各个线程在哪里，主要是排查死锁或者运行相当缓慢的函数。jmap是为了看系统的内存。当前使用的内存，以及jvm想删除却很久都没有删除的内存。    </div><div class="line">jstack的使用方法如下</div></pre></td></tr></table></figure></p>
+<p>jstack -l [pid]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">只要知道pid,就能知道该进程现在的stack情况。具体排查就是看那些stack...</div><div class="line">    </div><div class="line">jmap的使用基本一致</div></pre></td></tr></table></figure></p>
+<p>jmap -heap [pid]<br><code>``
+今天继续听巧大牛讲JVM GC策略。
+jmap中有New Generation 和Old Generation. 分别对应新生成的和很久都没有被释放的。Eden Space就是新生成的对象。而From Space是以前曾经存活的对象（一次GC之后，Eden区的对象都会转换为From区）。To Space是以前曾经存活的对象但是现在已经没有引用了（一次GC过后, Eden区全部对象和From区尚有引用的对象回全部放入到To区）。而对象如果一直在From区，就会被jvm放入到Old Generation中。
+Old Generation是扫描一边标记，再扫一边回收，另外涉及到内存压缩云云。 
+Perm Generation是static对象和class    
+另外如果运行在resin中，还是看看resin的各个log.例如jvm-default.log.这个log中有关于GC的信息。如果GC已经OverMemery了.那就不用找了，直接在resin的conf中的resin.xml中找到jvm参数修改-Xmx的值即可。例如改为</code>-Xmx1024`即为java将使用内存1G.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/2012-01-31-git-alias/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -404,18 +555,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -677,6 +816,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/2012-01-21-octopress-bugs/">
@@ -813,18 +964,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1348,6 +1487,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/2012-01-14-new-title/">
@@ -1473,158 +1624,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/2012-01-14-new/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/2012-01-14-new/" itemprop="url">first use octopress</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2012-01-14T20:43:00+08:00">
-                2012-01-14
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这是第二篇blog。第一篇貌似什么都没有写。现在在linux下过得相当到舒坦。比windows的感觉好多了。就是拼音输入法支持到不怎么样。谢谢搭建octopress的感受吧。第一感受是这东西真不好装。需要现学到知识也有很多，例如rvm, ruby, gem, bundle, rake, git, MarkDown. 再加上在windows下养成到习惯，到linux下还是要熟悉一下。首先要先安装openssl和libtool相关的包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-client openssl libruby1.9.1 libssl-dev libssl libtool</div></pre></td></tr></table></figure><br>下面挨个介绍吧。  </p>
-<ul>
-<li>rvm 是管理ruby的工具，因为octopress需要使用ruby1.9.2所以必须使用rvm,否则就自己去<a href="http://ruby-lang.org" target="_blank" rel="external">ruby</a>的官网上自己下载，然后编译安装。这里使用rvm是可以管理多个ruby版本。并且可以自动编译安装ruby。安装rvm需要一行命令<br>bash -s stable &lt; &lt;(curl -s <a href="https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer" target="_blank" rel="external">https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer</a>)<br>敲命令时注意<code>&lt; &lt;</code>之间的空格。安装完这个，需要将rvm添加到path中。在~/.bashrc中添加<code>PATH=$PATH:~/.rvm/bin</code>。注意有些系统可能~/.bashprofile或者其他，详情在哪里添加请<a href="http://google.com" target="_blank" rel="external">google</a>。添加完后，关闭bash shell.再启动shell或者终端。然后下面的命令可以很好执行：<br>which rvm<h1 id="看到底rvm路径对了没有"><a href="#看到底rvm路径对了没有" class="headerlink" title="看到底rvm路径对了没有"></a>看到底rvm路径对了没有</h1>rvm install 1.9.2 &amp;&amp; rvm use 1.9.2<h1 id="安装ruby-1-9-2并且使用这个版本"><a href="#安装ruby-1-9-2并且使用这个版本" class="headerlink" title="安装ruby 1.9.2并且使用这个版本"></a>安装ruby 1.9.2并且使用这个版本</h1>ruby –version<h1 id="是否是1-9-2版本"><a href="#是否是1-9-2版本" class="headerlink" title="是否是1.9.2版本"></a>是否是1.9.2版本</h1>这里需要注意rvm use 1.9.2,如果你的机器重启，这里下次还要再设置一边。否则很有可能不能找到正确的ruby.</li>
-<li>这一步要使用到git, git是管理代码到工具。不会用的话详情见<a href="http://git-scm.com" target="_blank" rel="external">git</a>。octopress也主要使用了git和github,否则该实现到功能都不能用了。<br>git clone git://github.com/imathis/octopress.git octopress<h1 id="把octopress的主要内容down下来。"><a href="#把octopress的主要内容down下来。" class="headerlink" title="把octopress的主要内容down下来。"></a>把octopress的主要内容down下来。</h1></li>
-<li>这里要使用gem， bundle, rake了。gem,bundler都是管理ruby各个小类库的工具。而rake是ruby make. <pre><code>gem install bundler
-bundle install
-rake install
-# 如果这里rake运行不成功，有可能是有多个版本到rake,要使用bundle exec rake install
-</code></pre></li>
-<li>剩下的详情请查阅<a href="http://octopress.org/docs/deploying/" target="_blank" rel="external">octopress</a>。<br>如果在<code>rake generate</code>处因为openssl卡住，则需要安装完openssl,再安装ruby.yaml编译不成功，是因为没有安装libtool.</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1674,7 +1673,7 @@ rake install
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">635</span>
+                <span class="site-state-item-count">636</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1687,7 +1686,7 @@ rake install
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">629</span>
+                <span class="site-state-item-count">633</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1746,7 +1745,7 @@ rake install
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

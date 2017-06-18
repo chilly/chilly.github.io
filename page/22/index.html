@@ -271,6 +271,154 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-adapter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-05-03-design-pattern-adapter/" itemprop="url">Design pattern -- Adapter</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">
+                2010-05-03
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="adapter pattern is used for combining two or more classes,which have the same behaviors but different interfaces."></p>
+<p><meta name="_su_keywords" content="design,pattern,virtual,class,constructor,destory,adapter"></p>
+<p><meta name="_su_title" content="design pattern adapter pattern"></p>
+<meta name="views" content="546">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">// Adapter.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">#include&amp;lt;string&amp;gt;</div><div class="line">using namespace std;</div><div class="line"></div><div class="line">/// adapter pattern is used for combining two or more classes,</div><div class="line">/// which have the same behaviors but different interfaces.</div><div class="line">/// some classes is common used in future, and the other which are special will never used.</div><div class="line">/// common used classes should be public, and the other is private.</div><div class="line">/// some classes which inherit adapter class will never use the special ones. </div><div class="line">/// adapter pattern is divided into two patterns.</div><div class="line">/// one is belong to class structure, and the other is belong to object structure.</div><div class="line"></div><div class="line">#ifndef INTERFACEA_H</div><div class="line">#define INTERFACEA_H</div><div class="line">/// Interface A is a common interface!</div><div class="line">class Interface_A&#123;</div><div class="line">public :</div><div class="line">	virtual void connect_com();</div><div class="line">&#125;;</div><div class="line">#endif</div><div class="line">void Interface_A::connect_com()&#123;</div><div class="line">	cout&amp;lt;&amp;lt;&quot;connect a&quot;&amp;lt;&amp;lt;endl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">#ifndef INTERFACEB_H</div><div class="line">#define INTERFACEB_H</div><div class="line">/// Interface B is not a common interface, </div><div class="line">/// it will be used in some special area!</div><div class="line">class Interface_B&#123;</div><div class="line">public :</div><div class="line">	virtual void connect_B();</div><div class="line">&#125;;</div><div class="line">#endif</div><div class="line">void Interface_B::connect_B()&#123;</div><div class="line">	cout&amp;lt;&amp;lt; &quot;connect b&quot;&amp;lt;&amp;lt;endl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">#ifndef ADAPTERCLASS_H</div><div class="line">#define ADAPTERCLASS_H</div><div class="line">/// this class uses private inheritance to construct adapter.</div><div class="line">/// and it is a kind of class structure.</div><div class="line">class Adapter_Class: public Interface_A, private Interface_B&#123;</div><div class="line">public:</div><div class="line">	Adapter_Class();</div><div class="line">	~Adapter_Class();</div><div class="line">	virtual void connect();</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/// this class uses private member variable to construct adapter.</div><div class="line">/// and it uses object relationship.</div><div class="line">class Adapter_Object: public Interface_A&#123;</div><div class="line">private:</div><div class="line">	Interface_B * b;</div><div class="line">public:</div><div class="line">	Adapter_Object();</div><div class="line">	~Adapter_Object();</div><div class="line"></div><div class="line">	virtual void connect();</div><div class="line">&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">Adapter_Class::Adapter_Class()&#123;</div><div class="line">	cout&amp;lt;&amp;lt; &quot;Adapter_Class construct&quot;&amp;lt;&amp;lt;endl;</div><div class="line"></div><div class="line">&#125;</div><div class="line">Adapter_Class::~Adapter_Class()&#123;&#125;</div><div class="line">void Adapter_Class::connect()&#123;</div><div class="line">	Interface_A::connect_com();</div><div class="line">	Interface_B::connect_B();</div><div class="line">&#125;</div><div class="line"></div><div class="line">Adapter_Object::Adapter_Object()&#123;</div><div class="line">	cout&amp;lt;&amp;lt;&quot;Adapter_Object construct&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	b = new Interface_B();</div><div class="line"></div><div class="line">&#125;</div><div class="line">Adapter_Object::~Adapter_Object()&#123;</div><div class="line">	delete b;</div><div class="line">&#125;</div><div class="line">void Adapter_Object::connect()&#123;</div><div class="line">	Interface_A::connect_com();</div><div class="line">	b-&amp;gt;connect_B();</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	Adapter_Class ac;</div><div class="line">	ac.connect();</div><div class="line">	Adapter_Object ao;</div><div class="line">	ao.connect();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-04-22-build-sqlite-in-codeblocks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -402,18 +550,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -691,6 +827,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-04-15-compare-double-numbers-in-cc-language/">
@@ -821,18 +969,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1398,6 +1534,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-04-05-software-architecture-singleton/">
@@ -1525,155 +1673,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-03-30-how-to-get-through-firewall-great/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-03-30-how-to-get-through-firewall-great/" itemprop="url">how to get through firewall (Great)</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-03-30T00:00:00+08:00">
-                2010-03-30
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><meta name="_edit_last" content="1"></p>
-<p><meta name="views" content="631"><br>This is graph for getting through firewall.  This is another method for climbing over the wall.</p>
-<p>Phase1. setup the connection between client and server by three-way handshake. when server send ACK and seq to the client. Client should let the wall know this connection is over. So client send FIN and seq to server. The wall get it, and consider the connection from client is over. Because the wall is not based on status. Then server get it, and find the seq of  package is wrong. And server send the RESET package to client. The wall get the package and consider the connection from server is over. Client receive and ignore the RESET package, and then it send the ACK and seq+1 to server.  The connection between client and server is established. However, the connection between client and server is over from viewpiont of the wall. The wall will not exam contents of the connection. So we can get though the wall!</p>
-<p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2010/2010-03-30-how-to-get-through-firewall-great/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1723,7 +1722,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">635</span>
+                <span class="site-state-item-count">636</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1736,7 +1735,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">629</span>
+                <span class="site-state-item-count">633</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1795,7 +1794,7 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

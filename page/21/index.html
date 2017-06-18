@@ -271,6 +271,155 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-06-21-volatile-do/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-06-21-volatile-do/" itemprop="url">What does volatile do?</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-06-21T00:00:00+08:00">
+                2010-06-21
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="views" content="536"></p>
+<p><meta name="_wp_old_slug" content="copy"><br>copy from <a href="http://www.javaperformancetuning.com/news/qotm030.shtml" target="_blank" rel="external">http://www.javaperformancetuning.com/news/qotm030.shtml</a></p>
+<p><strong>What does <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> do?</strong></p>
+<p>This is probably best explained by comparing the effects that <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> and <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> have on a method. <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> is a  field modifier, while <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> modifies code blocks and  methods. So we can specify three variations of a simple accessor using those two  keywords:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">         int i1;              int geti1() &#123;return i1;&#125;</div><div class="line">volatile int i2;              int geti2() &#123;return i2;&#125;</div><div class="line">         int i3; synchronized int geti3() &#123;return i3;&#125;</div></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">geti1()</div></pre></td></tr></table></figure> accesses the value currently stored in <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> <em>in the current thread</em>. Threads can have local copies of variables, and  the data does not have to be the same as the data held in other threads. In  particular, another thread may have updated <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> in it’s thread, but the  value in the current thread could be different from that updated value. In  fact Java has the idea of a “main” memory, and this is the memory that holds the  current “correct” value for variables. Threads can have their own copy of data  for variables, and the thread copy can be different from the “main” memory.  So in fact, it is possible for the “main” memory  to have a value of 1 for <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure>, for thread1 to have a value of 2 for <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> and for thread2 to  have a value of 3 for <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> if thread1 and thread2 have both updated <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i1</div></pre></td></tr></table></figure> but those updated value has not yet been propagated to “main” memory or  other threads.</p>
+<p>On the other hand, <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">geti2()</div></pre></td></tr></table></figure> effectively accesses the value  of <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i2</div></pre></td></tr></table></figure> from “main” memory. A <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> variable is not allowed to  have a local copy of a variable that is different from the value currently held in “main”  memory. Effectively, a variable declared <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> must have it’s data  synchronized across all threads, so that whenever you access or update the variable in any thread, all  other threads immediately see the same value. Of course, it is likely that <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> variables have a higher access and update overhead than “plain”  variables, since the reason threads can have their own copy of data is for better efficiency.</p>
+<p>Well if <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> already synchronizes data across threads,  what is <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> for? Well there are two differences. Firstly <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> obtains and releases locks on monitors which  can force only one thread at a time to execute a code block, if both threads use  the same monitor (effectively the same object lock). That’s the fairly well known  aspect to <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure>. But <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> also  synchronizes memory. In fact <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> synchronizes the whole of thread  memory with “main” memory. So executing <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">geti3()</div></pre></td></tr></table></figure> does the following:</p>
+<p><ol><br>    <li>The thread acquires the lock on the monitor for object <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">this</div></pre></td></tr></table></figure> (assuming the monitor is unlocked, otherwise the thread waits until the  monitor is unlocked).</li><br>    <li>The thread memory flushes <em>all</em> its variables, i.e. it  has all of its variables effectively read from “main” memory (JVMs can use dirty sets to optimize  this so that only “dirty” variables are flushed, but conceptually this is the same. See  section 17.9 of the Java language specification).</li><br>    <li>The code block is executed (in this case setting the return  value to the current value of <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i3</div></pre></td></tr></table></figure>, which may have just been reset from “main”  memory).</li><br>    <li>(Any changes to variables would normally now be written out to  “main” memory, but for <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">geti3()</div></pre></td></tr></table></figure> we have no changes.)</li><br>    <li>The thread releases the lock on the monitor for object <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">this</div></pre></td></tr></table></figure>.</li><br></ol><br>So where <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure> only synchronizes the value of one  variable between thread memory and “main” memory, <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> synchronizes  the value of all variables between thread memory and “main” memory, and locks and  releases a monitor to boot. Clearly <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">synchronized</div></pre></td></tr></table></figure> is likely to have  more overhead than <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">volatile</div></pre></td></tr></table></figure>.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-06-17-sizeof-c/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -415,18 +564,6 @@ the inside of memory alignment"></p>
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -698,6 +835,18 @@ the inside of memory alignment"></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-10-debug-postgresql/">
@@ -845,18 +994,6 @@ the inside of memory alignment"></p>
   
   
     
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-05-design-pattern-flyweight/">
@@ -996,278 +1133,6 @@ design pattern "></p>
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-bridge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-05-03-design-pattern-bridge/" itemprop="url">design pattern--bridge</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">
-                2010-05-03
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_description" content="why use bridge pattern?If the original parent class is not suitable for being inherited by subclass, it will be refactor. And If there are some concepts are common, it will be abstracted as implement interface or abstract class."></p>
-<p><meta name="_su_keywords" content="design,pattern,bridge"></p>
-<p><meta name="_su_title" content="design pattern bridge pattern"></p>
-<meta name="views" content="465">
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div></pre></td><td class="code"><pre><div class="line">// bridge.cpp : Defines the entry point for the console application.</div><div class="line">//</div><div class="line">/// author : chillyc</div><div class="line">/// email : chillycreator @t gmail.com</div><div class="line">/// uml:</div><div class="line">///                   _ </div><div class="line">///                  / \</div><div class="line">///                 /_ _\</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">namespace pattern&#123;</div><div class="line"></div><div class="line">/// why use bridge pattern?</div><div class="line">/// If the original parent class is not suitable for being inherited by subclass, </div><div class="line">/// it will be refactor. And If there are some concepts are common, </div><div class="line">/// it will be abstracted as implement interface or abstract class.</div><div class="line">/// for example: in KFC, there will be some softdrink to be sold, </div><div class="line">/// like coca cola, coff, and so on. And if you wish, you will add some additions like sugar,</div><div class="line">/// or ice into softdrinks. If we design the classes as sugar-cocacola, sugar-coff, ice-cocacola,</div><div class="line">/// and ice-coff. There will be four subclasses here. And in the future, is there add another</div><div class="line">/// additions? If yes, the system will add another two classes! But if use bridge pattern,</div><div class="line">/// it will add only one class called &quot;another additions&quot; inherited from addition class. </div><div class="line">/// This is benefits of this pattern.</div><div class="line"></div><div class="line">#ifndef ADDITION_H</div><div class="line">#define ADDITION_H</div><div class="line">	/// this is the implement class in Bridge pattern.</div><div class="line">	/// if you want add another additions, </div><div class="line">	/// inherit this class and the point of your class into Softdrink class.</div><div class="line">	/// Do you have better implements for just adding class here and not modifying Softdrink class?</div><div class="line">	class Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add()=0;</div><div class="line">		virtual ~Addition()&#123;&#125;;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef SUGAR_H</div><div class="line">#define SUGAR_H</div><div class="line">	class Sugar:public Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Sugar::Add()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;add sugar&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef ICE_H</div><div class="line">#define ICE_H</div><div class="line">	class Ice:public Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Ice::Add()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;add ice&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef SOFTDRINK_H</div><div class="line">#define SOFTDRINK_H</div><div class="line">	/// this class is the abstract class in Bridge pattern.</div><div class="line">	/// I consider there will be some other implement methods.</div><div class="line">	/// I use Addition objects as member variables, </div><div class="line">	/// and construct and destroy them in Softdrink.</div><div class="line">	/// But if there is no member variables of Addition, It will be ok.</div><div class="line">	/// for example: you can send Addition instances as parameters into Softdrink subclass.</div><div class="line">	/// But in Bridge pattern, the uml is aggregation between implement class and abstract class.</div><div class="line">	class Softdrink&#123;</div><div class="line">	public:</div><div class="line">		Softdrink();</div><div class="line">		virtual void drink()=0;</div><div class="line">		virtual ~Softdrink()=0;</div><div class="line">	protected:</div><div class="line">		Addition *sugar;</div><div class="line">		Addition *ice;</div><div class="line">		/// another additions add here!</div><div class="line">	&#125;;</div><div class="line">	Softdrink::~Softdrink()&#123;</div><div class="line">		if(NULL != sugar)&#123;</div><div class="line">			delete sugar;</div><div class="line">		&#125;</div><div class="line">		if(NULL != ice)&#123;</div><div class="line">			delete ice;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	Softdrink::Softdrink()&#123;</div><div class="line">		sugar = new Sugar();</div><div class="line">		ice = new Ice();</div><div class="line">	&#125;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef COFF_H</div><div class="line">#define COFF_H</div><div class="line"></div><div class="line">	class Coff: public Softdrink&#123;</div><div class="line">	public:</div><div class="line"></div><div class="line">		virtual void drink();</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Coff::drink()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;I am drinking coff!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">		sugar-&amp;gt;Add();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef COCA_H</div><div class="line">#define COCA_H</div><div class="line">	class Coca: public Softdrink&#123;</div><div class="line">	public:</div><div class="line">		virtual void drink();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Coca::drink()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;I am drinking coca cola!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">		ice-&amp;gt;Add();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line"></div><div class="line">	pattern::Coca coca;</div><div class="line">	coca.drink();</div><div class="line">	pattern::Coff coff;</div><div class="line">	coff.drink();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-adapter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-05-03-design-pattern-adapter/" itemprop="url">Design pattern -- Adapter</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">
-                2010-05-03
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_description" content="adapter pattern is used for combining two or more classes,which have the same behaviors but different interfaces."></p>
-<p><meta name="_su_keywords" content="design,pattern,virtual,class,constructor,destory,adapter"></p>
-<p><meta name="_su_title" content="design pattern adapter pattern"></p>
-<meta name="views" content="546">
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">// Adapter.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">#include&amp;lt;string&amp;gt;</div><div class="line">using namespace std;</div><div class="line"></div><div class="line">/// adapter pattern is used for combining two or more classes,</div><div class="line">/// which have the same behaviors but different interfaces.</div><div class="line">/// some classes is common used in future, and the other which are special will never used.</div><div class="line">/// common used classes should be public, and the other is private.</div><div class="line">/// some classes which inherit adapter class will never use the special ones. </div><div class="line">/// adapter pattern is divided into two patterns.</div><div class="line">/// one is belong to class structure, and the other is belong to object structure.</div><div class="line"></div><div class="line">#ifndef INTERFACEA_H</div><div class="line">#define INTERFACEA_H</div><div class="line">/// Interface A is a common interface!</div><div class="line">class Interface_A&#123;</div><div class="line">public :</div><div class="line">	virtual void connect_com();</div><div class="line">&#125;;</div><div class="line">#endif</div><div class="line">void Interface_A::connect_com()&#123;</div><div class="line">	cout&amp;lt;&amp;lt;&quot;connect a&quot;&amp;lt;&amp;lt;endl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">#ifndef INTERFACEB_H</div><div class="line">#define INTERFACEB_H</div><div class="line">/// Interface B is not a common interface, </div><div class="line">/// it will be used in some special area!</div><div class="line">class Interface_B&#123;</div><div class="line">public :</div><div class="line">	virtual void connect_B();</div><div class="line">&#125;;</div><div class="line">#endif</div><div class="line">void Interface_B::connect_B()&#123;</div><div class="line">	cout&amp;lt;&amp;lt; &quot;connect b&quot;&amp;lt;&amp;lt;endl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">#ifndef ADAPTERCLASS_H</div><div class="line">#define ADAPTERCLASS_H</div><div class="line">/// this class uses private inheritance to construct adapter.</div><div class="line">/// and it is a kind of class structure.</div><div class="line">class Adapter_Class: public Interface_A, private Interface_B&#123;</div><div class="line">public:</div><div class="line">	Adapter_Class();</div><div class="line">	~Adapter_Class();</div><div class="line">	virtual void connect();</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/// this class uses private member variable to construct adapter.</div><div class="line">/// and it uses object relationship.</div><div class="line">class Adapter_Object: public Interface_A&#123;</div><div class="line">private:</div><div class="line">	Interface_B * b;</div><div class="line">public:</div><div class="line">	Adapter_Object();</div><div class="line">	~Adapter_Object();</div><div class="line"></div><div class="line">	virtual void connect();</div><div class="line">&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">Adapter_Class::Adapter_Class()&#123;</div><div class="line">	cout&amp;lt;&amp;lt; &quot;Adapter_Class construct&quot;&amp;lt;&amp;lt;endl;</div><div class="line"></div><div class="line">&#125;</div><div class="line">Adapter_Class::~Adapter_Class()&#123;&#125;</div><div class="line">void Adapter_Class::connect()&#123;</div><div class="line">	Interface_A::connect_com();</div><div class="line">	Interface_B::connect_B();</div><div class="line">&#125;</div><div class="line"></div><div class="line">Adapter_Object::Adapter_Object()&#123;</div><div class="line">	cout&amp;lt;&amp;lt;&quot;Adapter_Object construct&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	b = new Interface_B();</div><div class="line"></div><div class="line">&#125;</div><div class="line">Adapter_Object::~Adapter_Object()&#123;</div><div class="line">	delete b;</div><div class="line">&#125;</div><div class="line">void Adapter_Object::connect()&#123;</div><div class="line">	Interface_A::connect_com();</div><div class="line">	b-&amp;gt;connect_B();</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	Adapter_Class ac;</div><div class="line">	ac.connect();</div><div class="line">	Adapter_Object ao;</div><div class="line">	ao.connect();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-facade-pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1359,6 +1224,142 @@ design pattern of facade"></p>
 <meta name="views" content="417">
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">// Facade.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern is facade pattern</div><div class="line">	/// facade pattern is for hiding relationship and behavior of inner classes .</div><div class="line">	/// client or outer class should only connect with facade class.</div><div class="line">	/// But it will not forbid accessing inner classes.</div><div class="line">#ifndef INNERA_H</div><div class="line">#define INNERA_H</div><div class="line">	class Inner_A&#123;</div><div class="line">	public:</div><div class="line">		void Do()&#123;std::cout&amp;lt;&amp;lt;&quot;A&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">#ifndef INNERB_H</div><div class="line">#define INNERB_H</div><div class="line">	class Inner_B&#123;</div><div class="line">	public:</div><div class="line">		void Do()&#123;std::cout&amp;lt;&amp;lt;&quot;B&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef FACADE_H</div><div class="line">#define FACADE_H</div><div class="line">	class Facade&#123;</div><div class="line">	private:</div><div class="line">		Inner_A* a;</div><div class="line">		Inner_B* b;</div><div class="line">	public:</div><div class="line">		Facade()&#123;</div><div class="line">			a = new Inner_A();</div><div class="line">			b = new Inner_B();</div><div class="line"></div><div class="line">		&#125;</div><div class="line">		void Do()&#123;</div><div class="line">			a-&amp;gt;Do();</div><div class="line">			b-&amp;gt;Do();</div><div class="line">		&#125;</div><div class="line">		~Facade()&#123;</div><div class="line">			delete a;</div><div class="line">			delete b;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Facade f;</div><div class="line">	f.Do();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-bridge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-05-03-design-pattern-bridge/" itemprop="url">design pattern--bridge</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">
+                2010-05-03
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="why use bridge pattern?If the original parent class is not suitable for being inherited by subclass, it will be refactor. And If there are some concepts are common, it will be abstracted as implement interface or abstract class."></p>
+<p><meta name="_su_keywords" content="design,pattern,bridge"></p>
+<p><meta name="_su_title" content="design pattern bridge pattern"></p>
+<meta name="views" content="465">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div></pre></td><td class="code"><pre><div class="line">// bridge.cpp : Defines the entry point for the console application.</div><div class="line">//</div><div class="line">/// author : chillyc</div><div class="line">/// email : chillycreator @t gmail.com</div><div class="line">/// uml:</div><div class="line">///                   _ </div><div class="line">///                  / \</div><div class="line">///                 /_ _\</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">namespace pattern&#123;</div><div class="line"></div><div class="line">/// why use bridge pattern?</div><div class="line">/// If the original parent class is not suitable for being inherited by subclass, </div><div class="line">/// it will be refactor. And If there are some concepts are common, </div><div class="line">/// it will be abstracted as implement interface or abstract class.</div><div class="line">/// for example: in KFC, there will be some softdrink to be sold, </div><div class="line">/// like coca cola, coff, and so on. And if you wish, you will add some additions like sugar,</div><div class="line">/// or ice into softdrinks. If we design the classes as sugar-cocacola, sugar-coff, ice-cocacola,</div><div class="line">/// and ice-coff. There will be four subclasses here. And in the future, is there add another</div><div class="line">/// additions? If yes, the system will add another two classes! But if use bridge pattern,</div><div class="line">/// it will add only one class called &quot;another additions&quot; inherited from addition class. </div><div class="line">/// This is benefits of this pattern.</div><div class="line"></div><div class="line">#ifndef ADDITION_H</div><div class="line">#define ADDITION_H</div><div class="line">	/// this is the implement class in Bridge pattern.</div><div class="line">	/// if you want add another additions, </div><div class="line">	/// inherit this class and the point of your class into Softdrink class.</div><div class="line">	/// Do you have better implements for just adding class here and not modifying Softdrink class?</div><div class="line">	class Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add()=0;</div><div class="line">		virtual ~Addition()&#123;&#125;;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef SUGAR_H</div><div class="line">#define SUGAR_H</div><div class="line">	class Sugar:public Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Sugar::Add()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;add sugar&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef ICE_H</div><div class="line">#define ICE_H</div><div class="line">	class Ice:public Addition&#123;</div><div class="line">	public:</div><div class="line">		virtual void Add();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Ice::Add()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;add ice&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef SOFTDRINK_H</div><div class="line">#define SOFTDRINK_H</div><div class="line">	/// this class is the abstract class in Bridge pattern.</div><div class="line">	/// I consider there will be some other implement methods.</div><div class="line">	/// I use Addition objects as member variables, </div><div class="line">	/// and construct and destroy them in Softdrink.</div><div class="line">	/// But if there is no member variables of Addition, It will be ok.</div><div class="line">	/// for example: you can send Addition instances as parameters into Softdrink subclass.</div><div class="line">	/// But in Bridge pattern, the uml is aggregation between implement class and abstract class.</div><div class="line">	class Softdrink&#123;</div><div class="line">	public:</div><div class="line">		Softdrink();</div><div class="line">		virtual void drink()=0;</div><div class="line">		virtual ~Softdrink()=0;</div><div class="line">	protected:</div><div class="line">		Addition *sugar;</div><div class="line">		Addition *ice;</div><div class="line">		/// another additions add here!</div><div class="line">	&#125;;</div><div class="line">	Softdrink::~Softdrink()&#123;</div><div class="line">		if(NULL != sugar)&#123;</div><div class="line">			delete sugar;</div><div class="line">		&#125;</div><div class="line">		if(NULL != ice)&#123;</div><div class="line">			delete ice;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	Softdrink::Softdrink()&#123;</div><div class="line">		sugar = new Sugar();</div><div class="line">		ice = new Ice();</div><div class="line">	&#125;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef COFF_H</div><div class="line">#define COFF_H</div><div class="line"></div><div class="line">	class Coff: public Softdrink&#123;</div><div class="line">	public:</div><div class="line"></div><div class="line">		virtual void drink();</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Coff::drink()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;I am drinking coff!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">		sugar-&amp;gt;Add();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef COCA_H</div><div class="line">#define COCA_H</div><div class="line">	class Coca: public Softdrink&#123;</div><div class="line">	public:</div><div class="line">		virtual void drink();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Coca::drink()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;I am drinking coca cola!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">		ice-&amp;gt;Add();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line"></div><div class="line">	pattern::Coca coca;</div><div class="line">	coca.drink();</div><div class="line">	pattern::Coff coff;</div><div class="line">	coff.drink();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
           
         
@@ -1725,7 +1726,7 @@ design pattern of facade"></p>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">635</span>
+                <span class="site-state-item-count">636</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1738,7 +1739,7 @@ design pattern of facade"></p>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">629</span>
+                <span class="site-state-item-count">633</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1797,7 +1798,7 @@ design pattern of facade"></p>
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -
