@@ -104,7 +104,7 @@
 <meta property="og:url" content="http://chillyc.info/2012/8026849/index.html">
 <meta property="og:site_name" content="帐前卒专栏">
 <meta property="og:description" content="今天过去写的testcase在ant执行时failed，但是在源文件中直接以application方式运行却没有错。 原因在于下面两句话： public static Set&amp;lt;Class&amp;lt;? extends XXX&amp;gt;&amp;gt; getPluginsInSameDir(Class&amp;lt;?&amp;gt; clazz) {         String dirPath = clazz.get">
-<meta property="og:updated_time" content="2017-06-12T02:33:50.000Z">
+<meta property="og:updated_time" content="2017-06-18T06:41:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决 ant Junit testcase failed 自动检测类名">
 <meta name="twitter:description" content="今天过去写的testcase在ant执行时failed，但是在源文件中直接以application方式运行却没有错。 原因在于下面两句话： public static Set&amp;lt;Class&amp;lt;? extends XXX&amp;gt;&amp;gt; getPluginsInSameDir(Class&amp;lt;?&amp;gt; clazz) {         String dirPath = clazz.get">
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-18T14:41:07+08:00">
+                2017-06-18
               </time>
             
           </span>
@@ -389,9 +389,9 @@
 }
 </code></pre><p>第一句是要得到那个类所在的包路径，第二句是要得到那个包所在的具体路径。</p>
 <p>以application方式运行得到的结果是：</p>
-<p><strong> aa/bb/cc<br>file:/D:/works/project/bin/aa/bb/cc </strong><br>以ant方式执行Junit testcase得到的结果是：</p>
-<p><strong> aa/bb/cc<br>file:/D:/works/project/build/classes/aa/bb/cc </strong><br>这两个结果差别还是蛮大的。关键问题是classLoader()那个家伙的查找资源的方式。这里解决问题的最简单方式:</p>
-<p>就是那个testcase中传入的Class&lt;?&gt;clazz的包路径不要在testcase代码中出现（可以在src代码路径中出现），那么ant执行testca<br>se时，就又会找到原来的/bin目录。</p>
+<p>\<em>\</em> aa/bb/cc<br>file:/D:/works/project/bin/aa/bb/cc **<br>以ant方式执行Junit testcase得到的结果是：</p>
+<p>** aa/bb/cc<br>file:/D:/works/project/build/classes/aa/bb/cc **<br>这两个结果差别还是蛮大的。关键问题是classLoader()那个家伙的查找资源的方式。这里解决问题的最简单方式:</p>
+<p>就是那个testcase中传入的Class&lt;?&rt;clazz的包路径不要在testcase代码中出现（可以在src代码路径中出现），那么ant执行testca<br>se时，就又会找到原来的/bin目录。</p>
 <p>例如工程结果是：</p>
 <pre><code>src/java
             | aa     
@@ -574,7 +574,7 @@ String location = cs.getLocation().getFile();
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">636</span>
+                <span class="site-state-item-count">637</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -587,7 +587,7 @@ String location = cs.getLocation().getFile();
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">633</span>
+                <span class="site-state-item-count">634</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -271,6 +271,152 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/18260323/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/18260323/" itemprop="url">Failed to convert value of type 'java.lang.String' to required type 'org.springframework.web.multipart...'</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-01-14T12:43:00+08:00">
+                2014-01-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>昨天遇到一个问题，请求发送之后直接返回了500错误，没有过ErrorController。并且Server这边的log里也没有异常。这真的是好奇怪。</p>
+<p>产生问题的method是这样写的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">   @RequestMapping(params = &quot;method=bulkChange&quot;, method = RequestMethod.POST)</div><div class="line">    public @ResponseBody</div><div class="line">    User changePhoto(</div><div class="line">                            @RequestParam(value = DESCRIPTION_NAME, required = false, defaultValue = DESCRIPTION_DEFAULT)</div><div class="line">                            String description,</div><div class="line">                            @RequestParam(value= PHOTO_NAME, required = false, defaultValue = PHOTO_DEFAULT)</div><div class="line">                            MultipartFile photo,</div><div class="line"></div><div class="line">                            HttpServletRequest request, HttpServletResponse response) throws Exception&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这出问题的地方就在于photo这个参数。如果将这个参数注释掉，一定没有问题。那这里在上传图片时，不会有500错误。但是在上传不含图片的时候，就会有500错误<br>了。这是为啥米？看起来问题应该是required=false时，没有上传参数，直接使用了defaultValue.<br>而我这里的defaultValue是个空字符串就直接挂了。应该使用<code>ValueConstants.DEFAULT_NONE</code>， 或者<br>“\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n” 这个将在Spring框架里作为 null进行处理。</p>
+<p>改好后就解决了之前的问题。  </p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17674583/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -404,18 +550,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -718,6 +852,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17434939/">
@@ -866,18 +1012,6 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1431,6 +1565,18 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17332801/">
@@ -1575,182 +1721,6 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17305955/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/17305955/" itemprop="url">SQRL Secure Quick Reliable Login 安全快速可靠登陆</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-12-13T18:44:00+08:00">
-                2013-12-13
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天公司断网，身为一个互联网公司，断了一天的网。身为一个让网络变得更容易的公司，断了一天的网…这让我重新审视了所处的环境。</p>
-<p>不过还是利用断网时间，详细看了一下 <a href="https://www.grc.com/sqrl/sqrl.htm" target="_blank" rel="external"> 这个SQRL技术 </a> 。</p>
-<p>下面简单的介绍一下该技术：</p>
-<p>1. 主要使用物件作为认证的方式。现在它给的一系列技术，主要是QR(二维码)。其实最主要也就是二维码中的一个经常变化且在一定时间内唯一的Nonce串。另外<br>我个人觉得作为扩展，现在的动态口令卡，各个银行发的电子令牌都可以归为这一类。不过SQRL使用的可以开源免费的算法，而且可以安装在任意电子设备中。所以这个是一<br>个通用技术。比银行发的电子令牌这些更加通用。</p>
-<p>2. 只是了消除username/password这个东西。其他的安全问题基本上没有考虑。不过这个消除不知道到底是一种进步，还是一种退步。因为它仍旧使用了<br>另外一套复杂的密钥（公钥私钥）代替了现有的username/password简单密钥。</p>
-<p>3. 仍然不能针对“人”这个实体做认证。偷走了手机，偷走了其他认证设备就意味着别人可以做为“你”登陆。</p>
-<p>4. 算法详情：<br>每个人都有一个唯一的256bit的ID作为自己的唯一ID。这个ID再所有可以进行SQRL认证的网站上都是统一的。另外自己的设备中有一个Master<br>Key(主钥)。这个Master Key可以用于生成各个网站的private-public key.<br>4. 1 首先设备读取到了信息(扫描二维码/获取到认证需要的url) 例如：<br><a href="https://chillyc.info/login?sdaf9203rfnlnvq0239sdf">https://chillyc.info/login?sdaf9203rfnlnvq0239sdf</a>,<br>其中sdaf9203rfnlnvq0239sdf这个是随机生成的并且在一定时间内是唯一的。<br>4. 2 然后设备使用Master key 对 domain(chillyc.info) 进行HMAC 散列生成 只对 chillyc.info 有作用的<br>private-public keys（其实这一步HMAC完全不需要，只需要生成一个不重复的private-public key<br>然后再做一个site到private-public key的Map就好了。）</p>
-<p>4. 3 使用 private key对<a href="https://chillyc.info/login?sdaf9203rfnlnvq0239sdf">https://chillyc.info/login?sdaf9203rfnlnvq0239sdf</a><br>进行加密，然后发送 POST <a href="https://chillyc.info/sqrl">https://chillyc.info/sqrl</a>  并且带上public=[your public<br>key]和sign=[刚才用private key加密的串]</p>
-<p>4. 4 网站使用设备给的公钥对加密串进行解密。然后就取到了你的ID。这中间不需要任何 username/password.<br>现在讨论一下上面的算法是安全的吗？</p>
-<ol>
-<li><p>整个过程使用了Https协议，可以有效的防止中间人攻击(如果客户端检查服务器证书的话)。</p>
-</li>
-<li><p>使用POST 发送数据，防止了某个中间代理截获url parameter，或者写入到log中。 例如网站使用的nginx,<br>https证书也放在nginx上。然后..log中就出现了不该出现的东西。  </p>
-</li>
-<li><p>因为对每个网站(domain)都有不同的private-public key, 这样就将安全问题隔离在某个domain中，不会引起扩散。</p>
-</li>
-<li><p>OS 需要保护好 Master Key。如果使用我建议的做一个site到private-public key的Map，那么Master<br>Key就不重要了。但是这需要保护的就是整个Map. 看起来只保护Master Key可能更简单一些。</p>
-</li>
-<li><p>另外SQRL 还希望，用户在扫描到二维码时，需要给用户展示一下domain,<br>并且提示一下用户，是否对该domain进行授权。这样就防止了恶意的domain，或者假冒的domain。<br>从算法协议层面，看起这个东西是安全的。可是仍有下面的一些不足：那个链接中有提及，我就直接照抄了。</p>
-<ul>
-<li>How are identities backed up and/or cloned to other devices? </li>
-<li>What about logging into a website displayed on the smartphone’s own browser? </li>
-<li>What if the smartphone that contains my identity is lost or stolen? </li>
-<li>What about password protecting logins on the phone? </li>
-<li>What if the phone is hacked? </li>
-<li>What about different people (and identities) sharing one phone? </li>
-<li>What about having multiple identities for the same website? </li>
-</ul>
-</li>
-</ol>
-<p>对于第一个问题，我想解决的方案非常简单。可以对在手机生成一个二维码，用另外一个手机拍照，这样就能够获取到Master Key. 然后就能方便的生成site-<br>public-private key.</p>
-<p>对于第二个问题，其实完全可以使用JS和native app通讯。或者 browser中带有SQRL client。</p>
-<p>对于第三个问题，这必须有一个SQRL的中心节点，该节点可以控制对已分配和已授权的Master<br>Key进行回收和清除。不过这个问题又来了，该中心节点如何认证用户呢？看起来SQRL 这个东西不是完备的。</p>
-<p>其他的问题我觉得…都很难解决。有些并不是SQRL这个算法协议所能解决的。</p>
-<p>总结：<br>SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥机制代替了人工可记忆的密钥。让我想到：技术宅永远都不可能改变世界。他们只不过给世界一个美好简单的假<br>象。当你仔细观察假象的时候，却发现竟然是由复杂丑陋的拼图拼接而成。该死的技术宅们……请研究一套能够真正能够认证“人”的技术。即使记忆可以移植，即使D<br>NA可以复制，即使指纹可以盗用，即使所有的一切都可以复制。但是只有一样只会随着人本身发生变化，那就是每一个人在其生活环境、经历、岁月中造就的思维模式。你可以<br>copy 我的文字，但是你写这个主题，不可能和我一字不差。不过这种变化的认证估计在我能看到的未来都不可能实现..  </p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1800,7 +1770,7 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">636</span>
+                <span class="site-state-item-count">637</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1813,7 +1783,7 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">633</span>
+                <span class="site-state-item-count">634</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -271,6 +271,152 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4628162/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2009/4628162/" itemprop="url">c++继续学习 virtual Destruct function (虚析构函数)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-10-02T22:21:00+08:00">
+                2009-10-02
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一般类是不写成虚析构函数的。除非你要使用多态的性质。对于一个没有多态性质的类结构而言。子类析构可能会导致父类析构。</p>
+<p>// TestRef.cpp : Defines the entry point for the console application. //</p>
+<p>#include <iostream> #include <string> using namespace std; class A {<br>protected: string _name; public: A(string name):_name(name) { } ~A(){cout &lt;&lt;<br>_name &lt;&lt; “destruct A” &lt;&lt;endl;} }; class B: public A { public: B(string<br>name):A(name){} ~B(){cout &lt;&lt; _name &lt;&lt; “destruct B” &lt;&lt;endl;} }; int main(int<br>argc, char<em> argv[]) { // 这里bb析构时不光会调用~B()也会调用~A() // 因为这里没有使用到多态的性质。 B bb(“I<br>am b “); A aa(“I am a “); //以下两行函数使用到了多态性质。 A</em> x = new B(“I am x “); delete x;<br>return 0; }</string></iostream></p>
+<p>main中最下几行使用到多态性质，所以你运行上面的代码仅仅调用了~A()。因为A中的析构函数并不是virtual类型的。如果你将A中的析构函数前加上virt<br>ual关键字，delete时就会先调~B(),再调~A().</p>
+<p>析构虚函数和其他的虚函数的不一致的地方在于它不再参照相同的函数签名，而仅仅是每个类中唯一的析构函数。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4619823/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -399,18 +545,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -674,6 +808,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4608494/">
@@ -807,18 +953,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1403,6 +1537,18 @@ dsssl-1.79</code> .</p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4564023/">
@@ -1563,158 +1709,6 @@ euca-register ubuntu-image-bucket/ubuntu.9-04.x86-64.img.manifest.xml
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4562908/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2009/4562908/" itemprop="url">Eucalyptus安装到centos5.3配置日志</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-09-17T14:49:00+08:00">
-                2009-09-17
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>首先按照我过去的一篇 <a href="http://blog.csdn.net/cctt_1/archive/2009/09/15/4553315.aspx" target="_blank" rel="external"> 搭建云计算平台 Eucalyptus安装  centos5.3安装日志
-</a> 应该可以启动云了。</p>
-<p>然后你可以使用命令： <code>ps aux | grep euca 来查看是否云真的启动了。如果你看到一大堆输出，那应该已经可以启动了。</code></p>
-<p>前端需要进行的配置需要添加cluster,添加node,然后生成加密用的keys.</p>
-<p>其命令为:</p>
-<p>$EUCALYPTUS/usr/sbin/euca_conf -addcluster <clustername> <clusterhost><br>$EUCALYPTUS/usr/sbin/euca_conf -addnode “<nodehost1> … <nodehostn>“<br>//上面这一句也可以使用下面两句代替： $EUCALYPTUS/usr/sbin/euca_conf -nodes “<nodehost1> …</nodehost1></nodehostn></nodehost1></clusterhost></clustername></p>
-<p><nodehostn>“ $EUCALYPTUS/usr/sbin/euca_conf -synckeys</nodehostn></p>
-<p>这里的$EUCALYPTUS就是你的安装目录。例如我使用的命令就是 /opt/eucalyptus/usr/sbin/euca_conf -XXXXXX,因<br>为我就在一台机器上部署，没有使用集群。clustername是你对自己集群的称呼,clusterhost是我的hostname,我就写localhost。然<br>后第二步添加node时，<nodehost1>可以是node的ip或者hostname，我这里还是写localhost（因为我就一台机器）.</nodehost1></p>
-<p>对于node也要做些配置。但是如果你是使用yum或者使用binary安装包进行安装的，那就没有必要了。但是如果是使用源代码进行安装的就要费些周折。据网上传言<br>说:首先要在建立一个/usr/local/instances目录，这个目录是用来临时存放vm<br>images的，并且传说移入此中的东西都会被删除。然后再执行以下类似的脚本（这里的xen可以改为kvm）:</p>
-<p>for x in hostname1 hostname2 … hostnameN ; do / ssh $x<br>“$EUCALYPTUS/usr/sbin/euca_conf -hypervisor kvm -instances<br>/usr/local/instances” done</p>
-<p>结束前端和node的配置之后，使用firefox敲一下地址: <a href="https://localhost:8443.是不是出来和open.Eucalyptus.co" target="_blank" rel="external">https://localhost:8443.是不是出来和open.Eucalyptus.co</a><br>m中apply相似的东东？不过没有apply,其用户名密码都为admin.进入后进行配置。可以改下用户名密码，然后填写下自己的email.然后配置下 URL<br>of the Walrus service,我这里配置这个URL的前缀还是localhost.然后保存之后就进入管理界面了..配置完成。可以让别人申请一个帐<br>户试试。你可以在users选项卡中Approve他们。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1764,7 +1758,7 @@ euca-register ubuntu-image-bucket/ubuntu.9-04.x86-64.img.manifest.xml
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">636</span>
+                <span class="site-state-item-count">637</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1777,7 +1771,7 @@ euca-register ubuntu-image-bucket/ubuntu.9-04.x86-64.img.manifest.xml
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">633</span>
+                <span class="site-state-item-count">634</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

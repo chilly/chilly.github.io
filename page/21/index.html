@@ -271,6 +271,179 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-06-30-try-catch-exception-c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-06-30-try-catch-exception-c/" itemprop="url">try...catch...exception in c++</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-06-30T00:00:00+08:00">
+                2010-06-30
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="try...catch...exception in c++, and it describe how to use it.  the philosophy of exceptions."></p>
+<p><meta name="_su_keywords" content="c,c++,exception,throw, catch,try"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_title" content="try...catch...exception in c++"></p>
+<p><meta name="views" content="2645"><br>if you will throw something, you should catch it as the same type. like following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">int main()&#123;</div><div class="line">    try&#123;</div><div class="line">        throw 20;</div><div class="line">    &#125;catch(int i)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;Exception Num is NO.&quot;&amp;lt;&amp;lt;i&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line">    try&#123;</div><div class="line">        throw &apos;X&apos;;</div><div class="line">    &#125;catch(char c)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;this exception is a char:&quot;&amp;lt;&amp;lt;c&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    try&#123;</div><div class="line">        throw &quot;abc&quot;;</div><div class="line">    &#125;catch(const char * e)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;this is string exception:&quot;&amp;lt;&amp;lt;e&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    try&#123;</div><div class="line">        int *d = new int(65);</div><div class="line">        throw d;</div><div class="line">    &#125;catch(const int * e)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;this is int point exception:&quot;&amp;lt;&amp;lt;*e&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line">    /* ok, catch will handle everything, if you throw correct type.*/</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>and if you want create classes for exceptions. You should add #include&lt;exception&gt; and inherit exception class, and then override the function “<strong>what</strong>“.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">#include&amp;lt;exception&amp;gt;</div><div class="line">using namespace std;</div><div class="line"></div><div class="line">/// this exception class is from #include&amp;lt;exception&amp;gt;</div><div class="line">/// you should override the function what() to generate your exception string</div><div class="line">class MyException: public exception&#123;</div><div class="line">    virtual const char* what() const throw()&#123;</div><div class="line">        return &quot;myExceptions!!!!!!!&quot;;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">class SubException: public MyException&#123;</div><div class="line">    virtual const char* what()const throw()&#123;</div><div class="line">        return &quot;sub exception !!!!!!&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">    try&#123;</div><div class="line">        throw MyException();</div><div class="line">    &#125;catch(exception&amp;amp; e)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; e.what()&amp;lt;&amp;lt;endl;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    try&#123;</div><div class="line">        throw SubException();</div><div class="line">    &#125;catch(bad_alloc&amp;amp;)&#123;</div><div class="line">        // this will not occur, just test this type.</div><div class="line">        // if it is occured, your computer will be locked.</div><div class="line">        cout &amp;lt;&amp;lt; &quot;nothing&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;catch(exception&amp;amp; e)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; e.what()&amp;lt;&amp;lt;endl;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>There are some standard exceptions in exception.h. These exceptions are:</p>
+<p><strong>bad_alloc</strong></p>
+<p>A bad_alloc is thrown by new if an allocation failure occurs.</p>
+<p><strong>bad_cast</strong></p>
+<p>A bad_cast is thrown by dynamic_cast when it fails with a referenced  type.</p>
+<p><strong>bad_exception</strong></p>
+<p>A bad_exception is thrown when an exception type doesn’t match any  catch</p>
+<p><strong>bad_typeid</strong></p>
+<p>A bad_typeid is thrown by typeid</p>
+<p><strong>ios_base::failure</strong></p>
+<p>An ios_base::failure is thrown by functions in the iostream library.</p>
+<p>in #include&lt;stdexecpt&gt; can use these exception:<br>class <strong>logic_error</strong>; // :  public exception<br>class <strong>domain_error</strong>; // :  public logic_error<br>class <strong>invalid_argument</strong>; // : public logic_error<br>class<strong> length_error</strong>; // :  public logic_error<br>class <strong>out_of_range</strong>; // :  public logic_error<br>class <strong>runtime_error</strong>; // :  public exception<br>class <strong>range_error</strong>; // :  public runtime_error<br>class <strong>overflow_error</strong>; // :  public runtime_error<br>class <strong>underflow_error</strong>; // :  public runtime_error</p>
+<p>If you don’t know which kind of exception will occur. you should use <strong>catch(…)</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">try&#123;</div><div class="line">        srand(time(NULL));</div><div class="line">        int i = rand()%4;</div><div class="line"></div><div class="line">        switch(i)&#123;</div><div class="line">            case 0:</div><div class="line">                throw; // terminate called without an active exception</div><div class="line">                       // Aborted, ... will not catch it.</div><div class="line">                break;</div><div class="line">            case 1:</div><div class="line">                throw &apos;x&apos;;</div><div class="line">                break;</div><div class="line">            case 2:</div><div class="line">                throw 50;</div><div class="line">                break;</div><div class="line">            case 3:</div><div class="line">                throw &quot;my string&quot;;</div><div class="line">                break;</div><div class="line">            default:</div><div class="line">                break;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;catch(...)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;I don&apos;t know which exception will occur!&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>But when i == 0, the program will execute throw;, and it will exit and print:</p>
+<p><blockquote>terminate called without an active exception</blockquote></p>
+<p>Aborted<br><strong>You should specify something to throw. throw; is only be used within catch clauses.</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">try&#123;</div><div class="line">        try&#123;</div><div class="line">            throw 2;</div><div class="line">        &#125;catch(int i)&#123;</div><div class="line">            throw; // here I use it again!</div><div class="line">        &#125;</div><div class="line">    &#125;catch(...)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;re-throw it!!!!&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>you can declare your functions using throw(). But it is just declare!  you can throw everything! But you declare it will throw bad_exception, and use set_unexpected(), it will process some unexpected exceptions.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">void foo() throw(int,bad_exception)&#123;</div><div class="line"></div><div class="line">    throw &quot;abc&quot;;</div><div class="line">&#125;</div><div class="line">void myunexpected()&#123;</div><div class="line">    cout &amp;lt;&amp;lt; &quot;I get unexpected exceptions!&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    throw;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// in main</div><div class="line"></div><div class="line">    set_unexpected(myunexpected);</div><div class="line">    try&#123;</div><div class="line">        foo();</div><div class="line">    &#125;catch(int)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;catch a integer&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;catch(bad_exception&amp;amp;)&#123;</div><div class="line">        cout &amp;lt;&amp;lt; &quot;bad_exception&quot;&amp;lt;&amp;lt;endl;</div><div class="line">    &#125;</div><div class="line">    // you can use catch(...)</div></pre></td></tr></table></figure>
+<p>output is</p>
+<p><blockquote>I get unexpected exceptions!<br>bad_exception</blockquote><br>If the program or your function can not process some kind of situation. you should throw something out.  Sometime, someone argued that it will reduce the usability. But If you don’t stop the processing(program or function), it will create a disaster.  Remember, by all means, throw it! But should we catch those exceptions and how we catch those? e….as your wish. Some bug will not appear, if you use not appropriate catch and process those exceptions in unsuitable way. If your program have some bug, and it is difficult to find, please delete all catches!</p>
+<p>In some languages which have finally clauses. But in c++, it dose not have finally clauses.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-06-21-volatile-do/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -405,18 +578,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -699,6 +860,18 @@ the inside of memory alignment"></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-24-design-pattern-chain-reponsibility/">
@@ -834,18 +1007,6 @@ the inside of memory alignment"></p>
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1133,6 +1294,141 @@ design pattern "></p>
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-decorator-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-05-03-design-pattern-decorator-pattern/" itemprop="url">design pattern -- decorator pattern</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">
+                2010-05-03
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_keywords" content="design,pattern, decorator,code"></p>
+<p><meta name="_su_title" content="design,pattern, decorator,code"></p>
+<meta name="views" content="426">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div></pre></td><td class="code"><pre><div class="line">// decorator.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern is decorator pattern.</div><div class="line">	/// In this pattern the super class should have default process functions.</div><div class="line">	/// for example: &quot;Read&quot; has default read word function, and it is useful in the future.</div><div class="line">	/// Read_Char, Read_Chinese, Decorator inherit Read class.</div><div class="line">	/// But those three subclass is not powerful to deal with sentences.</div><div class="line">	/// Then the subclass of Decorator will deal with sentences, but it dose not know every word.</div><div class="line">	/// So Sentence(Encode) pattern has become.</div><div class="line">	/// But decorator pattern is not only dealing with this situation but also enhance some classes</div><div class="line">	/// capacity without adding new classes.</div><div class="line">	/// is it something like Bridge?</div><div class="line">#ifndef READ_H</div><div class="line">#define READ_H</div><div class="line">	class Read&#123;</div><div class="line">	public:</div><div class="line">		Read()&#123;&#125;</div><div class="line">		virtual ~Read()&#123;&#125;</div><div class="line"></div><div class="line">		/// this is default process function.</div><div class="line">		/// and decorator class will use this function to read</div><div class="line">		virtual void ReadWord()&#123;std::cout&amp;lt;&amp;lt;&quot;default read!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		/// if the function is a pure virtual function,</div><div class="line">		/// decorator class need not inherit this class and</div><div class="line">		/// it just has an instance of Read as a member varible.</div><div class="line">		// virtual void ReadWord()=0;</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef READCHAR_H</div><div class="line">#define READCHAR_H</div><div class="line">	class Read_Char:public Read&#123;</div><div class="line">	public:</div><div class="line">		Read_Char():Read()&#123;&#125;</div><div class="line">		~Read_Char()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Char::ReadWord()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt; &quot;read a char&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef READCHINESE_H</div><div class="line">#define READCHINESE_H</div><div class="line">	class Read_Chinese:public Read&#123;</div><div class="line">	public:</div><div class="line">		Read_Chinese():Read()&#123;&#125;</div><div class="line">		~Read_Chinese()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Chinese::ReadWord()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;read a chinese word&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef DECORATOR_H</div><div class="line">#define DECORATOR_H</div><div class="line">	class Decorator:public Read&#123;</div><div class="line">	protected:</div><div class="line">		Read* r;</div><div class="line">	public:</div><div class="line">		Decorator():Read()&#123;r = NULL;&#125;</div><div class="line">		Decorator(Read* r):Read(),r(r)&#123;&#125;</div><div class="line">		virtual ~Decorator()&#123;if(r!=NULL) delete r;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Decorator::ReadWord()&#123;</div><div class="line">		if(NULL == r)</div><div class="line">			Read::ReadWord();</div><div class="line">		else</div><div class="line">			r-&amp;gt;ReadWord();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef READSENTENCE_H</div><div class="line">#define READSENTENCE_H</div><div class="line">	// this class is real work decorator class</div><div class="line">	class Read_Sentence:public Decorator&#123;</div><div class="line"></div><div class="line">	public:</div><div class="line">		Read_Sentence():Decorator()&#123;&#125;</div><div class="line">		Read_Sentence(Read* r):Decorator(r)&#123;&#125;</div><div class="line">		~Read_Sentence()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Sentence::ReadWord()&#123;</div><div class="line">		/// parent class method is called first!</div><div class="line">		Decorator::ReadWord();</div><div class="line">		/// then your method be called</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;read a sentence&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Read_Sentence rs1(new pattern::Read_Char());// read char</div><div class="line">	pattern::Read_Sentence rs2(new pattern::Read_Chinese());// read chinese</div><div class="line">	pattern::Read_Sentence rs3; // default read</div><div class="line">	rs1.ReadWord();</div><div class="line">	rs2.ReadWord();</div><div class="line">	rs3.ReadWord();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-facade-pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1268,6 +1564,18 @@ design pattern of facade"></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-bridge/">
@@ -1394,289 +1702,6 @@ design pattern of facade"></p>
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-decorator-pattern/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-05-03-design-pattern-decorator-pattern/" itemprop="url">design pattern -- decorator pattern</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">
-                2010-05-03
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_keywords" content="design,pattern, decorator,code"></p>
-<p><meta name="_su_title" content="design,pattern, decorator,code"></p>
-<meta name="views" content="426">
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div></pre></td><td class="code"><pre><div class="line">// decorator.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern is decorator pattern.</div><div class="line">	/// In this pattern the super class should have default process functions.</div><div class="line">	/// for example: &quot;Read&quot; has default read word function, and it is useful in the future.</div><div class="line">	/// Read_Char, Read_Chinese, Decorator inherit Read class.</div><div class="line">	/// But those three subclass is not powerful to deal with sentences.</div><div class="line">	/// Then the subclass of Decorator will deal with sentences, but it dose not know every word.</div><div class="line">	/// So Sentence(Encode) pattern has become.</div><div class="line">	/// But decorator pattern is not only dealing with this situation but also enhance some classes</div><div class="line">	/// capacity without adding new classes.</div><div class="line">	/// is it something like Bridge?</div><div class="line">#ifndef READ_H</div><div class="line">#define READ_H</div><div class="line">	class Read&#123;</div><div class="line">	public:</div><div class="line">		Read()&#123;&#125;</div><div class="line">		virtual ~Read()&#123;&#125;</div><div class="line"></div><div class="line">		/// this is default process function.</div><div class="line">		/// and decorator class will use this function to read</div><div class="line">		virtual void ReadWord()&#123;std::cout&amp;lt;&amp;lt;&quot;default read!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		/// if the function is a pure virtual function,</div><div class="line">		/// decorator class need not inherit this class and</div><div class="line">		/// it just has an instance of Read as a member varible.</div><div class="line">		// virtual void ReadWord()=0;</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef READCHAR_H</div><div class="line">#define READCHAR_H</div><div class="line">	class Read_Char:public Read&#123;</div><div class="line">	public:</div><div class="line">		Read_Char():Read()&#123;&#125;</div><div class="line">		~Read_Char()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Char::ReadWord()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt; &quot;read a char&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef READCHINESE_H</div><div class="line">#define READCHINESE_H</div><div class="line">	class Read_Chinese:public Read&#123;</div><div class="line">	public:</div><div class="line">		Read_Chinese():Read()&#123;&#125;</div><div class="line">		~Read_Chinese()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Chinese::ReadWord()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;read a chinese word&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef DECORATOR_H</div><div class="line">#define DECORATOR_H</div><div class="line">	class Decorator:public Read&#123;</div><div class="line">	protected:</div><div class="line">		Read* r;</div><div class="line">	public:</div><div class="line">		Decorator():Read()&#123;r = NULL;&#125;</div><div class="line">		Decorator(Read* r):Read(),r(r)&#123;&#125;</div><div class="line">		virtual ~Decorator()&#123;if(r!=NULL) delete r;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Decorator::ReadWord()&#123;</div><div class="line">		if(NULL == r)</div><div class="line">			Read::ReadWord();</div><div class="line">		else</div><div class="line">			r-&amp;gt;ReadWord();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef READSENTENCE_H</div><div class="line">#define READSENTENCE_H</div><div class="line">	// this class is real work decorator class</div><div class="line">	class Read_Sentence:public Decorator&#123;</div><div class="line"></div><div class="line">	public:</div><div class="line">		Read_Sentence():Decorator()&#123;&#125;</div><div class="line">		Read_Sentence(Read* r):Decorator(r)&#123;&#125;</div><div class="line">		~Read_Sentence()&#123;&#125;</div><div class="line">		virtual void ReadWord();</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Read_Sentence::ReadWord()&#123;</div><div class="line">		/// parent class method is called first!</div><div class="line">		Decorator::ReadWord();</div><div class="line">		/// then your method be called</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;read a sentence&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Read_Sentence rs1(new pattern::Read_Char());// read char</div><div class="line">	pattern::Read_Sentence rs2(new pattern::Read_Chinese());// read chinese</div><div class="line">	pattern::Read_Sentence rs3; // default read</div><div class="line">	rs1.ReadWord();</div><div class="line">	rs2.ReadWord();</div><div class="line">	rs3.ReadWord();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-03-design-pattern-composite-pattern/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-05-03-design-pattern-composite-pattern/" itemprop="url">design pattern--composite pattern</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">
-                2010-05-03
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_description" content="this pattern is composite pattern.in this pattern, it like a tree to call the leaves function.so there is an entry of high level (Graph), and each class has a function called " draw"="" ,the="" composite="" class="" is="" "picture".and="" the="" leaves="" are="" "line"="" and="" "point"."=""></p>
-<p><meta name="_su_keywords" content="code,design,pattern,composite"></p>
-<p><meta name="_su_title" content="design pattern composite pattern"></p>
-<meta name="views" content="532">
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div></pre></td><td class="code"><pre><div class="line">// composite.cpp : Defines the entry point for the console application.</div><div class="line">//</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">#include&amp;lt;string&amp;gt;</div><div class="line">#include&amp;lt;vector&amp;gt;</div><div class="line"></div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern is composite pattern.</div><div class="line">	/// in this pattern, it like a tree to call the leaves function.</div><div class="line">	/// so there is an entry of high level (Graph), and each class has a function called &quot;Draw&quot; </div><div class="line">	/// the composite class is &quot;Picture&quot;.</div><div class="line">	/// and the leaves are &quot;Line&quot; and &quot;Point&quot;.</div><div class="line">	/// This pattern is combine many objects together which have same functions </div><div class="line">	/// and have level structures .</div><div class="line">	/// And the composite class is like a manager.</div><div class="line">	/// It has the same function also. </div><div class="line">	/// Benefits of this pattern is : outer class will never know the composite relationship;</div><div class="line">	/// outer class will deal the composite class only, not all of innerclass. and composite class</div><div class="line">	/// and inner class have same functions or level structures.</div><div class="line">	/// Do you think the composite class like a facade in facade pattern?</div><div class="line">#ifndef GRAPH_H</div><div class="line">#define GRAPH_H</div><div class="line"></div><div class="line">	class Graph&#123;</div><div class="line">	protected:</div><div class="line">		std::string name;</div><div class="line"></div><div class="line">	public:</div><div class="line">		Graph(std::string name):name(name)&#123;std::cout&amp;lt;&amp;lt;&quot;graph &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;&quot; construct&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line"></div><div class="line">		virtual void Draw()=0;</div><div class="line">		virtual ~Graph()&#123;std::cout&amp;lt;&amp;lt; &quot;graph &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt; &quot; destroy&quot;&amp;lt;&amp;lt;std::endl;&#125;;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef PICTURE_H</div><div class="line">#define PICTURE_H</div><div class="line">	class Picture:public Graph&#123;</div><div class="line">	private:</div><div class="line">		std::vector&amp;lt;Graph*&amp;gt; list;</div><div class="line">	public:</div><div class="line">		Picture(std::string name):Graph(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Picture &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;&quot; construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		virtual void Add(Graph*);</div><div class="line">		virtual void Remove(Graph*);</div><div class="line">		virtual void Draw();</div><div class="line">		~Picture();</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line">	Picture::~Picture()&#123;</div><div class="line">		list.clear();</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;Picture destroy!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line">	void Picture::Add(pattern::Graph * g)&#123;</div><div class="line">		list.push_back(g);</div><div class="line">	&#125;</div><div class="line">	void Picture::Remove(pattern::Graph *g)&#123;</div><div class="line">		std::vector&amp;lt;Graph*&amp;gt;::iterator i=list.begin();</div><div class="line">		while(i!=list.end())&#123;</div><div class="line">			if(g==*i)&#123;</div><div class="line">				list.erase(i);</div><div class="line">				break;</div><div class="line">			&#125;</div><div class="line">			i++;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	void Picture::Draw()&#123;</div><div class="line">		std::vector&amp;lt;Graph*&amp;gt;::iterator i=list.begin();</div><div class="line">		while(i != list.end())&#123;</div><div class="line">			(*i)-&amp;gt;Draw();</div><div class="line">			i++;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef SHAPE_H</div><div class="line">#define SHAPE_H</div><div class="line">	/// Shape class is parent class of &quot;Line&quot; and &quot;Point&quot;</div><div class="line">	class Shape:public Graph&#123;</div><div class="line">	public:</div><div class="line">		virtual void Draw()=0;</div><div class="line">		Shape(std::string name):Graph(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Shape construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		virtual ~Shape()&#123;std::cout&amp;lt;&amp;lt;&quot;Shape destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line"></div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef POINT_H</div><div class="line">#define POINT_H</div><div class="line">	class Point:public Shape&#123;</div><div class="line">	public:</div><div class="line">		Point(std::string name):Shape(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Point construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		~Point()&#123;std::cout&amp;lt;&amp;lt;&quot;Point destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		virtual void Draw();</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Point::Draw()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;Draw a point!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef LINE_H</div><div class="line">#define LINE_H</div><div class="line">	class Line: public Shape&#123;</div><div class="line">	public:</div><div class="line">		Line(std::string name):Shape(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Line construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		~Line()&#123;std::cout&amp;lt;&amp;lt;&quot;Line destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</div><div class="line">		virtual void Draw();</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line">	void Line::Draw()&#123;</div><div class="line">		std::cout&amp;lt;&amp;lt;&quot;Draw a line!&quot;&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Line l (&quot;line&quot;);</div><div class="line">	pattern::Point p1 (&quot;point 1&quot;);</div><div class="line">	pattern::Point p2(&quot;point 2&quot;);</div><div class="line">	pattern::Picture pic(&quot;Picture&quot;);</div><div class="line">	pic.Add(&amp;amp;l);</div><div class="line">	pic.Add(&amp;amp;p1);</div><div class="line">	pic.Add(&amp;amp;p2);</div><div class="line"></div><div class="line">	pic.Draw();</div><div class="line">	// if you want destroy some shape, remove them first.</div><div class="line">	pic.Remove(&amp;amp;p1);</div><div class="line">	p1.~Point();</div><div class="line">	pic.Draw();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1726,7 +1751,7 @@ design pattern of facade"></p>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">636</span>
+                <span class="site-state-item-count">637</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1739,7 +1764,7 @@ design pattern of facade"></p>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">633</span>
+                <span class="site-state-item-count">634</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

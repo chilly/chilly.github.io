@@ -271,6 +271,156 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/9021437/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/9021437/" itemprop="url">腾讯微博发送图片OpenAPI （error content len）解决</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-06-04T13:44:00+08:00">
+                2013-06-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:51+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>调用 <a href="http://wiki.open.t.qq.com/index.php/API%E6%96%87%E6%A1%A3/%E5%B
+E%AE%E5%8D%9A%E6%8E%A5%E5%8F%A3/%E5%8F%91%E8%A1%A8%E4%B8%80%E6%9D%A1%E5%BE%AE%
+E5%8D%9A%E4%BF%A1%E6%81%AF" target="_blank" rel="external"> OpenAPI </a> 发送带有图片的微博。该openAPI接口为： <a href="https://open.t.qq.com/api/t/add" target="_blank" rel="external"><br>https://open.t.qq.com/api/t/add </a> _pic<br>(Oauth2.0专用)</p>
+<p>然后收到如下错误：</p>
+<p>“errcode”:2,”msg”:”error content len”,”ret”:1,”seqid”:5884029410824328274<br>这个错误信息是说微博内容长度太长。我开始以为是字数的问题，然后只发送两个ascii字符，但是结果仍然会有这个问题。然后细细研究了腾讯微博的SDK.<br>发现它发送multipart/form-data请求时， 头部信息没有带上charset=”utf-8”.<br>然后就成功了。所以解决方法就是去掉Multipart 头部的charset=UTF-8。</p>
+<pre><code>Content-Type: multipart/form-data; boundary=---------------------------7d83e2d7a141e; charset=UTF-8 // 这里的charset=UTF-8要去掉才可以。
+-----------------------------7d83e2d7a141e
+Content-Disposition: form-data; name=&quot;content&quot;;charset=UTF-8
+</code></pre><p>这个问题出现的相当tricky. 所以已经把这个问题反馈给腾讯微博的技术人员了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/8962322/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -471,18 +621,6 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -762,6 +900,18 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/2013-04-05-sheng-dan-mei-gui/">
@@ -891,18 +1041,6 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1627,6 +1765,18 @@ var fetcher = &amp;fakeFetcher{
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/8640546/">
@@ -1991,296 +2141,6 @@ rkJggg==" alt=""></p>
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/8639903/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/8639903/" itemprop="url">JAVA 快速实现webService （同步逻辑）</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-03-05T22:09:00+08:00">
-                2013-03-05
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天因为需要调用第三方的接口些fake service, 用于testcase. 该第三方使用的是soap的webservice模式。</p>
-<p>首先是创建service。</p>
-<pre><code>package myws;
-
-import java.io.IOException;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.ws.Endpoint;
-
-/**
- *
- * @author 帐前卒
- *
- */
-@WebService(
-        name=&quot;HELLO&quot;,
-        targetNamespace=&quot;http://chillyc.info/api&quot;, 
-        serviceName=&quot;API&quot;, 
-        portName=&quot;PortName&quot;)
-public class WebServiceHolder {
-    @WebMethod
-    @WebResult(name=&quot;return&quot;)
-    public String hello(@WebParam(name=&quot;name&quot;)String name) {
-        return &quot;hello&quot; + name;
-    }
-
-    public static void main(String[] args) throws IOException {
-        Endpoint.publish(&quot;http://localhost:80/fake/ws&quot;, new WebServiceHolder());
-        System.in.read();
-    }
-}
-</code></pre><p>这里写System.in.read();是希望服务在那里卡死。基本上所有的server都是类似死循环的写法。所以我这里就偷懒使用IO.</p>
-<p>这里要注意的是@WebService annotation. 其中 name是指这个portType 叫什么。<br>targetNameSpace这个在所有的后续调用中名字都是一致的。serviceName就是服务的名称。portName<br>其实就是提供服务的端口名称（这里对服务本身的调用没有什么关系）。如果没有name, 那么java会默认使用WebServiceHolder<br>也就类名称作为name.</p>
-<p>运行后，在浏览器中打开</p>
-<pre><code>http://localhost:80/fake/ws?wsdl
-</code></pre><p>然后就可以看到wsdl文件。</p>
-<pre><code>This XML file does not appear to have any style information associated with it. The document tree is shown below.
-&lt;!--
- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI&apos;s version is JAX-WS RI 2.1.6 in JDK 6. 
---&gt;
-&lt;!--
- Generated by JAX-WS RI at http://jax-ws.dev.java.net. RI&apos;s version is JAX-WS RI 2.1.6 in JDK 6. 
---&gt;
-&lt;definitions xmlns:soap=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot; xmlns:tns=&quot;http://chillyc.info/api&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns=&quot;http://schemas.xmlsoap.org/wsdl/&quot; targetNamespace=&quot;http://chillyc.info/api&quot; name=&quot;API&quot;&gt;
-&lt;types&gt;
-&lt;xsd:schema&gt;
-&lt;xsd:import namespace=&quot;http://chillyc.info/api&quot; schemaLocation=&quot;http://localhost/fake/ws?xsd=1&quot;/&gt;
-&lt;/xsd:schema&gt;
-&lt;/types&gt;
-&lt;message name=&quot;hello&quot;&gt;
-&lt;part name=&quot;parameters&quot; element=&quot;tns:hello&quot;/&gt;
-&lt;/message&gt;
-&lt;message name=&quot;helloResponse&quot;&gt;
-&lt;part name=&quot;parameters&quot; element=&quot;tns:helloResponse&quot;/&gt;
-&lt;/message&gt;
-&lt;message name=&quot;getReturnInfo&quot;&gt;
-&lt;part name=&quot;parameters&quot; element=&quot;tns:getReturnInfo&quot;/&gt;
-&lt;/message&gt;
-&lt;message name=&quot;getReturnInfoResponse&quot;&gt;
-&lt;part name=&quot;parameters&quot; element=&quot;tns:getReturnInfoResponse&quot;/&gt;
-&lt;/message&gt;
-&lt;portType name=&quot;HELLO&quot;&gt;
-&lt;operation name=&quot;hello&quot;&gt;
-&lt;input message=&quot;tns:hello&quot;/&gt;
-&lt;output message=&quot;tns:helloResponse&quot;/&gt;
-&lt;/operation&gt;
-&lt;operation name=&quot;getReturnInfo&quot;&gt;
-&lt;input message=&quot;tns:getReturnInfo&quot;/&gt;
-&lt;output message=&quot;tns:getReturnInfoResponse&quot;/&gt;
-&lt;/operation&gt;
-&lt;/portType&gt;
-&lt;binding name=&quot;PortNameBinding&quot; type=&quot;tns:HELLO&quot;&gt;
-&lt;soap:binding transport=&quot;http://schemas.xmlsoap.org/soap/http&quot; style=&quot;document&quot;/&gt;
-&lt;operation name=&quot;hello&quot;&gt;
-&lt;soap:operation soapAction=&quot;&quot;/&gt;
-&lt;input&gt;
-&lt;soap:body use=&quot;literal&quot;/&gt;
-&lt;/input&gt;
-&lt;output&gt;
-&lt;soap:body use=&quot;literal&quot;/&gt;
-&lt;/output&gt;
-&lt;/operation&gt;
-&lt;operation name=&quot;getReturnInfo&quot;&gt;
-&lt;soap:operation soapAction=&quot;&quot;/&gt;
-&lt;input&gt;
-&lt;soap:body use=&quot;literal&quot;/&gt;
-&lt;/input&gt;
-&lt;output&gt;
-&lt;soap:body use=&quot;literal&quot;/&gt;
-&lt;/output&gt;
-&lt;/operation&gt;
-&lt;/binding&gt;
-&lt;service name=&quot;API&quot;&gt;
-&lt;port name=&quot;PortName&quot; binding=&quot;tns:PortNameBinding&quot;&gt;
-&lt;soap:address location=&quot;http://localhost/fake/ws&quot;/&gt;
-&lt;/port&gt;
-&lt;/service&gt;
-&lt;/definitions&gt;
-</code></pre><p>大家自己对照刚才的那些name, serviceName等，在wsdl文件中的什么地方。</p>
-<p>然后是写一个stub作为调用的接口。</p>
-<pre><code>package myws;
-
-import javax.jws.WebParam;
-import javax.jws.WebService;
-
-/**
- *
- * @author 帐前卒
- *
- */
-@WebService(targetNamespace = &quot;http://chillyc.info/api&quot;, name=&quot;HELLO&quot;)
-public interface WebServiceAPI {
-    String hello(@WebParam(name=&quot;name&quot;)String name);
-
-}
-</code></pre><p>这里要注意的是 那个hello函数，必须与webService发布的函数名相一致(要看wdsl文件中的名字。)<br>另外WebParam中的name也需要和发布函数中的参数名字一致。<br>这里WebService中传入了两个值。其中name就是刚才WebService中的name. 其实就是wsdl中的portType.<br>如果这里写错了。就会有Undefined port type：{<a href="http://chillyc.info/api}Name">http://chillyc.info/api}Name</a>. 这个错误。所以要小心。</p>
-<p>另外写个可执行的类。</p>
-<pre><code>package myws;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-
-/**
- *
- * @author 帐前卒
- *
- */
-public class Client {
-    public static void main(String[] args) throws MalformedURLException {
-        WebServiceAPI api = Service.create(
-                new URL(&quot;http://localhost:80/fake/ws?wsdl&quot;),
-                new QName(&quot;http://chillyc.info/api&quot;, &quot;API&quot;))
-                .getPort(WebServiceAPI.class);
-        System.out.println(api.hello(&quot;sss&quot;));
-    }
-}
-</code></pre><p>这里URL中的就是wsdl文件的地址。 QName传入的就是targetNamespace 和 serviceName.<br>另外getPort就填入刚才的stub. 然后直接调用stub中的接口就能得到结果。</p>
-<p>done.</p>
-<p>简单快速，搭建和写client 也就是10分钟搞定。当然这只是起步</p>
-<p>这个方法适用于JDK6及以上，其他版本未知。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2330,7 +2190,7 @@ public class Client {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">636</span>
+                <span class="site-state-item-count">637</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2343,7 +2203,7 @@ public class Client {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">633</span>
+                <span class="site-state-item-count">634</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -271,6 +271,173 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1633846/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2007/1633846/" itemprop="url">解决c++头文件结构类似嵌套问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-06-01T10:35:00+08:00">
+                2007-06-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有一个Road类，有一个Intersection类，Road类中要含有两个节点Intersection的信息，<br>Intersection要有相邻路的信息列表。</p>
+<p>于是Road.h中这样定义：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>class  Road<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>private  :<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Intersection  <em>  from;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>Intersection  </em>  to;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  :<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>……..<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>Intersection.h中这样定义：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>class  Intersection<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>private  :<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>list  &lt; Road  *&gt; roadNext;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  :<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>…….<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>很可惜这样编译通不过，编译器会报找不到类型错误。</p>
+<p>于是在Intersection类中添加一行代码</p>
+<p>class Road;</p>
+<p>在Road.h中导入Intersection的文件#include”Intersection.h”</p>
+<p>这样编译应该没有问题。（如果函数中没有出现Road类型或者 Intersection类型的话）</p>
+<p>但如果函数中有Road类型或者 Intersection类型又怎么办呢？</p>
+<p>创建Road.cpp和Intersection.cpp文件</p>
+<p>在*.h中只是写函数的声明，在cpp文件中写函数定义，并导入两个.h文件。例如：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  “  Road.h  “<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>#include  “  Intersection.h  “<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>void  Intersection::InsertRoad(Road  *  r)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>roadNext.insert(roadNext.begin,r);<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>编译。。。通过</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1627894/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -406,18 +573,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -685,6 +840,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1621298/">
@@ -816,18 +983,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1386,6 +1541,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1612814/">
@@ -1513,151 +1680,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1612748/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2007/1612748/" itemprop="url">实习机会</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-05-17T10:18:00+08:00">
-                2007-05-17
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本以为搭上了微软的末班车，没有想到竟然是早班车。</p>
-<p>现在可好，IBM笔试 在院里考了第二，却不能被院里推荐。怕占名额。google的实习推荐又来了。结果怕占名额又不能去了。这年头想多经历些磨练，却常常不能得到<br>满足。明天金山的又来了……..想哭！</p>
-<p>记起微软的一道面试题，每层楼都有一颗钻石，乘电梯上楼。每层都可以开门看，但是只能在一层取钻石，问怎样取法。（电梯从底到顶只一次）这是博弈论的题目。最好的取法<br>是前三分之一的层看钻石，中三分之一比钻石，后三分之一取钻石。</p>
-<p>当初实习的时候，就没有这样做。现在几乎全部的面试机会都没有了。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1707,7 +1729,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">636</span>
+                <span class="site-state-item-count">637</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1720,7 +1742,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">633</span>
+                <span class="site-state-item-count">634</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
