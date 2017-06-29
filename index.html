@@ -271,6 +271,207 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/4048515/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/4048515/" itemprop="url">未命名</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-29T13:37:18+08:00">
+                2017-06-29
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-29T13:37:18+08:00">
+                2017-06-29
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>—layout: posttitle: ‘java webservice开发和调用(jdk1.5+eclipse3.4 + tomcat5.5+axis1.4+xfire1.2.6)’date: 2009-04-04 15:53comments: truetags: [‘webservice’,’tomcat’,’eclipse’]—</p>
+<ol>
+<li>下载一个 <a href="http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-1_5_0_18-windows-i586-p.exe?BundledLineItemUUID=1KhIBe.mgfsAAAEg5uQI93Ap&amp;OrderID=6gVIBe.mONgAAAEg2uQI93Ap&amp;ProductID=79FIBe.nKlMAAAEfLBlzHdQ4&amp;FileName=/jdk-1_5_0_18-windows-i586-p.exe" target="_blank" rel="external"> jdk1.5版本 </a> 的。并且如果Oracle与之冲突..就删掉Oracle的所有环境变量。虽然这样做有点过，但是我的确受够了jdk1.6+eclipse3.1+oracle中的jre 1.1.3和1.8.1版本的冲突。另外jdk1.6会与eclipse3.1在启动tomcat上冲突。我也不知道具体是什么原因。</li>
+</ol>
+<p>1. 下载一个Eclipse 3.4 for J2EE版本的 <a href="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/ganymede/SR2/eclipse-jee-ganymede-SR2-win32.zip" target="_blank" rel="external"> http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/ganymede/SR2/eclipse-jee-ganymede-SR2-win32.zip </a></p>
+<p>2. 下载tomcat 5.5。 <a href="http://apache.cs.utah.edu/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.exe" target="_blank" rel="external"> http://apache.cs.utah.edu/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.exe</a> ,下载一个 安装到默认目录。安装完毕之后，不要启动。另外注意，你启动monitor后再点击Exit，不代表服务关闭了。</p>
+<p>你要选择Stop Service 才可以。</p>
+<p>3. 下载xfire-1.2.6。 <a href="http://repository.codehaus.org/org/codehaus/xfire/xfire-distribution/1.2.6/xfire-distribution-1.2.6.zip" target="_blank" rel="external"> http://repository.codehaus.org/org/codehaus/xfire/xfire-distribution/1.2.6/xfire-distribution-1.2.6.zip</a></p>
+<p>4. 在Eclipse中windows-&gt;preference-&gt;Server-&gt;Runtime Environments。点击add,选中tomcat5.5, next, 浏览到你的tomcat 5.5的安装路径。然后Finish.</p>
+<p>5. 新建一个工程（dynamic web project），取名为TestHelloWebService</p>
+<p>6. 在此工程中添加一个新类：hello ，其package为test.</p>
+<p>7. in hello.java中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> test;  </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> </span>&#123;  </div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span>  </span></div><div class="line">    &#123;  </div><div class="line">        <span class="keyword">return</span> <span class="string">"hello"</span>;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>8. 在web.xml中之前添加<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>XFireServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>  </div><div class="line">            org.codehaus.xfire.transport.http.XFireConfigurableServlet  </div><div class="line">    <span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span>  </div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>XFireServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/servlet/XFireServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>XFireServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>  </div><div class="line">     <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/services/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>9. 将xfire-1.2.6解压，然后将xfire-all-1.2.6.jar 和所有在xfire-1.2.6的lib中的jar</p>
+<p>copy到WebContent/WEB-INF/lib下。</p>
+<p>10.在WEB-INF中创建classes文件夹，并将META-INF文件夹移到classes文件夹下，</p>
+<p>并在META-INF下创建一个xfire文件夹。在xfire中创建一个services.xml文件。</p>
+<p>service.xml文件内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;  </div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://xfire.codehaus.org/config/1.0"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">service</span>&gt;</span>  </div><div class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </div><div class="line">      <span class="tag">&lt;<span class="name">namespace</span>&gt;</span>http://localhost:8090/TestHelloWebService/services/Hello<span class="tag">&lt;/<span class="name">namespace</span>&gt;</span>  </div><div class="line">      <span class="tag">&lt;<span class="name">serviceClass</span>&gt;</span>test.Hello<span class="tag">&lt;/<span class="name">serviceClass</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;/<span class="name">service</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>其中name是你要提供service的类名</p>
+<p>namespace 是你要访问的服务地址。这里我的端口因为与Oracle冲突所以不是8080.你自己改为你当时配置端口。</p>
+<p>格式为:<a href="http://主机ip:端口号/项目工程名/services/类名" target="_blank" rel="external">http://主机ip:端口号/项目工程名/services/类名</a></p>
+<p>serviceClass是你的包名.类名</p>
+<p>11.右击的工程 -&gt;Run as-&gt; Run on server. Finish。这里如果在eclipse之外还启动了tomcat就会报错。</p>
+<p>12.访问 <a href="http://localhost:8090/TestHelloWebService/services/Hello?WSDL" target="_blank" rel="external"> http://localhost:8090/TestHelloWebService/services/Hello?WSDL</a></p>
+<p>13.如何访问WebService…你可以用c#，那是非常简单的..见一个C#工程，添加一个web reference.</p>
+<p>然后就像你使用本地方法一样使用这个webservice.注意要using webservice的名字空间。对于非本地的webservice调用就比较麻烦。</p>
+<p>有时还要使用用户验证。这里不详细介绍。</p>
+<p>13.如果使用java来调用webService 流行的方法是使用axis。</p>
+<p><a href="http://topic.csdn.net/t/20030403/09/1612072.html" target="_blank" rel="external">http://topic.csdn.net/t/20030403/09/1612072.html</a></p>
+<p>java里使用webservice 安装配置Axis</p>
+<p>下载一个Axis1.4。下载地址<a href="http://ws.apache.org/axis/releases.html" target="_blank" rel="external">http://ws.apache.org/axis/releases.html</a></p>
+<p>解压Axis1.4.zip包，找到webapps目录下的axis文件夹，拷贝axis文件夹到Tomcat中的webapps文件夹下。</p>
+<p>将Tomcat中的axis目录下的WEB-INF/lib中的所有的文件copy到Tomcat的common/lib目录中。(以后凡是要在axis的lib中添加jar文件，都要copy一份到Tomcat的common/lib目录下)。</p>
+<p>我的电脑-&gt;属性-&gt;高级-&gt;环境变量-&gt;系统变量（用户变量也可以）中添加：</p>
+<p>TOMCAT_HOME</p>
+<p>这里是你的TOMCAT安装目录。我的是C:/Program Files/Apache Software Foundation/Tomcat 5.5</p>
+<p>反正这个目录下一定要有webapps</p>
+<p>AXIS_HOME</p>
+<p>%TOMCAT_HOME%/webapps/axis(TOMCAT的目录)</p>
+<p>AXIS_LIB</p>
+<p>%AXIS_HOME%/lib</p>
+<p>AXISCLASSPATH</p>
+<p>%AXIS_LIB%/axis.jar;%AXIS_LIB%/commons-discovery.jar; %AXIS_LIB%/commons-logging.jar;%AXIS_LIB%/jaxrpc.jar;%AXIS_LIB%/saaj.jar;%AXIS_LIB%/log4j-1.2.8.jar; %AXIS_LIB%/xml-apis.jar;%AXIS_LIB%/xercesImpl.jar</p>
+<p>修改或创建CLASSPATH ，在末尾加上：</p>
+<p>%AXIS_LIB%/axis.jar;%AXIS_LIB%/commons-discovery.jar; %AXIS_LIB%/commons-logging.jar;%AXIS_LIB%/jaxrpc.jar;%AXIS_LIB%/saaj.jar;%AXIS_LIB%/log4j-1.2.8.jar; %AXIS_LIB%/xml-apis.jar;%AXIS_LIB%/xercesImpl.jar</p>
+<p>注意检查CLASSPATH是否正确：（有些软件会在用户变量区设置一个classpath，会有影响，如:XMLSPY）</p>
+<p>在运行输入cmd,然后：Echo %CLASSPATH%</p>
+<p>检查配置：</p>
+<p>启动Tomcat，访问<a href="http://localhost:8090/axis/，" target="_blank" rel="external">http://localhost:8090/axis/，</a></p>
+<p>验证axis的是否工作：<a href="http://localhost:8090/axis/happyaxis.jsp如果正常显示表示正常。" target="_blank" rel="external">http://localhost:8090/axis/happyaxis.jsp如果正常显示表示正常。</a></p>
+<p>14. 你要建立一个新的工程（一个常规的java工程即可）..创建一个包名test,添加一个类TestWebService</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> test;  </div><div class="line"><span class="keyword">import</span> org.apache.axis.client.Call;  </div><div class="line"><span class="keyword">import</span> org.apache.axis.client.Service;  </div><div class="line"><span class="keyword">import</span> org.apache.axis.encoding.XMLType;  </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestWebService</span> </span>&#123;  </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </div><div class="line">        <span class="keyword">try</span> &#123;  </div><div class="line">            <span class="comment">//还记得刚才的那个WebService的services.xml中的namespace吗？  </span></div><div class="line">            String endpoint = <span class="string">"http://localhost:8090/TestHelloWebService/services/Hello"</span>;  </div><div class="line">            Service service = <span class="keyword">new</span> Service();  </div><div class="line">            Call call = (Call) service.createCall();  </div><div class="line">            call.setTargetEndpointAddress(<span class="keyword">new</span> java.net.URL(endpoint));  </div><div class="line">            call.setOperationName(<span class="string">"hello"</span>); <span class="comment">// 这里是的Hello类中的方法名（注意大小写）  </span></div><div class="line">            call.setReturnType(XMLType.XSD_STRING); <span class="comment">// 返回值类型。  </span></div><div class="line">            Object[] o = <span class="keyword">null</span>;<span class="comment">//如果你的方法中没有参数，那么就这样写吧。  </span></div><div class="line">            String hello = (String) call.invoke(o);<span class="comment">// 做方法执行。  </span></div><div class="line">            System.out.println(hello);  </div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;  </div><div class="line">            System.err.println(e.toString());  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>网上的这段代码是用来调用一个float add(float a, float b)的方法。你现在应该知道怎么进行webservice调用了吧。</p>
+<p>不管webservice提供的函数有没有参数，你应该都会调用了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//            Float i = new Float(1);  </span></div><div class="line"><span class="comment">//            Float j = new Float(2);  </span></div><div class="line"><span class="comment">//            call.setOperationName("add");  </span></div><div class="line"><span class="comment">//            call.addParameter("i", org.apache.axis.encoding.XMLType.XSD_FLOAT,  </span></div><div class="line"><span class="comment">//                    javax.xml.rpc.ParameterMode.IN);  </span></div><div class="line"><span class="comment">//            call.addParameter("j", org.apache.axis.encoding.XMLType.XSD_FLOAT,  </span></div><div class="line"><span class="comment">//                    javax.xml.rpc.ParameterMode.IN);  </span></div><div class="line"><span class="comment">//            call.setReturnType(XMLType.XSD_FLOAT);  </span></div><div class="line"><span class="comment">//            Float ret = (Float) call.invoke(new Object[] &#123; i, j &#125;);</span></div></pre></td></tr></table></figure>
+<p>15.运行你的TestWebService试试。Done。（你刚才的webservice项目还在运行..，否则…）</p>
+<p>真的很可惜，我过去使用的eclipse3.1,添加了很多plugin,死活都建不成webservice.再后来我使用Myclipse 4.0GA版本，还是看不到webservice。或者运行时候后来有好心MM传给我MyEclipse5.0GA,结果报出灾难性崩溃…只得重装了jdk,并且下了较新的eclipse.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/好吃的杨梅/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -405,18 +606,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -709,6 +898,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/2010-07-19-catalan/">
@@ -872,18 +1073,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1478,6 +1667,18 @@ solve/70/gravity/SouthEast" alt="这里写图片描述"></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/44357935/">
@@ -1604,181 +1805,6 @@ title: 距离是什么？
 A->B: 我们两个角色之间的间距
 Note Over A,B: 包括上下两个方块和中间的竖线
 Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12,"theme":"simple"}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/44313917/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/44313917/" itemprop="url">CSDN markdown 编辑器 第五篇 UML</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-03-16T21:40:00+08:00">
-                2015-03-16
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-18T15:39:07+08:00">
-                2017-06-18
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这里大概就只能生成两种类型的图：</p>
-<ul>
-<li>序列图 </li>
-<li>流程图 </li>
-</ul>
-<h1 id="序列图"><a href="#序列图" class="headerlink" title="序列图"></a>序列图</h1><div id="sequence-0"></div>
-
-
-<p>序列图很简单， 左边 A-&gt;B就能生成两个对象.按照从上至下的顺序，将序列依次画出。 –-&gt;是虚线， -&gt;是实线。 Note Right of 【名称】是注释框。</p>
-<div id="sequence-1"></div>
-
-
-<p>如果Note中的对象名没有出现过，就会自建一个。另外还可以使用Note left of。</p>
-<p>这个js是使用的 <a href="https://github.com/bramp/js-sequence-diagrams" target="_blank" rel="external"> https://github.com/bramp/js-sequence-diagrams</a></p>
-<h1 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h1><div id="flowchart-0" class="flow-chart"></div>
-
-
-<p>流程图的代码： <a href="https://github.com/adrai/flowchart.js" target="_blank" rel="external"> https://github.com/adrai/flowchart.js</a></p>
-<p>看了一下代码，准备下一篇讲一讲 UML 序列图和流程的实现。</p>
-<p><script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.27/webfontloader.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script><textarea id="sequence-0-code" style="display: none">A->B: 一句话证明你很寂寞。
-Note right of B: thinking
-B->B: counting
-B-->A: 这句话有一共六十九笔</textarea><textarea id="sequence-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12,"theme":"simple"}</textarea><script>  var code = document.getElementById("sequence-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("sequence-0-options").value));  var diagram = Diagram.parse(code);  diagram.drawSVG("sequence-0", options);</script><textarea id="sequence-1-code" style="display: none">A->B: 一句话证明你很寂寞。
-Note left of A: thinking
-B->B: counting
-B-->A: 这句话有一共六十九笔
-Note right of X: SB</textarea><textarea id="sequence-1-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12,"theme":"simple"}</textarea><script>  var code = document.getElementById("sequence-1-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("sequence-1-options").value));  var diagram = Diagram.parse(code);  diagram.drawSVG("sequence-1", options);</script><script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">st=>start: 开始吃饭
-e=>end: 结束吃饭
-op=>operation: 埋头苦吃
-cond=>condition: 已经吃饱了？
-    
-st->op->cond
-cond(yes)->e
-cond(no)->op</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12,"theme":"simple"}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
 
           
         
