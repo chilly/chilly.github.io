@@ -271,6 +271,161 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1575016/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2007/1575016/" itemprop="url">网页乱码 UTF-8与GB2312 及 JSP中文问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-04-22T21:42:00+08:00">
+                2007-04-22
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>转至 <a href="http://www.sucn.com/blog/user.asp?act=view&amp;id=1" target="_blank" rel="external"> sucn </a> .com</p>
+<p>研究好多天了，也试过好多办法了，总结出目前发现最好的方法：<br>先说一下基本的东西：<br>&lt;%@ codepage=936%&gt;简体中文<br>&lt;%@ codepage=950%&gt;繁体中文<br>&lt;%@ codepage=65001%&gt;UTF-8<br>codepage指定了IIS按什么编码读取传递过来的串串（表单提交，地址栏传递等）。  </p>
+<p>出乱码的原因也就是网站要整合的时候模块编码不一样引起的。<br>就像我的博客一样，整合的时候都会出这个问题，因为BLOG是Utf-8的，<br>近来很多网友都在为这个问题咨询，我尝试了很多种方法。<br>最方便的方法如下：<br>不要转换任何模块网页的编码该utf-8的还是utf-8，该Gb22312的还是Gb2312<br>在Utf-8模块的包文件（如conn.asp，但是要注意conn.asp必须是在第一行调用）最前面加上<br>&lt;%@LANGUAGE=”VBSCRIPT” CODEPAGE=”65001”%&gt;<br>&lt;%Session.CodePage=65001%&gt;<br>在GB2312模块的包文件最前面加上<br>&lt;%@LANGUAGE=”VBSCRIPT” CODEPAGE=”936”%&gt;<br>&lt;%Session.CodePage=936%&gt;<br>其他编码的类推。再出问题，我也帮你了了，我现在是都没问题了^^  </p>
+<p>JSP中文问题  </p>
+<p>一、JSP页面显示乱码二、表单提交中文时出现乱码三、数据库连<br>大家在JSP的开发过程中，经常出现中文乱码的问题，可能一至困扰着您，我现在把我在JSP开发中遇到的中文乱码的问题及解决办法写出来供大家参考。  </p>
+<p>一、JSP页面显示乱码<br>下面的显示页面(display.jsp)就出现乱码：  </p>
+<html><br><head><br><title>JSP的中文处理</title><br><meta http-equiv="Content-Type" content="text/html; charset=gb2312"><br></head><br><br><body><br>&lt;%<br>out.print(“JSP的中文处理”);<br>%&gt;<br></body><br></html><br>对不同的WEB服务器和不同的JDK版本，处理结果就不一样。原因：服务器使用的编码方式不同和浏览器对不同的字符显示结果不同而导致的。解决办法：在JSP页面中指<br>定编码方式(gb2312),即在页面的第一行加上：&lt;%@ page contentType=”text/html;<br>charset=gb2312”%&gt;，就可以消除乱码了。完整页面如下：<br>&lt;%@ page contentType=”text/html; charset=gb2312”%&gt;<br><html><br><head><br><title>JSP的中文处理</title><br><meta http-equiv="Content-Type" content="text/html; charset=gb2312"><br></head><br><br><body><br>&lt;%<br>out.print(“JSP的中文处理”);<br>%&gt;<br></body><br></html>  
+
+<p>二、表单提交中文时出现乱码<br>下面是一个提交页面(submit.jsp)，代码如下：  </p>
+<html><br><head><br><title>JSP的中文处理</title><br><meta http-equiv="Content-Type" content="text/html; charset=gb2312"><br></head><br><br><body><br><form name="form1" method="post" action="process.jsp"><br><div align="center"><br><input type="text" name="name"><br><input type="submit" name="Submit" value="Submit"><br></div><br></form><br></body><br></html><br>下面是处理页面(process.jsp)代码：<br>&lt;%@ page contentType=”text/html; charset=gb2312”%&gt;<br><html><br><head><br><title>JSP的中文处理</title><br><meta http-equiv="Content-Type" content="text/html; charset=gb2312"><br></head><br><br><body><br>&lt;%=request.getParameter(“name”)%&gt;<br></body><br></html><br>如果submit.jsp提交英文字符能正确显示，如果提交中文时就会出现乱码。原因：浏览器默认使用UTF-8编码方式来发送请求，而UTF-8和GB2312编码<br>方式表示字符时不一样，这样就出现了不能识别字符。解决办法:通过request.setCharacterEncoding(“gb2312”)对请求进行统一编码<br>，就实现了中文的正常显示。修改后的process.jsp代码如下：<br>&lt;%@ page contentType=”text/html; charset=gb2312”%&gt;<br>&lt;%<br>request.seCharacterEncoding(“gb2312”);<br>%&gt;<br><html><br><head><br><title>JSP的中文处理</title><br><meta http-equiv="Content-Type" content="text/html; charset=gb2312"><br></head><br><br><body><br>&lt;%=request.getParameter(“name”)%&gt;<br></body><br></html>  
+
+<p>三、数据库连接出现乱码<br>只要涉及中文的地方全部是乱码，解决办法：在数据库的数据库URL中加上useUnicode=true&amp;characterEncoding=GBK就OK了。  </p>
+<p>四、数据库的显示乱码<br>在mysql4.1.0中,varchar类型，text类型就会出现中文乱码，对于varchar类型把它设为binary属性就可以解决中文问题，对于text类<br>型就要用一个编码转换类来处理，实现如下：<br>public class Convert {<br>/<em>* 把ISO-8859-1码转换成GB2312  
+</em>/<br>public static String ISOtoGB(String iso){<br>String gb;<br>try{<br>if(iso.equals(“”) || iso == null){<br>return “”;<br>}<br>else{<br>iso = iso.trim();<br>gb = new String(iso.getBytes(“ISO-8859-1”),”GB2312”);<br>return gb;<br>}<br>}<br>catch(Exception e){<br>System.err.print(“编码转换错误：”+e.getMessage());<br>return “”;<br>}<br>}<br>}<br>把它编译成class，就可以调用Convert类的静态方法ISOtoGB()来转换编码。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1573477/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -399,18 +554,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -677,6 +820,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1564747/">
@@ -836,18 +991,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1419,6 +1562,18 @@ kEnd.gif" alt=""> }</li>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1548345/">
@@ -1564,227 +1719,6 @@ kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/Outli
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1545814/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2007/1545814/" itemprop="url">jdk1.5+myeclipse+tomcat5.0+eclipse配置安装发布手册</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-03-29T21:02:00+08:00">
-                2007-03-29
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>用Eclipse3.1 + Myeclipse4.0 + Tomcat5.0 + j2sdk1.5<br>搭建J2EE开发环境(转自<a href="http://hdfyq.diy.myrice.com/" target="_blank" rel="external">http://hdfyq.diy.myrice.com/</a>)</p>
-<p>一、安装j2sdk1.5，设定环境变量。</p>
-<p>我的安装目录是 <strong> D:/j2sdk </strong> 。 所以设定环境变量如下：</p>
-<p>操作： My Computer(右键) —-&gt; Properties —-&gt; Advanced —-&gt; Environment<br>Variables :</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/1.PNG" alt=""></p>
-<p>设定环境变量为：<br>1. (新建)JAVA_HOME: D:/j2sdk<br>2. (新建)CLASSPATH: .;D:/j2sdk/lib/dt.jar;D:/j2sdk/lib/tools.jar<br>(注意：点号不能省略，表示当前目录)<br>3. 编辑PATH的变量值，在后面加上 ;%JAVA_HOME%/bin （注意：要有分号隔开）<br>到这里，j2sdk安装完毕，用命令简单测试一下: java -version</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/2.PNG" alt=""></p>
-<p>二、安装Tomcat5.0</p>
-<p>去下载一个Tomcat的zip版， 我用的是 jakarta-tomcat-5.0.28.zip ， 不下安装版的目的是可以使用多个Tomcat。</p>
-<p>直接解压缩到 G 盘：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/3.PNG" alt=""></p>
-<p>三、安装Eclipse3.1</p>
-<p>下载地址： <a href="http://www.eclipse.org/downloads/index.php" target="_blank" rel="external"> http://www.eclipse.org/downloads/index.php
-</a> 找到下面的页面：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/4.PNG" alt=""></p>
-<p>找个亚洲的服务器下载,速度会快一点。在flashget中如下：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/5.PNG" alt=""></p>
-<p>直接解压缩就可以用了，我是解压缩在 G 盘：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/6.PNG" alt=""></p>
-<p>到这里， Eclipse3.1 安装完毕。</p>
-<p>四、安装 Myeclipse4.0 (myeclipse不是免费的，所以我们先下载一个试用版，再去网上下载一个注册机)</p>
-<p>下载版本： MyEclipse Enterprise Workbench 4.0 GA for Windows 98/2000/XP (8/29/2005)<br>如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/7.PNG" alt=""></p>
-<p>在flashget下载中显示如下：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/8.PNG" alt=""></p>
-<p>下载完成后，开始安装：</p>
-<p>1. 选择你的eclipse所在目录，其它都点下一步，默认安装。</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/9.PNG" alt=""></p>
-<p>2.安装完毕之后，找到myeclipse的安装目录， 如下图所示：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/10.PNG" alt=""></p>
-<p>3. 将features和plugins这2个目录复制出来。这样做的目的是为了在一台电脑上可以使用多个独立的eclipse开发平台。如下图所示：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/11.PNG" alt=""></p>
-<p>4. 将刚才安装的 myeclipse 删除（反安装）。</p>
-<p>5. 将第3步复制的features和plugins这2个目录, 覆盖到 G</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/12.PNG" alt=""></p>
-<p>解释一下上面做的原因： 因为myeclipse是eclipse的插件，所以只要把features和plugins这2个目录覆盖在eclipse的相应目录，e<br>clipse会自动认出这些插件。</p>
-<p>到这一步，myeclipse算是安装完毕。 G 盘目录如下：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/13.PNG" alt=""></p>
-<p>五、破解myeclipse4.0</p>
-<p>1.去google搜索下载一个注册机。如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/14.PNG" alt=""></p>
-<p>2. 输入名字，算号，如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/15.PNG" alt=""></p>
-<p>3.运行eclipse.exe, 设定同目录下的workspace， 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/16.PNG" alt=""></p>
-<p>4.myeclipse插件已经被自动认出，如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/17.PNG" alt=""></p>
-<p>5. 点击 Window —-&gt; Preferences —-&gt; Subscription —-&gt; Enter Subscription,<br>输入注册码，破解myeclipse，下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/18.PNG" alt=""></p>
-<p>到这里，myeclipse破解完毕。</p>
-<p>六、设定myeclipse的 jdk 和 tomcat 服务器。</p>
-<p>1. 增加一个jre， 点击 Window —-&gt; Preferences —-&gt; Installed JREs —-&gt; Add<br>如下图：（找到自己的j2sdk安装目录）</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/19.PNG" alt=""></p>
-<p>2. 指定Tomcat服务器，Window —-&gt; Preferences —-&gt; Tomcat5,<br>并设定该tomcat所用的jre为我们上一步新增的。如下面2个图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/20.PNG" alt=""></p>
-<p><img src="http://hdfyq.diy.myrice.com/images/21.PNG" alt=""></p>
-<p>到这一步，我们的开发环境就搭建完毕了。</p>
-<p>七、新建一个项目来试一试？</p>
-<p>1. 点击 File —-&gt; New —-&gt; Project , 选择Web Project， 再点下一步， 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/22.PNG" alt=""></p>
-<p>2. 在 Project Name 中输入test， 点 finish。 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/23.PNG" alt=""></p>
-<p>3. 开发工具自动生成了test项目。 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/24.PNG" alt=""></p>
-<p>4.点击 WebRoot —-&gt; (右键)New —-&gt; JSP , 新建一个 JSP 页面 （hello.jsp）， 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/25.PNG" alt=""></p>
-<p>5. 编辑器生成的是jsp文件是按模板生成的， 简单修改一下， 代码如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/26.PNG" alt=""></p>
-<p>6. 再用同样的方法， 新建一个叫 hello_result.jsp 的JSP文件， 代码如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/27.PNG" alt=""></p>
-<p>7. deploy（部署）这个test项目。 如下图： （用黑线画了的按钮就是 deploy 的按钮） ， 在弹出窗口点 Add， 部署test项目。</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/28.PNG" alt=""></p>
-<p>8. 启动Tomcat服务器。如下图： （用黑线画了的按钮就是 启动Tomcat 的按钮）</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/29.PNG" alt=""></p>
-<p>9. Tomcat 启动输出信息如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/30.PNG" alt=""></p>
-<p>10. 网页访问和结果图.</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/31.PNG" alt=""></p>
-<p><img src="http://hdfyq.diy.myrice.com/images/32.PNG" alt=""></p>
-<p>大家可以去eclipse的workspace目录下看看test项目的代码，也可以去Tomcat的webapps目录下，看看部署之后的 test项目的结构。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1834,7 +1768,7 @@ kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/Outli
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">637</span>
+                <span class="site-state-item-count">638</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1847,7 +1781,7 @@ kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/Outli
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">638</span>
+                <span class="site-state-item-count">639</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1906,7 +1840,7 @@ kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/Outli
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

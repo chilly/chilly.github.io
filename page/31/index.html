@@ -271,6 +271,152 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4291222/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2009/4291222/" itemprop="url">python 中文分词——FMM 算法</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-06-23T12:04:00+08:00">
+                2009-06-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-29T10:32:28+08:00">
+                2017-06-29
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>FMM算法的最简单思想是使用贪心算法向前找n个，如果这n个组成的词在词典中出现，就ok，如果没有出现，那么找n-1个…然后继续下去。假如n个词在词典中出现，那么从n+1位置继续找下去，知道句子结束。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">import re  </div><div class="line">def PreProcess(sentence,edcode="utf-8"):  </div><div class="line">    sentence = sentence.decode(edcode)  </div><div class="line">    sentence=re.sub(u"[。，,！……!《》&lt;&gt;/"':：？/?、/|“”‘’；]"," ",sentence)  </div><div class="line">    return sentence  </div><div class="line">  </div><div class="line">def FMM(sentence,diction,result = [],maxwordLength = 4,edcode="utf-8"):  </div><div class="line">    i = 0  </div><div class="line">    sentence = PreProcess(sentence,edcode)  </div><div class="line">    length = len(sentence)  </div><div class="line">    while i &lt; length:  </div><div class="line">        # find the ascii word  </div><div class="line">        tempi=i  </div><div class="line">        tok=sentence[i:i+1]  </div><div class="line">        while re.search("[0-9A-Za-z/-/+#@_/.]&#123;1&#125;",tok)&lt;&gt;None:  </div><div class="line">            i= i+1  </div><div class="line">            tok=sentence[i:i+1]  </div><div class="line">        if i-tempi&gt;0:  </div><div class="line">            result.append(sentence[tempi:i].lower().encode(edcode))  </div><div class="line">        # find chinese word  </div><div class="line">        left = len(sentence[i:])  </div><div class="line">        if left == 1:  </div><div class="line">            """go to 4 step over the FMM"""  </div><div class="line">            """should we add the last one? Yes, if not blank"""  </div><div class="line">            if sentence[i:] &lt;&gt; " ":  </div><div class="line">                result.append(sentence[i:].encode(edcode))  </div><div class="line">            return result  </div><div class="line">        m = min(left,maxwordLength)  </div><div class="line">          </div><div class="line">        for j in xrange(m,0,-1):  </div><div class="line">            leftword = sentence[i:j+i].encode(edcode)  </div><div class="line">         #   print leftword.decode(edcode)  </div><div class="line">            if LookUp(leftword,diction):  </div><div class="line">                # find the left word in dictionary  </div><div class="line">                # it's the right one  </div><div class="line">                i = j+i  </div><div class="line">                result.append(leftword)  </div><div class="line">                break  </div><div class="line">            elif j == 1:  </div><div class="line">                """only one word, add into result, if not blank"""  </div><div class="line">                if leftword.decode(edcode) &lt;&gt; " ":  </div><div class="line">                    result.append(leftword)  </div><div class="line">                i = i+1  </div><div class="line">            else:  </div><div class="line">                continue  </div><div class="line">    return result  </div><div class="line">def LookUp(word,dictionary):  </div><div class="line">    if dictionary.has_key(word):  </div><div class="line">        return True  </div><div class="line">    return False  </div><div class="line">def ConvertGBKtoUTF(sentence):  </div><div class="line">    return sentence.decode('gbk').encode('utf-8')</div></pre></td></tr></table></figure>
+<p>测试代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dictions = &#123;&#125;  </div><div class="line">dictions[<span class="string">"ab"</span>] = <span class="number">1</span>  </div><div class="line">dictions[<span class="string">"cd"</span>] = <span class="number">2</span>  </div><div class="line">dictions[<span class="string">"abc"</span>] = <span class="number">1</span>  </div><div class="line">dictions[<span class="string">"ss"</span>] = <span class="number">1</span>  </div><div class="line">dictions[ConvertGBKtoUTF(<span class="string">"好的"</span>)] = <span class="number">1</span>  </div><div class="line">dictions[ConvertGBKtoUTF(<span class="string">"真的"</span>)] = <span class="number">1</span>  </div><div class="line">sentence = <span class="string">"asdfa好的是这样吗vasdiw呀真的daf dasfiw asid是吗？"</span>  </div><div class="line">s = FMM(ConvertGBKtoUTF(sentence),dictions)  </div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> s:  </div><div class="line">    <span class="keyword">print</span> i.decode(<span class="string">"utf-8"</span>)</div></pre></td></tr></table></figure>
+<p>文本测试代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">test = open(<span class="string">"test.txt"</span>,<span class="string">"r"</span>)  </div><div class="line"><span class="keyword">for</span> line <span class="keyword">in</span> test:  </div><div class="line">    s = FMM(CovertGBKtoUTF(line),dictions)  </div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s:  </div><div class="line">        <span class="keyword">print</span> i.decode(<span class="string">"utf-8"</span>)</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4290974/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -403,18 +549,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -685,6 +819,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4250809/">
@@ -829,18 +975,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1703,6 +1837,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4180000/">
@@ -1826,151 +1972,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4164019/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2009/4164019/" itemprop="url">黑客帝国赏析——what do you believe?</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-05-09T20:19:00+08:00">
-                2009-05-09
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>你相信什么？你是相信命运还是相信自己？我们是否已经习惯自己设计的条条框框？我们是救世主，还是这世界根本就没有救世主？我们的世界是真实的，还<br>是被我们双眼蒙蔽的假象？我们相信奇迹，还是我们就是奇迹本身？是命运造就了自己的现在还是自己的努力才会让生活更加美好？还是自己的命运早已注定自己的 努力？</p>
-<p>只要你相信you are the one，那你注定就是。或许这是一种盲目，或许这只是狂热，或许这什么都不是。但是你至少会发现你已经改变了自己。</p>
-<p>Do something what you believe, and trust yourself!</p>
-<p>想想孔子老庄的思想。其实到头来还是探讨一个问题——我们可以人定胜天，还是这不过是宿命的假象？</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2020,7 +2021,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">637</span>
+                <span class="site-state-item-count">638</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2033,7 +2034,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">638</span>
+                <span class="site-state-item-count">639</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2092,7 +2093,7 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

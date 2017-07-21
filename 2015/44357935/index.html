@@ -383,7 +383,7 @@
         <p>这一篇开始讨论代码层面的问题。主要是markdown的功能的设计实现。</p>
 <p>这一篇先从markdown外围的代码开始讲起：<br>UML序列图是从 <a href="https://github.com/bramp/js-sequence-diagrams" target="_blank" rel="external"> https://github.com/bramp/js-sequence-diagrams</a> copy得到的。</p>
 <p>当如这个UML代码还用到了两个JS,功能库和画图.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;script src=<span class="string">"underscore-min.js"</span>&gt;&lt;/script&gt;</div><div class="line">&lt;script src=<span class="string">"raphael-min.js"</span>&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;script src=<span class="string">"underscore-min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line">&lt;script src=<span class="string">"raphael-min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div></pre></td></tr></table></figure>
 <p>首先讲讲这个JS最核心的类：<br><a href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-diagram.js" target="_blank" rel="external"> https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-diagram.js </a></p>
 <p>首先这个类分为其实使用两种风格的。一种就是现在CSDN采用的风格，叫做simple. 另外一种是手绘风格，叫做hand。定义如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> themes = &#123;</div><div class="line"><span class="attr">simple</span> : RaphaelTheme,</div><div class="line"><span class="attr">hand</span> : HandRaphaelTheme</div><div class="line">&#125;;</div><div class="line">Diagram.prototype.drawSVG = <span class="function"><span class="keyword">function</span> (<span class="params">container, options</span>) </span>&#123;</div><div class="line"><span class="keyword">var</span> default_options = &#123;</div><div class="line"><span class="attr">theme</span>: <span class="string">'hand'</span></div><div class="line">&#125;;</div><div class="line">options = _.defaults(options || &#123;&#125;, default_options);</div><div class="line"><span class="keyword">if</span> (!(options.theme <span class="keyword">in</span> themes))</div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Unsupported theme: "</span> + options.theme);</div><div class="line"><span class="keyword">var</span> drawing = <span class="keyword">new</span> themes[options.theme](<span class="keyword">this</span>);</div><div class="line">drawing.draw(container);</div><div class="line">&#125;; <span class="comment">// end of drawSVG</span></div></pre></td></tr></table></figure>
@@ -420,7 +420,7 @@
 title: 距离是什么？
 A->B: 我们两个角色之间的间距
 Note Over A,B: 包括上下两个方块和中间的竖线
-Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12,"theme":"simple"}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
+Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: none">{"theme":"simple","scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
 
       
     </div>
@@ -570,7 +570,7 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">637</span>
+                <span class="site-state-item-count">638</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -583,7 +583,7 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">638</span>
+                <span class="site-state-item-count">639</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -642,7 +642,7 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -
