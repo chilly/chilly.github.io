@@ -271,6 +271,157 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-12-24-own-timer-replace-crontab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-12-24-own-timer-replace-crontab/" itemprop="url">own timer replace crontab</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-12-24T00:00:00+08:00">
+                2010-12-24
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="crontab can not execute some program.
+Its environment setting is hard to compare with that of system "></p>
+<p><meta name="_su_keywords" content="crontab,execute,environment,timer,code,setting,profile"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_title" content="own timer replace crontab"></p>
+<p><meta name="views" content="460"><br>Sometime crontab in Linux or Unix can not run some program. Because the environment of crontab is not as same as that of system. If you want to know the difference between those two environments settings. look up /etc/cron.d/anacron file and ~/.profile and ~/.bashrc and xxxx. I can not remember all of them. /etc/cron.d/anacron file is just for crontab. ~/.profile and ~/.bashrc is for system. If you want to know more, search “linux environment file” in Google.</p>
+<p>I think to find all difference between two environment is waste time obviously. Another method is write own timer codes. So Here is my solution:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">#include &amp;lt;iostream&amp;gt;</div><div class="line">#include &amp;lt;string&amp;gt;</div><div class="line">#include &amp;lt;stdlib.h&amp;gt;</div><div class="line">using namespace std;</div><div class="line">/**</div><div class="line"> * @author chico chen chillycreator #@@&amp;amp; gmail.com</div><div class="line"> */</div><div class="line">void usage()&#123;</div><div class="line">	cout &amp;lt;&amp;lt; &quot;timer&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	cout &amp;lt;&amp;lt; &quot;input your time point:[minute] [hour] [innerday] [innerweek]&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	cout &amp;lt;&amp;lt; &quot;input your program name:[your program]&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	cout &amp;lt;&amp;lt; &quot;all of input should be more than zero!&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	cout &amp;lt;&amp;lt; &quot;you should run this program earlier than you wanted.&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	cout &amp;lt;&amp;lt; &quot;or else your program will run at next time point.&quot;&amp;lt;&amp;lt;endl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line"></div><div class="line">	// user input</div><div class="line">	int min, hour, howday, howweek;</div><div class="line">	string program;</div><div class="line">	cout&amp;lt;&amp;lt; &quot;input [min] [hour] [innerdays] [innerweeks]&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	cin &amp;gt;&amp;gt; min &amp;gt;&amp;gt; hour &amp;gt;&amp;gt; howday &amp;gt;&amp;gt; howweek;</div><div class="line">	cout &amp;lt;&amp;lt;&quot;input your program&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	cin &amp;gt;&amp;gt; program;</div><div class="line">	if (program.size() &amp;lt;= 0 || min &amp;lt; 0 || hour &amp;lt; 0 || howday &amp;lt; 0 || howweek &amp;lt; 0)&#123;</div><div class="line">		usage();</div><div class="line">		return 1;</div><div class="line">	&#125;</div><div class="line">	cout &amp;lt;&amp;lt; &quot;your timer will run program at &quot;&amp;lt;&amp;lt;hour&amp;lt;&amp;lt;&quot;:&quot;&amp;lt;&amp;lt;min&amp;lt;&amp;lt;endl;</div><div class="line">	cout &amp;lt;&amp;lt; &quot;your program is &quot;&amp;lt;&amp;lt;program&amp;lt;&amp;lt;endl;</div><div class="line">	if (0 == howday || 1 == howday)&#123;</div><div class="line">		howday = 1;</div><div class="line">		cout &amp;lt;&amp;lt; &quot;run this program in every day&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	&#125;</div><div class="line">	else&#123;</div><div class="line">		cout &amp;lt;&amp;lt; &quot;run this program at &quot;&amp;lt;&amp;lt;howday &amp;lt;&amp;lt;&quot; days intervals.&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	&#125;</div><div class="line">	if (0 == howweek)&#123;</div><div class="line">		cout &amp;lt;&amp;lt; &quot;run this program in every week&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	&#125;</div><div class="line">	else&#123;</div><div class="line">		cout &amp;lt;&amp;lt; &quot;run this program at &quot;&amp;lt;&amp;lt;howweek &amp;lt;&amp;lt;&quot; weeks intervals.&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	&#125;</div><div class="line">	// set sleep time and loop time</div><div class="line">	int looptime = (howday-1)*3600*24 + howweek * 7 * 3600 * 24;</div><div class="line">	int sleeptime = 0;</div><div class="line">	bool bFirst = true;</div><div class="line">	while(true)&#123;</div><div class="line">		time_t now;</div><div class="line">		time(&amp;amp;now);</div><div class="line">		struct tm * timeinfo = localtime(&amp;amp;now);</div><div class="line">		timeinfo-&amp;gt;tm_hour = hour;</div><div class="line">		timeinfo-&amp;gt;tm_min = min;</div><div class="line">		time_t futuretime = mktime(timeinfo);</div><div class="line">		sleeptime = futuretime - now;</div><div class="line">		sleeptime = sleeptime &amp;gt;= 0 ? sleeptime : 24*3600+sleeptime;</div><div class="line">		if (!bFirst)&#123;</div><div class="line">			sleeptime += looptime;</div><div class="line">		&#125;</div><div class="line">		bFirst = false;</div><div class="line">		cout &amp;lt;&amp;lt; &quot;wait time:&quot;&amp;lt;&amp;lt;sleeptime&amp;lt;&amp;lt;endl;</div><div class="line">		sleep(sleeptime);</div><div class="line">		cout &amp;lt;&amp;lt; &quot;start to run:&quot;&amp;lt;&amp;lt;program&amp;lt;&amp;lt;endl;</div><div class="line">		system(program.c_str());</div><div class="line">		cout &amp;lt;&amp;lt; &quot;end program...&quot;&amp;lt;&amp;lt;endl;</div><div class="line">	&#125;</div><div class="line">	// loop end</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Write your own code will bring new bugs in your solution. Another drawback is spending your own time and this timer is not in common. However, you can control it!</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-12-06-jobs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -414,18 +565,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -687,6 +826,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-10-11-create-class-size-0/">
@@ -822,18 +973,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1408,6 +1547,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-07-09-print-display-row/">
@@ -1538,162 +1689,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-07-07-absolute-valueinteger/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-07-07-absolute-valueinteger/" itemprop="url">get absolute value(integer)</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-07-07T00:00:00+08:00">
-                2010-07-07
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_description" content="how to use bit operator and simple +-*/ to get absolute number."></p>
-<p><meta name="_su_keywords" content="bit,operator,absolute,complement,number,priority"></p>
-<p><meta name="_su_rich_snippet_type" content="none"></p>
-<p><meta name="_su_title" content="bit operators absolute complement number priority"></p>
-<p><meta name="views" content="1060"></p>
-<p><meta name="_wp_old_slug" content="absolute-numberinteger"><br>How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&nbsp; )</p>
-<p><ul><br>    <li>if number &gt;= 0 , then number &gt;&gt; 31 == 0</li><br></ul></p>
-<p><ul><br>    <li>if number &lt; 0&nbsp;&nbsp; , then number &gt;&gt; 31 == 0xFFFFFFFF</li><br></ul><br>If some number exclusive or( xor ) 0xFFFFFFFF means each bit becomes its “opposite” number. (1 becomes 0, and 0 becomes 1).And If a number xor 0x00000000 means nothing happened to this number. So:</p>
-<p><ul><br>    <li>number ^ 0xFFFFFFFF = ~number</li><br>    <li>number ^ 0x00000000 = number</li><br></ul><br>In this question, you should also know something about<a href="http://en.wikipedia.org/wiki/Signed_number_representations#Ones.27_complement" target="_blank" rel="external"> complement number(see two’s complement)</a>. When a number is negative, |number| = ~number +1 or you can use |number| = !number + 1. When a number is positive, |number| = number.</p>
-<p>If you know above, then the goal of |x| = (x^(x&gt;&gt;31))+(~(x&gt;&gt;31)+1).</p>
-<p>(x^(x&gt;&gt;31)) means:</p>
-<p><ul><br>    <li>x &gt;= 0, x^(x&gt;&gt;31) = x^0x00000000 = x</li><br>    <li>x &lt; 0, x^(x&gt;&gt;31) = x^0xFFFFFFFF = ~x</li><br></ul><br>And (~(x&gt;&gt;31)+1)means:</p>
-<p><ul><br>    <li>x &gt;= 0, ~(x&gt;&gt;31)+1 = 0xFFFFFFFF+1 = 0</li><br>    <li>x &lt; 0, ~(x&gt;&gt;31)+1 = 0x00000000+1 = 1</li><br></ul><br>And we should take care of those brackets, because the priorities of operators are: ~ <span style="color: rgb(128, 0, 0); font-size: 16pt;"><strong>&gt;</strong></span> */ <span style="color: rgb(153, 51, 0); font-size: 16pt;"><strong>&gt;</strong></span> + - <strong><span style="color: rgb(153, 51, 0); font-size: 16pt;">&gt;</span></strong> bit operators(&amp;,^,|)</p>
-<table><br><tbody><br><tr><br><th>Level</th><br><th>Operator</th><br><th>Description</th><br><th>Grouping</th><br></tr><br><tr><br><td>1</td><br><td><tt>::</tt></td><br><td>scope</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>2</td><br><td><tt>() [] . -&gt; ++ – dynamic_cast static_cast  reinterpret_cast const_cast typeid</tt></td><br><td>postfix</td><br><td>Left-to-right</td><br></tr><br><tr><br><td rowspan="3">3</td><br><td><tt>++ – ~ ! sizeof new delete</tt></td><br><td>unary  (prefix)</td><br><td rowspan="3">Right-to-left</td><br></tr><br><tr><br><td><tt><em> &amp;</em></tt></td><br><td>indirection and reference (pointers)</td><br></tr><br><tr><br><td><tt>+ -</tt></td><br><td>unary sign operator</td><br></tr><br><tr><br><td>4</td><br><td><tt>(type)</tt></td><br><td>type casting</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>5</td><br><td><tt>. -&gt;<em></em></tt></td><br><td>pointer-to-member</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>6</td><br><td><tt> / %</tt></td><br><td>multiplicative</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>7</td><br><td><tt>+ -</tt></td><br><td>additive</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>8</td><br><td><tt>&lt;&lt; &gt;&gt;</tt></td><br><td>shift</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>9</td><br><td><tt>&lt; &gt; &lt;= &gt;=</tt></td><br><td>relational</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>10</td><br><td><tt>== !=</tt></td><br><td>equality</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>11</td><br><td><tt>&amp;</tt></td><br><td>bitwise AND</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>12</td><br><td><tt>^</tt></td><br><td>bitwise XOR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>13</td><br><td><tt>|</tt></td><br><td>bitwise OR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>14</td><br><td><tt>&amp;&amp;</tt></td><br><td>logical AND</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>15</td><br><td><tt>||</tt></td><br><td>logical OR</td><br><td>Left-to-right</td><br></tr><br><tr><br><td>16</td><br><td><tt>?:</tt></td><br><td>conditional</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>17</td><br><td><tt>= *= /= %= += -= &gt;&gt;= &lt;&lt;= &amp;= ^= |=</tt></td><br><td>assignment</td><br><td>Right-to-left</td><br></tr><br><tr><br><td>18</td><br><td><tt>,</tt></td><br><td>comma</td><br><td>Left-to-right</td><br></tr><br></tbody><br></table>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1743,7 +1738,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">638</span>
+                <span class="site-state-item-count">639</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1756,7 +1751,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">639</span>
+                <span class="site-state-item-count">640</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
