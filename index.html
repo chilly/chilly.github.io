@@ -271,6 +271,210 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/code-comments/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/code-comments/" itemprop="url">代码论千言：如何评价别人的代码</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T09:56:02+08:00">
+                2017-08-05
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-08-21T13:43:22+08:00">
+                2017-08-21
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h1><pre><code>遇到一个陌生人，只看到他沾满泥土的鞋子。
+夏日地铁里，闻到了周围人的汗臭。
+朋友聚会，似乎有些人眼屎没擦干净。
+初次相亲见面，就一直在说对方不好看。
+你看到别人的种种不足，当面指出来，为什么没有人感谢你？
+不光没有人感谢，似乎还有人恶言相向，某些人还因此要打你。
+你做错了吗？
+                                 ————《帐前卒的寓言》
+</code></pre><div align="center"><br><img src="/images/code-comments/not_to_know.jpg" alt="I don&#39;t want to know"><br></div>
+
+<p>Code Review作为编码社会活动，一直被人诟病。每个人似乎都知道Code Review好，但是推广起来却有种种困难。而“用IDE编程”这事似乎根本就不用推广。这到底是为什么？因为Code Review中不可避免要指出别人的代码不足。我们也经常会遇到：</p>
+<ul>
+<li>评价/建议后，编码者却不修改；</li>
+<li>总是同一种错误，一犯再犯；</li>
+<li>抵制你的评价意见，寻求他人再次Review。</li>
+</ul>
+<p>我们review别人的代码，不是专门为代码点赞，那是“鼓励师”要做的事情。我们主要是指出别人的代码哪里写的不好。我想，即使是最和善、最理智的程序员也肯定不喜欢那些评论。即便如此，我们还是要评论，要让别人接受我们的观点。不过为了让别人乐于接受，肯定要有恰当的鼓励。另外，在评论别人的代码之前，我们最好知道是谁写的代码。如果是匿名的，当然可以肆无忌惮的评论。但Code Review是一种非匿名的社交活动：我们都知道编码者是谁，编码者也知道评价者是谁。与说话的技巧一样：“对什么人,说什么话”。所以我们首先需要了解编码者。</p>
+<h1 id="读代码识人心"><a href="#读代码识人心" class="headerlink" title="读代码识人心"></a>读代码识人心</h1><pre><code>比鬼神更可怕的，是人心。
+                    ————《盗墓笔记》
+</code></pre><p>读懂人心，实在是太难了。通过代码去读懂人心，那就更难了。如果和编码者经常在一起，性格喜好自然能略知一二。如果你从来没有接触过编码者，只看代码能了解什么呢？我们无法从代码中看出那人的血型、星座、爱好；也难看出勇敢、乐观、顽强、抑郁或悲伤；更看不出他是表现型、分析性还是实干型。当然以上那些性格特点对我们评价代码也没有什么卵用。从代码中读懂人心，只需关注三个方面：</p>
+<ul>
+<li>是否认真编码</li>
+<li>是否对技术有激情</li>
+<li>编码水平怎么样</li>
+</ul>
+<p>为什么只关注这三个方面？认真的编码者对细节格外关心，指明他代码细节的缺陷，他的技术水平一定会有提升。有激情的编码者一定会迫不及待的使用新的技术、新的语法、新的组件。应该告诉他们这些新的技术、语法、组件在代码里用的是否恰当。高水平的编码者乐于提高自己的编程技巧，也喜欢破坏现有的规则，他们看重的只有逻辑错误和运行时问题。Review时，投其所好，才能让编码者信任你，然后才可能接受你的建议。如果编码者编码不认真、技术没激情、水平也不咋样，请问该怎么办？这我们后面会说。</p>
+<h2 id="认真的编码者"><a href="#认真的编码者" class="headerlink" title="认真的编码者"></a>认真的编码者</h2><p>编码者是否想到你所想到的细节，是否还考虑了你没有想到的点？是否遵循了code style规范中每一条细节？是否考虑了边界情况？在特殊处理的地方，有没有写详细的注释？当他看到你的评论时，不管同意与否，他是否每一条都认真回复了。</p>
+<h2 id="有激情的编码者"><a href="#有激情的编码者" class="headerlink" title="有激情的编码者"></a>有激情的编码者</h2><p>编码者是否尝试了新的技术：新的组件、新的语法糖？是否愿意解决一些别人不碰的难题？不那么美观的代码是否充满了不断尝试的味道？是否规避了存在问题的第三方组件？是否尝试写过一些公用组件？是否对旧的问题有新的思路?</p>
+<h2 id="高水平的编码者"><a href="#高水平的编码者" class="headerlink" title="高水平的编码者"></a>高水平的编码者</h2><p>编码水平有优劣，但这个优劣大多数只存在于人的内心。有时候你看了一眼别人的代码，你心里想：“这段代码能写的更简单，更容易。” 所以优劣大多是和自己比较的：技术比自己好，还是比自己差。如果你熟悉整个团队，那么你就能知道这个人的编码水平大概处于整个团队的什么位置。</p>
+<p>但是编码者提交的代码量太少，或者大多是log/print/bean，无法了解他这三个方面的特质，那就用comments多交流几次。</p>
+<h1 id="书写评论"><a href="#书写评论" class="headerlink" title="书写评论"></a>书写评论</h1><p><div align="center"><br><img src="/images/code-comments/write.jpeg" alt="write comments"><br></div><br>初识，最好多点赞，并建议如何编码。如果对方是新入职的人员，最好一次性的指出程序要修改的地方。一是他有时间修改；二是新人需要了解公司里的编码规范；三是提升他的编码水平。</p>
+<p>在review的过程中不要否定新技术，也不要轻易肯定新技术，<strong>适用才是评判依据</strong>。为什么使用这些新技术？是旧的写起来麻烦，还是旧的无法满足需求，还是只为尝鲜？对于调研团队，我们鼓励使用各种新的技术。不管是挖坑还是填坑，需要通过他们的使用情况，了解多种新技术的功能特性、成熟度、性能优劣和适用条件。对于功能交付团队，不管是上线还是开发软件给客户使用，能满足需求的同时，一定要为了稳定不折腾。否则后期就会被bug所累，疲于奔命。</p>
+<p>表达相同意思的一段文字可以有不同的写法。工作要有乐趣，不要评论千篇一律、枯燥乏味。下面我要说几种评论的风格:</p>
+<ul>
+<li><p>吐槽。针对熟识的同事或者针对技术水平很高的人。幽默风趣，又让人容易接受。</p>
+</li>
+<li><p>委婉建议。针对有激情的人，不应该抹杀别人的技术追求。多以疑问句为主，让其自己反思。</p>
+</li>
+<li><p>批评。针对多次犯同一错误的新人。他们犯的错误一般都是非常容易改正。例如，多写常量定义、使用linux换行符、打印不用System.out等等。有时用感叹句让批评的语气再严厉一点，否则下次新人还会犯同样的错误。</p>
+</li>
+<li><p>直白陈述。可能大多数评论采用的是这种句式。另外针对编码“得过且过”的<strong>老码农</strong>，你可能需要多写点：除了点明问题所在，还应该建议他怎样去修改代码。这样可以减少他的返工次数，消减他的抵触情绪。</p>
+</li>
+<li><p>讥讽。除非是你的好基友，否则不要用，不要用，不要用，说三遍，不要树敌。</p>
+</li>
+</ul>
+<h1 id="当面交流"><a href="#当面交流" class="headerlink" title="当面交流"></a>当面交流</h1><p><div align="center"><br><img src="/images/code-comments/communicate.jpeg" alt="communicate"><br></div><br>既然当面交流，不妨听听编码者怎么看待你的评论。不要一言不合就暴跳如雷，要问问他想怎么修改，或者为什么不想修改。</p>
+<p>出发点还是<strong>“利”</strong>字。但是受益者可能不同的：是编码者得利，还是团队得利，还是公司得利。这就要看你的三寸不烂之舌，如何既讨人欢心又让人听你指示。程序员这群理智的动物，有时最看不惯的就是阿谀奉承。大家都是靠技术混饭吃的，虽然糖衣炮弹固然重要，但更重要的是言明利弊。</p>
+<p>有些人即使你心平气和的交流，仍然不愿意修改他们的代码，这时候就要关注问题的边界。如果在容忍的边界里，或者对建议置之不理，或者允许开发者以后再修改。如果是边界之外，就应该据理力争。那边界究竟是怎样划定的呢？我写在下面：</p>
+<ul>
+<li>代码中存在bug。bug会导致各种错误，有些会导致数据错乱、文件错乱等难以修复的问题。</li>
+<li>代码难以理解，日后难维护。当然如果写这代码的人永不离职，自己维护尚可。可人要是离职了，还要看后继者是否愿意担风险去重构这些代码。</li>
+<li>长时间运行有问题。那多久会出问题呢？看多久再次部署，如果每天都部署一次，两天就算长时间了。但是为了让团队每个人都休息好、有自己的假期、以及不在休假时被打扰，还是尽量考虑长远一点。如果你最长假期有10天，那至少要考虑软件运行大半个月没问题。</li>
+<li>数据量大、访问量大时，代码运行缓慢或者宕机。如果估算运行部署几天后数据/访问量就会到达这个规模，那一定要尽早修改代码。</li>
+<li>改动后将大量节省他人的时间。如果将代码抽取为模块或者组件后，有更大的收益。特别是他人即将开始这部分工作时，一定要尽快的抽取出相关代码。不抽取的话，一是别人也要写相关代码；二是一旦有修改，相同功能的代码都会修改；三是即使后期再抽取了组件，也没人愿意重构。</li>
+</ul>
+<p>我们都是执着的技术人，我们心中自有不可逾越的底线，我们也希望所有的编码者不要越过这条底线。我们把这底线告诉给编码者，这也是Code Review中评审者的义务。但建议也写了，见面也谈过了，编码者和审阅者两方就是各不相让。那没有其他办法，只能通过公司里的人事关系去解决：</p>
+<ul>
+<li>如果是你的下属，都已经讲明白道理，还是不执行，那是这个下属不称职。</li>
+<li>如果是你的上级，你已经告知了他风险，他觉得你的建议没有道理，那就请他说出自己的道理。当然你觉得是他是一个傻X领导，拍拍屁股走人就是；但如果你<strong>越职言事</strong>，那就是大忌了。</li>
+<li>如果是你的平级，告知他上级代码的风险，之后就交给他的上级处理吧。</li>
+</ul>
+<p>当然你需要知道，为了权衡：有时为了紧急上线，有时为了更大的利，即使逾越了你的底线，也要先把代码merge了再说。。</p>
+<p>Code Review是为了什么？最终是为了获利。在公司，什么都不考虑，只为把代码写的完美无缺，那才是真的傻。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/code-review/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -523,18 +727,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -813,6 +1005,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/change-to-hexo/">
@@ -970,18 +1174,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1561,6 +1753,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/49556925/">
@@ -1724,155 +1928,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/44654639/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/44654639/" itemprop="url">JS 实现UML序列图(二)——csdn MarkDown 第七篇 技术篇</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-03-28T21:10:00+08:00">
-                2015-03-28
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T20:50:49+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>上一篇大概说了一下JS是怎么画UML 图形的。<br>这一篇简单介绍一下这个JS 解析 UML语法是怎么实现的。<br><a href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf" target="_blank" rel="external"> https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf</a><br>这个是Markdown UML语言的语法结构。摘抄了部分：<br>这一部分是将词和词组成语句。而语句和语句就组成篇章。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">document ::= statement*</div><div class="line">statement ::=</div><div class="line">( &apos;title&apos; &apos;:&apos; message</div><div class="line">| &apos;participant&apos; actor</div><div class="line">| &apos;note&apos; (&apos;left of&apos; | &apos;right of&apos; | &apos;over&apos;) actor &apos;:&apos; message</div><div class="line">| actor ( &apos;-&apos; | &apos;--&apos; ) ( &apos;&gt;&apos; | &apos;&gt;&gt;&apos; )? actor &apos;:&apos; message</div><div class="line">)</div></pre></td></tr></table></figure></p>
-<p>这里的意思是 UML是由 statement（语句）构成的。<br>statement有下面几种表示方法：<br>1. ‘title’ ‘:’ message 这里带上’’的都是token,在编译原理中，token标识不能再被解释的词。<br>2. ‘participant’ actor<br>3. ‘note’ (‘left of’ | ‘right of’ | ‘over’) actor ‘:’ message 表示note与Actor之间的关系<br>4. actor ( ‘-’ | ‘–’ ) ( ‘&gt;’ | ‘&gt;&gt;’ )? actor ‘:’ message 标识actor之间的关系。</p>
-<p>下面的词法分析会将字符转换为UML中有含义的字。类似字符组成词。用正则式将字母变成有含义的词。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div></pre></td><td class="code"><pre><div class="line">/** js sequence diagrams</div><div class="line"> *  http://bramp.github.io/js-sequence-diagrams/</div><div class="line"> *  (c) 2012-2013 Andrew Brampton (bramp.net)</div><div class="line"> *  Simplified BSD license.</div><div class="line"> */</div><div class="line">%lex</div><div class="line"></div><div class="line">%options case-insensitive</div><div class="line"></div><div class="line">%&#123;</div><div class="line">    // Pre-lexer code can go here</div><div class="line">%&#125;</div><div class="line"></div><div class="line">%%</div><div class="line"></div><div class="line">[\n]+             return &apos;NL&apos;;</div><div class="line">\s+               /* skip whitespace */</div><div class="line">\#[^\n]*          /* skip comments */</div><div class="line">&quot;participant&quot;     return &apos;participant&apos;;</div><div class="line">&quot;left of&quot;         return &apos;left_of&apos;;</div><div class="line">&quot;right of&quot;        return &apos;right_of&apos;;</div><div class="line">&quot;over&quot;            return &apos;over&apos;;</div><div class="line">&quot;note&quot;            return &apos;note&apos;;</div><div class="line">&quot;title&quot;           return &apos;title&apos;;</div><div class="line">&quot;,&quot;               return &apos;,&apos;;</div><div class="line">[^\-&gt;:\n,]+       return &apos;ACTOR&apos;;</div><div class="line">&quot;--&quot;              return &apos;DOTLINE&apos;;</div><div class="line">&quot;-&quot;               return &apos;LINE&apos;;</div><div class="line">&quot;&gt;&gt;&quot;              return &apos;OPENARROW&apos;;</div><div class="line">&quot;&gt;&quot;               return &apos;ARROW&apos;;</div><div class="line">:[^#\n]+          return &apos;MESSAGE&apos;;</div><div class="line">&lt;&lt;EOF&gt;&gt;           return &apos;EOF&apos;;</div><div class="line">.                 return &apos;INVALID&apos;;</div><div class="line"></div><div class="line">/lex</div><div class="line"></div><div class="line">%start start</div><div class="line"></div><div class="line">%% /* language grammar */</div><div class="line"></div><div class="line">start</div><div class="line">    : document &apos;EOF&apos; &#123; return yy; &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">document</div><div class="line">    : /* empty */</div><div class="line">    | document line</div><div class="line">    ;</div><div class="line"></div><div class="line">line</div><div class="line">    : statement &#123; &#125;</div><div class="line">    | &apos;NL&apos;</div><div class="line">    ;</div><div class="line"></div><div class="line">statement</div><div class="line">    : &apos;participant&apos; actor  &#123; $2; &#125;</div><div class="line">    | signal               &#123; yy.addSignal($1); &#125;</div><div class="line">    | note_statement       &#123; yy.addSignal($1); &#125;</div><div class="line">    | &apos;title&apos; message      &#123; yy.setTitle($2);  &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">note_statement</div><div class="line">    : &apos;note&apos; placement actor message   &#123; $$ = new Diagram.Note($3, $2, $4); &#125;</div><div class="line">	| &apos;note&apos; &apos;over&apos; actor_pair message &#123; $$ = new Diagram.Note($3, Diagram.PLACEMENT.OVER, $4); &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">actor_pair</div><div class="line">    : actor             &#123; $$ = $1; &#125;</div><div class="line">	| actor &apos;,&apos; actor   &#123; $$ = [$1, $3]; &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">placement</div><div class="line">    : &apos;left_of&apos;   &#123; $$ = Diagram.PLACEMENT.LEFTOF; &#125;</div><div class="line">	| &apos;right_of&apos;  &#123; $$ = Diagram.PLACEMENT.RIGHTOF; &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">signal</div><div class="line">    : actor signaltype actor message</div><div class="line">    &#123; $$ = new Diagram.Signal($1, $2, $3, $4); &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">actor</div><div class="line">    : ACTOR &#123; $$ = yy.getActor($1); &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">signaltype</div><div class="line">    : linetype arrowtype  &#123; $$ = $1 | ($2 &lt;&lt; 2); &#125;</div><div class="line">	| linetype            &#123; $$ = $1; &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">linetype</div><div class="line">    : LINE      &#123; $$ = Diagram.LINETYPE.SOLID; &#125;</div><div class="line">	| DOTLINE   &#123; $$ = Diagram.LINETYPE.DOTTED; &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">arrowtype</div><div class="line">    : ARROW     &#123; $$ = Diagram.ARROWTYPE.FILLED; &#125;</div><div class="line">	| OPENARROW &#123; $$ = Diagram.ARROWTYPE.OPEN; &#125;</div><div class="line">    ;</div><div class="line"></div><div class="line">message</div><div class="line">    : MESSAGE &#123; $$ = $1.substring(1).trim().replace(/\\n/gm, &quot;\n&quot;); &#125;</div><div class="line">    ;</div><div class="line">%%</div></pre></td></tr></table></figure></p>
-<p>例如下面这一句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[^\-&gt;:\n,]+       return &apos;ACTOR&apos;;</div></pre></td></tr></table></figure></p>
-<p>就是将不是’-&gt;:\n,’这些字符的多个字组成词，这个词叫做ACTOR.</p>
-<p>一般来说终结符也就是类似’note’ 这样的字符需要先被定义。否则 ‘note’这样的字符集合就变成了markdown UML的ACTOR.</p>
-<p>而下面的是将ACTOR词转成对象actor。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">actor</div><div class="line">    : ACTOR &#123; $$ = yy.getActor($1); &#125;</div><div class="line">    ;</div></pre></td></tr></table></figure></p>
-<p>好吧上面就是UML的grammar. 其实用什么语言都可以写出来。不局限于JS. 具体grammar这块使用的是jison和ebnf.<br>有闲空的人可以看一下JS调用jison来做js parser以及EBNF表达式。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1922,7 +1977,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">639</span>
+                <span class="site-state-item-count">640</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

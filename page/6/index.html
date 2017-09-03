@@ -271,6 +271,158 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17389153/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/17389153/" itemprop="url">mysql存储过程加速</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-12-18T08:31:00+08:00">
+                2013-12-18
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>首先看一个存储过程，这个存储过程是为了构造数据使用的。当然贴出来的存储过程简化了一些不必要的表结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">CREATE PROCEDURE modifyRootEntry()</div><div class="line">BEGIN</div><div class="line">  DECLARE done INT DEFAULT FALSE;</div><div class="line">  DECLARE userId INT;  </div><div class="line">  DECLARE userIdIter CURSOR FOR SELECT DISTINCT user_id from entries;</div><div class="line">  OPEN userIdIter;</div><div class="line"></div><div class="line">  read_loop: LOOP</div><div class="line">    FETCH userIdIter INTO userId;   </div><div class="line">    IF done THEN</div><div class="line">      LEAVE read_loop;</div><div class="line">    END IF;</div><div class="line">	INSERT INTO entries (id, name, user_id, parent_id) VALUES(0, &apos;root_parent&apos;, userId, 0);</div><div class="line">	UPDATE entries SET parent_id=0 where user_id=userId AND name=&apos;file_root&apos; AND parent_id is NULL;</div><div class="line">  END LOOP;</div><div class="line"></div><div class="line">  CLOSE userIdIter;</div><div class="line">END;</div></pre></td></tr></table></figure>
+<p>这个存储过程运行了10分钟，好像仅插入了6w行记录。这个真是太慢了。首先一个问题，就是这里使用了隐式提交，所以这里需要写明transaction开始和com<br>mit.修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">CREATE PROCEDURE modifyRootEntry()</div><div class="line">BEGIN</div><div class="line">  DECLARE done INT DEFAULT FALSE;</div><div class="line">  DECLARE userId INT;  </div><div class="line">  DECLARE userIdIter CURSOR FOR SELECT DISTINCT user_id from entries;</div><div class="line"> </div><div class="line">  START TRANSACTION; // here !</div><div class="line">  OPEN userIdIter;</div><div class="line">   	</div><div class="line">  read_loop: LOOP</div><div class="line">    FETCH userIdIter INTO userId;   </div><div class="line">    IF done THEN</div><div class="line">      LEAVE read_loop;</div><div class="line">    END IF;</div><div class="line">	INSERT INTO entries (id, name, user_id, parent_id) VALUES(0, &apos;root_parent&apos;, userId, 0);</div><div class="line">	UPDATE entries SET parent_id=0 where user_id=userId AND name=&apos;file_root&apos; AND parent_id is NULL;</div><div class="line">  END LOOP;</div><div class="line"></div><div class="line">  CLOSE userIdIter;</div><div class="line">  COMMIT;// here !</div><div class="line">END;</div></pre></td></tr></table></figure>
+<p>还有一个问题，就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">UPDATE entries SET parent_id=0 where user_id=userId AND name=&apos;file_root&apos; AND parent_id is NULL;</div></pre></td></tr></table></figure>
+<p>这句话应该放在LOOP的外面。因为每次执行的都一样。修改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">CREATE PROCEDURE modifyRootEntry()</div><div class="line">BEGIN</div><div class="line">  DECLARE done INT DEFAULT FALSE;</div><div class="line">  DECLARE userId INT;  </div><div class="line">  DECLARE userIdIter CURSOR FOR SELECT DISTINCT user_id from entries;</div><div class="line"> </div><div class="line">  START TRANSACTION; // here !</div><div class="line">  OPEN userIdIter;</div><div class="line">   	</div><div class="line">  read_loop: LOOP</div><div class="line">    FETCH userIdIter INTO userId;   </div><div class="line">    IF done THEN</div><div class="line">      LEAVE read_loop;</div><div class="line">    END IF;</div><div class="line">	INSERT INTO entries (id, name, user_id, parent_id) VALUES(0, &apos;root_parent&apos;, userId, 0);</div><div class="line">	</div><div class="line">  END LOOP;</div><div class="line">  UPDATE entries SET parent_id=0 where user_id=userId AND name=&apos;file_root&apos; AND parent_id is NULL; // here!</div><div class="line">  CLOSE userIdIter;</div><div class="line">  COMMIT;// here !</div><div class="line">END;</div></pre></td></tr></table></figure>
+<p>其实上面的语句仍然不够快，原因在于这个是一行行插入的。可以使用辅助表进行加速。从网上直接copy过来的。这里因为每次插入的是2^n个行，所以速度大大提高。辅<br>助表的写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"> CREATE PROCEDURE pFastCreateNums (cnt INT UNSIGNED)</div><div class="line">BEGIN</div><div class="line">DECLARE s INT UNSIGNED DEFAULT 1;</div><div class="line">TRUNCATE TABLE Nums;</div><div class="line">INSERT INTO Nums SELECT s;</div><div class="line">WHILE s*2 &lt;= cnt DO</div><div class="line">BEGIN</div><div class="line">INSERT INTO Nums SELECT a+s FROM Nums;</div><div class="line">SET s = s*2;</div><div class="line">END;</div><div class="line">END WHILE;</div><div class="line">END;</div></pre></td></tr></table></figure>
+<p>上面的是生成一个数字列。当然我们没有必要生成这样一个数字列，但是思想完全可以通用。  </p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17370121/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -410,18 +562,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -741,6 +881,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17262125/">
@@ -874,18 +1026,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1467,6 +1607,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/11580521/">
@@ -1597,154 +1749,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/11104803/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/11104803/" itemprop="url">安全问题二三事</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-09-05T09:34:00+08:00">
-                2013-09-05
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近开始关注安全问题。 同时也在关注由于关注了安全导致的性能问题。</p>
-<p>第一件事是 微信收藏。 详细的内容点击： <a href="http://chillyc.info/blog/2013/08/30/wei-
-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/"> 微信公众平台的安全问题。 </a><br>另外再原文的基础上补充几点：微信公众平台最不安全的地方就是它的内容是通过http方式传输的。只要能抓到包，内容都很容易知道。关键问题就是非常不容易抓到包。<br>所以微信平台才不使用Https传输。而不使用https传输的第二个原因是因为 https ssl密钥交换协议很耗时。第三个原因，强求第三方内容供应商提供ht<br>tps支持的话，第三方供应商需要申请相应的域名证书，然后还需要配置，非常繁琐。所以微信客户端传输到微信服务器走的是https,<br>而微信服务器到第三方服务器走的是http.</p>
-<p>第二件事是 https 传输时需要注意 连接重用和密钥重用。 http connection能开重用就重用吧。另外同时找到了windows 库中<br>connection虽然重用，但是new request仍然不断的和server交换ssl密钥的问题。详见 <a href="http://hi.baidu.com/zzppallas/item/ad8d30c38ffa92310831c605" target="_blank" rel="external"> 这篇blog（winInet<br>对于https保持keep alive需要注意的地方）
-</a> 。大意就是<br>HttpOpenRequest 这个函数中需要去掉INTERNET_FLAG_IGNORE_CERT_CN_INVALID这个 Flag，<br>然后需要添加OnWinInetError代码。如果证书出错（ERROR_INTERNET_INVALID_CA），那么就重新试一次。这样就可以保证<br>INTERNET_FLAG_KEEP_CONNECTION。</p>
-<p>第三件事是 https的请求中夹杂着http请求的问题。这个问题在FireFox 23.0.1中出现。其他各个浏览器都是成功的。详细原因在： <a href="http://superfly81.blog.51cto.com/6302302/1284376" target="_blank" rel="external"><br>火狐混合内容拦截 </a><br>。也就是说如果是https的页面，里面的任何请求都需要是Https的。否则请求是不能发送出去的。而在chrome下，显示的就是 <strong> 此网页包含不安全的内容
-</strong> 。该问题在IE10下面，会在最下面弹出一个小tab，问你是否继续。  </p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1794,7 +1798,7 @@ xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/"> 微信公众平台的�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">639</span>
+                <span class="site-state-item-count">640</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

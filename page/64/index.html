@@ -271,6 +271,164 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979023/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2006/979023/" itemprop="url">java手记---数组,作用域,引用</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-07-26T09:35:00+08:00">
+                2006-07-26
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:51+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>boolean [] a;<br>a = new boolean [] {true,false};<br>System.out.println(a[0]+” “+a[1]);    //this is right.<br>System.out.println(a[0]+a[1]);         //this is wrong. Because two boolean<br>can’t add .<br>System.out.println(a[0],a[1]);           //this is also wrong. Because the<br>function can’t take two paraments               take two paraments.</p>
+<p>java 的数组:<br>ArrayList c;<br>c = new ArrayList();<br>for(int i = 0;i&lt;26;i++)<br>c.add(“hello”+i);<br>System.out.println(c);<br>////////可以在程序过程中输入任意多个数据放入这种数组。<br>Iterator a = c.iterator();//////////////这里是获得c的迭代器。<br>while(a.hasNext())////////这里判断下一个是否存在。<br>System.out.println(a.next());<br>/////////这里不要产生误解：认为第一个打印不出来。这里可以看出迭代器初始值是指向第一个元素，<br>/////////打印时只是先打印了元素再向后指。</p>
+<p>/////////不过要说明的是java中没有指针这个概念，不过我学c/c++多年很自然的想用这个概念。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">~~~~~~~~</div><div class="line"></div><div class="line">Slope:</div><div class="line"></div><div class="line">for(int i = 0;i &lt; 10;i++)  </div><div class="line">System.out.println(i);  </div><div class="line">for(int i = 0;i &lt; 10;i++)  </div><div class="line">System.out.println(i*10);  </div><div class="line">////////////////////这样写并没有出错，这与c＋＋不同。代表在for循环以外i已经被销掉。不能再使用i这个变量</div><div class="line"></div><div class="line">int i = 3;  </div><div class="line">&#123;  </div><div class="line">char i = &apos;c&apos;;//////////这里将出错，与c++不同。c++中将在第一个输出点输出c  </div><div class="line">System.out.println(i);  </div><div class="line">&#125;  </div><div class="line">System.out.println(i);  </div><div class="line">～～～～～～～～～～～～～～～～～～～～～～～～～～  </div><div class="line">int i = 3;  </div><div class="line">&#123;  </div><div class="line">char q = &apos;c&apos;;  </div><div class="line">System.out.println(q);  </div><div class="line">&#125;  </div><div class="line">System.out.println(i);  </div><div class="line">System.out.println(q);///////////这里也会编译失败，原因是q已经超出作用范围。</div></pre></td></tr></table></figure>
+<p><del>~</del></p>
+<p>reference:</p>
+<p>///////在声明数组或对象时，创建的是一个引用。无论声明什么样的数组，引用都是32位宽。<br>int [] ages;<br>int [] otherAges;<br>otherAges = new int [5];<br>ages = otherAges;  //认为把otherAges的引用赋给ages<br>////如果otherAges[2] = 2;<br>////则ages[2] == 2;</p>
+<p>//////////////////////////////函数不用声明。<br>//////////////////////////////传入到函数中的数组被永久的改变了。</p>
+<p>int [] b = new int []{1,2,3,5,7};  // this is right.<br>int [] b = new int [5]{1,2,3,5,7}; //this is wrong.<br>/////////////////////////////////////////////////////////////////<br>static int[] creat(int a)                         ///返回一个数组。<br>{<br>int[] array = new int [a];<br>…………………………….<br>return array;                       ///只写数组名。<br>}</p>
+<p>这里说明一下指针和引用的两个概念:</p>
+<p>指针是指向地址的,而引用不是.</p>
+<p>指针指向地址带来的麻烦就是指针可以乱指,而且有时程序中根本无法判断它是否已经越界.更可能指向系统区并修改里面的数据…..后果可想而知.</p>
+<p>而引用是一个对象的另一个名字,</p>
+<p>Object a = new Object();</p>
+<p>Object b = a;</p>
+<p>这样b成了a的引用.b其实是a的另一种叫法.所以改变了b就相当于改变了a..</p>
+<p>因为java中没有指针这个东西,所以比c/c++使用起来安全的多.错误也很容易被编译器发现.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/978982/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -399,18 +557,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -718,6 +864,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/976771/">
@@ -873,18 +1031,6 @@ document.close();
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1524,6 +1670,18 @@ window.setTimeout("firm()",5000);
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/675602/">
@@ -1693,7 +1851,7 @@ window.setTimeout("firm()",5000);
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">639</span>
+                <span class="site-state-item-count">640</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
