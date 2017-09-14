@@ -271,6 +271,157 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4104044/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2009/4104044/" itemprop="url">KMeans 算法</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-04-23T17:52:00+08:00">
+                2009-04-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-29T10:27:49+08:00">
+                2017-06-29
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>KMeans最主要是思想是</p>
+<ol>
+<li>播撒K个标识点，K是你要分成几类。</li>
+<li>网络中所有点对这K个点计算距离，并归入最近的一个标识点中。这样就得到K个类</li>
+<li>重新计算这K个类的中心距离。</li>
+<li>是否要更新K个类的中心距离，是否迭代次数为0，如果要更新标识点的位置，并且迭代次数不为0，更新标识点，并跳转回2.</li>
+</ol>
+<p>下面是为FPT</p>
+<p>写的KMeans算法。这个FPT分裂时只要分成两类，所以就是K=2.单纯的KMeans没有像我写的这样复杂。我这里的距离是计算的两个位数组中的差异位数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// only divide two parts  </span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">KMeans2</span><span class="params">(FPN * current,FPN * &amp;left, FPN * &amp;right, <span class="keyword">const</span> Record&lt;N&gt;&amp; record)</span>  </span></div><div class="line">    &#123;  </div><div class="line">        <span class="comment">// prepare   </span></div><div class="line">        <span class="keyword">int</span> k = <span class="number">2</span>;  </div><div class="line">        <span class="keyword">int</span> count = current-&gt;count+<span class="number">1</span>;  </div><div class="line">        KMeansNode&lt;N,order,KHash&gt; *nodes = <span class="keyword">new</span> KMeansNode&lt;N,order,KHash&gt;[count];   </div><div class="line">        <span class="keyword">int</span>* classLabel = <span class="keyword">new</span> <span class="keyword">int</span>[count];  </div><div class="line">        <span class="keyword">int</span>* totalDistance = <span class="keyword">new</span> <span class="keyword">int</span>[count];  </div><div class="line">        <span class="built_in">memset</span>(totalDistance,<span class="number">0</span>,count*<span class="keyword">sizeof</span>(<span class="keyword">int</span>));  </div><div class="line">        <span class="built_in">memset</span>(classLabel,<span class="number">-1</span>,count*<span class="keyword">sizeof</span>(<span class="keyword">int</span>));  </div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; current-&gt;count; i++)  </div><div class="line">        &#123;  </div><div class="line">            nodes[i].Set(current-&gt;bfilters[i],current-&gt;paths[i],current-&gt;branches[i],current-&gt;support[i]);  </div><div class="line">        &#125;  </div><div class="line">        nodes[count - <span class="number">1</span>].Set(record,<span class="literal">NULL</span>);  </div><div class="line">          </div><div class="line">        <span class="comment">// train  </span></div><div class="line">        BloomFilter&lt;N&gt;* centers = <span class="keyword">new</span> BloomFilter&lt;N&gt;[k];  </div><div class="line">        <span class="keyword">int</span>* cdistance = <span class="keyword">new</span> <span class="keyword">int</span>[k]; <span class="comment">// the distance between the center and each node  </span></div><div class="line">        <span class="built_in">memset</span>(cdistance,<span class="number">0</span>,k*<span class="keyword">sizeof</span>(<span class="keyword">int</span>));  </div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span> ; i &lt; k; i++)  </div><div class="line">        &#123;  </div><div class="line">            centers[i].Set(rand()%(<span class="keyword">int</span>)<span class="built_in">pow</span>(<span class="number">2.0</span>,(<span class="keyword">double</span>)N<span class="number">-1</span>));  </div><div class="line">              </div><div class="line">        &#125;  </div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; <span class="number">500</span>; x++)  </div><div class="line">        &#123;  </div><div class="line">            <span class="comment">// iterator  </span></div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)  </div><div class="line">            &#123;  </div><div class="line">                <span class="comment">// for each node to compute the distance with centers  </span></div><div class="line">                <span class="keyword">int</span> min = N+<span class="number">1</span>;  </div><div class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; k; j++)  </div><div class="line">                &#123;  </div><div class="line">                    <span class="keyword">int</span> distance = BloomFilter&lt;N&gt;::Distance(nodes[i].record.bfilter,centers[j]);  </div><div class="line">                    <span class="keyword">if</span>(distance &lt; min)  </div><div class="line">                    &#123;  </div><div class="line">                        min = distance;  </div><div class="line">                        classLabel[i] = j;  </div><div class="line">                    &#125;  </div><div class="line">                &#125;  </div><div class="line">                  </div><div class="line">            &#125;  </div><div class="line">            <span class="comment">// recompute the centers  </span></div><div class="line">              </div><div class="line">            <span class="comment">// compute the distance between each node in the same class label  </span></div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)  </div><div class="line">            &#123;  </div><div class="line">                totalDistance[i] = <span class="number">0</span>;  </div><div class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j &lt; count; j++)  </div><div class="line">                &#123;  </div><div class="line">                    <span class="keyword">if</span>(i != j &amp;&amp; classLabel[i] == classLabel[j])  </div><div class="line">                    &#123;  </div><div class="line">                        <span class="comment">// the same class but not itself  </span></div><div class="line">                        totalDistance[i] += BloomFilter&lt;N&gt;::Distance(nodes[i].record.bfilter,nodes[j].record.bfilter);  </div><div class="line">                    &#125;  </div><div class="line">                &#125;  </div><div class="line">            &#125;  </div><div class="line">            <span class="comment">// compute the distances between the center and each node   </span></div><div class="line">              </div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)  </div><div class="line">            &#123;  </div><div class="line">                cdistance[classLabel[i]]+=BloomFilter&lt;N&gt;::Distance(centers[classLabel[i]],nodes[i].record.bfilter);  </div><div class="line">            &#125;  </div><div class="line">  </div><div class="line">            <span class="keyword">int</span> flag = <span class="literal">false</span>;  </div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)  </div><div class="line">            &#123;  </div><div class="line">                <span class="keyword">if</span>(cdistance[classLabel[i]] &gt; totalDistance[i])  </div><div class="line">                &#123;  </div><div class="line">                    centers[i].Set(nodes[i].record.bfilter);  </div><div class="line">                    flag = <span class="literal">true</span>;  </div><div class="line">                    cdistance[classLabel[i]] = totalDistance[i];  </div><div class="line">                &#125;  </div><div class="line">            &#125;  </div><div class="line">            <span class="comment">// no update the center then break the loop  </span></div><div class="line">            <span class="keyword">if</span>(!flag)  </div><div class="line">            &#123;  </div><div class="line">                <span class="keyword">break</span>;  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">        right = <span class="keyword">new</span> FPN();  </div><div class="line">        left = <span class="keyword">new</span> FPN();  </div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)  </div><div class="line">        &#123;  </div><div class="line">            <span class="keyword">if</span>(classLabel[i] == <span class="number">0</span>)  </div><div class="line">            &#123;  </div><div class="line">                <span class="comment">// insert left   </span></div><div class="line">                left-&gt;Insert(nodes[i].record,nodes[i].branch);  </div><div class="line">            &#125;  </div><div class="line">            <span class="keyword">else</span>  </div><div class="line">            &#123;  </div><div class="line">                <span class="comment">// insert right  </span></div><div class="line">                right-&gt;Insert(nodes[i].record,nodes[i].branch);  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">        <span class="keyword">delete</span> current;  </div><div class="line">      </div><div class="line">        <span class="keyword">delete</span> [] nodes;  </div><div class="line">        <span class="keyword">delete</span> [] centers;  </div><div class="line">        <span class="keyword">delete</span> [] totalDistance;  </div><div class="line">        <span class="keyword">delete</span> [] classLabel;  </div><div class="line">        <span class="keyword">delete</span> [] cdistance;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4101888/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -401,18 +552,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -681,6 +820,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4088191/">
@@ -823,18 +974,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1380,6 +1519,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4064281/">
@@ -1507,206 +1658,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4048515/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2009/4048515/" itemprop="url">java webservice开发和调用(jdk1.5+eclipse3.4 + tomcat5.5+axis1.4+xfire1.2.6)</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-04-04T15:53:00+08:00">
-                2009-04-04
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-29T14:15:40+08:00">
-                2017-06-29
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>下载一个 <a href="http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-1_5_0_18-windows-i586-p.exe?BundledLineItemUUID=1KhIBe.mgfsAAAEg5uQI93Ap&amp;OrderID=6gVIBe.mONgAAAEg2uQI93Ap&amp;ProductID=79FIBe.nKlMAAAEfLBlzHdQ4&amp;FileName=/jdk-1_5_0_18-windows-i586-p.exe" target="_blank" rel="external"> jdk1.5版本 </a> 的。并且如果Oracle与之冲突..就删掉Oracle的所有环境变量。虽然这样做有点过，但是我的确受够了jdk1.6+eclipse3.1+oracle中的jre 1.1.3和1.8.1版本的冲突。另外jdk1.6会与eclipse3.1在启动tomcat上冲突。我也不知道具体是什么原因。</li>
-</ol>
-<p>1. 下载一个Eclipse 3.4 for J2EE版本的 <a href="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/ganymede/SR2/eclipse-jee-ganymede-SR2-win32.zip" target="_blank" rel="external"> http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/ganymede/SR2/eclipse-jee-ganymede-SR2-win32.zip </a></p>
-<p>2. 下载tomcat 5.5。 <a href="http://apache.cs.utah.edu/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.exe" target="_blank" rel="external"> http://apache.cs.utah.edu/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.exe</a> ,下载一个 安装到默认目录。安装完毕之后，不要启动。另外注意，你启动monitor后再点击Exit，不代表服务关闭了。</p>
-<p>你要选择Stop Service 才可以。</p>
-<p>3. 下载xfire-1.2.6。 <a href="http://repository.codehaus.org/org/codehaus/xfire/xfire-distribution/1.2.6/xfire-distribution-1.2.6.zip" target="_blank" rel="external"> http://repository.codehaus.org/org/codehaus/xfire/xfire-distribution/1.2.6/xfire-distribution-1.2.6.zip</a></p>
-<p>4. 在Eclipse中windows-&gt;preference-&gt;Server-&gt;Runtime Environments。点击add,选中tomcat5.5, next, 浏览到你的tomcat 5.5的安装路径。然后Finish.</p>
-<p>5. 新建一个工程（dynamic web project），取名为TestHelloWebService</p>
-<p>6. 在此工程中添加一个新类：hello ，其package为test.</p>
-<p>7. in hello.java中：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> test;  </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> </span>&#123;  </div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span>  </span></div><div class="line">    &#123;  </div><div class="line">        <span class="keyword">return</span> <span class="string">"hello"</span>;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>8. 在web.xml中之前添加<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>XFireServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>  </div><div class="line">            org.codehaus.xfire.transport.http.XFireConfigurableServlet  </div><div class="line">    <span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span>  </div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>XFireServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/servlet/XFireServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>XFireServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>  </div><div class="line">     <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/services/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>9. 将xfire-1.2.6解压，然后将xfire-all-1.2.6.jar 和所有在xfire-1.2.6的lib中的jar</p>
-<p>copy到WebContent/WEB-INF/lib下。</p>
-<p>10.在WEB-INF中创建classes文件夹，并将META-INF文件夹移到classes文件夹下，</p>
-<p>并在META-INF下创建一个xfire文件夹。在xfire中创建一个services.xml文件。</p>
-<p>service.xml文件内容如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;  </div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://xfire.codehaus.org/config/1.0"</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">service</span>&gt;</span>  </div><div class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </div><div class="line">      <span class="tag">&lt;<span class="name">namespace</span>&gt;</span>http://localhost:8090/TestHelloWebService/services/Hello<span class="tag">&lt;/<span class="name">namespace</span>&gt;</span>  </div><div class="line">      <span class="tag">&lt;<span class="name">serviceClass</span>&gt;</span>test.Hello<span class="tag">&lt;/<span class="name">serviceClass</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;/<span class="name">service</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>其中name是你要提供service的类名</p>
-<p>namespace 是你要访问的服务地址。这里我的端口因为与Oracle冲突所以不是8080.你自己改为你当时配置端口。</p>
-<p>格式为:<a href="http://主机ip:端口号/项目工程名/services/类名" target="_blank" rel="external">http://主机ip:端口号/项目工程名/services/类名</a></p>
-<p>serviceClass是你的包名.类名</p>
-<p>11.右击的工程 -&gt;Run as-&gt; Run on server. Finish。这里如果在eclipse之外还启动了tomcat就会报错。</p>
-<p>12.访问 <a href="http://localhost:8090/TestHelloWebService/services/Hello?WSDL" target="_blank" rel="external"> http://localhost:8090/TestHelloWebService/services/Hello?WSDL</a></p>
-<p>13.如何访问WebService…你可以用c#，那是非常简单的..见一个C#工程，添加一个web reference.</p>
-<p>然后就像你使用本地方法一样使用这个webservice.注意要using webservice的名字空间。对于非本地的webservice调用就比较麻烦。</p>
-<p>有时还要使用用户验证。这里不详细介绍。</p>
-<p>13.如果使用java来调用webService 流行的方法是使用axis。</p>
-<p><a href="http://topic.csdn.net/t/20030403/09/1612072.html" target="_blank" rel="external">http://topic.csdn.net/t/20030403/09/1612072.html</a></p>
-<p>java里使用webservice 安装配置Axis</p>
-<p>下载一个Axis1.4。下载地址<a href="http://ws.apache.org/axis/releases.html" target="_blank" rel="external">http://ws.apache.org/axis/releases.html</a></p>
-<p>解压Axis1.4.zip包，找到webapps目录下的axis文件夹，拷贝axis文件夹到Tomcat中的webapps文件夹下。</p>
-<p>将Tomcat中的axis目录下的WEB-INF/lib中的所有的文件copy到Tomcat的common/lib目录中。(以后凡是要在axis的lib中添加jar文件，都要copy一份到Tomcat的common/lib目录下)。</p>
-<p>我的电脑-&gt;属性-&gt;高级-&gt;环境变量-&gt;系统变量（用户变量也可以）中添加：</p>
-<p>TOMCAT_HOME</p>
-<p>这里是你的TOMCAT安装目录。我的是C:/Program Files/Apache Software Foundation/Tomcat 5.5</p>
-<p>反正这个目录下一定要有webapps</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">AXIS\_HOME</div><div class="line"></div><div class="line">%TOMCAT\_HOME%/webapps/axis(TOMCAT的目录)</div><div class="line"></div><div class="line">AXIS\_LIB</div><div class="line"></div><div class="line">%AXIS\_HOME%/lib</div><div class="line"></div><div class="line">AXISCLASSPATH</div><div class="line"></div><div class="line">%AXIS\_LIB%/axis.jar;%AXIS\_LIB%/commons-discovery.jar;%AXIS\_LIB%/commons-logging.jar;%AXIS\_LIB%/jaxrpc.jar;%AXIS\_LIB%/saaj.jar;%AXIS\_LIB%/log4j-1.2.8.jar;%AXIS\_LIB%/xml-apis.jar;%AXIS\_LIB%/xercesImpl.jar</div></pre></td></tr></table></figure>
-<p>修改或创建CLASSPATH ，在末尾加上：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">%AXIS\_LIB%/axis.jar;%AXIS\_LIB%/commons-discovery.jar;%AXIS\_LIB%/commons-logging.jar;%AXIS\_LIB%/jaxrpc.jar;%AXIS\_LIB%/saaj.jar;%AXIS\_LIB%/log4j-1.2.8.jar;%AXIS\_LIB%/xml-apis.jar;%AXIS\_LIB%/xercesImpl.jar</div></pre></td></tr></table></figure>
-<p>注意检查CLASSPATH是否正确：（有些软件会在用户变量区设置一个classpath，会有影响，如:XMLSPY）</p>
-<p>在运行输入cmd,然后：Echo %CLASSPATH%</p>
-<p>检查配置：</p>
-<p>启动Tomcat，访问<a href="http://localhost:8090/axis/，" target="_blank" rel="external">http://localhost:8090/axis/，</a></p>
-<p>验证axis的是否工作：<a href="http://localhost:8090/axis/happyaxis.jsp如果正常显示表示正常。" target="_blank" rel="external">http://localhost:8090/axis/happyaxis.jsp如果正常显示表示正常。</a></p>
-<p>14. 你要建立一个新的工程（一个常规的java工程即可）..创建一个包名test,添加一个类TestWebService</p>
-<p>代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> test;  </div><div class="line"><span class="keyword">import</span> org.apache.axis.client.Call;  </div><div class="line"><span class="keyword">import</span> org.apache.axis.client.Service;  </div><div class="line"><span class="keyword">import</span> org.apache.axis.encoding.XMLType;  </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestWebService</span> </span>&#123;  </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </div><div class="line">        <span class="keyword">try</span> &#123;  </div><div class="line">            <span class="comment">//还记得刚才的那个WebService的services.xml中的namespace吗？  </span></div><div class="line">            String endpoint = <span class="string">"http://localhost:8090/TestHelloWebService/services/Hello"</span>;  </div><div class="line">            Service service = <span class="keyword">new</span> Service();  </div><div class="line">            Call call = (Call) service.createCall();  </div><div class="line">            call.setTargetEndpointAddress(<span class="keyword">new</span> java.net.URL(endpoint));  </div><div class="line">            call.setOperationName(<span class="string">"hello"</span>); <span class="comment">// 这里是的Hello类中的方法名（注意大小写）  </span></div><div class="line">            call.setReturnType(XMLType.XSD_STRING); <span class="comment">// 返回值类型。  </span></div><div class="line">            Object[] o = <span class="keyword">null</span>;<span class="comment">//如果你的方法中没有参数，那么就这样写吧。  </span></div><div class="line">            String hello = (String) call.invoke(o);<span class="comment">// 做方法执行。  </span></div><div class="line">            System.out.println(hello);  </div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;  </div><div class="line">            System.err.println(e.toString());  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>网上的这段代码是用来调用一个float add(float a, float b)的方法。你现在应该知道怎么进行webservice调用了吧。</p>
-<p>不管webservice提供的函数有没有参数，你应该都会调用了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//            Float i = new Float(1);  </span></div><div class="line"><span class="comment">//            Float j = new Float(2);  </span></div><div class="line"><span class="comment">//            call.setOperationName("add");  </span></div><div class="line"><span class="comment">//            call.addParameter("i", org.apache.axis.encoding.XMLType.XSD_FLOAT,  </span></div><div class="line"><span class="comment">//                    javax.xml.rpc.ParameterMode.IN);  </span></div><div class="line"><span class="comment">//            call.addParameter("j", org.apache.axis.encoding.XMLType.XSD_FLOAT,  </span></div><div class="line"><span class="comment">//                    javax.xml.rpc.ParameterMode.IN);  </span></div><div class="line"><span class="comment">//            call.setReturnType(XMLType.XSD_FLOAT);  </span></div><div class="line"><span class="comment">//            Float ret = (Float) call.invoke(new Object[] &#123; i, j &#125;);</span></div></pre></td></tr></table></figure>
-<p>15.运行你的TestWebService试试。Done。（你刚才的webservice项目还在运行..，否则…）</p>
-<p>真的很可惜，我过去使用的eclipse3.1,添加了很多plugin,死活都建不成webservice.再后来我使用Myclipse 4.0GA版本，还是看不到webservice。或者运行时候后来有好心MM传给我MyEclipse5.0GA,结果报出灾难性崩溃…只得重装了jdk,并且下了较新的eclipse.</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/32/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/34/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/32/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><span class="space">&hellip;</span><a class="page-number" href="/page/65/">65</a><a class="extend next" rel="next" href="/page/34/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1751,7 +1707,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">640</span>
+                <span class="site-state-item-count">641</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1764,7 +1720,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -271,6 +271,174 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4667604/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2009/4667604/" itemprop="url">ssh自动登录方法</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-10-14T09:32:00+08:00">
+                2009-10-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="自动ssh登录的几种方法"><a href="#自动ssh登录的几种方法" class="headerlink" title="自动ssh登录的几种方法"></a>自动ssh登录的几种方法</h2><p>此帖转载自： <a href="http://blueicer.blog.51cto.com/395686/88175" target="_blank" rel="external"> http://blueicer.blog.51cto.com/395686/88175
+</a></p>
+<p>不过好像那个地方的也是转载。</p>
+<p>我依照下面的方法尝试了一下。在2中其实并不需要# ssh -i /root/.ssh/id_rsa_192.168.60.110 <a href="mailto:someone@192.168.60.110" target="_blank" rel="external"><br>someone@192.168.60.110 </a> 这样写。只需要ssh<br>root@192.168.60.110即可。或许是版本的问题吧。</p>
+<p><strong> 1. 自动ssh/scp方法== </strong>   </p>
+<p>A为本地主机(即用于控制其他主机的机器) ;<br>B为远程主机(即被控制的机器Server), 假如ip为192.168.60.110;<br>A和B的系统都是Linux  </p>
+<p>在A上运行命令:  </p>
+<h1 id="ssh-keygen-t-rsa-连续三次回车-即在本地生成了公钥和私钥-不设置密码"><a href="#ssh-keygen-t-rsa-连续三次回车-即在本地生成了公钥和私钥-不设置密码" class="headerlink" title="ssh-keygen -t rsa (连续三次回车,即在本地生成了公钥和私钥,不设置密码)"></a>ssh-keygen -t rsa (连续三次回车,即在本地生成了公钥和私钥,不设置密码)</h1><h1 id="ssh-root-192-168-60-110-“mkdir-ssh”"><a href="#ssh-root-192-168-60-110-“mkdir-ssh”" class="headerlink" title="ssh  root@192.168.60.110  “mkdir .ssh”"></a>ssh <a href="mailto:root@192.168.60.110" target="_blank" rel="external"> root@192.168.60.110 </a> “mkdir .ssh”</h1><p>(需要输入密码)  </p>
+<h1 id="scp-ssh-id-rsa-pub-root-192-168-60-110"><a href="#scp-ssh-id-rsa-pub-root-192-168-60-110" class="headerlink" title="scp ~/.ssh/id_rsa.pub  root@192.168.60.110 "></a>scp ~/.ssh/id_rsa.pub <a href="mailto:root@192.168.60.110" target="_blank" rel="external"> root@192.168.60.110 </a></h1><p>:.ssh/id_rsa.pub (需要输入密码)  </p>
+<p>在B上的命令:  </p>
+<h1 id="touch-root-ssh-authorized-keys-如果已经存在这个文件-跳过这条"><a href="#touch-root-ssh-authorized-keys-如果已经存在这个文件-跳过这条" class="headerlink" title="touch /root/.ssh/authorized_keys (如果已经存在这个文件, 跳过这条)"></a>touch /root/.ssh/authorized_keys (如果已经存在这个文件, 跳过这条)</h1><h1 id="cat-root-ssh-id-rsa-pub-gt-gt-root-ssh-authorized-keys"><a href="#cat-root-ssh-id-rsa-pub-gt-gt-root-ssh-authorized-keys" class="headerlink" title="cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys"></a>cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</h1><p>(将id_rsa.pub的内容追加到authorized_keys 中)  </p>
+<p>回到A机器:  </p>
+<h1 id="ssh-root-192-168-60-110-不需要密码-登录成功"><a href="#ssh-root-192-168-60-110-不需要密码-登录成功" class="headerlink" title="ssh  root@192.168.60.110  (不需要密码, 登录成功)"></a>ssh <a href="mailto:root@192.168.60.110" target="_blank" rel="external"> root@192.168.60.110 </a> (不需要密码, 登录成功)</h1><p><strong> 2. 控制n个机器如上所述自动登录 </strong><br>那就需要n对钥匙(密钥和公钥), ssh-keygen 命令可以随意更改钥匙对的名字, 比如:  </p>
+<h1 id="ssh-keygen-t-rsa"><a href="#ssh-keygen-t-rsa" class="headerlink" title="ssh-keygen -t rsa"></a>ssh-keygen -t rsa</h1><p>Generating public/private rsa key pair.<br>Enter file in which to save the key (/root/.ssh/id_rsa):<br>/root/.ssh/id_rsa_192.168.60.110  </p>
+<p>这 样私钥和公钥的名字分别就是: id_rsa_192.168.60.110和 id_rsa_192.168.60.110.pub;然后将<br>id_rsa_192.168.60.110.pub 文件的内容, 追加到sever的 ~/.ssh/authorized_keys文件中,最后,<br>在本地用ssh命令的 -i 参数指定本地密钥, 并登录:  </p>
+<h1 id="ssh-i-root-ssh-id-rsa-192-168-60-110-someone-192-168-60-110"><a href="#ssh-i-root-ssh-id-rsa-192-168-60-110-someone-192-168-60-110" class="headerlink" title="ssh -i /root/.ssh/id_rsa_192.168.60.110 [ someone@192.168.60.110"></a>ssh -i /root/.ssh/id_rsa_192.168.60.110 [ someone@192.168.60.110</h1><p>](mailto:someone@192.168.60.110)  </p>
+<p>scp也是一样的  </p>
+<h1 id="scp-i-root-ssh-id-rsa-192-168-60-110-filename-someone-192-168-60-110"><a href="#scp-i-root-ssh-id-rsa-192-168-60-110-filename-someone-192-168-60-110" class="headerlink" title="scp -i /root/.ssh/id_rsa_192.168.60.110 filename [ someone@192.168.60.110"></a>scp -i /root/.ssh/id_rsa_192.168.60.110 filename [ someone@192.168.60.110</h1><p>](mailto:someone@192.168.60.110) :/home/someone  </p>
+<p>在文件.bashrc中加下两行，每次做同样的操作就不用敲入这样长的命令了：<br>alias sshcell=’ssh -i /root/.ssh/id_rsa_192.168.60.110 <a href="mailto:someone@192.168.60.110" target="_blank" rel="external"><br>someone@192.168.60.110 </a> ‘<br>alias scpcell=’scp -i /root/.ssh/id_rsa_192.168.60.110 filename <a href="mailto:someone@192.168.60.110" target="_blank" rel="external"><br>someone@192.168.60.110 </a> :/home/someone’  </p>
+<p>这样，直接键入一下指令实现ssh和scp自动登录：  </p>
+<h1 id="sshcell"><a href="#sshcell" class="headerlink" title="sshcell"></a>sshcell</h1><h1 id="scpcell"><a href="#scpcell" class="headerlink" title="scpcell"></a>scpcell</h1><p><strong> 3. 自动ssh/scp脚本 </strong><br>如果需要从A，到B，然后才能够到C，那么需要ssh和scp两次，是比较麻烦的。<br>ssh自动登录：  </p>
+<p>#!/usr/bin/expect -f<br>set timeout 30<br>spawn ssh weiqiong@B<br>expect “password:”<br>send “pppppp/r”<br>expect “]*”<br>send “ssh weiqiong@C/r”<br>expect “password:”<br>send “pppppp/r”<br>interact<br>scp从A拷贝文件到C：  </p>
+<p>#!/usr/bin/expect -f<br>set timeout 300<br>set file [lindex $argv 0]<br>spawn scp $file weiqiong@B:/home/weiqiong<br>expect “password:”<br>send “pppppp/r”<br>expect “]<em>“<br>spawn ssh weiqiong@B<br>expect “password:”<br>send “pppppp/r”<br>expect “]</em>“<br>send “scp $file weiqiong@C:/home/weiqiong/r”<br>expect “password:”<br>send “pppppp/r”<br>expect “]*”<br>exit<br>interact  </p>
+<p>scp从C拷贝文件到A：  </p>
+<p>#!/usr/bin/expect -f<br>set timeout 300<br>set file [lindex $argv 0]<br>spawn ssh weiqiong@B<br>expect “password:”<br>send “pppppp/r”<br>expect “]<em>“<br>send “scp weiqiong@C:/home/weiqiong/$file ./r”<br>expect “password:”<br>send “pppppp/r”<br>expect “]</em>“<br>send “exit/r”<br>expect “]*”<br>spawn scp weiqiong@B:/home/weiqiong/$file .<br>expect “password:”<br>send “pppppp/r”<br>interact  </p>
+<p><strong> 4. 建立ssh/scp通道 </strong><br>比如说我的机器是A，中间服务器为B，目标服务器是C<br><br>从A可以ssh到B，从B可以ssh到C，但是A不能直接ssh到C<br><br>现在展示利用ssh通道技术从A直接传输文件到C<br><br>1. ssh -L1234:C:22 userid@B<br><br>input B’s password<br><br>(1234是本机A的空闲端口，该指令需要A机器上的root用户权限，实际上是在本机1234端口建立了一个通道)<br>  </p>
+<p>2. 打开一个新的console，键入：<br><br>scp -P1234 filename userid@localhost:<br><br>input C’s password</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4667460/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -411,18 +579,6 @@ E8%8D%90%E7%9A%84%E6%BA%90" target="_blank" rel="external"> 源地址 </a></p>
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -702,6 +858,18 @@ E8%8D%90%E7%9A%84%E6%BA%90" target="_blank" rel="external"> 源地址 </a></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4628162/">
@@ -835,18 +1003,6 @@ E8%8D%90%E7%9A%84%E6%BA%90" target="_blank" rel="external"> 源地址 </a></p>
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1375,6 +1531,18 @@ E8%8D%90%E7%9A%84%E6%BA%90" target="_blank" rel="external"> 源地址 </a></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4601230/">
@@ -1540,161 +1708,11 @@ dsssl-1.79</code> .</p>
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/4578604/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2009/4578604/" itemprop="url">奠</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2009-09-22T09:24:00+08:00">
-                2009-09-22
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>生本如花</p>
-<p>初开绽放</p>
-<p>即被割下</p>
-<p>去虹如影</p>
-<p>不复存留</p>
-<p>白驹过隙</p>
-<p>吾皆蚁蝼</p>
-<p>星坠平野</p>
-<p>月涌江流</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/27/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/29/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/27/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/65/">65</a><a class="extend next" rel="next" href="/page/29/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1739,7 +1757,7 @@ dsssl-1.79</code> .</p>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">640</span>
+                <span class="site-state-item-count">641</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1752,7 +1770,7 @@ dsssl-1.79</code> .</p>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

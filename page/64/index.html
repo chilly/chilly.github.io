@@ -271,6 +271,163 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979042/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2006/979042/" itemprop="url">java手记---类</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-07-26T09:40:00+08:00">
+                2006-07-26
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:51+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一个类的实现:<br>(1)当装载这个类的时候，实际上是调用的类的static方法或者访问类的static字段的时候，java解释器会搜寻classpath来找到这个类<br>（2）装载类后，会对static数据进行初始化。<br>（3）当用new创建一个新对象时，会在堆中为对象分配足够的内存<br>（4）内存先被清零 ，自动把对象的数据成员赋上缺省值。变量为0或对应的true或’/u0000’,引用赋为null<br>（5）执行定义成员数据的初始化<br>（6）执行构造函数</p>
+<p>////////////////////////////对象就是数据+方法。</p>
+<p>方法一 /////////////这样构造类<br>class person1                               /////////////但不能这样声明  public class<br>person1<br>{   ///////////////这样写会出错 。<br>String name;<br>int age;<br>}<br>public class person<br>{<br>public static void main(String[]<br>args)/////////main函数的参数必须这样写不能省略args，当然可以使用其他的变量<br>{ person1 test = new person1();<br>}<br>}</p>
+<p>方法二///////////////////这样也可以<br>public class person<br>{ String name;<br>int age;<br>public static void main(String[] args)<br>{ person test = new person();<br>}<br>}</p>
+<p>class person //////////////class 前的public 可以不写。<br>{<br>public static void main(String[] args)<br>{<br>……………………………………<br>}<br>}</p>
+<p>class person1<br>{<br>String name;<br>int age;<br>void test()<br>{<br>in t = new in(); /////////////////////每一次都必须实例化。<br>t.test1();   ////////否则编译失败。<br>System.out.println(“person1”);<br>}<br>class in ///////////////内部类<br>{<br>void test1()<br>{<br>System.out.println(“in”);<br>}<br>}<br>}</p>
+<p>///////////////////在构造函数中如果要调用其他构造函数,就要把其他的构造函数放在最前面.<br>///////////////////如果调用自身的构造函数可以这样写:<br>Flower(String s)<br>{<br>System.out.println(“String create”);</p>
+<p>}<br>Flower(int i)<br>{<br>System.out.println(“int create”);<br>}<br>Flower(String s,int i)<br>{<br>this(i);////放在最前面<br>System.out.println(“String and int create”);</p>
+<p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  </div><div class="line">但继承的时候  </div><div class="line">D:/Javaworkspace/test/testNow/Init.java  </div><div class="line">class SupClass  </div><div class="line">&#123;  </div><div class="line">public SupClass(int id)  </div><div class="line">&#123;  </div><div class="line">System.out.println(id+&quot;SupClass is construct!&quot;);  </div><div class="line">&#125;  </div><div class="line">&#125;  </div><div class="line">public class Init extends SupClass  </div><div class="line">&#123;  </div><div class="line">static int i;////////这样写在super（i）处就不会出错。  </div><div class="line">public Init()  </div><div class="line">&#123;  </div><div class="line">super(i);  </div><div class="line">i=0;  </div><div class="line">&#125;  </div><div class="line">&#125;  </div><div class="line">/////变化一下：  </div><div class="line">public class Init extends SupClass  </div><div class="line">&#123;  </div><div class="line">int i;  </div><div class="line">public Init()  </div><div class="line">&#123;  </div><div class="line">super(i);//这里就会报错。这是因为先初始化static变量，后进行自身类的构造函数调用，后调用基类构造函数，再进行  </div><div class="line">i=0；  //自身类中成员变量的初始化。  </div><div class="line">&#125;  </div><div class="line">&#125;  </div><div class="line">//////////再写一个类  </div><div class="line">public class ObjOrPri &#123;  </div><div class="line">SupClass a= new SupClass(i);//这里会报错，这就意味着成员对象是顺序进行的初始化。  </div><div class="line">int i;  </div><div class="line">  </div><div class="line">ObjOrPri()  </div><div class="line">&#123;  </div><div class="line">System.out.println(a);  </div><div class="line">&#125;  </div><div class="line">&#125;  </div><div class="line">///////////如果改为这样  </div><div class="line">public class ObjOrPri &#123;  </div><div class="line">int i;  </div><div class="line">SupClass a= new SupClass(i);/////这里就不会报错。  </div><div class="line">ObjOrPri()  </div><div class="line">&#123;  </div><div class="line">System.out.println(a);  </div><div class="line">&#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><del>~</del><del>~</del><del>~</del><del>~</del><del>~</del><del>~</del><del>~</del><del>~</del>~~~<br>根基类的static先被初始化。然后到子类的构造函数，在到基类的构造函数。</p>
+<p>每一个类都有自己的方法。超类的和子类的方法名必须相同。但是超类可以不实现那个方法。<br>最后在某一个类中用一个函数来用超类的引用当作参数。调用和子类同名的函数叫做多态。<br>这样做的好处是如果超类和子类都存放在同一个数组里，这样就可以节省代码。</p>
+<p>抽象类中不需要每一个方法都是抽象的。但至少有一个。<br>static和abstract关键字好像不能同时使用。</p>
+<p>清除类的时候先从派生类开始，然后才是超类。</p>
+<p>如果在构造函数中调用多态，那么将会调用被覆盖的函数。</p>
+<p>ClassCastException运行时类型检查异常。</p>
+<p>不是后绑定就不是多态。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979023/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -414,18 +571,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -707,6 +852,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/978921/">
@@ -863,18 +1020,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1540,6 +1685,18 @@ window.setTimeout("firm()",5000);
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/679953/">
@@ -1660,153 +1817,11 @@ window.setTimeout("firm()",5000);
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/675602/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2006/675602/" itemprop="url">银行家算法</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-04-24T20:14:00+08:00">
-                2006-04-24
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-08-21T14:03:53+08:00">
-                2017-08-21
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#include&lt;iostream&gt;</div><div class="line">using namespace std;</div><div class="line">int **allocate,*total,**need,*require;</div><div class="line">int num_process,num_resource;</div><div class="line">bool isDeadLock(int c=0);</div><div class="line">bool findFinish();</div><div class="line">void printALL(int**b_allocate,int** b_need,int* b_total);</div><div class="line">bool isAllFinish(int**);</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line"> cin &gt;&gt; num_process &gt;&gt; num_resource;</div><div class="line"> need = new int* [num_process]; </div><div class="line"> allocate = new int*[num_process];</div><div class="line"> total = new int [num_resource];</div><div class="line"> require = new int[num_resource];</div><div class="line"> int i,q;</div><div class="line"> for(i=0;i&lt;num_process;i++)</div><div class="line"> &#123;</div><div class="line">  need[i] = new int[num_resource];</div><div class="line">  allocate[i] = new int[num_resource];</div><div class="line"> &#125;</div><div class="line"> //define the number of each resource</div><div class="line"> for(i=0;i&lt;num_resource;i++)</div><div class="line">  cin &gt;&gt; total[i];</div><div class="line"> for(i=0;i&lt;num_resource;i++)</div><div class="line">  cout &lt;&lt;  total[i];</div><div class="line"> //define the processes get how much resource</div><div class="line"> for(i=0;i&lt;num_process;i++)</div><div class="line">  for(q=0;q&lt;num_resource;q++)</div><div class="line">  cin &gt;&gt; allocate[i][q];</div><div class="line"> //cheak the resource has enough to allocate</div><div class="line"> for(i=0;i&lt;num_resource;i++)</div><div class="line">  for(q=0;q&lt;num_process;q++)</div><div class="line">  &#123; if(total[i]-allocate[q][i]&gt;=0)</div><div class="line">    total[i]-=allocate[q][i];</div><div class="line">   else </div><div class="line">   &#123;</div><div class="line">    cerr &lt;&lt; &quot;error!&quot;;</div><div class="line">    return 1;</div><div class="line">   &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line"> //define how much resources will each process still need to get to finish itself now</div><div class="line"> for(i=0;i&lt;num_process;i++)</div><div class="line">  for(q=0;q&lt;num_resource;q++)</div><div class="line">   cin &gt;&gt; need[i][q];</div><div class="line"> printALL(allocate,need,total);</div><div class="line"> //cheak the allocate is deadlock or not</div><div class="line"> if(isDeadLock())</div><div class="line"> &#123;</div><div class="line">  cerr &lt;&lt; &quot;dead Lock&quot; ;</div><div class="line">  return 1;</div><div class="line"> &#125;</div><div class="line"> else</div><div class="line">  cout &lt;&lt; &quot;System is safe&quot;&lt;&lt;endl;</div><div class="line"> //auto test</div><div class="line"> int test;</div><div class="line"> cout &lt;&lt; &quot;choose 1:auto test, else:custom test. &quot;;</div><div class="line"> cin &gt;&gt; test;</div><div class="line"> if(test==1)</div><div class="line"> &#123;</div><div class="line">  isDeadLock(test);</div><div class="line"> &#125;</div><div class="line"> //custom test</div><div class="line"> else</div><div class="line"> &#123;</div><div class="line">  while(isAllFinish(need))</div><div class="line">  &#123;</div><div class="line">   for(i=0;i&lt;num_process;i++)</div><div class="line">   &#123;</div><div class="line">    cout &lt;&lt; i&lt;&lt;&quot;: require how much resource?&quot;&lt;&lt;endl;</div><div class="line">    for(q=0;q&lt;num_resource;q++)</div><div class="line">     cin &gt;&gt; require[q];</div><div class="line">    //determine the data of require is right</div><div class="line">    for(q=0;q&lt;num_resource;q++)</div><div class="line">    &#123; </div><div class="line">     if(total[q] &lt; require[q] || need[i][q] &lt; require[q])</div><div class="line">     &#123; </div><div class="line">      cout &lt;&lt; &quot;error data information&quot;&lt;&lt;endl;</div><div class="line">      i--;</div><div class="line">      break;</div><div class="line">     &#125;</div><div class="line">     total[q]-=require[q];</div><div class="line">     need[i][q]-=require[q];</div><div class="line">     allocate[i][q]+=require[q];     </div><div class="line">    &#125;</div><div class="line">    if(isDeadLock(1))</div><div class="line">    &#123;</div><div class="line">     i--;</div><div class="line">     cout &lt;&lt; &quot;System is in deadlock state&quot;&lt;&lt;endl;</div><div class="line">    &#125;</div><div class="line">    else</div><div class="line">     cout &lt;&lt; &quot;System is safe......&quot;&lt;&lt;endl;</div><div class="line">   &#125;</div><div class="line">  &#125;</div><div class="line"> &#125;</div><div class="line"> return 0;</div><div class="line">&#125;</div><div class="line">//if all the processes are finished,then return true; </div><div class="line">bool isAllFinish(int** b_need)</div><div class="line">&#123;</div><div class="line"> int i,q;</div><div class="line"> for(i=0;i&lt;num_process;i++)</div><div class="line">  for(q=0;q&lt;num_resource;q++)</div><div class="line">  &#123;</div><div class="line">   if(b_need[i][q]!=0)</div><div class="line">    return false;</div><div class="line">  &#125;</div><div class="line"> return true;</div><div class="line">&#125;</div><div class="line">//if it is deadlock ,then return true;else return false</div><div class="line">bool isDeadLock(int c)//c is a flag to show the information or not.</div><div class="line">&#123;</div><div class="line"> int **backup_allocate,**backup_need,*backup_total;</div><div class="line"> backup_need = new int* [num_process]; </div><div class="line"> backup_allocate = new int*[num_process];</div><div class="line"> backup_total = new int[num_resource];</div><div class="line"> int i,q;</div><div class="line"> for(i=0;i&lt;num_process;i++)</div><div class="line"> &#123;</div><div class="line">  backup_need[i] = new int[num_resource];</div><div class="line">  backup_allocate[i] = new int[num_resource]; </div><div class="line"> &#125;</div><div class="line"> for(i=0;i&lt;num_process;i++)</div><div class="line">  for(q=0;q&lt;num_resource;q++)</div><div class="line">  &#123;</div><div class="line">   backup_need[i][q] = need[i][q];</div><div class="line">   backup_allocate[i][q] = allocate[i][q];</div><div class="line">  &#125;</div><div class="line"> for(i=0;i&lt;num_resource;i++)</div><div class="line">  backup_total[i] = total[i];</div><div class="line">// return findFinish();</div><div class="line"> if(c!=0)</div><div class="line"> printALL(backup_allocate,backup_need,backup_total);</div><div class="line"> int flag=0,count=0;</div><div class="line"> while(!isAllFinish(backup_need))</div><div class="line"> &#123;</div><div class="line">  count=0;</div><div class="line">  for(i=0;i&lt;num_process;i++)</div><div class="line">  &#123; for(q=0;q&lt;num_resource;q++)</div><div class="line">   &#123;</div><div class="line">    if(backup_need[i][q]&gt;backup_total[q])</div><div class="line">    &#123; </div><div class="line">     flag = 0;</div><div class="line">     break;</div><div class="line">    &#125;</div><div class="line">     flag=1;</div><div class="line">   &#125;</div><div class="line">  // find a finishing process and collect the resource</div><div class="line">   if(flag==1)</div><div class="line">   &#123;</div><div class="line">    count++;</div><div class="line">    for(q=0;q&lt;num_resource;q++)</div><div class="line">    &#123;</div><div class="line">     backup_total[q]+=backup_allocate[i][q];</div><div class="line">     backup_allocate[i][q]=0;</div><div class="line">     backup_need[i][q]=0;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">   &#125;</div><div class="line">   printALL(backup_allocate,backup_need,backup_total);</div><div class="line">  &#125;</div><div class="line">//  if(c!=0)</div><div class="line">//   printALL(backup_allocate,backup_need,backup_total);</div><div class="line">//if no process is finished,it means no resource is collect once.Then the deadlock appears.</div><div class="line">  if(count==0)</div><div class="line">  &#123;</div><div class="line">   delete []backup_total;</div><div class="line">   for(i=0;i&lt;num_process;i++)</div><div class="line">   &#123; delete[]backup_allocate[i];</div><div class="line">    delete[]backup_need[i];</div><div class="line">   &#125;</div><div class="line">   delete []backup_allocate;</div><div class="line">   delete []backup_need;</div><div class="line">   return true;</div><div class="line">  &#125;</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> return false;</div><div class="line">&#125;</div><div class="line">void printALL(int**b_allocate,int** b_need,int* b_total)</div><div class="line">&#123;</div><div class="line"> int i,q;</div><div class="line"> cout &lt;&lt; &quot;Allocate need&quot;&lt;&lt;endl;</div><div class="line"> for(i=0;i&lt;num_process;i++)</div><div class="line"> &#123; </div><div class="line">  for(q=0;q&lt;num_resource;q++)</div><div class="line">  &#123;</div><div class="line">   cout &lt;&lt; b_allocate[i][q]&lt;&lt;&quot;  &quot;;</div><div class="line">  &#125;</div><div class="line">  cout &lt;&lt; &quot; &quot;;</div><div class="line">  for(q=0;q&lt;num_resource;q++)</div><div class="line">   cout &lt;&lt; b_need[i][q]&lt;&lt;&quot;  &quot;;</div><div class="line">  cout &lt;&lt; endl;</div><div class="line"> &#125;</div><div class="line"> cout &lt;&lt; &quot;total&quot;&lt;&lt;endl;</div><div class="line"> for(i=0;i&lt;num_resource;i++)</div><div class="line">  cout &lt;&lt; b_total[i]&lt;&lt;&quot;  &quot;;</div><div class="line"> cout &lt;&lt; endl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">bool findFinish()</div><div class="line">&#123;</div><div class="line"> int i,q,flag=0,count=0;</div><div class="line"> for(i=0;i&lt;num_process;i++)</div><div class="line"> &#123; for(q=0;q&lt;num_resource;q++)</div><div class="line">  &#123;</div><div class="line">   if(need[i][q]&gt;total[q])</div><div class="line">   &#123; </div><div class="line">    flag = 0;</div><div class="line">    break;</div><div class="line">   &#125;</div><div class="line">    flag=1;</div><div class="line">  &#125;</div><div class="line">  if(flag==1)</div><div class="line">  &#123;</div><div class="line">   count++;</div><div class="line">   for(q=0;q&lt;num_resource;q++)</div><div class="line">   &#123;</div><div class="line">    total[q]+=allocate[i][q];</div><div class="line">    allocate[i][q]=0;</div><div class="line">   &#125;</div><div class="line">  &#125;</div><div class="line"> &#125;</div><div class="line"> if(count!=0)</div><div class="line">  return true;</div><div class="line"> return false;</div><div class="line">&#125;*/</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/63/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><span class="page-number current">64</span>
+    <a class="extend prev" rel="prev" href="/page/63/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><span class="page-number current">64</span><a class="page-number" href="/page/65/">65</a><a class="extend next" rel="next" href="/page/65/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1851,7 +1866,7 @@ window.setTimeout("firm()",5000);
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">640</span>
+                <span class="site-state-item-count">641</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1864,7 +1879,7 @@ window.setTimeout("firm()",5000);
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -1,0 +1,922 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Architect,whatsapp,leetcode,week3,architect,data model," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="OriginI joined leetcode system design group to discuss how to design software. This is week3 topic: Messenger service like What’s App with the following functionalities  One to One text messaging Grou">
+<meta name="keywords" content="Architect,whatsapp,leetcode,week3,architect,data model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Architect:week3-whatsapp">
+<meta property="og:url" content="http://chillyc.info/2017/Architect-week3-whatsapp/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="OriginI joined leetcode system design group to discuss how to design software. This is week3 topic: Messenger service like What’s App with the following functionalities  One to One text messaging Grou">
+<meta property="og:image" content="http://chillyc.info/images/Architect-week3-whatsapp/init-system.png">
+<meta property="og:updated_time" content="2017-09-13T14:26:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Architect:week3-whatsapp">
+<meta name="twitter:description" content="OriginI joined leetcode system design group to discuss how to design software. This is week3 topic: Messenger service like What’s App with the following functionalities  One to One text messaging Grou">
+<meta name="twitter:image" content="http://chillyc.info/images/Architect-week3-whatsapp/init-system.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2017/Architect-week3-whatsapp/"/>
+
+
+
+
+
+  <title>Architect:week3-whatsapp | 帐前卒专栏</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+  
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+  
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/Architect-week3-whatsapp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Architect:week3-whatsapp</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-13T20:06:17+08:00">
+                2017-09-13
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-09-13T22:26:29+08:00">
+                2017-09-13
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+               
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/Architect-week3-whatsapp/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017/Architect-week3-whatsapp/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Origin"><a href="#Origin" class="headerlink" title="Origin"></a>Origin</h1><p>I joined leetcode system design group to discuss how to design software. This is week3 topic:</p>
+<p><strong>Messenger service like What’s App</strong> with the following functionalities</p>
+<ol>
+<li>One to One text messaging</li>
+<li>Group Chat, Storage</li>
+<li>Read/Delivery/Sent status</li>
+</ol>
+<p>Gist:</p>
+<ol>
+<li>We are having a conversation between two parties. A -&gt; B. Think of this process. What happens and how do you explain to interviewer</li>
+<li>Asynchronous - meaning, “You are on a flight and you receive messages once you land. So those messages were waiting some where!” (Hope you got it). How would you design it</li>
+<li>Horizontal scaling, Load Balancer</li>
+<li>For Read/Delivery/Sent status -&gt; 3 way handshake protocol can give you an idea.</li>
+</ol>
+<p>This is a good topic. I will try to design it. </p>
+<h1 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h1><p>First of all, what’s the scenarios? The scenarios will correct my design. The scenario is in which way people use our software. So let’s think scenario first. The scenario should be atomic, and can not split into two or more scenarios. The scenario is a completed interaction. For example, The scenario like:</p>
+<ol>
+<li>User A send message to the system.</li>
+<li>The system send message to User B.</li>
+</ol>
+<p>Step 1 or Step 2 is not a scenario. Step 1 with Step 2 is a completed scenario.<br>And our chat system will be like:</p>
+<p><div align="center"><br><img src="/images/Architect-week3-whatsapp/init-system.png" alt="init-system"><br><strong>Figure 1.1</strong> init system<br></div><br>Er…It’s too simple…So let’s write more scenarios:</p>
+<h3 id="Scenario-1-send-and-get-message-in-realtime"><a href="#Scenario-1-send-and-get-message-in-realtime" class="headerlink" title="Scenario 1: send and get message in realtime"></a>Scenario 1: send and get message in realtime</h3><ol>
+<li>User A send message to the system.</li>
+<li>The system send message to user B.</li>
+</ol>
+<h3 id="Scenario-2-send-message-and-get-it-after-a-while-because-user-is-offline"><a href="#Scenario-2-send-message-and-get-it-after-a-while-because-user-is-offline" class="headerlink" title="Scenario 2: send message and get it after a while, because user is offline."></a>Scenario 2: send message and get it after a while, because user is offline.</h3><ol>
+<li>User A send message to the system.</li>
+<li>At this time, user B is offline.</li>
+<li>User B is online.</li>
+<li>The system send message to User B.</li>
+</ol>
+<h3 id="Scenario-3-read-old-messages"><a href="#Scenario-3-read-old-messages" class="headerlink" title="Scenario 3: read old messages"></a>Scenario 3: read old messages</h3><ol>
+<li>User can read old messages of chat in receive-time order.</li>
+</ol>
+<h3 id="Scenario-4-group-chat-in-realtime"><a href="#Scenario-4-group-chat-in-realtime" class="headerlink" title="Scenario 4: group chat in realtime"></a>Scenario 4: group chat in realtime</h3><ol>
+<li>User A, B, and C join a chat group</li>
+<li>A send message to the system</li>
+<li>B and C receive the message from system.</li>
+</ol>
+<h3 id="Scenario-5-group-chat-when-someone-is-offline"><a href="#Scenario-5-group-chat-when-someone-is-offline" class="headerlink" title="Scenario 5: group chat when someone is offline"></a>Scenario 5: group chat when someone is offline</h3><ol>
+<li>User A, B, and C join a chat group</li>
+<li>User A send message to the system.</li>
+<li>C will receive the message in realtime.</li>
+<li>At this time, user B is offline.</li>
+<li>When User B is online, the system send message to User B in create-time order.</li>
+</ol>
+<h3 id="Scenario-6-chat-status-changing"><a href="#Scenario-6-chat-status-changing" class="headerlink" title="Scenario 6: chat status changing"></a>Scenario 6: chat status changing</h3><ol>
+<li>User A chat with B</li>
+<li>When A is typing words, B will get “A is typing…” message from system.</li>
+<li>When A press “send” button, A will get “the message is sending” from system.</li>
+<li>When B’s app receive the message in background, A will get “the message is delivered”. </li>
+<li>When B open the chat with A, and scroll to the message, A will get “the message has been read.”</li>
+</ol>
+<p>Here, scenario 5 and 4 is similar to 2 and 1. So can we consider scenario 2 and 1 are group chat with only one person? Can I chat with myself? And there should be more scenario should be consider. For example:</p>
+<ol>
+<li>User sign in</li>
+<li>User sign up</li>
+<li>User quit</li>
+<li>Invite other user to use the app</li>
+<li>Find a user</li>
+<li>Add relationship with other user, family, friends, enemy, lover, couple, and so on. Others should comfire the relationship.</li>
+<li>Break the relationship.</li>
+<li>Rebuild the relationship with the same user. Er…Are you crazy? …Trust me, most of lovers will repeat break-rebuild relationship scenarios. If you don’t believe it, you must be younger than me.</li>
+<li>Build a chat group, or invite other user one by one to join chat/group chat.</li>
+<li>Exit a chat group, but can not exit one-one chat, unless breaking the relationship.</li>
+<li>Type message with emoji, gif, png, voice, and other rich text.</li>
+<li>Search old messages</li>
+<li>Delete old messages.</li>
+<li>Set/Show online/offline or other user status to one or more users.</li>
+<li>Can we chat face to face?</li>
+<li>Change user own info</li>
+</ol>
+<p>In this article, we can not talk all above. It’s too complicated. I will only focus on group chat and chat status changing scenarios.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      帐前卒
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://chillyc.info/2017/Architect-week3-whatsapp/" title="Architect:week3-whatsapp">http://chillyc.info/2017/Architect-week3-whatsapp/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，内容均禁止转载，但链接可转载使用。如需转载内容请与作者沟通
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Architect-whatsapp-leetcode-week3-architect-data-model/" rel="tag"># Architect,whatsapp,leetcode,week3,architect,data model</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/code-comments/" rel="next" title="代码论千言：如何评价别人的代码">
+                <i class="fa fa-chevron-left"></i> 代码论千言：如何评价别人的代码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/zqz.jpg"
+               alt="帐前卒" />
+          <p class="site-author-name" itemprop="name">帐前卒</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">642</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Origin"><span class="nav-number">1.</span> <span class="nav-text">Origin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Scenario"><span class="nav-number">2.</span> <span class="nav-text">Scenario</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-1-send-and-get-message-in-realtime"><span class="nav-number">2.0.1.</span> <span class="nav-text">Scenario 1: send and get message in realtime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-2-send-message-and-get-it-after-a-while-because-user-is-offline"><span class="nav-number">2.0.2.</span> <span class="nav-text">Scenario 2: send message and get it after a while, because user is offline.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-3-read-old-messages"><span class="nav-number">2.0.3.</span> <span class="nav-text">Scenario 3: read old messages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-4-group-chat-in-realtime"><span class="nav-number">2.0.4.</span> <span class="nav-text">Scenario 4: group chat in realtime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-5-group-chat-when-someone-is-offline"><span class="nav-number">2.0.5.</span> <span class="nav-text">Scenario 5: group chat when someone is offline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-6-chat-status-changing"><span class="nav-number">2.0.6.</span> <span class="nav-text">Scenario 6: chat status changing</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- leftsiderbar -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6262648116"></ins>
+               <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+               </script>
+
+      <!--/noindex-->
+      
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-11621532-3', 'auto');
+                ga('send', 'pageview');
+
+                </script>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 92082, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 92082, xid: "2017/Architect-week3-whatsapp/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/92082/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

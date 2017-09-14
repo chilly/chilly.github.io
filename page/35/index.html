@@ -271,6 +271,251 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/2840419/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2008/2840419/" itemprop="url">返回值优化问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2008-08-27T21:43:00+08:00">
+                2008-08-27
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>近来看到小李子写了篇blog，题目为返回值优化。</p>
+<p>文章如下。</p>
+<p>return Integer(left.i+right.i); //创建一个临时对象并返回他，不会调用析构函数，效率高。<br>Interger tmp(left.i+right.i);<br>return tmp;              //创建了局部对象，有析构函数。</p>
+<p>————————————————————————————————</p>
+<p>这里感觉有些诡异。</p>
+<p>于是编写了简单的程序  </p>
+<ol>
+<li>// TempClassDestroy.cpp : Defines the entry point for the console application. </li>
+<li>// </li>
+<li><ol>
+<li>#include “stdafx.h” </li>
+</ol>
+</li>
+<li>#include <iostream></iostream></li>
+<li>using  namespace  std; </li>
+<li>class  A </li>
+<li>{ </li>
+<li>private  : </li>
+<li>int  a; </li>
+<li>public  : </li>
+<li>A(  int  a) </li>
+<li>{ </li>
+<li>this  -&gt;a = a; </li>
+<li>} </li>
+<li>~A() </li>
+<li>{ </li>
+<li>cout &lt;&lt; “AA:”  &lt;&lt;a&lt;&lt;endl; </li>
+<li>} </li>
+<li>}; </li>
+<li><ol>
+<li><ol>
+<li>A&amp; foo1(  int  c) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>return  A(c); </li>
+<li>} </li>
+<li><ol>
+<li><ol>
+<li>A foo2(  int  c) </li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>return  A(c); </li>
+<li>} </li>
+<li><ol>
+<li>A foo3(  int  c) </li>
+</ol>
+</li>
+<li>{ </li>
+<li>A a(c); </li>
+<li>return  a; </li>
+<li>} </li>
+<li>A&amp; foo4(  int  c) </li>
+<li>{ </li>
+<li>A a(c); </li>
+<li>return  a; </li>
+<li>} </li>
+<li>int  _tmain(  int  argc, _TCHAR* argv[]) </li>
+<li>{ </li>
+<li>foo1(1); </li>
+<li>cout &lt;&lt; “foo1”  &lt;&lt;endl; </li>
+<li>foo2(2); </li>
+<li>cout &lt;&lt; “foo2”  &lt;&lt;endl; </li>
+<li>foo3(3); </li>
+<li>cout &lt;&lt; “foo3”  &lt;&lt;endl; </li>
+<li>foo4(4); </li>
+<li>cout &lt;&lt; “foo4”  &lt;&lt;endl; </li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>A&amp; a = foo1(1); </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>A&amp; b = foo2(2); </li>
+<li>A&amp; c = foo3(3); </li>
+<li>A&amp; d = foo4(4); </li>
+<li>return  0; </li>
+<li>} </li>
+<li><ol>
+<li>最后的运行结果是： </li>
+</ol>
+</li>
+</ol>
+<p>AA:1<br>foo1<br>AA:2<br>foo2<br>AA:3<br>AA:3<br>foo3<br>AA:4<br>foo4<br>AA:1<br>AA:3<br>AA:4<br>AA:3<br>AA:2</p>
+<p>当然前面的内容：</p>
+<p>AA:1<br>foo1<br>AA:2<br>foo2<br>AA:3<br>AA:3<br>foo3<br>AA:4<br>foo4</p>
+<p>第二个函数与第三个函数可以很明显的看到效率的差异。因为foo3函数中析构函数出现了两次。</p>
+<p>（这里第一和第四个函数有明显错误，可以根据后面的测试程序看出）</p>
+<p>但是第一个函数也恰恰说明  return Integer(left.i+right.i); //创建一个临时对象并返回他，不会调用析构函数，效率高。<br>这句话有些问题。因为在调试的时候可以看出有调用析构函数。并且结果</p>
+<p>AA:1<br>AA:3<br>AA:4<br>AA:3<br>AA:2</p>
+<p>也能说明问题。</p>
+<p>由于第一个函数和第四个函数产生的效果一样。</p>
+<p>所以我提出一个可能的假设：</p>
+<p>return Integer(left.i+right.i);<br>只有当返回值为Integer，而非Integer&amp;才能有创建一个临时对象并返回他，不会调用析构函数。</p>
+<p>当然因为程序的正确性要求，我们不可能编写类似于foo1的函数。  </p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/2797967/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -442,18 +687,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -2350,6 +2583,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/2794565/">
@@ -2504,18 +2749,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -3336,6 +3569,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/2726812/">
@@ -3459,158 +3704,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/2726706/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2008/2726706/" itemprop="url">电竞之王赏析</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2008-07-28T20:32:00+08:00">
-                2008-07-28
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>听说这个影片是根据sky的故事改编。虽然不知道真假，但是情节的确很曲折搞笑。当然最后结果还是落入俗套。当然似乎没有啥电影不落入俗套的。</p>
-<p>等到几个提示：</p>
-<p>1.事在人为。积极进取得做好该做的事情。</p>
-<p>2.心无杂念，一心向目的地进发。</p>
-<p>3.小心身边的“战友”。不害人，但要提防别人不能害己。</p>
-<p>电竞之王=神经病医院故事+魔兽术语+感情磨难+武侠苦练+点点励志</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/34/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/36/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/34/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/65/">65</a><a class="extend next" rel="next" href="/page/36/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3655,7 +3753,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">640</span>
+                <span class="site-state-item-count">641</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3668,7 +3766,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

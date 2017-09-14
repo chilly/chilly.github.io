@@ -271,7 +271,7 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-03-08-facebook-api/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-03-10-use-c-language-to-connect-postgresql/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="帐前卒">
@@ -290,7 +290,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2010/2010-03-08-facebook-api/" itemprop="url">Facebook API</a></h2>
+                <a class="post-title-link" href="/2010/2010-03-10-use-c-language-to-connect-postgresql/" itemprop="url">use c language to connect postgreSQL</a></h2>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-03-08T00:00:00+08:00">
-                2010-03-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-03-10T00:00:00+08:00">
+                2010-03-10
               </time>
             
 
@@ -355,14 +355,22 @@
         
           
             <p><meta name="_edit_last" content="1"></p>
-<p><meta name="views" content="887"><br>Now I should do some work in investgate Facebook API. The Facebook API can be called as the following format( I use php as an example):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&amp;lt;?php</div><div class="line">/**</div><div class="line">* Set the configuration settings for Facebook</div><div class="line">*/</div><div class="line">$facebook_config[&apos;debug&apos;] = false;</div><div class="line">$facebook_config[&apos;api_key&apos;] = &apos;&amp;lt;your_api_key&amp;gt;&apos;;</div><div class="line">$facebook_config[&apos;secret_key&apos;] = &apos;&amp;lt;your_secret_key&amp;gt;&apos;;</div><div class="line">/**</div><div class="line">* include the Facebook client library</div><div class="line">*/</div><div class="line">require_once(&apos;&amp;lt;path_to_client_library&amp;gt;/facebook.php&apos;);</div><div class="line">/**</div><div class="line">* Set up the facebook object</div><div class="line">*/</div><div class="line">$facebook = new Facebook($facebook_config[&apos;api_key&apos;],</div><div class="line">$facebook_config[&apos;secret&apos;]);</div><div class="line">/**</div><div class="line">* Ensure the user has logged on to Facebook</div><div class="line">*/</div><div class="line">$user = $facebook-&amp;gt;require_login();</div><div class="line">/**</div><div class="line">* Make an API call to call get a user&apos;s friends using the PHP library&apos;s</div><div class="line">* library</div><div class="line">*/</div><div class="line">$friends = $facebook-&amp;gt;api_client-&amp;gt;friends_get();</div><div class="line">echo &quot;&amp;lt;pre&amp;gt;Friends:&quot; . print_r($friends, true). &quot;&amp;lt;/pre&amp;gt;&quot;;</div><div class="line">?&amp;gt;</div></pre></td></tr></table></figure>
-<p>The structure of the above codes is:</p>
-<p><ul><br>    <li>set api_key and secret_key by your own</li><br>    <li>send facebook_config to Facebook class and create an object of Facebook.</li><br>    <li>call some method of this object and get some data of facebook which you want</li><br>    <li>using those data to create an application</li><br></ul><br>In technology, facebook uses RESTful technology, such as web services. facebook api transform data in JSON or XML format. And FBML( facebook Markup Language ) is used to combine and present data coming from developers’ application servers. There are some technologic points: first, APIs should be packet into web services. Second, developers’ application data should be presented in web pages. But I don’t think there is new technology here.</p>
-<p>The flow diagram of calling facebook api is:</p>
-<p><a href="http://chillyc.info/wp-content/uploads/2010/03/08/facebook-api/the-flow-diagram-of-calling-facebook-api.jpg"><img class="aligncenter size-medium wp-image-98" title="the flow diagram of calling facebook api" src="http://chillyc.info/wp-content/uploads/2010/03/08/facebook-api/the-flow-diagram-of-calling-facebook-api-290x300.jpg" alt="" width="290" height="300"></a></p>
-<p>Chinese version is here:</p>
-<p><strong><strong><a href="../wp-content/uploads/2010/03/Facebook_API.doc" target="newUpload">Facebook_API.doc</a></strong></strong></p>
+<p><meta name="views" content="2275"><br>There is a small example copied from <a href="http://www.postgresql.org/files/documentation/books/aw_pgsql/writing_apps/node3.html" target="_blank" rel="external">postgreSQL.org</a></p>
+<p>[codesyntax lang=”c” tab_width=”4” strict=”yes”]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">*  libpq sample program</div><div class="line">*/</div><div class="line"></div><div class="line">#include &amp;lt;stdio.h&amp;gt;</div><div class="line">#include &amp;lt;stdlib.h&amp;gt;</div><div class="line">#include &quot;libpq-fe.h&quot;                                   /* libpq header file */</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	char        state_code[3];                          /* holds user state code */</div><div class="line">	char        query_string[256];                      /* holds constructed SQL query */</div><div class="line">	PGconn     *conn;                                   /* holds database connection */</div><div class="line">	PGresult   *res;                                    /* holds query result */</div><div class="line">	int         i;</div><div class="line"></div><div class="line">	conn = PQconnectdb(&quot;dbname=test&quot;); /* connect to the database */</div><div class="line"></div><div class="line">	if (PQstatus(conn) == CONNECTION_BAD)               /* did the connection fail? */</div><div class="line">	&#123;</div><div class="line">		fprintf(stderr, &quot;Connection to database failed.\n&quot;);</div><div class="line">		fprintf(stderr, &quot;%s&quot;, PQerrorMessage(conn));</div><div class="line">		exit(1);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	printf(&quot;Enter a state code:  &quot;);                    /* prompt user for a state code */</div><div class="line">	scanf(&quot;%2s&quot;, state_code);</div><div class="line"></div><div class="line">	sprintf(query_string,                               /* create an SQL query string */</div><div class="line">	&quot;SELECT name \</div><div class="line">	FROM statename \</div><div class="line">	WHERE code = &apos;%s&apos;&quot;, state_code);</div><div class="line"></div><div class="line">	res = PQexec(conn, query_string); /* send the query */</div><div class="line"></div><div class="line">	if (PQresultStatus(res) != PGRES_TUPLES_OK)         /* did the query fail? */</div><div class="line">	&#123;</div><div class="line">		fprintf(stderr, &quot;SELECT query failed.\n&quot;);</div><div class="line">		PQclear(res);</div><div class="line">		PQfinish(conn);</div><div class="line">		exit(1);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	for (i = 0; i &amp;lt; PQntuples(res); i++)                /* loop through all rows returned */</div><div class="line">		printf(&quot;%s\n&quot;, PQgetvalue(res, i, 0));          /* print the value returned */</div><div class="line"></div><div class="line">	PQclear(res); /* free result */</div><div class="line"></div><div class="line">	PQfinish(conn); /* disconnect from the database */</div><div class="line"></div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>above is how to connect localhost database. If you want to connect with remote postgreSQL server. You will following those rules(copied from <a href="http://www.cyberciti.biz/tips/postgres-allow-remote-access-tcp-connection.html" target="_blank" rel="external">vivek</a>):</p>
+<h2 id="Step-1-Login-over-ssh-if-server-is-outside-your-IDC"><a href="#Step-1-Login-over-ssh-if-server-is-outside-your-IDC" class="headerlink" title="Step # 1: Login over ssh if server is outside your IDC"></a>Step # 1: Login over ssh if server is outside your IDC</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh user@remote.pgsql.server.com</div></pre></td></tr></table></figure>
+<h2 id="Step-2-Enable-client-authentication"><a href="#Step-2-Enable-client-authentication" class="headerlink" title="Step # 2: Enable client authentication"></a>Step # 2: Enable client authentication</h2><p>Once connected, you need edit the PostgreSQL configuration file, edit the PostgreSQL configuration file <strong>/var/lib/pgsql/data/pg_hba.conf</strong> (or <strong>/etc/postgresql/8.2/main/pg_hba.conf</strong> for latest 8.2 version) using a text editor such as vi.</p>
+<p>Login as postgres user using su / sudo command, enter:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ su - postgres</div></pre></td></tr></table></figure><br>Edit the file:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vi /var/lib/pgsql/data/pg_hba.conf</div></pre></td></tr></table></figure><br>OR<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vi /etc/postgresql/8.2/main/pg_hba.conf</div></pre></td></tr></table></figure><br>Append the following configuration lines to give access to 10.10.29.0/24 network:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">host all all 10.10.29.0/24 trust</div></pre></td></tr></table></figure><br>Save and close the file. Make sure you replace 10.10.29.0/24 with actual network IP address range of the clients system in your own network.</p>
+<h2 id="Step-2-Enable-networking-for-PostgreSQL"><a href="#Step-2-Enable-networking-for-PostgreSQL" class="headerlink" title="Step # 2: Enable networking for PostgreSQL"></a>Step # 2: Enable networking for PostgreSQL</h2><p>You need to enable TCP / IP networking. Use either step #3 or #3a as per your PostgreSQL database server version.</p>
+<h2 id="Step-3-Allow-TCP-IP-socket"><a href="#Step-3-Allow-TCP-IP-socket" class="headerlink" title="Step # 3: Allow TCP/IP socket"></a>Step # 3: Allow TCP/IP socket</h2><p>If you are using <strong>PostgreSQL version 8.x or newer</strong> use the following instructions or skip to <a href="http://www.cyberciti.biz/tips/postgres-allow-remote-access-tcp-connection.html#3a" target="_blank" rel="external">Step # 3a</a> for older version (7.x or older).</p>
+<p>You need to open PostgreSQL configuration file /var/lib/pgsql/data/postgresql.conf or /etc/postgresql/8.2/main/postgresql.conf.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># vi /etc/postgresql/8.2/main/postgresql.conf</div></pre></td></tr></table></figure><br>OR<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># vi /var/lib/pgsql/data/postgresql.conf </div></pre></td></tr></table></figure><br>Find configuration line that read as follows:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">listen_addresses=&apos;localhost&apos;</div></pre></td></tr></table></figure><br>Next set IP address(es) to listen on; you can use comma-separated list of addresses; defaults to ‘localhost’, and ‘*’ is all ip address:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">listen_addresses=&apos;*&apos;</div></pre></td></tr></table></figure><br>Or just bind to 202.54.1.2 and 202.54.1.3 IP address<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">listen_addresses=&apos;202.54.1.2 202.54.1.3&apos;</div></pre></td></tr></table></figure><br>Save and close the file. Skip to <a href="http://www.cyberciti.biz/tips/postgres-allow-remote-access-tcp-connection.html#4" target="_blank" rel="external">step # 4</a>.</p>
+<p><a name="3a"></a></p>
+<h3 id="Step-3a-Information-for-old-version-7-x-or-older"><a href="#Step-3a-Information-for-old-version-7-x-or-older" class="headerlink" title="Step #3a - Information for old version 7.x  or older"></a>Step #3a - Information for old version 7.x  or older</h3><p>Following configuration only required for <strong>PostgreSQL version 7.x or older</strong>. Open config file, enter:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># vi /var/lib/pgsql/data/postgresql.conf </div></pre></td></tr></table></figure><br>Bind and open TCP/IP port by setting tcpip_socket to true.  Set / modify tcpip_socket to true:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tcpip_socket = true</div></pre></td></tr></table></figure><br>Save and close the file.</p>
+<p><a name="4"></a></p>
+<h2 id="Step-4-Restart-PostgreSQL-Server"><a href="#Step-4-Restart-PostgreSQL-Server" class="headerlink" title="Step # 4: Restart PostgreSQL Server"></a>Step # 4: Restart PostgreSQL Server</h2><p>Type the following command:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># /etc/init.d/postgresql restart</div></pre></td></tr></table></figure></p>
+<h2 id="Step-5-Iptables-firewall-rules"><a href="#Step-5-Iptables-firewall-rules" class="headerlink" title="Step # 5: Iptables firewall rules"></a>Step # 5: Iptables firewall rules</h2><p>Make sure iptables is not blocking communication, <a href="http://www.cyberciti.biz/tips/howto-iptables-postgresql-open-port.html" target="_blank" rel="external">open port 5432</a> (append rules to your iptables scripts or file <a href="http://www.cyberciti.biz/faq/howto-block-ipaddress-of-spammers-with-firewall/" target="_blank" rel="external">/etc/sysconfig/iptables</a>):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 10.10.29.50  --dport 5432\</div><div class="line"> -m state --state NEW,ESTABLISHED -j ACCEPT</div><div class="line">iptables -A OUTPUT -p tcp -s 10.10.29.50 --sport 5432 -d 0/0 --dport \</div><div class="line">1024:65535 -m state --state ESTABLISHED -j ACCEPT</div></pre></td></tr></table></figure><br>Restart firewall:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># /etc/init.d/iptables restart</div></pre></td></tr></table></figure></p>
+<h2 id="Step-6-Test-your-setup"><a href="#Step-6-Test-your-setup" class="headerlink" title="Step # 6: Test your setup"></a>Step # 6: Test your setup</h2><p>Use psql command from client system. Connect to remote server using IP address 10.10.29.50 and login using vivek username and sales database, enter:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ psql -h 10.10.29.50 -U vivek -d sales</div></pre></td></tr></table></figure></p>
+<h2 id="Step-7-Change-your-code"><a href="#Step-7-Change-your-code" class="headerlink" title="Step #7: Change your code"></a>Step #7: Change your code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">const char * connstr = &quot;host=&apos;10.10.29.50&apos; dbname=&apos;my_database&apos; user=&apos;postgres&apos; password=&apos;secret&apos;&quot;</div><div class="line">conn = PQconnectdb(connstr);                  /* connect to the database */</div></pre></td></tr></table></figure>
 
           
         
@@ -507,6 +515,144 @@
             <p><meta name="_edit_last" content="1"></p>
 <p><meta name="views" content="750"><br>the price of borrowing a boy-friend in international women’s day.</p>
 <p>[gallery] </p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-03-08-facebook-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-03-08-facebook-api/" itemprop="url">Facebook API</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-03-08T00:00:00+08:00">
+                2010-03-08
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="views" content="887"><br>Now I should do some work in investgate Facebook API. The Facebook API can be called as the following format( I use php as an example):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&amp;lt;?php</div><div class="line">/**</div><div class="line">* Set the configuration settings for Facebook</div><div class="line">*/</div><div class="line">$facebook_config[&apos;debug&apos;] = false;</div><div class="line">$facebook_config[&apos;api_key&apos;] = &apos;&amp;lt;your_api_key&amp;gt;&apos;;</div><div class="line">$facebook_config[&apos;secret_key&apos;] = &apos;&amp;lt;your_secret_key&amp;gt;&apos;;</div><div class="line">/**</div><div class="line">* include the Facebook client library</div><div class="line">*/</div><div class="line">require_once(&apos;&amp;lt;path_to_client_library&amp;gt;/facebook.php&apos;);</div><div class="line">/**</div><div class="line">* Set up the facebook object</div><div class="line">*/</div><div class="line">$facebook = new Facebook($facebook_config[&apos;api_key&apos;],</div><div class="line">$facebook_config[&apos;secret&apos;]);</div><div class="line">/**</div><div class="line">* Ensure the user has logged on to Facebook</div><div class="line">*/</div><div class="line">$user = $facebook-&amp;gt;require_login();</div><div class="line">/**</div><div class="line">* Make an API call to call get a user&apos;s friends using the PHP library&apos;s</div><div class="line">* library</div><div class="line">*/</div><div class="line">$friends = $facebook-&amp;gt;api_client-&amp;gt;friends_get();</div><div class="line">echo &quot;&amp;lt;pre&amp;gt;Friends:&quot; . print_r($friends, true). &quot;&amp;lt;/pre&amp;gt;&quot;;</div><div class="line">?&amp;gt;</div></pre></td></tr></table></figure>
+<p>The structure of the above codes is:</p>
+<p><ul><br>    <li>set api_key and secret_key by your own</li><br>    <li>send facebook_config to Facebook class and create an object of Facebook.</li><br>    <li>call some method of this object and get some data of facebook which you want</li><br>    <li>using those data to create an application</li><br></ul><br>In technology, facebook uses RESTful technology, such as web services. facebook api transform data in JSON or XML format. And FBML( facebook Markup Language ) is used to combine and present data coming from developers’ application servers. There are some technologic points: first, APIs should be packet into web services. Second, developers’ application data should be presented in web pages. But I don’t think there is new technology here.</p>
+<p>The flow diagram of calling facebook api is:</p>
+<p><a href="http://chillyc.info/wp-content/uploads/2010/03/08/facebook-api/the-flow-diagram-of-calling-facebook-api.jpg"><img class="aligncenter size-medium wp-image-98" title="the flow diagram of calling facebook api" src="http://chillyc.info/wp-content/uploads/2010/03/08/facebook-api/the-flow-diagram-of-calling-facebook-api-290x300.jpg" alt="" width="290" height="300"></a></p>
+<p>Chinese version is here:</p>
+<p><strong><strong><a href="../wp-content/uploads/2010/03/Facebook_API.doc" target="newUpload">Facebook_API.doc</a></strong></strong></p>
 
           
         
@@ -706,6 +852,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-02-28-play-small-games/">
@@ -839,18 +997,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1380,6 +1526,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-01-14-world-war-ii/">
@@ -1501,154 +1659,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-01-11-look-back/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-01-11-look-back/" itemprop="url">Look back</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-01-11T00:00:00+08:00">
-                2010-01-11
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="views" content="1320"></p>
-<p><meta name="_edit_last" content="1"><br>someone passed away<br>someone was born<br>someone had gone<br>someone is in<br>once I had fallen in<br>now I have got through<br>time passes by<br>memory fades away<br>I am not myself<br>I am still me</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/23/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/25/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/23/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/65/">65</a><a class="extend next" rel="next" href="/page/25/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1693,7 +1708,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">640</span>
+                <span class="site-state-item-count">641</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1706,7 +1721,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

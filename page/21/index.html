@@ -271,6 +271,156 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-07-16-quick-sort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-07-16-quick-sort/" itemprop="url">Quick Sort</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-07-16T00:00:00+08:00">
+                2010-07-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_description" content="Optimize QuickSort"></p>
+<p><meta name="_su_keywords" content="Optimize,Quick,Sort"></p>
+<p><meta name="_su_title" content="Quick Sort"></p>
+<p><meta name="views" content="851"><br>the simplest quick sort is like following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">int Partition(int * a, int start, int end)&#123;</div><div class="line">    swap(a[start],a[start+rand()%(end-start+1)]);</div><div class="line">    int p = a[start];</div><div class="line">    while(start&amp;lt;end)&#123;</div><div class="line">        while(start&amp;lt;end &amp;amp;&amp;amp; a[end] &amp;gt;= p) end--;</div><div class="line">        swap(a[start],a[end]);</div><div class="line">        while(start&amp;lt;end &amp;amp;&amp;amp; a[start]&amp;lt;= p) start++;</div><div class="line">        swap(a[start],a[end];)</div><div class="line">    &#125;</div><div class="line">    return start;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void QuickSort(int * a, int start, int end)&#123;</div><div class="line"></div><div class="line">     if(end-start&amp;gt;=1)&#123;</div><div class="line">         int mid = Partition(a,start, end);</div><div class="line">         QuickSort(a,start,mid-1);</div><div class="line">         QuickSort(a,mid+1,end);</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>But If you want do some optimization in QuickSort, first when the number of elements is small than 10, do insert sort not quick sort. Second, To find the near-like middle element of array, and not use the random one. Third, when the array is already sorted , do not use quick sort. and Reduce the function call. You will the following codes:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">void QuickSort(int *a, int start, int end)&#123;</div><div class="line"></div><div class="line">    if(end - start &amp;lt;= 0 ) // or you can throw some exceptions!</div><div class="line">       return ;</div><div class="line"></div><div class="line">// if the number of element is less than 8, do insert sort;</div><div class="line"></div><div class="line">    if(end - start&amp;lt;7)&#123;</div><div class="line"></div><div class="line">      for(int i = start; i &amp;lt;= end; i++)&#123;</div><div class="line"></div><div class="line">         for(int j = i; j &amp;gt; start &amp;amp;&amp;amp; a[j] &amp;lt; a[j-1]; j--)</div><div class="line"></div><div class="line">             swap(a[j],a[j-1]);</div><div class="line"></div><div class="line">      &#125;</div><div class="line"></div><div class="line">      return;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">// check if the array is sorted.</div><div class="line"></div><div class="line">    bool isSorted = true;</div><div class="line">    for(int i = start; i &amp;lt; end; i++)&#123;</div><div class="line">       if(a[i]&amp;gt;a[i+1])</div><div class="line">         isSorted = false;</div><div class="line">    &#125;</div><div class="line">    if(isSorted)</div><div class="line">      return;</div><div class="line"></div><div class="line">// get the near-like middle element, use 3 point middle method.</div><div class="line"></div><div class="line">    int dm = start+(end-start)/2;</div><div class="line"></div><div class="line">    int dl, dh;</div><div class="line"></div><div class="line">    if(end-start&amp;lt;40)&#123;</div><div class="line"></div><div class="line">       int d = (end-start+1)/8;</div><div class="line"></div><div class="line">       dl = mid(a, start,start+d,start+2*d);</div><div class="line"></div><div class="line">       dm = mid(a,dm-d,dm,dm+d);</div><div class="line"></div><div class="line">       dh = mid(a,end-2*d,end-d, end);</div><div class="line"></div><div class="line">       dm = mid(a,dl,dm,dh);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">// do partition</div><div class="line"></div><div class="line">    swap(a[start],a[dm]);</div><div class="line"></div><div class="line">    int low=start, high = end, p = a[start];</div><div class="line">    while(low&amp;lt;high)&#123;</div><div class="line">        while(low &amp;lt; high &amp;amp;&amp;amp; a[high]&amp;gt;= p) high--;</div><div class="line">        swap(a[low],a[high]);</div><div class="line">        while(low&amp;lt;high &amp;amp;&amp;amp; a[low]&amp;lt;= p) low ++;</div><div class="line">        swap(a[low],a[high]);</div><div class="line">    &#125;</div><div class="line">    QuickSort(a,start, low-1);</div><div class="line">    QuickSort(a,low+1,end);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-07-09-print-display-row/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -408,18 +558,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -715,6 +853,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-06-30-try-catch-exception-c/">
@@ -875,18 +1025,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1442,6 +1580,18 @@ the inside of memory alignment"></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-10-debug-postgresql/">
@@ -1579,160 +1729,11 @@ the inside of memory alignment"></p>
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-05-design-pattern-flyweight/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-05-05-design-pattern-flyweight/" itemprop="url">design pattern -- flyweight</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-05T00:00:00+08:00">
-                2010-05-05
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_description" content="software architecture
-design pattern "></p>
-<p><meta name="_su_keywords" content="design,pattern,flyweight,code"></p>
-<p><meta name="_su_title" content="flyweight,pattern,code,design"></p>
-<meta name="views" content="904">
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div></pre></td><td class="code"><pre><div class="line">// flyweight.cpp : Defines the entry point for the console application.</div><div class="line">// author: chillyc</div><div class="line">// email: chillycreator @t gmail.com</div><div class="line"></div><div class="line">#include&amp;lt;iostream&amp;gt;</div><div class="line">#include&amp;lt;map&amp;gt;</div><div class="line">namespace pattern&#123;</div><div class="line"></div><div class="line">	/// this is flyweight pattern </div><div class="line">	/// In text processing, there will be thousands of hundreds of characters.</div><div class="line">	/// If we construct too many this class instance, and </div><div class="line">	/// imaging this class will have many member variables, will the system be efficient? </div><div class="line">	/// So we just record the characters state, and not care about other part of character.</div><div class="line">	/// we shall save a lot of main memories, shall we?</div><div class="line">	/// If there are many characters, but  they are only in differnt place, we can reuse characters.</div><div class="line">	/// So there are Fly_Manager to record the shared objects or states.</div><div class="line">	/// All objects should be derived from Metadata class.</div><div class="line">	/// Graphdata is no-shared metadata. And Character is shared metadata.</div><div class="line">	/// In main function, you will see the difference between two of them.</div><div class="line"></div><div class="line">#ifndef STATE_H</div><div class="line">#define STATE_H</div><div class="line">	class State&#123;</div><div class="line">	private:</div><div class="line">		int font_num;</div><div class="line">		int style;</div><div class="line"></div><div class="line">	public:</div><div class="line">		void Set_Font_Num(int num)&#123;font_num = num;&#125;</div><div class="line">		void Set_Style(int style)&#123;this-&amp;gt;style = style;&#125;</div><div class="line">		int Get_Font_Num()&#123;return font_num;&#125;</div><div class="line">		int Get_Style()&#123;return style;&#125;</div><div class="line">		State()&#123;&#125;</div><div class="line">		State(int num,int style)&#123;</div><div class="line">			font_num = num; </div><div class="line">			this-&amp;gt;style = style;</div><div class="line">		&#125;</div><div class="line">		State(const State&amp;amp; state)&#123;</div><div class="line">			this-&amp;gt;font_num = state.font_num; </div><div class="line">			this-&amp;gt;style = state.style;</div><div class="line">		&#125;</div><div class="line">		State* operator = (const State&amp;amp; state)&#123;</div><div class="line">			this-&amp;gt;font_num = state.font_num; </div><div class="line">			this-&amp;gt;style = state.style;</div><div class="line">			return this;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef METADATA_H</div><div class="line">#define METADATA_H</div><div class="line">	class Metadata&#123;</div><div class="line">	public:</div><div class="line">		virtual void show()=0;</div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef character_H</div><div class="line">#define character_H</div><div class="line">	// share the basic information</div><div class="line">	// here you should image character has a huge infomation, </div><div class="line">	// and state is only a small part of this class</div><div class="line">	class character: public Metadata&#123;</div><div class="line">	private:</div><div class="line">		State state;</div><div class="line">	public:</div><div class="line">		// set state to default state</div><div class="line">		character():Metadata(),state(1,1)&#123;&#125;</div><div class="line">		~character()&#123;&#125;</div><div class="line">		void Set_State(State&amp;amp; state);</div><div class="line">		virtual void show();</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">	void character::Set_State(pattern::State&amp;amp; state)&#123;</div><div class="line">		this-&amp;gt;state = state;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	void character::show()&#123;</div><div class="line">		std::cout &amp;lt;&amp;lt; &quot;write a character font is &quot;&amp;lt;&amp;lt; state.Get_Font_Num()&amp;lt;&amp;lt; &quot; style is &quot;</div><div class="line">			&amp;lt;&amp;lt; state.Get_Style()&amp;lt;&amp;lt;std::endl; </div><div class="line">	&#125;</div><div class="line">#endif</div><div class="line"></div><div class="line">#ifndef GRAPHDATA_H</div><div class="line">#define GRAPHDATA_H</div><div class="line">	// not share </div><div class="line">	class Graphdata: public Metadata&#123;</div><div class="line">	private:</div><div class="line">		State state;</div><div class="line">	public:</div><div class="line">		Graphdata(State &amp;amp; state):Metadata(),state(state)&#123;&#125;</div><div class="line">		// font num is not used</div><div class="line">		Graphdata(int style):Metadata(),state(-1,style)&#123;&#125;</div><div class="line">		~Graphdata()&#123;&#125;;</div><div class="line">		virtual void show();</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">#endif</div><div class="line">	void Graphdata::show()&#123;</div><div class="line">		// only use its own state</div><div class="line">		std::cout&amp;lt;&amp;lt; &quot;print a graph! style is &quot;&amp;lt;&amp;lt;state.Get_Style()&amp;lt;&amp;lt;std::endl;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">#ifndef FLYMANAGER_H</div><div class="line">#define FLYMANAGER_H</div><div class="line">	class Fly_Manager&#123;</div><div class="line">	public:</div><div class="line">		// suggest you should make it as private or protected</div><div class="line">		std::map&amp;lt;int,State&amp;gt; characters;</div><div class="line">		Fly_Manager()&#123;&#125;</div><div class="line">		void Set_I(int i, State&amp;amp; state);</div><div class="line">		State&amp;amp; Get_I(int i);</div><div class="line">		~Fly_Manager()&#123;&#125;</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">#endif</div><div class="line">	void Fly_Manager::Set_I(int i, State&amp;amp; state)&#123;</div><div class="line">		characters[i] = state;</div><div class="line">	&#125;</div><div class="line">	State&amp;amp; Fly_Manager::Get_I(int i)&#123;</div><div class="line">		return characters[i];</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	pattern::Fly_Manager fm;</div><div class="line">	pattern::character c;</div><div class="line">	pattern::State s1(1,2);</div><div class="line">	pattern::State s2(2,3);</div><div class="line">	pattern::State s3(3,4);</div><div class="line">	fm.Set_I(0,s1);</div><div class="line">	fm.Set_I(1,s2);</div><div class="line">	fm.Set_I(2,s3);</div><div class="line">	pattern::Graphdata gd1(2);</div><div class="line">	pattern::Graphdata gd2(9);</div><div class="line">	for(int i = 0; i &amp;lt; 3; i++)&#123;</div><div class="line">		c.Set_State(fm.Get_I(i));</div><div class="line">		c.show();</div><div class="line">	&#125;</div><div class="line">	gd1.show();</div><div class="line">	gd2.show();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/22/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/65/">65</a><a class="extend next" rel="next" href="/page/22/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1777,7 +1778,7 @@ design pattern "></p>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">640</span>
+                <span class="site-state-item-count">641</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1790,7 +1791,7 @@ design pattern "></p>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
