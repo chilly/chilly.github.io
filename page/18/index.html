@@ -271,7 +271,7 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/2011-05-13-eucalyptus-ssh-login/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/2011-05-13-windowsapachepei-zhi-xu-ni-zhu-ji/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="帐前卒">
@@ -290,7 +290,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2011/2011-05-13-eucalyptus-ssh-login/" itemprop="url">eucalyptus ssh can not login solution</a></h2>
+                <a class="post-title-link" href="/2011/2011-05-13-windowsapachepei-zhi-xu-ni-zhu-ji/" itemprop="url">windows apache 配置虚拟主机</a></h2>
         
 
         <div class="post-meta">
@@ -355,16 +355,18 @@
         
           
             <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="在windows中配置apache虚拟主机。采用单ip多端口映射。"></p>
+<p><meta name="_su_keywords" content="windows,apache,配置,虚拟,主机,多端口,单ip"></p>
 <p><meta name="_su_rich_snippet_type" content="none"></p>
-<p><meta name="views" content="274"><br>I used</p>
-<p><blockquote>euca-describle-keypairs</blockquote><br>to see the password first. If there is no password “aa”,<br>then use the following command.</p>
-<p><blockquote>euca-add-keypair aa &gt; my.private</blockquote><br>else delete password “aa” first or use another password.</p>
-<p><blockquote>euca-delete-keypair aa</blockquote><br>you should change my.private file access privilege, like:</p>
-<p><blockquote>chmod 0600 my.private</blockquote><br>then use euca-run-instance to run:</p>
-<p><blockquote>euca-run-instance -k aa -n 1 $emi</blockquote><br>then I have seen ip of instance.<br>use ssh to login:</p>
-<p><blockquote>ssh -i my.private root@ip</blockquote><br>done!</p>
-<p>If you do not change my.private file access privilege, then it will report:</p>
-<p><blockquote>privilege 0644 is too open.</blockquote><br>If you chmod after the report, ssh will not let you login. So change it before you want access your instance.</p>
+<p><meta name="_su_title" content="windows,apache,配置,虚拟,主机,多端口"></p>
+<p><meta name="views" content="363"><br>如果我的只有一个ip要在同一个机器上有两个或者多个网站，那就需要端口映射了。<br>例如ip为192.168.1.122 端口号为80，需要有一个网站a.com<br>ip为192.168.1.122 端口号为8080，需要有一个网站b.com<br>在windows/system32/driver/etc中修改hosts 添加<br>192.168.1.122 a.com<br>192.168.1.122 b.com<br>在apache的conf文件夹中，修改httpd.conf找到Listen关键词<br>然后照样子修改<br>Listen 80<br>Listen 8080<br>然后去conf\extra文件夹下，修改httpd-vhosts.conf文件。添加：</p>
+<directory "c:="" yoursitdir"=""><br>   AllowOverride FileInfo<br>   Order allow,deny<br>   Allow from all<br></directory>
+
+<virtualhost *:8080=""><br>    ServerAdmin webmaster@a.com<br>       DocumentRoot “c:/yoursitedir”<br>    ServerName a.com<br>    ServerAlias www.a.com<br>    CustomLog “logs/a.com-access.log” common<br>    ErrorLog “logs/a.com-error.log”<br></virtualhost>
+
+<directory "c:="" yoursitdir2"=""><br>   AllowOverride FileInfo<br>   Order allow,deny<br>   Allow from all<br></directory>
+
+<p><virtualhost *:80=""><br>    ServerAdmin webmaster@b.com<br>    DocumentRoot “c:/yoursitedir2”<br>    ServerName b.com<br>    ServerAlias www.b.com<br>    CustomLog “logs/b.com-access.log” common<br>    ErrorLog “logs/b.com-error.log”<br></virtualhost><br>注意在DocumentRoot “c:/yoursitedir2”和<directory "c:="" yoursitdir2"="">中路径的最后不能有”/“.<br>然后重启apache即可。</directory></p>
 
           
         
