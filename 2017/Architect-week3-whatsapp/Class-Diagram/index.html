@@ -97,21 +97,21 @@
 
 
 
-<meta name="description" content="I will write an article to design Class Diagram. In before article, I draw some usecases and component diagrams. Transform component diagram into class diagramMark noun as entityI like OOM(Object Orie">
+<meta name="description" content="I will write an article to design Class Diagram. In before article, I draw some usecases and component diagrams. 4. Transform component diagram into class diagram4.1 Mark noun as entityI like OOM(Obje">
 <meta name="keywords" content="Architect,whatsapp,leetcode,week3,architect,data model,class diagram">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Class-Diagram-Architect-week3-whatsapp">
 <meta property="og:url" content="http://chillyc.info/2017/Architect-week3-whatsapp/Class-Diagram/index.html">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="I will write an article to design Class Diagram. In before article, I draw some usecases and component diagrams. Transform component diagram into class diagramMark noun as entityI like OOM(Object Orie">
+<meta property="og:description" content="I will write an article to design Class Diagram. In before article, I draw some usecases and component diagrams. 4. Transform component diagram into class diagram4.1 Mark noun as entityI like OOM(Obje">
 <meta property="og:image" content="http://chillyc.info/images/Architect-week3-whatsapp/classes-init.png">
 <meta property="og:image" content="http://chillyc.info/images/Architect-week3-whatsapp/classes-init2.png">
 <meta property="og:image" content="http://chillyc.info/images/Architect-week3-whatsapp/classes-init3.png">
 <meta property="og:image" content="http://chillyc.info/images/Architect-week3-whatsapp/classes-init4.png">
-<meta property="og:updated_time" content="2017-09-26T12:58:11.000Z">
+<meta property="og:updated_time" content="2017-09-26T13:11:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Class-Diagram-Architect-week3-whatsapp">
-<meta name="twitter:description" content="I will write an article to design Class Diagram. In before article, I draw some usecases and component diagrams. Transform component diagram into class diagramMark noun as entityI like OOM(Object Orie">
+<meta name="twitter:description" content="I will write an article to design Class Diagram. In before article, I draw some usecases and component diagrams. 4. Transform component diagram into class diagram4.1 Mark noun as entityI like OOM(Obje">
 <meta name="twitter:image" content="http://chillyc.info/images/Architect-week3-whatsapp/classes-init.png">
 
 
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-09-26T20:58:11+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2017-09-26T21:11:45+08:00">
                 2017-09-26
               </time>
             
@@ -384,7 +384,7 @@
 
       
         <p>I will write an article to design Class Diagram. <a href="../../Architect-week3-whatsapp/">In before article, I draw some usecases and component diagrams.</a></p>
-<h1 id="Transform-component-diagram-into-class-diagram"><a href="#Transform-component-diagram-into-class-diagram" class="headerlink" title="Transform component diagram into class diagram"></a>Transform component diagram into class diagram</h1><h2 id="Mark-noun-as-entity"><a href="#Mark-noun-as-entity" class="headerlink" title="Mark noun as entity"></a>Mark noun as entity</h2><p>I like OOM(Object Oriented Model). Because our world is built by things. And we describe those things as noun, like sky, bird, hand, clothes. In OOD(Object Oriented Design), things are object/class entities. So there is the equation: </p>
+<h1 id="4-Transform-component-diagram-into-class-diagram"><a href="#4-Transform-component-diagram-into-class-diagram" class="headerlink" title="4. Transform component diagram into class diagram"></a>4. Transform component diagram into class diagram</h1><h2 id="4-1-Mark-noun-as-entity"><a href="#4-1-Mark-noun-as-entity" class="headerlink" title="4.1 Mark noun as entity"></a>4.1 Mark noun as entity</h2><p>I like OOM(Object Oriented Model). Because our world is built by things. And we describe those things as noun, like sky, bird, hand, clothes. In OOD(Object Oriented Design), things are object/class entities. So there is the equation: </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">things == noun == entities     (4.1.1)</div></pre></td></tr></table></figure>
 <p>Here, I will describe our system again. <strong>Clients</strong> will send <strong>message</strong> to our “Messager Service”. <strong>User</strong> will chat with someone. User can chat with many people in one <strong>chat room</strong>. <strong>Chatting</strong> is real-time. But if all clients of user are offline, system will send offline <strong>messages</strong> to one of user’s mobile client. </p>
 <p>Why mobile client? Because web/pc client are hardly woke up. Emmm…Should we add a constraint? <strong>“User only use one client to login/chat.”</strong> Without this constraint, system should boradcast chat messages?</p>
@@ -392,13 +392,13 @@
 <div align="center"><br><img src="/images/Architect-week3-whatsapp/classes-init.png" alt="class-init.png"><br><strong>Figure 4.1.1</strong> init classes<br></div>
 
 
-<h2 id="Add-relationship-between-entities"><a href="#Add-relationship-between-entities" class="headerlink" title="Add relationship between entities"></a>Add relationship between entities</h2><p>In Figure 4.1.1 Chatting class is the most important class. But Chatting means a chat message. So I change it to be “ChatMsg”. In ChatMsg class, there should be who send the message, who will receive it, and what’s the status of the message. Many users will receive the same ChatMsg Object. And one ChatMsg only contain one Message. If one ChatMsg is not exist, can the Message in it be exist? I think there should be strong relationship between Message and ChatMsg. And I call the relationship as “co-exist”. I draw solid diamond line between ChatMsg and Message. Other relationship with ChatMsg is not co-exist, but without User, the ChatMsg is meaningless. So I draw hollow diamond line between User and ChatMsg. Status is addition feature of ChatMsg. Without Status, we can not show chat status to our users. I draw arrow line between them. Now we draw Figure 4.1.2</p>
-<div align="center"><br><img src="/images/Architect-week3-whatsapp/classes-init2.png" alt="class-init.png"><br><strong>Figure 4.1.2</strong> init classes 2<br></div>
+<h2 id="4-2-Add-relationship-between-entities"><a href="#4-2-Add-relationship-between-entities" class="headerlink" title="4.2 Add relationship between entities"></a>4.2 Add relationship between entities</h2><p>In Figure 4.1.1 Chatting class is the most important class. But Chatting means a chat message. So I change it to be “ChatMsg”. In ChatMsg class, there should be who send the message, who will receive it, and what’s the status of the message. Many users will receive the same ChatMsg Object. And one ChatMsg only contain one Message. If one ChatMsg is not exist, can the Message in it be exist? I think there should be strong relationship between Message and ChatMsg. And I call the relationship as “co-exist”. I draw solid diamond line between ChatMsg and Message. Other relationship with ChatMsg is not co-exist, but without User, the ChatMsg is meaningless. So I draw hollow diamond line between User and ChatMsg. Status is addition feature of ChatMsg. Without Status, we can not show chat status to our users. I draw arrow line between them. Now we draw Figure 4.2.1</p>
+<div align="center"><br><img src="/images/Architect-week3-whatsapp/classes-init2.png" alt="class-init.png"><br><strong>Figure 4.2.1</strong> init classes 2<br></div>
 
 <p>Emmm…Does ChatRoom relate with ChatMsg? Yes. We consider users chat with each other in one chat room. When one chat message generated, the system will send it to the users who are in the ChatRoom. So I put Collection<user> into ChatRoom. So here it is:</user></p>
-<div align="center"><br><img src="/images/Architect-week3-whatsapp/classes-init3.png" alt="class-init.png"><br><strong>Figure 4.1.3</strong> init classes 3<br></div>
+<div align="center"><br><img src="/images/Architect-week3-whatsapp/classes-init3.png" alt="class-init.png"><br><strong>Figure 4.2.2</strong> init classes 3<br></div>
 
-<h2 id="Think-twice"><a href="#Think-twice" class="headerlink" title="Think twice"></a>Think twice</h2><p>Here, another problem should be considered. If we join/leave ChatRoom, the users of ChatRoom will be changed. Can we see ChatMsg even if we leave the ChatRoom?  If the status of ChatMsg is sent, and then someone join the chatroom, should  the ChatMsg be delivered to him? Can new comer see old ChatMsgs?<br>There are many requirements:</p>
+<h2 id="4-3-Think-twice"><a href="#4-3-Think-twice" class="headerlink" title="4.3 Think twice"></a>4.3 Think twice</h2><p>Here, another problem should be considered. If we join/leave ChatRoom, the users of ChatRoom will be changed. Can we see ChatMsg even if we leave the ChatRoom?  If the status of ChatMsg is sent, and then someone join the chatroom, should  the ChatMsg be delivered to him? Can new comer see old ChatMsgs?<br>There are many requirements:</p>
 <ol>
 <li>new comer can see old chat messages. But someone quit the room, he can not see any chat messages be occurred in the room.</li>
 <li>new comer can not see old chat messages. And someone quit the room, he will see nothing chat messages.</li>
@@ -411,9 +411,9 @@
 <li>We store Collection&lt;User&gt; in each ChatMsg Object, and Collection&lt;User&gt; is only the snapshot of ChatRoom. It seems there is no relationship between ChatMsg and ChatRoom. And it will cost more spaces (memory/disk) than 1 or 2.</li>
 </ol>
 <p>I will choose solution 2. The solution can adapt many requirements, and it stores the relationship between ChatRoom and ChatMsg. And I fill more field of Class Message and User. I call “ChatRoom history” as “ChatRoomSnapshot”. When ChatRoom is changing, the system will generate ChatRoomSnapshot to store old ChatRoom. The id of ChatRoomSnapshot and related ChatRoom must be the same. So the relationship between ChatRoom and ChatRoomSnapshot is weak. I just draw a line between them. In Message, I prefer JSONObject as its content. </p>
-<div align="center"><br><img src="/images/Architect-week3-whatsapp/classes-init4.png" alt="class-init.png"><br><strong>Figure 4.1.4</strong> init classes 4<br></div>
+<div align="center"><br><img src="/images/Architect-week3-whatsapp/classes-init4.png" alt="class-init.png"><br><strong>Figure 4.3.1</strong> init classes 4<br></div>
 
-<p>All of above are our system “Server” entities. Is it enough? Those entities seem like static or immutable. And in component diagram, there are many components. Which component is related with the class diagram? The answer is none. Figure 4.1.4 only draw basic entities. Those entities will be used in each components. And now, I will draw details of each component, and “give life” to those entities.</p>
+<p>All of above are our system “Server” entities. Is it enough? Those entities seem like static or immutable. And in component diagram, there are many components. Which component is related with the class diagram? The answer is none. Figure 4.3.1 only draw basic entities. Those entities will be used in each components. And now, I will draw details of each component, and “give life” to those entities.</p>
 
       
     </div>
@@ -610,7 +610,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Transform-component-diagram-into-class-diagram"><span class="nav-number">1.</span> <span class="nav-text">Transform component diagram into class diagram</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mark-noun-as-entity"><span class="nav-number">1.1.</span> <span class="nav-text">Mark noun as entity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Add-relationship-between-entities"><span class="nav-number">1.2.</span> <span class="nav-text">Add relationship between entities</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Think-twice"><span class="nav-number">1.3.</span> <span class="nav-text">Think twice</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Transform-component-diagram-into-class-diagram"><span class="nav-number">1.</span> <span class="nav-text">4. Transform component diagram into class diagram</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Mark-noun-as-entity"><span class="nav-number">1.1.</span> <span class="nav-text">4.1 Mark noun as entity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-Add-relationship-between-entities"><span class="nav-number">1.2.</span> <span class="nav-text">4.2 Add relationship between entities</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Think-twice"><span class="nav-number">1.3.</span> <span class="nav-text">4.3 Think twice</span></a></li></ol></li></ol></div>
             
 
           </div>
