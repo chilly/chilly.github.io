@@ -271,6 +271,154 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1618221/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2007/1618221/" itemprop="url">8088汇编指令集</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-05-20T20:43:00+08:00">
+                2007-05-20
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong> 8088 汇编速查手册 </strong></p>
+<p>一、数据传输指令<br>───────────────────────────────────────<br>它们在存贮器和寄存器、寄存器和输入输出端口之间传送数据.<br>1. 通用数据传送指令.<br>MOV    传送字或字节.<br>MOVSX  先符号扩展,再传送.<br>MOVZX  先零扩展,再传送.<br>PUSH    把字压入堆栈.<br>POP    把字弹出堆栈.<br>PUSHA  把AX,CX,DX,BX,SP,BP,SI,DI依次压入堆栈.<br>POPA    把DI,SI,BP,SP,BX,DX,CX,AX依次弹出堆栈.<br>PUSHAD  把EAX,ECX,EDX,EBX,ESP,EBP,ESI,EDI依次压入堆栈.<br>POPAD  把EDI,ESI,EBP,ESP,EBX,EDX,ECX,EAX依次弹出堆栈.<br>BSWAP  交换32位寄存器里字节的顺序<br>XCHG    交换字或字节.( 至少有一个操作数为寄存器,段寄存器不可作为操作数)<br>CMPXCHG 比较并交换操作数.( 第二个操作数必须为累加器AL/AX/EAX )<br>XADD    先交换再累加.( 结果在第一个操作数里 )<br>XLAT    字节查表转换.<br>── BX 指向一张 256 字节的表的起点, AL 为表的索引值 (0-255,即<br>0-FFH); 返回 AL 为查表结果. ( [BX+AL]-&gt;AL )<br>2. 输入输出端口传送指令.<br>IN      I/O端口输入. ( 语法: IN 累加器, {端口号│DX} )<br>OUT    I/O端口输出. ( 语法: OUT {端口号│DX},累加器 )<br>输入输出端口由立即方式指定时, 其范围是 0-255; 由寄存器 DX 指定时,<br>其范围是 0-65535.<br>3. 目的地址传送指令.<br>LEA    装入有效地址.<br>例: LEA DX,string  ;把偏移地址存到DX.<br>LDS    传送目标指针,把指针内容装入DS.<br>例: LDS SI,string  ;把段地址:偏移地址存到DS:SI.<br>LES    传送目标指针,把指针内容装入ES.<br>例: LES DI,string  ;把段地址:偏移地址存到ES:DI.<br>LFS    传送目标指针,把指针内容装入FS.<br>例: LFS DI,string  ;把段地址:偏移地址存到FS:DI.<br>LGS    传送目标指针,把指针内容装入GS.<br>例: LGS DI,string  ;把段地址:偏移地址存到GS:DI.<br>LSS    传送目标指针,把指针内容装入SS.<br>例: LSS DI,string  ;把段地址:偏移地址存到SS:DI.<br>4. 标志传送指令.<br>LAHF    标志寄存器传送,把标志装入AH.<br>SAHF    标志寄存器传送,把AH内容装入标志寄存器.<br>PUSHF  标志入栈.<br>POPF    标志出栈.<br>PUSHD  32位标志入栈.<br>POPD    32位标志出栈.</p>
+<p>二、算术运算指令<br>───────────────────────────────────────<br>ADD    加法.<br>ADC    带进位加法.<br>INC    加 1.<br>AAA    加法的ASCII码调整.<br>DAA    加法的十进制调整.<br>SUB    减法.<br>SBB    带借位减法.<br>DEC    减 1.<br>NEC    求反(以 0 减之).<br>CMP    比较.(两操作数作减法,仅修改标志位,不回送结果).<br>AAS    减法的ASCII码调整.<br>DAS    减法的十进制调整.<br>MUL    无符号乘法.<br>IMUL    整数乘法.<br>以上两条,结果回送AH和AL(字节运算),或DX和AX(字运算),<br>AAM    乘法的ASCII码调整.<br>DIV    无符号除法.<br>IDIV    整数除法.<br>以上两条,结果回送:<br>商回送AL,余数回送AH, (字节运算);<br>或  商回送AX,余数回送DX, (字运算).<br>AAD    除法的ASCII码调整.<br>CBW    字节转换为字. (把AL中字节的符号扩展到AH中去)<br>CWD    字转换为双字. (把AX中的字的符号扩展到DX中去)<br>CWDE    字转换为双字. (把AX中的字符号扩展到EAX中去)<br>CDQ    双字扩展.    (把EAX中的字的符号扩展到EDX中去)</p>
+<p>三、逻辑运算指令<br>───────────────────────────────────────<br>AND    与运算.<br>OR      或运算.<br>XOR    异或运算.<br>NOT    取反.<br>TEST    测试.(两操作数作与运算,仅修改标志位,不回送结果).<br>SHL    逻辑左移.<br>SAL    算术左移.(=SHL)<br>SHR    逻辑右移.<br>SAR    算术右移.(=SHR)<br>ROL    循环左移.<br>ROR    循环右移.<br>RCL    通过进位的循环左移.<br>RCR    通过进位的循环右移.<br>以上八种移位指令,其移位次数可达255次.<br>移位一次时, 可直接用操作码.  如 SHL AX,1.<br>移位&gt;1次时, 则由寄存器CL给出移位次数.<br>如  MOV CL,04<br>SHL AX,CL</p>
+<p>四、串指令<br>───────────────────────────────────────<br>DS:SI  源串段寄存器  :源串变址.<br>ES:DI  目标串段寄存器:目标串变址.<br>CX      重复次数计数器.<br>AL/AX  扫描值.<br>D标志  0表示重复操作中SI和DI应自动增量; 1表示应自动减量.<br>Z标志  用来控制扫描或比较操作的结束.<br>MOVS    串传送.<br>( MOVSB  传送字符.    MOVSW  传送字.    MOVSD  传送双字. )<br>CMPS    串比较.<br>( CMPSB  比较字符.    CMPSW  比较字. )<br>SCAS    串扫描.<br>把AL或AX的内容与目标串作比较,比较结果反映在标志位.<br>LODS    装入串.<br>把源串中的元素(字或字节)逐一装入AL或AX中.<br>( LODSB  传送字符.    LODSW  传送字.    LODSD  传送双字. )<br>STOS    保存串.<br>是LODS的逆过程.<br>REP            当CX/ECX&lt;&gt;0时重复.<br>REPE/REPZ      当ZF=1或比较结果相等,且CX/ECX&lt;&gt;0时重复.<br>REPNE/REPNZ    当ZF=0或比较结果不相等,且CX/ECX&lt;&gt;0时重复.<br>REPC          当CF=1且CX/ECX&lt;&gt;0时重复.<br>REPNC          当CF=0且CX/ECX&lt;&gt;0时重复.</p>
+<p>五、程序转移指令<br>───────────────────────────────────────<br>1&gt;无条件转移指令 (长转移)<br>JMP    无条件转移指令<br>CALL    过程调用<br>RET/RETF过程返回.<br>2&gt;条件转移指令 (短转移,-128到+127的距离内)<br>( 当且仅当(SF XOR OF)=1时,OP1<op2 3="" )="" ja="" jnbe="" 不小于或不等于时转移.="" jae="" jnb="" 大于或等于转移.="" jb="" jnae="" 小于转移.="" jbe="" jna="" 小于或等于转移.="" 以上四条,测试无符号整数运算的结果(标志c和z).="" jg="" jnle="" 大于转移.="" jge="" jnl="" jl="" jnge="" jle="" jng="" 以上四条,测试带符号整数运算的结果(标志s,o和z).="" je="" jz="" 等于转移.="" jne="" jnz="" 不等于时转移.="" jc="" 有进位时转移.="" jnc="" 无进位时转移.="" jno="" 不溢出时转移.="" jnp="" jpo="" 奇偶性为奇数时转移.="" jns="" 符号位为="" "0"="" 时转移.="" jo="" 溢出转移.="" jp="" jpe="" 奇偶性为偶数时转移.="" js="" "1"="">循环控制指令(短转移)<br>LOOP            CX不为零时循环.<br>LOOPE/LOOPZ    CX不为零且标志Z=1时循环.<br>LOOPNE/LOOPNZ  CX不为零且标志Z=0时循环.<br>JCXZ            CX为零时转移.<br>JECXZ          ECX为零时转移.<br>4&gt;中断指令<br>INT    中断指令<br>INTO    溢出中断<br>IRET    中断返回<br>5&gt;处理器控制指令<br>HLT    处理器暂停, 直到出现中断或复位信号才继续.<br>WAIT    当芯片引线TEST为高电平时使CPU进入等待状态.<br>ESC    转换到外处理器.<br>LOCK    封锁总线.<br>NOP    空操作.<br>STC    置进位标志位.<br>CLC    清进位标志位.<br>CMC    进位标志取反.<br>STD    置方向标志位.<br>CLD    清方向标志位.<br>STI    置中断允许位.<br>CLI    清中断允许位.</op2></p>
+<p>六、伪指令<br>───────────────────────────────────────<br>DW      定义字(2字节).<br>PROC    定义过程.<br>ENDP    过程结束.<br>SEGMENT 定义段.<br>ASSUME  建立段寄存器寻址.<br>ENDS    段结束.<br>END    程序结束.  </p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1616530/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -402,18 +550,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -702,6 +838,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1612814/">
@@ -838,18 +986,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1404,6 +1540,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1607288/">
@@ -1554,170 +1702,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1591767/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2007/1591767/" itemprop="url">你真正掌握最基础的东西了吗？——写给学弟学妹</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-04-29T14:54:00+08:00">
-                2007-04-29
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>昨天面试了几个来加入科技部的人。</p>
-<p>我出了一道非常简单的题</p>
-<p>int i,x = 0;</p>
-<p>for(i=0;i&lt;3;i++)</p>
-<p>{</p>
-<p>x++;</p>
-<p>} 告诉我for循环执行的每一步。</p>
-<p>这几个人算是大一里的高手了，还有一个曾经拿过编程比赛的几个奖。大一的在学c语言。至少for控制流他们学完了。问了这个问题，本以为是小菜一碟。可惜都没有答对，<br>也就不想再问后续的问题了。</p>
-<p>for的控制流类似于</p>
-<p>i = 0;</p>
-<p>while(i&lt;3)</p>
-<p>{</p>
-<p>x++;</p>
-<p>i++;</p>
-<p>}</p>
-<p>可惜他们都答成这样的控制流</p>
-<p>i=0;</p>
-<p>do</p>
-<p>{</p>
-<p>x++;</p>
-<p>i++;</p>
-<p>}while(i&lt;3);</p>
-<p>判断条件的先后顺序都答错了。本以为来的都是高手，基础没有问题，看来我们软件学院的学生们还要加强一下基础的东西。至少你的控制流不能错吧。要不以后怎么编程？仅仅<br>会做网页，比别人多学点c++就觉得了不起。唉，现在的年轻人，越来越浮躁了。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1767,7 +1751,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1780,7 +1764,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">642</span>
+                <span class="site-state-item-count">643</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1839,7 +1823,7 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

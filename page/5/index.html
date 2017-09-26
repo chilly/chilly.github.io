@@ -271,6 +271,185 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/19087307/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/19087307/" itemprop="url">十分钟了解MongoDB</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-02-11T21:51:00+08:00">
+                2014-02-11
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天写写 MongoDB的事情。这货是一个document-orientied, 基本上使用的json进行交互的。他把那个形式很像json的东西叫做<br>BJSON. 里面有一些mongoDB自己定义的数据类型。这种数据形式在传输存储很方便。</p>
+<p><strong> 首先介绍一下MongoDB的数据结构  </strong></p>
+<p><strong>   
+</strong></p>
+<p>database : 这个和mysql中的database一致。 默认使用的local, 可以自己创建新的。例如 在shell中写 db.xxx<br>然后就自动创建了xxx 这个collection</p>
+<p>collection: 这个概念和mysql中的table保持一致。</p>
+<p>document: 这个和mysql里的row或者 record保持一致。</p>
+<p>这个是MongoDB的三个最主要的结构。</p>
+<p>下面是如何使用。</p>
+<p><strong> 下载安装  </strong><br>首先去 www.mongoDB.org 上下载一个mongoDB的最新版。然后解压到某个目录。然后使用命令行进入到该目录下。</p>
+<p>创建 数据存储文件夹，这里可以直接创建一个 /data/db的文件夹（mkdir -p /data/db）。然后在命令行里执行如下命令启动mongodb<br>server.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mongod --dbpath ./data/db</div></pre></td></tr></table></figure></p>
+<p>这样mongoDB就启动了，一般端口为 27017. 你可以使用help来修改Port等。这里就不过多介绍。</p>
+<p>然后重新开一个命令窗口，使用命令进入到该目录下，执行下面语句启动mongoDB client.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mongo</div></pre></td></tr></table></figure>
+<p>如果使用的都是默认端口，这里就可以正常启动了。如果你修改了mongoDB server的端口，这里需要改成一致的。</p>
+<p><strong> 数据库CRUD(Create, Retrieve, Update, Delete)操作  </strong><br>下面就是命令行选择database, 创建collection, 存储document。首先：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">db</div><div class="line">查看需要现有的database.</div><div class="line">show dbs</div><div class="line"></div><div class="line">使用ooo作为database</div><div class="line">use ooo;</div><div class="line"></div><div class="line">如果这里不写use ooo,那默认就是local.</div></pre></td></tr></table></figure>
+<p>然后是数据库的操作了：</p>
+<p><strong> 1. 插入 </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">var a = &#123;&quot;value&quot;:1,&quot;value2&quot;:[&apos;a&apos;,&apos;b&apos;]&#125;</div><div class="line">var b = &#123;&quot;value&quot;:2&#125;</div><div class="line">var c = &#123;&quot;str&quot;:‘aaa’&#125;</div><div class="line">插入数据,xxxx是collection</div><div class="line">db.xxxx.save(a);</div><div class="line">下面也是插入数据</div><div class="line">db.xxxx.insert(b);</div><div class="line">db.xxxx.insert(c);</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20140211213153265" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140211213157453" alt=""><br><strong><br>2. 查看数据  </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">获取全部数据</div><div class="line">db.xxxx.find()</div><div class="line">获取一个数据</div><div class="line">db.xxxx.findOne()</div><div class="line"></div><div class="line">查询特定的记录</div><div class="line"></div><div class="line">db.xxxx.find(&#123;&quot;value&quot;:1&#125;)</div></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20140211213532765" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140211213542078" alt=""><br><strong> 3.更新操作 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">db.xxxx.update(</div><div class="line">   &#123; value: &#123; $lt: 18 &#125; &#125;,</div><div class="line">   &#123; $set: &#123; status: &quot;A&quot; &#125; &#125;,</div><div class="line">   &#123; multi: true &#125;</div><div class="line">)</div><div class="line"></div><div class="line">这里 &#123; value: &#123; $lt: 18 &#125; &#125;,是说  value &lt; 18,  &#123; $set: &#123; status: &quot;A&quot; &#125; &#125;,是说要set status 为A, 如果没有那个域，则创建出来。</div><div class="line">&#123; multi: true &#125; 则是处理多个。</div></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20140211213211218" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140211213215515" alt=""><br><strong> 4. 删除操作  </strong></p>
+<p><strong>   
+</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">db.xxxx.remove(&#123;&quot;value&quot;:1&#125;)</div><div class="line">删除value 为1 的document.</div></pre></td></tr></table></figure>
+<p>这里看起来非常简单。</p>
+<p><img src="http://img.blog.csdn.net/20140211213238656" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140211213243265" alt=""></p>
+<p><strong> 结束语 </strong><br>MongoDB的强大之处在于 JSON串里想写什么就可以写什么。<br>相同的collection中document可以完全不相同。（但是为了后期的维护，还是尽量相同。）这是稀疏数据库的一大优势。</p>
+<p>建索引MongoDB有很多种，可以建立unique 索引， TTL 索引（数据会过期失效,默认为此索引）， 多列组合索引，空间索引，全文索引和hash索引。<br>这里的多列索引和mysql的一致。对于全文索引，mongoDB建议不要在生产环境（线上环境）中使用，因为这个建索引很慢，性价比不高。</p>
+<p>对于mongoDB来说，他的索引可以使用{“backgroup”:true}来进行后台异步创建，也可以使用前台索引。但是前台索引会对性能造成极大的影响，所以<br>mongoDB官方文档建议新起一个mongoDB server的实例进行创建。然后使用副本启动的方法将创建好的索引作为副本启动。</p>
+<p>对于mongoDB，安全性做的比较粗略。也是对于操作，对于database等特殊数据需要分配权限。因为没有视图等概念，这些安全性做的比mysql来说粒度大了<br>一些。但是mongoDB支持SSL<br>方式访问，也支持kerberos认证。不过Kerberos认证现在只有微软那边在用，之前K3,K4被破,人心惶惶。现在不知道情况如何。</p>
+<p>今天就先介绍这么多吧。  </p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/18990301/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -401,18 +580,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -684,6 +851,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/18260773/">
@@ -824,18 +1003,6 @@ kFCMA==/dissolve/70/gravity/Center" alt=""></p>
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1408,6 +1575,18 @@ kFCMA==/dissolve/70/gravity/Center" alt=""></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17434939/">
@@ -1547,152 +1726,6 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/17413169/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/17413169/" itemprop="url">HTTP/1.1 413 FULL head</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-12-19T12:32:00+08:00">
-                2013-12-19
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>昨天，server调用新浪的OpenAPI功能失效。出现的现象是：服务器上线时是可以正常使用的。但是隔一段时间就变得不可用。刚开始以为是socket连接过多<br>或者socket等资源没有释放。后来查了一下socket连接发现不是这样子的. 下面是连接新浪服务器的tcp。发现只有两个。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$ netstat -np | grep 123.125.29</div><div class="line"></div><div class="line">tcp        0      0 -- ::ffff:123.125.29.244:443   ESTABLISHED -                   </div><div class="line">tcp        0      0 -- ::ffff:123.125.29.244:443   ESTABLISHED -                   </div><div class="line">$ netstat -np | grep 180.149.135</div><div class="line">tcp       28      0 -- ::ffff:180.149.135.176:443  CLOSE_WAIT  -                   </div><div class="line">tcp       28      0 -- ::ffff:180.149.135.176:443  CLOSE_WAIT  -</div></pre></td></tr></table></figure></p>
-<p>后来还看了HttpClient的源码和PoolingClientConnectionManager, 发现并不是这个引起的。另外给大家说个事情。使用Http<br>Client+PoolingClientConnectionManager，然后再使用HttpGet和HttpPost的话，HttpGet和HttpPost<br>是不需要release的.另外socket也不需要显示的关掉。唯一需要注意的是<br>HttpResponse需要把Entity中的Stream流关掉。否则请求有可能被Hold住。详细的介绍见 <a href="http://blog.csdn.net/cctt_1/article/details/8166067" target="_blank" rel="external"> HttpClient 卡死 response<br>为null .  
-</a><br>如果你不是使用HttpClient+PoolingClientConnectionManager， 而是每次new出来的新HttpClient,<br>那就需要关闭Socket，详细解决方法见 <a href="http://blog.csdn.net/cctt_1/article/details/9021543" target="_blank" rel="external"> JAVA的HttpClient问题：The server failed to respond with a<br>valid HTTP response </a> 。<br>但是上面都没有解决问题， 最后还是将HTTP的status code打印出来。发现是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">HTTP/1.1 413 FULL head</div></pre></td></tr></table></figure>
-<p>这问题出在，有多个线程在往HTTP 请求中增加Header， 而且header一直没有清空。就导致了这个问题。  </p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1742,7 +1775,7 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1755,7 +1788,7 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">642</span>
+                <span class="site-state-item-count">643</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1814,7 +1847,7 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

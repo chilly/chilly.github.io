@@ -271,6 +271,156 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-08-13-trickies-bugs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-08-13-trickies-bugs/" itemprop="url">trickies and bugs in c</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-08-13T00:00:00+08:00">
+                2010-08-13
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="views" content="542"><br>the macro #define is the biggest hidden bug in c. You should always remember macro-function is like code paster. And it will slow down your system in some special situations, such as macro recursion. If you macro define some function use BIG characters.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#define FUN1(a,b) a*b</div><div class="line">#define FUN2(a) a++;\</div><div class="line">     a*=a;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">	int a = 2;</div><div class="line">	int b = 3;</div><div class="line">	FUN1(a,5+1); // =&amp;gt; 2*5+1</div><div class="line">        if(a&amp;gt;2)FUN2(a); //=&amp;gt; if(a&amp;gt;2) a++;a*=a;</div><div class="line"></div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>strcpy() will copy “\0”, and it is dangerous when you copy two points.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">int main()&#123;</div><div class="line">	char str1[] = &quot;abcd&quot;;</div><div class="line">	char str2[] = &quot;12&quot;;</div><div class="line">	strcpy(str1,str2); // ok, str1 equals &quot;12&quot;</div><div class="line">	char *st1 = &quot;abcd&quot;;</div><div class="line">	char *st2 = &quot;12&quot;;</div><div class="line">	strcpy(st1,st2); //crash!! st1 points to static const string</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>param as point or array style. Although they are differnt styles, they are the same.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">int size1(char a[])&#123;</div><div class="line">	cout &amp;lt;&amp;lt; sizeof(a);</div><div class="line">&#125;</div><div class="line">int size2(char* a)&#123;</div><div class="line">	cout &amp;lt;&amp;lt; sizeof(a);</div><div class="line">&#125;</div><div class="line">int main()&#123;</div><div class="line">	char a[] = &quot;abcdef&quot;;</div><div class="line">	char *b = &quot;abcdef&quot;;</div><div class="line">	size1(a); //  =&amp;gt; sizeof(char*)</div><div class="line">	size1(b); //  =&amp;gt; sizeof(char*)</div><div class="line">	size2(a); //  =&amp;gt; sizeof(char*)</div><div class="line">	size2(b);//  =&amp;gt; sizeof(char*)</div><div class="line">	cout &amp;lt;&amp;lt; sizeof(a)&amp;lt;&amp;lt;endl; // =&amp;gt;strlen(a)+1</div><div class="line">	cout &amp;lt;&amp;lt; sizeof(b)&amp;lt;&amp;lt;endl; // sizeof(char*)</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// There are 5 segments in codes, DATA, BSS, TEXT, heap, stack</div><div class="line">// DATA stores all globel variables, and those variables are defined.</div><div class="line">// BSS stores all globel variables, but those variables are not defined.</div><div class="line">// const variables are in TEXT, and codes are in this segment also.</div><div class="line">// heap store (malloc, calloc,realloc, new) data</div><div class="line">// stack store function params, local variables.</div><div class="line"></div><div class="line">int a; // a is in BSS</div><div class="line">int b = 3; // b is in DATA</div><div class="line">int fun(int c)&#123; // c is in stack, when the function is called.</div><div class="line">	return 0; </div><div class="line">&#125;</div><div class="line">int main()&#123;</div><div class="line">	const int c = 4; // c is in TEXT</div><div class="line">	a = 4; // move to DATA</div><div class="line">	int x = 4; // in stack</div><div class="line">	int * p = malloc(sizeof(int)); // *p is in heap. but p is in stack.</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-07-16-quick-sort/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -406,18 +556,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -703,6 +841,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-07-05-memory-allocation/">
@@ -852,18 +1002,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1444,6 +1582,18 @@ the inside of memory alignment"></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-24-design-pattern-chain-reponsibility/">
@@ -1570,165 +1720,6 @@ the inside of memory alignment"></p>
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-10-debug-postgresql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-05-10-debug-postgresql/" itemprop="url">how to debug PostgreSQL</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-10T00:00:00+08:00">
-                2010-05-10
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_description" content="postgresql debug"></p>
-<p><meta name="_su_keywords" content="postgresql debug"></p>
-<p><meta name="_su_title" content="postgresql debug"></p>
-<p><meta name="views" content="1123"><br>First, compile the source code use ./configure –prefix=XXXX –enable-debug &amp;&amp; CFLAGS=-O0</p>
-<p>then make and make install.</p>
-<h2><span style="color: #800000;">IF you want to RESTART PG</span></h2><br>Detected if there is an instance of Postgre server. If there is, kill it. use<br><br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ps -e | grep postgre</div><div class="line">// find id of the process</div><div class="line">kill -9 $processid</div></pre></td></tr></table></figure><br><br><br>to detect the pocess of postgresql and kill it.<br><br>then use:<br><br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">gdb postgresqlHomeDIR/bin/postgres -quiet</div><div class="line">// enter gdb then use</div><div class="line">set args -D DATADIR</div><div class="line">run</div></pre></td></tr></table></figure><br><br><br>here DATADIR and postgresqlDIR are your own directory.<br><h2><span style="color: #800000;">IF you don’t want to RESTART PG</span></h2>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// find postgres pid</div><div class="line">pid = `ps auxww | \</div><div class="line">    grep postgres: | \</div><div class="line">    grep -v -e &apos;grep postgres:&apos; -e &apos;postgres: stats&apos; -e &apos;postgres: writer&apos; -e &apos;postgres: archiver&apos; -e &apos;postgres: logger&apos; -e &apos;postgres: autovacuum&apos; | \</div><div class="line">    tee /dev/tty | \</div><div class="line">    awk &apos;&#123;print $2&#125;&apos;`</div><div class="line">gdb pid</div></pre></td></tr></table></figure>
-<p>then use</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./psql test</div></pre></td></tr></table></figure>
-<p>to test. Here test is  your database name.</p>
-<p>IF you want to debug contrib</p>
-<p>make &amp;&amp; make install in contrib/yourdir</p>
-<p>then go to gdb to file your shard lib to load symbol. Here XXX.so is your contrib share lib.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(gdb) file XXX.so</div></pre></td></tr></table></figure>
-<p>if not, when you use break somefunction, it will report:</p>
-<p>No symbol table is loaded.  Use the “file” command.<br>Make breakpoint pending on future shared library load? (y or [n])</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1778,7 +1769,7 @@ the inside of memory alignment"></p>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1791,7 +1782,7 @@ the inside of memory alignment"></p>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">642</span>
+                <span class="site-state-item-count">643</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1850,7 +1841,7 @@ the inside of memory alignment"></p>
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

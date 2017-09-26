@@ -271,6 +271,162 @@
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979058/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2006/979058/" itemprop="url">java手记---静态和非静态</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-07-26T09:44:00+08:00">
+                2006-07-26
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:51+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>////////////////////构造函数不能声明为静态。</p>
+<p>关于静态与非静态的方法   MainClass.java<br>class sub<br>{<br>String a;<br>int num;<br>sub()<br>{<br>a = “Hello”;<br>num = 3;<br>}<br>}</p>
+<p>public class MainClass<br>{<br>String t;<br>sub s;<br>///这样写没有错误。<br>MainClass()<br>{<br>s = new sub();<br>t = “hhh”;<br>}<br>public static void main(String []arg)<br>{<br>MainClass mc = new MainClass();<br>System.out.println(mc.s.a);<br>}<br>}<br>～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～</p>
+<p>public class MainClass<br>{<br>String t;<br>sub s;<br>///这样写有错误。<br>public static void main(String []arg)<br>{<br>s = new sub();<br>System.out.println(s.a);<br>}<br>}</p>
+<p>StaticClass.java<br>////如果这样写那么必须使s成为static变量<br>///////如果使用static方法则其中使用的变量要么是static的自身类成员，要么是自身类。如果是自身类的话，<br>////////通过自身类调用的类成员可以不是static</p>
+<p>//////////////////纯过程函数一定要加static。（不使用对象的）<br>class Test<br>{<br>int num = 3;<br>static void show(Test a)/////////////////如果想在main中直接使用函数名得以实现就必须加static<br>{<br>System.out.println(a.num);<br>}<br>}<br>////////////如果在main中这样实现：<br>Test out = new Test();<br>out.num = 10;<br>out.show(out);             //This is very important!<br>/////////////////原来的函数可以不使用static关键词</p>
+<p>/////////////////////////////////非静态函数必须使用”引用. * “。<br>/////////////////////////////////静态函数不需加。</p>
+<p>////////////////////////////只有类的成员和类的函数前可加static，本地变量不可以加static关键词</p>
+<p>//////////////////函数参数列表中即使没有参数也不能加void如show(void). This is wrong.<br>/////////类中静态变量可以用”类名.静态变量名”代替”引用.静态变量名”.//这样更易懂。</p>
+<p>////////////////一切都从静态代码开始。<br>////////////////一个*.java文件先执行public类中的内容:但同样遵循先执行静态类成员缺省赋值,再执行其他的静态代码.<br>////////////////一个类被导入的时候,其静态成员只能被载入一次.<br>////////////////静态块和静态类成员变量效果相同(装载时间相同)都是初始化用的.<br>////////////////一个块和一个静态块效果并不相同.一个块可以使用静态或非静态的变量.但是static块就必须使用static变量.<br>///////////////否则有可以会出现Compile Error.原因是可能一个类装载的时候先装载静态成员然后才是成员变量.<br>///////////////这就有可能出现变量未定义的错误.StaticBlock.java</p>
+<p>///////////////一个块和static块都可以初始化成员.</p>
+<p>///////////////一个static是属于类的而不应该是属于对象的.</p>
+<p>///////////////final的方法不能被override.即不能被任何子类改变.TestAAndB.java , TestB.java</p>
+<p>///////////////private的方法不能被子类使用.其余的方法均可以被子类所调用.<br>TestB b = new TestB();<br>TestAAndB ab = b;<br>ab.b();////compile  error<br>///////////////即使把子类当成用超类的引用也不能使用这个private方法.<br>///////////////如果此时b中有b()方法的重写也不能编译通过.</p>
+<p>///////////////如果把子类当成超类的引用.那么只能使用超类中的非private方法.当然这些方法可能会被子类超越.<br>///////////////那么这个引用会自动调用子类的超越后的方法.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979042/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -413,18 +569,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -703,6 +847,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/978953/">
@@ -851,18 +1007,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
@@ -1512,6 +1656,18 @@ window.setTimeout("firm()",3000);
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/968606/">
@@ -1675,148 +1831,6 @@ window.setTimeout("firm()",5000);
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/679953/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2006/679953/" itemprop="url">LRU算法</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-04-27T17:12:00+08:00">
-                2006-04-27
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-08-21T14:08:06+08:00">
-                2017-08-21
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div></pre></td><td class="code"><pre><div class="line">//LRU algorithm</div><div class="line">//author:chillyCreator</div><div class="line">//in the page_information, the bigger number means the newer page.</div><div class="line">//if the number in the page_information is -1, it means no page is in this position. </div><div class="line">#include&lt;iostream&gt;</div><div class="line">using namespace std;</div><div class="line">bool isNotIn(int p_page_num);</div><div class="line">bool isNotFull(int&amp; position);</div><div class="line">void insert(int p_page_num,int position);</div><div class="line">int delOldPage();</div><div class="line">const int MAX_INT = 32767;</div><div class="line">int process_num;//the total number of process pages</div><div class="line">int page_size;//the total number of pages</div><div class="line">int page_num=0;//the number of page which in the page array </div><div class="line">int miss=0;//</div><div class="line">int* page_information;//the page information array</div><div class="line">int* page;//the page array</div><div class="line">int old=0;//how old is a page?</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line"> cout &lt;&lt; &quot;how many pages of processes ?&quot;&lt;&lt;endl;</div><div class="line"> cin &gt;&gt; process_num ;</div><div class="line"> cout &lt;&lt; &quot;how many pages in the memory?&quot;&lt;&lt;endl; </div><div class="line"> cin &gt;&gt; page_size;</div><div class="line"> page_information = new int[page_size];</div><div class="line"> page = new int[page_size];</div><div class="line"> int i;</div><div class="line"> for(i=0; i&lt;page_size; i++)</div><div class="line"> &#123; </div><div class="line">  page[i] = -1;</div><div class="line">  page_information[i] = -1;</div><div class="line"> &#125;</div><div class="line"> int user_test;</div><div class="line"> cout &lt;&lt; &quot;input 1 is user test, 2 is auto test&quot;&lt;&lt;endl;</div><div class="line"> cin &gt;&gt; user_test;</div><div class="line"> switch(user_test)</div><div class="line"> &#123;</div><div class="line"> case 1:</div><div class="line">  for(i=0; i &lt; process_num; i++)</div><div class="line">  &#123;</div><div class="line">   int process_page_num;</div><div class="line">   cin &gt;&gt; process_page_num;</div><div class="line">   cout &lt;&lt;&quot;input process page num is :&quot; &lt;&lt;process_page_num&lt;&lt;endl;</div><div class="line">   if(isNotIn(process_page_num))</div><div class="line">   &#123;</div><div class="line">    miss++;</div><div class="line">    int temp_position;</div><div class="line">    if(isNotFull(temp_position))</div><div class="line">    &#123; </div><div class="line">     insert(process_page_num,temp_position);</div><div class="line">     page_num++;</div><div class="line">    &#125;</div><div class="line">    else</div><div class="line">    &#123;</div><div class="line">     temp_position = delOldPage();</div><div class="line">     insert(process_page_num,temp_position);</div><div class="line">    &#125;</div><div class="line">   &#125;</div><div class="line">  &#125;</div><div class="line"> break;</div><div class="line"> default:</div><div class="line">  for(i=0; i &lt; process_num; i++)</div><div class="line">  &#123;</div><div class="line">   int process_page_num = rand();</div><div class="line">   cout &lt;&lt; process_page_num&lt;&lt;endl;</div><div class="line">   if(isNotIn(process_page_num))</div><div class="line">   &#123;</div><div class="line">    miss++;</div><div class="line">    int temp_position;</div><div class="line">    if(isNotFull(temp_position))</div><div class="line">    &#123; </div><div class="line">     insert(process_page_num,temp_position);</div><div class="line">     page_num++;</div><div class="line">    &#125;</div><div class="line">    else</div><div class="line">    &#123;</div><div class="line">     temp_position = delOldPage();</div><div class="line">     insert(process_page_num,temp_position);</div><div class="line">    &#125;</div><div class="line">   &#125;</div><div class="line">  &#125;</div><div class="line">  break;</div><div class="line"> &#125;</div><div class="line"> cout &lt;&lt;&quot;miss is &quot; &lt;&lt;miss &lt;&lt; &quot;/t the total process num is &quot;&lt;&lt;process_num&lt;&lt;endl;</div><div class="line"> cout &lt;&lt; endl;</div><div class="line"> cout &lt;&lt;&quot;the miss percentage is miss/process_num = &quot;&lt;&lt;double(miss)/process_num&lt;&lt;endl;</div><div class="line"> return 0;</div><div class="line">&#125;</div><div class="line">//the process page is in the page array?;</div><div class="line">bool isNotIn(int p_page_num)</div><div class="line">&#123;</div><div class="line"> for(int i=0; i&lt;page_size; i++)</div><div class="line"> &#123;</div><div class="line">  if(page[i]==p_page_num)</div><div class="line">   return false;</div><div class="line"> &#125;</div><div class="line"> return true;</div><div class="line">&#125;</div><div class="line">//the page array is full or not.</div><div class="line">//and return the empty position</div><div class="line">bool isNotFull(int&amp; position)</div><div class="line">&#123;</div><div class="line"> if(page_size &lt;= page_num)</div><div class="line">  return false;</div><div class="line"> int i;</div><div class="line"> for(i=0; i&lt;page_size; i++)</div><div class="line"> &#123;</div><div class="line">  if(page_information[i]==-1)</div><div class="line">   break;</div><div class="line"> &#125;</div><div class="line"> position = i;</div><div class="line"> return true;</div><div class="line">&#125;</div><div class="line">//insert a process page to the page in an empty position.</div><div class="line">//and the function protect the primite: old from flowover error. </div><div class="line">void insert(int p_page_num,int position)</div><div class="line">&#123;</div><div class="line">  old++;</div><div class="line">  if(old==MAX_INT)</div><div class="line">  &#123; </div><div class="line">   old = 1;</div><div class="line">   for(int i=0; i&lt;page_size; i++)</div><div class="line">   &#123;</div><div class="line">    if(page_information[i]!=-1)</div><div class="line">     page_information[i] = old;</div><div class="line">   &#125;</div><div class="line">  &#125;</div><div class="line">  old++;</div><div class="line">  page[position] = p_page_num;</div><div class="line">  page_information[position] = old;</div><div class="line">&#125;</div><div class="line">int delOldPage()</div><div class="line">&#123;</div><div class="line"> int i;</div><div class="line"> int min=page_information[0],min_i=0;</div><div class="line"> for(i=1; i&lt;page_size; i++)</div><div class="line"> &#123;</div><div class="line">  if(min &gt; page_information[i])</div><div class="line">  &#123;</div><div class="line">   min = page_information[i];</div><div class="line">   min_i = i;</div><div class="line">  &#125;</div><div class="line"> &#125;</div><div class="line"> return min_i;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1866,7 +1880,7 @@ window.setTimeout("firm()",5000);
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">641</span>
+                <span class="site-state-item-count">642</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1879,7 +1893,7 @@ window.setTimeout("firm()",5000);
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">642</span>
+                <span class="site-state-item-count">643</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1938,7 +1952,7 @@ window.setTimeout("firm()",5000);
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -
