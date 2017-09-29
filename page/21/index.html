@@ -245,6 +245,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-09-02-error-lnk2019/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-09-02-error-lnk2019/" itemprop="url">error LNK2019 unresolved external symbol </a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-09-02T00:00:00+08:00">
+                2010-09-02
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_keywords" content="LNK2019"></p>
+<p><meta name="views" content="2408"><br>Today I have found this problem :</p>
+<p><span style="color: #800000;">error LNK2019: unresolved external symbol <strong>imp</strong>gethostname@8 referenced in function _wmain </span></p>
+<p><span style="color: #800000;">and </span></p>
+<p><span style="color: #800000;">fatal error LNK1120: 1 unresolved externals </span></p>
+<p>code fragment is :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// if this code fragment can be compiled, the result will not be your expected.</div><div class="line"></div><div class="line">#include &quot;stdafx.h&quot;</div><div class="line">#include &amp;lt;iostream&amp;gt;</div><div class="line">#include &amp;lt;WinSock2.h&amp;gt;</div><div class="line">using namespace std;</div><div class="line">int _tmain(int argc, _TCHAR* argv[])</div><div class="line">&#123;</div><div class="line">	const int len = 256;</div><div class="line">	char buffer[len];</div><div class="line">	int a = gethostname(buffer,len);</div><div class="line">	cout &amp;lt;&amp;lt;ａ&amp;lt;&amp;lt;endl; // a will be -1</div><div class="line">	cout &amp;lt;&amp;lt; buffer&amp;lt;&amp;lt;endl; // buffer will be filled with unreadable code.</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p></p><h3><strong>What’s wrong? </strong></h3><br>If you don’t add <span style="color: #000080;">#include &lt;WinSock2.h&gt;</span>, the compiler will report :  <span style="color: #800000;">error C3861: ‘gethostname’: identifier not found </span>. But after you adding this header, it will report above error again.  First, you should add the header &lt;afxext.h&gt; into stdafx.h, then compile the code again. Code will be compiled without any error. Then run this code fragment, and the result is not my expected. a is -1, and the buffer is filled with messy code. If you use WSAGetLastError() function to see it error code, the error code will be WSANOTINITIALISED. Yes, I have not initialized. So we should call WSAStartup() first and then gethostname. And WSAStartup() will check DLL version. And after having gotten hostname, don’t forget to call WSACleanup(). Here is the whole code:<p></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">#include &quot;stdafx.h&quot;</div><div class="line">//#include &amp;lt;winsock.h&amp;gt;</div><div class="line">#include &amp;lt;iostream&amp;gt;</div><div class="line">#include &amp;lt;WinSock2.h&amp;gt; // use winsock2.h is ok</div><div class="line">using namespace std;</div><div class="line">int _tmain(int argc, _TCHAR* argv[])</div><div class="line">&#123;</div><div class="line">	const int len = 256;</div><div class="line">	char buffer[len];</div><div class="line">	WORD wVersionRequested;</div><div class="line">	WSADATA wsaData;</div><div class="line">	wVersionRequested = MAKEWORD(2,2); //version 2.2 </div><div class="line">	int err = WSAStartup(wVersionRequested,&amp;amp;wsaData);</div><div class="line">	if (0 != err) return 1;</div><div class="line">	if ( LOBYTE( wsaData.wVersion ) != 2 ||</div><div class="line">        HIBYTE( wsaData.wVersion ) != 2 ) &#123;</div><div class="line">               // only support version 2.2 of Windows Sockets </div><div class="line">			WSACleanup();</div><div class="line">			return 1;</div><div class="line">	&#125;</div><div class="line">	// get hostname</div><div class="line">	int a = gethostname(buffer,len);</div><div class="line">	/* if there is an error. use WSAGetLastError to find it.</div><div class="line">	int errcode = WSAGetLastError();</div><div class="line">	switch(errcode)&#123;</div><div class="line">	 ....</div><div class="line">	&#125;*/</div><div class="line">	cout &amp;lt;&amp;lt; buffer&amp;lt;&amp;lt;endl;</div><div class="line">	WSACleanup();</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-08-13-trickies-bugs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -384,18 +544,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -691,6 +839,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -842,18 +1002,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1482,6 +1630,18 @@ the inside of memory alignment"></p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1614,162 +1774,6 @@ the inside of memory alignment"></p>
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-24-design-pattern-chain-reponsibility/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-05-24-design-pattern-chain-reponsibility/" itemprop="url">design pattern CHAIN of reponsibility</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-24T00:00:00+08:00">
-                2010-05-24
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_description" content="design pattern CHAIN of reponsibility"></p>
-<p><meta name="_su_keywords" content="design pattern CHAIN of reponsibility"></p>
-<p><meta name="_su_title" content="design pattern CHAIN of reponsibility"></p>
-<meta name="views" content="603">
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line">#include&amp;lt;cstdio&amp;gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">namespace pattern&#123;</div><div class="line">	/// this pattern links all handler as a line, if previous handler can process a request, it wil not be</div><div class="line">	/// send to next handler. For example, if someone requested changing programming style, </div><div class="line">	/// this decision will be made by a programmer. </div><div class="line">	/// He will change his programming style without noticing his lead. </div><div class="line">	/// But if someone request changing the requirements, the programmer can not make this decision. </div><div class="line">	/// He will noticing his lead, and make his lead decided.</div><div class="line"></div><div class="line">	/// this is request class.</div><div class="line">	#define STYLE 0</div><div class="line">	#define REQIREMENT 1</div><div class="line">	class Request&#123;</div><div class="line">		public:</div><div class="line">			int type; // changing programming style or changing requirements?</div><div class="line"></div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	/// this class for processing request.</div><div class="line">	class Handler&#123;</div><div class="line">	private:</div><div class="line">		Handler* parent;</div><div class="line">	public:</div><div class="line">		Handler(Handler* p):parent(p)&#123;&#125;</div><div class="line">		virtual bool DoHandle(Request&amp;amp; r)=0;</div><div class="line">		void Process(Request&amp;amp; r);</div><div class="line">		virtual ~Handler()&#123;&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	void Handler::Process(Request&amp;amp; r)&#123;</div><div class="line">		if(!this-&amp;gt;DoHandle(r) &amp;amp;&amp;amp; NULL != parent)&#123;</div><div class="line">			parent-&amp;gt;Process(r);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	class Programmer: public Handler&#123;</div><div class="line">		public:</div><div class="line">		Programmer(Handler* p):Handler(p)&#123;&#125;</div><div class="line">		virtual bool DoHandle(Request&amp;amp; r);</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">	bool Programmer::DoHandle(Request&amp;amp; r)&#123;</div><div class="line">		if(r.type == STYLE)&#123;</div><div class="line">			printf(&quot;programmer: I can process changing programming style\n&quot;);</div><div class="line">			return true;</div><div class="line">		&#125;else&#123;</div><div class="line">			printf(&quot;programmer: I can not process this request. I will report this to my lead!\n&quot;);</div><div class="line">			return false;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	class Lead:public Handler&#123;</div><div class="line">		public:</div><div class="line">		Lead(Handler* p):Handler(p)&#123;&#125;</div><div class="line">		virtual bool DoHandle(Request&amp;amp; r);</div><div class="line"></div><div class="line">	&#125;;</div><div class="line">	bool Lead::DoHandle(Request&amp;amp; r)&#123;</div><div class="line">		if(r.type == REQIREMENT)&#123;</div><div class="line">			printf(&quot;lead: I will process changing reqirements\n&quot;);</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">	pattern::Lead lead((pattern::Handler*)NULL);</div><div class="line">	pattern::Programmer programmer(&amp;amp;lead);</div><div class="line">	pattern::Request r;</div><div class="line">	r.type = STYLE;</div><div class="line">	programmer.Process(r);</div><div class="line">	r.type = REQIREMENT;</div><div class="line">	programmer.Process(r);</div><div class="line">	return 0;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1823,7 +1827,7 @@ the inside of memory alignment"></p>
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">642</span>
+                <span class="site-state-item-count">643</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1836,7 +1840,7 @@ the inside of memory alignment"></p>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1897,7 +1901,7 @@ the inside of memory alignment"></p>
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

@@ -245,6 +245,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/2011-12-04-velocity-encoding-error-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2011/2011-12-04-velocity-encoding-error-2/" itemprop="url">velocity encoding charset error</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2011-12-04T00:00:00+08:00">
+                2011-12-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_description" content="There is a solution for solve velocity encoding or charset error."></p>
+<p><meta name="_su_keywords" content="encoding, charset, error, velocity"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="_su_title" content="encoding, charset, velocity, error, exception, java, web"></p>
+<p><meta name="views" content="64"></p>
+<p><meta name="_wp_old_slug" content="velocity-encoding-error"></p>
+<p></p><p>   First, set some properties for velocity engine. Set vm file reading path. use file read-mode not resource read-mode.<br><br><br><br>// set velocity path, if you don’t do these, you will get Resource not found exception.<br><br>Properties p = new Properties();<br><br>p.setProperty(“resource.loader”, “file”);<br><br>p.setProperty(“class.resource.loader.class”,”org.apache.velocity.runtime.resource.loader.FileResourceLoader”);<br><br>// where is your vms path, set it<br><br>p.setProperty(“file.resource.loader.path”, realPath + “/vm”);<br><br>// set output encoding<br><br>// nearly almost articals said the following will work, but it won’t<br><br>p.setProperty(Velocity.INPUT_ENCODING, Constant.DEFAULT_ENCODING);<br><br>p.setProperty(Velocity.OUTPUT_ENCODING, Constant.DEFAULT_ENCODING);<br><br>p.setProperty(“contentType”, “text/html;charset=”+Constant.DEFAULT_ENCODING);<br><br>Velocity.init(p);<br><br><br><br>   The above code should be write in beginning of use any of velocity objects. In Spring or Java web application, you should write them into Servlet context listener.<br><br>   If you use ascii word. There will no error encoding. But if you use gb2312 or UTF-8. You will find something weird. The above code dose not work. So I use response output to solve those encoding problem. In web application, we always use response.getOutputStream() to write something back. But now, we should construct output stream to write correct encoding word to the page. So velocity can encoding them correctly. The following code will help you.<br><br><br><br>String encoding = “utf-8”;<br><br>// If you use UTF-8 encoding in your application<br><br>Writer writer = new PrintWriter(new PrintStream(resp.getOutputStream(), true, encoding));<br><br>// velocity will find abc.vm in your file path folder.<br><br>String pageName = “abc”;<br><br>Template template = Velocity.getTemplate(pageName);<br><br>VelocityContext context = new VelocityContext();<br><br>context.put(“test”, new String(“hello”.getBytes(encoding), encoding));<br><br>// here velocity will use the writer to write correct encoding words to response stream. So we can see the correct words showed by our page.<br><br>template.merge(context, writer);<br><br><br><br>   If you use jetty to run your web application, it works fine.<br><br>   But maybe you use windows resin to run war package. Sometimes, error encoding comes again. There is something wrong with your resin application. You should change config file in resin conf folder. In conf/resin.xml( resin 4.0+ ), add &lt;character-encoding&gt;UTF-8&lt;/character-encoding&gt;  in  &lt; web-app-default &gt;. Like following:<br></p>
+<p><blockquote><br>&lt; web-app-default &gt;<br><br>    &lt;character-encoding&gt;UTF-8&lt;/character-encoding&gt;<br><br>…<br><br>&lt; /web-app-default &gt;<br><br></blockquote><br>   And you should use correct charset to start your resin. Else resin will use default charset of your operation system.</p><p></p>
+<p><blockquote><p>java -Dfile.encoding=UTF-8 -jar lib/resin.jar </p></blockquote></p>
+<p></p><p>   Addition, if you use spring framework, don’t forget the encoding filter :<br></p>
+<p><blockquote><br>&lt;filter&gt;<br><br>    &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;<br><br>        &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;<br><br>        &lt;init-param&gt;<br><br>            &lt;param-name&gt;encoding&lt;/param-name&gt;<br>            &lt;param-value&gt;UTF-8&lt;/param-value&gt;<br>        &lt;/init-param&gt;<br><br>    &lt;/filter&gt;<br><br>    &lt;filter-mapping&gt;<br><br>        &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;<br><br>        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;<br><br>    &lt;/filter-mapping&gt;<br><br></blockquote><br>   In encoding or charset error. You should consider the following :</p><p></p>
+<li>  <b>environment (like resin, jetty, eclipse and etc.)</b></li><br><li>  <b>Input (from outside, like user input, or reading from database )</b></li><br><li>  <b>Output (to outside, like page presented, or writing to database or file)</b></li><br><li>  <b>Process (maybe you encode words twice or more, or encode them to some other different charset)</b></li>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/7017312/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -407,18 +569,6 @@ public void init(ServletConfig config) throws ServletException {
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -703,6 +853,18 @@ public void init(ServletConfig config) throws ServletException {
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -842,18 +1004,6 @@ public void init(ServletConfig config) throws ServletException {
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1147,151 +1297,6 @@ public void init(ServletConfig config) throws ServletException {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/2011-09-22-svn-commands/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2011/2011-09-22-svn-commands/" itemprop="url">svn commands</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2011-09-22T00:00:00+08:00">
-                2011-09-22
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_rich_snippet_type" content="none"></p>
-<p><meta name="views" content="141"></p>
-<p><meta name="_wp_old_slug" content="svn-command"><br>svn merge is used for merging code from branch or other path to chunk. Or you can use old version to cover new version.<br>svn co/ svn checkout is commonly used for checking code to local with svn information.<br>svn import is used for importing code to svn, which has no svn information.<br>svn export is used for checking out code without svn information.<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2011/2011-09-22-svn-commands/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/2011-09-22-svn-roll/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1437,6 +1442,163 @@ public void init(ServletConfig config) throws ServletException {
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/2011-09-22-svn-commands/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2011/2011-09-22-svn-commands/" itemprop="url">svn commands</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2011-09-22T00:00:00+08:00">
+                2011-09-22
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="views" content="141"></p>
+<p><meta name="_wp_old_slug" content="svn-command"><br>svn merge is used for merging code from branch or other path to chunk. Or you can use old version to cover new version.<br>svn co/ svn checkout is commonly used for checking code to local with svn information.<br>svn import is used for importing code to svn, which has no svn information.<br>svn export is used for checking out code without svn information.<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2011/2011-09-22-svn-commands/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/6775963/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1574,363 +1736,6 @@ public void init(ServletConfig config) throws ServletException {
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/6760189/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2011/6760189/" itemprop="url">wait、notify、notifyAll正确使用方法和解释说明</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2011-09-08T14:28:00+08:00">
-                2011-09-08
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>/**</p>
-<ul>
-<li>转载请注明作者longdick    <a href="http://longdick.iteye.com" target="_blank" rel="external">http://longdick.iteye.com</a>   </li>
-<li></li>
-</ul>
-<p>*/ </p>
-<p>wait()、notify()、notifyAll()是三个定义在Object类里的方法，可以用来控制线程的状态。</p>
-<p>这三个方法最终调用的都是jvm级的native方法。随着jvm运行平台的不同可能有些许差异。</p>
-<ul>
-<li>如果对象调用了wait方法就会使持有该对象的线程把该对象的控制权交出去，然后处于等待状态。 </li>
-<li>如果对象调用了notify方法就会通知某个正在等待这个对象的控制权的线程可以继续运行。 </li>
-<li>如果对象调用了notifyAll方法就会通知所有等待这个对象控制权的线程继续运行。 </li>
-</ul>
-<p>其中wait方法有三个over load方法：</p>
-<p>wait()</p>
-<p>wait(long)</p>
-<p>wait(long,int)</p>
-<p>wait方法通过参数可以指定等待的时长。如果没有指定参数，默认一直等待直到被通知。</p>
-<p>以下是一个演示代码，以最简洁的方式说明复杂的问题：</p>
-<p>简要说明下：</p>
-<p>NotifyThread是用来模拟3秒钟后通知其他等待状态的线程的线程类；</p>
-<p>WaitThread是用来模拟等待的线程类；</p>
-<p>等待的中间对象是flag，一个String对象；</p>
-<p>main方法中同时启动一个Notify线程和三个wait线程；</p>
-<pre><code>public class NotifyTest {
-    private  String flag = &quot;true&quot;;
-
-    class NotifyThread extends Thread{
-        public NotifyThread(String name) {
-            super(name);
-        }
-        public void run() {        
-            try {
-                sleep(3000);//推迟3秒钟通知
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-                flag = &quot;false&quot;;
-                flag.notify();
-        }
-    };
-
-    class WaitThread extends Thread {
-        public WaitThread(String name) {
-            super(name);
-        }
-
-        public void run() {
-
-                while (flag!=&quot;false&quot;) {
-                    System.out.println(getName() + &quot; begin waiting!&quot;);
-                    long waitTime = System.currentTimeMillis();
-                    try {
-                        flag.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    waitTime = System.currentTimeMillis() - waitTime;
-                    System.out.println(&quot;wait time :&quot;+waitTime);
-                }
-                System.out.println(getName() + &quot; end waiting!&quot;);
-
-        }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println(&quot;Main Thread Run!&quot;);
-        NotifyTest test = new NotifyTest();
-        NotifyThread notifyThread =test.new NotifyThread(&quot;notify01&quot;);
-        WaitThread waitThread01 = test.new WaitThread(&quot;waiter01&quot;);
-        WaitThread waitThread02 = test.new WaitThread(&quot;waiter02&quot;);
-        WaitThread waitThread03 = test.new WaitThread(&quot;waiter03&quot;);
-        notifyThread.start();
-        waitThread01.start();
-        waitThread02.start();
-        waitThread03.start();
-    }
-
-}
-</code></pre><p>OK，如果你拿这段程序去运行下的话， 会发现根本运行不了，what<br>happened？满屏的java.lang.IllegalMonitorStateException。</p>
-<p>没错，这段程序有很多问题，我们一个个来看。</p>
-<p>首先，这儿要非常注意的几个事实是</p>
-<ol>
-<li>任何一个时刻，对象的控制权（monitor）只能被一个线程拥有。 </li>
-<li>无论是执行对象的wait、notify还是notifyAll方法，必须保证当前运行的线程取得了该对象的控制权（monitor） </li>
-<li>如果在没有控制权的线程里执行对象的以上三种方法，就会报java.lang.IllegalMonitorStateException异常。 </li>
-<li>JVM基于多线程，默认情况下不能保证运行时线程的时序性 </li>
-</ol>
-<p>基于以上几点事实，我们需要确保让线程拥有对象的控制权。</p>
-<p>也就是说在waitThread中执行wait方法时，要保证waitThread对flag有控制权；</p>
-<p>在notifyThread中执行notify方法时，要保证notifyThread对flag有控制权。</p>
-<p>线程取得控制权的方法有三：</p>
-<ol>
-<li>执行对象的某个同步实例方法。 </li>
-<li>执行对象对应类的同步静态方法。 </li>
-<li>执行对该对象加同步锁的同步块。 </li>
-</ol>
-<p>我们用第三种方法来做说明：</p>
-<p>将以上notify和wait方法包在同步块中</p>
-<pre><code>synchronized (flag) {
-                flag = &quot;false&quot;;
-                flag.notify();
-            }
-synchronized (flag) {
-                while (flag!=&quot;false&quot;) {
-                    System.out.println(getName() + &quot; begin waiting!&quot;);
-                    long waitTime = System.currentTimeMillis();
-                    try {
-                        flag.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    waitTime = System.currentTimeMillis() - waitTime;
-                    System.out.println(&quot;wait time :&quot;+waitTime);
-                }
-                System.out.println(getName() + &quot; end waiting!&quot;);
-            }
-</code></pre><p>我们向前进了一步。</p>
-<p>问题解决了吗？</p>
-<p>好像运行还是报错java.lang.IllegalMonitorStateException。what happened？</p>
-<p>这时的异常是由于在针对flag对象同步块中，更改了flag对象的状态所导致的。如下：</p>
-<p>flag=”false”;</p>
-<p>flag.notify();</p>
-<p>对在同步块中对flag进行了赋值操作，使得flag引用的对象改变，这时候再调用notify方法时，因为没有控制权所以抛出异常。</p>
-<p>我们可以改进一下，将flag改成一个JavaBean，然后更改它的属性不会影响到flag的引用。</p>
-<p>我们这里改成数组来试试，也可以达到同样的效果：</p>
-<pre><code>private   String flag[] = {&quot;true&quot;};
-    synchronized (flag) {
-                flag[0] = &quot;false&quot;;
-                flag.notify();
-            }
-synchronized (flag) {
-                flag[0] = &quot;false&quot;;
-                flag.notify();
-            }synchronized (flag) {
-                while (flag[0]!=&quot;false&quot;) {
-                    System.out.println(getName() + &quot; begin waiting!&quot;);
-                    long waitTime = System.currentTimeMillis();
-                    try {
-                        flag.wait();
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-</code></pre><p>这时候再运行，不再报异常，但是线程没有结束是吧，没错，还有线程堵塞，处于wait状态。</p>
-<p>原因很简单，我们有三个wait线程，只有一个notify线程，notify线程运行notify方法的时候，是随机通知一个正在等待的线程，所以，现在应该还有两<br>个线程在waiting。</p>
-<p>我们只需要将NotifyThread线程类中的flag.notify()方法改成notifyAll()就可以了。notifyAll方法会通知所有正在等待对象<br>控制权的线程。</p>
-<p>最终完成版如下：</p>
-<pre><code>public class NotifyTest {
-    private String flag[] = { &quot;true&quot; };
-
-    class NotifyThread extends Thread {
-        public NotifyThread(String name) {
-            super(name);
-        }
-
-        public void run() {
-            try {
-                sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            synchronized (flag) {
-                flag[0] = &quot;false&quot;;
-                flag.notifyAll();
-            }
-        }
-    };
-
-    class WaitThread extends Thread {
-        public WaitThread(String name) {
-            super(name);
-        }
-
-        public void run() {
-            synchronized (flag) {
-                while (flag[0] != &quot;false&quot;) {
-                    System.out.println(getName() + &quot; begin waiting!&quot;);
-                    long waitTime = System.currentTimeMillis();
-                    try {
-                        flag.wait();
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    waitTime = System.currentTimeMillis() - waitTime;
-                    System.out.println(&quot;wait time :&quot; + waitTime);
-                }
-                System.out.println(getName() + &quot; end waiting!&quot;);
-            }
-        }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println(&quot;Main Thread Run!&quot;);
-        NotifyTest test = new NotifyTest();
-        NotifyThread notifyThread = test.new NotifyThread(&quot;notify01&quot;);
-        WaitThread waitThread01 = test.new WaitThread(&quot;waiter01&quot;);
-        WaitThread waitThread02 = test.new WaitThread(&quot;waiter02&quot;);
-        WaitThread waitThread03 = test.new WaitThread(&quot;waiter03&quot;);
-        notifyThread.start();
-        waitThread01.start();
-        waitThread02.start();
-        waitThread03.start();
-    }
-
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1984,7 +1789,7 @@ synchronized (flag) {
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">642</span>
+                <span class="site-state-item-count">643</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1997,7 +1802,7 @@ synchronized (flag) {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2058,7 +1863,7 @@ synchronized (flag) {
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -
