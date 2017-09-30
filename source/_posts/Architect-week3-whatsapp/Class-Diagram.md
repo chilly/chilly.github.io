@@ -1,7 +1,7 @@
 ---
 title: Class-Diagram-Architect-week3-whatsapp
 date: 2017-09-24 22:18:23
-tags: Architect,whatsapp,leetcode,week3,architect,data model,class diagram
+tags: ['Architect','whatsapp','leetcode','week3','architect','data model','class diagram']
 ---
 I will write an article to design Class Diagram. [In before article, I draw some usecases and component diagrams.](../../Architect-week3-whatsapp/)
 

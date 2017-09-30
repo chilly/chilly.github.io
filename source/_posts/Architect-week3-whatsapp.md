@@ -1,7 +1,7 @@
 ---
 title: 'Architect:week3-whatsapp'
 date: 2017-09-13 20:06:17
-tags: Architect,whatsapp,leetcode,week3,architect,data model
+tags: ['Architect','whatsapp','leetcode','week3','architect','data model']
 ---
 # Origin
 I joined leetcode system design group to discuss how to design software. This is week3 topic:
