@@ -73,38 +73,24 @@
 
 
 
-<meta name="description" content="1. 首看看漏洞的起因：有兴趣的你可以将下面的url贴到浏览器看看效果: 12http://chillyc.info\.csdn.net 或者这个url: 12http://sdfa.com@chillyc.info?blog.csdn.net/ 这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了chillyc.info的一个404页面。但不管怎么">
+<meta name="description" content="1. 首看看漏洞的起因：有兴趣的你可以将下面的url贴到浏览器看看效果: 1http://chillyc.info\.csdn.net 或者这个url: 1http://sdfa.com@chillyc.info?blog.csdn.net/ 这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了chillyc.info的一个404页面。但不管怎么说，">
 <meta name="keywords" content="安全,漏洞,redirect">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OAuth 漏洞预警 (OAuth平台redirect_uri 漏洞)">
 <meta property="og:url" content="http://chillyc.info/2014/25145551/index.html">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="1. 首看看漏洞的起因：有兴趣的你可以将下面的url贴到浏览器看看效果: 12http://chillyc.info\.csdn.net 或者这个url: 12http://sdfa.com@chillyc.info?blog.csdn.net/ 这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了chillyc.info的一个404页面。但不管怎么">
-<meta property="og:image" content="http://img.blog.csdn.net/20140507181539093?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center">
-<meta property="og:image" content="http://img.blog.csdn.net/20140507181725312?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center">
-<meta property="og:image" content="http://img.blog.csdn.net/20140507181800171?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center">
-<meta property="og:image" content="http://img.blog.csdn.net/20140520124043171?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center">
-<meta property="og:image" content="http://img.blog.csdn.net/20140520124154421?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center">
-<meta property="og:image" content="http://img.blog.csdn.net/20140520124713343?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center">
-<meta property="og:updated_time" content="2017-06-12T02:33:50.000Z">
+<meta property="og:description" content="1. 首看看漏洞的起因：有兴趣的你可以将下面的url贴到浏览器看看效果: 1http://chillyc.info\.csdn.net 或者这个url: 1http://sdfa.com@chillyc.info?blog.csdn.net/ 这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了chillyc.info的一个404页面。但不管怎么说，">
+<meta property="og:image" content="http://img.blog.csdn.net/20140507181539093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20140507181725312?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20140507181800171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20140520124043171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20140520124154421?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20140520124713343?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:updated_time" content="2017-09-30T08:37:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OAuth 漏洞预警 (OAuth平台redirect_uri 漏洞)">
-<meta name="twitter:description" content="1. 首看看漏洞的起因：有兴趣的你可以将下面的url贴到浏览器看看效果: 12http://chillyc.info\.csdn.net 或者这个url: 12http://sdfa.com@chillyc.info?blog.csdn.net/ 这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了chillyc.info的一个404页面。但不管怎么">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20140507181539093?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center">
+<meta name="twitter:description" content="1. 首看看漏洞的起因：有兴趣的你可以将下面的url贴到浏览器看看效果: 1http://chillyc.info\.csdn.net 或者这个url: 1http://sdfa.com@chillyc.info?blog.csdn.net/ 这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了chillyc.info的一个404页面。但不管怎么说，">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20140507181539093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 
 
 
@@ -325,8 +311,8 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-09-30T16:37:12+08:00">
+                2017-09-30
               </time>
             
           </span>
@@ -378,37 +364,26 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
 
       
         <h3 id="1-首看看漏洞的起因："><a href="#1-首看看漏洞的起因：" class="headerlink" title="1. 首看看漏洞的起因："></a>1. 首看看漏洞的起因：</h3><p>有兴趣的你可以将下面的url贴到浏览器看看效果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">http://chillyc.info\.csdn.net</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://chillyc.info\.csdn.net</div></pre></td></tr></table></figure>
 <p>或者这个url:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">http://sdfa.com@chillyc.info?blog.csdn.net/</div></pre></td></tr></table></figure>
-<p>这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了<br>chillyc.info的一个404页面。但不管怎么说，大多程序员使用找到 ‘.’<br>和’/‘来判断domain的方法十分不靠谱。so~~~~为什么呢？写这些Oauth的家伙们都没有看过 <a href="http://tools.ietf.org/html/rfc3986#section-1.1.1" target="_blank" rel="external"> RFC 3986 (Uniform<br>Resource Identifier (URI): Generic Syntax)
-</a> .  或者看了一眼发现：我x,<br>这么多英文。然后就跳过了。不过不光中国人实现的有问题， 各种版本浏览器实现的也都有些问题。也有可能大家都觉得不会有这么复杂的uri。<br><a href="http://tools.ietf.org/html/rfc3986#section-1.1.1" target="_blank" rel="external"> </a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://sdfa.com@chillyc.info?blog.csdn.net/</div></pre></td></tr></table></figure>
+<p>这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了chillyc.info的一个404页面。但不管怎么说，大多程序员使用找到 ‘.’和’/‘来判断domain的方法十分不靠谱。so~~~~为什么呢？写这些Oauth的家伙们都没有看过 <a href="http://tools.ietf.org/html/rfc3986#section-1.1.1" target="_blank" rel="external"> RFC 3986 (UniformResource Identifier (URI): Generic Syntax)</a> .  或者看了一眼发现：我x,这么多英文。然后就跳过了。不过不光中国人实现的有问题， 各种版本浏览器实现的也都有些问题。也有可能大家都觉得不会有这么复杂的uri。</p>
 <h3 id="2-对于Oauth平台来说如何修补漏洞？"><a href="#2-对于Oauth平台来说如何修补漏洞？" class="headerlink" title="2. 对于Oauth平台来说如何修补漏洞？"></a>2. 对于Oauth平台来说如何修补漏洞？</h3><p>好吧，下面看了下rfc,简单介绍一下uri的定义：</p>
-<p><img src="http://img.blog.csdn.net/20140507181539093?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center" alt=""><br>给大家一个rfc上的正则福利，这个正则是为了匹配上面的uri的定义。</p>
-<p><img src="http://img.blog.csdn.net/20140507181725312?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20140507181539093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""> </p>
+<p>给大家一个rfc上的正则福利，这个正则是为了匹配上面的uri的定义。</p>
+<p><img src="http://img.blog.csdn.net/20140507181725312?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
 <p>下面是这个正则对url进行解析：</p>
-<p><img src="http://img.blog.csdn.net/20140507181800171?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center" alt=""><br>好吧。那除了Oauth平台用这个正则来真正找到domain还有什么更简单的方法来预防这个漏洞吗？嗯，其实加盟的第三方一开始只要遵循了Oauth2.0的规范。<br>还是比较容易预防这个漏洞的。</p>
-<h3 id="3-再简单介绍下Oauth2授权-："><a href="#3-再简单介绍下Oauth2授权-：" class="headerlink" title="3. 再简单介绍下Oauth2授权 ："></a>3. 再简单介绍下Oauth2授权 ：</h3><p>针对Oauth2协议， Oauth2中有几种获取 accessToken的方式(就是response_type 这个域)：<br>1. code, 这种是先获取到 code, 然后再用code 来获取accessToken</p>
+<p><img src="http://img.blog.csdn.net/20140507181800171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""><br>好吧。那除了Oauth平台用这个正则来真正找到domain还有什么更简单的方法来预防这个漏洞吗？嗯，其实加盟的第三方一开始只要遵循了Oauth2.0的规范。还是比较容易预防这个漏洞的。</p>
+<h3 id="3-再简单介绍下Oauth2授权-："><a href="#3-再简单介绍下Oauth2授权-：" class="headerlink" title="3. 再简单介绍下Oauth2授权 ："></a>3. 再简单介绍下Oauth2授权 ：</h3><p>针对Oauth2协议， Oauth2中有几种获取 accessToken的方式(就是response_type 这个域)：  </p>
+<p>1. code, 这种是先获取到 code, 然后再用code 来获取accessToken</p>
 <p>2. token, 这种是直接获取到accessToken ,这个比code更加直接。</p>
-<p>而对于token这种方式进行授权的。 就会带来比code方式更加危险的问题。 造成这个问题的原因就是 redirectUrl 这个参数的domain<br>在各大平台上判断的都有问题。 原因也很简单，大家都觉得这东西安全不是那么重要， 都https, 还在意什么安全问题。 另外授权流程那么的复杂，谁在意这鬼东西<br>还能出来什么安全问题。再说即使是有问题，那肯定第三方自己就能修复，完全不需要各大平台修复。各大平台只需要保证你发来正确的信息，给你正确的返回就行了。所以这个<br>漏洞等级很低。</p>
-<p>但是这个漏洞，的确可以将code 或者 accessToken通过这个漏洞发送给恶意第三方。特别是第二种使用token的直接授权方式。除非Oauth平台修改<br>。加盟的第三方应用无法做出有成效的修补。所以我下面只介绍使用第一种授权方式 code的修补方案。</p>
-<h3 id="4-加盟第三方如何修补和预防"><a href="#4-加盟第三方如何修补和预防" class="headerlink" title="4. 加盟第三方如何修补和预防"></a>4. 加盟第三方如何修补和预防</h3><p>首先，你这个应用需要是 Server应用（有自己的服务器或者有后台不可见代码）。 JS的app<br>完全预防不了（之前指定Oauth2.0时说各个浏览器都要出份力，但好像也没有见到这对JS app的Oauth2.0有什么改进之处。）只要代码可见，不管明文密<br>文，都一定是能获取到该应用的appKey和appSecret的。所以怎么都能获取到用户真正的accessToken，不管是钓鱼还是伪造。</p>
+<p>而对于token这种方式进行授权的。 就会带来比code方式更加危险的问题。 造成这个问题的原因就是 redirectUrl 这个参数的domain在各大平台上判断的都有问题。 原因也很简单，大家都觉得这东西安全不是那么重要， 都https, 还在意什么安全问题。 另外授权流程那么的复杂，谁在意这鬼东西还能出来什么安全问题。再说即使是有问题，那肯定第三方自己就能修复，完全不需要各大平台修复。各大平台只需要保证你发来正确的信息，给你正确的返回就行了。所以这个漏洞等级很低。</p>
+<p>但是这个漏洞，的确可以将code 或者 accessToken通过这个漏洞发送给恶意第三方。特别是第二种使用token的直接授权方式。除非Oauth平台修改。加盟的第三方应用无法做出有成效的修补。所以我下面只介绍使用第一种授权方式code的修补方案。</p>
+<h3 id="4-加盟第三方如何修补和预防"><a href="#4-加盟第三方如何修补和预防" class="headerlink" title="4. 加盟第三方如何修补和预防"></a>4. 加盟第三方如何修补和预防</h3><p>首先，你这个应用需要是 Server应用（有自己的服务器或者有后台不可见代码）。 JS的app完全预防不了（之前指定Oauth2.0时说各个浏览器都要出份力，但好像也没有见到这对JS app的Oauth2.0有什么改进之处。）只要代码可见，不管明文密文，都一定是能获取到该应用的appKey和appSecret的。所以怎么都能获取到用户真正的accessToken，不管是钓鱼还是伪造。</p>
 <p>不考虑直接客户端获取accessToken的形式。 Oauth说白了就是 Oauth平台和Server之间通信。如下图：</p>
-<p><img src="http://img.blog.csdn.net/20140520124043171?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center" alt=""><br>下面我们考虑浏览器：</p>
-<p><img src="http://img.blog.csdn.net/20140520124154421?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center" alt=""><br>下面我们考虑一下恶意程序，恶意程序只会出现在两个地方。一个是以脚本的形式出现在浏览器中（见恶意程序1）。另外一个是让信息流强制流向恶意服务器（见恶意程序2）<br>。</p>
-<p><img src="http://img.blog.csdn.net/20140520124713343?watermark/2/text/aHR0cDovL2Jsb2
-cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
-0/gravity/Center" alt=""><br>下面我们分别就两个恶意程序来讨论一下如何修补规避漏洞。  </p>
+<p><img src="http://img.blog.csdn.net/20140520124043171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""><br>下面我们考虑浏览器：</p>
+<p><img src="http://img.blog.csdn.net/20140520124154421?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""><br>下面我们考虑一下恶意程序，恶意程序只会出现在两个地方。一个是以脚本的形式出现在浏览器中（见恶意程序1）。另外一个是让信息流强制流向恶意服务器（见恶意程序2）。</p>
+<p><img src="http://img.blog.csdn.net/20140520124713343?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""><br>下面我们分别就两个恶意程序来讨论一下如何修补规避漏洞。</p>
 <ul>
 <li>对于恶意程序1， 这里最简单的做法就是让JS只知道部分信息。例如登录中常用的shadow cookie的方法。JS用于显示用户名或者登录信息的cookie 不是httpOnly的，而真正作为服务器认证凭证的cookie则使用httpOnly cookie。这样恶意的JS无法获取到真正有用的cookie. 详见 <a href="http://chillyc.info/blog/2012/05/11/cookie/"> Cookie的特性 </a> 。 </li>
 <li><p>对于恶意程序2，这里需要在我们的server请求Oauth平台时，首先植入一个认证信息，例如cookie/session等。即使通过url漏洞跳转到恶意程序2, 恶意程序2这时可以获取到Oauth平台发来的code和state. 而浏览器通过cookie的domain属性保证开始植入的认证信息不会发送给恶意程序2. </p>
@@ -416,13 +391,11 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
 <li><p>恶意程序2 通过其他方式和我们的server进行交互时，因没有认证信息，我们的server不会返回给它accessToken。   </p>
 </li>
 <li><p>恶意程序2 直接和Oauth平台交互，因为没有appSecret和appKey, 也无法获取到accessToken.   </p>
-<h3 id="5-结论"><a href="#5-结论" class="headerlink" title="5. 结论"></a>5. 结论</h3><p>做了以上两步，redirect_uri的漏洞不管怎么样，都只能称为Oauth平台的bug。而你的服务是足够安全的。</p>
 </li>
 </ul>
 </li>
 </ul>
-<p>上面的安全是基于电脑没有中病毒，以及服务自身没有其他的隐患的假设。顺便一提，oauth2中redirect<br>url漏洞才会造成威胁。Oauth1.0a协议中这种漏洞不会造成威胁。<br><a href="http://tools.ietf.org/html/rfc3986#section-1.1.1" target="_blank" rel="external">  
-</a></p>
+<h3 id="5-结论"><a href="#5-结论" class="headerlink" title="5. 结论"></a>5. 结论</h3><p>做了以上两步，redirect_uri的漏洞不管怎么样，都只能称为Oauth平台的bug。而你的服务是足够安全的。上面的安全是基于电脑没有中病毒，以及服务自身没有其他的隐患的假设。顺便一提，oauth2中redirect_url漏洞才会造成威胁。Oauth1.0a协议中这种漏洞不会造成威胁。</p>
 
       
     </div>
@@ -593,7 +566,7 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">645</span>
+                <span class="site-state-item-count">670</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -680,7 +653,7 @@ cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

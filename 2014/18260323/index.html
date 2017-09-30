@@ -80,7 +80,7 @@
 <meta property="og:url" content="http://chillyc.info/2014/18260323/index.html">
 <meta property="og:site_name" content="帐前卒专栏">
 <meta property="og:description" content="昨天遇到一个问题，请求发送之后直接返回了500错误，没有过ErrorController。并且Server这边的log里也没有异常。这真的是好奇怪。 产生问题的method是这样写的： 1234567891011   @RequestMapping(params = &amp;quot;method=bulkChange&amp;quot;, method = RequestMethod.POST)    pub">
-<meta property="og:updated_time" content="2017-06-12T02:33:50.000Z">
+<meta property="og:updated_time" content="2017-09-30T08:53:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Failed to convert value of type &#39;java.lang.String&#39; to required type &#39;org.springframework.web.multipart...&#39;">
 <meta name="twitter:description" content="昨天遇到一个问题，请求发送之后直接返回了500错误，没有过ErrorController。并且Server这边的log里也没有异常。这真的是好奇怪。 产生问题的method是这样写的： 1234567891011   @RequestMapping(params = &amp;quot;method=bulkChange&amp;quot;, method = RequestMethod.POST)    pub">
@@ -304,8 +304,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-09-30T16:53:59+08:00">
+                2017-09-30
               </time>
             
           </span>
@@ -359,7 +359,7 @@
         <p>昨天遇到一个问题，请求发送之后直接返回了500错误，没有过ErrorController。并且Server这边的log里也没有异常。这真的是好奇怪。</p>
 <p>产生问题的method是这样写的：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">   @RequestMapping(params = &quot;method=bulkChange&quot;, method = RequestMethod.POST)</div><div class="line">    public @ResponseBody</div><div class="line">    User changePhoto(</div><div class="line">                            @RequestParam(value = DESCRIPTION_NAME, required = false, defaultValue = DESCRIPTION_DEFAULT)</div><div class="line">                            String description,</div><div class="line">                            @RequestParam(value= PHOTO_NAME, required = false, defaultValue = PHOTO_DEFAULT)</div><div class="line">                            MultipartFile photo,</div><div class="line"></div><div class="line">                            HttpServletRequest request, HttpServletResponse response) throws Exception&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这出问题的地方就在于photo这个参数。如果将这个参数注释掉，一定没有问题。那这里在上传图片时，不会有500错误。但是在上传不含图片的时候，就会有500错误<br>了。这是为啥米？看起来问题应该是required=false时，没有上传参数，直接使用了defaultValue.<br>而我这里的defaultValue是个空字符串就直接挂了。应该使用<code>ValueConstants.DEFAULT_NONE</code>， 或者<br>“\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n” 这个将在Spring框架里作为 null进行处理。</p>
+<p>这出问题的地方就在于photo这个参数。如果将这个参数注释掉，一定没有问题。那这里在上传图片时，不会有500错误。但是在上传不含图片的时候，就会有500错误了。这是为啥米？看起来问题应该是required=false时，没有上传参数，直接使用了defaultValue.而我这里的defaultValue是个空字符串就直接挂了。应该使用<code>ValueConstants.DEFAULT_NONE</code>， 或者”\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n” 这个将在Spring框架里作为 null进行处理。</p>
 <p>改好后就解决了之前的问题。  </p>
 
       
@@ -522,7 +522,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">645</span>
+                <span class="site-state-item-count">670</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -583,7 +583,7 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -

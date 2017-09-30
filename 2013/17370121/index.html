@@ -73,17 +73,17 @@
 
 
 
-<meta name="description" content="1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-keylock的事情防止幻读。但是如果你直接在事务中使用 12SELECT * from [table]; 这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如： 1234SELECT * from [table] for updat">
+<meta name="description" content="1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-key lock的事情防止幻读。但是如果你直接在事务中使用 1SELECT * from [table]; 这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如： 123SELECT * from [table] for update">
 <meta name="keywords" content="mysql,SQL,幻读">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用mysql遇到的问题">
 <meta property="og:url" content="http://chillyc.info/2013/17370121/index.html">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-keylock的事情防止幻读。但是如果你直接在事务中使用 12SELECT * from [table]; 这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如： 1234SELECT * from [table] for updat">
-<meta property="og:updated_time" content="2017-06-12T02:33:50.000Z">
+<meta property="og:description" content="1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-key lock的事情防止幻读。但是如果你直接在事务中使用 1SELECT * from [table]; 这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如： 123SELECT * from [table] for update">
+<meta property="og:updated_time" content="2017-09-30T09:07:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用mysql遇到的问题">
-<meta name="twitter:description" content="1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-keylock的事情防止幻读。但是如果你直接在事务中使用 12SELECT * from [table]; 这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如： 1234SELECT * from [table] for updat">
+<meta name="twitter:description" content="1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-key lock的事情防止幻读。但是如果你直接在事务中使用 1SELECT * from [table]; 这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如： 123SELECT * from [table] for update">
 
 
 
@@ -304,8 +304,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-09-30T17:07:09+08:00">
+                2017-09-30
               </time>
             
           </span>
@@ -356,19 +356,17 @@
       
 
       
-        <p>1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-key<br>lock的事情防止幻读。但是如果你直接在事务中使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">SELECT * from [table];</div></pre></td></tr></table></figure>
+        <p>1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-key lock的事情防止幻读。但是如果你直接在事务中使用</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> [<span class="keyword">table</span>];</div></pre></td></tr></table></figure>
 <p>这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">SELECT * from [table] for update;</div><div class="line"></div><div class="line">SELECT * from [table] lock in share mode;</div></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> [<span class="keyword">table</span>] <span class="keyword">for</span> <span class="keyword">update</span>;</div><div class="line"></div><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> [<span class="keyword">table</span>] <span class="keyword">lock</span> <span class="keyword">in</span> <span class="keyword">share</span> <span class="keyword">mode</span>;</div></pre></td></tr></table></figure>
 <p>以上两句都可以防止幻读。第二句要优于第一句，因为加的是读锁而不是写锁。</p>
 <p>另外介绍一下幻读：</p>
 <p>幻读就是当一个事务进行查询时没有发现该记录，或者没有发现该记录被更改。结果在正在插入该记录或者真正要改该记录时，发现这条记录已经被其他事务改过了。</p>
 <p>例如</p>
-<p>事务1， select * from [table];</p>
-<p>这时进行事务2， insert into [table] select xx; commit;<br>事务1 再执行 select * from [table]; 这里是没有 事务2 的数据的。</p>
-<p>这里只要事务1再次执行 insert into [table] select xx; 这样就发现这个行已经存在了；这就是幻读。</p>
-<p>2. 另外发现update的一个问题。如果使用事务， 首先select 数据然后再使用该数据进行update，有可能会有问题。一般使用 update<br>[table] set col = col + value where …这种形式进行更新，比select col from [table];<br>取到col然后再进行update [table] set col = 刚才select 出的col value + value;<br>这样更加正确，因为update自身可以加写锁。保证了不会幻读。</p>
-<p>3. 另外一个问题涉及到 limit. 例如 select * from [table] limit [len] offset [offset];<br>如果这里offset比较小，那么这样做是可以的。如果这里offset很大，那么这样做类似于扫表。这里需要使用where子句来加速。  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">事务1， <span class="keyword">select</span> * <span class="keyword">from</span> [<span class="keyword">table</span>];</div><div class="line"></div><div class="line">这时进行事务2， <span class="keyword">insert</span> <span class="keyword">into</span> [<span class="keyword">table</span>] <span class="keyword">select</span> xx; <span class="keyword">commit</span>;  </div><div class="line">事务1 再执行 <span class="keyword">select</span> * <span class="keyword">from</span> [<span class="keyword">table</span>]; 这里是没有 事务2 的数据的。</div><div class="line"></div><div class="line">这里只要事务1再次执行 <span class="keyword">insert</span> <span class="keyword">into</span> [<span class="keyword">table</span>] <span class="keyword">select</span> xx; 这样就发现这个行已经存在了；这就是幻读。</div></pre></td></tr></table></figure>
+<p>2. 另外发现update的一个问题。如果使用事务， 首先select 数据然后再使用该数据进行update，有可能会有问题。一般使用 update [table] set col = col + value where …这种形式进行更新，比select col from [table]; 取到col然后再进行update [table] set col = 刚才select 出的col value + value; 这样更加正确，因为update自身可以加写锁。保证了不会幻读。</p>
+<p>3. 另外一个问题涉及到 limit. 例如 select * from [table] limit [len] offset [offset]; 如果这里offset比较小，那么这样做是可以的。如果这里offset很大，那么这样做类似于扫表。这里需要使用where子句来加速。  </p>
 
       
     </div>
@@ -530,7 +528,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">645</span>
+                <span class="site-state-item-count">670</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -591,7 +589,7 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 <div class="theme-info">
   主题 -
