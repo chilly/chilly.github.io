@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,java9,modular,module,model,feature,模块,功能,package,包," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="起源这次写写JAVA9的modular，俗称模块化。这个应该是Java9的最出彩的地方。之前Java的那个项目叫做Jigsaw。 为什么会有这个项目呢？原因在于之前Java使用package作为管理的。大家为了图省事，里面写的class都是public class。 也就是说包外都可用。大家都使用各种包管理工具ivy, maven, gradle啥的，A依赖C的1.0版本, B依赖于C的2.0版本">
+<meta name="keywords" content="java,java9,modular,module,model,feature,模块,功能,package,包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java9:modular feature">
+<meta property="og:url" content="http://chillyc.info/2017/jdk9/Java9-modular-feature/index.html">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="起源这次写写JAVA9的modular，俗称模块化。这个应该是Java9的最出彩的地方。之前Java的那个项目叫做Jigsaw。 为什么会有这个项目呢？原因在于之前Java使用package作为管理的。大家为了图省事，里面写的class都是public class。 也就是说包外都可用。大家都使用各种包管理工具ivy, maven, gradle啥的，A依赖C的1.0版本, B依赖于C的2.0版本">
+<meta property="og:image" content="http://chillyc.info/images/jdk9/modular/modular_jar_hell.png">
+<meta property="og:updated_time" content="2017-10-08T11:42:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java9:modular feature">
+<meta name="twitter:description" content="起源这次写写JAVA9的modular，俗称模块化。这个应该是Java9的最出彩的地方。之前Java的那个项目叫做Jigsaw。 为什么会有这个项目呢？原因在于之前Java使用package作为管理的。大家为了图省事，里面写的class都是public class。 也就是说包外都可用。大家都使用各种包管理工具ivy, maven, gradle啥的，A依赖C的1.0版本, B依赖于C的2.0版本">
+<meta name="twitter:image" content="http://chillyc.info/images/jdk9/modular/modular_jar_hell.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chillyc.info/2017/jdk9/Java9-modular-feature/"/>
+
+
+
+
+
+  <title>Java9:modular feature | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">帐前卒专栏</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+  
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+  
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/jdk9/Java9-modular-feature/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Java9:modular feature</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T10:04:15+08:00">
+                2017-10-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-08T19:42:13+08:00">
+                2017-10-08
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+               
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/jdk9/Java9-modular-feature/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017/jdk9/Java9-modular-feature/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h1><p>这次写写JAVA9的modular，俗称模块化。这个应该是Java9的最出彩的地方。之前Java的那个项目叫做Jigsaw。 为什么会有这个项目呢？原因在于之前Java使用package作为管理的。大家为了图省事，里面写的class都是public class。 也就是说包外都可用。大家都使用各种包管理工具ivy, maven, gradle啥的，A依赖C的1.0版本, B依赖于C的2.0版本。然后A,B又被自己的工程所依赖。C的1.0版本和2.0版本中有相同的类，不同的函数定义。见下图：</p>
+<div align="center"><br><img src="/images/jdk9/modular/modular_jar_hell.png" alt="jarhell.png"><br><strong>图 1</strong> 运行时依赖不同版本的类<br></div>
+
+<p>这就会导致JVM运行时不知道该用哪个类，这就是jar hell问题。不过jar hell还有许多种,这个只是比较常见的一种。</p>
+<p>之前jdk自身的package也有许多，写着写着自己都搞不明白到底谁依赖谁了。然后大家就都需要依赖整个jdk的jar。但现在不一样了，只需要依赖一部分模块就行了。module是package的集合。而一个module可以依赖其他的module, 例如所有的module都依赖于java.base这个基础的module。</p>
+<h1 id="使用IDE，Intellij"><a href="#使用IDE，Intellij" class="headerlink" title="使用IDE，Intellij"></a>使用IDE，Intellij</h1><p>说了这么多，不会用还是白搭。首先我们先用Intellij搭一个java9的工程。目录结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Project</div><div class="line">    |</div><div class="line">    module name</div><div class="line">        |</div><div class="line">        src</div><div class="line">            |</div><div class="line">            package name</div><div class="line">                |</div><div class="line">                class name</div><div class="line">			|</div><div class="line">			module-info.java</div><div class="line">    |</div><div class="line">    module name</div><div class="line">        |</div><div class="line">        src</div><div class="line">            |</div><div class="line">            package name</div><div class="line">                |</div><div class="line">                class name</div><div class="line">			|</div><div class="line">			module-info.java</div></pre></td></tr></table></figure>
+<p>这里有一个module-info.java。是写什么呢？首先我们将第一个module name写为one, 第二个module写为two. 第一个package是chillyc.info。第二个package name是info.chillyc.我们写一个最简单的Hello World代码，在代码里chillyc.info.Hello依赖于info.chillyc.World</p>
+<p>Hello.java的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> chillyc.info;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> info.chillyc.World.WORLD;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"chillyc.info.Hello"</span> + WORLD);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>World.java的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> info.chillyc;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">World</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String WORLD = <span class="string">"WORLD"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>one的module-info.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> one &#123;</div><div class="line">    <span class="keyword">requires</span> two;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>two的module-info.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> two &#123;</div><div class="line">    <span class="keyword">exports</span> info.chillyc;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>呃，上面这些写成多个package，也不需要写module-info.java, 不是更省事吗？是是是，的确更省事，这些是为了整个java的生态环境。你一个人爽不叫爽，大家一起爽才行。</p>
+<p>顺便一提，在IDE中Project上右键出来New…可以new出来新的module(自动带上了module-info.java)。 这个使用起来更加方便。我记得很久以前其实有package-info.java这个东西的。但是因为只是用来做文档声明的，大家嫌麻烦，都弃之不用了。我并不担心大家不用module-info.java. 因为这个东西还可以严格限制模块外可以调用哪些类。而且必须写模块依赖才行。所以如果你使用了module，那未来你一定有再次用到module的时候. 另外使用了module之后，你打成的最终jar应该更小巧。</p>
+<p>仔细的研究一下module-info.java文件，里面有requires和exports。requires是依赖，exports是导出。这点倒是和JS很像。这两句任何一句缺失，你的程序编译时都会报错。错误类似：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">只注释掉exports info.chillyc; 报错：</div><div class="line">The module &apos;two&apos; does not export the package &apos;info.chillyc&apos; to module &apos;one&apos;</div><div class="line"></div><div class="line">只注释掉require two; 报错：</div><div class="line">The module &apos;one&apos; does not have the module &apos;two&apos; in requirements</div></pre></td></tr></table></figure></p>
+<p>讲完了。你会用了吗？是不是很简单？….的确很简单。但是我觉得这依旧没有什么用。别人使用我的类的时候，如果我没有在module-info中exports出来，那他们要么重新写一个；要么让我改一下代码。</p>
+<p>但是module的确让我们的工程代码更加清晰。不过怕就怕你把整个工程的package全部都exports出来，那这东西就没有什么用了。很多时候，我们封装好一个component,只希望暴露出少量的几个类。但是因为测试或者内部调用的方便，一般都会将class定义为public的。那这个时候使用module就可以很好的解决这个问题。</p>
+<h1 id="更实用的"><a href="#更实用的" class="headerlink" title="更实用的"></a>更实用的</h1><p>对了，写点更加实用的。我们希望将各个module打成jar包，以后就可以单独使用某些module。这部分不能使用Intellij的IDE，因为它还没有支持。首先将Project的目录树变为如下的模样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Project</div><div class="line">    |</div><div class="line">    src</div><div class="line">        |</div><div class="line">        module name</div><div class="line">            |</div><div class="line">            package name</div><div class="line">                |</div><div class="line">                class name</div><div class="line">            |</div><div class="line">            module-info.java</div><div class="line">    	|</div><div class="line">    	module name</div><div class="line">            |</div><div class="line">            package name</div><div class="line">                |</div><div class="line">                class name</div><div class="line">            |</div><div class="line">            module-info.java</div></pre></td></tr></table></figure>
+<p>然后开始敲命令了。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">首先确定你的javac, java, jlink什么的是不是java9的版本。</div><div class="line"><span class="meta">$</span> mkdir mods</div><div class="line"><span class="meta">$</span> javac -d mods --module-source-path src $(find src -name "*.java")</div></pre></td></tr></table></figure></p>
+<p>执行完之后就可以看到mods里面存放了编译好的class文件。继续执行打包命令,注意jar是jdk9里的才行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> mkdir mlib</div><div class="line"><span class="meta">$</span> jar --create --file=mlib/two@1.0.jar --module-version=1.0 -C modt/two .</div><div class="line"><span class="meta">$</span> jar --create --file=mlib/one@1.0.jar --module-version=1.0 --main-class=chillyc.info.Hello -C modt/one .</div></pre></td></tr></table></figure></p>
+<p>执行jar文件：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> java -p mlib -m one</div></pre></td></tr></table></figure></p>
+<p>这个问题在于我每次执行就需要带上一个mlib的文件。这个文件很容易被被人直接拿去了反编译了。现在有更好的解决方案了：编译成一个image.<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> jlink --module-path jmods:mlib --add-modules one --output oneapp</div><div class="line">但是实际上上面这个要看你的Path是否正确，如果写成绝对路径应该像下面这样：</div><div class="line"><span class="meta">$</span> /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/bin/jlink --module-path /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/jmods:mlib --add-modules one --output oneapp</div></pre></td></tr></table></figure></p>
+<p>这样就有一个oneapp目录。这个目录里面你再也找不到你的one@1.0.jar这个东西了。如果你要执行，敲下面的命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> bin/java -m one</div></pre></td></tr></table></figure></p>
+<p>通过如下命令可以看一下bin/java这里的modules<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> bin/java --list-modules</div><div class="line">结果:</div><div class="line">java.base@9</div><div class="line">one@1.0</div><div class="line">two@1.0</div></pre></td></tr></table></figure></p>
+<p>java.base其实就是java9的默认模块，所有模块都会依赖java.base。上面打包成oneapp中的jmods就是java的基础模块。我觉得这个东西还是比较有用的。另外bin/java中里面暗含了这些模块，所以也可以直接执行刚才的jar。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> bin/java -jar [你的相对路径]/one@1.0.jar</div></pre></td></tr></table></figure></p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>嗯。modular…其实也没有真正解决Jar Hell的问题。不过如果出现冲突，那么java9的提示会比较友好。另外没有一堆的classpath,这样ps命令时不会眼痛。编译成模块image这点对防止反编译还是有点用处的。但是这个image不能直接放到一个没有Java的环境中使用。那就是说，编译好的image, 仍然达不到开箱即用的效果。希望image这东西在Java10可以开箱即用，不再依赖OS和Jdk。</p>
+<p><a href="https://blog.jetbrains.com/idea/2017/03/support-for-java-9-modules-in-intellij-idea-2017-1/" target="_blank" rel="external">Intellij的官方教程</a><br><a href="http://openjdk.java.net/projects/jigsaw/quick-start" target="_blank" rel="external">Jigsaw quick start</a><br><a href="http://openjdk.java.net/projects/jigsaw/talks/intro-modular-dev-j1-2016.pdf" target="_blank" rel="external">modular开发手册 2016年版</a><br><a href="http://openjdk.java.net/jeps/220" target="_blank" rel="external">modular images</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    帐前卒
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://chillyc.info/2017/jdk9/Java9-modular-feature/" title="Java9:modular feature">http://chillyc.info/2017/jdk9/Java9-modular-feature/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，内容均禁止转载，但链接可转载使用。如需转载内容请与作者沟通
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/java9/" rel="tag"># java9</a>
+          
+            <a href="/tags/modular/" rel="tag"># modular</a>
+          
+            <a href="/tags/module/" rel="tag"># module</a>
+          
+            <a href="/tags/model/" rel="tag"># model</a>
+          
+            <a href="/tags/feature/" rel="tag"># feature</a>
+          
+            <a href="/tags/模块/" rel="tag"># 模块</a>
+          
+            <a href="/tags/功能/" rel="tag"># 功能</a>
+          
+            <a href="/tags/package/" rel="tag"># package</a>
+          
+            <a href="/tags/包/" rel="tag"># 包</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/jdk9/Java9-Flow-feature/" rel="next" title="Java9:Flow feature">
+                <i class="fa fa-chevron-left"></i> Java9:Flow feature
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/zqz.jpg"
+              alt="帐前卒" />
+          
+            <p class="site-author-name" itemprop="name">帐前卒</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">644</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">670</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#起源"><span class="nav-number">1.</span> <span class="nav-text">起源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用IDE，Intellij"><span class="nav-number">2.</span> <span class="nav-text">使用IDE，Intellij</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更实用的"><span class="nav-number">3.</span> <span class="nav-text">更实用的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结束"><span class="nav-number">4.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- leftsiderbar -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6262648116"></ins>
+               <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+               </script>
+
+      <!--/noindex-->
+      
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-11621532-3', 'auto');
+                ga('send', 'pageview');
+
+                </script>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">帐前卒</span>
+
+  
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 92082, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 92082, xid: "2017/jdk9/Java9-modular-feature/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/92082/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

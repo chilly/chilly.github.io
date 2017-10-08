@@ -245,6 +245,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/jdk9/Java9-modular-feature/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/jdk9/Java9-modular-feature/" itemprop="url">Java9:modular feature</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T10:04:15+08:00">
+                2017-10-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-08T19:42:13+08:00">
+                2017-10-08
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h1><p>这次写写JAVA9的modular，俗称模块化。这个应该是Java9的最出彩的地方。之前Java的那个项目叫做Jigsaw。 为什么会有这个项目呢？原因在于之前Java使用package作为管理的。大家为了图省事，里面写的class都是public class。 也就是说包外都可用。大家都使用各种包管理工具ivy, maven, gradle啥的，A依赖C的1.0版本, B依赖于C的2.0版本。然后A,B又被自己的工程所依赖。C的1.0版本和2.0版本中有相同的类，不同的函数定义。见下图：</p>
+<div align="center"><br><img src="/images/jdk9/modular/modular_jar_hell.png" alt="jarhell.png"><br><strong>图 1</strong> 运行时依赖不同版本的类<br></div>
+
+<p>这就会导致JVM运行时不知道该用哪个类，这就是jar hell问题。不过jar hell还有许多种,这个只是比较常见的一种。</p>
+<p>之前jdk自身的package也有许多，写着写着自己都搞不明白到底谁依赖谁了。然后大家就都需要依赖整个jdk的jar。但现在不一样了，只需要依赖一部分模块就行了。module是package的集合。而一个module可以依赖其他的module, 例如所有的module都依赖于java.base这个基础的module。</p>
+<h1 id="使用IDE，Intellij"><a href="#使用IDE，Intellij" class="headerlink" title="使用IDE，Intellij"></a>使用IDE，Intellij</h1><p>说了这么多，不会用还是白搭。首先我们先用Intellij搭一个java9的工程。目录结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Project</div><div class="line">    |</div><div class="line">    module name</div><div class="line">        |</div><div class="line">        src</div><div class="line">            |</div><div class="line">            package name</div><div class="line">                |</div><div class="line">                class name</div><div class="line">			|</div><div class="line">			module-info.java</div><div class="line">    |</div><div class="line">    module name</div><div class="line">        |</div><div class="line">        src</div><div class="line">            |</div><div class="line">            package name</div><div class="line">                |</div><div class="line">                class name</div><div class="line">			|</div><div class="line">			module-info.java</div></pre></td></tr></table></figure>
+<p>这里有一个module-info.java。是写什么呢？首先我们将第一个module name写为one, 第二个module写为two. 第一个package是chillyc.info。第二个package name是info.chillyc.我们写一个最简单的Hello World代码，在代码里chillyc.info.Hello依赖于info.chillyc.World</p>
+<p>Hello.java的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> chillyc.info;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> info.chillyc.World.WORLD;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"chillyc.info.Hello"</span> + WORLD);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>World.java的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> info.chillyc;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">World</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String WORLD = <span class="string">"WORLD"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>one的module-info.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> one &#123;</div><div class="line">    <span class="keyword">requires</span> two;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>two的module-info.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> two &#123;</div><div class="line">    <span class="keyword">exports</span> info.chillyc;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>呃，上面这些写成多个package，也不需要写module-info.java, 不是更省事吗？是是是，的确更省事，这些是为了整个java的生态环境。你一个人爽不叫爽，大家一起爽才行。</p>
+<p>顺便一提，在IDE中Project上右键出来New…可以new出来新的module(自动带上了module-info.java)。 这个使用起来更加方便。我记得很久以前其实有package-info.java这个东西的。但是因为只是用来做文档声明的，大家嫌麻烦，都弃之不用了。我并不担心大家不用module-info.java. 因为这个东西还可以严格限制模块外可以调用哪些类。而且必须写模块依赖才行。所以如果你使用了module，那未来你一定有再次用到module的时候. 另外使用了module之后，你打成的最终jar应该更小巧。</p>
+<p>仔细的研究一下module-info.java文件，里面有requires和exports。requires是依赖，exports是导出。这点倒是和JS很像。这两句任何一句缺失，你的程序编译时都会报错。错误类似：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">只注释掉exports info.chillyc; 报错：</div><div class="line">The module &apos;two&apos; does not export the package &apos;info.chillyc&apos; to module &apos;one&apos;</div><div class="line"></div><div class="line">只注释掉require two; 报错：</div><div class="line">The module &apos;one&apos; does not have the module &apos;two&apos; in requirements</div></pre></td></tr></table></figure></p>
+<p>讲完了。你会用了吗？是不是很简单？….的确很简单。但是我觉得这依旧没有什么用。别人使用我的类的时候，如果我没有在module-info中exports出来，那他们要么重新写一个；要么让我改一下代码。</p>
+<p>但是module的确让我们的工程代码更加清晰。不过怕就怕你把整个工程的package全部都exports出来，那这东西就没有什么用了。很多时候，我们封装好一个component,只希望暴露出少量的几个类。但是因为测试或者内部调用的方便，一般都会将class定义为public的。那这个时候使用module就可以很好的解决这个问题。</p>
+<h1 id="更实用的"><a href="#更实用的" class="headerlink" title="更实用的"></a>更实用的</h1><p>对了，写点更加实用的。我们希望将各个module打成jar包，以后就可以单独使用某些module。这部分不能使用Intellij的IDE，因为它还没有支持。首先将Project的目录树变为如下的模样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Project</div><div class="line">    |</div><div class="line">    src</div><div class="line">        |</div><div class="line">        module name</div><div class="line">            |</div><div class="line">            package name</div><div class="line">                |</div><div class="line">                class name</div><div class="line">            |</div><div class="line">            module-info.java</div><div class="line">    	|</div><div class="line">    	module name</div><div class="line">            |</div><div class="line">            package name</div><div class="line">                |</div><div class="line">                class name</div><div class="line">            |</div><div class="line">            module-info.java</div></pre></td></tr></table></figure>
+<p>然后开始敲命令了。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">首先确定你的javac, java, jlink什么的是不是java9的版本。</div><div class="line"><span class="meta">$</span> mkdir mods</div><div class="line"><span class="meta">$</span> javac -d mods --module-source-path src $(find src -name "*.java")</div></pre></td></tr></table></figure></p>
+<p>执行完之后就可以看到mods里面存放了编译好的class文件。继续执行打包命令,注意jar是jdk9里的才行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> mkdir mlib</div><div class="line"><span class="meta">$</span> jar --create --file=mlib/two@1.0.jar --module-version=1.0 -C modt/two .</div><div class="line"><span class="meta">$</span> jar --create --file=mlib/one@1.0.jar --module-version=1.0 --main-class=chillyc.info.Hello -C modt/one .</div></pre></td></tr></table></figure></p>
+<p>执行jar文件：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> java -p mlib -m one</div></pre></td></tr></table></figure></p>
+<p>这个问题在于我每次执行就需要带上一个mlib的文件。这个文件很容易被被人直接拿去了反编译了。现在有更好的解决方案了：编译成一个image.<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> jlink --module-path jmods:mlib --add-modules one --output oneapp</div><div class="line">但是实际上上面这个要看你的Path是否正确，如果写成绝对路径应该像下面这样：</div><div class="line"><span class="meta">$</span> /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/bin/jlink --module-path /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/jmods:mlib --add-modules one --output oneapp</div></pre></td></tr></table></figure></p>
+<p>这样就有一个oneapp目录。这个目录里面你再也找不到你的one@1.0.jar这个东西了。如果你要执行，敲下面的命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> bin/java -m one</div></pre></td></tr></table></figure></p>
+<p>通过如下命令可以看一下bin/java这里的modules<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> bin/java --list-modules</div><div class="line">结果:</div><div class="line">java.base@9</div><div class="line">one@1.0</div><div class="line">two@1.0</div></pre></td></tr></table></figure></p>
+<p>java.base其实就是java9的默认模块，所有模块都会依赖java.base。上面打包成oneapp中的jmods就是java的基础模块。我觉得这个东西还是比较有用的。另外bin/java中里面暗含了这些模块，所以也可以直接执行刚才的jar。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> bin/java -jar [你的相对路径]/one@1.0.jar</div></pre></td></tr></table></figure></p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>嗯。modular…其实也没有真正解决Jar Hell的问题。不过如果出现冲突，那么java9的提示会比较友好。另外没有一堆的classpath,这样ps命令时不会眼痛。编译成模块image这点对防止反编译还是有点用处的。但是这个image不能直接放到一个没有Java的环境中使用。那就是说，编译好的image, 仍然达不到开箱即用的效果。希望image这东西在Java10可以开箱即用，不再依赖OS和Jdk。</p>
+<p><a href="https://blog.jetbrains.com/idea/2017/03/support-for-java-9-modules-in-intellij-idea-2017-1/" target="_blank" rel="external">Intellij的官方教程</a><br><a href="http://openjdk.java.net/projects/jigsaw/quick-start" target="_blank" rel="external">Jigsaw quick start</a><br><a href="http://openjdk.java.net/projects/jigsaw/talks/intro-modular-dev-j1-2016.pdf" target="_blank" rel="external">modular开发手册 2016年版</a><br><a href="http://openjdk.java.net/jeps/220" target="_blank" rel="external">modular images</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/jdk9/Java9-Flow-feature/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -420,18 +597,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -836,6 +1001,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1035,18 +1212,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1770,6 +1935,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1901,190 +2078,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/2010-07-19-catalan/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/2010-07-19-catalan/" itemprop="url">catalan 数</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-11T00:00:00+08:00">
-                2017-06-11
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Hi all,I should write this article  in Chinese. Because there are many special Math words here. Maybe I will translate this article later.</p>
-<p>首先是啥米叫<code>[[catalan]]</code>数，$$h(n) = h(0)h(n-1)+ h(1)h(n-2)+….+h(n-2)h(1)+h(n-1)h(0) ，h(0) = h(1) = 1$$通项公式为 $$h(n) = \frac{1}{n+1}{C_{2n}^{n}}$$ 另外还有 $$h(n) = h(1)h(n-1)+h(2)h(n-2)+…+h(n-2)h(2)+h(n-1)h(1), h(1) = 1$$。其通项公式为 $$h(n) = \frac{1}{n}{C_{2n-2}^{n-1}}$$</p>
-<p>首先是括号问题，很多问题都能转换为括号匹配问题，即在任何位置，左括号的数目都要大于等于右括号的数目。然后问你给n个左括号和n个右括号，共有多少种放置方法。具体解法为：</p>
-<p>分析：把左括号看作0，将右括号看作1，n个1和n个0组成的2n     位二进制数。由于等待入栈的操作数按照1‥n的顺序排列、入栈的操作数b大于等于出栈的操作数a(a≤b)，因此输出序列的总数目=由左而右扫描由n个1   和n个0组成的2n位二进制数，1的累计数不小于0的累计数的方案种数。在2n位二进制数中填入n个1的方案数为c(2n,n),不 填 1的其余n位自动填0。从中减去不符合要求（由左而右扫描，0的累计数大于1的累计 数）的方案数即为所求。不符合要求的数的特征是 由左 而右扫描时，必然在某一奇数位2m+1位上首先出现m+1个0的累计数和m个1的累计数，此后的2(n-m)-1位上有 n-m个    1和n-m-1个0。如若把后面这2(n-m)-1位上的0和1互换，使之成为n-m个0和n-m-1个1，结果得1个由n+1个0和n-1个1组成的   2n位数，即一个不合要求的数对应于一个由n+1个0和n-1个1组成的排列。反过来，任何一个由n+1个0和n-1个1组成的2n位 二 进制数，由于0的个数多2个，2n为偶数，故必在某一个奇数位上出现0的累计数超过1的累   计数。同样在后面部分0和1互换，使之成为由n个0和n个1组成的2n位数，即n+1个0和n-1个1组成的2n位数必对应一个不符合要求的数。因而不合要求的2n位数与n＋1个0，n－1个1组成的排列一一对应。显然，不符合要求的方案数为c(2n,n+1)。由此得出 $$输出序列的总数目={C_2n^n}-{C_2n^{n+1}}=\frac{n+1}{1}{C_2n^n}$$。</p>
-<p>当然也可以看作第一对括号出现在什么位置，如果出现在1，2位置，则为<code>h(0)h(2n-2)</code>,出现在3,4位置为<code>h(2)h(2n-4)</code>,当然这里不可能出现在2，3位置，否则，左边h(1)是错误状态，不可以再递归做下去。所以原方程为</p>
-<p>$$h(n) = h(0)h(2n-2)+h(2)h(2n-4)+…+h(2n-4)h(2)+h(2n-2)h(0)$$，这里将h(n)替换为f(n/2),即 $$h(n) = f(0)f(n-1)+f(1)f(n-2)+… = \frac{1}{n+1}{C_{2n}^{n}}$$</p>
-<p>另外矩阵连乘，出入栈，人过街区问题和这个解法类似。</p>
-<ol>
-<li>矩阵连乘即<code>a1*a2*a3...*an</code>这样的矩阵加括号表示成对共有多少种方法。首先可以选取某个矩阵作为起始矩阵，在这个矩阵上加括号，例如a2为起始矩阵，然后就变为 $$a1(a2)a3…$$然后如果a2与a3相乘则$$a1((a2)a3)…$$看出来括号是否和刚才那个左右括号匹配的问题一样？所以这里共有2n个括号，然后求放置正确括号位置的种类有多少。因为最初的一对括号无用，所以这里其实有2n-2个括号，结果秒杀为</li>
-</ol>
-<p>$$ \frac{1}{n}{C_{2n-2}^{n-1}} $$ 其实就是$$g(n)=f(2n-2)=h(n-1)$$带入即可。</p>
-<ol>
-<li><p>下面是问n个数出入栈，共有多少种出入栈的方式？进栈看作左括号，出栈看作右括号，然后瞬间变为左右括号匹配问题。结果依旧是<br>$$\frac{1}{n+1}{C_{2n}^{n}} $$</p>
-<p>因为第一个括号对就决定了结果的顺序，所以是2n个括号，这个与问题1有所不同。</p>
-</li>
-<li><p>然后是人过2n个街区工作，看作方格子，即左右走向n个街区，南北走向n个街区，但是这个家伙不会穿越但是可以碰到家到办公室的对角线，问有多少种可能的道路走法。这里因为没有通过对角线，所以走了k个左右走向的街区，最多只能再走k个南北走向的街区，否则就会穿越对角线。所以可以看作是栈问题，塞进去k个数只能弹出k个数。所以结果同2.</p>
-</li>
-<li>凸多边形区域划分三角形的方法数有多少？划分的三角形不能重叠（除三边可以重叠外）。首先选一条基边（因为划分必然要用到基边），一个顶点。图1中选中一条基边，一个顶点后，左边剩余1条基边(红色)，右边剩余n-2条；图二中左边剩余两条基边，右边剩余n-3条。其中n为凸多边形顶点数。则有</li>
-</ol>
-<p>$$f(n) = f(1)f(n-2)+f(2)f(n-3)+….+f(n-2)f(1)$$</p>
-<ol>
-<li>圆上选择2n个点，将这些点对连接起来，且所得n条线段不相交，求可行方法数。首先选择两个点，左边剩余0个点，右边剩余2n-2个点继续这样连接。下一次选择，左边剩余两个点，右边剩余2n-4继续选择..</li>
-</ol>
-<p> $$f(2n) = f(0)f(2n-2)+f(2)f(2n-4)+…$$令$$f(2n) = h(n)$$则$$ f(2n) = h(0)h(n-1)+h(1)h(n-2)+…=\frac{1}{n+1}{C_{2n}^{n}} $$</p>
-<ol>
-<li><p>n个节点构造多少种不同的二叉树。这个问题可以转换为括号问题，与连乘不同的是，它的第一对括号决定了它的树根。当选择一个节点，左边可以有0个，右边有n-1个；左边有1个，右边n-2个….所以</p>
-<p>$$g(n) = f(2n) = h(n) =\frac{1}{n+1}{C_{2n}^{n}} $$</p>
-</li>
-</ol>
-<p>下面转载冷笑话：</p>
-<p>从前有棵树，叫高数，树上挂了很多人<br>很久很久以前，在拉格朗日照耀下，有几座城：分别是常微分方城和偏微分方城这两座兄弟城，还有数理方程、随机过城。从这几座城里流出了几条溪，比较著名的 有：柯溪、数学分溪、泛函分溪、回归分溪、时间序列分溪等。其中某几条溪和支流汇聚在一起，形成了解析几河、微分几河、黎曼几河三条大河。</p>
-<p>河边有座古老的海森堡，里面生活着亥霍母子，穿着德布罗衣、卢瑟服、门捷列服，这样就不会被开尔蚊骚扰，被河里的薛定鳄咬伤。城堡门口两边摆放着牛墩和道 尔墩，出去便是鲍林。鲍林里面的树非常多：有高等代树、抽象代树、线性代树、实变函树、复变函树、数值代树等，还有长满了傅立叶，开满了范德花的级 树…人们专门在这些树边放了许多的盖(概)桶,高桶，这是用来放尸体的，因为，挂在上面的人，太多了，太多了…</p>
-<p>这些人死后就葬在微积坟，坟的后面是一片广阔的麦克劳林，林子里有一只费马，它喜欢在柯溪喝水，溪里撒着用高丝做成的ε-网，有时可以捕捉到二次剩鱼。<br>后来，芬斯勒几河改道，几河不能同调，工程师李群不得不微分流形，调河分溪。几河分溪以后，水量大涨，建了个测渡也没有效果，还是挂了很多人，连非交换代 树都挂满了，不得不弄到动力系桶里扔掉。<br>有些人不想挂在树上，索性投入了数值逼井（近）。结果投井的人发现井下生活着线性回龟和非线性回龟两种龟：前一种最为常见的是简单线性回龟和多元线性回 龟，它们都喜欢吃最小二橙。</p>
-<p>柯溪经过不等市，渐近县和极县，这里房子的屋顶都是用伽罗瓦盖的，人们的主食是无穷小粮。</p>
-<p>极县旁有一座道观叫线性无观，线性无观里有很多道士叫做多项士，道长比较二，也叫二项士。线性无观旁有一座庙叫做香寺，长老叫做满志，排出咀阵，守卫着一 座塔方。一天二项士拎着马尔可夫链来踢馆，满志曰：“正定！正定！吾级数太低，愿以郑太求和，道友合同否？”二项士惊呼：“特真值啊！”立退。不料满志此 人置信度太低，不以郑太求和，却要郑太回归。二项式大怒在密度函树下展开标准分布，布里包了两个钗钗，分别是标准钗和方钗。满志见状央（鞅）求饶命。二项 式将其关到希尔伯特空间，命巴纳赫看守。后来，巴纳赫让其付饭钱，满志念已缴钱便贪多吃，结果在无参树下被噎死（贝叶斯）。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2138,7 +2131,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

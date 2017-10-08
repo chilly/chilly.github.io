@@ -245,6 +245,159 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/2012-03-21-svn-diff/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/2012-03-21-svn-diff/" itemprop="url">svn diff</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2012-03-21T21:21:00+08:00">
+                2012-03-21
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近碰到了<code>svn merge</code>之后，再使用<code>svn diff</code>产生出来的patch中缺少某些文件的信息。后来发现了原因。使用<code>svn st</code>查看那些文件信息，类似于:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">A       src/aa.c</div><div class="line">A   +   src/bb.c</div><div class="line">M       src/cc.c</div></pre></td></tr></table></figure></p>
+<p>这样输出的patch中，aa.c是信息是都有的。cc.c也是有的。但是bb.c的信息不存在。主要是存在那个<code>+</code>. <code>+</code>的意思是这些文件存在于提交历史中，所以该文件不能再次被diff.但是为什么会存在于提交历史中，这个我就不知道了。<br>下面是教你如何去掉<code>+</code>.<br>使用下面的脚本会方便的去掉各个文件的<code>+</code>,对于目录的<code>+</code>是不能去掉的.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh</div><div class="line">plus_file=`svn st | grep &quot;^A&quot; | grep &quot;+&quot; | cut -d&quot; &quot; -f6`</div><div class="line">for i in $plus_file; do</div><div class="line">        if [ -d $i ]; then</div><div class="line">                echo &quot;skip $i&quot;</div><div class="line">        else</div><div class="line">                cp $&#123;i&#125; $&#123;i&#125;.back;</div><div class="line">                echo $i;</div><div class="line">                svn revert $i;</div><div class="line">                mv $&#123;i&#125;.back $&#123;i&#125;;</div><div class="line">                svn add $i;</div><div class="line">        fi</div><div class="line"></div><div class="line">done;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">上面脚本的工作原理是:</div><div class="line">cp src/bb.c src/bb.c.back</div><div class="line">svn revert src/bb.c</div><div class="line">mv src/bb.c.back src/bb.c</div><div class="line">svn add src/bb.c</div></pre></td></tr></table></figure>
+<p>这样所有的<code>A +</code>状态就变为了<code>A</code>。这样再使用<code>svn diff</code>就可以得到完整的diff信息。如果有想法还可以处理一下文件夹。不过review code时，文件夹的意义并不大，所以就没有处理。这里顺便感谢下巧大牛。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/2012-02-23-you-dao-yun-bi-ji-1-dot-5zheng-shi-ban-shang-xian/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -391,18 +544,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -688,6 +829,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -827,18 +980,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1415,6 +1556,18 @@ Perm Generation是static对象和class
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1549,156 +1702,6 @@ Perm Generation是static对象和class
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/2012-01-26-kong-fu-kong-miao-kong-lin/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/2012-01-26-kong-fu-kong-miao-kong-lin/" itemprop="url">孔府，孔庙，孔林</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2012-01-26T19:41:00+08:00">
-                2012-01-26
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天跟姐和姐夫逛了下曲阜。三孔很小的时候去过，现在基本什么记忆都没有了。当年好像破破烂烂。现在好像好一点了。很多翻修的痕迹，如果过去不砸，也就不用修了。跟着导游看了看，貌似只有题字有看的必要。翻修的有些差，就如同翻修的长城。<br>在孔林里听说只要姓孔就可以埋到孔林里。孔老师看来很有希望…</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1752,7 +1755,7 @@ Perm Generation是static对象和class
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

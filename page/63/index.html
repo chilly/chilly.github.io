@@ -245,6 +245,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/1057361/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2006/1057361/" itemprop="url">用java通过odbc连mysql</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-08-13T11:44:00+08:00">
+                2006-08-13
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong> 首先  </strong> 装一个mysql的驱动程序：mysql-connector-odbc-3.51.12-win32.zip解压点击setup即可，可能会碰到与java运行时有冲突，点击yes即可。 </p>
+<p>下一步下个mysql-connector-java-3.1.11-bin.jar，把它放在java－sdk的lib库里。</p>
+<p>在管理工具的odbc数据源里用户DSN选项卡里添加：mysql odbc 3.51Driver在connector中login选项卡添加：</p>
+<p>DataSourceName：user（这里是程序要使用到的名字）</p>
+<p>server：localhost</p>
+<p>user：root</p>
+<p>password：123</p>
+<p>Database：user（这里的名字要和mysql中的要使用的数据库名字一样）</p>
+<p>点击TEST，测试成功后点确定即可…</p>
+<p>写如下程序进行测试：</p>
+<p>public static void main(String[] args)<br>{<br>Connection connection = null;<br>Statement statement;<br>ResultSet resultSet;<br>// 加载驱动程序以连接数据库<br>try<br>{<br>Class.forName(“sun.jdbc.odbc.JdbcOdbcDriver”);//这个驱动不能是其他的..<br>connection = DriverManager.getConnection(“jdbc:odbc:user”,”root”,”123”);<br>//user是data Source ，root是用</p>
+<p>//户名，123是进入mysql的密码<br>System.out.println(“open easy”);<br>String query = “Select * from userrole”;<br>statement = connection.createStatement();<br>resultSet = statement.executeQuery( query );<br>connection.close();<br>System.out.println(“close easy”);  </p>
+<p>}<br>// 捕获加载驱动程序异常<br>catch ( ClassNotFoundException cnfex )<br>{<br>System.err.println(<br>“装载 JDBC/ODBC 驱动程序失败。” );<br>cnfex.printStackTrace();<br>System.exit( 1 ); // terminate program<br>}<br>// 捕获连接数据库异常<br>catch ( SQLException sqlex )<br>{<br>System.err.println( “无法连接数据库” );<br>sqlex.printStackTrace();<br>System.exit( 1 ); // terminate program<br>}<br>catch (Exception e)<br>{<br>System.out.println(e.toString());<br>}</p>
+<p>在运行中输入：net start mysql以启动mysql服务</p>
+<p>运行程序测试即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/1002348/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -430,18 +594,6 @@ second(thisForm.secondSelect);
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -750,6 +902,18 @@ defaultImage.src">这里可以加任意多的语句.<br><br><br><br><br><br><img
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -887,18 +1051,6 @@ defaultImage.src">这里可以加任意多的语句.<br><br><br><br><br><br><img
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1512,6 +1664,18 @@ Documents/壁纸/winxpaa13.jpg"><br>这里的&lt;img要写在一起,否则只是
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1641,173 +1805,6 @@ Documents/壁纸/winxpaa13.jpg"><br>这里的&lt;img要写在一起,否则只是
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979111/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2006/979111/" itemprop="url">java手记---package</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-07-26T09:56:00+08:00">
-                2006-07-26
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:51+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>///////////////程序包就是命名的类组。很像目录。是名称空间。类名在其中必须唯一  </p>
-<p>///////////////sgsware程序包-raytracing子程序包-Mailbox.java中的Mailbox.class<br>///////////////其全名为sgsware.raytracing.Mailbox<br>///////////////程序包名为小写。  </p>
-<p>c:&gt;   javac -d /路径 文件名.java         ///////////////编译程序包中的java文件<br>///////////////这时把编译出的*.class 放在这个路径下。  </p>
-<p>c:&gt;   java -classpath 路径 程序包名.文件/////////使用此文件。  </p>
-<p>package 名称；  ////////这样编译时就把这个文件的.class放在了这个名称中  </p>
-<p>package mypackage;<br>import mypackage.*;/////程序员永远不用这样定义。<br>/////一个类自动导入其程序包中的其他类。  </p>
-<p>///////////////在程序包中的类其default类型(包访问类型)为非public型<br>///////////////在同一程序包中的类在其他类中的实例可以调用自己类中的任何类型。  </p>
-<p>///////////一个受保护的方法可以由属主类的任何子类中被超越。即使子类在其他的程序包中。<br>//////////可以被子类的当前实例访问<br>package cc;<br>public class Cctest<br>{<br>protected int  id;<br>protected void show()<br>{<br>System.out.println(id);<br>}<br>}  </p>
-<p>package dd;<br>import cc.Cctest;<br>public class C extends Cctest<br>{<br>float salary;<br>protected void show(C A)      //在子类中被超越。<br>{<br>System.out.println(A.id);///////子类实例可用。<br>System.out.println(A.salary);<br>}<br>}//////////this is right.<br>//////////一个受保护的数据可以被属主类的任何子类中调用。但不能被超类中的实例访问。<br>//////////但可以被子类的实例访问。  </p>
-<p>package dd;<br>import cc.Cctest;<br>public class C extends Cctest<br>{<br>float salary;<br>protected void show(Cctest A)<br>{<br>System.out.println(A.id);//this is wrong.<br>}<br>}  </p>
-<p>超类版本访问                                                        子类版本访问<br>public<br>public<br>protected<br>public    protected<br>default<br>public    protected    default<br>private<br>public    protected    default    private  </p>
-<p>///////把main放在超类中。这样以后可以用超类的引用子类实例的超越的所有类型的函数。  </p>
-<p>///////终结类不能子类化，终结方法不能被超越。终结变量得到初始化后不能被修改。<br>private void show()///////////在超类中。<br>{<br>System.out.println(“a = “ + a + “ b = “ + b + “ c = “ + c);<br>}<br>public void show()///////////在子类中。<br>{<br>System.out.println(add());<br>}<br>PrivateClass pri1 = new SubPrivate();//////////超类引用子类。<br>pri1.show();////////////调用的是超类中的show().<br>/////////////但如果超类中的show()是非private得则调用的是子类中的show().<br>/////////////接口如果是公用的则在任何地方的任何代码中都可以使用。<br>/////////////接口如果不是公用的则在它的程序包中使用。它不能是private/protected<br>////////////接口中可以不声明public,但实现的时候必须有public声明.<br>///////////接口的引用只能用接口中声明的方法。<br>package Interface;<br>interface OverrideB<br>{<br>void b();<br>void c(int s);<br>}<br>package Interface;  </p>
-<p>interface A<br>{<br>void b();<br>int c(int s);<br>}<br>package Interface;<br>public class Override implements OverrideB,A<br>{<br>public void b()//这段代码是正确的.但软件工程不要求这样做.<br>{  </p>
-<p>}<br>public int c(int s)//这里不正确.两个接口中的方法可以函数签名和返回值都相同.但不能只有返回值不同.<br>return 3;<br>}<br>}<br>/////////一个接口可以继承多个接口使用extends关键字<br>interface AandB extends A,B<br>{  </p>
-<p>}<br>/////////一个接口不能继承一个虚拟类<br>public abstract class AbClass<br>{<br>abstract void draw();<br>}<br>package Interface;<br>interface AbInterface extends AbClass<br>{  </p>
-<p>}  </p>
-<p>//////////////虚拟类可以实现接口.  </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1861,7 +1858,7 @@ Documents/壁纸/winxpaa13.jpg"><br>这里的&lt;img要写在一起,否则只是
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

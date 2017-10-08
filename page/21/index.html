@@ -245,6 +245,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-09-03-postgresql-function-define/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2010/2010-09-03-postgresql-function-define/" itemprop="url">postgresql function define</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-09-03T00:00:00+08:00">
+                2010-09-03
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><meta name="_edit_last" content="1"></p>
+<p><meta name="_su_rich_snippet_type" content="none"></p>
+<p><meta name="views" content="1573"><br>In Postgresql, If you want to do something like “select Hello(a) from A;”. You should define your own function Hello().</p>
+<p>First, go to postgresql root directory and go into contrib file folder. Create your own directory, and add hello.h , hello.c, Makefile, hello.sql.in and uninstall_Hello.sql.in</p>
+<p>Makefile is like the following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">MODULE_big  = Hello // this is module name</div><div class="line">OBJS = Hello.o // those will be create by execute &quot;make&quot;</div><div class="line"></div><div class="line">DATA_built = hello.sql // install your function using this sql file</div><div class="line">DATA = uninstall_Hello.sql</div><div class="line">SHLIB_LINK = $(BE_DLLLIBS)</div><div class="line"></div><div class="line">ifdef USE_PGXS // this is a build infrastructure of extentions in postgreSQL</div><div class="line">PGXS = $(shell pg_config --pgxs)</div><div class="line">include $(PGXS)</div><div class="line">else</div><div class="line">subdir = contrib/Hello // here is your code files</div><div class="line">top_builddir = ../..</div><div class="line">include $(top_builddir)/src/Makefile.global</div><div class="line">include $(top_srcdir)/contrib/contrib-global.mk</div><div class="line">endif</div><div class="line"></div><div class="line">// the following code fragment is copying content of *.sql.in into *.sql</div><div class="line">%.sql: %.source</div><div class="line">	rm -f $@; \</div><div class="line">	C=`pwd`; \</div><div class="line">	sed -e &quot;s:_OBJWD_:$$C:g&quot; &amp;lt; $&amp;lt; &amp;gt; $@</div></pre></td></tr></table></figure>
+<p>Attention!!! In Makefile those command should be with no blank at end.<br>Here we can write hello.sql.in:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">SET search_path = public; --you should add this code first.</div><div class="line">--functions</div><div class="line">--take care of those functions, if those functions are used for data input and out, their args or return type must be cstring or varchar</div><div class="line"></div><div class="line">-- arg type is cstring</div><div class="line">CREATE OR REPLACE FUNCTION hello_in(cstring)</div><div class="line">   RETURNS HelloS</div><div class="line">   AS &apos;MODULE_PATHNAME&apos;</div><div class="line">   LANGUAGE C IMMUTABLE STRICT;</div><div class="line">-- return type is cstring</div><div class="line">CREATE OR REPLACE FUNCTION hello_out(HelloS)</div><div class="line">   RETURNS cstring</div><div class="line">   AS &apos;MODULE_PATHNAME&apos;</div><div class="line">   LANGUAGE C IMMUTABLE STRICT;</div><div class="line"></div><div class="line">--data type</div><div class="line">CREATE TYPE HelloS (</div><div class="line">   internallength = 52,</div><div class="line">   input = hello_in,</div><div class="line">   output = hello_out,</div><div class="line">   alignment = double</div><div class="line">);</div><div class="line">--size is 52 bytes and alignment is 8 bytes.</div><div class="line">--if you don&apos;t know its real size, use internallength = VARIABLE</div><div class="line">--if you want use binary array as its input and out, you should use receive=XXX_function, and send = XXX_function</div><div class="line"></div><div class="line">--outer function</div><div class="line">--this function can use kinds of types</div><div class="line">CREATE OR REPLACE FUNCTION Hello(HelloS)</div><div class="line">   RETURNS cstring</div><div class="line">   AS &apos;MODULE_PATHNAME&apos;</div><div class="line">   LANGUAGE C IMMUTABLE STRICT;</div></pre></td></tr></table></figure>
+<p>Here is the uninstall_Hello.sql.in:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SET search_path = public;</div><div class="line"></div><div class="line">DROP FUNCTION hello_in(cstring);</div><div class="line">DROP FUNCTION hello_out(HelloS);</div><div class="line">DROP TYPE HelloS;</div><div class="line">DROP FUNCTION Hello(HelloS);</div></pre></td></tr></table></figure>
+<p>In hello.h</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#ifndef HELLO_H</div><div class="line">#define HELLO_H</div><div class="line">#include&amp;lt;stdio.h&amp;gt;</div><div class="line">#include&amp;lt;stdlib.h&amp;gt;</div><div class="line"></div><div class="line">#include &quot;postgres.h&quot;</div><div class="line">#include &quot;fmgr.h&quot;</div><div class="line">#include &quot;funcapi.h&quot;</div><div class="line">// you should take care of the order of those head files!!!</div><div class="line"></div><div class="line">typedef struct&#123;</div><div class="line">	char content[52];</div><div class="line">&#125;HelloS;</div><div class="line"></div><div class="line">Datum		hello_in(PG_FUNCTION_ARGS);</div><div class="line">Datum		hello_out(PG_FUNCTION_ARGS);</div><div class="line">Datum               Hello(PG_FUNCTION_ARGS);</div><div class="line"></div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>hello.c</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#include “hello.h”</div><div class="line"></div><div class="line">#ifndef MOD_FOR_PG</div><div class="line">PG_MODULE_MAGIC;</div><div class="line">#endif</div><div class="line"></div><div class="line">PG_FUNCTION_INFO_V1(hello_in);</div><div class="line">Datum</div><div class="line">hello_in(PG_FUNCTION_ARGS)</div><div class="line">&#123;</div><div class="line">	// get args[0]</div><div class="line">	char * str = PG_GETARG_CSTRING(0);</div><div class="line">    HelloS * hs = palloc(sizeof(HelloS));</div><div class="line">    if(NULL != str)&#123;</div><div class="line">        strcpy(hs-&amp;gt;content,str);</div><div class="line">        PG_RETURN_POINTER(hs)</div><div class="line">    &#125;</div><div class="line">    PG_RETURN_NULL();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">PG_FUNCTION_INFO_V1(hello_out);</div><div class="line">Datum</div><div class="line">hello_out(PG_FUNCTION_ARGS)</div><div class="line">&#123;</div><div class="line">	// get args[0]</div><div class="line">    Hello * hs = PG_GETARG_POINTER(0);</div><div class="line"></div><div class="line">    if(NULL != hs)&#123;</div><div class="line">        char * content = palloc(sizeof(HelloS));</div><div class="line">        strcpy(content,hs-&amp;gt;content);</div><div class="line">        PG_RETURN_CSTRING(content);</div><div class="line">    &#125;</div><div class="line">    PG_RETURN_CSTRING(&quot;&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">PG_FUNCTION_INFO_V1(Hello);</div><div class="line">Datum</div><div class="line">Hello(PG_FUNCTION_ARGS)</div><div class="line">&#123;</div><div class="line">   HelloS* hs = PG_GETARG_POINTER(0);</div><div class="line"> if(NULL != hs)&#123;</div><div class="line">    char * res = palloc(sizeof(HelloS));</div><div class="line">    sprintf(res,&quot;hello %s&quot;,hs-&amp;gt;content);</div><div class="line">    PG_RETURN_CSTRING(res);</div><div class="line"> &#125;</div><div class="line"> PG_RETURN_CSTRING(&quot;hello nobody&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Then cd your folder contrib/Hello, make, and make install</p>
+<p>Then start psql to execute :</p>
+<p>create table A(a HelloS);</p>
+<p>insert into A values(‘cc’);</p>
+<p>insert into A values(‘ff’);</p>
+<p>select Hello(a) from A;</p>
+<p>result:</p>
+<p>Hello cc</p>
+<p>Hello ff</p>
+<p>select * from A;</p>
+<p>result:</p>
+<p>cc</p>
+<p>ff</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-09-02-error-lnk2019/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -386,18 +563,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -691,6 +856,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -838,18 +1015,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1475,6 +1640,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1620,160 +1797,6 @@ the inside of memory alignment"></p>
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/2010-05-26-climbing-wall/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2010/2010-05-26-climbing-wall/" itemprop="url">climbing wall?</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2010-05-26T00:00:00+08:00">
-                2010-05-26
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><meta name="_edit_last" content="1"></p>
-<p><meta name="_su_rich_snippet_type" content="none"></p>
-<p><meta name="views" content="495"></p>
-<p><meta name="_wp_old_slug" content=""></p>
-<p>#!/bin/sh<br>plink -ssh -D 7070 -P 22 -pw “$1” freessh@a.freessh.us</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1827,7 +1850,7 @@ the inside of memory alignment"></p>
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

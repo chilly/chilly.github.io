@@ -245,6 +245,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/2174638/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2008/2174638/" itemprop="url">模板类的小问题（链接失败）</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2008-03-12T21:44:00+08:00">
+                2008-03-12
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天上午做模板类。结果还发现了大大小小的问题。</p>
+<p>希望自己的模板变的越来越规范，所以强迫自己把模板类中的函数的定义和声明分开。 而且放在了不同的文件里。</p>
+<p>下面是大概的写法。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>template  &lt; class  type  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>class  A<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>public  :<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>friend ostream  &amp; operator  &lt;&lt; (ostream  &amp; , A  &lt; type  &gt;&amp; );<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>A();<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>….<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }  ;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""></p>
+<p>然后在另一个.cpp中这样定义</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>template  &lt; class  type  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>ostream  &amp; operator  &lt;&lt; (ostream  &amp; os,A  &lt; type  &gt;&amp; a)<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>os  &lt;&lt; a….  &lt;&lt; endl;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>return  os;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>template  &lt; class  type  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""> A<br>&lt; type  &gt; ::A()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>….<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>template  &lt; class  type  &gt;<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt=""><br>void  A  &lt; type  &gt; ::test()<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kStart.gif" alt=""> <img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/
+ContractedBlock.gif" alt=""> …  {<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt=""><br>….<br><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc
+kEnd.gif" alt=""> }</p>
+<p>在main函数中这样调用</p>
+<p>A<int> a();</int></p>
+<p>a.test();</p>
+<p>cout &lt;&lt; a;</p>
+<p>结果链接失败..报的错误好像是link2019.</p>
+<p>不清楚为啥，后来同时在main的文件中include A.h 和A.cpp可以解决构造函数和Test()函数reference的问题。</p>
+<p>然后又将重载&lt;&lt;的函数放在类的定义中才解决了link2019链接错误.</p>
+<p>但是我还是想把这个重载的函数声明和定义分开写，不知道哪位高手可以指点一下。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/2170908/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -436,18 +611,6 @@ kEnd.gif" alt=""> }</p>
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -733,6 +896,18 @@ kEnd.gif" alt=""> }</p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -887,18 +1062,6 @@ kEnd.gif" alt=""> }</p>
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1504,6 +1667,18 @@ kEnd.gif" alt=""> }</p>
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1643,156 +1818,6 @@ kEnd.gif" alt=""> }</p>
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/2097132/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2008/2097132/" itemprop="url">中国的研究论文</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2008-02-15T14:49:00+08:00">
-                2008-02-15
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在网上搜索论文，只要是中文的，一般就被放在的维普或者万方，或者某个不知名但是却要收钱的站点。根本不像国外那样即使被IEEE收录了，在外面至少也可以下载到。中<br>文的竟然不存在挂在某个免费站点的论文pdf版本。做研究至少也应该免费传播一下自己的研究成果。现在却都用钱锁住了，还怎么让其他人研究？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1846,7 +1871,7 @@ kEnd.gif" alt=""> }</p>
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

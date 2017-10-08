@@ -245,6 +245,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1771910/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2007/1771910/" itemprop="url">C# 利用WinRAR (加密)压缩及解压缩 相关文件夹及文件</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-09-04T16:13:00+08:00">
+                2007-09-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本次示例主要实现：<br>1.压缩文件夹及其下文件<br>2.压缩文件夹下文件<br>3.压缩文件夹及其下文件为rar 还是 zip<br>4.解压缩<br>5.加密压缩及解加密压缩<br>-———-<br>示例代码如下：<br>protected void Button1_Click(object sender, EventArgs e)<br>{<br>string strtxtPath = “C://freezip//free.txt”;<br>string strzipPath = “C://freezip//free.zip”;<br>System.Diagnostics.Process Process1 = new System.Diagnostics.Process();<br>Process1.StartInfo.FileName = “Winrar.exe”;<br>Process1.StartInfo.CreateNoWindow = true;</p>
+<p>//// 1<br>////压缩c:/freezip/free.txt(即文件夹及其下文件freezip/free.txt)<br>////到c:/freezip/free.rar<br>//strzipPath = “C://freezip//free”;//默认压缩方式为 .rar<br>//Process1.StartInfo.Arguments = “ a -r “ + strzipPath + “ “ + strtxtPath;</p>
+<p>//// 2<br>////压缩c:/freezip/free.txt(即文件夹及其下文件freezip/free.txt)<br>////到c:/freezip/free.rar<br>//strzipPath = “C://freezip//free”;//设置压缩方式为 .zip<br>//Process1.StartInfo.Arguments = “ a -afzip “ + strzipPath + “ “ + strtxtPath;</p>
+<p>//// 3<br>////压缩c:/freezip/free.txt(即文件夹及其下文件freezip/free.txt)<br>////到c:/freezip/free.zip  直接设定为free.zip<br>//Process1.StartInfo.Arguments = “ a -r “+strzipPath+” “ + strtxtPath ;</p>
+<p>//// 4<br>////搬迁压缩c:/freezip/free.txt(即文件夹及其下文件freezip/free.txt)<br>////到c:/freezip/free.rar 压缩后 原文件将不存在<br>//Process1.StartInfo.Arguments = “ m “ + strzipPath + “ “ + strtxtPath;</p>
+<p>//// 5<br>////压缩c:/freezip/下的free.txt(即文件free.txt)<br>////到c:/freezip/free.zip  直接设定为free.zip 只有文件 而没有文件夹<br>//Process1.StartInfo.Arguments = “ a -ep “ + strzipPath + “ “ + strtxtPath;</p>
+<p>//// 6<br>////解压缩c:/freezip/free.rar<br>////到 c:/freezip/<br>//strtxtPath = “c://freezip//“;<br>//Process1.StartInfo.Arguments = “ x “ + strzipPath + “ “ + strtxtPath;</p>
+<p>//// 7<br>////加密压缩c:/freezip/free.txt(即文件夹及其下文件freezip/free.txt)<br>////到c:/freezip/free.zip  密码为123456 注意参数间不要空格<br>//Process1.StartInfo.Arguments = “ a -p123456 “ + strzipPath + “ “ +<br>strtxtPath;</p>
+<p>//// 8<br>////解压缩加密的c:/freezip/free.rar<br>////到 c:/freezip/   密码为123456 注意参数间不要空格<br>//strtxtPath = “c://freezip//“;<br>//Process1.StartInfo.Arguments = “ x -p123456 “ + strzipPath + “ “ +<br>strtxtPath;<br>//// 9<br>////-o+ 覆盖 已经存在的文件<br>//// -o- 不覆盖 已经存在的文件<br>//strtxtPath = “c://freezip//“;<br>//Process1.StartInfo.Arguments = “ x -o+ “ + strzipPath + “ “ + strtxtPath;</p>
+<p>////10<br>//// 只从指定的zip中<br>//// 解压出free1.txt<br>//// 到指定路径下<br>//// 压缩包中的其他文件 不予解压<br>//strtxtPath = “c://freezip//“;<br>//Process1.StartInfo.Arguments = “ x “ + strzipPath + “ “ +” free1.txt” + “ “</p>
+<ul>
+<li>strtxtPath;  </li>
+</ul>
+<p>//// 11<br>//// 通过 -y 对所有询问回应为”是” 以便 即便发生错误 也不弹出WINRAR的窗口<br>//// -cl 转换文件名为小写字母<br>//strtxtPath = “c://freezip//“;<br>//Process1.StartInfo.Arguments = “ t -y -cl “ + strzipPath + “ “ + “<br>free1.txt”;  </p>
+<p>Process1.Start();<br>if (Process1.HasExited)<br>{<br>int iExitCode = Process1.ExitCode;<br>if (iExitCode == 0)<br>{<br>Response.Write(iExitCode.ToString() + “ 正常完成”);<br>}<br>else<br>{<br>Response.Write(iExitCode.ToString() + “ 有错完成”);<br>}<br>}<br>}</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1768656/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -393,18 +557,6 @@ var a = "<%=aa%>"//这里aa是后台c#中的变量，这个变量必须是protec
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -713,6 +865,18 @@ var a = "<%=aa%>"//这里aa是后台c#中的变量，这个变量必须是protec
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -858,18 +1022,6 @@ var a = "<%=aa%>"//这里aa是后台c#中的变量，这个变量必须是protec
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1445,6 +1597,18 @@ var a = "<%=aa%>"//这里aa是后台c#中的变量，这个变量必须是protec
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1632,158 +1796,6 @@ us/minus.gif" alt="示例"> 示例 </a>.aspx#)<br>按引用传递值类型（如
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1755306/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2007/1755306/" itemprop="url">图片导入工具实现</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-08-23T08:42:00+08:00">
-                2007-08-23
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:50+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>可以将图片集上传到数据库了。</p>
-<p>采用了C-<br>S模式，Server使用的是多线程循环服务器。没有考虑效率，下次改进准备使用线程池机制。上传图片时使用每发一次数据断开一次链接，下次要做不断开链接的。</p>
-<p>图片对比使用的是逐点对比，速度较慢，准备改进。使用索引对比法。准备添加掩码机制。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1837,7 +1849,7 @@ us/minus.gif" alt="示例"> 示例 </a>.aspx#)<br>按引用传递值类型（如
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

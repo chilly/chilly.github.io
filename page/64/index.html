@@ -245,6 +245,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979111/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2006/979111/" itemprop="url">java手记---package</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-07-26T09:56:00+08:00">
+                2006-07-26
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:51+08:00">
+                2017-06-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>///////////////程序包就是命名的类组。很像目录。是名称空间。类名在其中必须唯一  </p>
+<p>///////////////sgsware程序包-raytracing子程序包-Mailbox.java中的Mailbox.class<br>///////////////其全名为sgsware.raytracing.Mailbox<br>///////////////程序包名为小写。  </p>
+<p>c:&gt;   javac -d /路径 文件名.java         ///////////////编译程序包中的java文件<br>///////////////这时把编译出的*.class 放在这个路径下。  </p>
+<p>c:&gt;   java -classpath 路径 程序包名.文件/////////使用此文件。  </p>
+<p>package 名称；  ////////这样编译时就把这个文件的.class放在了这个名称中  </p>
+<p>package mypackage;<br>import mypackage.*;/////程序员永远不用这样定义。<br>/////一个类自动导入其程序包中的其他类。  </p>
+<p>///////////////在程序包中的类其default类型(包访问类型)为非public型<br>///////////////在同一程序包中的类在其他类中的实例可以调用自己类中的任何类型。  </p>
+<p>///////////一个受保护的方法可以由属主类的任何子类中被超越。即使子类在其他的程序包中。<br>//////////可以被子类的当前实例访问<br>package cc;<br>public class Cctest<br>{<br>protected int  id;<br>protected void show()<br>{<br>System.out.println(id);<br>}<br>}  </p>
+<p>package dd;<br>import cc.Cctest;<br>public class C extends Cctest<br>{<br>float salary;<br>protected void show(C A)      //在子类中被超越。<br>{<br>System.out.println(A.id);///////子类实例可用。<br>System.out.println(A.salary);<br>}<br>}//////////this is right.<br>//////////一个受保护的数据可以被属主类的任何子类中调用。但不能被超类中的实例访问。<br>//////////但可以被子类的实例访问。  </p>
+<p>package dd;<br>import cc.Cctest;<br>public class C extends Cctest<br>{<br>float salary;<br>protected void show(Cctest A)<br>{<br>System.out.println(A.id);//this is wrong.<br>}<br>}  </p>
+<p>超类版本访问                                                        子类版本访问<br>public<br>public<br>protected<br>public    protected<br>default<br>public    protected    default<br>private<br>public    protected    default    private  </p>
+<p>///////把main放在超类中。这样以后可以用超类的引用子类实例的超越的所有类型的函数。  </p>
+<p>///////终结类不能子类化，终结方法不能被超越。终结变量得到初始化后不能被修改。<br>private void show()///////////在超类中。<br>{<br>System.out.println(“a = “ + a + “ b = “ + b + “ c = “ + c);<br>}<br>public void show()///////////在子类中。<br>{<br>System.out.println(add());<br>}<br>PrivateClass pri1 = new SubPrivate();//////////超类引用子类。<br>pri1.show();////////////调用的是超类中的show().<br>/////////////但如果超类中的show()是非private得则调用的是子类中的show().<br>/////////////接口如果是公用的则在任何地方的任何代码中都可以使用。<br>/////////////接口如果不是公用的则在它的程序包中使用。它不能是private/protected<br>////////////接口中可以不声明public,但实现的时候必须有public声明.<br>///////////接口的引用只能用接口中声明的方法。<br>package Interface;<br>interface OverrideB<br>{<br>void b();<br>void c(int s);<br>}<br>package Interface;  </p>
+<p>interface A<br>{<br>void b();<br>int c(int s);<br>}<br>package Interface;<br>public class Override implements OverrideB,A<br>{<br>public void b()//这段代码是正确的.但软件工程不要求这样做.<br>{  </p>
+<p>}<br>public int c(int s)//这里不正确.两个接口中的方法可以函数签名和返回值都相同.但不能只有返回值不同.<br>return 3;<br>}<br>}<br>/////////一个接口可以继承多个接口使用extends关键字<br>interface AandB extends A,B<br>{  </p>
+<p>}<br>/////////一个接口不能继承一个虚拟类<br>public abstract class AbClass<br>{<br>abstract void draw();<br>}<br>package Interface;<br>interface AbInterface extends AbClass<br>{  </p>
+<p>}  </p>
+<p>//////////////虚拟类可以实现接口.  </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979069/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -391,18 +558,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -709,6 +864,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -862,18 +1029,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1500,6 +1655,18 @@ document.close();
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1637,222 +1804,6 @@ document.close();
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/968667/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2006/968667/" itemprop="url">javascript--第一天的源代码</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-07-24T14:22:00+08:00">
-                2006-07-24
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-12T10:33:51+08:00">
-                2017-06-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>sa.js文件</p>
-<p>document.write(“good day”);</p>
-<p>ex1.html 文件</p>
-<html><br><head><br></head><br><body><pre><br><script language="javaScript"><br>//this is comment<br>document.writeln(“hello”);<br>var value1 = ‘100’;<br>var value2 = “kill you”;<br>var value3 = 342;<br>var value4 = 400;<br>var value5 = “ world”;<br>var value6 = (value5+value2).search(“k”);<br>var value7 = (value5+value2).replace(“k”,’c’);<br>var myArray1 = new Array(5);<br>var myArray2 = new Array(“A”,”B”,”C”);<br>if(true)<br>{<br><br>//document.write(“hello”);<br>document.writeln(“hello”);<br>}<br>document.writeln(value2);<br>document.writeln(value1);<br>document.writeln(value3);<br>document.writeln(value3+value4);<br>document.writeln(value2+value5);<br>document.writeln(value3+value5);<br>document.writeln(value6);<br>document.writeln(value7.big());<br>for(var i=0;i<5;i++)  
-{  
-myArray1[i] = i;  
-document.writeln(myArray1[i]);  
-}
-
-for(i=0;i<3;i++)  
-{  
-document.writeln(myArray2[i]);  
-}
-
-</script><br><noscript><br>document.write(“fefef”);<br></noscript><br></pre></body><br></html>
-
-<p>ex2.html文件</p>
-<html><br><head><br><title><br>for test Array<br></title><br><script language="javascript"><br>function write()<br>{<br>document.writeln(“看看”);<br>}<br>function add(a,b)<br>{<br>document.writeln(a+b);<br>}<br>function returnValue(a)<br>{<br>return a*a;<br>}<br>function hello()<br>{<br>window.alert(“hello”);<br>}<br></script><br><head><br></head></head><body><pre><br><a href="#" onclick="hello();">onClick</a><br><br><a href="javascript:hello();" target="_blank" rel="external">javascript</a><br><script language="javascript"><br><br>var arr = new Array(4);<br>arr[0] = “c”;<br>arr[1] = “h”;<br>arr[2] = “a”;<br>arr[3] = “d”;<br><br>for(var i=0;i<4;i++)  
-{  
-document.writeln(arr[i]);  
-}  
-document.writeln(arr.sort());
-
-var mystring = "a,x,d,e";  
-var arr1 = mystring.split(",");  
-for(i=0;i<4;i++)  
-{  
-document.writeln(arr1[i]);  
-}  
-//window.alert("hello");  
-//window.confirm("bye");  
-write();  
-add(4,6);  
-document.writeln(returnValue(5));
-
-</script><br></pre></body><br></html><br>ex3.html文件<br><br><html><br><head><br><script><br><!--  
-function warning()  
-{  
-window.alert("hello");  
-}  
-function firm()  
-{  
-return window.confirm("Open it?");  
-window.setTimeout("firm()",5000);  
-}  
-window.setTimeout("firm()",5000);  
-//--><br></script><br></head><br><body onload="warning()"><br><script><br>var ok=firm();<br>if(ok==true)<br>document.writeln(“Ok”);<br></script><br></body><br></html>
-
-<p>ex4.html文件</p>
-<html><br><head><br><script><br><!--  
-function warning()  
-{  
-window.alert("hello");  
-}  
-function firm()  
-{  
-
-window.confirm("Open it?");  
-window.setTimeout("firm()",3000);
-
-}
-
-//--><br></script><br></head><br><body onunload="warning()"><br><script><br><br>var a = window.setTimeout(“firm()”,3000);<br>window.clearTimeout(a);<br><br></script><br></body><br></html>
-
-<p>ex5.html文件</p>
-<html><br><head><br></head><br><body><br><script language="javascript"><br>var b = document.URL;<br>document.writeln(b);<br>document.write(“<p><strong>Dynamic Content</strong></p>“);<br></script><br></body><br></html>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1906,7 +1857,7 @@ window.setTimeout("firm()",3000);
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-count">644</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
