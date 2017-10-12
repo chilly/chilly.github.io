@@ -54,7 +54,22 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
 
 
   <meta name="keywords" content="设计,markdown,技术," />
@@ -62,11 +77,6 @@
 
 
 
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
 
 
 
@@ -80,8 +90,9 @@
 <meta property="og:url" content="http://chillyc.info/2015/44357935/index.html">
 <meta property="og:site_name" content="帐前卒专栏">
 <meta property="og:description" content="这一篇开始讨论代码层面的问题。主要是markdown的功能的设计实现。 这一篇先从markdown外围的代码开始讲起：UML序列图是从  https://github.com/bramp/js-sequence-diagrams copy得到的。 当如这个UML代码还用到了两个JS,功能库和画图. 12&amp;lt;script src=&quot;underscore-min.js&quot;&amp;gt;&amp;lt;/scrip">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20150317225017889">
-<meta property="og:updated_time" content="2017-06-18T07:37:40.000Z">
+<meta property="og:updated_time" content="2017-10-12T05:56:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实现UML 序列图 -- csdn MarkDown  第六篇 技术篇">
 <meta name="twitter:description" content="这一篇开始讨论代码层面的问题。主要是markdown的功能的设计实现。 这一篇先从markdown外围的代码开始讲起：UML序列图是从  https://github.com/bramp/js-sequence-diagrams copy得到的。 当如这个UML代码还用到了两个JS,功能库和画图. 12&amp;lt;script src=&quot;underscore-min.js&quot;&amp;gt;&amp;lt;/scrip">
@@ -94,11 +105,11 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    version: '5.1.2',
-    sidebar: {"position":"right","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
       author: '博主'
@@ -140,7 +151,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -306,8 +317,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-06-18T15:37:40+08:00">
-                2017-06-18
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
+                2017-10-12
               </time>
             
           </span>
@@ -364,9 +375,9 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;script src=<span class="string">"underscore-min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line">&lt;script src=<span class="string">"raphael-min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div></pre></td></tr></table></figure>
 <p>首先讲讲这个JS最核心的类：<br><a href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-diagram.js" target="_blank" rel="external"> https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-diagram.js </a></p>
 <p>首先这个类分为其实使用两种风格的。一种就是现在CSDN采用的风格，叫做simple. 另外一种是手绘风格，叫做hand。定义如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> themes = &#123;</div><div class="line"><span class="attr">simple</span> : RaphaelTheme,</div><div class="line"><span class="attr">hand</span> : HandRaphaelTheme</div><div class="line">&#125;;</div><div class="line">Diagram.prototype.drawSVG = <span class="function"><span class="keyword">function</span> (<span class="params">container, options</span>) </span>&#123;</div><div class="line"><span class="keyword">var</span> default_options = &#123;</div><div class="line"><span class="attr">theme</span>: <span class="string">'hand'</span></div><div class="line">&#125;;</div><div class="line">options = _.defaults(options || &#123;&#125;, default_options);</div><div class="line"><span class="keyword">if</span> (!(options.theme <span class="keyword">in</span> themes))</div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Unsupported theme: "</span> + options.theme);</div><div class="line"><span class="keyword">var</span> drawing = <span class="keyword">new</span> themes[options.theme](<span class="keyword">this</span>);</div><div class="line">drawing.draw(container);</div><div class="line">&#125;; <span class="comment">// end of drawSVG</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> themes = &#123;</div><div class="line">simple : RaphaelTheme,</div><div class="line">hand : HandRaphaelTheme</div><div class="line">&#125;;</div><div class="line">Diagram.prototype.drawSVG = <span class="function"><span class="keyword">function</span> (<span class="params">container, options</span>) </span>&#123;</div><div class="line"><span class="keyword">var</span> default_options = &#123;</div><div class="line">theme: <span class="string">'hand'</span></div><div class="line">&#125;;</div><div class="line">options = _.defaults(options || &#123;&#125;, default_options);</div><div class="line"><span class="keyword">if</span> (!(options.theme <span class="keyword">in</span> themes))</div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Unsupported theme: "</span> + options.theme);</div><div class="line"><span class="keyword">var</span> drawing = <span class="keyword">new</span> themes[options.theme](<span class="keyword">this</span>);</div><div class="line">drawing.draw(container);</div><div class="line">&#125;; <span class="comment">// end of drawSVG</span></div></pre></td></tr></table></figure>
 <p>drawSVG是最外层JS要画图调用的方法。例如：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;div id="diagram"&gt;Diagram will be placed here&lt;/div&gt;</div><div class="line">&lt;script src="sequence-diagram-min.js"&gt;&lt;/script&gt;</div><div class="line">&lt;script&gt; </div><div class="line">  var diagram = Diagram.parse("A-&gt;B: Does something");</div><div class="line">  diagram.drawSVG('diagram');</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;div id=<span class="string">"diagram"</span>&gt;Diagram will be placed here&lt;<span class="regexp">/div&gt;</span></div><div class="line"><span class="regexp">&lt;script src="sequence-diagram-min.js"&gt;&lt;/</span>script&gt;</div><div class="line">&lt;script&gt; </div><div class="line">  <span class="keyword">var</span> diagram = Diagram.parse(<span class="string">"A-&gt;B: Does something"</span>);</div><div class="line">  diagram.drawSVG(<span class="string">'diagram'</span>);</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
 <p>下面就可以画出图形。所以drawSVG是核心入口。</p>
 <p>drawSVG的实现过程中，最重要的一句：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">drawing.draw(container);</div></pre></td></tr></table></figure>
@@ -423,7 +434,7 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
-    本博客所有文章除特别声明外，内容均禁止转载，但链接可转载使用。如需转载内容请与作者沟通
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
   </li>
 </ul>
 
@@ -502,11 +513,13 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
                     (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
 
-  <div class="comments" id="comments">
-    
+  
+    <div class="comments" id="comments">
       <div id="hypercomments_widget"></div>
-    
-  </div>
+    </div>
+
+  
+
 
 
         </div>
@@ -529,48 +542,58 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
 
       
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          
-            <img class="site-author-image" itemprop="image"
-              src="/images/zqz.jpg"
-              alt="帐前卒" />
-          
-            <p class="site-author-name" itemprop="name">帐前卒</p>
-            <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <a href="/archives/">
+              <img class="site-author-image" itemprop="image"
+                src="/images/zqz.jpg"
+                alt="帐前卒" />
             
-                <span class="site-state-item-count">644</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
+              <p class="site-author-name" itemprop="name">帐前卒</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
 
-          
+          <nav class="site-state motion-element">
 
-          
             
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">644</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
             
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">670</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">670</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
           
 
-        </nav>
+          <div class="links-of-author motion-element">
+            
+          </div>
 
-        
+          
+          
 
-        <div class="links-of-author motion-element">
+          
+          
+
           
         </div>
 
@@ -584,16 +607,6 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
       </section>
 
       
-      <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-              ga('create', 'UA-11621532-3', 'auto');
-                ga('send', 'pageview');
-
-                </script>
 
       
 
@@ -607,12 +620,9 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">帐前卒</span>
 
@@ -620,15 +630,17 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
 </div>
 
 
-<div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="nofollow">
-    NexT.Mist
-  </a>
-</div>
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
 
 
         
@@ -670,6 +682,8 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
       </div>
     
 
+    
+
   </div>
 
   
@@ -702,46 +716,58 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
 
 
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
   
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
   
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
-
-
 
   
   
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
 
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
 
 
   
 
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
 
 
 
@@ -788,6 +814,10 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
 
 
 
+
+
+
+
   
 
 
@@ -813,6 +843,7 @@ Note Over A: I'm A</textarea><textarea id="flowchart-0-options" style="display: 
 </script>
 
 
+  
   
 
   
