@@ -57,10 +57,12 @@ False: x -> x  , 这样写你是不是更明白? (f,x) -> x
 True: f,x -> f  这样写你是不是更明白?  (f,x) -> f
 ```
 
-然后就可以定义IF判断了。你看看False的定义是不是就是 False ? f : x. True的定义是不是 True ? f : x .所以False返回了x,而True返回f.我们将IF定义为三元组
+然后就可以定义IF判断了。你看看False的定义是不是就是 False ? f : x. True的定义是不是 True ? f : x .所以False返回了x,而True返回f.我们将IF定义为多元组
 ```
 Pair(False,f,x) -> x
 Pair(True, f,x) -> f
+同时认为
+Pair(f,x) -> f 等同于Pair(True,f,x)
 ```
 
 下面我们再来定义正整数。False在我们计算机界经常被认为是0.所以我们0的定义就是
@@ -99,13 +101,18 @@ n+m: f,x -> n.f(m.f(x))
 6: f,x -> f(f(f(f(f(f(x)))))) == 2.f(2.f(2.f(x))) == 3.2.f(x)  其中2.f(x)替换为z所以就变成了3.z(x) 再替换回来就是3.2.f(x)
 ```
 
-下面是定义n++操作，这个在数学上叫做Successor. 其实从n到n+1是很简单。
+下面是定义n++操作，这个在数学上叫做Successor,所以我叫这个lambda为Succ. 其实从n到n+1是很简单。
 ```
-n++: n,f,x -> f(n.f(x))  就是多调一次f就行了
+Succ: n,f,x -> f(n.f(x))  就是多调一次f就行了
+
 ```
 
 下面是定义n--操作，这个在数学上叫做Predecessor. 这个是最复杂的。我看视频就是没看懂这里。问题是怎么从n变成n-1。我知道n-1怎么变成n。那有没有方法将n-1带入公式，最后再同时消除呢？就这么干！当年Church可是苦想n天。我辈比较幸运，直接知道人家的想法了。看这篇文章的你们就更加幸运，因为我把所有被省略的推理过程也写出来了。
 ```
-
+先定义： PSucc(n) -> Pair(n,n,Succ(n))
+那么PSucc(0) -> Pair(0,0,1) == 1
+那么我们对PSucc(0)做n次操作就是
+n.PSucc(0) = PSucc(PSucc(...PSucc(Pair(0,0,1))...)) 记住这里只有n-1个PSucc调用，因为其中一个PSucc(0)已经变成了Pair(0,1)了
+           = (n-1, n-1, n)
 ```
 
