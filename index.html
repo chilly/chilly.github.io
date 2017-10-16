@@ -303,7 +303,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-16T13:54:57+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-16T14:20:24+08:00">
                 2017-10-16
               </time>
             
@@ -343,9 +343,9 @@
         
           
             <h1 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h1><p>这篇还是用中文写吧。我基本上没有看到中文的推导过程。当然英文的也各种缺失推导过程。有空的话再用英文写一篇（我肯定没有空）。</p>
-<p>首先是lambda表达式。用过Python, Java, JS啥的都应该知道。否则意味着你肯定没有好好学。</p>
-<p>我是从国外的视频中看到lambda表达式和图灵机等价这一观点的。然后人家就进行了简单的推导。结果我根本就看不懂。我很怀疑我的英语水平，于是又仔细看了几遍视频，仍然不懂。我觉得我需要研究一下，因为视频中的很多推导都明白了。但是就有一步推导，讲解者说了这过程比较复杂，然后就带过了。我非常想知道这推导过程怎么来的。所以搜索了许多资料，加上自己的思考，写了下面的文字。</p>
-<h1 id="图灵完备"><a href="#图灵完备" class="headerlink" title="图灵完备"></a>图灵完备</h1><p>图灵完备是个什么意思？通俗的意思就是能实现正整数加减法，if判断跳转，while循环，以及可以构造简单数据结构的都成为图灵完备。图灵完备的语言无法处理停机问题。图灵完备的机器就是图灵机。你认为正整数加减法，if判断跳转，while循环很简单。所以你这个人也是图灵机的一种。</p>
+<p>首先是lambda表达式。用过Python, Java, JS的，都应该知道。否则意味着你肯定没有好好学。</p>
+<p>我是从国外的视频中看到lambda表达式和图灵机等价这一观点的。然后人家就进行了简单的推导。然而我根本就看不懂。我很怀疑我的英语水平，于是又仔细看了几遍视频，仍然不懂。我觉得我需要研究一下，因为视频中的很多推导都明白了。但是就有一步推导，讲解者说了这过程比较复杂，然后就带过了。我非常想知道这推导过程怎么来的。所以搜索了许多资料，加上自己的思考，写了下面的文字。</p>
+<h1 id="图灵完备"><a href="#图灵完备" class="headerlink" title="图灵完备"></a>图灵完备</h1><p>图灵完备是个什么意思？通俗的意思就是能实现正整数加减法，if判断跳转，while循环，以及可以构造简单数据结构的都称为图灵完备。图灵完备的语言无法处理停机问题。具备图灵完备的假象机器就是图灵机。你认为正整数加减法，if判断跳转，while循环很简单，所以你这个人也是图灵机的一种。</p>
 <p>所有编程语言都会将图灵完备作为最基础的目标。你看比特币智能合约这么火，它也说自己是图灵完备的。这样看来图灵完备是检测这门编程语言是否能通用的前提。当然Java、Python、JS等等都是图灵完备的。</p>
 <h1 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h1><p>在推导之前先看看什么是lambda表达式。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f(x) -&gt; x</div><div class="line">f(x,y) -&gt; x</div></pre></td></tr></table></figure>
@@ -355,14 +355,14 @@
 <ul>
 <li>赋值</li>
 <li>判断等价</li>
-<li>调用，有时候用<strong>()</strong> 也可使用 <strong>.</strong></li>
+<li>调用，使用<strong>()</strong>表示，也可以使用<strong>.</strong>表示</li>
 </ul>
 <p>另外我们还应该清楚一件事，就是单参lambda完全等价于多参lambda表达式。在最初的1920+年Church这伟大的人物提出来lambda的时候就是使用的单参。但是我们为了推导方便，我故意使用多参。</p>
 <p>问题: 多参为什么等价于单参lambda?</p>
 <p>答:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">f(x,y) -&gt; z</div><div class="line">t -&gt; (x,y) 这里的括号无二义的时候可以去掉，就是 t -&gt; x,y</div><div class="line"></div><div class="line">所以 f(t) -&gt; z</div><div class="line">证毕</div></pre></td></tr></table></figure></p>
 <p>下面开始真正的推导：</p>
 <p>首先定义True与False<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">False: x -&gt; x  , 这样写你是不是更明白? (f,x) -&gt; x</div><div class="line">True: f,x -&gt; f  这样写你是不是更明白?  (f,x) -&gt; f</div></pre></td></tr></table></figure></p>
-<p>然后就可以定义IF判断了。你看看False的定义是不是就是 False ? f : x. True的定义是不是 True ? f : x .所以False返回了x,而True返回f.我们将IF定义为多元组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">IF(False,f,x) -&gt; x</div><div class="line">IF(True, f,x) -&gt; f</div><div class="line">同时认为</div><div class="line">Fst(f,x) -&gt; f 等同于Pair(True,f,x)</div><div class="line">Snd(f,x) -&gt; x 等同于Pair(False,f,x)</div><div class="line">这其实就是投影操作。</div></pre></td></tr></table></figure></p>
+<p>然后就可以定义IF判断了。你看看False的定义是不是就是<code>False ? f : x</code>. True的定义是不是<code>True ? f : x</code>.所以False返回了x,而True返回f.我们将IF定义为多元组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">IF(False,f,x) -&gt; x</div><div class="line">IF(True, f,x) -&gt; f</div><div class="line">同时认为</div><div class="line">Fst(f,x) -&gt; f 等同于IF(True,f,x)</div><div class="line">Snd(f,x) -&gt; x 等同于IF(False,f,x)</div><div class="line">这其实就是投影操作。</div></pre></td></tr></table></figure></p>
 <p>下面我们再来定义正整数。False在我们计算机界经常被认为是0.所以我们0的定义就是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0: f,x -&gt; x</div></pre></td></tr></table></figure></p>
 <p>正整数1的定义，我们认为调用了一次f,即<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">1: f,x -&gt; f(x)</div></pre></td></tr></table></figure></p>
 <p>下面正整数2，3…，n的定义就是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">2: f,x -&gt; f(f(x))</div><div class="line">3: f,x -&gt; f(f(f(x)))</div><div class="line">...</div><div class="line">n: f,x -&gt; f(f(...f(x)...)) 这里应有有n个f调用</div></pre></td></tr></table></figure></p>
@@ -371,15 +371,15 @@
 <p>我们下面来定义加法操作。例如n + m. 这个问题不好想，所以先想特例。例如5 = 2 + 3, 那么怎么得到5呢，就是5次函数调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">5: f,x -&gt; f(f(f(f(f(x))))) == f(f(f(2.f(x)))) == 3.f(m) == 3.f(2.f(x))  其中2.f(x) 替换成m，然后再替换回来。</div><div class="line">替换一下</div><div class="line">n+m: f,x -&gt; n.f(m.f(x))</div></pre></td></tr></table></figure></p>
 <p>定义下乘法操作.例如n*m. 同样先想特例： 6 = 3 * 2. 怎么得到6呢?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">6: f,x -&gt; f(f(f(f(f(f(x)))))) == 2.f(2.f(2.f(x))) == 3.2.f(x)  其中2.f(x)替换为z所以就变成了3.z(x) 再替换回来就是3.2.f(x)</div></pre></td></tr></table></figure></p>
 <p>下面是定义n++操作，这个在数学上叫做Successor,所以我叫这个lambda为Succ. 其实从n到n+1是很简单。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Succ: n,f,x -&gt; f(n.f(x))  就是多调一次f就行了</div></pre></td></tr></table></figure></p>
-<p>下面是定义n–操作，这个在数学上叫做Predecessor. 这个是最复杂的。我看视频就是没看懂这里。问题是怎么从n变成n-1。我知道n-1怎么变成n。那有没有方法将n-1带入公式，最后再同时消除呢？就这么干！当年Church可是苦想n天。我辈比较幸运，直接知道人家的想法了。看这篇文章的你们就更加幸运，因为我把所有被省略的推理过程也写出来了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">先定义： PSucc(n) -&gt; (Snd n,Succ(Snd n))</div><div class="line">那么PSucc((0,0)) -&gt; (0,1)</div><div class="line">那么我们对PSucc(0)做n次操作就是</div><div class="line">n.PSucc((0,0)) = PSucc(PSucc(...PSucc((0,1))...)) 记住这里只有n-1个PSucc调用，因为其中一个PSucc((0,0))已经变成了(0,1)了</div><div class="line">           = (n-1, n)</div><div class="line"></div><div class="line">那我们定义</div><div class="line">Pred(n) -&gt; Fst n.PSucc((0,0)) = n-1</div><div class="line">Pred就是Predecessor</div></pre></td></tr></table></figure></p>
-<p>现在好办了，只有有了加减法，所有的就都好办了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">n-m的减法就是执行n--操作m次。</div><div class="line">SUB: m.Pred(n)</div></pre></td></tr></table></figure>
+<p>下面是定义n–操作，这个在数学上叫做Predecessor. 这个是最复杂的。我看视频就是没看懂这里。问题是怎么从n变成n-1。我知道n-1怎么变成n。那有没有方法将n-1带入公式，最后再同时消除呢？就这么干！当年Church可是苦想n天。我辈比较幸运，直接知道人家的想法了。看这篇文章的你们就更加幸运，因为我把所有被省略的推理过程也写出来了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">先定义： PSucc(n) -&gt; (Snd n,Succ(Snd n))</div><div class="line">那么PSucc((0,0)) -&gt; (0,1)</div><div class="line">那么我们对PSucc(0)做n次操作就是</div><div class="line">n.PSucc((0,0)) = PSucc(PSucc(...PSucc((0,1))...)) 记住这里只有n-1个PSucc调用，因为其中一个PSucc((0,0))已经变成了(0,1)了</div><div class="line">               = (n-1, n)</div><div class="line"></div><div class="line">那我们定义</div><div class="line">Pred(n) -&gt; Fst n.PSucc((0,0)) = n-1</div><div class="line">Pred就是Predecessor</div></pre></td></tr></table></figure></p>
+<p>现在好办了，只要有了加减法，所有的一切操作就都好办了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">n-m的减法就是执行n--操作m次。</div><div class="line">SUB(n,m) -&gt; m.Pred(n)</div></pre></td></tr></table></figure>
 <p>下面再定义一些AND,OR,NOT就非常简单了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">AND(a,b) -&gt; IF(a,b,False) 这个意思就是如果a是真的，那就看b是不是真的。否则，那一定返回False.</div><div class="line">OR(a,b) -&gt; IF(a,True,b) </div><div class="line">NOT(a) -&gt; IF(a,False,True)</div></pre></td></tr></table></figure></p>
 <p>下面再定义while循环<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">WHILE(n,f) -&gt; n.f</div></pre></td></tr></table></figure></p>
 <p>再来定义点简单的数据结构，例如链表, 这里还是学习了一下Lisp<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt; (<span class="name">cons</span> <span class="number">1</span> <span class="number">2</span>)</div><div class="line">&gt; x</div><div class="line">(<span class="number">1</span> . <span class="number">2</span> )</div><div class="line">这创建了一个头是1，尾是2的cons对象。</div><div class="line">对cons的操作有两个，car及cdr，分别是读取cons的头和尾元素：</div><div class="line">&gt; (<span class="name">car</span> (<span class="name">cons</span> <span class="number">1</span> <span class="number">2</span>))</div><div class="line"><span class="number">1</span></div><div class="line">&gt; (<span class="name">cdr</span> (<span class="name">cons</span> <span class="number">1</span> <span class="number">2</span>))</div><div class="line"><span class="number">2</span></div></pre></td></tr></table></figure></p>
 <p>cons代表的是构建一个链表。 car代表是前一个节点，cdr代表的是后一个节点。那么我们用lambda表达式也写一个。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">构造链表cons: cons(a,b) -&gt; (a,b)</div><div class="line">获取前一个节点car: car(a,b) -&gt; a</div><div class="line">获取后一个节点cdr: cdr(a,b) -&gt; b</div></pre></td></tr></table></figure>
-<p>我们将0判断、False判断、null判断认为是等价的。文章开始也说了，等价判断是先决条件。所以0判断一定是预先存在的。所以lambda表达式图灵完备了。</p>
+<p>我们将0判断、False判断、null判断这三种操作认为是等价的。文章开始也说了，等价判断是先决条件。所以0判断一定是预先存在的。所以lambda表达式图灵完备了。</p>
 <p>再说一点，图灵完备，意味着无法停机。停机证明不是本文的重点，不再证明。(对对对，就是笔者不会证明。你们随便吐槽)</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>看了这篇文章你能学习到什么？你能证明1+2 == 3 ？还是会写链表了？lambda证明到底有什么用？根本就没有编程来的实在！你说的太对了。我也这样认为。那这篇文章到底有什么用？</p>
 <pre><code>就是为了装逼呀!!!
@@ -387,7 +387,7 @@
 <p>看到一条微博，说：<strong>“太难了，我大脑停机了。”</strong> 就回复：“你竟然不是图灵完备的!!”</p>
 <p>以后有谁再说<strong>“我无法思考了”</strong>,你们就接话：“你竟然不是图灵完备的!!”</p>
 <p>对，以后谁在你们面前装逼说自己会图灵完备的证明，你们就接话：“我也会!!”</p>
-<p>这才是这篇文章的正确打开方式。</p>
+<p><strong>这才是这篇文章的正确打开方式。</strong></p>
 
           
         
@@ -2258,7 +2258,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
