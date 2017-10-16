@@ -256,6 +256,215 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1755650/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2007/1755650/" itemprop="url">c# ref关键字</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-08-23T10:49:00+08:00">
+                2007-08-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
+                2017-10-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>C# 语言参考</p>
+<p>ref（C# 参考）</p>
+<p><strong> ref </strong> 关键字使参数按引用传递。其效果是，当控制权传递回调用方法时，在方法中对参数所做的任何更改都将反映在该变量中。若要使用 <strong> ref </strong> 参数，则方法定义和调用方法都必须显式使用 <strong> ref </strong> 关键字。例如： </p>
+<p><a href="javascript:CopyCode\(&#39;ctl00_LibFrame_ctl06other&#39;\" target="_blank" rel="external"> <img src="http://msdn2.microsoft.com/msdn/Controls/CodeSnippet/zh-cn/copy_off.gif" alt=""><br>复制代码 </a>;)</p>
+<pre><code>class RefExample
+{
+    static void Method(ref int i)
+    {
+        i = 44;
+    }
+    static void Main()
+    {
+        int val = 0;
+        Method(ref val);
+        // val is now 44
+    }
+}
+</code></pre><p>传递到 <strong> ref </strong> 参数的参数必须最先初始化。这与 out 不同，out 的参数在传递之前不需要显式初始化。（请参见 <a href="http://msdn2.microsoft.com/zh-cn/library/t3c3bfhx\(VS.80\" target="_blank" rel="external"> out
+</a>.aspx) 。）</p>
+<p>尽管 <strong> ref </strong> 和 <strong> out </strong> 在运行时的处理方式不同，但它们在编译时的处理方式是相同的。因此，如果一个方法采用 <strong> ref </strong><br>参数，而另一个方法采用 <a href="http://msdn2.microsoft.com/zh-
+cn/library/t3c3bfhx\(VS.80\" target="_blank" rel="external"> out </a>.aspx)<br>参数，则无法重载这两个方法。例如，从编译的角度来看，以下代码中的两个方法是完全相同的，因此将不会编译以下代码：</p>
+<p><a href="javascript:CopyCode\(&#39;ctl00_LibFrame_ctl09other&#39;\" target="_blank" rel="external"> <img src="http://msdn2.microsoft.com/msdn/Controls/CodeSnippet/zh-cn/copy_off.gif" alt=""><br>复制代码 </a>;)</p>
+<pre><code>class CS0663_Example 
+{
+    // compiler error CS0663: &quot;cannot define overloaded 
+    // methods that differ only on ref and out&quot;
+    public void SampleMethod(ref int i) {  }
+    public void SampleMethod(out int i) {  }
+}
+</code></pre><p>但是，如果一个方法采用 <strong> ref </strong> 或 <a href="http://msdn2.microsoft.com/zh-
+cn/library/t3c3bfhx\(VS.80\" target="_blank" rel="external"> out </a>.aspx) 参数，而另一个方法不采用这两类参数，则可以进行重载，如下所示：</p>
+<p><a href="javascript:CopyCode\(&#39;ctl00_LibFrame_ctl11other&#39;\" target="_blank" rel="external"> <img src="http://msdn2.microsoft.com/msdn/Controls/CodeSnippet/zh-cn/copy_off.gif" alt=""><br>复制代码 </a>;)</p>
+<pre><code>class RefOutOverloadExample
+{
+    public void SampleMethod(int i) {  }
+    public void SampleMethod(ref int i) {  }
+}
+</code></pre><p><a href="http://msdn2.microsoft.com/zh-
+cn/library/14akc2c7\(VS.80\" target="_blank" rel="external"> <img src="http://msdn2.microsoft.com/msdn/Controls/CollapsibleArea/en-
+us/minus.gif" alt="备注"> 备注 </a>.aspx#)<br>属性不是变量，因此不能作为 <strong> ref </strong> 参数传递。</p>
+<p>有关传递数组的信息，请参见</p>
+<p><a href="http://msdn2.microsoft.com/zh-
+cn/library/szasx730\(VS.80\" target="_blank" rel="external"> 使用 ref 和 out 传递数组 </a>.aspx) 。</p>
+<p><a href="http://msdn2.microsoft.com/zh-
+cn/library/14akc2c7\(VS.80\" target="_blank" rel="external"> <img src="http://msdn2.microsoft.com/msdn/Controls/CollapsibleArea/en-
+us/minus.gif" alt="示例"> 示例 </a>.aspx#)<br>按引用传递值类型（如上所示）是有用的，但是 <strong> ref </strong><br>对于传递引用类型也是很有用的。这允许被调用的方法修改该引用所引用的对象，因为引用本身是按引用来传递的。下面的示例显示出当引用类型作为 <strong> ref </strong><br>参数传递时，可以更改对象本身。</p>
+<pre><code>class RefRefExample
+{
+    static void Method(ref string s)
+    {
+        s = &quot;changed&quot;;
+    }
+    static void Main()
+    {
+        string str = &quot;original&quot;;
+        Method(ref str);
+        // str is now &quot;changed&quot;
+    }
+}
+</code></pre><p><a href="javascript:CopyCode\(&#39;ctl00_LibFrame_ctl15other&#39;\" target="_blank" rel="external"> <img src="http://msdn2.microsoft.com/msdn/Controls/CodeSnippet/zh-cn/copy_off.gif" alt=""><br>复制代码 </a>;)</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1755306/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -389,18 +598,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -686,6 +883,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -828,18 +1037,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1415,6 +1612,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1544,158 +1753,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/1719043/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2007/1719043/" itemprop="url">MiniDB实训第十六天--HashTable,红黑树序列化</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2007-07-31T13:25:00+08:00">
-                2007-07-31
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>昨天搞定了HashTable,红黑树序列化 ，数据文件终于可以保存了。但是调试的时候如果不是正常关闭，还是会有多多少少的问题。</p>
-<p>界面那里要大改一些。因为他传来的值就是界面上得到的值，那么我数据底层就没有办法删除空行。过去使用的是delete * 现在没有办法在那样做了，因为表关联的时<br>候，不能删除关联的行，但是却插入了更改后的行。而更改前的行还留在那里。最后又回归到第一个版本，点击插入才能插入，点击删除才能删除。</p>
-<p>关联。。。。痛苦。。。。。调试中。。。。。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1750,7 +1807,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">644</span>
+                  <span class="site-state-item-count">645</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1763,7 +1820,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">670</span>
+                  <span class="site-state-item-count">679</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
