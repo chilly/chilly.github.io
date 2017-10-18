@@ -267,6 +267,189 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979170/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="帐前卒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zqz.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2006/979170/" itemprop="url">java手记---swing类和awt类</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-07-26T10:07:00+08:00">
+                2006-07-26
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
+                2017-10-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Graphics a；<br>a.drawOval(size.width/4,size.height/4,size.width/2,size.height/2);////////此时椭圆<br>在中心。<br>a.drawString(“Hello world<br>gj”,20,200);///////////////////////////////////20是最左的象素坐标，200是基线  </p>
+<p>Cbox()<br>{<br>setLayout(new FlowLayout());<br>Checkbox cb = new Checkbox(“he”);//////复选框有2个构造器Checkbox(String<br>s)&amp;Checkbox(String s,boolean state).<br>add(cb);///////////////////////////////////if there isn’t this statement, the<br>Checkbox won’t appear.<br>setSize(200,200);<br>}</p>
+<p>CheckboxGroup cbg = new CheckboxGroup();<br>Checkbox(String s,boolean state,CheckboxGroup cbg)&amp;Checkbox(String<br>s,CheckboxGroup cbg,boolean state);/////这样可以建单选框。</p>
+<p>////////////////////////Checkbox(String s)用来建复选框与单选框。<br>////////////////////////Choice()用来建下拉式单选。<br>////////////////////////Frame(String s)用来建窗口。<br>////////////////////////Button(String s)用来建按钮。<br>////////////////////////Label(String s)用来建标签。</p>
+<p>setLayout(new FlowLayout());<br>Choice c = new Choice();<br>for(int i = 0;i &lt; fontFamily.length;i++)<br>c.add(fontFamily[i]);<br>add(c);<br>c = new Choice();/////////////////////////这样相当于新建一个下拉单选框。<br>for(int i = 0;i &lt; size.length;i++)<br>c.add(size[i]+””);<br>add(c);<br>setSize(200,200);</p>
+<p>public class TestFrame extends Frame {<br>public void doDemo(){<br>Button b = new Button(“Press Me!”);<br>b.addActionListener(new ButtonHandler());/////////在这里添加实现<br>add(b,BorderLayout.CENTER);<br>pack();//////////如果没有这句，最初按钮是看不到的。最大化后才会看到。<br>setVisible(true);<br>}<br>public static void main(String args[]) {<br>TestFrame   f = new TestFrame();<br>f.doDemo();<br>}<br>////////以下是一个内部类<br>public class ButtonHandler implements ActionListener {<br>public void actionPerformed(ActionEvent e) {<br>setTitle(“Button’s label is :” +<br>e.getActionCommand());////这里getActionCommand（）函数返回的是控件的名称。<br>}<br>}<br>}</p>
+<p>如果main中加上这个函数<br>f.addWindowListener(new WindowAdapter() {<br>public void windowClosing(WindowEvent e) {<br>System.exit(0);<br>}<br>});//////////就可以实现窗口关闭功能。</p>
+<p>public class MouseMoveHandler implements MouseListener {<br>private Color source = null;</p>
+<p>public void mouseEntered(MouseEvent e) {<br>source = e.getComponent().getBackground();<br>e.getComponent().setBackground(Color.PINK);<br>}<br>public void mouseExited(MouseEvent e) {<br>e.getComponent().setBackground(source);<br>}</p>
+<p>public void mousePressed(MouseEvent e) {<br>}<br>public void mouseReleased(MouseEvent e) {<br>}<br>public void mouseClicked(MouseEvent e) {<br>}<br>}</p>
+<p>awt提供的控件：<br>Button<br>Label<br>Checkbox<br>CheckboxGroup<br>Choice<br>TextField<br>TextArea<br>List</p>
+<p>Font<br>Image<br>Canvas<br>Graphics2D<br>Dialog<br>ScrollPanel<br>Menu<br>Toolkit<br>InputMethod</p>
+<p>textTabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);/////将标签放在下部。<br>privateScrollPane = new JScrollPane();<br>privateTextPane = new JTextPane();</p>
+<p>privateTextPane.setEditable(true);///////这是把JTextPane设置为可以编辑的。（是否能让用户编辑）<br>//      privateTextPane.setName(“”);//////////这句似乎没什么用。<br>privateScrollPane.setViewportView(privateTextPane);///JScrollPane可以显示JTextPane<br>上的内容。<br>textTabbedPane.addTab(“private”,privateScrollPane);//这句才是把最重要的。把JScrollPane放在J<br>TabbedPane上。<br>add（textTabbedPane）///把JTabbedPane放在JFrame上。</p>
+<p>////////////////////////////在编写菜单的时候不需写setLayout(new FlowLayout());<br>////////////////////////////如果在编写按钮的时候不写上面的代码，那么按钮就会变的很大。上一行代码是布局管理器。</p>
+<p>////////////////////////////应该始终有一个File菜单，它应该始终在菜单栏的最左边。菜单项New，Open…和Close（如<br>果有的话）<br>////////////////////////////应该按上面的次序出现。New应该是第一项，Exit应该是最后一项。<br>////////////////////////////如果有Edit项的话，应该为第二项，它应该有copy,paste,cut等功能。<br>////////////////////////////如果有help项的话，应该是最后一项。</p>
+<p>////////////////////////////如果不把菜单加到菜单栏上，那么菜单栏就不会出现。</p>
+<p>TextArea ta = new<br>TextArea(10,20);/////////////////////用于创建文本框。第一个参数为高度，第二个为长度。<br>Scrollbar sb = new Scrollbar(Scrollbar.HORIZONTAL)；////////////用于建一个水平方向的控制条。</p>
+<p>///////////////////////////有两种布局管理器：流程布局管理器和边框布局管理器。<br>setLayout(new FlowLayout(FlowLayout.LEFT));////////////////这便是流程管理器</p>
+<p>///////////////////////////边框管理器是add（）；使用边框管理器的容器只能有五个构件。<br>/////////////////////////// add(sb,”North”);//////这就是边框管理器。之前不再用setLayout(new<br>FlowLayout());</p>
+<p>add(p,”South”);//////////////“South”一定要大写。</p>
+<p>//////////////////////////调用了边框管理器后，构件的大小就不再受传入参数的制约。如果不指明就将占据剩余的整个空间。<br>Panel p = new Panel();//////////创建新面板。<br>p.add(new Button(“HI”));<br>p.add(new TextField(“ldldl”,10));//////////可以将几个构件锁在一起。<br>/////////////////////////流程管理器可以兑现构件的优先大小。而边框管理器不行。此外还有3个管理器：<br>/////////////////////////CardLayout(),仅允许在任何时候只有一个构件是可见的。<br>GridLayout(),GridBagLayout().</p>
+<p>////////////////////////MenuBar mb = new MenuBar();<br>////////////////////////setMenuBar(mb);///////////此句用于设置菜单栏。</p>
+<p>//////new JMenu(“String”).add(new JMenuItem(“String”));////////菜单添加菜单项<br>///////new JMenuBar().add(new JMenu(“String”))///////////菜单栏添加菜单<br>//// /// new JFrame(“String”).setJMenuBar(new JMenuBar());/////菜单栏放置在窗体上。</p>
+<p>////////////////////////当一个构件和一个paint（）方法都负责屏幕的同一部分时，总是构件获胜。</p>
+<p>////////////////////////(1)创建构件。<br>////////////////////////(2)创建实现<em>Listener接口的收听者。<br>////////////////////////(3)构造该收听者的一个实例。<br>////////////////////////调用该构件add</em>Listener()方法，同时传入刚建成的收听者类的实例。</p>
+<p>//////////////////////// public SelfListener()<br>{<br>setLayout(new FlowLayout());<br>for(int i = 0;i &lt; btn.length;i++)<br>{ btn[i] = new Button(s[i]);<br>btn[i].addActionListener(this);<br>add(btn[i]);<br>}<br>tf = new TextField(25);<br>add(tf);<br>setSize(200,300);<br>}<br>public void actionPerformed(ActionEvent e)<br>{<br>if(e.getSource() == btn[0])<br>nCon -= 1;<br>else if(e.getSource() == btn[1])<br>nCon -= 2;<br>else<br>nCon -= 3;<br>tf.setText(nCon + “ Left.”);<br>if(nCon &lt; 3)<br>btn[2].setEnabled(false);<br>if(nCon &lt; 2)<br>btn[1].setEnabled(false);<br>if(nCon == 0)<br>{<br>Label ab = new Label(“win!”);//////////在这里会出现混乱。//////win!迟迟不出现。只有变化窗口的时候才会<br>add(ab,”South”);///////////////////////出现。<br>btn[0].setEnabled(false);<br>}<br>}<br>////////////////////使用repaint()方法可以刷屏并调用paint（）。</p>
+<p>////////////////////当画的图形位置不对时，有可能在屏幕上显示不出来。</p>
+<p>//////////////////// tf.setText(“Font Color is “+<br>c.getItem(c.getSelectedIndex())+/////////此处用于返回Choice所选项。<br>“. Font Size is “ + cb[i].getLabel() );//////////////////此处用于返回checkbox所选项。</p>
+<p>当程序启动时paint（）调用。当图文框被完全覆盖时，paint（）被调用，当图文框放大时，paint（）被调用。被最小化再还原时调用。<br>//////////////////其余时间都不会调用paint（）。</p>
+<p>//////////////////// btn[i].addActionListener(this);<br>btn[i].addActionListener(this);//////////此时进行两次调用。点一次鼠标有两次动作。<br>///////////////////想让一个任意的类成为一个动作收听者，光实现一个actionperformed（）的方法是不够的。因为单凭这一点不能<br>///////////////////认为它实现了ActionListener接口。</p>
+<p>///////////////////当类中函数要用到其它函数中的变量时，特别是构件要声明成类的变量而不是函数中的变量。</p>
+<p>/////////publicTextPane是放在publicScrollPane上的，而publicScrollPane是放在textTabbedPan<br>e上的。<br>/////////这样使用：<br>publicTextPane.setEditable(false);///这个面板是否可以操作。<br>////      publicTextPane.setName(“”);//////////////////?似乎没有什么用。<br>publicScrollPane.setViewportView(publicTextPane);//让面板显示<br>textTabbedPane.addTab(“public”,publicScrollPane);//在textTabbedPane上添加滚动条。</p>
+<p>/////////   frameClient.getContentPane().add(new JButton(),<br>BorderLayout.CENTER);/////////这句话用于JFrame添加控件。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+  
+  
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
+  
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/979125/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -399,18 +582,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -720,6 +891,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -871,18 +1054,6 @@
   
   
   
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
     
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1487,6 +1658,18 @@
   
   
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+          data-ad-client="ca-pub-6565392687771630"
+               data-ad-slot="6330026919"
+                    data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+    
   
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -1642,182 +1825,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-  
-  
-    
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- ad -->
-<ins class="adsbygoogle"
-     style="display:block"
-          data-ad-client="ca-pub-6565392687771630"
-               data-ad-slot="6330026919"
-                    data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-
-    
-  
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/976771/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="帐前卒">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/zqz.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2006/976771/" itemprop="url">javascript--第二天源代码</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2006-07-25T21:46:00+08:00">
-                2006-07-25
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
-              </time>
-            
-          </span>
-
-          
-
-          
-            
-              
-              <!--/noindex-->
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>ex6.html</p>
-<html><br><head><br><head><br></head></head><body><br><script language="javascript"><br>var currentDate = new Date();<br>document.write(“<table border=1 cellpadding=3 cellspacing=0>“);<br>document.write(“<tr>“);<br>document.write(“<td colspan=7 align='center'>“+<br>7 + “</td>“);<br>document.write(“<tr>“);<br>document.write(“<td align='center'>Sun</td>“);<br>document.write(“<td align='center'>Mon</td>“);<br>document.write(“<td align='center'>Tue</td>“);<br>document.write(“<td align='center'>Wes</td>“);<br>document.write(“<td align='center'>The</td>“);<br>document.write(“<td align='center'>Fri</td>“);<br>document.write(“<td align='center'>Sat</td>“);<br>document.write(“</tr>“);<br>if (currentDate.getDay() != 0)<br>{<br>document.write(“<tr>“);<br>for (i = 0; i &lt; currentDate.getDay(); i++)<br>{<br>document.write(“<td>&nbsp;</td>“);<br>}<br>}<br>document.write(“</table>“);<br>document.write(“<br><br><br><hr>“);<br>document.write(document.URL);<br>document.write(“<br>“);<br>var Surl = document.URL.split(“//“);<br>var part = Surl[1].split(“//“);<br>for(var i= 0; i<part.length; i++)  
-{  
-var cho = "choice"+i;  
-document.write("<a href = document.URL+"+cho+  
-">"+cho+"</a><br>");  
-}  
-function newDoc()  
-{  
-document.open();  
-document.write("byebye");  
-document.close();  
-}  
-</script><br><a href="#" onclick="newDoc();">New Document</a><br></body><br></html>
-
-<p>ex7.html</p>
-<html><br><head><br><script><br>window.location = “ <a href="http://www.google.com/"> http://www.google.com/ </a> “;<br></script><br></head><br><body><br></body><br></html>
-
-<p>ex8.html</p>
-<html><br><head><br><br></head><br><body><br><form><br>Enter a URL: <input type="text" name="url"><br><input type="button" value="Go" onclick="window.location = this.form.url.value"><br></form><br><br></body><br></html>
-
-<p>ex9.html</p>
-<html><br><head><br><script language="javascript"><br>var placeHold = window.open(“PageLoading.html”,”placeholder”,<br>“width = 200, height = 200”);<br></script><br><title><br>The Main Page<br></title><br></head><br><body onload="placeHold.close()"><br>Main Page…<br></body><br></html>
-
-<p>PageLoading.html</p>
-<html><br><head><br><title><br>The Page is loading<br></title><br></head><br><body><br>The Page is loading……..<br></body><br></html>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1872,7 +1879,7 @@ document.close();
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">645</span>
+                  <span class="site-state-item-count">646</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1885,7 +1892,7 @@ document.close();
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">679</span>
+                  <span class="site-state-item-count">681</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
