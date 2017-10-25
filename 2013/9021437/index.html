@@ -83,18 +83,18 @@
 
 
 
-<meta name="description" content="调用  OpenAPI  发送带有图片的微博。该openAPI接口为： https://open.t.qq.com/api/t/add  _pic(Oauth2.0专用) 然后收到如下错误： “errcode”:2,”msg”:”error content len”,”ret”:1,”seqid”:5884029410824328274这个错误信息是说微博内容长度太长。我开始以为是字数的问题，然后">
+<meta name="description" content="调用  OpenAPI  发送带有图片的微博。该openAPI接口为： https://open.t.qq.com/api/t/add  (Oauth2.0专用) 然后收到如下错误： &amp;quot;errcode&amp;quot;:2,&amp;quot;msg&amp;quot;:&amp;quot;error content len&amp;quot;,&amp;quot;ret&amp;quot;:1,&amp;quot;seqid&amp;quot;:5884">
 <meta name="keywords" content="OpenAPI,腾讯微博,UTF-8">
 <meta property="og:type" content="article">
 <meta property="og:title" content="腾讯微博发送图片OpenAPI （error content len）解决">
 <meta property="og:url" content="http://chillyc.info/2013/9021437/index.html">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="调用  OpenAPI  发送带有图片的微博。该openAPI接口为： https://open.t.qq.com/api/t/add  _pic(Oauth2.0专用) 然后收到如下错误： “errcode”:2,”msg”:”error content len”,”ret”:1,”seqid”:5884029410824328274这个错误信息是说微博内容长度太长。我开始以为是字数的问题，然后">
+<meta property="og:description" content="调用  OpenAPI  发送带有图片的微博。该openAPI接口为： https://open.t.qq.com/api/t/add  (Oauth2.0专用) 然后收到如下错误： &amp;quot;errcode&amp;quot;:2,&amp;quot;msg&amp;quot;:&amp;quot;error content len&amp;quot;,&amp;quot;ret&amp;quot;:1,&amp;quot;seqid&amp;quot;:5884">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-12T05:56:53.000Z">
+<meta property="og:updated_time" content="2017-10-24T09:56:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="腾讯微博发送图片OpenAPI （error content len）解决">
-<meta name="twitter:description" content="调用  OpenAPI  发送带有图片的微博。该openAPI接口为： https://open.t.qq.com/api/t/add  _pic(Oauth2.0专用) 然后收到如下错误： “errcode”:2,”msg”:”error content len”,”ret”:1,”seqid”:5884029410824328274这个错误信息是说微博内容长度太长。我开始以为是字数的问题，然后">
+<meta name="twitter:description" content="调用  OpenAPI  发送带有图片的微博。该openAPI接口为： https://open.t.qq.com/api/t/add  (Oauth2.0专用) 然后收到如下错误： &amp;quot;errcode&amp;quot;:2,&amp;quot;msg&amp;quot;:&amp;quot;error content len&amp;quot;,&amp;quot;ret&amp;quot;:1,&amp;quot;seqid&amp;quot;:5884">
 
 
 
@@ -326,8 +326,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T17:56:14+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -378,11 +378,10 @@
       
 
       
-        <p>调用 <a href="http://wiki.open.t.qq.com/index.php/API%E6%96%87%E6%A1%A3/%E5%B
-E%AE%E5%8D%9A%E6%8E%A5%E5%8F%A3/%E5%8F%91%E8%A1%A8%E4%B8%80%E6%9D%A1%E5%BE%AE%
-E5%8D%9A%E4%BF%A1%E6%81%AF" target="_blank" rel="external"> OpenAPI </a> 发送带有图片的微博。该openAPI接口为： <a href="https://open.t.qq.com/api/t/add" target="_blank" rel="external"><br>https://open.t.qq.com/api/t/add </a> _pic<br>(Oauth2.0专用)</p>
+        <p>调用 <a href="http://wiki.open.t.qq.com/index.php/API%E6%96%87%E6%A1%A3/%E5%BE%AE%E5%8D%9A%E6%8E%A5%E5%8F%A3/%E5%8F%91%E8%A1%A8%E4%B8%80%E6%9D%A1%E5%BE%AE%E5%8D%9A%E4%BF%A1%E6%81%AF" target="_blank" rel="external"> OpenAPI </a> 发送带有图片的微博。该openAPI接口为： <a href="https://open.t.qq.com/api/t/add" target="_blank" rel="external">https://open.t.qq.com/api/t/add </a> (Oauth2.0专用)</p>
 <p>然后收到如下错误：</p>
-<p>“errcode”:2,”msg”:”error content len”,”ret”:1,”seqid”:5884029410824328274<br>这个错误信息是说微博内容长度太长。我开始以为是字数的问题，然后只发送两个ascii字符，但是结果仍然会有这个问题。然后细细研究了腾讯微博的SDK.<br>发现它发送multipart/form-data请求时， 头部信息没有带上charset=”utf-8”.<br>然后就成功了。所以解决方法就是去掉Multipart 头部的charset=UTF-8。</p>
+<pre><code>&quot;errcode&quot;:2,&quot;msg&quot;:&quot;error content len&quot;,&quot;ret&quot;:1,&quot;seqid&quot;:5884029410824328274  
+</code></pre><p>这个错误信息是说微博内容长度太长。我开始以为是字数的问题，然后只发送两个ascii字符，但是结果仍然会有这个问题。然后细细研究了腾讯微博的SDK.发现它发送multipart/form-data请求时， 头部信息没有带上charset=”utf-8”.然后就成功了。所以解决方法就是去掉Multipart 头部的charset=UTF-8。</p>
 <pre><code>Content-Type: multipart/form-data; boundary=---------------------------7d83e2d7a141e; charset=UTF-8 // 这里的charset=UTF-8要去掉才可以。
 -----------------------------7d83e2d7a141e
 Content-Disposition: form-data; name=&quot;content&quot;;charset=UTF-8
@@ -607,7 +606,7 @@ Content-Disposition: form-data; name=&quot;content&quot;;charset=UTF-8
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 

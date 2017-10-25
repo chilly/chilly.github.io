@@ -1441,8 +1441,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T17:54:15+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -1480,12 +1480,13 @@
       
         
           
-            <p>帐 前卒今天遇到 JAVA mail MimeUtility.quote 函数抛出 NULL Pointer Exception<br>问题。找这个问题的确废了一番功夫：看栈信息，看源码，debug.  然后终于发现了问题的原因：</p>
+            <p>帐前卒今天遇到 JAVA mail MimeUtility.quote 函数抛出 NULL Pointer Exception问题。找这个问题的确废了一番功夫：看栈信息，看源码，debug.  然后终于发现了问题的原因：</p>
 <p>在Email里MimeBody中有这样一行：</p>
 <pre><code>Content-Type: application/octet-stream; name=&quot;&quot;
-</code></pre><p>这句话相当的神奇，让JavaMail抛出NPE. 但是这个问题是JavaMail这个库有问题，还是这封email没有遵循rfc规范？</p>
-<p>于是 <a href="http://chillyc.info"> 帐前 卒 </a> 找了一下rfc文档，在 <a href="http://www.ietf.org/rfc/rfc2045.txt" target="_blank" rel="external"> rfc 2045
-</a> 中找到了5.1章，发现如下内容：</p>
+
+这句话相当的神奇，让JavaMail抛出NPE. 
+但是这个问题是JavaMail这个库有问题，还是这封email没有遵循rfc规范？
+</code></pre><p>于是 <a href="http://chillyc.info"> 帐前 卒 </a> 找了一下rfc文档，在 <a href="http://www.ietf.org/rfc/rfc2045.txt" target="_blank" rel="external"> rfc 2045</a> 中找到了5.1章，发现如下内容：</p>
 <pre><code>value := token / quoted-string
 
 token := 1*&lt;any (US-ASCII) CHAR except SPACE, CTLs,
@@ -1496,8 +1497,8 @@ tspecials :=  &quot;(&quot; / &quot;)&quot; / &quot;&lt;&quot; / &quot;&gt;&quot
                    &quot;/&quot; / &quot;[&quot; / &quot;]&quot; / &quot;?&quot; / &quot;=&quot;
                    ; Must be in quoted-string,
                    ; to use within parameter values
-</code></pre><p>这是语法定义。这里说，对于Content-Type header域的词法定义中，明确写了，不应该为空。那么JavaMail在这里发现为空抛出Exceptio<br>n也是理所应当。所以错在发信方。看到这里，那封不能被很好解析的邮件该怎么丢弃就怎么丢弃吧。然后把这个bug反馈给发信方。所以软件开发…还是需要时不时的看<br>看rfc呀…</p>
-<p>另外上面的问题是在获取Multipart p后，调用p.getContent(); 或者 p.getDataHandler()或者<br>p.getInputStream()方法时，抛出的Null Pointer Exception.  </p>
+</code></pre><p>这是语法定义。这里说，对于Content-Type header域的词法定义中，明确写了，不应该为空。那么JavaMail在这里发现为空抛出Exception也是理所应当。所以错在发信方。看到这里，那封不能被很好解析的邮件该怎么丢弃就怎么丢弃吧。然后把这个bug反馈给发信方。所以软件开发…还是需要时不时的看看rfc呀…</p>
+<p>另外上面的问题是在获取Multipart p后，调用p.getContent(); 或者 p.getDataHandler()或者p.getInputStream()方法时，抛出的Null Pointer Exception.  </p>
 
           
         
@@ -1596,8 +1597,8 @@ tspecials :=  &quot;(&quot; / &quot;)&quot; / &quot;&lt;&quot; / &quot;&gt;&quot
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T17:54:54+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -1635,10 +1636,10 @@ tspecials :=  &quot;(&quot; / &quot;)&quot; / &quot;&lt;&quot; / &quot;&gt;&quot
       
         
           
-            <p>Caused by: org.apache.http.ProtocolException: The server failed to respond<br>with a valid HTTP response</p>
-<p>昨天帐前 卒使用java 的HttpClient时遇到这个错误。这个错误大致是说server给的不是正确的http<br>response.这个错误是可能是由于：使用同一个HttpClient长连接/保持连接, 然后又使用这个httpClient进行其他网络请求。</p>
+            <p>Caused by: org.apache.http.ProtocolException: The server failed to respond with a valid HTTP response</p>
+<p>昨天帐前卒使用java 的HttpClient时遇到这个错误。这个错误大致是说server给的不是正确的http response.这个错误是可能是由于：使用同一个HttpClient长连接/保持连接, 然后又使用这个httpClient进行其他网络请求。</p>
 <p>如果使用的是HttpGet进行的请求(其他请求类似解决)。那么解决方法是：</p>
-<pre><code>//  帐 前卒的code
+<pre><code>//  帐前卒的code
 HttpGet get = new HttpGet(urlWithParam);
 HttpResponse response;
         try {
@@ -1655,8 +1656,7 @@ HttpResponse response;
                  EntityUtils.consumeQuietly(response.getEntity());
             }
         }
-</code></pre><p>在abort()之前要把所有的内容都获取到。然后强制关闭这个连接。同时把entity也干掉。这里解决问题的关键是<br>get.abort()。如果entity不关掉，那么引发的问题是：httpclient卡死。 <a href="http://blog.csdn.net/cctt_1/article/details/8166067" target="_blank" rel="external"> 详情猛击这里
-</a></p>
+</code></pre><p>在abort()之前要把所有的内容都获取到。然后强制关闭这个连接。同时把entity也干掉。这里解决问题的关键是get.abort()。如果entity不关掉，那么引发的问题是：httpclient卡死。 <a href="http://blog.csdn.net/cctt_1/article/details/8166067" target="_blank" rel="external"> 详情猛击这里</a></p>
 <p>当然还有一种解决方法：不断new出httpclient. 这种方法不推荐（消耗大量资源）。</p>
 
           
@@ -1768,8 +1768,8 @@ HttpResponse response;
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T17:56:14+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -1807,11 +1807,10 @@ HttpResponse response;
       
         
           
-            <p>调用 <a href="http://wiki.open.t.qq.com/index.php/API%E6%96%87%E6%A1%A3/%E5%B
-E%AE%E5%8D%9A%E6%8E%A5%E5%8F%A3/%E5%8F%91%E8%A1%A8%E4%B8%80%E6%9D%A1%E5%BE%AE%
-E5%8D%9A%E4%BF%A1%E6%81%AF" target="_blank" rel="external"> OpenAPI </a> 发送带有图片的微博。该openAPI接口为： <a href="https://open.t.qq.com/api/t/add" target="_blank" rel="external"><br>https://open.t.qq.com/api/t/add </a> _pic<br>(Oauth2.0专用)</p>
+            <p>调用 <a href="http://wiki.open.t.qq.com/index.php/API%E6%96%87%E6%A1%A3/%E5%BE%AE%E5%8D%9A%E6%8E%A5%E5%8F%A3/%E5%8F%91%E8%A1%A8%E4%B8%80%E6%9D%A1%E5%BE%AE%E5%8D%9A%E4%BF%A1%E6%81%AF" target="_blank" rel="external"> OpenAPI </a> 发送带有图片的微博。该openAPI接口为： <a href="https://open.t.qq.com/api/t/add" target="_blank" rel="external">https://open.t.qq.com/api/t/add </a> (Oauth2.0专用)</p>
 <p>然后收到如下错误：</p>
-<p>“errcode”:2,”msg”:”error content len”,”ret”:1,”seqid”:5884029410824328274<br>这个错误信息是说微博内容长度太长。我开始以为是字数的问题，然后只发送两个ascii字符，但是结果仍然会有这个问题。然后细细研究了腾讯微博的SDK.<br>发现它发送multipart/form-data请求时， 头部信息没有带上charset=”utf-8”.<br>然后就成功了。所以解决方法就是去掉Multipart 头部的charset=UTF-8。</p>
+<pre><code>&quot;errcode&quot;:2,&quot;msg&quot;:&quot;error content len&quot;,&quot;ret&quot;:1,&quot;seqid&quot;:5884029410824328274  
+</code></pre><p>这个错误信息是说微博内容长度太长。我开始以为是字数的问题，然后只发送两个ascii字符，但是结果仍然会有这个问题。然后细细研究了腾讯微博的SDK.发现它发送multipart/form-data请求时， 头部信息没有带上charset=”utf-8”.然后就成功了。所以解决方法就是去掉Multipart 头部的charset=UTF-8。</p>
 <pre><code>Content-Type: multipart/form-data; boundary=---------------------------7d83e2d7a141e; charset=UTF-8 // 这里的charset=UTF-8要去掉才可以。
 -----------------------------7d83e2d7a141e
 Content-Disposition: form-data; name=&quot;content&quot;;charset=UTF-8
@@ -1974,7 +1973,7 @@ Content-Disposition: form-data; name=&quot;content&quot;;charset=UTF-8
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 

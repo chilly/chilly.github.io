@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T18:02:03+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -353,81 +353,13 @@
       
         
           
-            <p>如果不知道MultipartResolver 或者ServletFileUpload 的，请 <a href="http://blog.csdn.net/cctt_1/article/details/8800964" target="_blank" rel="external"> 点击这里
+            <p>如果不知道MultipartResolver 或者ServletFileUpload 的，请 <a href="http://chillyc.info/2013/8800964/">JAVA Server上传文件 Spring MultipartResolver 或者 ServletFileUpload
 </a></p>
-<p>如果同时使用了MultipartResolver<br>和ServletFileUpload，就会在iter.hasNext()返回false.然后整个循环就跳出去了。</p>
-<pre><code>if (isMultipart) {
-            DiskFileItemFactory factory = new DiskFileItemFactory(1024 * 1024 * 20, null);
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            upload.setHeaderEncoding(&quot;UTF-8&quot;);
-            upload.setSizeMax(1024 * 1024 * 20);
+<p>如果同时使用了MultipartResolver和ServletFileUpload，就会在iter.hasNext()返回false.然后整个循环就跳出去了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (isMultipart) &#123;</div><div class="line">            DiskFileItemFactory factory = <span class="keyword">new</span> DiskFileItemFactory(<span class="number">1024</span> * <span class="number">1024</span> * <span class="number">20</span>, <span class="keyword">null</span>);</div><div class="line">            ServletFileUpload upload = <span class="keyword">new</span> ServletFileUpload(factory);</div><div class="line">            upload.setHeaderEncoding(<span class="string">"UTF-8"</span>);</div><div class="line">            upload.setSizeMax(<span class="number">1024</span> * <span class="number">1024</span> * <span class="number">20</span>);</div><div class="line"></div><div class="line">            List&lt;FileItem&gt; fileItems = upload.parseRequest(req);</div><div class="line">            Iterator&lt;FileItem&gt; iter = fileItems.iterator();</div><div class="line">            <span class="comment">// 这里获取不到任何FileItem</span></div><div class="line">            <span class="keyword">while</span> (iter.hasNext()) &#123;</div><div class="line">                FileItem item = (FileItem) iter.next();</div><div class="line">                <span class="keyword">if</span> (item.isFormField()) &#123;</div><div class="line">                    String name = item.getFieldName();</div><div class="line">                    String value = item.getString(<span class="string">"UTF-8"</span>);</div><div class="line">                    request.put(name, value);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="keyword">byte</span>[] filebytes = item.get();</div><div class="line">                    <span class="keyword">if</span> (StringUtils.isBlank(item.getName())) &#123;</div><div class="line">                        <span class="keyword">continue</span>;</div><div class="line">                    &#125;</div><div class="line">                    </div><div class="line">                    request.put(item.getFieldName(), <span class="keyword">new</span> String(filebyte, <span class="string">"utf-8"</span>));</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>整个问题产生的原因是Spring框架先调用了MultipartResolver 来处理http multi-part的请求。这里http multipart的请求已经消耗掉。后面又交给ServletFileUpload ，那么ServletFileUpload 就获取不到相应的multi-part请求。</p>
+<p>如果帐前 卒想快速解决这个问题。解决方法是加入帐前卒的  multipartResolver,  来单独处理某些请求。这些请求需要特判。例如下面的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> example;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.web.multipart.commons.CommonsMultipartResolver;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> 帐前卒</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMultipartResolver</span> <span class="keyword">extends</span> <span class="title">CommonsMultipartResolver</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> String excludeUrls;   </div><div class="line">    <span class="keyword">private</span> String[] excludeUrlArray;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getExcludeUrls</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> excludeUrls;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setExcludeUrls</span><span class="params">(String excludeUrls)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.excludeUrls = excludeUrls;</div><div class="line">        <span class="keyword">this</span>.excludeUrlArray = excludeUrls.split(<span class="string">","</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 这里是处理Multipart http的方法。如果这个返回值为true,那么Multipart http body就会MyMultipartResolver 消耗掉.如果这里返回false</span></div><div class="line"><span class="comment">     * 那么就会交给后面的自己写的处理函数处理例如刚才ServletFileUpload 所在的函数</span></div><div class="line"><span class="comment">     * <span class="doctag">@see</span> org.springframework.web.multipart.commons.CommonsMultipartResolver#isMultipart(javax.servlet.http.HttpServletRequest)</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (String url: excludeUrlArray) &#123;</div><div class="line">            <span class="comment">// 这里可以自己换判断</span></div><div class="line">            <span class="keyword">if</span> (request.getRequestURI().contains(url)) &#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.isMultipart(request);</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后在web.xml中这样写：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"multipartResolver"</span> <span class="attr">class</span>=<span class="string">"example.MyMultipartResolver"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"excludeUrls"</span> <span class="attr">value</span>=<span class="string">"example"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!-- url中带有example的http请求就不会被multipartResolver先解析--&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure></p>
 
-            List&lt;FileItem&gt; fileItems = upload.parseRequest(req);
-            Iterator&lt;FileItem&gt; iter = fileItems.iterator();
-            // 这里获取不到任何FileItem
-            while (iter.hasNext()) {
-                FileItem item = (FileItem) iter.next();
-                if (item.isFormField()) {
-                    String name = item.getFieldName();
-                    String value = item.getString(&quot;UTF-8&quot;);
-                    request.put(name, value);
-                } else {
-                    byte[] filebytes = item.get();
-                    if (StringUtils.isBlank(item.getName())) {
-                        continue;
-                    }
-
-                    request.put(item.getFieldName(), new String(filebyte, &quot;utf-8&quot;));
-                }
-            }
-        }
-}
-</code></pre><p>整个问题产生的原因是Spring框架先调用了MultipartResolver 来处理http multi-part的请求。这里http<br>multipart的请求已经消耗掉。后面又交给ServletFileUpload ，那么ServletFileUpload 就获取不到相应的multi-<br>part请求。</p>
-<p>如果帐前 卒想快速解决这个问题。解决方法是加入帐前卒的  multipartResolver,  来单独处理某些请求。这些请求需要特判。例如下面的代码：</p>
-<pre><code>package example;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
-/**
- * @author 帐前卒
- */
-public class MyMultipartResolver extends CommonsMultipartResolver {
-    private String excludeUrls;   
-    private String[] excludeUrlArray;
-
-    public String getExcludeUrls() {
-        return excludeUrls;
-    }
-    public void setExcludeUrls(String excludeUrls) {
-        this.excludeUrls = excludeUrls;
-        this.excludeUrlArray = excludeUrls.split(&quot;,&quot;);
-    }
-    /**
-     * 这里是处理Multipart http的方法。如果这个返回值为true,那么Multipart http body就会MyMultipartResolver 消耗掉.如果这里返回false
-     * 那么就会交给后面的自己写的处理函数处理例如刚才ServletFileUpload 所在的函数
-     * @see org.springframework.web.multipart.commons.CommonsMultipartResolver#isMultipart(javax.servlet.http.HttpServletRequest)
-     */
-    @Override
-    public boolean isMultipart(HttpServletRequest request) {
-        for (String url: excludeUrlArray) {
-            // 这里可以自己换判断
-            if (request.getRequestURI().contains(url)) {
-                return false;
-            }
-        }
-
-        return super.isMultipart(request);
-    }
-
-}
-</code></pre><p>然后在web.xml中这样写：</p>
-<pre><code>&lt;bean id=&quot;multipartResolver&quot; class=&quot;example.MyMultipartResolver&quot;&gt;
-&lt;property name=&quot;excludeUrls&quot; value=&quot;example&quot;/&gt;
-&lt;!-- url中带有example的http请求就不会被multipartResolver先解析--&gt;
-&lt;/bean&gt;
-</code></pre>
           
         
       
@@ -537,8 +469,8 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T18:00:22+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -576,15 +508,19 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
       
         
           
-            <p>今天好好学习了一下java中的各种reference.<br>一共分为以下几种：<br><strong> 1. 强引用<br>2. 软引用 SoftReference<br>3. 弱引用 WeakReference<br>4. 虚引用 PhantomReference  </strong><br>5. FinalReference 所有实现finalize()方法的对象<br>一下是Oracle JDK. IBM的JDK会有些不同。<br><strong> 强引用 </strong> ：<br>    String a = new String(“A”);</p>
+            <p>今天好好学习了一下java中的各种reference.一共分为以下几种：  </p>
+<p>1. 强引用<br>2. 软引用 SoftReference<br>3. 弱引用 WeakReference<br>4. 虚引用 PhantomReference<br>5. FinalReference 所有实现finalize()方法的对象  </p>
+<p>一下是Oracle JDK. IBM的JDK会有些不同。  </p>
+<p><strong> 强引用 </strong> ：<br>    String a = new String(“A”);</p>
 <p>一般程序都在使用。申请太多时，会有OutOfMemory异常。gc不会自动释放。  </p>
 <p><strong> 软引用 </strong> ：<br>    SoftReference<string> a = new SoftReference<string>(new String(“A”));<br>    String real = a.get(); // if memory is near/equal to threshold of memory, real may be null.</string></string></p>
-<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.<br>适合作为cache.  </p>
+<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.  适合作为cache.  </p>
 <p><strong> 弱引用 </strong> ：<br>    WeakReference<string> a = new WeakReference<string>(new String(“A”));<br>    String real = a.get(); // may null</string></string></p>
-<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.<br>适合作为Cache, 并且这里的意思为:如果能在内存中看到这个cache对象最好，看不到，load这个对象也不会损失很多效率。  </p>
+<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.  适合作为Cache, 并且这里的意思为:如果能在内存中看到这个cache对象最好，看不到，load这个对象也不会损失很多效率。  </p>
 <p><strong> 虚引用 </strong> :<br>    PhantomReference<string> a = new PhantomReference<string>(new String(“A”));<br>    String real = a.get(); // is always null</string></string></p>
-<p>gc不会自动释放, 会有OutOfMemory。对象在垃圾回收/finalize()之后才会放入到ReferenceQueue中。这里会保证对象不会再次引用<br>。也可以用于判断该对象是否已经从内存中移除。  </p>
-<p><strong> FinalReference </strong> :<br>其实不能直接使用。这个的子类 Finalizer也不能直接使用。系统会在运行时启动FinalizerThread。<br>这个Thread用于清理ReferenceQueue中的对象。首先调用该对象finalize()方法，然后将引用赋值为null. 这样就解除了引用和对象的关<br>系。这里的ReferenceQueue可以看做是以上各个引用都被最终放入到的queue对象。因为所有对象都有finalize()方法。<br>另外垃圾回收有两步，第一步确定垃圾回收的对象，第二步调用finalize()方法，将对象从内存中移除。在finalize()方法调用前，强引用是可以召回对象<br>，使对象不会移除内存。这样会导致垃圾回收会反反复复回收多次，仍未能将该对象移除。但是如果使用虚引用，就能确保，进入ReferenceQueue中的引用，其对<br>象一定已经移除内存。<br>参考：<br><a href="http://www.ibm.com/developerworks/cn/java/j-lo-langref/" target="_blank" rel="external">http://www.ibm.com/developerworks/cn/java/j-lo-langref/</a><br><a href="https://weblogs.java.net/blog/2006/05/04/understanding-weak-references" target="_blank" rel="external">https://weblogs.java.net/blog/2006/05/04/understanding-weak-references</a><br><a href="http://yangguangfu.iteye.com/blog/849317" target="_blank" rel="external">http://yangguangfu.iteye.com/blog/849317</a>  </p>
+<p>gc不会自动释放, 会有OutOfMemory。对象在垃圾回收/finalize()之后才会放入到ReferenceQueue中。这里会保证对象不会再次引用。也可以用于判断该对象是否已经从内存中移除。  </p>
+<p><strong> FinalReference </strong> :<br>其实不能直接使用。这个的子类 Finalizer也不能直接使用。系统会在运行时启动FinalizerThread。这个Thread用于清理ReferenceQueue中的对象。首先调用该对象finalize()方法，然后将引用赋值为null. 这样就解除了引用和对象的关系。这里的ReferenceQueue可以看做是以上各个引用都被最终放入到的queue对象。因为所有对象都有finalize()方法。  另外垃圾回收有两步，第一步确定垃圾回收的对象，第二步调用finalize()方法，将对象从内存中移除。在finalize()方法调用前，强引用是可以召回对象，使对象不会移除内存。这样会导致垃圾回收会反反复复回收多次，仍未能将该对象移除。但是如果使用虚引用，就能确保，进入ReferenceQueue中的引用，其对象一定已经移除内存。  </p>
+<p>参考：<br><a href="http://www.ibm.com/developerworks/cn/java/j-lo-langref/" target="_blank" rel="external">http://www.ibm.com/developerworks/cn/java/j-lo-langref/</a><br><a href="https://weblogs.java.net/blog/2006/05/04/understanding-weak-references" target="_blank" rel="external">https://weblogs.java.net/blog/2006/05/04/understanding-weak-references</a><br><a href="http://yangguangfu.iteye.com/blog/849317" target="_blank" rel="external">http://yangguangfu.iteye.com/blog/849317</a>  </p>
 
           
         
@@ -683,8 +619,8 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T18:02:46+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -724,15 +660,15 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
           
             <p>如果想上传文件，那么有两种方法可以解决。一种使用Spring框架中的东西。另外一种是使用原生的代码。</p>
 <p>使用Spring框架非常简单。将如下xml放入到servlet.xml中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;bean id=&quot;multipartResolver&quot;</div><div class="line">        class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;&gt;</div><div class="line">        &lt;property name=&quot;maxUploadSize&quot;</div><div class="line">            value=&quot;20000000&quot; /&gt;</div><div class="line">   &lt;!-- 上传限制 20M --&gt;</div><div class="line">    &lt;/bean&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"multipartResolver"</span></span></div><div class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"org.springframework.web.multipart.commons.CommonsMultipartResolver"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxUploadSize"</span></span></div><div class="line"><span class="tag">            <span class="attr">value</span>=<span class="string">"20000000"</span> /&gt;</span></div><div class="line">   <span class="comment">&lt;!-- 上传限制 20M --&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>然后在代码中这样写：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@RequestMapping(value = &quot;upload&quot;, method = RequestMethod.POST)</div><div class="line">    public void upload(HttpServletRequest req, HttpServletResponse response,</div><div class="line">            @RequestParam(value=&quot;file&quot;, required=true) MultipartFile file,</div><div class="line">            )</div><div class="line">            throws IOException &#123;</div><div class="line">// 1. upload file, 获取bytes内容</div><div class="line"></div><div class="line">       ByteArrayOutputStream bytes = new ByteArrayOutputStream();</div><div class="line">        IOUtils.copy(file.getInputStream(), bytes);</div><div class="line">        byte[] byteArray = bytes.toByteArray();&#125;</div></pre></td></tr></table></figure>
-<p>Html上传页面这样写： <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;form name=&quot;uploadForm&quot; action=&quot;upload&quot; method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot; &gt;</div><div class="line">        </div><div class="line">        &lt;label&gt;上传文件 &lt;/label&gt;&lt;br/&gt;</div><div class="line">        &lt;input type=&quot;file&quot; name=&quot;file&quot; size=&quot;100&quot; style=&quot;width:300px;&quot; /&gt; &lt;br /&gt;</div><div class="line">        </div><div class="line">        &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;submit&quot;/&gt;</div><div class="line">    &lt;/form&gt;</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"upload"</span>, method = RequestMethod.POST)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload</span><span class="params">(HttpServletRequest req, HttpServletResponse response,</span></span></div><div class="line"><span class="function"><span class="params">            @RequestParam(value=<span class="string">"file"</span>, required=<span class="keyword">true</span>)</span> MultipartFile file,</span></div><div class="line"><span class="function">            )</span></div><div class="line"><span class="function">            <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line"><span class="comment">// 1. upload file, 获取bytes内容</span></div><div class="line"></div><div class="line">       ByteArrayOutputStream bytes = <span class="keyword">new</span> ByteArrayOutputStream();</div><div class="line">        IOUtils.copy(file.getInputStream(), bytes);</div><div class="line">        <span class="keyword">byte</span>[] byteArray = bytes.toByteArray();&#125;</div></pre></td></tr></table></figure>
+<p>Html上传页面这样写： </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">name</span>=<span class="string">"uploadForm"</span> <span class="attr">action</span>=<span class="string">"upload"</span> <span class="attr">method</span>=<span class="string">"POST"</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span> &gt;</span></div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>上传文件 <span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> <span class="attr">size</span>=<span class="string">"100"</span> <span class="attr">style</span>=<span class="string">"width:300px;"</span> /&gt;</span> <span class="tag">&lt;<span class="name">br</span> /&gt;</span></div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">name</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"submit"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>这样写完后，就可以上传一个不超过20M的文件了。</p>
 <p>第二种方式不使用Spring框架。代码稍微复杂一些。HTML同上。但是没有那段XML内容。JAVA代码需要改为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@RequestMapping(value = &quot;upload&quot;, method = RequestMethod.POST)</div><div class="line">    public void upload(HttpServletRequest req, HttpServletResponse resp</div><div class="line">            ) throws ServletException, IOException, FileUploadException,</div><div class="line">            &#123;</div><div class="line">        boolean isMultipart = ServletFileUpload.isMultipartContent(req);</div><div class="line">        HashMap&lt;String, String&gt; request = new HashMap&lt;String, String&gt;();</div><div class="line">        if (isMultipart) &#123;</div><div class="line">            DiskFileItemFactory factory = new DiskFileItemFactory(1024 * 1024 * 20, null);</div><div class="line">            ServletFileUpload upload = new ServletFileUpload(factory);</div><div class="line">            upload.setHeaderEncoding(&quot;UTF-8&quot;);</div><div class="line">            upload.setSizeMax(1024 * 1024 * 20);</div><div class="line"></div><div class="line">            List&lt;FileItem&gt; fileItems = upload.parseRequest(req);</div><div class="line">            Iterator&lt;FileItem&gt; iter = fileItems.iterator();</div><div class="line">            while (iter.hasNext()) &#123;</div><div class="line">                FileItem item = (FileItem) iter.next();</div><div class="line">                if (item.isFormField()) &#123;</div><div class="line">                    String name = item.getFieldName();</div><div class="line">                    String value = item.getString(&quot;UTF-8&quot;);</div><div class="line">                    request.put(name, value);</div><div class="line">                &#125; else &#123;</div><div class="line">                    byte[] filebytes = item.get();</div><div class="line">                    if (StringUtils.isBlank(item.getName())) &#123;</div><div class="line">                        continue;</div><div class="line">                    &#125;</div><div class="line">                    </div><div class="line">                    request.put(item.getFieldName(), new String(filebyte, &quot;utf-8&quot;));</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>但是这两者不能同时使用，否则会有冲突。下一篇将介绍 <a href="http://blog.csdn.net/cctt_1/article/details/8962322" target="_blank" rel="external"> 如何解决两者之间的冲突
-</a> 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"upload"</span>, method = RequestMethod.POST)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload</span><span class="params">(HttpServletRequest req, HttpServletResponse resp</span></span></div><div class="line"><span class="function"><span class="params">            )</span> <span class="keyword">throws</span> ServletException, IOException, FileUploadException,</span></div><div class="line"><span class="function">            </span>&#123;</div><div class="line">        <span class="keyword">boolean</span> isMultipart = ServletFileUpload.isMultipartContent(req);</div><div class="line">        HashMap&lt;String, String&gt; request = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</div><div class="line">        <span class="keyword">if</span> (isMultipart) &#123;</div><div class="line">            DiskFileItemFactory factory = <span class="keyword">new</span> DiskFileItemFactory(<span class="number">1024</span> * <span class="number">1024</span> * <span class="number">20</span>, <span class="keyword">null</span>);</div><div class="line">            ServletFileUpload upload = <span class="keyword">new</span> ServletFileUpload(factory);</div><div class="line">            upload.setHeaderEncoding(<span class="string">"UTF-8"</span>);</div><div class="line">            upload.setSizeMax(<span class="number">1024</span> * <span class="number">1024</span> * <span class="number">20</span>);</div><div class="line"></div><div class="line">            List&lt;FileItem&gt; fileItems = upload.parseRequest(req);</div><div class="line">            Iterator&lt;FileItem&gt; iter = fileItems.iterator();</div><div class="line">            <span class="keyword">while</span> (iter.hasNext()) &#123;</div><div class="line">                FileItem item = (FileItem) iter.next();</div><div class="line">                <span class="keyword">if</span> (item.isFormField()) &#123;</div><div class="line">                    String name = item.getFieldName();</div><div class="line">                    String value = item.getString(<span class="string">"UTF-8"</span>);</div><div class="line">                    request.put(name, value);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="keyword">byte</span>[] filebytes = item.get();</div><div class="line">                    <span class="keyword">if</span> (StringUtils.isBlank(item.getName())) &#123;</div><div class="line">                        <span class="keyword">continue</span>;</div><div class="line">                    &#125;</div><div class="line">                    </div><div class="line">                    request.put(item.getFieldName(), <span class="keyword">new</span> String(filebyte, <span class="string">"utf-8"</span>));</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是这两者不能同时使用，否则会有冲突。下一篇将介绍 <a href="http://chillyc.info/2013/8962322/"> 如何解决两者之间的冲突</a> 。</p>
 
           
         
@@ -1121,8 +1057,8 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T17:58:38+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -1160,199 +1096,13 @@ public class MyMultipartResolver extends CommonsMultipartResolver {
       
         
           
-            <p>之前找了有下web crawler的练习答案. 貌似中文的不多。另外golang.org自从在外面之后， <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前卒
-</a> 每次上都需要到那里都要花些功夫。国内的也有一个移植的（ <a href="http://www.aqee.net/go/a-tour-of-go/#1" target="_blank" rel="external"> 猛击这里
-</a> ）。</p>
-<p>最近支付宝的页面也被爬虫爆出来了。不过这应该很久之前的事情了。因为看到了google的搜索，还有2012年8月份的。估计上支付宝那个shenghuo.ali<br>pay.com这个domain自从上线就没有加robots.txt. 有兴趣的可以在google上使用 site:shenghuo.alipay.com<br>or 查看 shenghuo.alipay.com/robots.txt.</p>
+            <p>之前找了有下web crawler的练习答案. 貌似中文的不多。另外golang.org自从在外面之后， <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前卒</a> 每次上都需要到那里都要花些功夫。国内的也有一个移植的（ <a href="http://www.aqee.net/go/a-tour-of-go/#1" target="_blank" rel="external"> 猛击这里</a> ）。</p>
+<p>最近支付宝的页面也被爬虫爆出来了。不过这应该很久之前的事情了。因为看到了google的搜索，还有2012年8月份的。估计上支付宝那个shenghuo.alipay.com这个domain自从上线就没有加robots.txt. 有兴趣的可以在google上使用 site:shenghuo.alipay.com or 查看 shenghuo.alipay.com/robots.txt.</p>
 <p>言归正传, golang的问题是这样的：</p>
-<pre><code>package main
-
-import (
-    &quot;fmt&quot;
-)
-
-type Fetcher interface {
-        // Fetch 返回 URL 的 body 内容，并且将在这个页面上找到的 URL 放到一个 slice 中。
-    Fetch(url string) (body string, urls []string, err error)
-}
-
-// Crawl 使用 fetcher 从某个 URL 开始递归的爬取页面，直到达到最大深度。
-func Crawl(url string, depth int, fetcher Fetcher) {
-        // TODO: 并行的抓取 URL。
-        // TODO: 不重复抓取页面。
-        // 下面并没有实现上面两种情况：
-    if depth &lt;= 0 {
-        return
-    }
-    body, urls, err := fetcher.Fetch(url)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-    fmt.Printf(&quot;found: %s %q\n&quot;, url, body)
-    for _, u := range urls {
-        Crawl(u, depth-1, fetcher)
-    }
-    return
-}
-
-func main() {
-    Crawl(&quot;http://golang.org/&quot;, 4, fetcher)
-}
-// fakeFetcher 是返回若干结果的 Fetcher。
-type fakeFetcher map[string]*fakeResult
-
-type fakeResult struct {
-    body string
-    urls     []string
-}
-
-func (f *fakeFetcher) Fetch(url string) (string, []string, error) {
-    if res, ok := (*f)[url]; ok {
-        return res.body, res.urls, nil
-    }
-    return &quot;&quot;, nil, fmt.Errorf(&quot;not found: %s&quot;, url)
-}
-
-// fetcher 是填充后的 fakeFetcher。
-var fetcher = &amp;fakeFetcher{
-    &quot;http://golang.org/&quot;: &amp;fakeResult{
-        &quot;The Go Programming Language&quot;,
-        []string{
-            &quot;http://golang.org/pkg/&quot;,
-            &quot;http://golang.org/cmd/&quot;,
-        },
-    },
-    &quot;http://golang.org/pkg/&quot;: &amp;fakeResult{
-        &quot;Packages&quot;,
-        []string{
-            &quot;http://golang.org/&quot;,
-            &quot;http://golang.org/cmd/&quot;,
-            &quot;http://golang.org/pkg/fmt/&quot;,
-            &quot;http://golang.org/pkg/os/&quot;,
-        },
-    },
-    &quot;http://golang.org/pkg/fmt/&quot;: &amp;fakeResult{
-        &quot;Package fmt&quot;,
-        []string{
-            &quot;http://golang.org/&quot;,
-            &quot;http://golang.org/pkg/&quot;,
-        },
-    },
-    &quot;http://golang.org/pkg/os/&quot;: &amp;fakeResult{
-        &quot;Package os&quot;,
-        []string{
-            &quot;http://golang.org/&quot;,
-            &quot;http://golang.org/pkg/&quot;,
-        },
-    },
-}
-</code></pre><p>然后下面是 <a href="http://chillyc.info"> 小卒 </a> 的解答。最主要的是改写原来的函数。同步map,<br>然后父节点应在全部子节点退出后再退出。用channel当banner派上用场。当然golang还提供了锁和其他的同步机制。不过 <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前 卒
-</a> 还是先用channel吧。另外最好先看看golang的memory model.</p>
-<p>下面 <a href="http://chillyc.info"> 帐 前卒 </a> 的代码：</p>
-<pre><code>package main
-
-import (
-  &quot;fmt&quot;
-)
-
-type Fetcher interface {
-        // Fetch 返回 URL 的 body 内容，并且将在这个页面上找到的 URL 放到一个 slice 中。
-  Fetch(url string) (body string, urls []string, err error)
-}
-var lockx = make(chan int,1)
-// 同步通信使用
-func LockFun(f func()) {
-  lockx&lt;-1
-  f()
-  &lt;-lockx
-}
-var visited map[string]bool = make(map[string]bool)
-// Crawl 使用 fetcher 从某个 URL 开始递归的爬取页面，直到达到最大深度。
-func Crawl(url string, depth int, fetcher Fetcher, banner chan int) {
-
-  if depth &lt;= 0 || visited[url] {
-    banner&lt;-1
-    return
-  }
-  body, urls, err := fetcher.Fetch(url)
-  LockFun(func(){
-    visited[url]=true
-  })
-  fmt.Printf(&quot;found: %s %q\n&quot;, url, body)
-  if err != nil {
-    fmt.Println(err)
-    banner&lt;-1
-    return
-  }
-  subBanner := make(chan int, len(urls))
-  for _, u := range urls {
-     // 并行吧～～ 
-      go Crawl(u, depth-1, fetcher, subBanner);
-  }
-  for i:=0; i &lt; len(urls); i++ {
-    // subBanner用来防止退出
-    &lt;-subBanner
-  }
-  // banner用于让父节点退出
-  banner&lt;-1
-  return
-}
-
-func main() {
-  mainBanner := make(chan int,1)
-  Crawl(&quot;http://golang.org/&quot;, 4, fetcher, mainBanner)
-  &lt;-mainBanner
-}
-// fakeFetcher 是返回若干结果的 Fetcher。
-type fakeFetcher map[string]*fakeResult
-
-type fakeResult struct {
-  body string
-  urls     []string
-}
-
-func (f *fakeFetcher) Fetch(url string) (string, []string, error) {
-  if res, ok := (*f)[url]; ok {
-    return res.body, res.urls, nil
-  }
-  return &quot;&quot;, nil, fmt.Errorf(&quot;not found: %s&quot;, url)
-}
-
-// fetcher 是填充后的 fakeFetcher。
-var fetcher = &amp;fakeFetcher{
-  &quot;http://golang.org/&quot;: &amp;fakeResult{
-    &quot;The Go Programming Language&quot;,
-    []string{
-      &quot;http://golang.org/pkg/&quot;,
-      &quot;http://golang.org/cmd/&quot;,
-    },
-  },
-  &quot;http://golang.org/pkg/&quot;: &amp;fakeResult{
-    &quot;Packages&quot;,
-    []string{
-      &quot;http://golang.org/&quot;,
-      &quot;http://golang.org/cmd/&quot;,
-      &quot;http://golang.org/pkg/fmt/&quot;,
-      &quot;http://golang.org/pkg/os/&quot;,
-    },
-  },
-  &quot;http://golang.org/pkg/fmt/&quot;: &amp;fakeResult{
-    &quot;Package fmt&quot;,
-    []string{
-      &quot;http://golang.org/&quot;,
-      &quot;http://golang.org/pkg/&quot;,
-    },
-  },
-  &quot;http://golang.org/pkg/os/&quot;: &amp;fakeResult{
-    &quot;Package os&quot;,
-    []string{
-      &quot;http://golang.org/&quot;,
-      &quot;http://golang.org/pkg/&quot;,
-    },
-  },
-}
-</code></pre><p>觉得没有找到类似python的遍历list但是不需要获取值的方法例如 for <em>, </em> := range urls {}<br>这样就是错误的。另外golang也不能加入不需要的包，变量。帐 前 卒觉得这点…太洁癖了。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Fetcher <span class="keyword">interface</span> &#123;</div><div class="line">        <span class="comment">// Fetch 返回 URL 的 body 内容，并且将在这个页面上找到的 URL 放到一个 slice 中。</span></div><div class="line">	Fetch(url <span class="keyword">string</span>) (body <span class="keyword">string</span>, urls []<span class="keyword">string</span>, err error)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Crawl 使用 fetcher 从某个 URL 开始递归的爬取页面，直到达到最大深度。</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Crawl</span><span class="params">(url <span class="keyword">string</span>, depth <span class="keyword">int</span>, fetcher Fetcher)</span></span> &#123;</div><div class="line">        <span class="comment">// <span class="doctag">TODO:</span> 并行的抓取 URL。</span></div><div class="line">        <span class="comment">// <span class="doctag">TODO:</span> 不重复抓取页面。</span></div><div class="line">        <span class="comment">// 下面并没有实现上面两种情况：</span></div><div class="line">	<span class="keyword">if</span> depth &lt;= <span class="number">0</span> &#123;</div><div class="line">		<span class="keyword">return</span></div><div class="line">	&#125;</div><div class="line">	body, urls, err := fetcher.Fetch(url)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		fmt.Println(err)</div><div class="line">		<span class="keyword">return</span></div><div class="line">	&#125;</div><div class="line">	fmt.Printf(<span class="string">"found: %s %q\n"</span>, url, body)</div><div class="line">	<span class="keyword">for</span> _, u := <span class="keyword">range</span> urls &#123;</div><div class="line">		Crawl(u, depth<span class="number">-1</span>, fetcher)</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	Crawl(<span class="string">"http://golang.org/"</span>, <span class="number">4</span>, fetcher)</div><div class="line">&#125;</div><div class="line"><span class="comment">// fakeFetcher 是返回若干结果的 Fetcher。</span></div><div class="line"><span class="keyword">type</span> fakeFetcher <span class="keyword">map</span>[<span class="keyword">string</span>]*fakeResult</div><div class="line"></div><div class="line"><span class="keyword">type</span> fakeResult <span class="keyword">struct</span> &#123;</div><div class="line">	body <span class="keyword">string</span></div><div class="line">	urls     []<span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *fakeFetcher)</span> <span class="title">Fetch</span><span class="params">(url <span class="keyword">string</span>)</span> <span class="params">(<span class="keyword">string</span>, []<span class="keyword">string</span>, error)</span></span> &#123;</div><div class="line">	<span class="keyword">if</span> res, ok := (*f)[url]; ok &#123;</div><div class="line">		<span class="keyword">return</span> res.body, res.urls, <span class="literal">nil</span></div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="string">""</span>, <span class="literal">nil</span>, fmt.Errorf(<span class="string">"not found: %s"</span>, url)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// fetcher 是填充后的 fakeFetcher。</span></div><div class="line"><span class="keyword">var</span> fetcher = &amp;fakeFetcher&#123;</div><div class="line">	<span class="string">"http://golang.org/"</span>: &amp;fakeResult&#123;</div><div class="line">		<span class="string">"The Go Programming Language"</span>,</div><div class="line">		[]<span class="keyword">string</span>&#123;</div><div class="line">			<span class="string">"http://golang.org/pkg/"</span>,</div><div class="line">			<span class="string">"http://golang.org/cmd/"</span>,</div><div class="line">		&#125;,</div><div class="line">	&#125;,</div><div class="line">	<span class="string">"http://golang.org/pkg/"</span>: &amp;fakeResult&#123;</div><div class="line">		<span class="string">"Packages"</span>,</div><div class="line">		[]<span class="keyword">string</span>&#123;</div><div class="line">			<span class="string">"http://golang.org/"</span>,</div><div class="line">			<span class="string">"http://golang.org/cmd/"</span>,</div><div class="line">			<span class="string">"http://golang.org/pkg/fmt/"</span>,</div><div class="line">			<span class="string">"http://golang.org/pkg/os/"</span>,</div><div class="line">		&#125;,</div><div class="line">	&#125;,</div><div class="line">	<span class="string">"http://golang.org/pkg/fmt/"</span>: &amp;fakeResult&#123;</div><div class="line">		<span class="string">"Package fmt"</span>,</div><div class="line">		[]<span class="keyword">string</span>&#123;</div><div class="line">			<span class="string">"http://golang.org/"</span>,</div><div class="line">			<span class="string">"http://golang.org/pkg/"</span>,</div><div class="line">		&#125;,</div><div class="line">	&#125;,</div><div class="line">	<span class="string">"http://golang.org/pkg/os/"</span>: &amp;fakeResult&#123;</div><div class="line">		<span class="string">"Package os"</span>,</div><div class="line">		[]<span class="keyword">string</span>&#123;</div><div class="line">			<span class="string">"http://golang.org/"</span>,</div><div class="line">			<span class="string">"http://golang.org/pkg/"</span>,</div><div class="line">		&#125;,</div><div class="line">	&#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后下面是 <a href="http://chillyc.info"> 小卒 </a> 的解答。最主要的是改写原来的函数。同步map,然后父节点应在全部子节点退出后再退出。用channel当banner派上用场。当然golang还提供了锁和其他的同步机制。不过 <a href="http://blog.csdn.net/cctt_1" target="_blank" rel="external"> 帐前 卒</a> 还是先用channel吧。另外最好先看看golang的memory model.</p>
+<p>下面 <a href="http://chillyc.info"> 帐 前卒 </a> 的代码：<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">  <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Fetcher <span class="keyword">interface</span> &#123;</div><div class="line">        <span class="comment">// Fetch 返回 URL 的 body 内容，并且将在这个页面上找到的 URL 放到一个 slice 中。</span></div><div class="line">  Fetch(url <span class="keyword">string</span>) (body <span class="keyword">string</span>, urls []<span class="keyword">string</span>, err error)</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> lockx = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>,<span class="number">1</span>)</div><div class="line"><span class="comment">// 同步通信使用</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">LockFun</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;</div><div class="line">  lockx&lt;<span class="number">-1</span></div><div class="line">  f()</div><div class="line">  &lt;-lockx</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> visited <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">bool</span> = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">bool</span>)</div><div class="line"><span class="comment">// Crawl 使用 fetcher 从某个 URL 开始递归的爬取页面，直到达到最大深度。</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Crawl</span><span class="params">(url <span class="keyword">string</span>, depth <span class="keyword">int</span>, fetcher Fetcher, banner <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</div><div class="line"> </div><div class="line">  <span class="keyword">if</span> depth &lt;= <span class="number">0</span> || visited[url] &#123;</div><div class="line">    banner&lt;<span class="number">-1</span></div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line">  body, urls, err := fetcher.Fetch(url)</div><div class="line">  LockFun(<span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</div><div class="line">    visited[url]=<span class="literal">true</span></div><div class="line">  &#125;)</div><div class="line">  fmt.Printf(<span class="string">"found: %s %q\n"</span>, url, body)</div><div class="line">  <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Println(err)</div><div class="line">    banner&lt;<span class="number">-1</span></div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line">  subBanner := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="built_in">len</span>(urls))</div><div class="line">  <span class="keyword">for</span> _, u := <span class="keyword">range</span> urls &#123;</div><div class="line">     <span class="comment">// 并行吧～～ </span></div><div class="line">      <span class="keyword">go</span> Crawl(u, depth<span class="number">-1</span>, fetcher, subBanner);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">for</span> i:=<span class="number">0</span>; i &lt; <span class="built_in">len</span>(urls); i++ &#123;</div><div class="line">    <span class="comment">// subBanner用来防止退出</span></div><div class="line">    &lt;-subBanner</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// banner用于让父节点退出</span></div><div class="line">  banner&lt;<span class="number">-1</span></div><div class="line">  <span class="keyword">return</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">  mainBanner := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>,<span class="number">1</span>)</div><div class="line">  Crawl(<span class="string">"http://golang.org/"</span>, <span class="number">4</span>, fetcher, mainBanner)</div><div class="line">  &lt;-mainBanner</div><div class="line">&#125;</div><div class="line"><span class="comment">// fakeFetcher 是返回若干结果的 Fetcher。</span></div><div class="line"><span class="keyword">type</span> fakeFetcher <span class="keyword">map</span>[<span class="keyword">string</span>]*fakeResult</div><div class="line"></div><div class="line"><span class="keyword">type</span> fakeResult <span class="keyword">struct</span> &#123;</div><div class="line">  body <span class="keyword">string</span></div><div class="line">  urls     []<span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *fakeFetcher)</span> <span class="title">Fetch</span><span class="params">(url <span class="keyword">string</span>)</span> <span class="params">(<span class="keyword">string</span>, []<span class="keyword">string</span>, error)</span></span> &#123;</div><div class="line">  <span class="keyword">if</span> res, ok := (*f)[url]; ok &#123;</div><div class="line">    <span class="keyword">return</span> res.body, res.urls, <span class="literal">nil</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="string">""</span>, <span class="literal">nil</span>, fmt.Errorf(<span class="string">"not found: %s"</span>, url)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// fetcher 是填充后的 fakeFetcher。</span></div><div class="line"><span class="keyword">var</span> fetcher = &amp;fakeFetcher&#123;</div><div class="line">  <span class="string">"http://golang.org/"</span>: &amp;fakeResult&#123;</div><div class="line">    <span class="string">"The Go Programming Language"</span>,</div><div class="line">    []<span class="keyword">string</span>&#123;</div><div class="line">      <span class="string">"http://golang.org/pkg/"</span>,</div><div class="line">      <span class="string">"http://golang.org/cmd/"</span>,</div><div class="line">    &#125;,</div><div class="line">  &#125;,</div><div class="line">  <span class="string">"http://golang.org/pkg/"</span>: &amp;fakeResult&#123;</div><div class="line">    <span class="string">"Packages"</span>,</div><div class="line">    []<span class="keyword">string</span>&#123;</div><div class="line">      <span class="string">"http://golang.org/"</span>,</div><div class="line">      <span class="string">"http://golang.org/cmd/"</span>,</div><div class="line">      <span class="string">"http://golang.org/pkg/fmt/"</span>,</div><div class="line">      <span class="string">"http://golang.org/pkg/os/"</span>,</div><div class="line">    &#125;,</div><div class="line">  &#125;,</div><div class="line">  <span class="string">"http://golang.org/pkg/fmt/"</span>: &amp;fakeResult&#123;</div><div class="line">    <span class="string">"Package fmt"</span>,</div><div class="line">    []<span class="keyword">string</span>&#123;</div><div class="line">      <span class="string">"http://golang.org/"</span>,</div><div class="line">      <span class="string">"http://golang.org/pkg/"</span>,</div><div class="line">    &#125;,</div><div class="line">  &#125;,</div><div class="line">  <span class="string">"http://golang.org/pkg/os/"</span>: &amp;fakeResult&#123;</div><div class="line">    <span class="string">"Package os"</span>,</div><div class="line">    []<span class="keyword">string</span>&#123;</div><div class="line">      <span class="string">"http://golang.org/"</span>,</div><div class="line">      <span class="string">"http://golang.org/pkg/"</span>,</div><div class="line">    &#125;,</div><div class="line">  &#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>觉得没有找到类似python的遍历list但是不需要获取值的方法例如 for <em>, </em> := range urls {}这样就是错误的。另外golang也不能加入不需要的包，变量。帐 前 卒觉得这点…太洁癖了。</p>
 <p>暂时就这样吧。</p>
 
           
@@ -2476,7 +2226,7 @@ public class Client {
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 

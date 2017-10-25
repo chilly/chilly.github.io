@@ -83,18 +83,18 @@
 
 
 
-<meta name="description" content="今天好好学习了一下java中的各种reference.一共分为以下几种： 1. 强引用2. 软引用 SoftReference3. 弱引用 WeakReference4. 虚引用 PhantomReference  5. FinalReference 所有实现finalize()方法的对象一下是Oracle JDK. IBM的JDK会有些不同。 强引用  ：    String a = new S">
+<meta name="description" content="今天好好学习了一下java中的各种reference.一共分为以下几种：   1. 强引用2. 软引用 SoftReference3. 弱引用 WeakReference4. 虚引用 PhantomReference5. FinalReference 所有实现finalize()方法的对象   一下是Oracle JDK. IBM的JDK会有些不同。    强引用  ：    String a =">
 <meta name="keywords" content="java,引用,垃圾回收">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JAVA 各种reference和垃圾回收机制">
 <meta property="og:url" content="http://chillyc.info/2013/8948669/index.html">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="今天好好学习了一下java中的各种reference.一共分为以下几种： 1. 强引用2. 软引用 SoftReference3. 弱引用 WeakReference4. 虚引用 PhantomReference  5. FinalReference 所有实现finalize()方法的对象一下是Oracle JDK. IBM的JDK会有些不同。 强引用  ：    String a = new S">
+<meta property="og:description" content="今天好好学习了一下java中的各种reference.一共分为以下几种：   1. 强引用2. 软引用 SoftReference3. 弱引用 WeakReference4. 虚引用 PhantomReference5. FinalReference 所有实现finalize()方法的对象   一下是Oracle JDK. IBM的JDK会有些不同。    强引用  ：    String a =">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-12T05:56:53.000Z">
+<meta property="og:updated_time" content="2017-10-24T10:00:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA 各种reference和垃圾回收机制">
-<meta name="twitter:description" content="今天好好学习了一下java中的各种reference.一共分为以下几种： 1. 强引用2. 软引用 SoftReference3. 弱引用 WeakReference4. 虚引用 PhantomReference  5. FinalReference 所有实现finalize()方法的对象一下是Oracle JDK. IBM的JDK会有些不同。 强引用  ：    String a = new S">
+<meta name="twitter:description" content="今天好好学习了一下java中的各种reference.一共分为以下几种：   1. 强引用2. 软引用 SoftReference3. 弱引用 WeakReference4. 虚引用 PhantomReference5. FinalReference 所有实现finalize()方法的对象   一下是Oracle JDK. IBM的JDK会有些不同。    强引用  ：    String a =">
 
 
 
@@ -326,8 +326,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T18:00:22+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -378,15 +378,19 @@
       
 
       
-        <p>今天好好学习了一下java中的各种reference.<br>一共分为以下几种：<br><strong> 1. 强引用<br>2. 软引用 SoftReference<br>3. 弱引用 WeakReference<br>4. 虚引用 PhantomReference  </strong><br>5. FinalReference 所有实现finalize()方法的对象<br>一下是Oracle JDK. IBM的JDK会有些不同。<br><strong> 强引用 </strong> ：<br>    String a = new String(“A”);</p>
+        <p>今天好好学习了一下java中的各种reference.一共分为以下几种：  </p>
+<p>1. 强引用<br>2. 软引用 SoftReference<br>3. 弱引用 WeakReference<br>4. 虚引用 PhantomReference<br>5. FinalReference 所有实现finalize()方法的对象  </p>
+<p>一下是Oracle JDK. IBM的JDK会有些不同。  </p>
+<p><strong> 强引用 </strong> ：<br>    String a = new String(“A”);</p>
 <p>一般程序都在使用。申请太多时，会有OutOfMemory异常。gc不会自动释放。  </p>
 <p><strong> 软引用 </strong> ：<br>    SoftReference<string> a = new SoftReference<string>(new String(“A”));<br>    String real = a.get(); // if memory is near/equal to threshold of memory, real may be null.</string></string></p>
-<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.<br>适合作为cache.  </p>
+<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.  适合作为cache.  </p>
 <p><strong> 弱引用 </strong> ：<br>    WeakReference<string> a = new WeakReference<string>(new String(“A”));<br>    String real = a.get(); // may null</string></string></p>
-<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.<br>适合作为Cache, 并且这里的意思为:如果能在内存中看到这个cache对象最好，看不到，load这个对象也不会损失很多效率。  </p>
+<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.  适合作为Cache, 并且这里的意思为:如果能在内存中看到这个cache对象最好，看不到，load这个对象也不会损失很多效率。  </p>
 <p><strong> 虚引用 </strong> :<br>    PhantomReference<string> a = new PhantomReference<string>(new String(“A”));<br>    String real = a.get(); // is always null</string></string></p>
-<p>gc不会自动释放, 会有OutOfMemory。对象在垃圾回收/finalize()之后才会放入到ReferenceQueue中。这里会保证对象不会再次引用<br>。也可以用于判断该对象是否已经从内存中移除。  </p>
-<p><strong> FinalReference </strong> :<br>其实不能直接使用。这个的子类 Finalizer也不能直接使用。系统会在运行时启动FinalizerThread。<br>这个Thread用于清理ReferenceQueue中的对象。首先调用该对象finalize()方法，然后将引用赋值为null. 这样就解除了引用和对象的关<br>系。这里的ReferenceQueue可以看做是以上各个引用都被最终放入到的queue对象。因为所有对象都有finalize()方法。<br>另外垃圾回收有两步，第一步确定垃圾回收的对象，第二步调用finalize()方法，将对象从内存中移除。在finalize()方法调用前，强引用是可以召回对象<br>，使对象不会移除内存。这样会导致垃圾回收会反反复复回收多次，仍未能将该对象移除。但是如果使用虚引用，就能确保，进入ReferenceQueue中的引用，其对<br>象一定已经移除内存。<br>参考：<br><a href="http://www.ibm.com/developerworks/cn/java/j-lo-langref/" target="_blank" rel="external">http://www.ibm.com/developerworks/cn/java/j-lo-langref/</a><br><a href="https://weblogs.java.net/blog/2006/05/04/understanding-weak-references" target="_blank" rel="external">https://weblogs.java.net/blog/2006/05/04/understanding-weak-references</a><br><a href="http://yangguangfu.iteye.com/blog/849317" target="_blank" rel="external">http://yangguangfu.iteye.com/blog/849317</a>  </p>
+<p>gc不会自动释放, 会有OutOfMemory。对象在垃圾回收/finalize()之后才会放入到ReferenceQueue中。这里会保证对象不会再次引用。也可以用于判断该对象是否已经从内存中移除。  </p>
+<p><strong> FinalReference </strong> :<br>其实不能直接使用。这个的子类 Finalizer也不能直接使用。系统会在运行时启动FinalizerThread。这个Thread用于清理ReferenceQueue中的对象。首先调用该对象finalize()方法，然后将引用赋值为null. 这样就解除了引用和对象的关系。这里的ReferenceQueue可以看做是以上各个引用都被最终放入到的queue对象。因为所有对象都有finalize()方法。  另外垃圾回收有两步，第一步确定垃圾回收的对象，第二步调用finalize()方法，将对象从内存中移除。在finalize()方法调用前，强引用是可以召回对象，使对象不会移除内存。这样会导致垃圾回收会反反复复回收多次，仍未能将该对象移除。但是如果使用虚引用，就能确保，进入ReferenceQueue中的引用，其对象一定已经移除内存。  </p>
+<p>参考：<br><a href="http://www.ibm.com/developerworks/cn/java/j-lo-langref/" target="_blank" rel="external">http://www.ibm.com/developerworks/cn/java/j-lo-langref/</a><br><a href="https://weblogs.java.net/blog/2006/05/04/understanding-weak-references" target="_blank" rel="external">https://weblogs.java.net/blog/2006/05/04/understanding-weak-references</a><br><a href="http://yangguangfu.iteye.com/blog/849317" target="_blank" rel="external">http://yangguangfu.iteye.com/blog/849317</a>  </p>
 
       
     </div>
@@ -607,7 +611,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 

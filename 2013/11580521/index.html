@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="帐前卒专栏">
 <meta property="og:description" content="前几天在研究 http keepalive，使用pipeline的方式。结果发现server端只能接收到100个请求。必须断开连接后才能继续发送更多的请求。 问题…..问题出在哪里？ 1. 路由和中间节点 2. nginx 3. web服务器 4. 程序写bug了 第一个“中间路由和节点”很好排除。只要把程序放在和nginx 同一台机器上就可以了。 第二个“nginx”,这个把nginx的log打">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-12T05:56:53.000Z">
+<meta property="og:updated_time" content="2017-10-24T09:51:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx http keep alive 只能发100个请求！！">
 <meta name="twitter:description" content="前几天在研究 http keepalive，使用pipeline的方式。结果发现server端只能接收到100个请求。必须断开连接后才能继续发送更多的请求。 问题…..问题出在哪里？ 1. 路由和中间节点 2. nginx 3. web服务器 4. 程序写bug了 第一个“中间路由和节点”很好排除。只要把程序放在和nginx 同一台机器上就可以了。 第二个“nginx”,这个把nginx的log打">
@@ -326,8 +326,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-10-12T13:56:53+08:00">
-                2017-10-12
+              <time title="更新于" itemprop="dateModified" datetime="2017-10-24T17:51:52+08:00">
+                2017-10-24
               </time>
             
           </span>
@@ -378,7 +378,7 @@
       
 
       
-        <p>前几天在研究 http keep<br>alive，使用pipeline的方式。结果发现server端只能接收到100个请求。必须断开连接后才能继续发送更多的请求。</p>
+        <p>前几天在研究 http keepalive，使用pipeline的方式。结果发现server端只能接收到100个请求。必须断开连接后才能继续发送更多的请求。</p>
 <p>问题…..问题出在哪里？</p>
 <p>1. 路由和中间节点</p>
 <p>2. nginx</p>
@@ -387,7 +387,7 @@
 <p>第一个“中间路由和节点”很好排除。只要把程序放在和nginx 同一台机器上就可以了。</p>
 <p>第二个“nginx”,这个把nginx的log打开，看看收到多少个请求。<br>第三个”web服务器”，这个也好排除，只要把web服务器的log打开，打印一下就好了。</p>
 <p>第四个那就是使用client访问时，用wireshark抓个包。看看第100个请求和101个请求到底有什么不同。</p>
-<p>结果1，2，4都被排除了。只有nginx的问题。关键是没有做什么特殊设置。到底为什么只能收100个呢？扫了一下源代码，发现 keepalive_reques<br>ts这个值被设置为了100，大于这个数值nginx就会发送RST包回来。和wireshark中看到的server端发送RST包的现象一致。然后改动了该值为1<br>000，发现pipeline的请求就可以发送1000个了。</p>
+<p>结果1，2，4都被排除了。只有nginx的问题。关键是没有做什么特殊设置。到底为什么只能收100个呢？扫了一下源代码，发现 keepalive_requests这个值被设置为了100，大于这个数值nginx就会发送RST包回来。和wireshark中看到的server端发送RST包的现象一致。然后改动了该值为1000，发现pipeline的请求就可以发送1000个了。</p>
 <p>另外这个100值，不知道是nginx看了tomcat,还是tomcat抄袭了nginx。反正这个设置出奇的诡异。  </p>
 
       
@@ -609,7 +609,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
