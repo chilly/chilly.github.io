@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="OriginI joined leetcode system design group to discuss how to design software. This is week3 topic: Messenger service like What’s App with the following functionalities  One to One text messaging Grou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Architect:week3-Whatsapp">
+<meta property="og:url" content="http://chillyc.info/2017/09/13/Architect-week3-whatsapp/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="OriginI joined leetcode system design group to discuss how to design software. This is week3 topic: Messenger service like What’s App with the following functionalities  One to One text messaging Grou">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-09-13T12:06:17.000Z">
+<meta property="article:modified_time" content="2023-10-05T15:26:39.630Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="Architect">
+<meta property="article:tag" content="whatsapp">
+<meta property="article:tag" content="leetcode">
+<meta property="article:tag" content="week3">
+<meta property="article:tag" content="architect">
+<meta property="article:tag" content="data model">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2017/09/13/Architect-week3-whatsapp/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2017/09/13/Architect-week3-whatsapp/","path":"2017/09/13/Architect-week3-whatsapp/","title":"Architect:week3-Whatsapp"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Architect:week3-Whatsapp | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Origin"><span class="nav-number">1.</span> <span class="nav-text">Origin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Scenario"><span class="nav-number">2.</span> <span class="nav-text">Scenario</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Scenario-1-send-and-get-message-in-realtime"><span class="nav-number">2.1.</span> <span class="nav-text">Scenario 1: send and get message in realtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scenario-2-send-message-and-get-it-after-a-while-because-user-is-offline"><span class="nav-number">2.2.</span> <span class="nav-text">Scenario 2: send message and get it after a while, because user is offline.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scenario-3-read-old-messages"><span class="nav-number">2.2.1.</span> <span class="nav-text">Scenario 3: read old messages</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scenario-4-group-chat-in-realtime"><span class="nav-number">2.3.</span> <span class="nav-text">Scenario 4: group chat in realtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scenario-5-group-chat-when-someone-is-offline"><span class="nav-number">2.4.</span> <span class="nav-text">Scenario 5: group chat when someone is offline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scenario-6-chat-status-changing"><span class="nav-number">2.5.</span> <span class="nav-text">Scenario 6: chat status changing</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#How-to-design"><span class="nav-number">3.</span> <span class="nav-text">How to design?</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/09/13/Architect-week3-whatsapp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Architect:week3-Whatsapp | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Architect:week3-Whatsapp
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-09-13 20:06:17" itemprop="dateCreated datePublished" datetime="2017-09-13T20:06:17+08:00">2017-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:26:39" itemprop="dateModified" datetime="2023-10-05T23:26:39+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Origin"><a href="#Origin" class="headerlink" title="Origin"></a>Origin</h1><p>I joined leetcode system design group to discuss how to design software. This is week3 topic:</p>
+<p><strong>Messenger service like What’s App</strong> with the following functionalities</p>
+<ol>
+<li>One to One text messaging</li>
+<li>Group Chat, Storage</li>
+<li>Read&#x2F;Delivery&#x2F;Sent status</li>
+</ol>
+<p>Gist:</p>
+<ol>
+<li>We are having a conversation between two parties. A -&gt; B. Think of this process. What happens and how do you explain to interviewer</li>
+<li>Asynchronous - meaning, “You are on a flight and you receive messages once you land. So those messages were waiting some where!” (Hope you got it). How would you design it</li>
+<li>Horizontal scaling, Load Balancer</li>
+<li>For Read&#x2F;Delivery&#x2F;Sent status -&gt; 3 way handshake protocol can give you an idea.</li>
+</ol>
+<p>This is a good topic. I will try to design it. </p>
+<h1 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h1><p>First of all, what’s the scenarios? The scenarios will correct my design. The scenario is in which way people use our software. So let’s think scenario first. The scenario should be atomic, and can not split into two or more scenarios. The scenario is a completed interaction. For example, The scenario like:</p>
+<ol>
+<li>User A send message to the system.</li>
+<li>The system send message to User B.</li>
+</ol>
+<p>Step 1 or Step 2 is not a scenario. Step 1 with Step 2 is a completed scenario.<br>And our chat system will be like:</p>
+<div align=center>
+![init-system](/images/Architect-week3-whatsapp/init-system.png)
+**Figure 2.1** init system
+</div>
+
+<p>Er…It’s too simple…So let’s write more scenarios:</p>
+<h2 id="Scenario-1-send-and-get-message-in-realtime"><a href="#Scenario-1-send-and-get-message-in-realtime" class="headerlink" title="Scenario 1: send and get message in realtime"></a>Scenario 1: send and get message in realtime</h2><ol>
+<li>User A send message to the system.</li>
+<li>The system send message to user B.</li>
+</ol>
+<h2 id="Scenario-2-send-message-and-get-it-after-a-while-because-user-is-offline"><a href="#Scenario-2-send-message-and-get-it-after-a-while-because-user-is-offline" class="headerlink" title="Scenario 2: send message and get it after a while, because user is offline."></a>Scenario 2: send message and get it after a while, because user is offline.</h2><ol>
+<li>User A send message to the system.</li>
+<li>At this time, user B is offline.</li>
+<li>User B is online.</li>
+<li>The system send message to User B.</li>
+</ol>
+<h3 id="Scenario-3-read-old-messages"><a href="#Scenario-3-read-old-messages" class="headerlink" title="Scenario 3: read old messages"></a>Scenario 3: read old messages</h3><ol>
+<li>User can read old messages of chat in receive-time order.</li>
+</ol>
+<h2 id="Scenario-4-group-chat-in-realtime"><a href="#Scenario-4-group-chat-in-realtime" class="headerlink" title="Scenario 4: group chat in realtime"></a>Scenario 4: group chat in realtime</h2><ol>
+<li>User A, B, and C join a chat group</li>
+<li>A send message to the system</li>
+<li>B and C receive the message from system.</li>
+</ol>
+<h2 id="Scenario-5-group-chat-when-someone-is-offline"><a href="#Scenario-5-group-chat-when-someone-is-offline" class="headerlink" title="Scenario 5: group chat when someone is offline"></a>Scenario 5: group chat when someone is offline</h2><ol>
+<li>User A, B, and C join a chat group</li>
+<li>User A send message to the system.</li>
+<li>C will receive the message in realtime.</li>
+<li>At this time, user B is offline.</li>
+<li>When User B is online, the system send message to User B in create-time order.</li>
+</ol>
+<h2 id="Scenario-6-chat-status-changing"><a href="#Scenario-6-chat-status-changing" class="headerlink" title="Scenario 6: chat status changing"></a>Scenario 6: chat status changing</h2><ol>
+<li>User A chat with B</li>
+<li>When A is typing words, B will get “A is typing…” message from system.</li>
+<li>When A press “send” button, A will get “the message is sending” from system.</li>
+<li>When B’s app receive the message in background, A will get “the message is delivered”. </li>
+<li>When B open the chat with A, and scroll to the message, A will get “the message has been read.”</li>
+</ol>
+<p>Here, scenario 5 and 4 is similar to 2 and 1. So can we consider scenario 2 and 1 are group chat with only one person? Can I chat with myself? And there should be more scenarios be considered. For example:</p>
+<ol>
+<li>User sign in</li>
+<li>User sign up</li>
+<li>User quit</li>
+<li>Invite other user to use the app</li>
+<li>Find a user</li>
+<li>Add relationship with other user, family, friends, enemy, lover, couple, and so on. Others should comfire the relationship.</li>
+<li>Break the relationship.</li>
+<li>Rebuild the relationship with the same user. Er…Are you crazy? …Trust me, most of lovers will repeat break-rebuild relationship scenarios. If you don’t believe it, you must be younger than me.</li>
+<li>Build a chat group, or invite other user one by one to join chat&#x2F;group chat.</li>
+<li>Exit a chat group, but can not exit one-one chat, unless breaking the relationship.</li>
+<li>Type message with emoji, gif, png, voice, and other rich text.</li>
+<li>Search old messages</li>
+<li>Delete old messages.</li>
+<li>Set&#x2F;Show online&#x2F;offline or other user status to one or more users.</li>
+<li>Can we chat face to face?</li>
+<li>Change user own info</li>
+</ol>
+<p>In this article, we can not talk all above. It’s too complicated. I will only focus on group chat and chat status changing scenarios. </p>
+<div align=center>
+![scenarios](/images/Architect-week3-whatsapp/scenarios.png)
+**Figure 2.2** scenarios relationship
+</div>
+
+<p>Like Figure 2.2 describles, one-one chat is a special case of group chat. So here use inherit arrow. The interaction of scenario 6 will be included from group chat scenarios. But scenario 3 is alone. If scenario 3 is discarded, our message service will be like “Snapchat”. And I use “User” actor instead of “User A” or “User B”. Why I always write a rectangle as “Messager service”? Because the rectangle warns us, our service has its own boundary! We will not consider other scenarios. If those scenarios inside of rectangle do not be implemented, our service is useless. And if you want to add more functionalities, the rectangle will be bigger and bigger. So thinking about your limit time and money, can you add more functionalities? The correct thing is creating worked well service, notwriting piles and piles of functionalities. Mmmmm…sound like: I use your “Messager service”, will you add “beautify photo”? <strong>NO!!!</strong></p>
+<h1 id="How-to-design"><a href="#How-to-design" class="headerlink" title="How to design?"></a>How to design?</h1><p>Seems like we always talk about how user use our messager service. Er…Correct! So here I will write something about how to design it. I don’t know how to build the system. I only knows there should be a client and a server…So like that:</p>
+<div align=center>
+![init-components](/images/Architect-week3-whatsapp/init-components.png)
+**Figure 3.1** init components
+</div>
+
+<p>Now, we have first components diagram. Let’s do more thinking. If we store data, we will have database. If we connect with others, there should have a channel mananger. My chat groups should be controlled by group manager. If some user is offline, can we send offline message to them by APNS? Adding schedule component for sending message to offline user is a good idea. There should have a component for transforming “chat message” to service data, and doing reverse. And another component called “chat service” controls all component to work togather.</p>
+<div align=center>
+![more-components](/images/Architect-week3-whatsapp/more-components.png)
+**Figure 3.2** decompose components
+</div>
+
+<p>In Figure 3.2, I decompose “Client” into “Interface”, “Transform” and “Channel”, and decompose “Server” into other small components. How to use line to connect those components? The answer is if the connection between components exists, connecting them. It’s nosense!! And another way to deal with the connections is following data flows. In Message services, there exists at least two data flows.</p>
+<ol>
+<li>User -&gt; Client Interface -&gt; Transform message to bytes&#x2F;data -&gt; send to Channel -&gt; Server Channel Mgr receive bytes&#x2F;data -&gt; Transfrom into server data -&gt; according to data, pull group data from Group Mgr and store message into Database.</li>
+<li>According to group info, sending message to other group members -&gt;  Transfrom server data into bytes -&gt; send to Channel Mgr -&gt; delivery message to Client Channel -&gt; Transform bytes to message -&gt; display message to User.</li>
+<li>Schedule reading what cannot be deliveried -&gt; send message through Chat Service -&gt; Transfrom server data into bytes …</li>
+</ol>
+<p>Er…Can we connect Group Mgr with DAO? <strong>YES</strong>. One point is you can change all diagrams in any time. And another point is, if you don’t draw line between Group Mgr and DAO, you can implement the system as well. For example,</p>
+<ol>
+<li>we can store group info into files</li>
+<li>we use Chat Service as proxy to store group info. Chat Service will call DAO to store group info, if chat exist. If the group members are all silence, the group will be destroyed after a while.</li>
+</ol>
+<p>Is there a formal way to draw those components and lines? <strong>NO.</strong> This is why the software is attractive. <strong>Every software is artwork.</strong> Do you remember your first program? Always print: “Hello World!” It’s boring! Can we make the world different?</p>
+<p>End? No. I will write how to decompose conponent into classes later.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Architect/" rel="tag"># Architect</a>
+              <a href="/tags/whatsapp/" rel="tag"># whatsapp</a>
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+              <a href="/tags/week3/" rel="tag"># week3</a>
+              <a href="/tags/architect/" rel="tag"># architect</a>
+              <a href="/tags/data-model/" rel="tag"># data model</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/08/05/code-comments/" rel="prev" title="代码论千言：如何评价别人的代码">
+                  <i class="fa fa-angle-left"></i> 代码论千言：如何评价别人的代码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/09/24/Architect-week3-whatsapp/Class-Diagram/" rel="next" title="Class-Diagram-Architect-Week3-Whatsapp">
+                  Class-Diagram-Architect-Week3-Whatsapp <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

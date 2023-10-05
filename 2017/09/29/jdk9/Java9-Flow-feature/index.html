@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="LP强烈要求用中文写。嗯，好吧，用中文写吧。 Flow 简介今天试用了一下jdk9, 最主要关注Flow这个新增的功能。结果发现，这个Flow其实是一个final class，构造函数还是private,没有任何正常方法将其实例化。这个是新功能？我抱着学习的心态看了一下java doc. 发现主要是几个interface. Interface…都是接口，到底有没有实现？ 然后不知道怎么查到了rea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java9:Flow Feature">
+<meta property="og:url" content="http://chillyc.info/2017/09/29/jdk9/Java9-Flow-feature/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="LP强烈要求用中文写。嗯，好吧，用中文写吧。 Flow 简介今天试用了一下jdk9, 最主要关注Flow这个新增的功能。结果发现，这个Flow其实是一个final class，构造函数还是private,没有任何正常方法将其实例化。这个是新功能？我抱着学习的心态看了一下java doc. 发现主要是几个interface. Interface…都是接口，到底有没有实现？ 然后不知道怎么查到了rea">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-09-29T13:00:04.000Z">
+<meta property="article:modified_time" content="2023-10-05T14:53:47.319Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="new">
+<meta property="article:tag" content="jdk">
+<meta property="article:tag" content="java9">
+<meta property="article:tag" content="jdk9">
+<meta property="article:tag" content="Flow">
+<meta property="article:tag" content="feature">
+<meta property="article:tag" content="Publisher">
+<meta property="article:tag" content="Subscriber">
+<meta property="article:tag" content="Processor">
+<meta property="article:tag" content="performance">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2017/09/29/jdk9/Java9-Flow-feature/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2017/09/29/jdk9/Java9-Flow-feature/","path":"2017/09/29/jdk9/Java9-Flow-feature/","title":"Java9:Flow Feature"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java9:Flow Feature | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Flow-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Flow 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flow-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">Flow 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Publisher%E5%92%8CSubscriber%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.1.</span> <span class="nav-text">Publisher和Subscriber简单示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flow%E7%9A%84Processor%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.2.</span> <span class="nav-text">Flow的Processor接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flow-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">Flow 性能测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flow-bug"><span class="nav-number">4.</span> <span class="nav-text">Flow bug</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9D%9F%E8%AF%AD"><span class="nav-number">5.</span> <span class="nav-text">结束语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/09/29/jdk9/Java9-Flow-feature/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java9:Flow Feature | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java9:Flow Feature
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-09-29 21:00:04" itemprop="dateCreated datePublished" datetime="2017-09-29T21:00:04+08:00">2017-09-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 22:53:47" itemprop="dateModified" datetime="2023-10-05T22:53:47+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>LP强烈要求用中文写。嗯，好吧，用中文写吧。</p>
+<h1 id="Flow-简介"><a href="#Flow-简介" class="headerlink" title="Flow 简介"></a>Flow 简介</h1><p>今天试用了一下jdk9, 最主要关注Flow这个新增的功能。结果发现，这个Flow其实是一个final class，构造函数还是private,没有任何正常方法将其实例化。这个是新功能？我抱着学习的心态看了一下java doc. 发现主要是几个interface. Interface…都是接口，到底有没有实现？</p>
+<p>然后不知道怎么查到了reactive-stream, 其实Java的JVM Flow就是按照reactive-stream的API规范写的。</p>
+<p>reactive-stream是什么？就是反向压力流（back pressure），其实你称其为反向控制流也行。官方说法是：一个异步非阻塞反向控制流处理的标准。嗯，相当拗口。</p>
+<p>什么是反向控制？这里还是抄袭一下别人的图吧。图的出处在<span class="exturl" data-url="aHR0cHM6Ly9jb21tdW5pdHkub3JhY2xlLmNvbS9kb2NzL0RPQy0xMDA2NzM4">这里<i class="fa fa-external-link-alt"></i></span>。</p>
+<div align=center>
+![flow1.png](/images/jdk9/flow/flow1.png)
+**图 1** 正常流处理
+</div>
+
+<p>下面是反向的流处理：</p>
+<div align=center>
+![flow2.png](/images/jdk9/flow/flow2.png)
+**图 2** 反向流处理
+</div>
+
+<p>看到了吧，反向的流处理<strong>图 2</strong>是Subcriber需要多少数据，就给多少数据。不要不给。正常的流处理<strong>图 1</strong>是管你要多少，我有多少给你多少。图1的问题就导致数据在管道里积压，或者在Subscriber里面积压。所以正常的流一般处理时要么数据就丢弃掉了，要么JVM就OOM了。所以反向的流好棒好棒的!</p>
+<p>嗯，感觉也不是，因为有可能反向的流在Publisher的地方挤压了…其实你的程序性能不行，处理不完，积压不可避免。所以这反向的鬼东西有什么用呢？除非你的Publisher是根据你处理的数据的性能来生产数据。这听起来很酷，这很像当年教务系统的排队选课，以及魔兽世界中的等等等…其实就是处理性能不行，只能反推给最初的生产者<strong>人</strong>。当然还有一种使用场景是消除峰值，当大量数据瞬间涌入时会造成整个系统崩溃。但如果你的系统在限定的时间内慢慢处理这些数据，还是完全没有问题的。这样就增加了系统的稳定性。</p>
+<p>Java9其实只是将这个标准写入了JVM中而已。我顺便看了一下Publisher以及Subscriber的实现类，很多都是incubate包的(即实验中)。只有一个类是特别的存在：SubmissionPublisher。</p>
+<h1 id="Flow-使用"><a href="#Flow-使用" class="headerlink" title="Flow 使用"></a>Flow 使用</h1><p>这个Flow使用起来，真的好麻烦。最初我知道Flow这个Feature的时候，我以为只需要将数据push到流里，然后有一个default的Consumer获取到数据。这个Flow自己给我搞定了反向控制。No,No,No. Java9啥都没有做。啥都需要你自己写。如果没有SubmissionPublisher，那你需要根据那几个Interface自己去实现。这是什么鬼，我是不是可以宣布我写了一个可以实现全世界所有功能的框架呢？我的框架就是下面这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Everything</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">doEverything</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是不是非常棒?! Java9宣称的Flow就和我上面宣称的没有啥区别,只是它的接口更多而已。好了，它还是给出了一个SubmissionPublisher。 我就先原谅它吧… 可是怎么使用呢？我再次抄袭了<span class="exturl" data-url="aHR0cHM6Ly9jb21tdW5pdHkub3JhY2xlLmNvbS9kb2NzL0RPQy0xMDA2NzM4">这边的blog的代码<i class="fa fa-external-link-alt"></i></span>。我也不知道为啥变得这么厚颜无耻，不知脸红的抄袭，可能是跟腾讯阿里学的吧。</p>
+<h2 id="Publisher和Subscriber简单示例"><a href="#Publisher和Subscriber简单示例" class="headerlink" title="Publisher和Subscriber简单示例"></a>Publisher和Subscriber简单示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MySubscriber</span>&lt;T&gt; <span class="keyword">implements</span> <span class="title class_">Flow</span>.Subscriber&lt;T&gt; &#123;</span><br><span class="line">        <span class="keyword">private</span> Flow.Subscription subscription;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSubscribe</span><span class="params">(Flow.Subscription subscription)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.subscription = subscription;</span><br><span class="line">            subscription.request(<span class="number">1</span>); <span class="comment">//这里要使用Long.MAX_VALUE就会被认为获取无穷的数据。</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(T item)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Got : &quot;</span> + item);</span><br><span class="line">            subscription.request(<span class="number">1</span>); <span class="comment">//这里也可以使用Long.MAX_VALUE</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable t)</span> &#123;</span><br><span class="line">            t.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Done&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        SubmissionPublisher&lt;String&gt; publisher = <span class="keyword">new</span> <span class="title class_">SubmissionPublisher</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Register Subscriber</span></span><br><span class="line">        MySubscriber&lt;String&gt; subscriber = <span class="keyword">new</span> <span class="title class_">MySubscriber</span>&lt;&gt;();</span><br><span class="line">        publisher.subscribe(subscriber);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Publish items</span></span><br><span class="line">        System.out.println(<span class="string">&quot;Publishing Items...&quot;</span>);</span><br><span class="line">        String[] items = &#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;x&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;x&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;x&quot;</span>&#125;;</span><br><span class="line">        Arrays.asList(items).stream().forEach(i -&gt; publisher.submit(i));</span><br><span class="line">        publisher.close();</span><br><span class="line">        Thread.sleep(<span class="number">20000</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>主要的函数是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 反向控制获取数据个数。</span></span><br><span class="line"><span class="comment">//代码里两处request(1)都不能丢，否则数据无法正常获取</span></span><br><span class="line">subscription.request(<span class="number">1</span>)</span><br><span class="line"><span class="comment">// 发布数据，相当于数据输入</span></span><br><span class="line">publisher.submit(i)</span><br><span class="line"><span class="comment">// 关闭publisher，没有该函数则Subscriber.onComplete()不会被调用。</span></span><br><span class="line">publisher.close()  </span><br><span class="line"><span class="comment">// 因为是异步的流处理</span></span><br><span class="line"><span class="comment">// 所以没能提供同步的接口，可以自己在Subcriber中加入同步策略</span></span><br><span class="line"><span class="comment">// 我这里简化了,如果你去掉这段代码，那你可能什么都看不到</span></span><br><span class="line">Thread.sleep(<span class="number">20000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Publishing Items...</span><br><span class="line">Got : 1</span><br><span class="line">Got : x</span><br><span class="line">Got : 2</span><br><span class="line">Got : x</span><br><span class="line">Got : 3</span><br><span class="line">Got : x</span><br><span class="line">Done</span><br></pre></td></tr></table></figure>
+
+<h2 id="Flow的Processor接口"><a href="#Flow的Processor接口" class="headerlink" title="Flow的Processor接口"></a>Flow的Processor接口</h2><p>Flow还有一个重要的Processor接口，这个其实就是函数变换。其实一般的函数变换操作都可以在Subscriber中实现，Processor并没有什么卵用。不过如果让我去定义接口，我仍然会给出Processor. 为啥？这样会防止别人来喷我…嗯，其实给出了Processor接口，一样有人来喷，例如我…</p>
+<p>看下图就知道我在说什么了。竟然无图可盗了…</p>
+<div align=center>
+![withProcessor.png](/images/jdk9/flow/withProcessor.png)
+**图 3** 带有Processor的流
+</div>
+
+<div align=center>
+![withoutProcessor.png](/images/jdk9/flow/withoutProcessor.png)
+**图 4** 没有Processor的流
+</div>
+
+<p>如果增加另外一个流，就可以完全实现Processor的功能。所以表达流的<strong>最小原语</strong>不应该存在Processor这东西。但是Reactive-Stream说：我的这个就是规范。那好吧，就加一个吧。不过增加Processor的好处在于：你可以只写一个流，里面有很多Processor。而不是写很多流，将Subscriber和Publisher混在一起写。虽然你已经在Processor中将Publisher,Subscriber混在一起写了…嗯…呃…总而言之，你一定要相信规范，Processor存在一定有它的道理。</p>
+<p>下面也给一个Process的例子：是过滤用的Processor.(这段代码是我自己写的，在Oracle官方文档中本应存在这段代码，但是他们不小心忘记写了…忘记写了…我看到的官方文档最后由 Bob Rhubart-Oracle 于 2016-9-26 下午2:03修改,版本号为6)：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyFilterProcessor</span>&lt;T,K <span class="keyword">extends</span> <span class="title class_">T</span>&gt; <span class="keyword">extends</span> <span class="title class_">SubmissionPublisher</span>&lt;K&gt; <span class="keyword">implements</span> <span class="title class_">Flow</span></span><br><span class="line">            .Processor&lt;T, K&gt; &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Function&lt;? <span class="built_in">super</span> T, Boolean&gt; function;</span><br><span class="line">        <span class="keyword">private</span> Flow.Subscription subscription;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">MyFilterProcessor</span><span class="params">(Function&lt;? <span class="built_in">super</span> T, Boolean&gt; function)</span> &#123;</span><br><span class="line">            <span class="built_in">super</span>();</span><br><span class="line">            <span class="built_in">this</span>.function = function;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSubscribe</span><span class="params">(Flow.Subscription subscription)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.subscription = subscription;</span><br><span class="line">            subscription.request(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(T item)</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!(<span class="type">boolean</span>) function.apply(item)) &#123;</span><br><span class="line"></span><br><span class="line">                submit((K)item);</span><br><span class="line">            &#125;</span><br><span class="line">            subscription.request(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable t)</span> &#123;</span><br><span class="line">            t.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">            close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="comment">//Create Publisher</span></span><br><span class="line">        SubmissionPublisher&lt;String&gt; publisher = <span class="keyword">new</span> <span class="title class_">SubmissionPublisher</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Create Processor and Subscriber</span></span><br><span class="line">        MyFilterProcessor&lt;String, String&gt; filterProcessor = <span class="keyword">new</span> <span class="title class_">MyFilterProcessor</span>&lt;&gt;(s -&gt; s.equals(<span class="string">&quot;x&quot;</span>));</span><br><span class="line"></span><br><span class="line">        MySubscriber&lt;Integer&gt; subscriber = <span class="keyword">new</span> <span class="title class_">MySubscriber</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Chain Processor and Subscriber</span></span><br><span class="line">        publisher.subscribe(filterProcessor);</span><br><span class="line">        filterProcessor.subscribe(subscriber);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;Publishing Items...&quot;</span>);</span><br><span class="line"></span><br><span class="line">        String[] items = &#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;x&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;x&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;x&quot;</span>&#125;;</span><br><span class="line">        Arrays.asList(items).stream().forEach(i -&gt; publisher.submit(i));</span><br><span class="line">        publisher.close();</span><br><span class="line">        Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Publishing Items...</span><br><span class="line">Got : 1</span><br><span class="line">Got : 2</span><br><span class="line">Got : 3</span><br><span class="line">Done</span><br></pre></td></tr></table></figure>
+<p>重要的代码片段是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!(<span class="type">boolean</span>) function.apply(item)) &#123;</span><br><span class="line">	submit((K)item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的submit就是数据再发布，相信大家都能看懂，不再叙述。</p>
+<h1 id="Flow-性能测试"><a href="#Flow-性能测试" class="headerlink" title="Flow 性能测试"></a>Flow 性能测试</h1><p>到底这个东西性能怎么样？我是不是随便写一个Flow的实现都比它快？如果它性能差，我按它这个规范写有什么意义？为了好看吗？<br>好吧。我自己用无锁队列实现了一下。功能就是简单的计数，看看各自的最强性能。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">无锁队列执行结果：</span><br><span class="line">class chillyc.info.speed.old.XFlow:27qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:171629qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:7586111qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:8095748qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:7640866qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:6845523qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:6516655qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:6191659qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:5742711qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:6657964qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:5720992qps</span><br></pre></td></tr></table></figure>
+<p>JVM jdk9 Flow执行结果</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Concurrent.Flow 测试结果： 设置无穷索取, request(Long.MAX_VALUE)</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:39688qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6798618qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6556238qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6506791qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6545895qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:7129085qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:7005827qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6818252qps</span><br></pre></td></tr></table></figure>
+
+<p>性能对比图：</p>
+<div align=center>
+![性能对比](/images/jdk9/flow/speed.png)
+**图 5** 性能对比图
+</div>
+
+<p>个人感觉前两次都可以忽略不计，无锁队列的实现中，前两次线程还没有完全启动，数据还没有完全填充。不过从另外一个侧面反映出jdk9 Flow启动效率非常高。我们除去前两次计算一下平均值。看到两者相差不大:无锁队列比jdk9 Flow平均快了17000+qps.</p>
+<p>实验和数据量，buffer大小都有关系，变量太多，没有一一实验，并且两者的qps都是六七百万量级，所以我认为两者差别不大。JDK9的Flow实现的挺不错的，竟然能和我顺手写的性能差不多。我心中不由的赞叹一番。</p>
+<h1 id="Flow-bug"><a href="#Flow-bug" class="headerlink" title="Flow bug"></a>Flow bug</h1><p>因为测试了jdk9 Flow的无限索取时的性能。我想再测测每次取一个导致的最差性能（request(1)）。结果就发现了bug.<br>测试输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:55296qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br></pre></td></tr></table></figure>
+<p>从结果上分析，经过一段时间之后，jdk9的Flow就无法处理数据了。这…真的能用吗？</p>
+<h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>本来应该带着虔诚敬畏的心态学习JDK9的…结果变成了吐槽大会了…罪过罪过，实在不该这样…顺便一提，jshell非常好用，tab功能提示很强大，就是我机器性能有点差，感觉很卡顿… </p>
+<p>对了，不要以为我只会讨论jdk9…那是因为ReactJS 16发布的比较晚。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/new/" rel="tag"># new</a>
+              <a href="/tags/jdk/" rel="tag"># jdk</a>
+              <a href="/tags/java9/" rel="tag"># java9</a>
+              <a href="/tags/jdk9/" rel="tag"># jdk9</a>
+              <a href="/tags/Flow/" rel="tag"># Flow</a>
+              <a href="/tags/feature/" rel="tag"># feature</a>
+              <a href="/tags/Publisher/" rel="tag"># Publisher</a>
+              <a href="/tags/Subscriber/" rel="tag"># Subscriber</a>
+              <a href="/tags/Processor/" rel="tag"># Processor</a>
+              <a href="/tags/performance/" rel="tag"># performance</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/09/24/Architect-week3-whatsapp/Class-Diagram/" rel="prev" title="Class-Diagram-Architect-Week3-Whatsapp">
+                  <i class="fa fa-angle-left"></i> Class-Diagram-Architect-Week3-Whatsapp
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/10/07/jdk9/Java9-modular-feature/" rel="next" title="Java9:modular Feature">
+                  Java9:modular Feature <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

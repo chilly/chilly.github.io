@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这个类用于一般树形，每个节点可以有多个分支，且数目不定。 可以看做是二叉树的变形形式。一个节点除了父指针外还有左右两个指针。 左指针为孩子节点的起始指针，右指针为同父节点的兄弟节点的指针 例如： A的左指针为B，右指针为C，C的左指针为E，右指针为D 则，A，C,D为同兄弟节点。B为A的子节点，E为C的子节点。 这里使用到了  GeneralTreeNode类  这个树没有delete操作。因为我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GeneralTree 一般树形结构类">
+<meta property="og:url" content="http://chillyc.info/2009/02/03/3860211/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="这个类用于一般树形，每个节点可以有多个分支，且数目不定。 可以看做是二叉树的变形形式。一个节点除了父指针外还有左右两个指针。 左指针为孩子节点的起始指针，右指针为同父节点的兄弟节点的指针 例如： A的左指针为B，右指针为C，C的左指针为E，右指针为D 则，A，C,D为同兄弟节点。B为A的子节点，E为C的子节点。 这里使用到了  GeneralTreeNode类  这个树没有delete操作。因为我">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2009-02-03T05:54:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:44.732Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="null">
+<meta property="article:tag" content="tree">
+<meta property="article:tag" content="search">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2009/02/03/3860211/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2009/02/03/3860211/","path":"2009/02/03/3860211/","title":"GeneralTree 一般树形结构类"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GeneralTree 一般树形结构类 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/03/3860211/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GeneralTree 一般树形结构类 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GeneralTree 一般树形结构类
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-02-03 13:54:00" itemprop="dateCreated datePublished" datetime="2009-02-03T13:54:00+08:00">2009-02-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>这个类用于一般树形，每个节点可以有多个分支，且数目不定。</p>
+<p>可以看做是二叉树的变形形式。一个节点除了父指针外还有左右两个指针。</p>
+<p>左指针为孩子节点的起始指针，右指针为同父节点的兄弟节点的指针</p>
+<p>例如：</p>
+<p>A的左指针为B，右指针为C，C的左指针为E，右指针为D</p>
+<p>则，A，C,D为同兄弟节点。B为A的子节点，E为C的子节点。</p>
+<p>这里使用到了 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/02/03/3859570.aspx"> GeneralTreeNode类
+</a></p>
+<p>这个树没有delete操作。因为我暂时不知道这个树类在什么地方会用到delete操作。而且这个树的查找是O(n)，相比与排序二叉树那是慢的太多了。不过这个树<br>在未知每个节点的分叉个数时，可以使用。其他的地方，个人认为还是尽量使用其他树形。</p>
+<p>这个GeneralTree类还要进行大量的改进。</p>
+<p>另外因为继承的缘故，这里大量使用dynamic_cast&lt;&gt;()方法。为了将GeneralTreeNode类转变为TreeNode类。这里我暂时还是不知道有<br>什么好的方法。</p>
+<p>另外注意这里的Print函数，必须传入一个函数指针。因为树不知道你的打印数据方法和格式，其实我这里想了很多，最后感觉还是这种方法好点。感觉应该在TreeNo<br>de类中添加一个virtual Print（）函数来负责data的打印工作。</p>
+<p>开始的时候，想过使用模板的方法，在TreeNode中添加一个模板参数。后来发现这样做对数据控制不利，而且我要改动非常多的代码，不如直接在GeneralTre<br>eNode类中添加一个virtual Print（）函数，然后传入指针参数去控制打印。</p>
+<p>当然这样做的缺点在于如果还有类继承了TreeNode，而且也需要有print data<br>的方法。那么代码还要改动。但是现在的需求并没有看出这样做的趋势..所以暂时还是在GeneralTreeNode类中添加一个virtual<br>Print（）函数.</p>
+<p>具体代码如下：</p>
+<p>&#x2F;* created by chico chen * date 2009&#x2F;02&#x2F;02 * 如需转载注明出处 <em>&#x2F; #ifndef<br><em>GENERAL_TREE</em> #define <em>GENERAL_TREE</em> #include <iostream> #include <cassert><br>#include “GeneralTreeNode.h” #include “BinaryTree.h” #include “List.h” using<br>namespace std; &#x2F;&#x2F; this tree can not accept the same value. No element is the<br>same! &#x2F;&#x2F; The class is not finished, and I am thinking where the class should<br>be used. &#x2F;&#x2F; And there is no delete operator. template<class T> class<br>GeneralTree: public BinaryTree<T> { private : GeneralTreeNode<T></em><br>GetTail(GeneralTreeNode<T>* head) { &#x2F;&#x2F; only the right piont can be used!<br>if(head !&#x3D; NULL) { while(head-&gt;right !&#x3D; NULL) { head &#x3D;<br>(GeneralTreeNode<T><em>)head-&gt;right; } } else { throw “head is null!”; } return<br>head; } &#x2F;&#x2F; pre: parent !&#x3D; NULL and index is bigger than or equal with 0<br>GeneralTreeNode<T></em> GetAChild(GeneralTreeNode<T>* parent,int index) {<br>assert(index&gt;&#x3D;0); assert(parent!&#x3D;NULL); GeneralTreeNode<T>* head &#x3D;<br>dynamic_cast&lt;GeneralTreeNode<T><em>&gt;(parent-&gt;left); assert(head !&#x3D; NULL);<br>while(head-&gt;right !&#x3D; NULL &amp;&amp; index–) { head &#x3D;<br>dynamic_cast&lt;GeneralTreeNode<T></em>&gt;(head-&gt;right); } if(NULL &#x3D;&#x3D; head-&gt;right &amp;&amp;<br>index &gt; 0) { throw “index is over float!”; } return head; } &#x2F;&#x2F; this is deep<br>print(深度遍历) void DeepPrint(GeneralTreeNode<T>* subRoot) { if(NULL !&#x3D; subRoot)<br>{ cout &lt;&lt; subRoot-&gt;getData()&lt;&lt;” “&lt;&lt;endl;<br>DeepPrint(dynamic_cast&lt;GeneralTreeNode<T><em>&gt;(subRoot-&gt;getLeft()));<br>DeepPrint(dynamic_cast&lt;GeneralTreeNode<T></em>&gt;(subRoot-&gt;getRight())); } } &#x2F;&#x2F; this<br>is level print(层次遍历) void LevelPrint(GeneralTreeNode<T>* subRoot,void<br>(<em>print)(T&amp; data)) { List&lt;GeneralTreeNode<T></em>&gt; queue; queue.Insert(new<br>ListNode&lt;GeneralTreeNode<T><em>&gt;(subRoot),-1); while(!queue.IsEmpty()) {<br>ListNode&lt;GeneralTreeNode<T></em>&gt;* temp &#x3D; queue.GetHead(); GeneralTreeNode<T>*<br>tempNode &#x3D; temp-&gt;data; tempNode-&gt;Print(print); for(int i &#x3D; 0; i &lt;<br>tempNode-&gt;childLength; i++) { GeneralTreeNode<T>* tempChildNode &#x3D;<br>GetAChild(tempNode,i); queue.Insert(new ListNode&lt;GeneralTreeNode<T>*</p>
+<blockquote>
+<p>(tempChildNode),-1); } queue.DeleteHead(); } } &#x2F;&#x2F; pre: node !&#x3D; NULL &#x2F;&#x2F; post:<br>true iff node is in the Tree, false iff node isn’t in the tree bool<br>Search(GeneralTreeNode<T>* subRoot,GeneralTreeNode<T>* node) { if(subRoot &#x3D;&#x3D;<br>NULL) { return false; } else if(node &#x3D;&#x3D; subRoot) { return true; } else { bool<br>a &#x3D; Search((GeneralTreeNode<T><em>)subRoot-&gt;getLeft(),node); bool b &#x3D;<br>Search((GeneralTreeNode<T></em>)subRoot-&gt;getRight(),node); return a||b; } }<br>public: GeneralTree():BinaryTree() { this-&gt;root &#x3D; NULL; } GeneralTree(T&amp;<br>data):BinaryTree(data) { this-&gt;root-&gt;parent &#x3D; NULL; } virtual ~GeneralTree() {<br>} &#x2F;&#x2F; this function will call Insert (GeneralTreeNode<T>* node,<br>GeneralTreeNode<T> * parent) &#x2F;&#x2F; and it will find the point of parentData. &#x2F;&#x2F;<br>So it means if there are the same T in two node, it will return the first<br>node. &#x2F;&#x2F;void Insert(T &amp; dataCurrent, T &amp; parentData) &#x2F;&#x2F;{ &#x2F;&#x2F;} &#x2F;&#x2F; pre: node is<br>not in the tree. void Insert(GeneralTreeNode<T>* node, GeneralTreeNode<T> *<br>parent) { if(parent &#x3D;&#x3D; NULL&amp;&amp; root &#x3D;&#x3D; NULL) { &#x2F;&#x2F; this is root root &#x3D; node;<br>return; } if(root &#x3D;&#x3D; NULL) { throw “no parent!”; } bool isFind &#x3D;<br>Search(dynamic_cast&lt;GeneralTreeNode<T><em>&gt;(root),parent); if(!isFind) { throw<br>“no such parent node!”; } isFind &#x3D;<br>Search(dynamic_cast&lt;GeneralTreeNode<T></em>&gt;(root),node); if(isFind) { throw<br>“there is the same node in the tree!”; } if(parent-&gt;left &#x3D;&#x3D; NULL) {<br>parent-&gt;left &#x3D; node; } else { GeneralTreeNode<T>* tail &#x3D;<br>GetTail((GeneralTreeNode<T><em>)parent-&gt;left); tail-&gt;right &#x3D; node; } node-&gt;parent<br>&#x3D; parent; parent-&gt;childLength ++; } &#x2F;&#x2F; this is deep print(深度遍历) void<br>DeepPrint() { DeepPrint(dynamic_cast&lt;GeneralTreeNode<T></em>&gt;(this-&gt;root)); } &#x2F;&#x2F;<br>this is level print(层次遍历) void LevelPrint(void (<em>print)(T&amp; data)) {<br>LevelPrint(dynamic_cast&lt;GeneralTreeNode<T></em>&gt;(this-&gt;root),print); } }; #endif</p>
+</blockquote>
+<p>这里可能还需要一个 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/02/03/3860277.aspx"> List.h
+</a><br>文件，大家可以使用stl中的代替，也可以自己写，也可以使用我的..</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/null/" rel="tag"># null</a>
+              <a href="/tags/tree/" rel="tag"># tree</a>
+              <a href="/tags/search/" rel="tag"># search</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2009/02/03/3859570/" rel="prev" title="GeneralTreeNode 一般树形结构节点类">
+                  <i class="fa fa-angle-left"></i> GeneralTreeNode 一般树形结构节点类
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2009/02/03/3860277/" rel="next" title="链表类List">
+                  链表类List <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

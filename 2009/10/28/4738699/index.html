@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="转载自：  http:&#x2F;&#x2F;www.ibm.com&#x2F;developerworks&#x2F;cn&#x2F;linux&#x2F;shell&#x2F;sed&#x2F;sed-1&#x2F;index.html  http:&#x2F;&#x2F;www.ibm.com&#x2F;developerworks&#x2F;cn&#x2F;linux&#x2F;shell&#x2F;sed&#x2F;sed-2&#x2F;index.html  http:&#x2F;&#x2F;www.ibm.com&#x2F;developerworks&#x2F;cn&#x2F;linux&#x2F;shell&#x2F;sed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 脚本 Sed">
+<meta property="og:url" content="http://chillyc.info/2009/10/28/4738699/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="转载自：  http:&#x2F;&#x2F;www.ibm.com&#x2F;developerworks&#x2F;cn&#x2F;linux&#x2F;shell&#x2F;sed&#x2F;sed-1&#x2F;index.html  http:&#x2F;&#x2F;www.ibm.com&#x2F;developerworks&#x2F;cn&#x2F;linux&#x2F;shell&#x2F;sed&#x2F;sed-2&#x2F;index.html  http:&#x2F;&#x2F;www.ibm.com&#x2F;developerworks&#x2F;cn&#x2F;linux&#x2F;shell&#x2F;sed">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://www.loveunix.net/style_emoticons/default/smile.gif">
+<meta property="article:published_time" content="2009-10-28T07:46:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:45.644Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="unix">
+<meta property="article:tag" content="脚本">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.loveunix.net/style_emoticons/default/smile.gif">
+
+
+<link rel="canonical" href="http://chillyc.info/2009/10/28/4738699/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2009/10/28/4738699/","path":"2009/10/28/4738699/","title":"Linux 脚本 Sed"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux 脚本 Sed | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/28/4738699/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux 脚本 Sed | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux 脚本 Sed
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-10-28 15:46:00" itemprop="dateCreated datePublished" datetime="2009-10-28T15:46:00+08:00">2009-10-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>转载自：</p>
+<p><a target="_blank" rel="noopener" href="http://www-900.ibm.com/developerWorks/cn/linux/shell/sed/sed-1/index.shtml"> http://www.ibm.com/developerworks/cn/linux/shell/sed/sed-1/index.html
+</a><br><a target="_blank" rel="noopener" href="http://www-900.ibm.com/developerWorks/cn/linux/shell/sed/sed-1/index.shtml"> http://www.ibm.com/developerworks/cn/linux/shell/sed/sed-2/index.html
+</a><br><a target="_blank" rel="noopener" href="http://www-900.ibm.com/developerWorks/cn/linux/shell/sed/sed-1/index.shtml"> http://www.ibm.com/developerworks/cn/linux/shell/sed/sed-3/index.html
+</a></p>
+<p>在 UNIX 世界中有很多文本编辑器可供我们选择。思考一下 – vi、emacs 和 jed<br>以及很多其它工具都会浮现在脑海中。我们都有自己已逐渐了解并且喜爱的编辑器（以及我们喜爱的组合键）。有了可信赖的编辑器，我们可以轻松处理任何数量与 UNIX<br>有关的管理或编程任务。  </p>
+<p>虽然交互式编辑器很棒，但却有其限制。尽管其交互式特性可以成为强项，但也有其不足之处。考虑一下需要对一组文件执行类似更改的情形。您可能会本能地运行自己所喜爱的<br>编辑器，然后手工执行一组烦琐、重复和耗时的编辑任务。然而，有一种更好的方法。  </p>
+<p>进入 sed<br>如果可以使编辑文件的过程自动化，以便用“批处理”方式编辑文件，甚至编写可以对现有文件进行复杂更改的脚本，那将太好了。幸运的是，对于这种情况，有一种更好的方法<br>– 这种更好的方法称为 “sed”。  </p>
+<p>sed 是一种几乎包括在所有 UNIX 平台（包括 Linux）的轻量级流编辑器。sed<br>有许多很好的特性。首先，它相当小巧，通常要比您所喜爱的脚本语言小很多倍。其次，因为 sed<br>是一种流编辑器，所以，它可以对从如管道这样的标准输入接收的数据进行编辑。因此，无需将要编辑的数据存储在磁盘上的文件中。因为可以轻易将数据管道输出 到<br>sed，所以，将 sed 用作强大的 shell 脚本中长而复杂的管道很容易。试一下用您所喜爱的编辑器去那样做。  </p>
+<p>GNU sed<br>对 Linux 用户来说幸运的是，最好的 sed 版本之一恰好是 GNU sed，其当前版本是 3.02。每一个 Linux<br>发行版都有（或至少应该有）GNU sed。GNU sed 之所以流行不仅因为可以自由分发其源代码，还因为它恰巧有许多对 POSIX sed<br>标准便利、省时的扩展。另外，GNU 没有 sed 早期专门版本的很多限制，如行长度限制 – GNU 可以轻松处理任意长度的行。  </p>
+<p>最新的 GNU sed<br>在 研究这篇文章之时我注意到：几个在线 sed 爱好者提到 GNU sed<br>3.02a。奇怪的是，在ftp.gnu.org（有关这些链接，请参阅参考资料）上找不到 sed<br>3.02a，所以，我只得在别处寻找。我在alpha.gnu.org 的 &#x2F;pub&#x2F;sed<br>中找到了它。于是我高兴地将其下载、编译然后安装，而几分钟后我发现最新的 sed 版本却是 3.02.80 – 可在alpha.gnu.org 上<br>3.02a 源代码旁边找到其源代码。安装完 GNU sed 3.02.80 之后，我就完全准备好了。  </p>
+<p>alpha.gnu.org<br>alpha.gnu.org（请 参阅参考资料）是新的和实验性 GNU 源代码的所在地。然而，您还会在那里发现许多优秀、稳定的源代码。出于某种原因，不是许多<br>GNU 开发人员忘记将稳定的源代码移至 ftp.gnu.org，就是它们的 “beta” 期间格外长（2 年！）。例如，sed 3.02a 已有两年，甚至<br>3.02.80 也有一年，但它们仍不能（在 2000 年 8 月写本文章时）在 ftp.gnu.org 上获得。  </p>
+<p>正确的 sed<br>在 本系列中，将使用 GNU sed 3.02.80。在即将出现的本系列后续文章中，某些（但非常少）最高级的示例将不能在 GNU sed 3.02 或<br>3.02a 中使用。如果您使用的不是 GNU sed，那么结果可能会不同。现在为什么不花些时间安装 GNU sed 3.02.80<br>呢？那样，不仅可以为本系列的余下部分作好准备，而且还可以使用可能是目前最好的 sed。  </p>
+<p>sed 示例<br>sed 通过对输入数据执行任意数量用户指定的编辑操作（“命令”）来工作。sed 是基于行的，因此按顺序对每一行执行命令。然后，sed 将其结果写入标准输出<br>(stdout)，它不修改任何输入文件。  </p>
+<p>让我们看一些示例。头几个会有些奇怪，因为我要用它们演示 sed 如何工作，而不是执行任何有用的任务。然而，如果您是 sed<br>新手，那么理解它们是十分重要的。下面是第一个示例：<br>$ sed -e ‘d’ &#x2F;etc&#x2F;services<br>如 果输入该命令，将得不到任何输出。那么，发生了什么？在该例中，用一个编辑命令 ‘d’ 调用 sed。sed 打开 &#x2F;etc&#x2F;services<br>文件，将一行读入其模式缓冲区，执行编辑命令（“删除行”），然后打印模式缓冲区（缓冲区已为空）。然后，它对后面的每一行重复这些步骤。这不会产生输 出，因为<br>“d” 命令除去了模式缓冲区中的每一行！  </p>
+<p>在该例中，还有几件事要注意。首先，根本没有修改 &#x2F;etc&#x2F;services。这还是因为 sed 只读取在命令行指定的文件，将其用作输入 –<br>它不试图修改该文件。第二件要注意的事是 sed 是面向行的。’d’ 命令不是简单地告诉 sed 一下子删除所有输入数据。相反，sed 逐行将<br>&#x2F;etc&#x2F;services 的每一行读入其称为模式缓冲区的内部缓冲区。一旦将一行读入模式缓冲区，它就执行 ‘d’<br>命令，然后打印模式缓冲区的内容（在本例中没有内容）。我将在后面为您演示如何使用地址范围来控制将命令应用到哪些行 –<br>但是，如果不使用地址，命令将应用到所有行。  </p>
+<p>第三件要注意的事是括起 ‘d’ 命令的单引号的用法。养成使用单引号来括起 sed 命令的习惯是个好注意，这样可以禁用 shell 扩展。  </p>
+<p>另一个 sed 示例<br>下面是使用 sed 从输出流除去 &#x2F;etc&#x2F;services 文件第一行的示例：<br>$ sed -e ‘1d’ &#x2F;etc&#x2F;services | more<br>如 您所见，除了前面有 ‘1’ 之外，该命令与第一个 ‘d’ 命令十分类似。如果您猜到 ‘1’ 指的是第一行，那您就猜对了。与第一个示例中只使用 ‘d’<br>不同的是，这一次使用的 ‘d’ 前面有一个可选的数字地址。通过使用地址，可以告诉 sed 只对某一或某些特定行进行编辑。  </p>
+<p>地址范围<br>现在，让我们看一下如何指定地址范围。在本例中，sed 将删除输出的第 1 到 10 行：<br>$ sed -e ‘1,10d’ &#x2F;etc&#x2F;services | more<br>当用逗号将两个地址分开时，sed 将把后面的命令应用到从第一个地址开始、到第二个地址结束的范围。在本例中，将 ‘d’ 命令应用到第 1 到 10<br>行（包括这两行）。所有其它行都被忽略。  </p>
+<p>带规则表达式的地址<br>现 在演示一个更有用的示例。假设要查看 &#x2F;etc&#x2F;services 文件的内容，但是对查看其中包括的注释部分不感兴趣。如您所知，可以通过以 ‘#’<br>字符开头的行在 &#x2F;etc&#x2F;services 文件中放置注释。为了避免注释，我们希望 sed 删除以 ‘#’ 开始的行。以下是具体做法：<br>$ sed -e ‘&#x2F;^#&#x2F;d’ &#x2F;etc&#x2F;services | more<br>试一下该例，看看发生了什么。您将注意到，sed 成功完成了预期任务。现在，让我们分析发生的情况。  </p>
+<p>要 理解 ‘&#x2F;^#&#x2F;d’ 命令，首先需要对其剖析。首先，让我们除去 ‘d’ – 这是我们前面所使用的同一个删除行命令。新增加的是 ‘&#x2F;^#&#x2F;‘<br>部分，它是一种新的规则表达式地址。规则表达式地址总是由斜杠括起。它们指定一种 模式，紧跟在规则表达式地址之后的命令将仅适用于正好与该特定模式匹配的行。  </p>
+<p>因此，’&#x2F;^#&#x2F;‘ 是一个规则表达式。但是，它做些什么呢？很明显，现在该复习规则表达式了。  </p>
+<p>规则表达式复习<br>可以使用规则表达式来表示可能会在文本中发现的模式。您在 shell 命令行中用过 ‘*’<br>字符吗？这种用法与规则表达式类似，但并不相同。下面是可以在规则表达式中使用的特殊字符：  </p>
+<p>字符 描述<br>与行首匹配<br>与行末尾匹配<br>与任一个字符匹配<br>将与前一个字符的零或多个出现匹配<br>[ ] 与 [ ] 之内的所有字符匹配  </p>
+<p>感受规则表达式的最好方法可能是看几个示例。所有这些示例都将被 sed 作为合法地址接受，这些地址出现在命令的左边。下面是几个示例：  </p>
+<p>规则<br>表达式 描述<br>&#x2F;.&#x2F; 将与包含至少一个字符的任何行匹配<br>&#x2F;..&#x2F; 将与包含至少两个字符的任何行匹配<br>&#x2F;^#&#x2F; 将与以 ‘#’ 开始的任何行匹配<br>&#x2F;^$&#x2F; 将与所有空行匹配<br>&#x2F;}^&#x2F; 将与以 ‘}’（无空格）结束的任何行匹配<br>&#x2F;} *^&#x2F; 将与以 ‘}’ 后面跟有零或多个空格结束的任何行匹配<br>&#x2F;[abc]&#x2F; 将与包含小写 ‘a’、’b’ 或 ‘c’ 的任何行匹配<br>&#x2F;^[abc]&#x2F; 将与以 ‘a’、’b’ 或 ‘c’开始的任何行匹配  </p>
+<p>在这些示例中，鼓励您尝试几个。花一些时间熟悉规则表达式，然后尝试几个自己创建的规则表达式。可以如下使用 regexp：<br>$ sed -e ‘&#x2F;regexp&#x2F;d’ &#x2F;path&#x2F;to&#x2F;my&#x2F;test&#x2F;file | more<br>这将导致 sed 删除任何匹配的行。然而，通过告诉 sed打印 regexp<br>匹配并删除不匹配的内容，而不是与之相反的方法，会更有利于熟悉规则表达式。可以用以下命令这样做：<br>$ sed -n -e ‘&#x2F;regexp&#x2F;p’ &#x2F;path&#x2F;to&#x2F;my&#x2F;test&#x2F;file | more<br>请注意新的 ‘-n’ 选项，该选项告诉 sed 除非明确要求打印模式空间，否则不这样做。您还会注意到，我们用 ‘p’ 命令替换了 ‘d’<br>命令，如您所猜想的那样，这明确要求 sed 打印模式空间。就这样，将只打印匹配部分。  </p>
+<p>有关地址的更多内容<br>目 前为止，我们已经看到了行地址、行范围地址和 regexp 地址。但是，还有更多的可能。我们可以指定两个用逗号分开的规则表达式，sed<br>将与所有从匹配第一个规则表达式的第一行开始，到匹配第二个规则表达式的行结束（包括该行）的所有行匹配。例如，以下命令将打印从包含 “BEGIN”<br>的行开始，并且以包含 “END” 的行结束的文本块：<br>$ sed -n -e ‘&#x2F;BEGIN&#x2F;,&#x2F;END&#x2F;p’ &#x2F;my&#x2F;test&#x2F;file | more<br>如果没发现 “BEGIN”，那么将不打印数据。如果发现了 “BEGIN”，但是在这之后的所有行中都没发现<br>“END”，那么将打印所有后续行。发生这种情况是因为 sed 面向流的特性 – 它不知道是否会出现 “END”。  </p>
+<p>C 源代码示例<br>如果只要打印 C 源文件中的 main() 函数，可输入：<br>$ sed -n -e ‘&#x2F;main[[:space:]]<em>(&#x2F;,&#x2F;^}&#x2F;p’ sourcefile.c | more<br>该 命令有两个规则表达式 ‘&#x2F;main[[:space:]]</em>(&#x2F;‘ 和 ‘&#x2F;^}&#x2F;‘，以及一个命令<br>‘p’。第一个规则表达式将与后面依次跟有任意数量的空格或制表键以及开始圆括号的字符串 “main” 匹配。这应该与一般 ANSI C main()<br>声明的开始匹配。  </p>
+<p>在这个特别的规则表达式中，出现了 ‘[[:space:]]’ 字符类。这只是一个特殊的关键字，它告诉 sed 与 TAB<br>或空格匹配。如果愿意的话，可以不输入 ‘[[:space:]]’，而输入 ‘[‘，然后是空格字母，然后是 -V，然后再输入制表键字母和 ‘]’ –<br>Control-V 告诉 bash 要插入“真正”的制表键，而不是执行命令扩展。使用 ‘[[:space:]]’ 命令类（特别是在脚本中）会更清楚。  </p>
+<p>好，现在看一下第二个 regexp。’&#x2F;^}’ 将与任何出现在新行行首的 ‘}’ 字符匹配。如果代码的格式很好，那么这将与 main()<br>函数的结束花括号匹配。如果格式不好，则不会正确匹配 – 这是执行模式匹配任务的一件棘手之事。  </p>
+<p>因为是处于 ‘-n’ 安静方式，所以 ‘p’ 命令还是完成其惯有任务，即明确告诉 sed 打印该行。试着对 C 源文件运行该命令 – 它应该输出整个<br>main() { } 块，包括开始的 “main()” 和结束的 ‘}’。在 UNIX 世界中有很多文本编辑器可供我们选择。思考一下 – vi、emacs<br>和 jed 以及很多其它工具都会浮现在脑海中。我们都有自己已逐渐了解并且喜爱的编辑器（以及我们喜爱的组合键）。有了可信赖的编辑器，我们可以轻松处理任何数量与<br>UNIX 有关的管理或编程任务。  </p>
+<p>虽然交互式编辑器很棒，但却有其限制。尽管其交互式特性可以成为强项，但也有其不足之处。考虑一下需要对一组文件执行类似更改的情形。您可能会本能地运行自己所喜爱的<br>编辑器，然后手工执行一组烦琐、重复和耗时的编辑任务。然而，有一种更好的方法。  </p>
+<p>进入 sed<br>如果可以使编辑文件的过程自动化，以便用“批处理”方式编辑文件，甚至编写可以对现有文件进行复杂更改的脚本，那将太好了。幸运的是，对于这种情况，有一种更好的方法<br>– 这种更好的方法称为 “sed”。  </p>
+<p>sed 是一种几乎包括在所有 UNIX 平台（包括 Linux）的轻量级流编辑器。sed<br>有许多很好的特性。首先，它相当小巧，通常要比您所喜爱的脚本语言小很多倍。其次，因为 sed<br>是一种流编辑器，所以，它可以对从如管道这样的标准输入接收的数据进行编辑。因此，无需将要编辑的数据存储在磁盘上的文件中。因为可以轻易将数据管道输出 到<br>sed，所以，将 sed 用作强大的 shell 脚本中长而复杂的管道很容易。试一下用您所喜爱的编辑器去那样做。  </p>
+<p>GNU sed<br>对 Linux 用户来说幸运的是，最好的 sed 版本之一恰好是 GNU sed，其当前版本是 3.02。每一个 Linux<br>发行版都有（或至少应该有）GNU sed。GNU sed 之所以流行不仅因为可以自由分发其源代码，还因为它恰巧有许多对 POSIX sed<br>标准便利、省时的扩展。另外，GNU 没有 sed 早期专门版本的很多限制，如行长度限制 – GNU 可以轻松处理任意长度的行。  </p>
+<p>最新的 GNU sed<br>在 研究这篇文章之时我注意到：几个在线 sed 爱好者提到 GNU sed<br>3.02a。奇怪的是，在ftp.gnu.org（有关这些链接，请参阅参考资料）上找不到 sed<br>3.02a，所以，我只得在别处寻找。我在alpha.gnu.org 的 &#x2F;pub&#x2F;sed<br>中找到了它。于是我高兴地将其下载、编译然后安装，而几分钟后我发现最新的 sed 版本却是 3.02.80 – 可在alpha.gnu.org 上<br>3.02a 源代码旁边找到其源代码。安装完 GNU sed 3.02.80 之后，我就完全准备好了。  </p>
+<p>alpha.gnu.org<br>alpha.gnu.org（请 参阅参考资料）是新的和实验性 GNU 源代码的所在地。然而，您还会在那里发现许多优秀、稳定的源代码。出于某种原因，不是许多<br>GNU 开发人员忘记将稳定的源代码移至 ftp.gnu.org，就是它们的 “beta” 期间格外长（2 年！）。例如，sed 3.02a 已有两年，甚至<br>3.02.80 也有一年，但它们仍不能（在 2000 年 8 月写本文章时）在 ftp.gnu.org 上获得。  </p>
+<p>正确的 sed<br>在 本系列中，将使用 GNU sed 3.02.80。在即将出现的本系列后续文章中，某些（但非常少）最高级的示例将不能在 GNU sed 3.02 或<br>3.02a 中使用。如果您使用的不是 GNU sed，那么结果可能会不同。现在为什么不花些时间安装 GNU sed 3.02.80<br>呢？那样，不仅可以为本系列的余下部分作好准备，而且还可以使用可能是目前最好的 sed。  </p>
+<p>sed 示例<br>sed 通过对输入数据执行任意数量用户指定的编辑操作（“命令”）来工作。sed 是基于行的，因此按顺序对每一行执行命令。然后，sed 将其结果写入标准输出<br>(stdout)，它不修改任何输入文件。  </p>
+<p>让我们看一些示例。头几个会有些奇怪，因为我要用它们演示 sed 如何工作，而不是执行任何有用的任务。然而，如果您是 sed<br>新手，那么理解它们是十分重要的。下面是第一个示例：<br>$ sed -e ‘d’ &#x2F;etc&#x2F;services<br>如 果输入该命令，将得不到任何输出。那么，发生了什么？在该例中，用一个编辑命令 ‘d’ 调用 sed。sed 打开 &#x2F;etc&#x2F;services<br>文件，将一行读入其模式缓冲区，执行编辑命令（“删除行”），然后打印模式缓冲区（缓冲区已为空）。然后，它对后面的每一行重复这些步骤。这不会产生输 出，因为<br>“d” 命令除去了模式缓冲区中的每一行！  </p>
+<p>在该例中，还有几件事要注意。首先，根本没有修改 &#x2F;etc&#x2F;services。这还是因为 sed 只读取在命令行指定的文件，将其用作输入 –<br>它不试图修改该文件。第二件要注意的事是 sed 是面向行的。’d’ 命令不是简单地告诉 sed 一下子删除所有输入数据。相反，sed 逐行将<br>&#x2F;etc&#x2F;services 的每一行读入其称为模式缓冲区的内部缓冲区。一旦将一行读入模式缓冲区，它就执行 ‘d’<br>命令，然后打印模式缓冲区的内容（在本例中没有内容）。我将在后面为您演示如何使用地址范围来控制将命令应用到哪些行 –<br>但是，如果不使用地址，命令将应用到所有行。  </p>
+<p>第三件要注意的事是括起 ‘d’ 命令的单引号的用法。养成使用单引号来括起 sed 命令的习惯是个好注意，这样可以禁用 shell 扩展。  </p>
+<p>另一个 sed 示例<br>下面是使用 sed 从输出流除去 &#x2F;etc&#x2F;services 文件第一行的示例：<br>$ sed -e ‘1d’ &#x2F;etc&#x2F;services | more<br>如 您所见，除了前面有 ‘1’ 之外，该命令与第一个 ‘d’ 命令十分类似。如果您猜到 ‘1’ 指的是第一行，那您就猜对了。与第一个示例中只使用 ‘d’<br>不同的是，这一次使用的 ‘d’ 前面有一个可选的数字地址。通过使用地址，可以告诉 sed 只对某一或某些特定行进行编辑。  </p>
+<p>地址范围<br>现在，让我们看一下如何指定地址范围。在本例中，sed 将删除输出的第 1 到 10 行：<br>$ sed -e ‘1,10d’ &#x2F;etc&#x2F;services | more<br>当用逗号将两个地址分开时，sed 将把后面的命令应用到从第一个地址开始、到第二个地址结束的范围。在本例中，将 ‘d’ 命令应用到第 1 到 10<br>行（包括这两行）。所有其它行都被忽略。  </p>
+<p>带规则表达式的地址<br>现 在演示一个更有用的示例。假设要查看 &#x2F;etc&#x2F;services 文件的内容，但是对查看其中包括的注释部分不感兴趣。如您所知，可以通过以 ‘#’<br>字符开头的行在 &#x2F;etc&#x2F;services 文件中放置注释。为了避免注释，我们希望 sed 删除以 ‘#’ 开始的行。以下是具体做法：<br>$ sed -e ‘&#x2F;^#&#x2F;d’ &#x2F;etc&#x2F;services | more<br>试一下该例，看看发生了什么。您将注意到，sed 成功完成了预期任务。现在，让我们分析发生的情况。  </p>
+<p>要 理解 ‘&#x2F;^#&#x2F;d’ 命令，首先需要对其剖析。首先，让我们除去 ‘d’ – 这是我们前面所使用的同一个删除行命令。新增加的是 ‘&#x2F;^#&#x2F;‘<br>部分，它是一种新的规则表达式地址。规则表达式地址总是由斜杠括起。它们指定一种 模式，紧跟在规则表达式地址之后的命令将仅适用于正好与该特定模式匹配的行。  </p>
+<p>因此，’&#x2F;^#&#x2F;‘ 是一个规则表达式。但是，它做些什么呢？很明显，现在该复习规则表达式了。  </p>
+<p>规则表达式复习<br>可以使用规则表达式来表示可能会在文本中发现的模式。您在 shell 命令行中用过 ‘*’<br>字符吗？这种用法与规则表达式类似，但并不相同。下面是可以在规则表达式中使用的特殊字符：  </p>
+<p>字符 描述<br>与行首匹配<br>与行末尾匹配<br>与任一个字符匹配<br>将与前一个字符的零或多个出现匹配<br>[ ] 与 [ ] 之内的所有字符匹配  </p>
+<p>感受规则表达式的最好方法可能是看几个示例。所有这些示例都将被 sed 作为合法地址接受，这些地址出现在命令的左边。下面是几个示例：  </p>
+<p>规则<br>表达式 描述<br>&#x2F;.&#x2F; 将与包含至少一个字符的任何行匹配<br>&#x2F;..&#x2F; 将与包含至少两个字符的任何行匹配<br>&#x2F;^#&#x2F; 将与以 ‘#’ 开始的任何行匹配<br>&#x2F;^$&#x2F; 将与所有空行匹配<br>&#x2F;}^&#x2F; 将与以 ‘}’（无空格）结束的任何行匹配<br>&#x2F;} *^&#x2F; 将与以 ‘}’ 后面跟有零或多个空格结束的任何行匹配<br>&#x2F;[abc]&#x2F; 将与包含小写 ‘a’、’b’ 或 ‘c’ 的任何行匹配<br>&#x2F;^[abc]&#x2F; 将与以 ‘a’、’b’ 或 ‘c’开始的任何行匹配  </p>
+<p>在这些示例中，鼓励您尝试几个。花一些时间熟悉规则表达式，然后尝试几个自己创建的规则表达式。可以如下使用 regexp：<br>$ sed -e ‘&#x2F;regexp&#x2F;d’ &#x2F;path&#x2F;to&#x2F;my&#x2F;test&#x2F;file | more<br>这将导致 sed 删除任何匹配的行。然而，通过告诉 sed打印 regexp<br>匹配并删除不匹配的内容，而不是与之相反的方法，会更有利于熟悉规则表达式。可以用以下命令这样做：<br>$ sed -n -e ‘&#x2F;regexp&#x2F;p’ &#x2F;path&#x2F;to&#x2F;my&#x2F;test&#x2F;file | more<br>请注意新的 ‘-n’ 选项，该选项告诉 sed 除非明确要求打印模式空间，否则不这样做。您还会注意到，我们用 ‘p’ 命令替换了 ‘d’<br>命令，如您所猜想的那样，这明确要求 sed 打印模式空间。就这样，将只打印匹配部分。  </p>
+<p>有关地址的更多内容<br>目 前为止，我们已经看到了行地址、行范围地址和 regexp 地址。但是，还有更多的可能。我们可以指定两个用逗号分开的规则表达式，sed<br>将与所有从匹配第一个规则表达式的第一行开始，到匹配第二个规则表达式的行结束（包括该行）的所有行匹配。例如，以下命令将打印从包含 “BEGIN”<br>的行开始，并且以包含 “END” 的行结束的文本块：<br>$ sed -n -e ‘&#x2F;BEGIN&#x2F;,&#x2F;END&#x2F;p’ &#x2F;my&#x2F;test&#x2F;file | more<br>如果没发现 “BEGIN”，那么将不打印数据。如果发现了 “BEGIN”，但是在这之后的所有行中都没发现<br>“END”，那么将打印所有后续行。发生这种情况是因为 sed 面向流的特性 – 它不知道是否会出现 “END”。  </p>
+<p>C 源代码示例<br>如果只要打印 C 源文件中的 main() 函数，可输入：<br>$ sed -n -e ‘&#x2F;main[[:space:]]<em>(&#x2F;,&#x2F;^}&#x2F;p’ sourcefile.c | more<br>该 命令有两个规则表达式 ‘&#x2F;main[[:space:]]</em>(&#x2F;‘ 和 ‘&#x2F;^}&#x2F;‘，以及一个命令<br>‘p’。第一个规则表达式将与后面依次跟有任意数量的空格或制表键以及开始圆括号的字符串 “main” 匹配。这应该与一般 ANSI C main()<br>声明的开始匹配。  </p>
+<p>在这个特别的规则表达式中，出现了 ‘[[:space:]]’ 字符类。这只是一个特殊的关键字，它告诉 sed 与 TAB<br>或空格匹配。如果愿意的话，可以不输入 ‘[[:space:]]’，而输入 ‘[‘，然后是空格字母，然后是 -V，然后再输入制表键字母和 ‘]’ –<br>Control-V 告诉 bash 要插入“真正”的制表键，而不是执行命令扩展。使用 ‘[[:space:]]’ 命令类（特别是在脚本中）会更清楚。  </p>
+<p>好，现在看一下第二个 regexp。’&#x2F;^}’ 将与任何出现在新行行首的 ‘}’ 字符匹配。如果代码的格式很好，那么这将与 main()<br>函数的结束花括号匹配。如果格式不好，则不会正确匹配 – 这是执行模式匹配任务的一件棘手之事。  </p>
+<p>因为是处于 ‘-n’ 安静方式，所以 ‘p’ 命令还是完成其惯有任务，即明确告诉 sed 打印该行。试着对 C 源文件运行该命令 – 它应该输出整个<br>main() { } 块，包括开始的 “main()” 和结束的 ‘}’。</p>
+<p>替换！<br>让我们看一下 sed 最有用的命令之一，替换命令。使用该命令，可以将特定字符串或匹配的规则表达式用另一个字符串替换。下面是该命令最基本用法的示例：  </p>
+<p>$ sed -e ‘s&#x2F;foo&#x2F;bar&#x2F;‘ myfile.txt<br>上 面的命令将 myfile.txt 中每行第一次出现的 ‘foo’（如果有的话）用字符串 ‘bar’<br>替换，然后将该文件内容输出到标准输出。请注意，我说的是每行第一次出现，尽管这通常不是您想要的。在进行字符串替换时，通常想执行全局替换。也就是说，<br>要替换每行中的所有出现，如下所示：  </p>
+<p>$ sed -e ‘s&#x2F;foo&#x2F;bar&#x2F;g’ myfile.txt<br>在最后一个斜杠之后附加的 ‘g’ 选项告诉 sed 执行全局替换。  </p>
+<p>关于 ‘s&#x2F;&#x2F;&#x2F;‘ 替换命令，还有其它几件要了解的事。首先，它是一个命令，并且只是一个命令，在所有上例中都没有指定地址。这意味着，’s&#x2F;&#x2F;&#x2F;‘<br>还可以与地址一起使用来控制要将命令应用到哪些行，如下所示：  </p>
+<p>$ sed -e ‘1,10s&#x2F;enchantment&#x2F;entrapment&#x2F;g’ myfile2.txt<br>上例将导致用短语 ‘entrapment’ 替换所有出现的短语 ‘enchantment’，但是只在第一到第十行（包括这两行）上这样做。  </p>
+<p>$ sed -e ‘&#x2F;^$&#x2F;,&#x2F;^END&#x2F;s&#x2F;hills&#x2F;mountains&#x2F;g’ myfile3.txt<br>该例将用 ‘mountains’ 替换 ‘hills’，但是，只从空行开始，到以三个字符 ‘END’ 开始的行结束（包括这两行）的文本块上这样做。  </p>
+<p>关 于 ‘s&#x2F;&#x2F;&#x2F;‘ 命令的另一个妙处是 ‘&#x2F;‘ 分隔符有许多替换选项。如果正在执行字符串替换，并且规则表达式或替换字符串中有许多斜杠，则可以通过在 ‘s’<br>之后指定一个不同的字符来更改分隔符。例如，下例将把所有出现的 &#x2F;usr&#x2F;local 替换成 &#x2F;usr：  </p>
+<p>$ sed -e ‘s:&#x2F;usr&#x2F;local:&#x2F;usr:g’ mylist.txt<br>在该例中，使用冒号作为分隔符。如果需要在规则表达式中指定分隔符字符，可以在它前面加入反斜杠。  </p>
+<p>规则表达式混乱<br>目前为止，我们只执行了简单的字符串替换。虽然这很方便，但是我们还可以匹配规则表达式。例如，以下 sed 命令将匹配从 ‘&lt;’ 开始、到 ‘&gt;’<br>结束、并且在其中包含任意数量字符的短语。下例将删除该短语（用空字符串替换）：  </p>
+<p>$ sed -e ‘s&#x2F;&lt;.*&gt;&#x2F;&#x2F;g’ myfile.html<br>这 是要从文件除去 HTML 标记的第一个很好的 sed 脚本尝试，但是由于规则表达式的特有规则，它不会很好地工作。原因何在？当 sed<br>试图在行中匹配规则表达式时，它要在行中查找最长的匹配。在我的前一篇 sed 文章中，这不成问题，因为我们使用的是 ‘d’ 和 ‘p’<br>命令，这些命令总要删除或打印整行。但是，在使用 ‘s&#x2F;&#x2F;&#x2F;‘<br>命令时，确实有很大不同，因为规则表达式匹配的整个部分将被目标字符串替换，或者，在本例中，被删除。这意味着，上例将把下行：  </p>
+<p><b>This</b> is what <b>I</b> meant.<br>变成：  </p>
+<p>meant.<br>我们要的不是这个，而是：  </p>
+<p>This is what I meant.<br>幸 运的是，有一种简便方法来纠正该问题。我们不输入“’&lt;’ 字符后面跟有一些字符并以 ‘&gt;’ 字符结束”的规则表达式，而只需输入一个“’&lt;’<br>字符后面跟有任意数量非 ‘&gt;’ 字符并以 ‘&gt;’ 字符结束”的规则表达式。这将与最短、而不是最长的可能性匹配。新命令如下：  </p>
+<p>$ sed -e ‘s&#x2F;&lt;[^&gt;]<em>&gt;&#x2F;&#x2F;g’ myfile.html<br>在上例中，’[^&gt;]’ 指定“非 ‘&gt;’”字符，其后的 ‘</em>‘ 完成该表达式以表示“零或多个非 ‘&gt;’ 字符”。对几个 html<br>文件测试该命令，将它们管道输出到 “more”，然后仔细查看其结果。  </p>
+<p>更多字符匹配<br>‘[ ]’ 规则表达式语法还有一些附加选项。要指定字符范围，只要字符不在第一个或最后一个位置，就可以使用 ‘-‘，如下所示：  </p>
+<p>‘[a-x]*’<br>这将匹配零或多个全部为 ‘a’、’b’、’c’…’v’、’w’、’x’ 的字符。另外，可以使用 ‘[:space:]’<br>字符类来匹配空格。以下是可用字符类的相当完整的列表：  </p>
+<p>字符类 描述<br>[:alnum:] 字母数字 [a-z A-Z 0-9]<br>[:alpha:] 字母 [a-z A-Z]<br>[:blank:] 空格或制表键<br>[:cntrl:] 任何控制字符<br>[:digit:] 数字 [0-9]<br>[:graph:] 任何可视字符（无空格）<br>[:lower:] 小写 [a-z]<br>[:print:] 非控制字符<br>[:punct:] 标点字符<br>[:space:] 空格<br>[:upper:] 大写 [A-Z]<br>[:xdigit:] 十六进制数字 [0-9 a-f A-F]  </p>
+<p>尽可能使用字符类是很有利的，因为它们可以更好地适应非英语 locale（包括某些必需的重音字符等等）.  </p>
+<p>高级替换功能<br>我们已经看到如何执行简单甚至有些复杂的直接替换，但是 sed<br>还可以做更多的事。实际上可以引用匹配规则表达式的部分或全部，并使用这些部分来构造替换字符串。作为示例，假设您正在回复一条消息。下例将在每一行前面加上短语<br>“ralph said: “：  </p>
+<p>$ sed -e ‘s&#x2F;.*&#x2F;ralph said: &amp;&#x2F;‘ origmsg.txt<br>输出如下：  </p>
+<p>ralph said: Hiya Jim, ralph said: ralph said:<br>I sure like this sed stuff! ralph said:<br>该例的替换字符串中使用了 ‘&amp;’ 字符，该字符告诉 sed 插入整个匹配的规则表达式。因此，可以将与 ‘.*’<br>匹配的任何内容（行中的零或多个字符的最大组或整行）插入到替换字符串中的任何位置，甚至多次插入。这非常好，但 sed 甚至更强大。  </p>
+<p>那些极好的带反斜杠的圆括号<br>‘s&#x2F;&#x2F;&#x2F;‘ 命令甚至比 ‘&amp;’ 更好，它允许我们在规则表达式中定义区域，然后可以在替换字符串中引用这些特定区域。作为示例，假设有一个包含以下文本的文件：  </p>
+<p>foo bar oni eeny meeny miny larry curly moe jimmy the weasel<br>现在假设要编写一个 sed 脚本，该脚本将把 “eeny meeny miny” 替换成 “Victor eeny-meeny Von miny”<br>等等。要这样做，首先要编写一个由空格分隔并与三个字符串匹配的规则表达式。  </p>
+<p>‘.* .* .*’<br>现在，将在其中每个感兴趣的区域两边插入带反斜杠的圆括号来定义区域：  </p>
+<p>‘&#x2F;(.<em>&#x2F;) &#x2F;(.</em>&#x2F;) &#x2F;(.*&#x2F;)’<br>除了要定义三个可在替换字符串中引用的逻辑区域以外，该规则表达式的工作原理将与第一个规则表达式相同。下面是最终脚本：  </p>
+<p>$ sed -e ‘s&#x2F;&#x2F;(.<em>&#x2F;) &#x2F;(.</em>&#x2F;) &#x2F;(.*&#x2F;)&#x2F;Victor &#x2F;1-&#x2F;2 Von &#x2F;3&#x2F;‘ myfile.txt<br>如您所见，通过输入 ‘&#x2F;x’（其中，x 是从 1 开始的区域号）来引用每个由圆括号定界的区域。输入如下：  </p>
+<p>Victor foo-bar Von oni Victor eeny-meeny Von miny Victor larry-curly Von moe<br>Victor jimmy-the Von weasel<br>随着对 sed 越来越熟悉，您可以花最小力气来进行相当强大的文本处理。您可能想如何使用熟悉的脚本语言来处理这种问题 –<br>能用一行代码轻易实现这样的解决方案吗？  </p>
+<p>组合使用<br>在 开始创建更复杂的 sed 脚本时，需要有输入多个命令的能力。有几种方法这样做。首先，可以在命令之间使用分号。例如，以下命令系列使用 ‘&#x3D;’ 命令和<br>‘p’ 命令，’&#x3D;’ 命令告诉 sed 打印行号，’p’ 命令明确告诉 sed 打印该行（因为处于 ‘-n’ 模式）。  </p>
+<p>$ sed -n -e ‘&#x3D;;p’ myfile.txt<br>无 论什么时候指定了两个或更多命令，都按顺序将每个命令应用到文件的每一行。在上例中，首先将 ‘&#x3D;’ 命令应用到第 1 行，然后应用 ‘p’<br>命令。接着，sed 继续处理第 2 行，并重复该过程。虽然分号很方便，但是在某些场合下，它不能正常工作。另一种替换方法是使用两个 -e<br>选项来指定两个不同的命令：  </p>
+<p>$ sed -n -e ‘&#x3D;’ -e ‘p’ myfile.txt<br>然而，在使用更为复杂的附加和插入命令时，甚至多个 ‘-e’ 选项也不能帮我们的忙。对于复杂的多行脚本，最好的方法是将命令放入一个单独的文件中。然后，用 -f<br>选项引用该脚本文件：  </p>
+<p>$ sed -n -f mycommands.sed myfile.txt<br>这种方法虽然可能不太方便，但总是管用。  </p>
+<p>一个地址的多个命令<br>有时，可能要指定应用到一个地址的多个命令。这在执行许多 ‘s&#x2F;&#x2F;&#x2F;‘ 以变换源文件中的字和语法时特别方便。要对一个地址执行多个命令，可在文件中输入 sed<br>命令，然后使用 ‘{ }’ 字符将这些命令分组，如下所示：  </p>
+<p>1,20{ s&#x2F;[Ll]inux&#x2F;GNU&#x2F;&#x2F;Linux&#x2F;g s&#x2F;samba&#x2F;Samba&#x2F;g s&#x2F;posix&#x2F;POSIX&#x2F;g }<br>上例将把三个替换命令应用到第 1 行到第 20 行（包括这两行）。还可以使用规则表达式地址或者二者的组合：  </p>
+<p>1,&#x2F;^END&#x2F;{ s&#x2F;[Ll]inux&#x2F;GNU&#x2F;&#x2F;Linux&#x2F;g s&#x2F;samba&#x2F;Samba&#x2F;g s&#x2F;posix&#x2F;POSIX&#x2F;g p }<br>该例将把 ‘{ }’ 之间的所有命令应用到从第 1 行开始，到以字母 “END” 开始的行结束（如果在源文件中没发现 “END”，则到文件结束）的所有行。  </p>
+<p>附加、插入和更改行<br>既然在单独的文件中编写 sed 脚本，我们可以利用附加、插入和更改行命令。这些命令将在当前行之后插入一行，在当前行之前插入一行，或者替换模式空间中的当前行。<br>它们也可以用来将多行插入到输出。插入行命令用法如下：  </p>
+<p>i&#x2F; This line will be inserted before each line<br>如果不为该命令指定地址，那么它将应用到每一行，并产生如下的输出：  </p>
+<p>This line will be inserted before each line line 1 here<br>This line will be inserted before each line line 2 here<br>This line will be inserted before each line line 3 here<br>This line will be inserted before each line line 4 here<br>如果要在当前行之前插入多行，可以通过在前一行之后附加一个反斜杠来添加附加行，如下所示：  </p>
+<p>i&#x2F; insert this line&#x2F; and this one&#x2F; and this one&#x2F; and, uh, this one too.<br>附加命令的用法与之类似，但是它将把一行或多行插入到模式空间中的当前行之后。其用法如下：  </p>
+<p>a&#x2F; insert this line after each line. Thanks!<br><img src="http://www.loveunix.net/style_emoticons/default/smile.gif" alt="smile.gif"><br>另一方面，“更改行”命令将实际替换模式空间中的当前行，其用法如下：  </p>
+<p>c&#x2F; You’re history, original line! Muhahaha!<br>因为附加、插入和更改行命令需要在多行输入，所以将把它们输入到一个文本 sed 脚本中，然后通过使用 ‘-f’ 选项告诉 sed<br>执行它们。使用其它方法将命令传递给 sed 会出现问题。</p>
+<p>文本转换<br>第一个实际脚本将 UNIX 风格的文本转换成 DOS&#x2F;Windows 格式。您可能知道，基于 DOS&#x2F;Windows 的文本文件在每一行末尾有一个<br>CR（回车）和 LF（换行），而 UNIX 文本只有一个换行。有时可能需要将某些 UNIX 文本移至 Windows 系统，该脚本将为您执行必需的格式转换。  </p>
+<p>$ sed -e ‘s&#x2F;$&#x2F;&#x2F;r&#x2F;‘ myunix.txt &gt; mydos.txt<br>在 该脚本中，’$’ 规则表达式将与行的末尾匹配，而 ‘&#x2F;r’ 告诉 sed 在其之前插入一个回车。在换行之前插入回车，立即，每一行就以 CR&#x2F;LF<br>结束。请注意，仅当使用 GNU sed 3.02.80 或以后的版本时，才会用 CR 替换 ‘&#x2F;r’。如果还没有安装 GNU sed<br>3.02.80，请在我的第一篇 sed 文章中查看如何这样做的说明。  </p>
+<p>我已记不清有多少次在下载一些示例脚本或 C 代码之后，却发现它是 DOS&#x2F;Windows 格式。虽然很多程序不在乎 DOS&#x2F;Windows 格式的<br>CR&#x2F;LF 文本文件，但是有几个程序却在乎 – 最著名的是 bash，只要一遇到回车，它就会出问题。以下 sed 调用将把 DOS&#x2F;Windows<br>格式的文本转换成可信赖的 UNIX 格式：  </p>
+<p>$ sed -e ‘s&#x2F;.$&#x2F;&#x2F;‘ mydos.txt &gt; myunix.txt<br>该脚本的工作原理很简单：替代规则表达式与一行的最末字符匹配，而该字符恰好就是回车。我们用空字符替换它，从而将其从输出中彻底删除。如果使用该脚本并注意到已经删<br>除了输出中每行的最末字符，那么，您就指定了已经是 UNIX 格式的文本文件。也就没必要那样做了！  </p>
+<p>反转行<br>下 面是另一个方便的小脚本。与大多数 Linux 发行版中包括的 “tac” 命令一样，该脚本将反转文件中行的次序。”tac”<br>这个名称可能会给人以误导，因为 “tac” 不反转行中字符的位置（左和右），而是反转文件中行的位置（上和下）。用 “tac” 处理以下文件：  </p>
+<p>foo bar oni<br>….将产生以下输出：  </p>
+<p>oni bar foo<br>可以用以下 sed 脚本达到相同目的：  </p>
+<p>$ sed -e ‘1!G;h;$!d’ forward.txt &gt; backward.txt<br>如果登录到恰巧没有 “tac” 命令的 FreeBSD 系统，将发现该 sed 脚本很有用。虽然方便，但最好还是知道该脚本为什么那样做。让我们对它进行讨论。  </p>
+<p>反转解释<br>首 先，该脚本包含三个由分号隔开的单独 sed 命令：’1!G’、’h’ 和 ‘$!d’。现在，需要好好理解用于第一个和第三个命令的地址。如果第一个命令是<br>‘1G’，则 ‘G’ 命令将只应用第一行。然而，还有一个 ‘!’ 字符 – 该 ‘!’ 字符忽略该地址，即，’G’<br>命令将应用到除第一行之外的所有行。’$!d’ 命令与之类似。如果命令是 ‘$d’，则将只把 ‘d’ 命令应用到文件中的最后一行（’$’<br>地址是指定最后一行的简单方式）。然而，有了 ‘!’ 之后，’$!d’ 将把 ‘d’<br>命令应用到除最后一行之外的所有行。现在，我们所要理解的是这些命令本身做什么。  </p>
+<p>当对上面的文本文件执行反转脚本时，首先执行的命令是 ‘h’。该命令告诉 sed<br>将模式空间（保存正在处理的当前行的缓冲区）的内容复制到保留空间（临时缓冲区）。然后，执行 ‘d’ 命令，该命令从模式空间中删除<br>“foo”，以便在对这一行执行完所有命令之后不打印它。  </p>
+<p>现在，第二行。在将 “bar” 读入模式空间之后，执行 ‘G’ 命令，该命令将保留空间的内容 (“foo&#x2F;n”) 附加到模式空间<br>(“bar&#x2F;n”)，使模式空间的内容为 “bar&#x2F;n&#x2F;foo&#x2F;n”。’h’ 命令将该内容放回保留空间保护起来，然后，’d’<br>从模式空间删除该行，以便不打印它。  </p>
+<p>对于最后的 “oni” 行，除了不删除模式空间的内容（由于 ‘d’ 之前的 ‘$!’）以及将模式空间的内容（三行）打印到标准输出之外，重复同样的步骤。  </p>
+<p>现在，要用 sed 执行一些强大的数据转换。  </p>
+<p>sed QIF 魔法<br>过去几个星期，我一直想买一份 Quicken 来结算我的银行帐户。Quicken<br>是一个非常好的金融程序，当然会成功地完成这项工作。但是，经过考虑之后，我觉得自己可以轻易编写某个软件来结算我的支票簿。我想，毕竟，我是个软件开发人员！  </p>
+<p>我 开发了一个很好的小型支票簿结算程序（使用 awk），它通过分析包含我的所有交易的文本文件的语法来计算余额。略微调整之后，我将其改进，以便可以象<br>Quicken 那样跟踪不同的贷款和借款类别。但是，我还要添加一个特性。最近，我将帐户转移到一家有联机 Web 帐户界面的银行。有一天，我注意到，这家银行的<br>Web 站点允许以 Quicken 的 .QIF 格式下载我的帐户信息。我马上觉得，如果可以将该信息转换成文本格式，那就太棒了。  </p>
+<p>两种格式的故事<br>在查看 QIF 格式之前，先看一下我的 checkbook.txt 格式：  </p>
+<p>28 Aug 2000 food - - Y Supermarket 30.94 25 Aug 2000 watr - 103 Y Check 103<br>52.86<br>在我的文件中，所有字段都由一个或多个制表符分开，每个交易占据一行。日期之后的下一个字段列 出支出类型（如果是收入项，则为<br>“-“）。第三个字段列出收入类型（如果是支出项，则为 “-“）。然后，是一个支票号字段（如果为空，则还是 “-“），一个交易完成字段（”Y” 或<br>“N”），一个注释和一个美元金额字段。现在，让我们看一下 QIF 格式。当用文本查看器查看下载的 QIF 文件时，它看起来如下：  </p>
+<p>!Type:Bank D08&#x2F;28&#x2F;2000 T-8.15 N PCHECKCARD SUPERMARKET ^ D08&#x2F;28&#x2F;2000 T-8.25 N<br>PCHECKCARD PUNJAB RESTAURANT ^ D08&#x2F;28&#x2F;2000 T-17.17 N PCHECKCARD SUPERMARKET<br>浏览过文件之后，不难猜出其格式 – 忽略第一行，其余的格式如下：  </p>
+<p>D&lt;数据&gt;<br>T&lt;交易量&gt;<br>N&lt;支票号&gt;<br>P&lt;描述&gt;<br>^ （这是字段分隔符）<br>开始处理<br>在处理象这样重要的 sed 项目时，不要气馁 – sed 允许您将数据逐渐修改成最终形式。在进行当中，可以继续细化 sed<br>脚本，直到输出与预期的完全一样为止。无需在试第一次时就保证其完全正确。  </p>
+<p>要开始，首先创建一个名为 “qiftrans.sed” 的文件，然后开始修改数据：  </p>
+<p>1d &#x2F;^^&#x2F;d s&#x2F;[[:cntrl:]]&#x2F;&#x2F;g<br>第一个 ‘1d’ 命令删除第一行，第二个命令从输出除去那些讨厌的 ‘^’ 字符。最后一行除去文件中可能存在的任何控制字符。既然在处理外来文件格式，我想消除在<br>中途遇到任何控制字符的风险。到目前为止，一切顺利。现在，要向该基本脚本中添加一些处理功能：  </p>
+<p>1d &#x2F;^^&#x2F;d s&#x2F;[[:cntrl:]]&#x2F;&#x2F;g &#x2F;^D&#x2F; {<br>s&#x2F;^D&#x2F;(.<em>&#x2F;)&#x2F;&#x2F;1&#x2F;tOUTY&#x2F;tINNY&#x2F;t&#x2F;<br>s&#x2F;^01&#x2F;Jan&#x2F; s&#x2F;^02&#x2F;Feb&#x2F;<br>s&#x2F;^03&#x2F;Mar&#x2F; s&#x2F;^04&#x2F;Apr&#x2F;<br>s&#x2F;^05&#x2F;May&#x2F; s&#x2F;^06&#x2F;Jun&#x2F;<br>s&#x2F;^07&#x2F;Jul&#x2F; s&#x2F;^08&#x2F;Aug&#x2F;<br>s&#x2F;^09&#x2F;Sep&#x2F; s&#x2F;^10&#x2F;Oct&#x2F;<br>s&#x2F;^11&#x2F;Nov&#x2F; s&#x2F;^12&#x2F;Dec&#x2F;<br>s:^&#x2F;(.</em>&#x2F;)&#x2F;&#x2F;(.<em>&#x2F;)&#x2F;&#x2F;(.</em>&#x2F;):&#x2F;2 &#x2F;1 &#x2F;3: }<br>首先，添加一个 ‘&#x2F;^D&#x2F;‘ 地址，以便 sed 只在遇到 QIF 数据字段的第一个字符 ‘D’ 时才开始处理。当 sed<br>将这样一行读入其模式空间时，将按顺序执行花括号中的所有命令。  </p>
+<p>花括号中的第一个命令将把如下行：  </p>
+<p>D08&#x2F;28&#x2F;2000<br>变换成：  </p>
+<p>08&#x2F;28&#x2F;2000 OUTY INNY<br>当然，现在的格式还不完美，但没关系。我们将在进行过程中逐渐细化模式空间的内容。后面 12<br>行的最后效果是将数据变换成三个字母的格式，最后一行从数据中除去三个斜杠。最后得到这一行：  </p>
+<p>Aug 28 2000 OUTY INNY<br>OUTY 和 INNY 字段是占位符，以后将被替换。现在还不能确定它们，因为如果美元金额为负，将把 OUTY 和 INNY 设置成 “misc” 和<br>“-“，但是，如果美元金额为正，将分别把它们更改成 “-“ 和 “inco”。既然还没有读入美元金额，所以，需要暂时使用占位符。  </p>
+<p>细化<br>现在进一步细化：  </p>
+<p>1d &#x2F;^^&#x2F;d s&#x2F;[[:cntrl:]]&#x2F;&#x2F;g &#x2F;^D&#x2F; {<br>s&#x2F;^D&#x2F;(.<em>&#x2F;)&#x2F;&#x2F;1&#x2F;tOUTY&#x2F;tINNY&#x2F;t&#x2F;<br>s&#x2F;^01&#x2F;Jan&#x2F; s&#x2F;^02&#x2F;Feb&#x2F;<br>s&#x2F;^03&#x2F;Mar&#x2F; s&#x2F;^04&#x2F;Apr&#x2F;<br>s&#x2F;^05&#x2F;May&#x2F; s&#x2F;^06&#x2F;Jun&#x2F;<br>s&#x2F;^07&#x2F;Jul&#x2F; s&#x2F;^08&#x2F;Aug&#x2F;<br>s&#x2F;^09&#x2F;Sep&#x2F; s&#x2F;^10&#x2F;Oct&#x2F;<br>s&#x2F;^11&#x2F;Nov&#x2F; s&#x2F;^12&#x2F;Dec&#x2F;<br>s:^&#x2F;(.</em>&#x2F;)&#x2F;&#x2F;(.<em>&#x2F;)&#x2F;&#x2F;(.</em>&#x2F;):&#x2F;2 &#x2F;1 &#x2F;3:<br>N N N<br>s&#x2F;&#x2F;nT&#x2F;(.<em>&#x2F;)&#x2F;nN&#x2F;(.</em>&#x2F;)&#x2F;nP&#x2F;(.<em>&#x2F;)&#x2F;NUM&#x2F;2NUM&#x2F;t&#x2F;tY&#x2F;t&#x2F;t&#x2F;3&#x2F;tAMT&#x2F;1AMT&#x2F;<br>s&#x2F;NUMNUM&#x2F;-&#x2F; s&#x2F;NUM&#x2F;([0-9]</em>&#x2F;)NUM&#x2F;&#x2F;1&#x2F;<br>s&#x2F;&#x2F;([0-9]&#x2F;),&#x2F;&#x2F;1&#x2F; }<br>后七行有些复杂，所以将详细讨论它们。首先，连续使用三个 ‘N’ 命令。’N’ 命令告诉 sed 将下一行读入输入中，然后将其附加到当前模式空间。这三个<br>‘N’ 命令导致将下三行附加到当前模式空间缓冲区，现在这一行看起来如下：  </p>
+<p>28 Aug 2000 OUTY INNY &#x2F;nT-8.15&#x2F;nN&#x2F;nPCHECKCARD SUPERMARKET<br>sed 的模式空间变得很难看 – 需要除去额外的新行，并执行某些附加的格式化。要这样做，将使用替代命令。要匹配的模式为：  </p>
+<p>‘&#x2F;nT.<em>&#x2F;nN.</em>&#x2F;nP.*’<br>这 将与后面依次跟有<br>‘T’、零或多个字符、新行、’N’、任何数量的字符、新行、’P’、以及任何数量字符的新行匹配。呀！这个规则表达式将与刚刚附加到模式空间的三行的全<br>部内容匹配。但我们要重新格式化该区域，而不是整个替换它。美元金额、支票号（如果有的话）和描述需要出现在替换字符串中。要这样做，我们用带有反斜杠的<br>圆括号括起那些“感兴趣部分”，以便可以在替换字符串中引用它们（使用 ‘&#x2F;1’、’&#x2F;2&#x2F; 和 ‘&#x2F;3’ 来告诉 sed 将它们插入到何处）。以下是最后的命令：  </p>
+<p>s&#x2F;&#x2F;nT&#x2F;(.<em>&#x2F;)&#x2F;nN&#x2F;(.</em>&#x2F;)&#x2F;nP&#x2F;(.*&#x2F;)&#x2F;NUM&#x2F;2NUM&#x2F;t&#x2F;tY&#x2F;t&#x2F;t&#x2F;3&#x2F;tAMT&#x2F;1AMT&#x2F;<br>该命令将我们的行变换成：  </p>
+<p>28 Aug 2000 OUTY INNY NUMNUM Y CHECKCARD SUPERMARKET AMT-8.15AMT<br>虽 然该行正变得好一些，但是，有几件事一看就有点…啊…有趣。首先是那个愚蠢的 “NUMNUM” 字符串 – 其目的何在？如果查看 sed<br>脚本的后两行，就会发现其目的，后两行将把 “NUMNUM” 替换成 “-“，而把 “NUM”<number>“NUM” 替换成<br><number>。如您所见，用愚蠢的标记括起支票号允许我们在该字段为空时方便地插入一个 “-“。  </p>
+<p>结束尝试<br>最后一行除去数字后的逗号。它把如 “3,231.00” 这样的美元金额转换成我使用的格式 “3231.00”。现在，让我们看一下最终脚本：  </p>
+<p>最终的“QIF 到文本”脚本 1d &#x2F;^^&#x2F;d s&#x2F;[[:cntrl:]]&#x2F;&#x2F;g &#x2F;^D&#x2F; { s&#x2F;^D&#x2F;(.<em>&#x2F;)&#x2F;&#x2F;1&#x2F;tOUTY&#x2F;tINNY&#x2F;t&#x2F;<br>s&#x2F;^01&#x2F;Jan&#x2F; s&#x2F;^02&#x2F;Feb&#x2F; s&#x2F;^03&#x2F;Mar&#x2F; s&#x2F;^04&#x2F;Apr&#x2F; s&#x2F;^05&#x2F;May&#x2F;<br>s&#x2F;^06&#x2F;Jun&#x2F; s&#x2F;^07&#x2F;Jul&#x2F; s&#x2F;^08&#x2F;Aug&#x2F; s&#x2F;^09&#x2F;Sep&#x2F; s&#x2F;^10&#x2F;Oct&#x2F;<br>s&#x2F;^11&#x2F;Nov&#x2F; s&#x2F;^12&#x2F;Dec&#x2F; s:^&#x2F;(.</em>&#x2F;)&#x2F;&#x2F;(.<em>&#x2F;)&#x2F;&#x2F;(.</em>&#x2F;):&#x2F;2 &#x2F;1 &#x2F;3:<br>N N N s&#x2F;&#x2F;nT&#x2F;(.<em>&#x2F;)&#x2F;nN&#x2F;(.</em>&#x2F;)&#x2F;nP&#x2F;(.<em>&#x2F;)&#x2F;NUM&#x2F;2NUM&#x2F;t&#x2F;tY&#x2F;t&#x2F;t&#x2F;3&#x2F;tAMT&#x2F;1AMT&#x2F;<br>s&#x2F;NUMNUM&#x2F;-&#x2F; s&#x2F;NUM&#x2F;([0-9]</em>&#x2F;)NUM&#x2F;&#x2F;1&#x2F; s&#x2F;&#x2F;([0-9]&#x2F;),&#x2F;&#x2F;1&#x2F;<br>&#x2F;AMT-[0-9]<em>.[0-9]<em>AMT&#x2F;b fixnegs<br>s&#x2F;AMT&#x2F;(.</em>&#x2F;)AMT&#x2F;&#x2F;1&#x2F; s&#x2F;OUTY&#x2F;-&#x2F; s&#x2F;INNY&#x2F;inco&#x2F;<br>b done :fixnegs s&#x2F;AMT-&#x2F;(.</em>&#x2F;)AMT&#x2F;&#x2F;1&#x2F; s&#x2F;OUTY&#x2F;misc&#x2F;<br>s&#x2F;INNY&#x2F;-&#x2F; :done }<br>附加的十一行使用替代和一些分支功能来美化输出。首先看一下这行：  </p>
+<p>&#x2F;AMT-[0-9]*.[0-9]*AMT&#x2F;b fixnegs<br>该行包含一个格式为 “&#x2F;regexp&#x2F;b label” 的分支命令。如果模式空间与规则表达式匹配，sed 将分支到 fixnegs<br>标号。您应该可以轻易找到该标号，它在代码中为 “:fixnegs”。如果规则表达式不匹配，则以常规方式继续处理下一个命令。  </p>
+<p>既 然您理解该命令本身的工作原理，让我们看一下分支。如果看一下分支规则表达式，将看到它与后面依次跟有 ‘-‘、任意数量的数字、一个 ‘.’、任意数量的数字和<br>‘AMT’ 的字符串 ‘AMT’ 匹配。就象我确信您已猜到一样，该规则表达式专门处理负的美元金额。在这之前，用 ‘ATM’<br>括起美元金额，以便以后可以轻易找到它。因为规则表达式只与以 ‘-‘ 开始的美元金额匹配，所以，该分支只在恰巧处理借款时才发生。如果正处理贷款，应该将<br>OUTY 设置成 ‘misc’，将 INNY 设置成<br>‘-‘，并且应该除去贷款数量前面的负号。如果跟踪代码的流程，将看到实际情况正是这样。如果不执行分支，则用 ‘-‘ 替换 OUTY，用 ‘inco’ 替换<br>INNY。完成了！现在输出行是完美的：  </p>
+<p>28 Aug 2000 misc - - Y CHECKCARD SUPERMARKET -8.15<br>别犯糊涂<br>如 您所见，只要循序渐进地解决问题，使用 sed 转换数据就没有那么难。不要试图使用一个 sed<br>命令或一下子解决所有问题。相反，要朝着目标逐步进行，并不断改进 sed 脚本，直到其输出正如您希望那样为止。sed<br>有许多功能，希望您已非常熟悉其内部工作原理并继续努力以进一步掌握它！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/unix/" rel="tag"># unix</a>
+              <a href="/tags/%E8%84%9A%E6%9C%AC/" rel="tag"># 脚本</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2009/10/28/4737259/" rel="prev" title="Linux脚本">
+                  <i class="fa fa-angle-left"></i> Linux脚本
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2009/10/29/4743979/" rel="next" title="Linux Bash Command Bash脚本命令">
+                  Linux Bash Command Bash脚本命令 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

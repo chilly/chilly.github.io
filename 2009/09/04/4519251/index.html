@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="说检查点,其实就是对过去历史的记录，可以认为是log.不过这里进行了简化.举例来说,我现在又一段文本.文本里放有一堆堆的链接地址.我现在的任务是下载那些地址中的内容.另外因为网络的问题或者网站的问题,每次下载可能不会非常的成功.有可能出现断链或者socket异常错误。不过不管产生什么样的错误，我都希望我的程序能够一直跑下去。或者能停掉后，继续从为下载的链接处跑。而不是从开始的地方跑。这个问题非常简">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python设置检查点简单实现">
+<meta property="og:url" content="http://chillyc.info/2009/09/04/4519251/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="说检查点,其实就是对过去历史的记录，可以认为是log.不过这里进行了简化.举例来说,我现在又一段文本.文本里放有一堆堆的链接地址.我现在的任务是下载那些地址中的内容.另外因为网络的问题或者网站的问题,每次下载可能不会非常的成功.有可能出现断链或者socket异常错误。不过不管产生什么样的错误，我都希望我的程序能够一直跑下去。或者能停掉后，继续从为下载的链接处跑。而不是从开始的地方跑。这个问题非常简">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2009-09-04T06:35:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:45.480Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="exception">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="download">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2009/09/04/4519251/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2009/09/04/4519251/","path":"2009/09/04/4519251/","title":"Python设置检查点简单实现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python设置检查点简单实现 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%99%E4%B8%AA%E5%BC%82%E5%B8%B8%E6%98%AF%E5%8E%9F%E6%96%87%E6%9C%AC%E5%86%85%E5%AE%B9%E4%B8%AD%E6%9C%AA%E5%87%BA%E7%8E%B0%E6%A3%80%E6%9F%A5%E7%82%B9%E5%86%85%E5%AE%B9%E5%87%BA%E7%8E%B0%E9%80%A0%E6%88%90%E7%9A%84-class-CheckPointMissContentError-pass"><span class="nav-number">1.</span> <span class="nav-text">这个异常是原文本内容中未出现检查点内容出现造成的 class CheckPointMissContentError: pass</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-def-Download-downloadlist-sleep-time-if-os-path-isfile-downloadlist"><span class="nav-number">2.</span> <span class="nav-text">伪代码 def Download(downloadlist,sleep_time): if os.path.isfile(downloadlist):</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/04/4519251/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python设置检查点简单实现 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python设置检查点简单实现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-09-04 14:35:00" itemprop="dateCreated datePublished" datetime="2009-09-04T14:35:00+08:00">2009-09-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>说检查点,其实就是对过去历史的记录，可以认为是log.不过这里进行了简化.举例来说,我现在又一段文本.文本里放有一堆堆的链接地址.我现在的任务是下载那些地址<br>中的内容.另外因为网络的问题或者网站的问题,每次下载可能不会非常的成功.有可能出现断链或者socket异常错误。不过不管产生什么样的错误，我都希望我的程序能<br>够一直跑下去。或者能停掉后，继续从为下载的链接处跑。而不是从开始的地方跑。这个问题非常简单。因为这些链接是上下文无关的（上下文有关的情况要另外分析）。所以我<br>只要记录程序运行停止前的最后一条，就有希望能够延续前面的工作。这里实现中使用的是记录原有的链接，大家也可以使用计数器的方法来记录。代码如下：  </p>
+<h1 id="这个异常是原文本内容中未出现检查点内容出现造成的-class-CheckPointMissContentError-pass"><a href="#这个异常是原文本内容中未出现检查点内容出现造成的-class-CheckPointMissContentError-pass" class="headerlink" title="这个异常是原文本内容中未出现检查点内容出现造成的 class CheckPointMissContentError: pass"></a>这个异常是原文本内容中未出现检查点内容出现造成的 class CheckPointMissContentError: pass</h1><p>将文件读取指针fd移至到检查点对应的内容处 # check point 的规则为，读取文件一行或者多行，进行操作后，将此一行或多行送入 #<br>检查文件check_point中。以后再次运行程序，即可从该检查点处继续运行。 def GoCheckPoint(fd,check_point): if<br>not os.path.isfile(check_point): f_check &#x3D; open(check_point,’w’)<br>f_check.close() f_check &#x3D; open(check_point,’r’) lines &#x3D; f_check.readlines() if<br>len(lines) &gt; 0: check_content &#x3D; lines[-1] #找到检查点最后一行 check_content &#x3D;<br>check_content.strip(‘ &#x2F;n&#x2F;r’) # go to check point while True: content &#x3D;<br>fd.readline() if content &#x3D;&#x3D; ‘’: # eof raise CheckPointMissContentError if<br>content.strip(‘ &#x2F;n&#x2F;r’) &#x3D;&#x3D; check_content: break f_check.close()#关闭检查点</p>
+<p>有了上面一段还是不够的，需要下面的代码补充：</p>
+<h1 id="伪代码-def-Download-downloadlist-sleep-time-if-os-path-isfile-downloadlist"><a href="#伪代码-def-Download-downloadlist-sleep-time-if-os-path-isfile-downloadlist" class="headerlink" title="伪代码 def Download(downloadlist,sleep_time): if os.path.isfile(downloadlist):"></a>伪代码 def Download(downloadlist,sleep_time): if os.path.isfile(downloadlist):</h1><p>f &#x3D; open(downloadlist) # check_point file name，这里为自动生成一个检查点文件 check_point &#x3D;<br>file[0:file.rfind(‘.’)]+’_check.txt’ Util.GoCheckPoint(f,check_point)<br>#这就是上面代码中的GoCheckPoint函数 f_check &#x3D; open(check_point,’a’)# 以追加方式写入 try: while<br>True: content &#x3D; f.readline() if content &#x3D;&#x3D; ‘’: # eof break content &#x3D;<br>content.strip(‘ &#x2F;n&#x2F;r’) if content !&#x3D; ‘’: # has download url<br>time.sleep(sleep_time) DownloadOper(path,url)<br>#这里是伪代码..可以认为是urllib.request.retrieve()函数或者是urllib.request.urlopen()啥的 #<br>作为响应的操作后再将内容写入检查点文件 f_check.write(content+’&#x2F;n’) f_check.flush() #<br>必须的，否则会缓存，不会写入硬盘中 except : # 蹦个异常也不怕,以后再次按F5执行即可 raise Exception() return<br>Util.FAILURE # 这是我设置的常量，大家认为是0或者1就可以了 finally: f.close() f_check.close()# 关闭文件<br>print(‘Downloading is done……………………’) return Util.SUCCESS</p>
+<p>执行完操作之后再写入到检查点文件中。以后程序挂掉，只要检查点文件还在，就可以延续前面的工作。不过这里的检查点相对于数据库中事务处理的检查点还是太简单了点。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/exception/" rel="tag"># exception</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/download/" rel="tag"># download</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2009/09/02/4512103/" rel="prev" title="Python  远程主机强迫关闭了一个现有的连接 Socket 超时设置 Errno 10054">
+                  <i class="fa fa-angle-left"></i> Python  远程主机强迫关闭了一个现有的连接 Socket 超时设置 Errno 10054
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2009/09/14/4550295/" rel="next" title="Centos 更新 Yum的使用方法">
+                  Centos 更新 Yum的使用方法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

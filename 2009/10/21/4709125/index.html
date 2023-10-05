@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="A Eucalyptus cloud setup consists of three types of components – the cloudcontroller, the cluster controller(s), and the node controller(s). The cloudcontroller is a Java program that, in addition to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="弹性计算云Eucalyptus代码（start With A）">
+<meta property="og:url" content="http://chillyc.info/2009/10/21/4709125/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="A Eucalyptus cloud setup consists of three types of components – the cloudcontroller, the cluster controller(s), and the node controller(s). The cloudcontroller is a Java program that, in addition to">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2009-10-21T08:28:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:45.603Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="class">
+<meta property="article:tag" content="webservice">
+<meta property="article:tag" content="interface">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2009/10/21/4709125/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2009/10/21/4709125/","path":"2009/10/21/4709125/","title":"弹性计算云Eucalyptus代码（start With A）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>弹性计算云Eucalyptus代码（start With A） | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/21/4709125/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="弹性计算云Eucalyptus代码（start With A） | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          弹性计算云Eucalyptus代码（start With A）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-10-21 16:28:00" itemprop="dateCreated datePublished" datetime="2009-10-21T16:28:00+08:00">2009-10-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>A Eucalyptus cloud setup consists of three types of components – the cloud<br>controller, the cluster controller(s), and the node controller(s). The cloud<br>controller is a Java program that, in addition to high-level resource<br>scheduling and system accounting, offers a Web services interface and a Web<br>interface to the outside world. Cluster controller and node controller are<br>written in C and deployed as Web services inside Apache.</p>
+<p>Eucalyptus使用了 ** Axis2 ** ,啥是Axis2或者说Axis2有啥用。Axis就是快速发布web<br>service的工具，提供了SOAP协议的封装，方便于client端于webservice通信。</p>
+<p>log机制使用了log4j。</p>
+<p>使用X509认证。</p>
+<p>** class AbstractIsomorph ** ,注释为MappedSuperclass，个人认为是一个保存用户信息和状态的抽象类。 </p>
+<p>** class AbstractKeyStore ** ,这个抽象类很有意思，其静态方法调用了子类的构造函数。并且子类GenericKeyStore是其内部类。感觉设计得不好。其意图是让这个类含有几个抽象的方法，但是这几个抽象方法有一个默认的实现。AbstractKeyStore主要是为了添加证书查找证书，并查找用户名对应的password来认证。并且将alias，cert添加到某一文件中。并将此alias对应的password放入到keystore中。 </p>
+<p>** class AbstractNamedRegistry ** ,这个抽象类将存放、更新某种继承自HasName接口的对象的两种状态。一种是active,一种是disable,这两种状态放在ConcurrentNavigableMap中，并且以对象的名作为key,value就是对象自身。 </p>
+<p>** class AbstractOperation ** ,这个抽象类是操作的抽象，并认为凡是操作就应该有request和reply,并且request和reply继承自EucalyptusMessage </p>
+<p>** class AccessDeniedException ** ,就是一个禁止访问的异常，继承自EucalyptusCloudException。 </p>
+<p>** class Address ** ,这是一个address类(废话)，存放地址id,  地址名(?? 个人认为可能是真实地址)  ,cluster的地址，使用者的用户名，实例地址等(其实就是一个描述实例所需要的属性。)并使用高性能锁ReentrantReadWriteLock加以控制。  加锁是为了将实例assign出去，或者收回。不过我个人觉得ReentrantReadWriteLock可能使用的有问题。以为我看到函数release()中有this.canHas.writeLock().lock();，并在之后调用了unassign()方法，而unassign()方法中也有this.canHas.writeLock().lock();…难道可以对同一写锁加两次lock？不过我没有研究过ReentrantReadWriteLock。 </p>
+<p>** class Addresses, ** 这个类继承了  ** AbstractNamedRegistry， ** 并且可以填入 ** Address ** .这就是说，这个类是用来active,disable一个address的。另外它是用来单实例模式，也就是整个cloud中只有这一份实例。(  这里会不会崩溃后无法恢复的问题?  ) </p>
+<p>** class AddressManager ** ,继承了org.mule.api.lifecycle.Startable类，  Startable可能是处理生命周期吧  ..不过这个类是和地址相关的，是用来分配，释放，将address和vm关联起来的类。 </p>
+<p>** class AddressUpdateCallback ** 继承了QueuedEventCallback并且实现了Runnable，也就是说它可以作为一个线程类。另外它sleep的时间好像有点过长了5<em>1000.这个类的作用好像是将用户名封装到msg中，然后发送给cluster队列来处理。之后睡一个5</em>1000秒，然后再醒来看看是否有cluster的回复，然后根据回复设置实例的地址。这里采用线程，是因为需要一直监督address的更新。可以看成是守护线程。 </p>
+<p>add_key.pl,这个是perl文件，看不太明白，应该是加入了ssh的public key.不过中间为啥使用loop<br>device,并且将图片加载到loop device上就不得而知了。后来发现，这里image的含义不是图片的意思，而是镜像，也就是将镜像加载到loop<br>device上。</p>
+<p>add_key~add_wsdllocation.pl都是perl写成的。</p>
+<p>** class Admin ** 是用来创建EucalyptusMessage的类。 </p>
+<p>** admin.xml ** 用来配置www的conf的。<br>** interface Allocator ** ，这接口用来分配的，根据String requestId, String userName, String vmtype, int min, int max, SortedSet<ClusterNodeState> clusters 来分配资源，会抛出NotEnoughResourcesAvailable异常 </p>
+<p>** class AlreadyExistsException ** 继承了RuntimeException </p>
+<p>** class AOEManager ** 继承了StorageExportManager，是用来导出存储容量的？ </p>
+<p>** interface AppMessages ** 继承了Messages，从其函数中看，是一个与页面控件事件相关的类。 </p>
+<p>** class AssignAddressCallback ** ，分配地址的cluster,发送回消息后就会将network configure更新。 </p>
+<p>** class AttachedVolumeInfo ** 这是一个将附加逻辑磁盘id,逻辑磁盘名，实例id,设备名，状态和添加时间合成的类。如果其为一行，那么一张表就是AttachedVolumes </p>
+<p>** interface Authenticator ** 是将X509证书和EucalyptusMessage中信息来生成是否授权的Msg的接口。 </p>
+<p>** aws-base.xml~aws-zones.xml ** 是将java类映射为XML,是否为Hibernate就不得而知了。 </p>
+<p>** Axis2.xml~class AxisHttpResponseImpl ** 可以认为是和Axis2打交道的东西。可以以后再研究下。 </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/class/" rel="tag"># class</a>
+              <a href="/tags/webservice/" rel="tag"># webservice</a>
+              <a href="/tags/interface/" rel="tag"># interface</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2009/10/20/4703558/" rel="prev" title="SQL中的各种join">
+                  <i class="fa fa-angle-left"></i> SQL中的各种join
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2009/10/23/4718291/" rel="next" title="Linux新建用户并管理组">
+                  Linux新建用户并管理组 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

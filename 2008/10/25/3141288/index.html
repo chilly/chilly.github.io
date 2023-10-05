@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这个类的名字叫huffman Tree，但是不仅仅是生成huffman Tree，因为Huffman树的生成要使用优先队列，也就是堆。stl中其实有这个的实现。但是我机器里的vs2005这个堆的使用有点小bug（估计是stl中使用的就是数组存储，而且数组一旦固定大小，就再也无法改变，其实这样实现失去了堆的某些特性。  _ 所以我还是自己实现了一下 _  。顺便练习下。）。刚开始的时候就采用int作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程练习——Huffman编码">
+<meta property="og:url" content="http://chillyc.info/2008/10/25/3141288/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="这个类的名字叫huffman Tree，但是不仅仅是生成huffman Tree，因为Huffman树的生成要使用优先队列，也就是堆。stl中其实有这个的实现。但是我机器里的vs2005这个堆的使用有点小bug（估计是stl中使用的就是数组存储，而且数组一旦固定大小，就再也无法改变，其实这样实现失去了堆的某些特性。  _ 所以我还是自己实现了一下 _  。顺便练习下。）。刚开始的时候就采用int作">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2008-10-25T00:56:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:44.347Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="null">
+<meta property="article:tag" content="tree">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2008/10/25/3141288/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2008/10/25/3141288/","path":"2008/10/25/3141288/","title":"编程练习——Huffman编码"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编程练习——Huffman编码 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/25/3141288/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编程练习——Huffman编码 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编程练习——Huffman编码
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-25 08:56:00" itemprop="dateCreated datePublished" datetime="2008-10-25T08:56:00+08:00">2008-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>这个类的名字叫huffman Tree，但是不仅仅是生成huffman Tree，因为Huffman树的生成要使用优先队列，也就是堆。stl中其实有这个的实<br>现。但是我机器里的vs2005这个堆的使用有点小bug（估计是stl中使用的就是数组存储，而且数组一旦固定大小，就再也无法改变，其实这样实现失去了堆的某些特<br>性。 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/10/25/3141267.aspx"> _ 所以我还是自己实现了一下 _
+</a> 。顺便练习下。）。刚开始的时候<br>就采用int作为编码的存储单元。后来发现huffman是可变长编码。所以使用int作为编码单元就失去了huffman的特性。于是寻找bit数组。找到了bit<br>set这个stl类，却发现这个是不可变的。无语。只得自己实现一个可变大小的 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/10/25/3141275.aspx"> _ bit vector _
+</a><br>。然后近乎重写了这个Huffman的编码和解码。不过也不是很难。在这之间又陆陆续续的发现了一系列的bug和编译错误。对以后的编程大有启发。</p>
+<ol>
+<li>&#x2F;* created by chico chen </li>
+<li>*  date 2008&#x2F;10&#x2F;25 </li>
+<li>*&#x2F; </li>
+<li><ol start="5">
+<li><ol start="6">
+<li>#ifndef <em>HUFFMAN_TREE</em></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>#define <em>HUFFMAN_TREE</em> </li>
+<li>#include “Heap.h” </li>
+<li>#include “TreeNode.h” </li>
+<li>#include “BinaryTree.h” </li>
+<li>#include <map></li>
+<li>#include “..&#x2F;..&#x2F;ArithmeticTest&#x2F;ArithmeticTest&#x2F;BITVector.h” </li>
+<li>using  namespace  std; </li>
+<li><ol start="15">
+<li>&#x2F;&#x2F; this class is used for the combin function in huffmanTree class.</li>
+</ol>
+</li>
+<li>class  IntCombin </li>
+<li>{ </li>
+<li>public  : </li>
+<li>static  int  Add(  int  i,  int  j) </li>
+<li>{ </li>
+<li>return  i+j; </li>
+<li>} </li>
+<li>}; </li>
+<li><ol start="25">
+<li>&#x2F;&#x2F; this class for compare tree node</li>
+</ol>
+</li>
+<li>template  &lt; class  T&gt;</li>
+<li>class  TreeNodeCompare </li>
+<li>{ </li>
+<li>public  : </li>
+<li>static  bool  Up(TreeNode<T>* d1, TreeNode<T>* d2) </li>
+<li>{ </li>
+<li>return  Lt(d1-&gt;getData(),d2-&gt;getData()); </li>
+<li>} </li>
+<li><ol start="35">
+<li>static  bool  Eq(T&amp; d1, T&amp; d2)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (d1 &#x3D;&#x3D; d2) </li>
+<li>return  true  ; </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li><ol start="42">
+<li>static  bool  Gt(T&amp; d1, T&amp; d2)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (d1 &gt; d2) </li>
+<li>return  true  ; </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li><ol start="49">
+<li>static  bool  Lt(T&amp; d1, T&amp; d2)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (d1 &lt; d2) </li>
+<li>return  true  ; </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li>}; </li>
+<li><ol start="57">
+<li>&#x2F;&#x2F; this class is for storing huffman code.</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; bits and the length of bits </li>
+<li>class  HuffmanCode </li>
+<li>{ </li>
+<li>public  : </li>
+<li>BITVector bits; </li>
+<li>int  len; </li>
+<li>HuffmanCode() </li>
+<li>{ </li>
+<li>len &#x3D; 0; </li>
+<li>} </li>
+<li><ol start="69">
+<li>HuffmanCode(  const  HuffmanCode &amp; codes):bits(codes.bits)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>len  &#x3D; codes.len; </li>
+<li><ol start="73">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="75">
+<li>const  HuffmanCode&amp; operator&#x3D;(  const  HuffmanCode &amp; codes)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (  this  !&#x3D; &amp;codes) </li>
+<li>{ </li>
+<li>this  -&gt;len &#x3D; codes.len; </li>
+<li>this  -&gt;bits &#x3D; codes.bits; </li>
+<li>} </li>
+<li>return  *  this  ; </li>
+<li>} </li>
+<li><ol start="85">
+<li>~HuffmanCode()</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol start="88">
+<li>}</li>
+</ol>
+</li>
+<li>}; </li>
+<li><ol start="91">
+<li>template  &lt; class  T,  class  Cmp,  class  Combin&gt;</li>
+</ol>
+</li>
+<li>class  HuffmanTree:  public  BinaryTree<T></li>
+<li>{ </li>
+<li>private  : </li>
+<li>&#x2F;&#x2F; store the data, and sort it, then for building a huffman tree </li>
+<li>Heap&lt;TreeNode<T>* ,Cmp&gt; huffmanQueue; </li>
+<li><ol start="98">
+<li>const  unsigned  int  mask;</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; the max number can be shifted, if it is unsigned int then it will be 32. </li>
+<li>const  int  maxShiftNum; </li>
+<li><ol start="102">
+<li><ol start="103">
+<li>TreeNode<T>* initTree()</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; init the huffman tree </li>
+<li>{ </li>
+<li>TreeNode<T> * combinNode &#x3D; NULL; </li>
+<li>T tempData; </li>
+<li>while  (!  this  -&gt;huffmanQueue.IsEmpty()) </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; fetch two small data and generate a large data </li>
+<li>TreeNode<T> * node1 &#x3D;  this  -&gt;huffmanQueue.Top(); </li>
+<li>combinNode &#x3D; node1; </li>
+<li>this  -&gt;huffmanQueue.RemoveTop(); </li>
+<li>if  (!  this  -&gt;huffmanQueue.IsEmpty()) </li>
+<li>{ </li>
+<li>TreeNode<T> * node2 &#x3D;  this  -&gt;huffmanQueue.Top(); </li>
+<li>this  -&gt;huffmanQueue.RemoveTop(); </li>
+<li>tempData &#x3D;  Combin::Add(node1-&gt;getData(),node2-&gt;getData()); </li>
+<li><ol start="120">
+<li><ol start="121">
+<li>if  (Cmp::Lt(node1-&gt;getData(),node2-&gt;getData()))</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>&#x2F;&#x2F; here is comparing the data1 of node1 and the data2 of node2 </li>
+<li>&#x2F;&#x2F;  Cmp:Lt means ‘&lt;’ and Cmp:Gt means ‘&gt;’ </li>
+<li><ol start="126">
+<li>combinNode &#x3D;  new  TreeNode<T>(tempData,node1,node2);</li>
+</ol>
+</li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>combinNode &#x3D;  new  TreeNode<T>(tempData,node2,node1); </li>
+<li>} </li>
+<li>this  -&gt;huffmanQueue.Insert(combinNode); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>break  ; </li>
+<li>} </li>
+<li><ol start="139">
+<li>}</li>
+</ol>
+</li>
+<li>return  combinNode; </li>
+<li>} </li>
+<li><ol start="143">
+<li><ol start="144">
+<li><ol start="145">
+<li>&#x2F;&#x2F; the final huffman code</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>map&lt;T,HuffmanCode&gt; huffmanTable; </li>
+<li><ol start="148">
+<li><ol start="149">
+<li>void  SelfEncode(TreeNode<T>* subRoot,unsigned  int  bitcode,  int  num,map&lt;T,HuffmanCode &gt; &amp;ht)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; encoding the data from a huffman tree. </li>
+<li>&#x2F;&#x2F; The left branch is 0, and the right branch is 1 </li>
+<li>{ </li>
+<li><ol start="154">
+<li>if  (subRoot !&#x3D; NULL)</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol start="157">
+<li>if  (subRoot-&gt;left &#x3D;&#x3D; NULL &amp;&amp; subRoot-&gt;right&#x3D;&#x3D;NULL)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>HuffmanCode hc; </li>
+<li>hc.bits.SetInt(bitcode,0,maxShiftNum-num); </li>
+<li>hc.len &#x3D; maxShiftNum-num; </li>
+<li>ht[subRoot-&gt;getData()] &#x3D; hc; </li>
+<li>return  ; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>if  (num&lt;&#x3D;0) </li>
+<li>{ </li>
+<li>throw  “the huffman is too deep!”  ; </li>
+<li>} </li>
+<li><ol start="172">
+<li><ol start="173">
+<li>SelfEncode(subRoot-&gt;left,bitcode,num-1,ht);</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>bitcode &#x3D; bitcode | (0x80000000 &gt;&gt; (maxShiftNum-num)); </li>
+<li>SelfEncode(subRoot-&gt;right,bitcode,num-1,ht); </li>
+<li>} </li>
+<li>} </li>
+<li><ol start="179">
+<li><ol start="180">
+<li>}</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol start="182">
+<li><ol start="183">
+<li>void  DecodeFromTree(TreeNode<T>* subRoot,BITVector&amp; bits,  int  index,  const  int  &amp; len,vector<T>&amp; decode)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; decoding the code. use the code to search the data from the huffmanTree. </li>
+<li>&#x2F;&#x2F; here you can create you own map&lt;code,data&gt; deHuffmanTable. </li>
+<li>&#x2F;&#x2F; but I can not analyze the space the table will use, </li>
+<li>&#x2F;&#x2F; so I find the data by searching huffman tree </li>
+<li>{ </li>
+<li>if  (index &#x3D;&#x3D; len) </li>
+<li>{ </li>
+<li>if  (subRoot-&gt;getLeft()&#x3D;&#x3D;NULL &amp;&amp; subRoot-&gt;getRight() &#x3D;&#x3D; NULL) </li>
+<li>{ </li>
+<li><ol start="194">
+<li>decode.push_back(subRoot-&gt;getData());</li>
+</ol>
+</li>
+<li>return  ; </li>
+<li>} </li>
+<li>throw  “code length is not match the bits length. Huffman Tree construct error.”  ; </li>
+<li>} </li>
+<li>if  (subRoot &#x3D;&#x3D; NULL) </li>
+<li>{ </li>
+<li>throw  “decode error!”  ; </li>
+<li><ol start="203">
+<li>}</li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getLeft() &#x3D;&#x3D; NULL &amp;&amp; subRoot-&gt;getRight() &#x3D;&#x3D; NULL) </li>
+<li>{ </li>
+<li><ol start="207">
+<li>decode.push_back(subRoot-&gt;getData());</li>
+</ol>
+</li>
+<li>return  DecodeFromTree(  this  -&gt;root,bits,index,len,decode); </li>
+<li>} </li>
+<li><ol start="211">
+<li>if  (bits.Get(index) &#x3D;&#x3D; 0)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>return  DecodeFromTree(subRoot-&gt;getLeft(),bits,index+1,len,decode); </li>
+<li>} </li>
+<li>else  if  (bits.Get(index)&#x3D;&#x3D;1) </li>
+<li>{ </li>
+<li><ol start="218">
+<li>return  DecodeFromTree(subRoot-&gt;getRight(),bits,index+1,len,decode);</li>
+</ol>
+</li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>throw  “code error!”  ; </li>
+<li>} </li>
+<li><ol start="225">
+<li><ol start="226">
+<li>}</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol start="228">
+<li><ol start="229">
+<li>unsigned  int  FindCodeFromTable(T&amp; data)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; find the data code from huffman table </li>
+<li>&#x2F;&#x2F; may be not efficient. </li>
+<li>{ </li>
+<li>return  this  -&gt;huffmanTable[data]; </li>
+<li>} </li>
+<li><ol start="236">
+<li>public  :</li>
+</ol>
+</li>
+<li><ol start="238">
+<li>HuffmanTree(T t[],  int  n):</li>
+</ol>
+</li>
+<li>BinaryTree<T>(),mask(0x80000000),maxShiftNum(  sizeof  (unsigned  int  )*8) </li>
+<li>&#x2F;&#x2F; the array t type is T, and the number is n </li>
+<li>{ </li>
+<li>if  (n &#x3D;&#x3D; 0) </li>
+<li>return  ; </li>
+<li>TreeNode<T>* node; </li>
+<li>for  (  int  i &#x3D; 0; i &lt; n; i++) </li>
+<li>{ </li>
+<li>node &#x3D;  new  TreeNode<T>(t[i]); </li>
+<li>this  -&gt;huffmanQueue.Insert(node); </li>
+<li>} </li>
+<li>this  -&gt;root &#x3D; initTree(); </li>
+<li>} </li>
+<li><ol start="253">
+<li>~HuffmanTree()</li>
+</ol>
+</li>
+<li>{ </li>
+<li>&#x2F;&#x2F; destroy </li>
+<li><ol start="257">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="259">
+<li><ol start="260">
+<li>void  SelfEncode()</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; convert the huffmanTree into huffmanTable </li>
+<li>&#x2F;&#x2F; unsigned int code is 32 bits, so the huffman tree has only less than 33 layer. </li>
+<li>{ </li>
+<li>string s&#x3D;  “”  ; </li>
+<li><ol start="266">
+<li>SelfEncode(  this  -&gt;root,0,maxShiftNum,  this  -&gt;huffmanTable);</li>
+</ol>
+</li>
+<li><ol start="268">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="270">
+<li><ol start="271">
+<li><ol start="272">
+<li>void  Decode(HuffmanCode&amp; huffmanCode,vector<T>&amp; decode)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; use bit to find the data node. </li>
+<li>{ </li>
+<li><ol start="276">
+<li>return  DecodeFromTree(  this  -&gt;root,huffmanCode.bits,0,huffmanCode.len,decode);</li>
+</ol>
+</li>
+<li><ol start="278">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="280">
+<li>HuffmanCode Encode(T info[],  int  n)</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; n is size </li>
+<li>{ </li>
+<li>HuffmanCode hc; </li>
+<li><ol start="285">
+<li>for  (  int  i &#x3D; 0; i &lt; n; i++)</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol start="288">
+<li>hc.bits.SetBitVector(((HuffmanCode)  this  -&gt;huffmanTable[info[i]]).bits,hc.len,((HuffmanCode)  this  -&gt;huffmanTable[info[i]]).len);</li>
+</ol>
+</li>
+<li>hc.len +&#x3D;((HuffmanCode)  this  -&gt;huffmanTable[info[i]]).len; </li>
+<li>} </li>
+<li><ol start="292">
+<li>return  hc;</li>
+</ol>
+</li>
+<li>} </li>
+<li><ol start="295">
+<li><ol start="296">
+<li>void  PrintHuffmanTable()</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; print the huffman table </li>
+<li>&#x2F;&#x2F; print the pair data&lt;-&gt;code </li>
+<li>{ </li>
+<li>int  len &#x3D;  this  -&gt;huffmanTable.size(); </li>
+<li>cout &lt;&lt; “i&#x2F;tdata&#x2F;tcode&#x2F;n”  ; </li>
+<li>int  count &#x3D; 0; </li>
+<li>map&lt;T,HuffmanCode&gt;::iterator i&#x3D;  this  -&gt;huffmanTable.begin(); </li>
+<li>for  (; i !&#x3D;  this  -&gt;huffmanTable.end(); i++) </li>
+<li>{ </li>
+<li>cout &lt;&lt; count++&lt;&lt; “&#x2F;t”  &lt;&lt;(*i).first&lt;&lt; “&#x2F;t”  ; </li>
+<li>(*i).second.bits.PrintfZeroOne(0,(*i).second.len); </li>
+<li>cout&lt;&lt;endl; </li>
+<li>} </li>
+<li><ol start="311">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="313">
+<li>};</li>
+</ol>
+</li>
+<li><ol start="315">
+<li><ol start="316">
+<li>#endif</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>这个类设计方面还有些不足之处。比如encode方法</p>
+<p>测试一下：</p>
+<ol>
+<li>int  a[10] &#x3D; {12,224,33,32,1,91,35,34,36,291}; </li>
+<li>HuffmanTree&lt; int  ,TreeNodeCompare&lt; int  &gt;,IntCombin&gt; ht(a,10); </li>
+<li>ht.SelfEncode(); </li>
+<li>ht.PrintHuffmanTable(); </li>
+<li>ht.printTree(); </li>
+<li>cout &lt;&lt; endl; </li>
+<li>int  info[] &#x3D; {33,34,33}; </li>
+<li>HuffmanCode hc &#x3D; ht.Encode(info,3); </li>
+<li>hc.bits.PrintfZeroOne(0,hc.len); </li>
+<li>vector&lt; int  &gt; code; </li>
+<li>ht.Decode(hc,code); </li>
+<li>** for  ** (  int  i &#x3D; 0; i !&#x3D; code.size();i++) </li>
+<li>{ </li>
+<li><ol start="15">
+<li>cout&lt;&lt;code[i]&lt;&lt;endl;</li>
+</ol>
+</li>
+<li>} </li>
+<li><ol start="18">
+<li>** return  ** 0;</li>
+</ol>
+</li>
+<li></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag"># 编程</a>
+              <a href="/tags/null/" rel="tag"># null</a>
+              <a href="/tags/tree/" rel="tag"># tree</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2008/10/25/3141275/" rel="prev" title="编程练习——可变长bit数组(bitArray)">
+                  <i class="fa fa-angle-left"></i> 编程练习——可变长bit数组(bitArray)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2008/10/27/3156039/" rel="next" title="Open Source Camp校园开源社区聚会">
+                  Open Source Camp校园开源社区聚会 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

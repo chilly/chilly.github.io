@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="copy from :http:&#x2F;&#x2F;rdc.taobao.com&#x2F;blog&#x2F;cs&#x2F;?p&#x3D;671  用消息队列和消息应用状态表来消除分布式事务 由于数据量的巨大，大部分Web应用都需要部署很多个数据库实例。这样，有些用户操作就可能需要去修改多个数据库实例中的数据。传统的解决方法是使用分布式事务保证数据的全局一致性，经典的方法是使用两阶段提交协议。 长期以来，分布式事务提供的优雅的全局ACI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Use Message Queue and Message Status Table to Solute Distribute Transcation">
+<meta property="og:url" content="http://chillyc.info/2011/03/17/2011-03-17-message-queue/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="copy from :http:&#x2F;&#x2F;rdc.taobao.com&#x2F;blog&#x2F;cs&#x2F;?p&#x3D;671  用消息队列和消息应用状态表来消除分布式事务 由于数据量的巨大，大部分Web应用都需要部署很多个数据库实例。这样，有些用户操作就可能需要去修改多个数据库实例中的数据。传统的解决方法是使用分布式事务保证数据的全局一致性，经典的方法是使用两阶段提交协议。 长期以来，分布式事务提供的优雅的全局ACI">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2011-03-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T15:11:05.362Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="see-hear">
+<meta property="article:tag" content="queue">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2011/03/17/2011-03-17-message-queue/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2011/03/17/2011-03-17-message-queue/","path":"2011/03/17/2011-03-17-message-queue/","title":"Use Message Queue and Message Status Table to Solute Distribute Transcation"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Use Message Queue and Message Status Table to Solute Distribute Transcation | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/03/17/2011-03-17-message-queue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Use Message Queue and Message Status Table to Solute Distribute Transcation | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Use Message Queue and Message Status Table to Solute Distribute Transcation
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2011-03-17 00:00:00" itemprop="dateCreated datePublished" datetime="2011-03-17T00:00:00+08:00">2011-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:11:05" itemprop="dateModified" datetime="2023-10-05T23:11:05+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><meta name="_edit_last" content="1" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="_su_title" content="message,queue" />
+<meta name="views" content="362" />
+<meta name="_wp_old_slug" content="用消息队列和消息应用状态表来消除分布式事务" />
+copy from :<span class="exturl" data-url="aHR0cDovL3JkYy50YW9iYW8uY29tL2Jsb2cvY3MvP3A9Njcx">http://rdc.taobao.com/blog/cs/?p=671<i class="fa fa-external-link-alt"></i></span>
+
+<p><strong>用消息队列和消息应用状态表来消除分布式事务</strong></p>
+<p>由于数据量的巨大，大部分Web应用都需要部署很多个数据库实例。这样，有些用户操作就可能需要去修改多个数据库实例中的数据。传统的解决方法是使用分布式事务保证数据的全局一致性，经典的方法是使用两阶段提交协议。</p>
+<p>长期以来，分布式事务提供的优雅的全局ACID保证麻醉了应用开发者的心灵，很多人都不敢越雷池一步，想像没有分布式事务的世界会是怎样。如今就如MySQL和PostgreSQL这类面向低端用户的开源数据库都支持分布式事务了，开发者更是沉醉其中，不去考虑分布式事务是否给系统带来了伤害。</p>
+<p>事实上，有所得必有所失，分布式事务提供的ACID保证是以损害系统的可用性、性能与可伸缩性为代价的。只有在参与分布式事务的各个数据库实例都能够正常工作的前提下，分布式事务才能够顺利完成，只要有一个工作不正常，整个事务就不能完成。这样，系统的可用性就相当于参加分布式事务的各实例的可用性之积，实例越多，可用性下降越明显。从性能和可伸缩性角度看，首先是事务的总持续时间通常是各实例操作时间之和，因为一个事务中的各个操作通常是顺序执行的，这样事务的响应时间就会增加很多；其次是一般Web应用的事务都不大，单机操作时间也就几毫秒甚至不到1毫秒，一但涉及到分布式事务，提交时节点间的网络通信往返过程也为毫秒级别，对事务响应时间的影响也不可忽视。由于事务持续时间延长，事务对相关资源的锁定时间也相应增加，从而可能严重增加了并发冲突，影响到系统吞吐率和可伸缩性。</p>
+<p>正是由于分布式事务有以上问题，eBay在设计上就不采用分布式事务，而是通过其它途径来解决数据一致性问题。其中使用的最重要的技术就是消息队列和消息应用状态表。</p>
+<p>举个例子。假设系统中有以下两个表<br>user(id, name, amt_sold, amt_bought)<br>transaction(xid, seller_id, buyer_id, amount)<br>其中user表记录用户交易汇总信息，transaction表记录每个交易的详细信息。</p>
+<p>这样，在进行一笔交易时，若使用事务，就需要对数据库进行以下操作：<br>begin;<br>INSERT INTO transaction VALUES(xid, $seller_id, $buyer_id, $amount);<br>UPDATE user SET amt_sold &#x3D; amt_sold + $amount WHERE id &#x3D; $seller_id;<br>UPDATE user SET amt_bought &#x3D; amt_bought + $amount WHERE id &#x3D; $buyer_id;<br>commit;<br>即在transaction表中记录交易信息，然后更新卖家和买家的状态。</p>
+<p>假设transaction表和user表存储在不同的节点上，那么上述事务就是一个分布式事务。要消除这一分布式事务，将它拆分成两个子事务，一个更新transaction表，一个更新user表是不行的，因为有可能transaction表更新成功后，更新user失败，系统将不能恢复到一致状态。</p>
+<p>解决方案是使用消息队列。如下所示，先启动一个事务，更新transaction表后，并不直接去更新user表，而是将要对user表进行的更新插入到消息队列中。另外有一个异步任务轮询队列内容进行处理。<br>begin;<br>INSERT INTO transaction VALUES(xid, $seller_id, $buyer_id, $amount);<br>put_to_queue “update user(“seller”, $seller_id, amount);<br>put_to_queue “update user(“buyer”, $buyer_id, amount);<br>commit;<br>for each message in queue<br>begin;<br>dequeue message;<br>if message.type &#x3D; “seller” then<br>UPDATE user SET amt_sold &#x3D; amt_sold + message.amount WHERE id &#x3D; message.user_id;<br>else<br>UPDATE user SET amt_bought &#x3D; amt_bought + message.amount WHERE id &#x3D; message.user_id;<br>end<br>commit;<br>end</p>
+<p>上述解决方案看似完美，实际上还没有解决分布式问题。为了使第一个事务不涉及分布式操作，消息队列必须与transaction表使用同一套存储资源，但为了使第二个事务是本地的，消息队列存储又必须与user表在一起。这两者是不可能同时满足的。</p>
+<p>如果消息具有操作幂等性，也就是一个消息被应用多次与应用一次产生的效果是一样的话，上述问题是很好解决的，只要将消息队列放到transaction表一起，然后在第二个事务中，先应用消息，再从消息队列中删除。由于消息队列存储与user表不在一起，应用消息后，可能还没来得及将应用过的消息从队列中删除时系统就出故障了。这时系统恢复后会重新应用一次这一消息，由于幂等性，应用多次也能产生正确的结果。</p>
+<p>但实际情况下，消息很难具有幂等性，比如上述的UPDATE操作，执行一次和执行多次的结束显然是不一样的。解决这一问题的方法是使用另一个表记录已经被成功应用的消息，并且这个表使用与user表相同的存储。假设增加以下表 message_applied(msg_id)记录被成功应用的消息，则产生最终的解决方案如下：<br>begin;<br>INSERT INTO transaction VALUES(xid, $seller_id, $buyer_id, $amount);<br>put_to_queue “update user(“seller”, $seller_id, amount);<br>put_to_queue “update user(“buyer”, $buyer_id, amount);<br>commit;<br>for each message in queue<br>begin;<br>SELECT count(*) as cnt FROM message_applied WHERE msg_id &#x3D; message.id;<br>if cnt &#x3D; 0 then<br>if message.type &#x3D; “seller” then<br>UPDATE user SET amt_sold &#x3D; amt_sold + message.amount WHERE id &#x3D; message.user_id;<br>else<br>UPDATE user SET amt_bought &#x3D; amt_bought + message.amount WHERE id &#x3D; message.user_id;<br>end<br>INSERT INTO message_applied VALUES(message.id);<br>end<br>commit;<br>if 上述事务成功<br>dequeue message<br>DELETE FROM message_applied WHERE msg_id &#x3D; message.id;<br>end<br>end</p>
+<p>我们来仔细分析一下：<br>1、消息队列与transaction使用同一实例，因此第一个事务不涉及分布式操作；<br>2、message_applied与user表在同一个实例中，也能保证一致性；<br>3、第二个事务结束后，dequeue message之前系统可能出故障，出故障后系统会重新从消息队列中取出这一消息，但通过message_applied表可以检查出来这一消息已经被应用过，跳过这一消息实现正确的行为；<br>4、最后将已经成功应用，且已经从消息队列中删除的消息从message_applied表中删除，可以将message_applied表保证在很小的状态（不清除也是可以的，不影响系统正确性）。由于消息队列与message_applied在不同实例上，dequeue message之后，将对应message_applied记录删除之前可能出故障。一但这时出现故障，message_applied表中会留下一些垃圾内容，但不影响系统正确性，另外这些垃圾内容也是可以正确清理的。</p>
+<p>虽然由于没有分布式事务的强一致性保证，使用上述方案在系统发生故障时，系统将短时间内处于不一致状态。但基于消息队列和消息应用状态表，最终可以将系统恢复到一致。使用消息队列方案，解除了两个数据库实例之间的紧密耦合，其性能和可伸缩性是分布式事务不可比拟的。</p>
+<p>当然，使用分布式事务有助于简化应用开发，使用消息队列明显需要更多的工作量，两者各有优缺点。个人观点是，对于时间紧迫或者对性能要求不高的系统，应采用分布式事务加快开发效率，对于时间需求不是很紧，对性能要求很高的系统，应考虑使用消息队列方案。对于原使用分布式事务，且系统已趋于稳定，性能要求高的系统，则可以使用消息队列方案进行重构来优化性能。</p>
+<p>注: 本文主要取材于eBay的工程师Dan Pritchet写的这篇文章。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/see-hear/" rel="tag"># see-hear</a>
+              <a href="/tags/queue/" rel="tag"># queue</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2011/03/16/2011-03-16-google-search-update-speed/" rel="prev" title="Google Search Update Speed">
+                  <i class="fa fa-angle-left"></i> Google Search Update Speed
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2011/04/01/2011-04-01-fun-clock/" rel="next" title="Fun Clock">
+                  Fun Clock <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

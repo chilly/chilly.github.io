@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="今天公司断网，身为一个互联网公司，断了一天的网。身为一个让网络变得更容易的公司，断了一天的网…这让我重新审视了所处的环境。 不过还是利用断网时间，详细看了一下  这个SQRL技术  。 下面简单的介绍一下该技术： 1. 主要使用物件作为认证的方式。现在它给的一系列技术，主要是QR(二维码)。其实最主要也就是二维码中的一个经常变化且在一定时间内唯一的Nonce串。另外我个人觉得作为扩展，现在的动态口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQRL Secure Quick Reliable Login 安全快速可靠登陆">
+<meta property="og:url" content="http://chillyc.info/2013/12/13/17305955/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="今天公司断网，身为一个互联网公司，断了一天的网。身为一个让网络变得更容易的公司，断了一天的网…这让我重新审视了所处的环境。 不过还是利用断网时间，详细看了一下  这个SQRL技术  。 下面简单的介绍一下该技术： 1. 主要使用物件作为认证的方式。现在它给的一系列技术，主要是QR(二维码)。其实最主要也就是二维码中的一个经常变化且在一定时间内唯一的Nonce串。另外我个人觉得作为扩展，现在的动态口">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2013-12-13T10:44:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:34:49.851Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="安全">
+<meta property="article:tag" content="SQRL">
+<meta property="article:tag" content="认证">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2013/12/13/17305955/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2013/12/13/17305955/","path":"2013/12/13/17305955/","title":"SQRL Secure Quick Reliable Login 安全快速可靠登陆"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SQRL Secure Quick Reliable Login 安全快速可靠登陆 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/13/17305955/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SQRL Secure Quick Reliable Login 安全快速可靠登陆 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQRL Secure Quick Reliable Login 安全快速可靠登陆
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-12-13 18:44:00" itemprop="dateCreated datePublished" datetime="2013-12-13T18:44:00+08:00">2013-12-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>今天公司断网，身为一个互联网公司，断了一天的网。身为一个让网络变得更容易的公司，断了一天的网…这让我重新审视了所处的环境。</p>
+<p>不过还是利用断网时间，详细看了一下 <a target="_blank" rel="noopener" href="https://www.grc.com/sqrl/sqrl.htm"> 这个SQRL技术 </a> 。</p>
+<p>下面简单的介绍一下该技术：</p>
+<p>1. 主要使用物件作为认证的方式。现在它给的一系列技术，主要是QR(二维码)。其实最主要也就是二维码中的一个经常变化且在一定时间内唯一的Nonce串。另外我个人觉得作为扩展，现在的动态口令卡，各个银行发的电子令牌都可以归为这一类。不过SQRL使用的可以开源免费的算法，而且可以安装在任意电子设备中。所以这个是一个通用技术。比银行发的电子令牌这些更加通用。</p>
+<p>2. 只是了消除username&#x2F;password这个东西。其他的安全问题基本上没有考虑。不过这个消除不知道到底是一种进步，还是一种退步。因为它仍旧使用了另外一套复杂的密钥（公钥私钥）代替了现有的username&#x2F;password简单密钥。</p>
+<p>3. 仍然不能针对“人”这个实体做认证。偷走了手机，偷走了其他认证设备就意味着别人可以做为“你”登陆。</p>
+<p>4. 算法详情：<br>每个人都有一个唯一的256bit的ID作为自己的唯一ID。这个ID再所有可以进行SQRL认证的网站上都是统一的。另外自己的设备中有一个MasterKey(主钥)。这个Master Key可以用于生成各个网站的private-public key.<br>4. 1 首先设备读取到了信息(扫描二维码&#x2F;获取到认证需要的url) 例如：<a href="https://chillyc.info/login?sdaf9203rfnlnvq0239sdf,%E5%85%B6%E4%B8%ADsdaf9203rfnlnvq0239sdf%E8%BF%99%E4%B8%AA%E6%98%AF%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90%E7%9A%84%E5%B9%B6%E4%B8%94%E5%9C%A8%E4%B8%80%E5%AE%9A%E6%97%B6%E9%97%B4%E5%86%85%E6%98%AF%E5%94%AF%E4%B8%80%E7%9A%84%E3%80%82">https://chillyc.info/login?sdaf9203rfnlnvq0239sdf,其中sdaf9203rfnlnvq0239sdf这个是随机生成的并且在一定时间内是唯一的。</a><br>4. 2 然后设备使用Master key 对 domain(chillyc.info) 进行HMAC 散列生成 只对 chillyc.info 有作用的private-public keys（其实这一步HMAC完全不需要，只需要生成一个不重复的private-public key然后再做一个site到private-public key的Map就好了。）</p>
+<p>4. 3 使用 private key对<a href="https://chillyc.info/login?sdaf9203rfnlnvq0239sdf%E8%BF%9B%E8%A1%8C%E5%8A%A0%E5%AF%86%EF%BC%8C%E7%84%B6%E5%90%8E%E5%8F%91%E9%80%81">https://chillyc.info/login?sdaf9203rfnlnvq0239sdf进行加密，然后发送</a> POST <a href="https://chillyc.info/sqrl">https://chillyc.info/sqrl</a>  并且带上public&#x3D;[your publickey]和sign&#x3D;[刚才用private key加密的串]</p>
+<p>4. 4 网站使用设备给的公钥对加密串进行解密。然后就取到了你的ID。这中间不需要任何 username&#x2F;password.  现在讨论一下上面的算法是安全的吗？</p>
+<p>1.  整个过程使用了Https协议，可以有效的防止中间人攻击(如果客户端检查服务器证书的话)。</p>
+<p>2.  使用POST 发送数据，防止了某个中间代理截获url parameter，或者写入到log中。 例如网站使用的nginx,https证书也放在nginx上。然后..log中就出现了不该出现的东西。<br>3.  因为对每个网站(domain)都有不同的private-public key, 这样就将安全问题隔离在某个domain中，不会引起扩散。</p>
+<p>4.  OS 需要保护好 Master Key。如果使用我建议的做一个site到private-public key的Map，那么Master Key就不重要了。但是这需要保护的就是整个Map. 看起来只保护Master Key可能更简单一些。</p>
+<p>5.  另外SQRL 还希望，用户在扫描到二维码时，需要给用户展示一下domain,并且提示一下用户，是否对该domain进行授权。这样就防止了恶意的domain，或者假冒的domain。从算法协议层面，看起这个东西是安全的。可是仍有下面的一些不足：那个链接中有提及，我就直接照抄了。</p>
+<ul>
+<li>How are identities backed up and&#x2F;or cloned to other devices? </li>
+<li>What about logging into a website displayed on the smartphone’s own browser? </li>
+<li>What if the smartphone that contains my identity is lost or stolen? </li>
+<li>What about password protecting logins on the phone? </li>
+<li>What if the phone is hacked? </li>
+<li>What about different people (and identities) sharing one phone? </li>
+<li>What about having multiple identities for the same website?</li>
+</ul>
+<p>对于第一个问题，我想解决的方案非常简单。可以对在手机生成一个二维码，用另外一个手机拍照，这样就能够获取到Master Key. 然后就能方便的生成site-public-private key.</p>
+<p>对于第二个问题，其实完全可以使用JS和native app通讯。或者 browser中带有SQRL client。</p>
+<p>对于第三个问题，这必须有一个SQRL的中心节点，该节点可以控制对已分配和已授权的Master Key进行回收和清除。不过这个问题又来了，该中心节点如何认证用户呢？看起来SQRL 这个东西不是完备的。</p>
+<p>其他的问题我觉得…都很难解决。有些并不是SQRL这个算法协议所能解决的。</p>
+<p>总结：<br>SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥机制代替了人工可记忆的密钥。让我想到：技术宅永远都不可能改变世界。他们只不过给世界一个美好简单的假象。当你仔细观察假象的时候，却发现竟然是由复杂丑陋的拼图拼接而成。该死的技术宅们……请研究一套能够真正能够认证“人”的技术。即使记忆可以移植，即使DNA可以复制，即使指纹可以盗用，即使所有的一切都可以复制。但是只有一样只会随着人本身发生变化，那就是每一个人在其生活环境、经历、岁月中造就的思维模式。你可以copy 我的文字，但是你写这个主题，不可能和我一字不差。不过这种变化的认证估计在我能看到的未来都不可能实现..  </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%AE%89%E5%85%A8/" rel="tag"># 安全</a>
+              <a href="/tags/SQRL/" rel="tag"># SQRL</a>
+              <a href="/tags/%E8%AE%A4%E8%AF%81/" rel="tag"># 认证</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2013/12/11/17262125/" rel="prev" title="安全、垃圾注册、垃圾邮件">
+                  <i class="fa fa-angle-left"></i> 安全、垃圾注册、垃圾邮件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2013/12/15/17332801/" rel="next" title="2013 PyCon总结">
+                  2013 PyCon总结 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="vsFTPd 服务器初学者指南（欢迎大家参与补充）** 作者： ** 北南南北，正在修订之中** 来自： **  LinuxSir.Org  (此处为文章地址)** 摘要： ** vsFTPD是一款小巧易用FTP服务器程序；本文面向初学者的一点疑问，能让初学者在最短的时间内学会最简单的vsftpd服务器的架设；本文应该算是初学者练手篇；正在更新之中；本文基于 vsftpd-2.0.3；  ** 欢">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos&#x2F;redhat&#x2F;fedora Ftp配置和使用——vsftp">
+<meta property="og:url" content="http://chillyc.info/2009/08/31/4503394/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="vsFTPd 服务器初学者指南（欢迎大家参与补充）** 作者： ** 北南南北，正在修订之中** 来自： **  LinuxSir.Org  (此处为文章地址)** 摘要： ** vsFTPD是一款小巧易用FTP服务器程序；本文面向初学者的一点疑问，能让初学者在最短的时间内学会最简单的vsftpd服务器的架设；本文应该算是初学者练手篇；正在更新之中；本文基于 vsftpd-2.0.3；  ** 欢">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2009-08-31T06:20:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:45.470Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="ftp服务器">
+<meta property="article:tag" content="防火墙">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2009/08/31/4503394/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2009/08/31/4503394/","path":"2009/08/31/4503394/","title":"Centos/redhat/fedora Ftp配置和使用——vsftp"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Centos/redhat/fedora Ftp配置和使用——vsftp | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vsFTPd-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%9D%E5%AD%A6%E8%80%85%E6%8C%87%E5%8D%97%EF%BC%88%E6%AC%A2%E8%BF%8E%E5%A4%A7%E5%AE%B6%E5%8F%82%E4%B8%8E%E8%A1%A5%E5%85%85%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">vsFTPd 服务器初学者指南（欢迎大家参与补充）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#This-file-controls-the-state-of-SELinux-on-the-system"><span class="nav-number"></span> <span class="nav-text">This file controls the state of SELinux on the system.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SELINUX-can-take-one-of-these-three-values"><span class="nav-number"></span> <span class="nav-text">SELINUX&#x3D; can take one of these three values:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#enforcing-SELinux-security-policy-is-enforced"><span class="nav-number"></span> <span class="nav-text">enforcing - SELinux security policy is enforced.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#permissive-SELinux-prints-warnings-instead-of-enforcing"><span class="nav-number"></span> <span class="nav-text">permissive - SELinux prints warnings instead of enforcing.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#disabled-SELinux-is-fully-disabled"><span class="nav-number"></span> <span class="nav-text">disabled - SELinux is fully disabled.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SELINUXTYPE-type-of-policy-in-use-Possible-values-are"><span class="nav-number"></span> <span class="nav-text">SELINUXTYPE&#x3D; type of policy in use. Possible values are:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#targeted-Only-targeted-network-daemons-are-protected"><span class="nav-number"></span> <span class="nav-text">targeted - Only targeted network daemons are protected.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#strict-Full-SELinux-protection"><span class="nav-number"></span> <span class="nav-text">strict - Full SELinux protection.</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/08/31/4503394/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Centos/redhat/fedora Ftp配置和使用——vsftp | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Centos/redhat/fedora Ftp配置和使用——vsftp
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-08-31 14:20:00" itemprop="dateCreated datePublished" datetime="2009-08-31T14:20:00+08:00">2009-08-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="vsFTPd-服务器初学者指南（欢迎大家参与补充）"><a href="#vsFTPd-服务器初学者指南（欢迎大家参与补充）" class="headerlink" title="vsFTPd 服务器初学者指南（欢迎大家参与补充）"></a>vsFTPd 服务器初学者指南（欢迎大家参与补充）</h2><p>** 作者： ** 北南南北，正在修订之中<br>** 来自： ** <a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152"> LinuxSir.Org </a> (此处为文章地址)<br>** 摘要： ** vsFTPD是一款小巧易用FTP服务器程序；本文面向初学者的一点疑问，能让初学者在最短的时间内学会最简单的vsftpd服务器的架设；本文应该算是初学者练手篇；正在更新之中；本文基于 vsftpd-2.0.3； </p>
+<p>** 欢迎大家共同修订本教程，有些功能的实现，需要大家参与； ** 您可以以留言的形式参与，我会每天把大家的留言整理加入文档；谢谢。 </p>
+<p>** 目录 **</p>
+<p><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#1"> 1、vsFTPd，目前常用FTP服务器套件； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#2"> 2、ftp 用户管理解说； </a></p>
+<p><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#2.1"> 2.1、匿名ftp 用户和用户组的理解； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#2.2"> 2.2、匿名ftp 用户和ftp用户组是否可以删除； </a></p>
+<p><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#3"> 3、vsFTPd的安装； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#4"> 4、vsFTPd的服务器的启动和关闭； </a></p>
+<p><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#4.1"> 4.1、vsFTPd服务器启动和关闭的通用方法； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#4.2"> 4.2、在Fedora&#x2F;Redhat&#x2F;CentOS中vsFTPd 服务器的启动和关闭：
+</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#5"> 5、vsFTPd的服务器和防火墙及SELINUX的关系； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#6"> 6、500 OOPS: vsftpd: refusing to run with writable anonymous root
+</a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#7"> 7、关于vsFTPd配置文件的说明； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8"> 8、关于vsFTPd服务器的一些常用功能的实现； </a></p>
+<p><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.1"> 8.1、关于匿名上传下载的实现； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.2"> 8.2、关于添加本地用户及打开读写权限示例； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.4"> 8.4、如何实现虚拟路径？ </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.5"> 8.5、打开vsFTP服务器的日志功能； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.6"> 8.6、如何定制欢迎信息； </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.7"> 8.7、硬盘空间有限，如何把帐号ftp默认的路径&#x2F;var&#x2F;ftp更改到别处？
+</a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.8"> 8.8、如何让vsFTP服务器限制链接数，以及每个IP最大的链接数？
+</a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.9"> 8.9、如何限制传输速度？ </a><br><a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#8.10"> 8.10、如何有选择的把用户限制在家目录中呢？ </a></p>
+<p>**<br>+++++++++++++++++++++++++++++++++++++++++++<br>正文<br>+++++++++++++++++++++++++++++++++++++++++++<br>**</p>
+<p>** 1、vsFTPd，目前常用FTP服务器套件； **</p>
+<p>vsFTPd是一款在Linux发行版中最受推崇的FTP服务器程序；特点是小巧轻快，安全易用；能让其自身特点得发发挥和掌握，也然最主要的是会用；</p>
+<p>目前在开源操作系统中常用的FTPD套件主要有ProFTPD、PureFTPd和wuftpd等；至于哪个FTP服务器套件更好，哪个是你最熟悉的，哪个就是最好的<br>；</p>
+<p>** 2、ftp 用户管理解说； **</p>
+<p>FTP服务器对用户的管理，在默认的情况下是根据 &#x2F;etc&#x2F;passwd及&#x2F;etc&#x2F;group<br>来进行的，所以我们一定要了解Linux系统用户和用户组的管理，用户和用户组的管理是一切应用的的基础，有的弟兄不想去了解基础的东西，就想一步成架好<br>各种服务器，事实证明这种学习方法是最不明智的；虽然在您可能在几分钟启动了ftp服务器，但遇到问题时，您不一定能知道是哪里出错；所以基础还是极为重 要的；</p>
+<p>** 推荐文章： ** <a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/91"> 《Linux 用户（user）和用户组（group）管理概述》 </a></p>
+<p>** 2.1、匿名ftp 用户和用户组的理解； **</p>
+<p>当我们访问各大FTP上访问时，可能我们不去想我们以什么身份登录的，如果他的FTP允许匿名登录的话；比如我们在浏览器上打入；</p>
+<p><code>ftp://mirrors.kernel.org   或   ftp://ftp:ftp@mirrors.kernel.org</code></p>
+<p>我们会发现上面的两行最终都能访问，而且显示的结果也完全一样，最终都跳到 <a href="ftp://mirrors.kernel.org/">ftp://mirrors.kernel.org</a><br>地址；那我们访问这个FTP时，是不是有用户和密码呢？是的，也是需要在的，只是在服务器端允许匿名访问，而匿名访问的用户名和密码都是ftp，只是我们<br>因为匿名访问，没有感觉到他有用户名和密码罢了。第二个地址就是以ftp用户，密码也是ftp来访问 <a href="ftp://mirrors.kernel.org;/">ftp://mirrors.kernel.org；</a></p>
+<p>如果我们以ftp命令连接 mirrors.kernel.org 时，我们会发现需要输入用户ftp，密码ftp才能访问；</p>
+<p>在FTP服务器中，匿名用户的用户名和密码都是ftp ；这个用户可以在您的操作系统中的 &#x2F;etc&#x2F;passwd 中能找得到；可能有类似下面的一行；</p>
+<p><code>ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</code></p>
+<p>** 说明： **</p>
+<p>&#x2F;etc&#x2F;passwd 是系统用户的配置文件；&#x2F;etc&#x2F;group是系统用户组配置文件，您可以通过 <a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/91"> 《Linux<br>用户（user）和用户组（group）管理概述》 </a><br>及其相关文档中了解一些用户管理的一些基础知识；</p>
+<p>在ftp用户这行中，我们看到七个字段，每个字段写字段之间用:号分割；</p>
+<p>ftp 是用户名<br>x 是密码字段，是隐藏的；<br>14 是用户的UID字段，可以自己来设定，不要和其它用户的UID相同，否则会造成系统安全问题；<br>50 用用户组的GID，可以自己设定，不要和其它用户组共用FTP的GID，否则会造成系统全全问题；<br>FTP User 是用户说明字段；<br>&#x2F;var&#x2F;ftp 是ftp用户的家目录，可以自己来定义；<br>&#x2F;sbin&#x2F;nologin 这是用户登录SHELL ，这个也是可以定义的，&#x2F;sbin&#x2F;nologin<br>表示不能登录系统；系统虚拟帐号（也被称为伪用户）一般都是这么设置。比如我们把ftp用户的&#x2F;sbin&#x2F;nologin 改为 &#x2F;bin&#x2F;bash<br>，这样ftp用户通过本地或者远程工具ssh或telnet以真实用户身份登录到系统。这样做对系统来说是不安全的；如果您认为一个用户没有太大的必要登<br>录到系统，就可以只给他FTP帐号的权限，也就是说只给他FTP的权限，而不要把他的SHELL设置成 &#x2F;bin&#x2F;bash 等；</p>
+<p>** 关于ftp用户组的理解： **</p>
+<p>我们查看 &#x2F;etc&#x2F;group 的时候，会发现类似这样一条；</p>
+<p><code>ftp:x:50:</code></p>
+<p>&#x2F;etc&#x2F;group 是用户组的管理配置文件，上面这行表示用户组ftp，x是密码段，50是GID；我们对照在&#x2F;etc&#x2F;passwd中的ftp那行得知ftp用<br>户是属于ftp用户组的，因为ftp用户那行中的GID和ftp用户组的GID是相同的；</p>
+<p>** 2.2、匿名ftp 用户和ftp用户组是否可以删除 **</p>
+<p>在一般情况下是不能把&#x2F;etc&#x2F;passwd和&#x2F;etc&#x2F;group<br>中有把ftp用户和用户组的行删除的，因为FTP服务器是需要他们来对FTP用户实现管理，在默认的情况下。</p>
+<p>虽然不能删除，但对&#x2F;etc&#x2F;passwd及&#x2F;etc&#x2F;group中的ftp用户及ftp用户组的一些相关的东西是能修改的；比如我们可以把ftp<br>用户的家目录改掉，也可以把ftp用户的UID改掉 … …<br>前提是你对用户管理有所了解，系统用户管理是一切应用基础之一，可能初学Linux的弟兄并不了解用户管理的重要性，但慢慢您就会发现这个道理；</p>
+<p>** 3、vsFTPd的安装； **</p>
+<p>在最新的各大发行版中的安装盘中都有vsFTPd的软件包，您用相应发行版提供的软件包管理工具就能安装上；当然您可以到各大发行版的FTP镜像中<br>找到vsftpd的软件包；当然也能用软件包的管理工具在线安装；vsftpd的软件包本来不大，花不了多长时间，两分钟就够了吧；因为本文是初学者教<br>程，我严重推荐您用发行版提供的软件来安装，不推荐您自己来编译源码包的安装方式；</p>
+<p>** 如果您用的是Fedora 或Redhat 系统，可以用下面的命令在线安装； **</p>
+<p><code>[root@localhost ~]# yum install vsftpd</code></p>
+<p>** 如果是debian 类系统，可以用apt 来在线安装； **</p>
+<p><code>[root@localhost ~]# apt-get install vsftpd</code></p>
+<p>** 如果您是RPM的系统，也可以找到vsftpd-xxxx.rpm 的包来通过rpm命令来安装； **</p>
+<p><code>[root@localhost ~]# rpm -ivh vsftpd*.rpm</code></p>
+<p>** 您可以下载源码包来安装 **</p>
+<p>比如我们下载的是 vsftpd-2.0.3.tar.gz ；</p>
+<p><code>[root@localhost ~]# tar zxvf vsftpd-2.0.3.tar.gz   [root@localhost ~]# cd vsftpd-2.0.3   [root@localhost ~]# make ;make install   [root@localhost ~]# cp vsftpd.conf /etc</code></p>
+<p>然后修改&#x2F;etc&#x2F;vsftpd.conf ，在配置文件的最后一行加入下面一行；</p>
+<p><code>listen=yes</code></p>
+<p>源码包安装的方法，如果您的系统是RPM包管理的系统，可以删除&#x2F;etc&#x2F;xinetd.d&#x2F;vsftpd 这个文件；然后启动xinetd 服务器；</p>
+<p><code>[root@localhost ~]# /etc/init.d/xinetd restart   停止 xinetd：                                              [  确定  ]   启动 xinetd：                                              [  确定  ]</code></p>
+<p>vsFTPd运行有两种模式，在RPM包管理的系重审统，大多是由Fedora&#x2F;Redhat<br>开发而来，对于这样的系统有xinted服务器一说；对于非RPM包管理的系统，一般没有xinted这一说。为了保证本文档的统一，我们都不要用<br>xinetd模式，而用initd运行模式来启动和管理服务器，也就是独立运行模式； 至于什么是xinted和inted 模式，您可以参考 <a target="_blank" rel="noopener" href="http://www.linuxsir.org/bbs/showthread.php?t=42075"> 《<br>用vsFTPd自架Linux网络安装服务器》 </a></p>
+<p>** 4、vsFTPd的服务器的启动和关闭； **</p>
+<p>vsFTPd服务器启动和关闭是极容易的；我们可以直接把服务器运行调到后台运行；这是几乎所有服务器管理的运行方式；</p>
+<p>** 4.1、vsFTPd服务器启动和关闭的通用方法； **</p>
+<p>运行vsftpd命令，要用到root权限，如果您当前操作用户并非是root，可以用su切换到root权限；关于root权限的切换，您有两种方式，一种是su，<br>另一种是sudo； ** 请参考： ** <a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/104"> 《Linux 系统中的超级权限的控制》
+</a></p>
+<p>** vsFTPd服务器的运行； **</p>
+<p><code>[root@localhost ~]# /usr/sbin/vsftpd &amp;   [root@localhost ~]# /usr/local/sbin/vsftpd &amp;</code></p>
+<p>** vsFTPd服务器是否运行起来； **</p>
+<p>我们可以通过pgrep vsftpd 来查看vsftpd是否运行起来；</p>
+<p><code>[root@localhost ~]# pgrep vsftpd   4248</code></p>
+<p>上面显示vsFTPd服务器运行起来了，您可以通过ftp命令、lftp工具或gftp或其它的FTP客户端来测试连接；</p>
+<p>** vsFTPd 服务器关闭： **</p>
+<p>我们用pkill vsftpd 来杀死vsftpd进程，这样就把vsFTPd关闭，用psgrep vsftpd<br>来查看进程，如果没有进程，证明vsFTPd已经关掉；当然也要用到root权限。</p>
+<p><code>  [root@localhost ~]# pkill vsftpd   [root@localhost ~]# pgrep vsftpd</code></p>
+<p>** 4.2、在Fedora&#x2F;Redhat&#x2F;CentOS中vsFTPd 服务器的启动和关闭： **</p>
+<p>在Fedora&#x2F;Redhat&#x2F;CentOS中，也可以用下面的方法来启动vsFTPd；当然也要用到root权限；</p>
+<p><code>[root@localhost beinan]# /etc/init.d/vsftpd start   为 vsftpd 启动 vsftpd：                                    [  确定  ]</code></p>
+<p>重新启动vsFTPd用下面的命令；</p>
+<p><code>[root@localhost beinan]# /etc/init.d/vsftpd restart   关闭 vsftpd：                                              [  确定  ]   为 vsftpd 启动 vsftpd：                                    [  确定  ]</code></p>
+<p>关掉vsFTPd服务器，应该用下面的命令；</p>
+<p><code>[root@localhost beinan]# /etc/init.d/vsftpd stop   关闭 vsftpd：                                              [  确定  ]</code></p>
+<p>** 5、vsFTPd的服务器和防火墙及SELINUX的关系；（重要） **</p>
+<p>我在论坛上看到有些弟兄说vsFTPd服务器启动正常，但却不能访问或用户不能上传文件，我感觉应该是防火墙或SELINUX的事；可能FTPD服<br>务器被防火墙或SELINUX的安全机制防住了。所以您必须要让防火墙通过ftp，当然也要让SELINUX通过ftp服务器才行；</p>
+<p>在Fedora&#x2F;Redhat&#x2F;CentOS中，您要设置一下防火墙，可以把防火墙关掉，或者在自定义中让ftp “通过”防火墙；</p>
+<p><code>[root@localhost ~]# system-config-securitylevel-tui</code></p>
+<p>或者运行一下如下的命令，清除防火墙规则（通用）；</p>
+<p><code>[root@localhost beinan]# iptables -F</code></p>
+<p>关于SELINUX服务器的解说<br>，可能老手或新手对SELINUX都有点麻烦，建议您SELINUX；或者让vsFTPd服务器跳过SELINUX启动；也就是说要用到 ** <a target="_blank" rel="noopener" href="http://www.linuxsir.org/main/?q=node/152#4.1"><br>4.1、vsFTPd服务器启动和关闭的通用方法； </a> **<br>；这在Fedora&#x2F;Redhat&#x2F;CentOS中这样启动vsFTPd服务器是有效的；</p>
+<p>当然您可也可以关掉SELINUX，在&#x2F;etc&#x2F;selinux&#x2F;config 配置文件如下；</p>
+<p>&#96; &#x2F;etc&#x2F;selinux&#x2F;config  </p>
+<h1 id="This-file-controls-the-state-of-SELinux-on-the-system"><a href="#This-file-controls-the-state-of-SELinux-on-the-system" class="headerlink" title="This file controls the state of SELinux on the system."></a>This file controls the state of SELinux on the system.</h1><h1 id="SELINUX-can-take-one-of-these-three-values"><a href="#SELINUX-can-take-one-of-these-three-values" class="headerlink" title="SELINUX&#x3D; can take one of these three values:"></a>SELINUX&#x3D; can take one of these three values:</h1><h1 id="enforcing-SELinux-security-policy-is-enforced"><a href="#enforcing-SELinux-security-policy-is-enforced" class="headerlink" title="enforcing - SELinux security policy is enforced."></a>enforcing - SELinux security policy is enforced.</h1><h1 id="permissive-SELinux-prints-warnings-instead-of-enforcing"><a href="#permissive-SELinux-prints-warnings-instead-of-enforcing" class="headerlink" title="permissive - SELinux prints warnings instead of enforcing."></a>permissive - SELinux prints warnings instead of enforcing.</h1><h1 id="disabled-SELinux-is-fully-disabled"><a href="#disabled-SELinux-is-fully-disabled" class="headerlink" title="disabled - SELinux is fully disabled."></a>disabled - SELinux is fully disabled.</h1><p>SELINUX&#x3D;Disabled  #这样就把SELINUX服务器关掉了，请重新启动系统；  </p>
+<h1 id="SELINUXTYPE-type-of-policy-in-use-Possible-values-are"><a href="#SELINUXTYPE-type-of-policy-in-use-Possible-values-are" class="headerlink" title="SELINUXTYPE&#x3D; type of policy in use. Possible values are:"></a>SELINUXTYPE&#x3D; type of policy in use. Possible values are:</h1><h1 id="targeted-Only-targeted-network-daemons-are-protected"><a href="#targeted-Only-targeted-network-daemons-are-protected" class="headerlink" title="targeted - Only targeted network daemons are protected."></a>targeted - Only targeted network daemons are protected.</h1><h1 id="strict-Full-SELinux-protection"><a href="#strict-Full-SELinux-protection" class="headerlink" title="strict - Full SELinux protection."></a>strict - Full SELinux protection.</h1><p>SELINUXTYPE&#x3D;targeted &#96;</p>
+<p>** 6、500 OOPS: vsftpd: refusing to run with writable anonymous root **</p>
+<p>如果我们已经把vsFTPd服务器启动好了，但登录测试是会出现类似下面的提示；</p>
+<p>500 OOPS: vsftpd: refusing to run with writable anonymous root</p>
+<p>这表示ftp用户的家目录的权限不对，应该改过才对；</p>
+<p><code>[root@localhost ~]# more /etc/passwd |grep ftp   ftp:x:1000:1000:FTP User:/var/ftp:/sbin/nologin</code></p>
+<p>我们发现ftp用户的家目录在&#x2F;var&#x2F;ftp，就是这个&#x2F;var&#x2F;ftp的权限不对所致，这个目录的权限是不能打开所有权限的；是您运行了chmod 777<br>&#x2F;var&#x2F;ftp所致；如果没有ftp用户这个家目录，当然您要自己建一个；</p>
+<p>如下FTP用户的家目录是不能针对所有用户、用户组、其它用户组完全开放；</p>
+<p><code>[root@localhost ~]# ls -ld /var/ftp   drwxrwxrwx  3 root root 4096 2005-03-23  /var/ftp</code></p>
+<p>** 修正这个错误，应该用下面的办法； **</p>
+<p><code>[root@localhost ~]# chown  root:root /var/ftp   [root@localhost ~]# chmod  755 /var/ftp</code></p>
+<p>有的弟兄可能会说，那匿名用户的可读、可下载、可上传怎么办呢？这也简单，在&#x2F;var&#x2F;ftp下再建一个目录，权限是777的就行了，再改一改vsftpd.conf<br>就OK了；没有什么难的；</p>
+<p>vsFTPd出于安全考虑，是不准让ftp用户的家目录的权限是完全没有限制的，您可以去读一下vsFTPd的文档就明白的了；否则也不能称为最安全的FTP服务器了<br>，对不对？</p>
+<p>** 7、关于vsFTPd配置文件的说明； **</p>
+<p>vsftpd.conf是vsFTPd服务器的配置文件，此文件一般是&#x2F;etc&#x2F;vsftpd.conf或&#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf<br>，以系统为准吧。。</p>
+<p>vsftpd.conf配置文件就是vsFTPd服务器的全局控制文件，此配置文件中，每行应该算做一个规则；前面带有#号的服务器不会解释，这和apache<br>的配置文件类似；#后所接的内容一般是说明性的，或者是关掉某些功能的选项；</p>
+<p>vsftpd.conf<br>这个配置文件并不包括所有您想实现的功能，有些功能的实现，我们要自己动手来解决，我们要学会查vsFTPd的文档和FAQ等，虽然是英文的，但都是比较<br>简单的；我们要习惯看洋文文档，为什么呢？因为Linux本来就是洋人厉害，重量级的软件都是洋人的。呵，兄弟不要抱怨，谁让我们落后了呢？</p>
+<p>** 注意： ** 修改完配置文件后，一定要重启vsFTPd服务器才能生效，切记~~ </p>
+<p>** 8、关于vsFTPd服务器的一些常用功能的实现； **</p>
+<p>** 8.1、关于匿名上传下载的实现； **</p>
+<p>关于匿名上传，其实也比较简单，首先我们要修改一下vsftpd.conf ，此文件位于<br>&#x2F;etc&#x2F;目录下，可能是&#x2F;etc&#x2F;vsftpd.conf，也可能是&#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf文件。以您的系统环境为准；</p>
+<p>** 首先：我们要改一下vsftpd.conf，确保有以下几行； **</p>
+<p><code>anonymous_enable=YES   anon_upload_enable=YES   anon_mkdir_write_enable=YES   anon_umask=022</code></p>
+<p>** 其次：在ftp用户家目录的下建一个文件夹，并修改其权限为完全开放； **</p>
+<p>ftp用户的家目录在哪？我们前面已经说了，要通过&#x2F;etc&#x2F;passwd来查看；也可以通过finger ftp来查看；</p>
+<p><code>[root@localhost beinan]# finger ftp   Login: ftp                              Name: FTP User   Directory: /var/ftp                     Shell: /sbin/nologin</code></p>
+<p>这说明ftp用户的家目录在&#x2F;var&#x2F;ftp<br>，我们要在这个目录下建一个目录，然后把他的权限设置为任何用户可读可写可执行就行了；一般的情况下，在发行版中，有一个&#x2F;var&#x2F;ftp&#x2F;pub的目<br>录，如果没有，您也可以自己建一个；把配置文件改好后，只要把&#x2F;var&#x2F;ftp下的任何一个目录的权限打开，都可以用来匿名上传和下载；</p>
+<p>比如您想让匿名用户上传和下载都在&#x2F;var&#x2F;ftp&#x2F;pub，就可以把&#x2F;var&#x2F;ftp&#x2F;pub的权限打开，如果没有这个目录，您要自己建一个；</p>
+<p><code>[root@localhost ~]# mkdir /var/ftp/pub   [root@localhost ~]# chmod 777 /var/ftp/pub</code></p>
+<p>这样上传的时候传到pub目录就OK了，对不对？？</p>
+<p>** 8.2、关于添加本地用户及打开读写权限示例； **</p>
+<p>FTP用户一般是不能登录系统的，这也是为了安全。在系统中，没有权限登录系统的用户一般也被称之为虚拟用户；虚拟用户也是要写进&#x2F;etc<br>&#x2F;passwd中；这只是一种虚拟用户的方法，但说实在的并不是真正的虚拟用户，只是把他登录SHELL的权限去掉了，所以他没有能力登录系统；</p>
+<p>如果我们想把beinan这个用户目录定位在&#x2F;opt&#x2F;beinan这个目录中，并且不能登录系统；我们应该如下操作</p>
+<p><code>[root@localhost ~]# adduser -d /opt/beinan -g ftp -s /sbin/nologin beinan   [root@localhost ~]# passwd beinan   Changing password for user beinan.   New password:   Retype new password:   passwd: all authentication tokens updated successfully.   [root@localhost ~]#</code></p>
+<p>其实这还是不够的，还要改一下配置文件vsftpd.conf ，以确保本地虚拟用户能有读写权限；</p>
+<p><code>local_enable=YES   write_enable=YES   local_umask=022</code></p>
+<p>** 8.4、如何实现虚拟路径？ **</p>
+<p>** 比如： **</p>
+<p><code>/home/a 映射为 ftp://localhost/a   /home/b/c 则为 ftp://localhost/c</code></p>
+<p>其实这个不能说是vsFTPd的内容，其实我们早就接触过了，可能我们没有注意，我们可以通过如下的方法来实现。</p>
+<p><code>[root@localhost ~]# mount --bind [原有的目录] [新目录]</code></p>
+<p>比如我的ftp的默认目录是&#x2F;var&#x2F;ftp，我想把&#x2F;mnt&#x2F;LinG&#x2F;WinSoft文件夹，映射到&#x2F;var&#x2F;ftp目录中，我就如下操作</p>
+<p>我们要先在&#x2F;var&#x2F;ftp目录中建一个目录</p>
+<p><code>[root@localhost ~]# mkdir /var/ftp/WinSoft</code></p>
+<p>然后执行mount命令</p>
+<p><code>[root@localhost ~]# mount --bind /mnt/LinG/WinSoft /var/ftp/WinSoft</code></p>
+<p>这样就OK了。</p>
+<p>** 8.5、打开vsFTP服务器的日志功能； **</p>
+<p>把下面xferlog_file前面的#号对掉，也就是把vsftp的log功能打开，这样我们就能在&#x2F;var&#x2F;log目录下查看vsftpd.log。这是vsFT<br>P的日志功能，这对于我们来说是极为重要的。</p>
+<p><code>xferlog_file=/var/log/vsftpd.log</code></p>
+<p>** 8.6、如何定制欢迎信息； **</p>
+<p>如何定制欢迎信息，也就是我们登入有些FTP之后，会出现类似：欢迎您来到LinuxSir<br>FTP，在这里，您会得到最真诚的帮助，如果有什么问题和建议，请来信，多谢。</p>
+<p>实现这个并不难，我们可以查看vsftpd.conf文件中，是否有这行。</p>
+<p><code>dirmessage_enable=YES   message_file=.message</code></p>
+<p>如果没有就加上，如果dirmessage_enable&#x3D;YES前面有#号，就把#号去掉。其实FTP信息默认的就是.message，所以可以不加<br>message_file&#x3D; 来指定。自己指定也行，无所谓的事；</p>
+<p>然后我们制定一个.message文件，写上您想要写的东西，比如是.message的内容是如下的：</p>
+<p><code>\--欢迎您来到LinuxSir FTP！   \--在这里，您会得到最真诚的帮助；   \--如果有什么问题和建议，请来信，多谢。</code></p>
+<p>我们可以用编辑器来写这个.message，我想这个过程就不用说了吧。</p>
+<p>然后我们把.message这个文件复制到各个用户的家目录中。比如我的FTP的一个用户是beinan，这个用户所在的家目录是&#x2F;opt&#x2F;beinan<br>我们就要把.message放在&#x2F;opt&#x2F;beinan这个目录下。如果系统用户ftp，他的目录就是&#x2F;var&#x2F;ftp这个目录，这个是默认的，当匿名用<br>户登入时就访问的是&#x2F;var&#x2F;ftp这个目录。我们要让匿名用户能看到欢迎信息。就要把.message放在&#x2F;var&#x2F;ftp目录中。其它的用户，也无非<br>就是类似的操作。</p>
+<p>** 8.7、硬盘空间有限，如何把帐号ftp默认的家目录更改到别处？ **</p>
+<p>我的硬盘空间有限，如何把帐号ftp默认的路径&#x2F;var&#x2F;ftp更改到别处？或者是，我的linux所有的目录都放在&#x2F;根分区，因为空间紧张，我能否把ftp这个用户<br>的默认路径放到别的分区？？</p>
+<p>对于ftp这个用户的管理，我们应该查看&#x2F;etc&#x2F;passwd ，然后修改ftp用户那行；</p>
+<p><code>ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</code></p>
+<p>比如我们想把ftp用户的家目录改为&#x2F;opt&#x2F;ftp，则要把类似上一行改为</p>
+<p><code>ftp:x:14:50:FTP User:/opt/ftp:/sbin/nologin</code></p>
+<p>然后我们要建立ftp用户的新的家目录；</p>
+<p><code>[root@localhost ~]# mkdir /opt/ftp   [root@localhost ~]# chmod 755 /opt/ftp   [root@localhost ~]# chown root:root /opt/ftp</code></p>
+<p>如果默认的ftp磁盘空间紧张，我们其实也可以用虚拟路径映射的方法来解决；也就是mount –bind的办法；看情况吧，哪个适合就是最好的方法；</p>
+<p>** 8.8、如何让vsFTP服务器限制链接数，以及每个IP最大的链接数？ **</p>
+<p>应该改vsFTPd服务器的配制文件vsftpd.conf，加入下面的两行：</p>
+<p><code>max_clients=数字   max_per_ip=数字</code></p>
+<p>** 举例： ** 我想让我的vsFTP最大支持链接数为100个，每个IP，最多能支持5个链接，所以我应该在vsftpd.conf中加上如下的两行： </p>
+<p><code>max_clients=100   max_per_ip=5</code></p>
+<p>改好了配制文件，不要忘记启动vsftp服务器。<br>** 8.9、如何限制传输速度？ **<br><code>anon_max_rate=数字</code></p>
+<p>注：这是匿名的速度</p>
+<p><code>local_max_rate=数字</code></p>
+<p>注：这是vsFTP服务器上本地用户的速度</p>
+<p>注：这个数字的单位是byte，所以我们要计算一下。比如我想让匿名用户和vsFTP上的用户都以80KB下载，所以这个数字应该是1024x80&#x3D;81920<br>所以我们要在vsftpd.conf中加入下面的两行</p>
+<p><code>anon_max_rate=81920   local_max_rate=81920</code></p>
+<p>** 8.10、如何有选择的把用户限制在家目录中呢？ **</p>
+<p>我们要自己建一个文件，在&#x2F;etc目录中或&#x2F;etc&#x2F;vsftpd目录中（假如您的vsftpd配置文件都是放在这个目录的话）；</p>
+<p><code>#touch /etc/vsftpd.chroot_list</code></p>
+<p>以beinan和nanbei这两个用户限制在他们所在的家目录中，而其它的FTP用户不做此限制。</p>
+<p>在vsftpd.chroot_list这个文件中，把beinan和nanbei添上去就行，注意，每个用户占一行。</p>
+<p><code>beinan   nanbei</code></p>
+<p>然后改&#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf文件，找如下的两行</p>
+<p><code>chroot_list_enable=YES   chroot_list_file=/etc/vsftpd.chroot_list</code></p>
+<p>如果没有这样的两行，就可以自己添加上去也是一样的。</p>
+<p>设置好后，重新vsFTPD服务器。</p>
+<p>补充一之补充：如何把系统内所有的FTP用户都限制在家目录中呢？？经juliaugong兄的提示，我查找了vsFTPd的洋文说明，证明这个选项是一刀切的解决所<br>有的用户都能限制在家目录中</p>
+<p>我们可以通过更改vsftpd.conf文件，加入如下的一行</p>
+<p><code>chroot_local_user=YES</code></p>
+<p>改完配制文件，不要忘记重启vsFTPd服务器；</p>
+<p>** 8.11、如何让绑定IP到vsFTPd？ **</p>
+<p>如何让绑定IP到vsFTPd？也就是说，如何让用户只能通过某个IP来访问FTP。其实这个功能很有意思。如果绑定的是内网的IP，外部是没有办法访问的。如果绑定<br>的是对外服务的IP，内网也只能通过对外服务的IP来访问FTP</p>
+<p>在vsftpd.conf中加一行，以我的局域网为例，请看第一帖中的操作环境，这样外网就不能访问我的FTP了，内网也可能通过192.168.0.2来访问FTP<br>；</p>
+<p><code>listen_address=192.168.0.2</code></p>
+<p>注：近来  使用centos配置ftp，很是不顺。第一次怎么连都连不上，好像没有设置listen端口。第二次本机可以连，其他机器不能连。第三次看了此篇文章，<br>原来防火墙没有开放ftp.  </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag"># 服务器</a>
+              <a href="/tags/ftp%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag"># ftp服务器</a>
+              <a href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99/" rel="tag"># 防火墙</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2009/08/24/4479739/" rel="prev" title="自动化迅雷下载文件(Vbs脚本)调用迅雷api">
+                  <i class="fa fa-angle-left"></i> 自动化迅雷下载文件(Vbs脚本)调用迅雷api
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2009/09/02/4512103/" rel="next" title="Python  远程主机强迫关闭了一个现有的连接 Socket 超时设置 Errno 10054">
+                  Python  远程主机强迫关闭了一个现有的连接 Socket 超时设置 Errno 10054 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

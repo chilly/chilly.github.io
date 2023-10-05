@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="牛mm细心给我讲了一个小时，终于明白它的含义，然后花了一两节分布式数据库的课实现了。当时牛mm还说不可能这么快实现，结果不可能事还是发生了。发现python果真非常好用。不明白此算法可以看这篇blog http:&#x2F;&#x2F;blog.csdn.net&#x2F;NirvanaFeng&#x2F;archive&#x2F;2009&#x2F;05&#x2F;12&#x2F;4171799.aspx  初始化方法： def InitDicForViterbi(node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Viterbi算法 Python版">
+<meta property="og:url" content="http://chillyc.info/2009/06/23/4290974/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="牛mm细心给我讲了一个小时，终于明白它的含义，然后花了一两节分布式数据库的课实现了。当时牛mm还说不可能这么快实现，结果不可能事还是发生了。发现python果真非常好用。不明白此算法可以看这篇blog http:&#x2F;&#x2F;blog.csdn.net&#x2F;NirvanaFeng&#x2F;archive&#x2F;2009&#x2F;05&#x2F;12&#x2F;4171799.aspx  初始化方法： def InitDicForViterbi(node">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2009-06-23T02:59:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:45.321Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="path">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2009/06/23/4290974/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2009/06/23/4290974/","path":"2009/06/23/4290974/","title":"Viterbi算法 Python版"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Viterbi算法 Python版 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/23/4290974/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Viterbi算法 Python版 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Viterbi算法 Python版
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-23 10:59:00" itemprop="dateCreated datePublished" datetime="2009-06-23T10:59:00+08:00">2009-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>牛mm细心给我讲了一个小时，终于明白它的含义，然后花了一两节分布式数据库的课实现了。当时牛mm还说不可能这么快实现，结果不可能事还是发生了。发现python<br>果真非常好用。不明白此算法可以看这篇blog <a target="_blank" rel="noopener" href="http://blog.csdn.net/NirvanaFeng/archive/2009/05/12/4171799.aspx"><br>http://blog.csdn.net/NirvanaFeng/archive/2009/05/12/4171799.aspx
+</a></p>
+<p>初始化方法：</p>
+<p>def InitDicForViterbi(nodes,posw,posdi,n): newWordList &#x3D; [] # 解决未登录词 for i in<br>nodes: if not posw.has_key(i): newWordList.append(i) maxPosList &#x3D;<br>NPos(posdi,n) print maxPosList<br>GenerateDicPos(newWordList,maxPosList,posw,posdi) def<br>InitViterbi(node,posw,posdi): viStatePath &#x3D; [] for i in posw[node]: if i &lt;&gt;<br>“@@@”: print “i:”,i viStatePath.append([posw[node][i]*posdi[i][“@@@”],[i]])<br>return viStatePath</p>
+<p>viterbi算法函数</p>
+<p>“”” nodes 就是分好的词, posw 是词转换为词性的概率，posdi是词性之间的转换概率,n 是n个最大的词性将此用于未登录词中,<br>weightNone是未出现的词性转移的概率 nodes format {word1,word2…} , posw format<br>{word1:{pos1:fre,pos2:fre,…”@@@”:totalnum},…”@@@”:total} posdi format<br>{pos1:{pos2:fre,pos3:fre….”@@@”:total},….”@@@”:total} “”” def<br>Viterbi(nodes,posw,posdi,n,weightNone): InitDicForViterbi(nodes,posw,posdi,n)<br>viStatePath &#x3D; InitViterbi(nodes[0],posw,posdi) length &#x3D; len(nodes) currentNode<br>&#x3D; 1 while currentNode &lt; length: currentPosList &#x3D; posw[nodes[currentNode]]<br>paths &#x3D; [] # print “vstate:”,viStatePath for k in currentPosList: if k &lt;&gt;<br>“@@@”: ajk &#x3D; weightNone heap &#x3D; [] for j in xrange(len(viStatePath)): # compute<br>every state j to every state k in ti # temppath &#x3D; viStatePath[j] # print<br>“lastpos:”,temppath lastpos &#x3D; viStatePath[j][1][-1] lastweight &#x3D;<br>viStatePath[j][0] lastposList &#x3D; posdi[lastpos] if lastposList.has_key(k): ajk<br>&#x3D;lastposList[k] currentweight &#x3D; lastweight * ajk * currentPosList[k] # print<br>“viStatePath:”,viStatePath[j][1] pathNew &#x3D; [data for data in<br>viStatePath[j][1]] pathNew.append(k) # print “pathNew:”,pathNew<br>heappush(heap,[currentweight,pathNew]) # get the max possibility of state k in<br>ti # print “path:”,path paths.append(nlargest(1,heap)[0]) del viStatePath<br>viStatePath &#x3D; paths # print “paths:”,paths currentNode &#x3D; currentNode + 1 heap<br>&#x3D; [] # get the max possibility path for i in viStatePath: heappush(heap,i)<br>return nlargest(1,heap)</p>
+<p>结果打印输出函数：</p>
+<p>“””nodes format {word1,word2,…} path is [weight,[pos1,pos2….]]””” def<br>Result(nodes,path,edcode&#x3D;”utf-8”): realPath &#x3D; path[0][1]<br>ResultPrint(nodes,realPath,edcode) “””nodes format {word1,word2,…} path is<br>[pos1,pos2….]””” def ResultPrint(nodes,path,edcode&#x3D;”utf-8”): for i in<br>xrange(len(nodes)): print nodes[i].decode(edcode),”&#x2F;“,path[i].decode(edcode)</p>
+<p>下面是测试代码：</p>
+<p>aa &#x3D; ConvertGBKtoUTF(“球球”) bb &#x3D; ConvertGBKtoUTF(“娃娃”) cc &#x3D;<br>ConvertGBKtoUTF(“吃饭”) dd &#x3D; ConvertGBKtoUTF(“好”) ee &#x3D;<br>ConvertGBKtoUTF(“dddwieoewkem”) dictions &#x3D;<br>{aa:{bb:1,”@@@”:4},bb:{cc:2,aa:3,”@@@”:40},”@@@”:400} posdi &#x3D; {“n”:{“s”:3,”v”:<br>3,”@@@”:40},”s”:{“v”:2,”e”:3,”@@@”:33},”v”:{“@@@”:1},”@@@”:100} posw &#x3D; {aa:{“n<br>“:1,”v”:3,”@@@”:29},bb:{“n”:1,”s”:1,”@@@”:19},cc:{“n”:1,”@@@”:1},”@@@”:10002}<br>nodes &#x3D; [aa,bb,cc,ee,dd,bb,aa,cc] path &#x3D; Viterbi(nodes,posw,posdi,3,0.01)<br>print path Result(nodes,path)</p>
+<p>这里不要问为啥要encode,然后再decode 因为只有这样才能在屏幕上打印出中文。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/path/" rel="tag"># path</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2009/06/14/4268747/" rel="prev" title="农家乐一日游">
+                  <i class="fa fa-angle-left"></i> 农家乐一日游
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2009/06/23/4291222/" rel="next" title="Python 中文分词——FMM 算法">
+                  Python 中文分词——FMM 算法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

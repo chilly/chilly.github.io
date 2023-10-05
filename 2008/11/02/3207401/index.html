@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="按我的这篇文章所写：  http:&#x2F;&#x2F;blog.csdn.net&#x2F;cctt_1&#x2F;archive&#x2F;2008&#x2F;11&#x2F;02&#x2F;3206314.aspx  这里这里读出写入英文是没有问题的。 但是我们需要读出写入中文。我在mysql的表有一项设置字符集，改为了GBK编码。 但是还是使用了我上篇文章所写的编码，结果发现插入中文时变为：？？？ 插入中英文结合时，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vs2005 C#与mySql连接解决中文乱码问题">
+<meta property="og:url" content="http://chillyc.info/2008/11/02/3207401/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="按我的这篇文章所写：  http:&#x2F;&#x2F;blog.csdn.net&#x2F;cctt_1&#x2F;archive&#x2F;2008&#x2F;11&#x2F;02&#x2F;3206314.aspx  这里这里读出写入英文是没有问题的。 但是我们需要读出写入中文。我在mysql的表有一项设置字符集，改为了GBK编码。 但是还是使用了我上篇文章所写的编码，结果发现插入中文时变为：？？？ 插入中英文结合时，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2008-11-02T11:42:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:44.385Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="c#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2008/11/02/3207401/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2008/11/02/3207401/","path":"2008/11/02/3207401/","title":"Vs2005 C#与mySql连接解决中文乱码问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Vs2005 C#与mySql连接解决中文乱码问题 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/11/02/3207401/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Vs2005 C#与mySql连接解决中文乱码问题 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vs2005 C#与mySql连接解决中文乱码问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-11-02 19:42:00" itemprop="dateCreated datePublished" datetime="2008-11-02T19:42:00+08:00">2008-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>按我的这篇文章所写：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/11/02/3206314.aspx"> http://blog.csdn.net/cctt_1&#x2F;archive&#x2F;2008&#x2F;11&#x2F;02&#x2F;3206314.aspx
+</a></p>
+<p>这里这里读出写入英文是没有问题的。</p>
+<p>但是我们需要读出写入中文。我在mysql的表有一项设置字符集，改为了GBK编码。</p>
+<p>但是还是使用了我上篇文章所写的编码，结果发现插入中文时变为：？？？</p>
+<p>插入中英文结合时，全部的中文变为？？英文不变。</p>
+<p>在网上搜了下，然后将上篇文章的编码改为：</p>
+<ol>
+<li>private  SqlAccess sqlAccess &#x3D;  new  SqlAccess(); </li>
+<li>private  void  button1_Click(  object  sender, EventArgs e) </li>
+<li>{ </li>
+<li>DataSet ds &#x3D; sqlAccess.SelectDataSet(  “select * from users”  ); </li>
+<li><ol start="6">
+<li>label1.Text &#x3D;  “”  ;</li>
+</ol>
+</li>
+<li>Array alist &#x3D; ds.Tables[0].Rows[0].ItemArray; </li>
+<li>foreach  (  object  o  in  alist) </li>
+<li>{ </li>
+<li>label1.Text +&#x3D; o.ToString(); </li>
+<li>} </li>
+<li>UpdateName(); </li>
+<li>} </li>
+<li>private  const  string  sql &#x3D;  “UPDATE USERS SET userName&#x3D;@userName  WHERE userID&#x3D;@userID”  ; </li>
+<li>private  const  string  userName &#x3D;  “@userName”  ; </li>
+<li>private  const  string  userID &#x3D;  “@userID”  ; </li>
+<li>private  void  UpdateName() </li>
+<li>{ </li>
+<li>int  i &#x3D; 1; </li>
+<li>string  name &#x3D; GB2312_ISO8859(  “和好多岁收到暗示”  ); </li>
+<li>MySqlParameter[] my &#x3D; </li>
+<li>{ </li>
+<li>new  MySqlParameter(userName,MySqlDbType.String), </li>
+<li>new  MySqlParameter(userID,MySqlDbType.Int32) </li>
+<li>}; </li>
+<li>my[0].Value &#x3D; name; </li>
+<li>my[1].Value &#x3D; i; </li>
+<li>label2.Text &#x3D; sqlAccess.EXESql(sql, my).ToString(); </li>
+<li>} </li>
+<li><ol start="31">
+<li>&#x2F;&#x2F;写入数据库时要进行gb2312转换到iso8895</li>
+</ol>
+</li>
+<li>public  string  GB2312_ISO8859(  string  srcString) </li>
+<li>{ </li>
+<li>&#x2F;&#x2F;字符集gb2312转为iso8859 </li>
+<li>System.Text.Encoding iso8859&#x3D;System.Text.Encoding.GetEncoding(  “iso8859-1”  ); </li>
+<li>System.Text.Encoding gb2312&#x3D;System.Text.Encoding.GetEncoding(  “gb2312”  ); </li>
+<li>return  iso8859.GetString(gb2312.GetBytes(srcString)); </li>
+<li>}</li>
+</ol>
+<p>发现还是原来的问题。然后又搜了搜mysql的中文文档。发现好像column还是有字符集属性的…怎么不知道为啥这样做..太麻烦了。于是改了每一个表中需要中<br>文的列都改为了gbk，在mysql图形界面的字段详细资料中。但是如果你是使用的mysql非图形界面..那就要辛苦的alter<br>吧.改完后，运行成功，再也没有？？了。</p>
+<p>发现windowsApplication使用的string是gb2312编码，但是显示的时候gb2312和iso8895-1都可以。</p>
+<p>所以在写入数据库时要转换为iso8895-1编码。注意这里如果转为System.Text.Encoding.GetEncoding(“GBK”)是不可以的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/c/" rel="tag"># c#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2008/11/02/3206314/" rel="prev" title=".Net与mysql连接">
+                  <i class="fa fa-angle-left"></i> .Net与mysql连接
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2008/11/05/3223873/" rel="next" title="计算新视野——21世纪的计算">
+                  计算新视野——21世纪的计算 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

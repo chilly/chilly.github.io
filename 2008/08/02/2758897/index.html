@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="用C#的Thread做了一个简单计时器。为了让自己45分钟后就可以休息一次，45分钟过后会响音乐提示。 开始使用的TimeSpan相减的方式，在Thread的启动函数中也就是这样写的：  ** public  ** ** void  ** CountTime()  {   ** while  ** (  ** true  ** )   {   TimeSpan tsNew &#x3D;  ** n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# Thread 点点滴滴">
+<meta property="og:url" content="http://chillyc.info/2008/08/02/2758897/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="用C#的Thread做了一个简单计时器。为了让自己45分钟后就可以休息一次，45分钟过后会响音乐提示。 开始使用的TimeSpan相减的方式，在Thread的启动函数中也就是这样写的：  ** public  ** ** void  ** CountTime()  {   ** while  ** (  ** true  ** )   {   TimeSpan tsNew &#x3D;  ** n">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2008-08-02T09:47:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:34:51.799Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="thread">
+<meta property="article:tag" content="c#">
+<meta property="article:tag" content="join">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2008/08/02/2758897/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2008/08/02/2758897/","path":"2008/08/02/2758897/","title":"C# Thread 点点滴滴"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C# Thread 点点滴滴 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/08/02/2758897/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C# Thread 点点滴滴 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C# Thread 点点滴滴
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-08-02 17:47:00" itemprop="dateCreated datePublished" datetime="2008-08-02T17:47:00+08:00">2008-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>用C#的Thread做了一个简单计时器。为了让自己45分钟后就可以休息一次，45分钟过后会响音乐提示。</p>
+<p>开始使用的TimeSpan相减的方式，在Thread的启动函数中也就是这样写的：</p>
+<ol>
+<li>** public  ** ** void  ** CountTime() </li>
+<li>{ </li>
+<li><ol start="4">
+<li>** while  ** (  ** true  ** )</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol start="7">
+<li>TimeSpan tsNew &#x3D;  ** new  ** TimeSpan(DateTime.Now.Ticks);</li>
+</ol>
+</li>
+<li>TimeSpan tsIn &#x3D; tsNew - tsOld; </li>
+<li><ol start="10">
+<li>** if  ** (tsIn.Minutes &gt;&#x3D; 1)</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol start="13">
+<li>** while  ** (  ** true  ** )</li>
+</ol>
+</li>
+<li>{ </li>
+<li>TimeSpan tsNewer &#x3D;  ** new  ** TimeSpan(DateTime.Now.Ticks); </li>
+<li>TimeSpan tsIner &#x3D; tsNewer - tsNew; </li>
+<li><ol start="18">
+<li>** if  ** (tsIner.Minutes &gt;&#x3D; 10)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>&#x2F;&#x2F;十分钟后线程重启 </li>
+<li>tsOld &#x3D; tsNew; </li>
+<li>** break  ** ; </li>
+<li>} </li>
+<li><ol start="25">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="27">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="29">
+<li>}</li>
+</ol>
+</li>
+<li>}</li>
+</ol>
+<p>后来发现这种方法效率太低了。当然，可以使用Thread.Sleep(20);这个函数降低CPU占用时间。其实中间加入Thread.Sleep(20);就可明<br>显的降低CPU消耗。后来发现C#中的Thread中自带有函数join(),这个函数可以使线程等待一段时间。调用方法如下</p>
+<p>th.Join(new TimeSpan(hours, minutes, seconds));在等待的这段时间里线程处于WaitSleepJoin状态。</p>
+<p>当然也可以调用Thread.Sleep(millionseconds);这里提一下Sleep和Join的区别</p>
+<p>当线程执行Sleep时系统就退出执行队列一段时间，当睡眠结束时，系统会产生一个时钟中断，从而使线程回到执行队列中恢复线程的执行。  ** Sleep方法如果<br>参数是0，代表这个线程应当挂起让其他等待的线程运行，这里cpu回重新分配控制权，也有可能是刚才的执行的程序。这样就会有cpu占用总是100%的情况发生。<br>** 有时你界面死了，但是你还是可以移动鼠标。如果是Timeout.Infinite,就代表将使线程休眠，直到它被调用 Thread.Interrupt<br>的另一个线程中断或被 Thread.Abort 中止为止。<br>如果父线程先于子线程结束，那么子线程将在父线程结束的同时被迫结束。Thread.Join()方法使父线程等待，直到子线程结束。  Join方法有返回值，当值<br>为true，代表线程终止。false的话代表线程在等待了那段时间后还未终止。如果在线程Unstarted状态时，调用join()就会有<br>ThreadStateException异常。如果线程已经终止，那么调用这个函数，会立即得到返回值。</p>
+<p>例如下面的主程序</p>
+<p>…</p>
+<p>ThreadStart st &#x3D; New ThreadStart(fun);</p>
+<p>Thread th &#x3D; new Thread(ThreadStart st);</p>
+<p>th.Start();</p>
+<p>Application.Exit();</p>
+<p>…</p>
+<p>&#x2F;&#x2F;下面是fun函数</p>
+<p>void fun()</p>
+<p>{</p>
+<p>while(true)</p>
+<p>{</p>
+<p>…</p>
+<p>}</p>
+<p>}</p>
+<p>这段程序的唯一毛病就是有可能在主程序退出后，从线程还没有结束。(这个从线程真可怜…)</p>
+<p>这里顺便再提一下线程的几个状态：</p>
+<p>创建：当创建一个新进程时，也为该进程创建了一个线程。线程还可以创建新线程。</p>
+<p>就绪：线程已获得除处理机外的所有资源。</p>
+<p>运行：线程正在处理机上执行。</p>
+<p>阻塞：线程因等待某事件而暂停运行。</p>
+<p>终止：一个线程已完成。</p>
+<p>但是C#的线程中多了几个状态：</p>
+<p>Aborted，AbortRequested，Background，Running，Stopped，StopRequested，Suspended，Susp<br>endRequested，Unstarted，WaitSleepJoin。</p>
+<p>Abort()将导致ThreadState.AbortRequested调用Abort()的线程获得控制权之后导致ThreadState.Aborted，A<br>bortRequested与Aborted的区别在于一个停止一个未停止。而Stopped则是线程终止。但是我反复试验多次发现当调用Abort()函数后，线程<br>状态会变为Stopped。如何变为Aborted状态，还在研究中。其他几个状态差不多。都是调用相应的函数会产生相应的状态请求，还有过一段时间才能到底相应的状<br>态。至于Unstarted是还未调用Start()函数，Running是调用Start()或者Resume()函数的结果。WaitSleepJoin是在等待<br>I&#x2F;O，或者是调用Join()方法。  **<br>这里Join()和Sleep()方法的不同还在于调用Join()线程状态进入WaitSleepJoin，调用Sleep()线程状态还是Running。 **</p>
+<p>挂起线程的方法是Suspend();调用这个方法后，线程处于SuspendRequest状态。Suspended()调用后如果线程仍然在执行join()方法<br>，因为Suspended()要让线程到达安全点之后它才可以将该线程挂起，此时那线程状态就是SuspendRequested|WaitSleepJoin。但是<br>这里的join里的时钟依然在计数。所以现在还不知道用什么方法来暂停这个join计数，当然也可以不使用join解决彻底暂停线程这个问题。现在不明白哪个Susp<br>ended()函数是干什么的，因为线程依旧在运行中。另外值得一提的是现在不提倡使用Suspend()和让线程调用Suspend()后再次恢复的Resume(<br>)方法。  ** 原因很简单，因为这两个方法是由另外的线程执行，另外的线程并不能准确的知道被Suspend()的线程处于何种状态，如某个类的构造函数执行时期<br>，或者析构等。所以用这个函数来同步很危险。 **</p>
+<hr>
+<p>** 另外，要注意的是Thread.Sleep(n)这个n不能精确的控制时间。如果你认为要线程要隔多长时间，这个控制就有问题。如果当前的线程是一个前台线程，那么Thread.Sleep(n)就要在大于n的时间才能退出。如果是后台进程，当主程序退出后，这线程就再也不能唤醒..悲惨..所以一般也建议不用Thread.Sleep()函数。另外Sleep函数也不能用于同步.peter说程序的Sleep函数代表了一个很烂的设计。  **</p>
+<p>做了个计时器竟然引发了这些问题…疯…</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/thread/" rel="tag"># thread</a>
+              <a href="/tags/c/" rel="tag"># c#</a>
+              <a href="/tags/join/" rel="tag"># join</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2008/07/28/2726812/" rel="prev" title="功夫熊猫启示录">
+                  <i class="fa fa-angle-left"></i> 功夫熊猫启示录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2008/08/05/2768804/" rel="next" title="游戏启示录">
+                  游戏启示录 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

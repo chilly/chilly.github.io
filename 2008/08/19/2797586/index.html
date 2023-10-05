@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这个树的定义的确很有问题。其实AVLTree和SplayTree以及RedBlackTree都是self-adjusting Tree 因为如果是树做索引那么大部分的时间将用来查找。这个树在查找上可以将查找的节点提升到树根，插入时也是一样。这样提高了查找的效率。并且操作系统有一种说法是近来用到的，将来用到的几率也会很大（LRU原理）。删除，既然删除对于此树来说再也没有什么，那就直接删除算了。 根据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创造练习——自适应树(Self-Adjusting Tree)">
+<meta property="og:url" content="http://chillyc.info/2008/08/19/2797586/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="这个树的定义的确很有问题。其实AVLTree和SplayTree以及RedBlackTree都是self-adjusting Tree 因为如果是树做索引那么大部分的时间将用来查找。这个树在查找上可以将查找的节点提升到树根，插入时也是一样。这样提高了查找的效率。并且操作系统有一种说法是近来用到的，将来用到的几率也会很大（LRU原理）。删除，既然删除对于此树来说再也没有什么，那就直接删除算了。 根据">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2008-08-19T11:06:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:34:51.840Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="null">
+<meta property="article:tag" content="tree">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2008/08/19/2797586/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2008/08/19/2797586/","path":"2008/08/19/2797586/","title":"创造练习——自适应树(Self-Adjusting Tree)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>创造练习——自适应树(Self-Adjusting Tree) | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/08/19/2797586/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="创造练习——自适应树(Self-Adjusting Tree) | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          创造练习——自适应树(Self-Adjusting Tree)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-08-19 19:06:00" itemprop="dateCreated datePublished" datetime="2008-08-19T19:06:00+08:00">2008-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>这个树的定义的确很有问题。其实AVLTree和SplayTree以及RedBlackTree都是self-adjusting Tree</p>
+<p>因为如果是树做索引那么大部分的时间将用来查找。这个树在查找上可以将查找的节点提升到树根，插入时也是一样。这样提高了查找的效率。并且操作系统有一种说法是近来用<br>到的，将来用到的几率也会很大（LRU原理）。删除，既然删除对于此树来说再也没有什么，那就直接删除算了。</p>
+<p>根据这几点想法。自己做一个self-adjusting Tree。但是还没有验证是否能达到实际水平的O（nlogn）。虽然理论上这个树并不能达到这样一个时间<br>复杂度。但是对于实际数据来说，还是有可能达到的。不知道有没有这么lucky。</p>
+<p>因为对于这个树来说插入和查找操作其实差不多。</p>
+<p>所以下面只介绍插入操作。找到要插入的地方，反遍历单旋转（这里和SplayTree不同一点是只使用单旋转）</p>
+<p>TreeNode<T>* insertNode(TreeNode<T>* subroot,TreeNode<T>* prev,T&amp; data)</p>
+<p>返回值为当前子树根节点</p>
+<p>1.subroot是否为空,创建新的节点，并返回subroot</p>
+<p>2.如果不为空</p>
+<p>A.subroot中的值 &lt; data中的值,对subroot右子树调用insertNode()，subroot<br>与当前右子树根节点采用旋转操作。将两个节点位置对换。</p>
+<p>B.subroot中的值 &gt; data中的值，对subroot左子树调用insertNode()，subroot<br>与当前左子树根节点采用旋转操作。将两个节点位置对换。</p>
+<p>C.subroot中的值 &#x3D;&#x3D; data中的值，do nothing</p>
+<p>3.查看该节点是否已成为根节点。如果是的话，调整根节点的值。</p>
+<p>下面给出代码。</p>
+<ol>
+<li>template  &lt; class  T&gt;</li>
+<li>class  SelfTree:  public  BinaryTree<T></li>
+<li>{ </li>
+<li>private  : </li>
+<li>&#x2F;&#x2F; return the sub tree root </li>
+<li>&#x2F;&#x2F;        a               b </li>
+<li>&#x2F;&#x2F;       &#x2F;       -&gt;        &#x2F; </li>
+<li>&#x2F;&#x2F;      b                   a </li>
+<li>TreeNode<T>* sLeftRotate(TreeNode<T>* a,TreeNode<T>* b) </li>
+<li>{ </li>
+<li>a-&gt;setLeft(b-&gt;getRight()); </li>
+<li>b-&gt;setRight(a); </li>
+<li>return  b; </li>
+<li>} </li>
+<li><ol start="16">
+<li><ol start="17">
+<li>&#x2F;&#x2F; return the sub tree root</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F;        a               b </li>
+<li>&#x2F;&#x2F;         &#x2F;     -&gt;      &#x2F; </li>
+<li>&#x2F;&#x2F;          b           a </li>
+<li>TreeNode<T>* sRightRotate(TreeNode<T>* a, TreeNode<T>* b) </li>
+<li>{ </li>
+<li>a-&gt;setRight(b-&gt;getLeft()); </li>
+<li>b-&gt;setLeft(a); </li>
+<li>return  b; </li>
+<li>} </li>
+<li><ol start="28">
+<li><ol start="29">
+<li><ol start="30">
+<li>TreeNode<T>* insertNode(TreeNode<T>* subroot,TreeNode<T>* prev,T&amp; data)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (subroot &#x3D;&#x3D; NULL) </li>
+<li>{ </li>
+<li>subroot &#x3D;  new  TreeNode<T>(data); </li>
+<li>return  subroot; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>TreeNode<T>* tempNode &#x3D; NULL; </li>
+<li>TreeNode<T>* tempRoot &#x3D; NULL; </li>
+<li>if  (subroot-&gt;getData() &gt; data) </li>
+<li>{ </li>
+<li><ol start="44">
+<li>tempNode &#x3D; insertNode(subroot-&gt;getLeft(),subroot,data);</li>
+</ol>
+</li>
+<li>tempRoot &#x3D; sLeftRotate(subroot,tempNode); </li>
+<li><ol start="47">
+<li>}</li>
+</ol>
+</li>
+<li>else  if  (subroot-&gt;getData() &lt; data) </li>
+<li>{ </li>
+<li>tempNode &#x3D; insertNode(subroot-&gt;getRight(),subroot,data); </li>
+<li>tempRoot &#x3D; sRightRotate(subroot,tempNode); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>throw  “the same key”  ; </li>
+<li>} </li>
+<li><ol start="58">
+<li>if  (prev &#x3D;&#x3D; NULL)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>this  -&gt;head &#x3D; tempRoot; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>if  (prev-&gt;getData() &gt; tempRoot-&gt;getData()) </li>
+<li>{ </li>
+<li>prev-&gt;setLeft(tempRoot); </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>prev-&gt;setRight(tempRoot); </li>
+<li>} </li>
+<li>} </li>
+<li>return  tempRoot; </li>
+<li>} </li>
+<li>} </li>
+<li>public  : </li>
+<li>SelfTree(T&amp; data):BinaryTree(data) </li>
+<li>{ </li>
+<li><ol start="80">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="82">
+<li>~SelfTree()</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol start="85">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="87">
+<li>void  insertNode(T&amp; data)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>insertNode(  this  -&gt;head,NULL,data); </li>
+<li>} </li>
+<li><ol start="92">
+<li>};</li>
+</ol>
+</li>
+<li></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/null/" rel="tag"># null</a>
+              <a href="/tags/tree/" rel="tag"># tree</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2008/08/19/2797126/" rel="prev" title="编程练习——平衡树（AVLTree）">
+                  <i class="fa fa-angle-left"></i> 编程练习——平衡树（AVLTree）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2008/08/19/2797967/" rel="next" title="快速排序其他实现代码">
+                  快速排序其他实现代码 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

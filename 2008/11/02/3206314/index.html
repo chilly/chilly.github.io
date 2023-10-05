@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="首先去mysql网站下载一个mysql非安装版本  _ http:&#x2F;&#x2F;dev.mysql.com&#x2F;downloads&#x2F;mysql&#x2F;5.0.html _  如果你感觉使用dos命令行不方便的话，可以顺便也下载一个GUI客户端：  _ http:&#x2F;&#x2F;dev.mysql.com&#x2F;downloads&#x2F;gui-tools&#x2F;5.0.html _  然后打开vs..这个版本必须是2003以上。 然后呢，建立一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content=".Net与mysql连接">
+<meta property="og:url" content="http://chillyc.info/2008/11/02/3206314/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="首先去mysql网站下载一个mysql非安装版本  _ http:&#x2F;&#x2F;dev.mysql.com&#x2F;downloads&#x2F;mysql&#x2F;5.0.html _  如果你感觉使用dos命令行不方便的话，可以顺便也下载一个GUI客户端：  _ http:&#x2F;&#x2F;dev.mysql.com&#x2F;downloads&#x2F;gui-tools&#x2F;5.0.html _  然后打开vs..这个版本必须是2003以上。 然后呢，建立一个">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2008-11-02T02:35:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:44.375Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content=".net">
+<meta property="article:tag" content="dataset">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2008/11/02/3206314/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2008/11/02/3206314/","path":"2008/11/02/3206314/","title":".Net与mysql连接"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>.Net与mysql连接 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/11/02/3206314/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=".Net与mysql连接 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          .Net与mysql连接
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-11-02 10:35:00" itemprop="dateCreated datePublished" datetime="2008-11-02T10:35:00+08:00">2008-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>首先去mysql网站下载一个mysql非安装版本</p>
+<p><a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/mysql/5.0.html"> _ http://dev.mysql.com/downloads/mysql/5.0.html _
+</a></p>
+<p>如果你感觉使用dos命令行不方便的话，可以顺便也下载一个GUI客户端：</p>
+<p><a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/gui-tools/5.0.html"> _ http://dev.mysql.com/downloads/gui-tools/5.0.html _
+</a></p>
+<p>然后打开vs..这个版本必须是2003以上。</p>
+<p>然后呢，建立一个windowsApplication工程，然后在里面的app.config</p>
+<?xml   version="1.0"   encoding="utf-8"?><configuration>  
+<appSettings>  
+<add   key="Restaurant"   value="server=localhost;user
+id=root;password=;database=test;allow zero datetime=true;"></add>  
+</appSettings>  
+</configuration>
+
+<p>如果你想把连接字符串写在程序里的话：将下面的代码改为  ** string  ** strConn &#x3D;  “server&#x3D;localhost;user<br>id&#x3D;root;password&#x3D;;database&#x3D;test;allow zero datetime&#x3D;  ** true  ** ;”</p>
+<p>这里与sqlserver连接字符串相区别的是：</p>
+<p>user-&gt;user id,</p>
+<p>当然估计没有下载MySql.Data.dll所以在</p>
+<p><a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/connector/net/5.2.html"> _ http://dev.mysql.com/downloads/connector/net/5.2.html _
+</a> 下载</p>
+<p>然后在net工程里添加引用，找到刚才你下载MySql.Data.dll的压缩包，解压后，在bin目录下有MySql.Data.dll.</p>
+<p>添加成功后，在你的代码里添加一个</p>
+<p>using MySql.Data.MySqlClient;</p>
+<p>然后下面的和SqlClient的效果是一样的。只不过前面多了”My”</p>
+<p>下面看具体的代码：</p>
+<ol>
+<li>using  System; </li>
+<li>using  System.Collections.Generic; </li>
+<li>using  System.Text; </li>
+<li>using  System.Data; </li>
+<li>using  MySql.Data.MySqlClient; </li>
+<li><ol start="7">
+<li><ol start="8">
+<li>namespace  SqlConnect</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>&#x2F;&#x2F;&#x2F; <summary></li>
+<li>&#x2F;&#x2F;&#x2F; author: chico chen </li>
+<li>&#x2F;&#x2F;&#x2F; date: 2008-11-02 </li>
+<li>&#x2F;&#x2F;&#x2F; </summary></li>
+<li>public  class  SqlAccess </li>
+<li>{ </li>
+<li>private  MySqlConnection conn &#x3D;  null  ; </li>
+<li>private  MySqlCommand cmd &#x3D;  null  ; </li>
+<li>&#x2F;&#x2F;&#x2F; <summary></li>
+<li>&#x2F;&#x2F;&#x2F; 建立与数据库的连接 </li>
+<li>&#x2F;&#x2F;&#x2F; </summary></li>
+<li>&#x2F;&#x2F;&#x2F; <returns></returns></li>
+<li>private  MySqlConnection CreateConn() </li>
+<li>{ </li>
+<li>string  strConn &#x3D; System.Configuration.ConfigurationSettings.AppSettings[  “Restaurant”  ].ToString(); </li>
+<li>&#x2F;&#x2F; SqlConnection 对象 </li>
+<li>conn &#x3D;  new  MySqlConnection(strConn); </li>
+<li>try </li>
+<li>{ </li>
+<li>conn.Open(); </li>
+<li>return  conn; </li>
+<li>} </li>
+<li>catch  (Exception e) </li>
+<li>{ </li>
+<li>Console.WriteLine(  “sql 连接未打开”  ); </li>
+<li>return  null  ; </li>
+<li>} </li>
+<li>} </li>
+<li>&#x2F;&#x2F;&#x2F; <summary></li>
+<li>&#x2F;&#x2F;&#x2F; 关闭与数据库的连接 </li>
+<li>&#x2F;&#x2F;&#x2F; </summary></li>
+<li>private  void  CloseConn() </li>
+<li>{ </li>
+<li>try </li>
+<li>{ </li>
+<li>conn.Close(); </li>
+<li>} </li>
+<li>catch  (Exception e) </li>
+<li>{ </li>
+<li>Console.WriteLine(  “sql 连接未关闭”  ); </li>
+<li>} </li>
+<li>} </li>
+<li><ol start="53">
+<li>&#x2F;&#x2F;&#x2F; <summary></li>
+</ol>
+</li>
+<li>&#x2F;&#x2F;&#x2F; 查询数据库 </li>
+<li>&#x2F;&#x2F;&#x2F; </summary></li>
+<li>&#x2F;&#x2F;&#x2F; <param name="sql">类似于SELECT * FROM [User];</param></li>
+<li>&#x2F;&#x2F;&#x2F; <returns></returns></li>
+<li>public  DataSet SelectDataSet(  string  sql) </li>
+<li>{ </li>
+<li>CreateConn(); </li>
+<li>MySqlDataAdapter sda &#x3D;  new  MySqlDataAdapter(sql, conn); </li>
+<li>DataSet ds &#x3D;  new  DataSet(); </li>
+<li>sda.Fill(ds); </li>
+<li>CloseConn(); </li>
+<li>return  ds; </li>
+<li>} </li>
+<li>&#x2F;&#x2F;&#x2F; <summary></li>
+<li>&#x2F;&#x2F;&#x2F; 执行无返回值的sql语句，如果成功返回true，失败返回false； </li>
+<li>&#x2F;&#x2F;&#x2F; </summary></li>
+<li>&#x2F;&#x2F;&#x2F; <param name="sqlcmd">类似于UPDATE [USER] SET userID&#x3D;@userIDC  WHERE userID&#x3D;@userID </li>
+<li>&#x2F;&#x2F;&#x2F; 或delete from [user] where userID&#x3D;@userID; </li>
+<li>&#x2F;&#x2F;&#x2F; 或者insert into [user] (userID, password, name) values (@userID,@password,@Name) ;</param></li>
+<li>&#x2F;&#x2F;&#x2F; <param name="sqlPara"></li>
+<li>&#x2F;&#x2F;&#x2F;  SqlParameter[] sp &#x3D; new SqlParameter[3]; </li>
+<li>&#x2F;&#x2F;&#x2F;  sp[0] &#x3D; new SqlParameter(user, SqlDbType.VarChar, 50); </li>
+<li>&#x2F;&#x2F;&#x2F; sp[0].Value &#x3D; “www”; </li>
+<li>&#x2F;&#x2F;&#x2F; </param></li>
+<li>&#x2F;&#x2F;&#x2F; <returns></returns></li>
+<li>public  bool  EXESql(  string  sqlcmd, MySqlParameter[] sqlPara) </li>
+<li>{ </li>
+<li>try </li>
+<li>{ </li>
+<li>CreateConn(); </li>
+<li>cmd &#x3D;  new  MySqlCommand(); </li>
+<li>cmd.Connection &#x3D; conn; </li>
+<li>cmd.CommandType &#x3D; CommandType.Text; </li>
+<li>cmd.CommandText &#x3D; sqlcmd; </li>
+<li>foreach  (MySqlParameter sp  in  sqlPara) </li>
+<li>{ </li>
+<li>cmd.Parameters.Add(sp); </li>
+<li>} </li>
+<li>cmd.ExecuteNonQuery(); </li>
+<li>CloseConn(); </li>
+<li>return  true  ; </li>
+<li>} </li>
+<li>catch  (Exception e) </li>
+<li>{ </li>
+<li>return  false  ; </li>
+<li>} </li>
+<li>} </li>
+<li><ol start="102">
+<li>}</li>
+</ol>
+</li>
+<li>}</li>
+</ol>
+<p>这里调用的代码这样写：</p>
+<p>DataSet ds &#x3D; sqlAccess.SelectDataSet(“select * from user”);</p>
+<p>当然如果你使用DataSet还要加using System.Data;</p>
+<p>连接字符串中为什么要加Allow Zero datetime  &#x3D; true是因为在添加数据库数据时，</p>
+<p>添加了错误的dateTime数据，所以mysql自动将其转为0000-00-00 00:00:00,所以在</p>
+<p>DataSet ds &#x3D; new DataSet();<br>sda.Fill(ds);</p>
+<p>这里就会报异常，原因是不支持这种Date&#x2F;Time。</p>
+<p>要使用刚才的接口的话：</p>
+<ol>
+<li>{ </li>
+<li>DataSet ds &#x3D; sqlAccess.SelectDataSet(  “select * from user”  ); </li>
+<li><ol start="4">
+<li><ol start="5">
+<li>Array alist &#x3D; ds.Tables[0].Rows[0].ItemArray;</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>foreach  (  object  o  in  alist) </li>
+<li>{ </li>
+<li>label1.Text +&#x3D; o.ToString(); </li>
+<li>} </li>
+<li>UpdateName(); </li>
+<li>} </li>
+<li><ol start="13">
+<li><ol start="14">
+<li>private  const  string  sql &#x3D;  “UPDATE USER SET userName&#x3D;@userName  WHERE userID&#x3D;@userID”  ;</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>private  const  string  userName &#x3D;  “@userName”  ; </li>
+<li>private  const  string  userID &#x3D;  “@userID”  ; </li>
+<li>private  void  UpdateName() </li>
+<li>{ </li>
+<li>int  i &#x3D; 1; </li>
+<li>string  name &#x3D;  “xxxx”  ; </li>
+<li>MySqlParameter[] my &#x3D; </li>
+<li>{ </li>
+<li>new  MySqlParameter(userName,MySqlDbType.String), </li>
+<li>new  MySqlParameter(userID,MySqlDbType.Int32) </li>
+<li>}; </li>
+<li>my[0].Value &#x3D; name; </li>
+<li>my[1].Value &#x3D; i; </li>
+<li>label2.Text &#x3D; sqlAccess.EXESql(sql, my).ToString(); </li>
+<li>}</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/net/" rel="tag"># .net</a>
+              <a href="/tags/dataset/" rel="tag"># dataset</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2008/10/27/3161492/" rel="prev" title="如果没有接起百度的电话(搞笑)">
+                  <i class="fa fa-angle-left"></i> 如果没有接起百度的电话(搞笑)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2008/11/02/3207401/" rel="next" title="Vs2005 C#与mySql连接解决中文乱码问题">
+                  Vs2005 C#与mySql连接解决中文乱码问题 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

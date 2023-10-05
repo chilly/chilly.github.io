@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="伸展树用于查询结果的概率非平均情况，即起初假设某些要查询的信息偏多，有些信息几乎无人问津。对于平均访问概率来说，使用SplayTree实现并不是一个明智的选择。 可能会用到此数据结构的程序：词典或者多维搜索树，还有连接&#x2F;切除树（link&#x2F;cut tree）（这个树是用于网络优化问题包括最大流和最小代价）  &#x2F;*  * create by chico chen  * d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程练习——伸展树(SplayTree)">
+<meta property="og:url" content="http://chillyc.info/2008/10/03/3013225/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="伸展树用于查询结果的概率非平均情况，即起初假设某些要查询的信息偏多，有些信息几乎无人问津。对于平均访问概率来说，使用SplayTree实现并不是一个明智的选择。 可能会用到此数据结构的程序：词典或者多维搜索树，还有连接&#x2F;切除树（link&#x2F;cut tree）（这个树是用于网络优化问题包括最大流和最小代价）  &#x2F;*  * create by chico chen  * d">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2008-10-03T01:30:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:44.124Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="null">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2008/10/03/3013225/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2008/10/03/3013225/","path":"2008/10/03/3013225/","title":"编程练习——伸展树(SplayTree)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编程练习——伸展树(SplayTree) | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/03/3013225/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编程练习——伸展树(SplayTree) | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编程练习——伸展树(SplayTree)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-03 09:30:00" itemprop="dateCreated datePublished" datetime="2008-10-03T09:30:00+08:00">2008-10-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>伸展树用于查询结果的概率非平均情况，即起初假设某些要查询的信息偏多，有些信息几乎无人问津。对于平均访问概率来说，使用SplayTree实现并不是一个明智的选<br>择。</p>
+<p>可能会用到此数据结构的程序：词典或者多维搜索树，还有连接&#x2F;切除树（link&#x2F;cut tree）（这个树是用于网络优化问题包括最大流和最小代价）</p>
+<ol>
+<li>&#x2F;* </li>
+<li>* create by chico chen </li>
+<li>* date: 2008&#x2F;10&#x2F;02 </li>
+<li>*&#x2F; </li>
+<li>template  &lt; class  T&gt;</li>
+<li>class  SplayTree:  public  BinaryTree<T></li>
+<li>{ </li>
+<li><ol start="9">
+<li>public  :</li>
+</ol>
+</li>
+<li>explicit  SplayTree(T&amp; data):BinaryTree(data) </li>
+<li>{ </li>
+<li><ol start="13">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="15">
+<li>explicit  SplayTree(TreeNode<T>* root):BinaryTree(root)</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol start="18">
+<li>}</li>
+</ol>
+</li>
+<li>~SplayTree() </li>
+<li>{ </li>
+<li><ol start="22">
+<li>}</li>
+</ol>
+</li>
+<li>public  : </li>
+<li><ol start="25">
+<li>void  insertNode(T&amp; data)</li>
+</ol>
+</li>
+<li>{ </li>
+<li><ol start="28">
+<li>if  (NULL &#x3D;&#x3D;  this  -&gt;head)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>this  -&gt;head &#x3D;  new  TreeNode<T>(data); </li>
+<li>return  ; </li>
+<li>} </li>
+<li><ol start="34">
+<li>splay(  this  -&gt;head,data);</li>
+</ol>
+</li>
+<li>if  (  this  -&gt;head-&gt;data &gt; data) </li>
+<li>{ </li>
+<li>&#x2F;&#x2F;     A     B                 A </li>
+<li>&#x2F;&#x2F;            &#x2F; &#x2F;     -&gt;         &#x2F; &#x2F; </li>
+<li>&#x2F;&#x2F;         C   D             C   B </li>
+<li>&#x2F;&#x2F;                                &#x2F; </li>
+<li>&#x2F;&#x2F;                                 D </li>
+<li>TreeNode<T>* node &#x3D;  new  TreeNode<T>(data); </li>
+<li>node-&gt;left &#x3D;  this  -&gt;head-&gt;left ; </li>
+<li>node-&gt;right &#x3D;  this  -&gt;head; </li>
+<li>this  -&gt;head-&gt;left &#x3D; NULL; </li>
+<li>this  -&gt;head &#x3D; node; </li>
+<li>} </li>
+<li>else  if  (  this  -&gt;head-&gt;data &lt; data) </li>
+<li>{ </li>
+<li>&#x2F;&#x2F;     A     B                 A </li>
+<li>&#x2F;&#x2F;            &#x2F; &#x2F;     -&gt;         &#x2F; &#x2F; </li>
+<li>&#x2F;&#x2F;         C   D             B   D </li>
+<li>&#x2F;&#x2F;                              &#x2F; </li>
+<li>&#x2F;&#x2F;                            C </li>
+<li>TreeNode<T>* node &#x3D;  new  TreeNode<T>(data); </li>
+<li>node-&gt;right &#x3D;  this  -&gt;head-&gt;right; </li>
+<li>node-&gt;left &#x3D;  this  -&gt;head; </li>
+<li>this  -&gt;head-&gt;right &#x3D; NULL; </li>
+<li>this  -&gt;head &#x3D; node; </li>
+<li><ol start="61">
+<li>}</li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; insert the same key </li>
+<li>&#x2F;&#x2F; throw exception </li>
+<li>throw  “the same key”  ; </li>
+<li>} </li>
+<li>} </li>
+<li><ol start="70">
+<li>&#x2F;&#x2F; use the data as key to splay the tree</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; then we can get the structures of the tree like the following: </li>
+<li>&#x2F;&#x2F;     (1)  A             (2)   A </li>
+<li>&#x2F;&#x2F;              &#x2F;                    &#x2F; &#x2F; </li>
+<li>&#x2F;&#x2F;               B               C   B </li>
+<li>&#x2F;&#x2F; the difference between the two structures is whether the root has left child </li>
+<li>&#x2F;&#x2F; In case (1), we can simpliy make the root right child instead the root. </li>
+<li>&#x2F;&#x2F; In case (2), we should splay the root left subtree and then it will be </li>
+<li>&#x2F;&#x2F; changed like case (1), and we make the splayed left subtree root instead </li>
+<li>&#x2F;&#x2F; the root. </li>
+<li>void  deleteNode(T&amp; data) </li>
+<li>{ </li>
+<li><ol start="83">
+<li>if  (NULL &#x3D;&#x3D;  this  -&gt;head)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>return  ; </li>
+<li>} </li>
+<li>splay(  this  -&gt;head, data); </li>
+<li>if  (  this  -&gt;head-&gt;data !&#x3D; data) </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; not found the key to delete </li>
+<li>return  ; </li>
+<li>} </li>
+<li>TreeNode<T>* newRoot; </li>
+<li>if  (NULL &#x3D;&#x3D;  this  -&gt;head-&gt;left) </li>
+<li>{ </li>
+<li>newRoot &#x3D;  this  -&gt;head-&gt;right; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>newRoot &#x3D;  this  -&gt;head-&gt;left; </li>
+<li>splay(newRoot,data); </li>
+<li>newRoot-&gt;right &#x3D;  this  -&gt;head-&gt;right; </li>
+<li>} </li>
+<li>delete  this  -&gt;head; </li>
+<li>this  -&gt;head &#x3D; newRoot; </li>
+<li><ol start="107">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="109">
+<li><ol start="110">
+<li>TreeNode<T>* searchNode(T&amp; data)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (NULL &#x3D;&#x3D;  this  -&gt;head) </li>
+<li>{ </li>
+<li>return  NULL; </li>
+<li>} </li>
+<li>splay(  this  -&gt;head, data); </li>
+<li>if  (  this  -&gt;head-&gt;data &#x3D;&#x3D; data) </li>
+<li>{ </li>
+<li>return  this  -&gt;head; </li>
+<li>} </li>
+<li>return  NULL; </li>
+<li>} </li>
+<li><ol start="124">
+<li>private  :</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; use top-down splay method, </li>
+<li><ol start="127">
+<li>&#x2F;&#x2F; you should make the suitable final step</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; according to the situation, such as “insert”, “delete”, “search”. </li>
+<li>&#x2F;&#x2F; And what’s the top-down method? </li>
+<li>&#x2F;&#x2F; now we should add LeftMaxRoot as L and RightMinRoot as R </li>
+<li>&#x2F;&#x2F; 1. L  A  R         2. L  A  R        3. L   A   R </li>
+<li>&#x2F;&#x2F;         &#x2F;                        &#x2F;                      &#x2F; </li>
+<li>&#x2F;&#x2F;        B                     B                     B </li>
+<li>&#x2F;&#x2F;                               &#x2F;                          &#x2F; </li>
+<li>&#x2F;&#x2F;                              C                          C </li>
+<li>&#x2F;&#x2F; </li>
+<li>&#x2F;&#x2F; 1.-&gt;L  B  R      2.-&gt;L  C   R        3.L   C    R </li>
+<li>&#x2F;&#x2F;        &#x2F;                     &#x2F;                          &#x2F;      &#x2F; </li>
+<li>&#x2F;&#x2F;     A                    B                         B    A </li>
+<li>&#x2F;&#x2F;                             &#x2F; </li>
+<li>&#x2F;&#x2F;                              A </li>
+<li>&#x2F;&#x2F; but in case 3. we can simplified case 3 rotate as </li>
+<li>&#x2F;&#x2F; 3. L   B      R </li>
+<li>&#x2F;&#x2F;            &#x2F;      &#x2F; </li>
+<li>&#x2F;&#x2F;            C  A </li>
+<li>&#x2F;&#x2F; and we must integrate the LeftMaxRoot and RightMinRoot together, </li>
+<li>&#x2F;&#x2F; then we have final step to do this. And L is left tree, and R is right tree. </li>
+<li>&#x2F;&#x2F; L     A     R               A </li>
+<li>&#x2F;&#x2F;         &#x2F; &#x2F;         -&gt;         &#x2F;   &#x2F; </li>
+<li>&#x2F;&#x2F;       B   C                L     R </li>
+<li>&#x2F;&#x2F;                                 &#x2F;   &#x2F; </li>
+<li>&#x2F;&#x2F;                                B C </li>
+<li>void  splay(TreeNode<T>* &amp;subRoot,T&amp; data) </li>
+<li>{ </li>
+<li>if  (NULL &#x3D;&#x3D; subRoot) </li>
+<li>{ </li>
+<li>return  ; </li>
+<li>} </li>
+<li>TreeNode<T>* leftRoot; </li>
+<li>TreeNode<T>* rightRoot; </li>
+<li>&#x2F;&#x2F; here some code use static member, if you promise you have sync-control </li>
+<li>&#x2F;&#x2F; or you don’t use this code in thread or process, you could choose static </li>
+<li>&#x2F;&#x2F; member to accelerate your program. </li>
+<li>&#x2F;&#x2F; It means the following code is thread-safe. </li>
+<li>TreeNode<T> head(data); </li>
+<li>leftRoot &#x3D; rightRoot &#x3D; &head; </li>
+<li>while  (  true  ) </li>
+<li>{ </li>
+<li><ol start="170">
+<li>if  (data &lt; subRoot-&gt;data)</li>
+</ol>
+</li>
+<li>{ </li>
+<li>if  (NULL &#x3D;&#x3D; subRoot-&gt;left) </li>
+<li>{ </li>
+<li>break  ; </li>
+<li>} </li>
+<li>else  if  (data &lt; subRoot-&gt;left-&gt;data) </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; Left rotate </li>
+<li>TreeNode<T>* tempLeft &#x3D; subRoot-&gt;left; </li>
+<li>subRoot-&gt;left &#x3D; tempLeft-&gt;right; </li>
+<li>tempLeft-&gt;right &#x3D; subRoot; </li>
+<li>subRoot &#x3D; tempLeft; </li>
+<li><ol start="184">
+<li>}</li>
+</ol>
+</li>
+<li>else </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; do nothing </li>
+<li>} </li>
+<li>&#x2F;&#x2F; split the tree with right root </li>
+<li>if  (NULL &#x3D;&#x3D; subRoot-&gt;left) </li>
+<li>break  ; </li>
+<li>rightRoot-&gt;left &#x3D; subRoot; </li>
+<li>rightRoot &#x3D; subRoot; </li>
+<li>subRoot &#x3D; subRoot-&gt;left ; </li>
+<li><ol start="196">
+<li>}</li>
+</ol>
+</li>
+<li>else  if  (data &gt; subRoot-&gt;data) </li>
+<li>{ </li>
+<li>if  (NULL &#x3D;&#x3D; subRoot-&gt;right) </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; need not to rotate </li>
+<li>break  ; </li>
+<li>} </li>
+<li>else  if  (data &gt; subRoot-&gt;right-&gt;data) </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; right rotate </li>
+<li>TreeNode<T>* tempRight &#x3D; subRoot-&gt;right; </li>
+<li>subRoot-&gt;right &#x3D; tempRight-&gt;left; </li>
+<li>tempRight-&gt;left &#x3D; subRoot; </li>
+<li>subRoot &#x3D; tempRight; </li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; do nothing </li>
+<li>} </li>
+<li>&#x2F;&#x2F; split the tree by left root </li>
+<li>if  (NULL &#x3D;&#x3D; subRoot-&gt;right) </li>
+<li>break  ; </li>
+<li>leftRoot-&gt;right &#x3D; subRoot; </li>
+<li>leftRoot &#x3D; subRoot; </li>
+<li><ol start="222">
+<li>subRoot &#x3D; subRoot-&gt;right;</li>
+</ol>
+</li>
+<li>} </li>
+<li>else </li>
+<li>{ </li>
+<li>&#x2F;&#x2F; the same key </li>
+<li>break  ; </li>
+<li>} </li>
+<li><ol start="230">
+<li>}</li>
+</ol>
+</li>
+<li><ol start="232">
+<li>&#x2F;&#x2F; the final step</li>
+</ol>
+</li>
+<li>&#x2F;&#x2F; we have find the last node, ant then we should </li>
+<li>&#x2F;&#x2F; integrate the left root, the right root and the root into One tree. </li>
+<li>&#x2F;&#x2F; head.right is left root </li>
+<li>&#x2F;&#x2F; head.left is right root </li>
+<li>leftRoot-&gt;right &#x3D; subRoot-&gt;left; </li>
+<li>rightRoot-&gt;left &#x3D; subRoot-&gt;right; </li>
+<li>subRoot-&gt;left &#x3D; head.right; </li>
+<li>subRoot-&gt;right &#x3D; head.left; </li>
+<li><ol start="242">
+<li><ol start="243">
+<li>}</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol start="245">
+<li><ol start="246">
+<li><ol start="247">
+<li><ol start="248">
+<li>};</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>发现CSDN的代码编辑器还是有些问题，空格处理不好，导致我注释中的树形错乱了…</p>
+<p>不过没有大关系，应该抓起旁边的纸边看边画就能明白。</p>
+<p>在网上找splayTree的源码学习，发现凭自己的实力还真的看不懂…..</p>
+<p>幸好在家里翻到了古老的数据结构教材。这才明白。</p>
+<p>至于不使用添加父节点或者采用递归栈等方式的原因在于：空间消耗太大。</p>
+<p>另外递归栈也不好调试</p>
+<p>这个top-down splay的方法消耗空间为O(1)，带来的效果却和添加父节点类似，没有使用递归的方法。</p>
+<p>至于具体的方法，在代码的注释里。</p>
+<p>这里为了编代码方便就没有将treeNode 类中的成员变量私有化。</p>
+<p>另外的BinaryTree的代码在 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/08/19/2794469.aspx"> _ 以前的blog中 _
+</a> 。</p>
+<p>这个splayTree还是较为完整的，至少比Apache中的splayTree完整些。现在我依旧不明白为什么Apache中的内存管理使用的是splayTre<br>e,而且splayTree还没有delete函数。难道内存管理的东西没有必要删除吗？</p>
+<p>思考中….</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+              <a href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag"># 编程</a>
+              <a href="/tags/null/" rel="tag"># null</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2008/09/30/3004984/" rel="prev" title="个人项目总结">
+                  <i class="fa fa-angle-left"></i> 个人项目总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2008/10/03/3013266/" rel="next" title="在析构函数上犯了个愚笨的错误">
+                  在析构函数上犯了个愚笨的错误 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

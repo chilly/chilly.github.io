@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这个类是为了给GeneralTree提供Queue队列操作才创建的。 因为GeneralTree使用层次遍历的时候，必须要使用这样一个队列。当然如果你没有这样一个队列，但是你在每个节点那里设置了计数器，那么你还是可以完成一个层次遍历操作。 这里为了保持GeneralTreeNode的最简单性，所以没有添加计数器属性。 下面是List类的具体代码： &#x2F;* * create by chico">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表类List">
+<meta property="og:url" content="http://chillyc.info/2009/02/03/3860277/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="这个类是为了给GeneralTree提供Queue队列操作才创建的。 因为GeneralTree使用层次遍历的时候，必须要使用这样一个队列。当然如果你没有这样一个队列，但是你在每个节点那里设置了计数器，那么你还是可以完成一个层次遍历操作。 这里为了保持GeneralTreeNode的最简单性，所以没有添加计数器属性。 下面是List类的具体代码： &#x2F;* * create by chico">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2009-02-03T06:28:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:44.738Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="delete">
+<meta property="article:tag" content="null">
+<meta property="article:tag" content="list">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2009/02/03/3860277/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2009/02/03/3860277/","path":"2009/02/03/3860277/","title":"链表类List"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>链表类List | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/03/3860277/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="链表类List | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          链表类List
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-02-03 14:28:00" itemprop="dateCreated datePublished" datetime="2009-02-03T14:28:00+08:00">2009-02-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>这个类是为了给GeneralTree提供Queue队列操作才创建的。</p>
+<p>因为GeneralTree使用层次遍历的时候，必须要使用这样一个队列。当然如果你没有这样一个队列，但是你在每个节点那里设置了计数器，那么你还是可以完成一个层<br>次遍历操作。</p>
+<p>这里为了保持GeneralTreeNode的最简单性，所以没有添加计数器属性。</p>
+<p>下面是List类的具体代码：</p>
+<p>&#x2F;* * create by chico chen * date: 2009&#x2F;02&#x2F;02 <em>&#x2F; #ifndef <em>LIST_H</em> #define<br><em>LIST_H</em> template<class T> class ListNode { public: T data; ListNode<T></em> next;<br>ListNode() { next &#x3D; NULL; } ListNode(T &amp; data) { this-&gt;data &#x3D; data; next &#x3D;<br>NULL; } ListNode(T &amp; data, ListNode<T>* next) { this-&gt;data &#x3D; data; this-&gt;next<br>&#x3D; next; } ~ListNode() { next &#x3D; NULL; } }; template<class T> class List {<br>private: int length; ListNode<T>* head; public: List() { head &#x3D; NULL; length &#x3D;<br>0; } List(ListNode<T>* head) { this-&gt;head &#x3D; head; length &#x3D; 1; } ~List() {<br>ListNode<T>* tempHead &#x3D; head; while(NULL !&#x3D; head) { tempHead &#x3D; head-&gt;next;<br>delete head; head &#x3D; tempHead; } length &#x3D; 0; } bool IsEmpty() { return 0 &#x3D;&#x3D;<br>length; } &#x2F;&#x2F; the coral function to insert the node &#x2F;&#x2F; pre : none &#x2F;&#x2F; post: no<br>matter what kind of situation, the function can work. void Insert(ListNode<T>*<br>node, int index) { if(0 &#x3D;&#x3D; index) { &#x2F;&#x2F; insert in the front if(NULL &#x3D;&#x3D; head) {<br>head &#x3D; node; } else { node-&gt;next &#x3D; head; head &#x3D; node; } } else { if(NULL &#x3D;&#x3D;<br>head) { head &#x3D; node; } else { if(index &gt;&#x3D; length || index &lt; 0) { index &#x3D;<br>length; } ListNode<T>* temp &#x3D; head; while(NULL !&#x3D; temp-&gt;next &amp;&amp; index–) {<br>temp &#x3D; temp-&gt;next; } temp-&gt;next &#x3D; node; } } length ++; } ListNode<T>*<br>GetHead() { return this-&gt;head; } &#x2F;&#x2F; pre: list is not empty &#x2F;&#x2F; post: return the<br>last element. ListNode<T>* GetTail() { if(NULL &#x3D;&#x3D; head) { return NULL; }<br>ListNode<T>* tempHead &#x3D; head; while(NULL !&#x3D; tempHead-&gt;next) { tempHead &#x3D;<br>tempHead-&gt;next; } return tempHead; } &#x2F;&#x2F; pre: node is not NULL &#x2F;&#x2F; post: return<br>the node’s next node ListNode<T>* GetNext(ListNode<T>* node) { if(NULL !&#x3D;<br>node) { return node-&gt;next; } } &#x2F;&#x2F; pre: begin at zero, and the index is less<br>than the length of the list &#x2F;&#x2F; post: if index is -1, then return the last &#x2F;&#x2F;<br>post: if index is not -1 and less than zer, or bigger than the length, throw<br>exception. ListNode<T>* GetAt(int index) { ListNode<T>* temp &#x3D; NULL; if(-1 &#x3D;&#x3D;<br>index) { &#x2F;&#x2F; get the last temp &#x3D; GetTail(); } else if(0 &lt;&#x3D; index &amp;&amp; index &lt;<br>length) { ListNode<T>* tempHead &#x3D; head; while(tempHead &amp;&amp; index–) { tempHead<br>&#x3D; tempHead-&gt;next; } temp &#x3D; tempHead; } else { throw “out of list”; } return<br>temp; } void DeleteHead() { ListNode<T>* tempHead &#x3D; head; head &#x3D; head-&gt;next;<br>delete tempHead; this-&gt;length–; } &#x2F;&#x2F; pre: head is not NULL &#x2F;&#x2F; post: delete<br>the last one and length subtract 1 void DeleteTail() { if(NULL &#x3D;&#x3D; head)<br>return; ListNode<T>* tempTail &#x3D; head; while(NULL !&#x3D; tempTail-&gt;next) { tempTail<br>&#x3D; tempTail-&gt;next; } delete tempTail; length–; } &#x2F;&#x2F; pre: head may be not NULL<br>&#x2F;&#x2F; post: if index is equal to -1, then delete tail element &#x2F;&#x2F; post: if index<br>is equal to 0, then delete the head &#x2F;&#x2F; post: if it is bigger than the length,<br>or less than 0, throw exception &#x2F;&#x2F; post: delete one node at index and length<br>subtract 1 void DeleteAt(int index) { if(-1 &#x3D;&#x3D; index) { DeleteTail(); } else<br>if(0 &#x3D;&#x3D; index) { DeleteHead(); } else if(0 &lt; index &amp;&amp; index &lt; length) {<br>ListNode<T>* temp &#x3D; GetAt(index-1); ListNode<T>* dNode &#x3D; temp-&gt;next;<br>temp-&gt;next &#x3D; dNode-&gt;next; delete dNode; length –; } else { throw “out of<br>List”; } } }; #endif</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/delete/" rel="tag"># delete</a>
+              <a href="/tags/null/" rel="tag"># null</a>
+              <a href="/tags/list/" rel="tag"># list</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2009/02/03/3860211/" rel="prev" title="GeneralTree 一般树形结构类">
+                  <i class="fa fa-angle-left"></i> GeneralTree 一般树形结构类
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2009/02/03/3860725/" rel="next" title="AI 决策树ID3 代码(C++)">
+                  AI 决策树ID3 代码(C++) <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

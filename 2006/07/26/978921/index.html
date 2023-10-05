@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="&#x2F;&#x2F;System Shedule Algorithm&#x2F;&#x2F;include the Priority First Algorithm and the Time Slice Algorithm&#x2F;&#x2F;Version 2.0&#x2F;&#x2F;author:chillyCreator #include#include#includeusing n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cpu优先级调度算法和时间片算法模拟程序">
+<meta property="og:url" content="http://chillyc.info/2006/07/26/978921/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="&#x2F;&#x2F;System Shedule Algorithm&#x2F;&#x2F;include the Priority First Algorithm and the Time Slice Algorithm&#x2F;&#x2F;Version 2.0&#x2F;&#x2F;author:chillyCreator #include#include#includeusing n">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2006-07-26T01:14:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:34:52.935Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="null">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2006/07/26/978921/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2006/07/26/978921/","path":"2006/07/26/978921/","title":"Cpu优先级调度算法和时间片算法模拟程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Cpu优先级调度算法和时间片算法模拟程序 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/07/26/978921/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Cpu优先级调度算法和时间片算法模拟程序 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cpu优先级调度算法和时间片算法模拟程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2006-07-26 09:14:00" itemprop="dateCreated datePublished" datetime="2006-07-26T09:14:00+08:00">2006-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>&#x2F;&#x2F;System Shedule Algorithm<br>&#x2F;&#x2F;include the Priority First Algorithm and the Time Slice Algorithm<br>&#x2F;&#x2F;Version 2.0<br>&#x2F;&#x2F;author:chillyCreator</p>
+<p>#include<string><br>#include<iostream><br>#include<iomanip><br>using namespace std;</p>
+<p>class process<br>{<br>private:<br>string name;&#x2F;&#x2F;the name of process<br>int pri;&#x2F;&#x2F;the priority,the bigger is the higher. the number is from 0 to 99<br>int round;&#x2F;&#x2F; the time slice.<br>int cpuTime;&#x2F;&#x2F;the process used by cpu<br>int needTime;&#x2F;&#x2F;the time need to finish the process<br>int state;&#x2F;&#x2F; 1 is ready, 0 is Run, -1 is Finish<br>process* next;&#x2F;&#x2F;to the next<br>public :<br>&#x2F;&#x2F;constructor<br>process(string Name,int Pri,int NeedTime,int roundTime &#x3D; 10,int State &#x3D; 1,int<br>CpuTime&#x3D;0,process * Next &#x3D; NULL)<br>{<br>name  &#x3D; Name;<br>pri &#x3D; Pri;<br>round &#x3D; roundTime;<br>cpuTime &#x3D; CpuTime;<br>needTime &#x3D; NeedTime;<br>state &#x3D; State;<br>next &#x3D; Next;<br>}<br>&#x2F;&#x2F;gettors and settors<br>string getName()<br>{<br>return name;<br>}<br>int getPri()<br>{<br>return pri;<br>}<br>int getNeedTime()<br>{<br>return needTime;<br>}<br>int getCpuTime()<br>{<br>return cpuTime;<br>}<br>int getState()<br>{<br>return state;<br>}<br>process* getNext()<br>{<br>return next;<br>}<br>void setState(int State)<br>{<br>state &#x3D; State;<br>}<br>void setCpuTime(int Time)<br>{<br>cpuTime +&#x3D; Time;<br>}<br>void setNeedTime(int Time)<br>{<br>needTime -&#x3D; Time;<br>}<br>void setPri(int Pri)<br>{<br>pri -&#x3D; Pri;<br>}<br>void setNextProcess(process* Next)<br>{<br>next &#x3D; Next;<br>}<br>void print()<br>{<br>&#x2F;&#x2F;for print<br>cout &lt;&lt;setw(14)&lt;&lt;name &lt;&lt; setw(2)&lt;&lt;state&lt;&lt;setw(7)&lt;&lt;needTime<br>&lt;&lt;setw(10)&lt;&lt;pri&lt;&lt;setw(5)&lt;&lt;cpuTime&lt;&lt;endl;<br>}<br>};</p>
+<p>&#x2F;&#x2F;this is nonpreempt system<br>class System<br>{<br>private:<br>process* head;<br>process* tail;<br>int length;<br>&#x2F;&#x2F;auto test<br>void test1(int n)<br>{<br>head &#x3D; new process(“Head”,-1,0,0);<br>length &#x3D; 0;<br>process* temp &#x3D; head;<br>for(int i&#x3D;0;i&lt;n;i++)<br>{<br>temp-&gt;setNextProcess(new process(“NameIsForTest “+i,20-i,30+i));<br>length++;<br>temp &#x3D; temp-&gt;getNext();<br>}<br>tail &#x3D; temp;<br>}<br>&#x2F;&#x2F;user test<br>void test2(int n)<br>{<br>head &#x3D; new process(“Head”,-1,0,0);<br>length &#x3D; 0;<br>process* temp &#x3D; head;<br>string name;<br>int priority,needtime;<br>for(int i&#x3D;0;i&lt;n;i++)<br>{<br>cin&gt;&gt;name&gt;&gt;priority&gt;&gt;needtime;<br>temp-&gt;setNextProcess(new process(name,priority,needtime));<br>length++;<br>temp &#x3D; temp-&gt;getNext();<br>}<br>tail &#x3D; temp;<br>}<br>public:<br>&#x2F;&#x2F;testN is for the various of tests. 1 is using the default test. 2 is using<br>the User test.<br>System(int testN,int num)<br>{<br>&#x2F;&#x2F;num is the number of processes<br>if(testN &#x3D;&#x3D; 1)<br>test1(num);<br>else<br>test2(num);<br>}<br>&#x2F;&#x2F;delete a process<br>void deleteProcess(process* a)<br>{<br>process* temp &#x3D; tail;<br>toQueueEnd(a);<br>delete a;<br>tail &#x3D; temp;<br>tail-&gt;setNextProcess(NULL);<br>length–;<br>}<br>void toQueueEnd(process* a)<br>{<br>if(a-&gt;getNext()&#x3D;&#x3D;NULL)<br>return;<br>process* temp &#x3D; findP(a);<br>temp-&gt;setNextProcess(a-&gt;getNext());<br>tail-&gt;setNextProcess(a);<br>tail &#x3D; a;<br>tail-&gt;setNextProcess(NULL);<br>}<br>&#x2F;&#x2F;put the process to the end of the queue<br>void toQueueHead(process* a)<br>{<br>if(head-&gt;getNext()&#x3D;&#x3D;a)<br>return;<br>process* temp &#x3D; findP(a);<br>temp-&gt;setNextProcess(a-&gt;getNext());</p>
+<p>if(a&#x3D;&#x3D;tail)<br>tail &#x3D; temp;<br>a-&gt;setNextProcess(head-&gt;getNext());<br>head-&gt;setNextProcess(a);<br>}<br>&#x2F;&#x2F;find parent<br>process* findP(process* a)<br>{<br>process* temp &#x3D; head;<br>while(temp-&gt;getNext() !&#x3D; a)<br>temp &#x3D; temp-&gt;getNext();<br>return temp;<br>}<br>&#x2F;&#x2F;when the process is sheduled into the CPU<br>void use(process* pro,int RunTime,int dePriority)<br>{<br>if(pro-&gt;getState()&#x3D;&#x3D;1)<br>{<br>if(RunTime &lt; pro-&gt;getNeedTime())<br>{<br>toQueueHead(pro);<br>pro-&gt;setCpuTime(RunTime);<br>pro-&gt;setNeedTime(RunTime);<br>pro-&gt;setPri(dePriority);<br>toQueueEnd(pro);<br>}<br>else<br>{<br>toQueueHead(pro);<br>pro-&gt;setCpuTime(pro-&gt;getNeedTime());<br>pro-&gt;setNeedTime(pro-&gt;getNeedTime());<br>pro-&gt;setState(-1);<br>cout &lt;&lt; endl&lt;<pro->getName()&lt;&lt;” finally use the cpu time is<br>“&lt;<pro->getCpuTime()&lt;&lt;endl;<br>deleteProcess(pro);<br>}<br>}<br>}<br>void printAll()<br>{<br>&#x2F;&#x2F;All of the process are printed<br>cout &lt;&lt; setw(14)&lt;&lt;”name “ &lt;&lt; setw(2)&lt;&lt;”state  “&lt;&lt;setw(5)&lt;&lt;”needTime “<br>&lt;&lt;setw(3)&lt;&lt;”pri “&lt;&lt;setw(5)&lt;&lt;”cpuTime  “&lt;&lt;endl;<br>for(process* temp &#x3D; head-&gt;getNext();temp!&#x3D;NULL;temp&#x3D; temp-&gt;getNext())<br>{<br>temp-&gt;print();<br>}<br>}<br>&#x2F;&#x2F;find the Highest priority<br>process* findHighest()<br>{<br>if(head-&gt;getNext()&#x3D;&#x3D;NULL)<br>return NULL;<br>process* temp &#x3D; head-&gt;getNext();<br>process* first &#x3D; NULL;<br>int i&#x3D;-1;<br>for(;temp!&#x3D;NULL;temp&#x3D;temp-&gt;getNext())<br>{<br>if(i &lt; temp-&gt;getPri())<br>{<br>i &#x3D; temp-&gt;getPri();<br>first &#x3D; temp;<br>}<br>}<br>return first;<br>}<br>&#x2F;&#x2F; the priority First Algorithm<br>void FP()<br>{<br>while(length &gt; 0)<br>{</p>
+<p>process* fir &#x3D; findHighest();<br>if(fir !&#x3D; NULL)<br>{<br>printAll();<br>use(fir,10,2);<br>}<br>}<br>}<br>&#x2F;&#x2F;the Time slice Algorithm<br>void TS(int RunTime)<br>{  </p>
+<p>while(length&gt;0)<br>{<br>process* temp &#x3D; head-&gt;getNext();<br>printAll();<br>if(temp !&#x3D; NULL)<br>use(temp,RunTime,0);<br>}<br>}<br>};<br>&#x2F;&#x2F;test<br>int main()<br>{<br>System a(1,4);<br>a.FP();<br>cout&lt;&lt;endl&lt;&lt;endl&lt;&lt;endl;<br>System b(1,4);<br>b.TS(10);<br>return 0;<br>}</p>
+<p>今天终于把上面的代码调试成功了！</p>
+<p>不过感觉还不够好。如果队列能写成一个单独的类就好了。</p>
+<p>而且今天编写队列的删除，进程移至队尾和队首的算法时，思路没有整理好。故白白浪费了太多时间。</p>
+<p>对于移至队尾的操作应该记住要把最后一个节点的next指针赋为null.</p>
+<p>移至队首的操作也要注意队尾的变化。</p>
+<p>对于队列某个元素的删除操作,可以先将元素置尾再删除。或者查找指向它的前一个元素，再通过基本的操作进行删除。</p>
+<p>这段程序代码使用的是链表队列。所以考虑的事件较多。如果使用数组的话会省些时间。</p>
+<p>此外process 类的gettors and<br>settors太多。简单的可以将私有的变量成员变为共有的。不过安全性不高。这个类中有些变量并没有什么作用，只不过为以后方便模拟。</p>
+<p>** 继续优化cpu调度算法  **</p>
+<hr>
+<p>如果在system类中加一个这样函数</p>
+<p>&#x2F;&#x2F;find the process which is not used.<br>&#x2F;&#x2F;the process will be older with the Time.<br>void findOld(int RunT)<br>{<br>const int increasePri &#x3D; -2;<br>static int time&#x3D;1;<br>process* temp &#x3D; head-&gt;getNext();<br>while(temp!&#x3D;NULL)<br>{<br>if((temp-&gt;getCpuTime() - time*RunT) &lt; 0)<br>temp-&gt;setPri(increasePri);<br>temp &#x3D; temp-&gt;getNext();<br>}<br>time++;<br>cout &lt;&lt;time;<br>}</p>
+<p>而void FT（）算法中这样调用：</p>
+<p>&#x2F;&#x2F; the priority First Algorithm<br>void FP()<br>{<br>int TimeSlice &#x3D; 10;<br>int oldTimer&#x3D;0;<br>while(length &gt; 0)<br>{  </p>
+<p>process* fir &#x3D; findHighest();<br>if(oldTimer%4&#x3D;&#x3D;1)<br>{<br>findOld(TimeSlice);<br>&#x2F;&#x2F;  cout &lt;&lt; oldTimer;<br>}<br>if(fir !&#x3D; NULL)<br>{<br>printAll();<br>use(fir,10,2);<br>}<br>oldTimer++;<br>}<br>}</p>
+<p>这样改动后就可以让进程随时间的增加而优先级提高。当一个进程在队列中很长一段时间后，进程就会出现老化情况。为了防止老化（就是很难再得到利用）的发生，过一段时间<br>后就会检测进程。当发现长时间没有用到的进程时，优先级会升高。</p>
+<p>不过void findOld(int RunT)<br>并不严谨。可能会出现所以进程都提高优先级的情况。所以还要进行优化。</p>
+<p>另外在上一次的代码中有可能会出现进程优先级为负数的情况。可以这样修改类process</p>
+<p>void setPri(int Pri)<br>{<br>if(pri-Pri&lt;0)<br>return;<br>if(pri-Pri&gt;100)<br>return;<br>pri -&#x3D; Pri;<br>}</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/null/" rel="tag"># null</a>
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2006/07/25/976771/" rel="prev" title="Javascript--第二天源代码">
+                  <i class="fa fa-angle-left"></i> Javascript--第二天源代码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2006/07/26/978953/" rel="next" title="Java手记---算术符号">
+                  Java手记---算术符号 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

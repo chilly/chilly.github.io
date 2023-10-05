@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="输出流(cout)基本操作1、使用流插入运算符（&lt;&lt;）#include&lt;iostream.h&gt;void main(){char c[]&#x3D;”Good morning”;cout&lt;&lt;c&lt;&lt;endl;}运行结果：Good morningPress any key to continue2、使用成员函数&#x2F;&#x2F; ostream &amp;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++I&#x2F;O流">
+<meta property="og:url" content="http://chillyc.info/2008/04/08/2260065/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="输出流(cout)基本操作1、使用流插入运算符（&lt;&lt;）#include&lt;iostream.h&gt;void main(){char c[]&#x3D;”Good morning”;cout&lt;&lt;c&lt;&lt;endl;}运行结果：Good morningPress any key to continue2、使用成员函数&#x2F;&#x2F; ostream &amp;a">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2008-04-08T03:35:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:34:51.628Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="ios">
+<meta property="article:tag" content="hex">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2008/04/08/2260065/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2008/04/08/2260065/","path":"2008/04/08/2260065/","title":"c++I/O流"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>c++I/O流 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/04/08/2260065/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="c++I/O流 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          c++I/O流
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-04-08 11:35:00" itemprop="dateCreated datePublished" datetime="2008-04-08T11:35:00+08:00">2008-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>输出流(cout)基本操作<br>1、使用流插入运算符（&lt;&lt;）<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>char c[]&#x3D;”Good morning”;<br>cout&lt;&lt;c&lt;&lt;endl;<br>}<br>运行结果：<br>Good morning<br>Press any key to continue<br>2、使用成员函数<br>&#x2F;&#x2F; ostream &amp;put(char);<br>&#x2F;&#x2F; 输出一个字符，可连续使用<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>cout.put(‘A’).put(‘&#x2F;n’);<br>}<br>运行结果：<br>A<br>Press any key to continue<br>&#x2F;&#x2F; ostream &amp;write(const char*,int);<br>&#x2F;&#x2F; 输出若干个字符<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>char c[]&#x3D;”Good morning”;<br>cout.write(c,4)&lt;&lt;endl;<br>}<br>运行结果：<br>Good<br>Press any key to continue<br>输入流(cin)基本操作<br>1、使用提取运算符（&gt;&gt;）<br>&#x2F;&#x2F;输入用空格、制表符、回车分隔<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>int i,j; char c;<br>cin&gt;&gt;i&gt;&gt;c&gt;&gt;j;<br>cout&lt;&lt;i&lt;&lt;”[“&lt;&lt;c&lt;&lt;”]”&lt;&lt;j&lt;&lt;endl;<br>}<br>运行结果：<br>123 456<br>123[4]56<br>Press any key to continue<br>2、使用成员函数<br>&#x2F;&#x2F; int get();<br>&#x2F;&#x2F; 读到结束标记返回EOF(-1)<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>while(true)<br>{<br>cout&lt;&lt;cin.get()&lt;&lt;’&#x2F;&#x2F;‘;<br>if(cin.eof())break;<br>}<br>}<br>运行结果：<br>12 34　 5<br>49&#x2F;50&#x2F;32&#x2F;51&#x2F;52&#x2F;9&#x2F;53&#x2F;10&#x2F;^Z<br>-1&#x2F;Press any key to continue<br>&#x2F;&#x2F; istream &amp;get(char&amp;);<br>&#x2F;&#x2F; 读到结束标记返回NULL指针<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>char c;<br>while(true)<br>{<br>cout&lt;&lt;cin.get(c)&lt;&lt;endl;<br>if(cin.eof())break;<br>}<br>}<br>运行结果：<br>12<br>0x004300EC<br>0x004300EC<br>0x004300EC<br>^Z<br>0x00000000<br>Press any key to continue<br>&#x2F;&#x2F;istream &amp;get(char*,int n,char delimit&#x3D;’&#x2F;n’);<br>&#x2F;&#x2F;get不从流中取出结束符，默认结束符是回车<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>char s1[10],s2[10],s3[10];<br>cin.get(s1,10);<br>cin.get(s2,10);<br>cin.get(s3,10);<br>cout&lt;&lt;”———————&#x2F;n”;<br>cout&lt;&lt;s1&lt;&lt;endl;<br>cout&lt;&lt;s2&lt;&lt;endl;<br>cout&lt;&lt;s3&lt;&lt;endl;<br>}<br>运行结果：<br>1234567890ABCDEF<br>-——————–<br>123456789<br>0ABCDEF  </p>
+<p>Press any key to continue<br>&#x2F;&#x2F;istream &amp;getline(char*,int n,char delimit&#x3D;’&#x2F;n’);<br>&#x2F;&#x2F;getline将从流中取出结束符，默认结束符是回车<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>char s1[10],s2[10],s3[10];<br>cin.getline(s1,10);<br>cin.getline(s2,10);<br>cin.getline(s3,10);<br>cout&lt;&lt;”———————&#x2F;n”;<br>cout&lt;&lt;s1&lt;&lt;endl;<br>cout&lt;&lt;s2&lt;&lt;endl;<br>cout&lt;&lt;s3&lt;&lt;endl;<br>}<br>1234567890ABCDEF<br>Bye bye<br>-——————–<br>123456789<br>0ABCDEF<br>Bye bye<br>Press any key to continue<br>&#x2F;&#x2F;isrream &amp;read(char *,int);<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>char c[10];<br>cin.read(c,10);<br>cout.write(c,cin.gcount())&lt;&lt;endl;<br>}<br>运行结果：<br>1234567890ABCDEF<br>1234567890<br>Press any key to continue  </p>
+<p>2、I&#x2F;O格式控制<br>ios类中有一些格式控制标志位，可通过公有函数来改变这些标志位<br>long　　flags() ;  &#x2F;&#x2F;返回标志字的值<br>long　　flags(long);  &#x2F;&#x2F;设置标志字的值<br>long　　setf(long);  &#x2F;&#x2F;设置标志位<br>long　　setf(long,long);  &#x2F;&#x2F;设置对齐、数制、浮点标志位<br>long　　unsetf(long);  &#x2F;&#x2F;清除标志位<br>int　　 width();<br>int　　 width(int);  &#x2F;&#x2F;无保持性，对紧随其后输出的数据有效<br>char　　fill();<br>char　　fill(chac);  &#x2F;&#x2F;填充字符<br>int　　 precision();<br>int　　 precision(int);  &#x2F;&#x2F;设置精度  </p>
+<p>设置标志位时，可使用ios类定义的枚举常量：<br>enum {　skipws　　 &#x3D; 0x0001,<br>left　　　 &#x3D; 0x0002,　　&#x2F;&#x2F; adjustfield<br>right　　　&#x3D; 0x0004,<br>internal　 &#x3D; 0x0008,<br>dec　　　　&#x3D; 0x0010,　　&#x2F;&#x2F; basefield<br>oct　　　　&#x3D; 0x0020,<br>hex　　　　&#x3D; 0x0040,<br>showbase　 &#x3D; 0x0080,<br>showpoint　&#x3D; 0x0100,<br>uppercase　&#x3D; 0x0200,<br>showpos　　&#x3D; 0x0400,<br>scientific &#x3D; 0x0800,　　&#x2F;&#x2F; floatfield<br>fixed　　　&#x3D; 0x1000,<br>unitbuf　　&#x3D; 0x2000,<br>stdio　　　&#x3D; 0x4000<br>};  </p>
+<p>用成员函数控制：<br>#include&lt;stdio.h&gt;<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>int i&#x3D;234;<br>printf(“%08X&#x2F;n”,i);<br>cout.setf(ios::hex,ios::basefield);<br>cout.setf(ios::uppercase);<br>cout.width(8);<br>cout.fill(‘0’);<br>cout&lt;&lt;i&lt;&lt;endl;<br>cout.setf(ios::dec,ios::basefield);<br>cout&lt;&lt;i&lt;&lt;endl;<br>}<br>运行结果：<br>000000EA<br>000000EA<br>234<br>Press any key to continue  </p>
+<p>用流操纵算子控制格式<br>算子可直接作为I&#x2F;O输出表达式的一项，算子分为无参算子及有参算子<br>算子分为无参算子  iostream.h<br>dec  &#x2F;&#x2F;十进制<br>oct  &#x2F;&#x2F;八进制<br>hex  &#x2F;&#x2F;16进制<br>endl  &#x2F;&#x2F;换行<br>flush  &#x2F;&#x2F;立即输出<br>有参算子  iomanip.h<br>resetiosflags(long)  &#x2F;&#x2F;清除标志位<br>setfill(int)  &#x2F;&#x2F;设置填充字符<br>setiosflags(long)  &#x2F;&#x2F;设置标志位<br>setprecision(int)  &#x2F;&#x2F;设置精度<br>setw(int)  &#x2F;&#x2F;设置宽度<br>&#x2F;&#x2F;用流操纵算子控制格式<br>#include&lt;iostream.h&gt;<br>#include&lt;iomanip.h&gt;<br>void main()<br>{<br>int i&#x3D;234;<br>cout&lt;&lt;hex&lt;&lt;setfill(‘0’)&lt;&lt;setw(8)&lt;&lt;setiosflags(ios::uppercase)&lt;&lt;i&lt;&lt;endl;<br>cout&lt;&lt;i&lt;&lt;endl;<br>cout&lt;&lt;dec&lt;&lt;i&lt;&lt;endl;<br>cout&lt;&lt;setw(8)&lt;&lt;i&lt;&lt;endl;<br>}<br>运行结果：<br>000000EA<br>EA<br>234<br>00000234<br>Press any key to continue<br>显示浮点数<br>&#x2F;&#x2F;没指定是定点(fixed)还是科学(scientific)时，默认输出6位有效数字<br>&#x2F;&#x2F;指定后，精度是指小数点后的有效位数<br>#include&lt;iomanip.h&gt;<br>#include&lt;stdio.h&gt;<br>#include&lt;iostream.h&gt;<br>void main()<br>{<br>double d&#x3D;123.4567890123456789123456789;<br>cout&lt;&lt;d&lt;&lt;endl;  &#x2F;&#x2F;默认6位有效数字<br>cout&lt;&lt;setprecision(4)&lt;&lt;d&lt;&lt;endl;  &#x2F;&#x2F;保留小数点后3位<br>cout&lt;&lt;setiosflags(ios::fixed)&lt;&lt;d&lt;&lt;endl;  &#x2F;&#x2F;科学记数法<br>cout&lt;&lt;setprecision(20)&lt;&lt;d&lt;&lt;endl;  &#x2F;&#x2F;能显示20位吗？<br>cout&lt;&lt;resetiosflags(ios::fixed);  &#x2F;&#x2F;取消定点显示<br>cout&lt;&lt;setiosflags(ios::scientific);  &#x2F;&#x2F;科学记数法<br>cout&lt;&lt;setprecision(4)&lt;&lt;d&lt;&lt;endl;  &#x2F;&#x2F;保留小数点后2位<br>}<br>运行结果：<br>123.457<br>123.5<br>123.4568<br>123.456789012345680<br>1.2346e+002<br>Press any key to continue</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+              <a href="/tags/ios/" rel="tag"># ios</a>
+              <a href="/tags/hex/" rel="tag"># hex</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2008/04/03/2247830/" rel="prev" title="令人迷惑的Javascript">
+                  <i class="fa fa-angle-left"></i> 令人迷惑的Javascript
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2008/04/15/2292714/" rel="next" title="Css文件调用">
+                  Css文件调用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="我只是记点流水帐，不是技术文档。 1。首先找到文档  http:&#x2F;&#x2F;open.eucalyptus.com&#x2F;wiki&#x2F;EucalyptusPrerequisites_v1.5.2  看看安装前需要准备什么。 2。去  http:&#x2F;&#x2F;open.eucalyptus.com&#x2F;downloads  下载一个安装包。我使用的是centos5.3 3.解压缩后进入那个解压的目录。这步可以以后再做。 4。添加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建云计算平台～Eucalyptus安装日志 Centos 5.3">
+<meta property="og:url" content="http://chillyc.info/2009/09/15/4553315/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="我只是记点流水帐，不是技术文档。 1。首先找到文档  http:&#x2F;&#x2F;open.eucalyptus.com&#x2F;wiki&#x2F;EucalyptusPrerequisites_v1.5.2  看看安装前需要准备什么。 2。去  http:&#x2F;&#x2F;open.eucalyptus.com&#x2F;downloads  下载一个安装包。我使用的是centos5.3 3.解压缩后进入那个解压的目录。这步可以以后再做。 4。添加">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2009-09-15T00:54:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:41:45.502Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="云计算">
+<meta property="article:tag" content="centos">
+<meta property="article:tag" content="平台">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2009/09/15/4553315/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2009/09/15/4553315/","path":"2009/09/15/4553315/","title":"搭建云计算平台～Eucalyptus安装日志 Centos 5.3"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>搭建云计算平台～Eucalyptus安装日志 Centos 5.3 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/15/4553315/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="搭建云计算平台～Eucalyptus安装日志 Centos 5.3 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          搭建云计算平台～Eucalyptus安装日志 Centos 5.3
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-09-15 08:54:00" itemprop="dateCreated datePublished" datetime="2009-09-15T08:54:00+08:00">2009-09-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>我只是记点流水帐，不是技术文档。</p>
+<p>1。首先找到文档 <a target="_blank" rel="noopener" href="http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2"> http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2
+</a> 看看安装前需要准备什么。</p>
+<p>2。去 <a target="_blank" rel="noopener" href="http://open.eucalyptus.com/downloads"> http://open.eucalyptus.com/downloads
+</a> 下载一个安装包。我使用的是centos5.3</p>
+<p>3.解压缩后进入那个解压的目录。这步可以以后再做。</p>
+<p>4。添加各种可能需要的包：</p>
+<p>&#x2F;&#x2F;为了和让时钟同步 yum install -y ntp ntpdate pool.ntp.org &#x2F;&#x2F;安装xen虚拟机 yum install -y<br>xen sed –in-place ‘s&#x2F;#(xend-http-server no)&#x2F;(xend-http-server yes)&#x2F;‘ &#x2F;etc&#x2F;xen<br>&#x2F;xend-config.sxp sed –in-place ‘s&#x2F;#(xend-address localhost)&#x2F;(xend-address<br>localhost)&#x2F;‘ &#x2F;etc&#x2F;xen&#x2F;xend-config.sxp &#x2F;etc&#x2F;init.d&#x2F;xend restart<br>&#x2F;&#x2F;为了让Eucalyptus正常运行 yum install -y java-1.6.0-openjdk ant ant-nodeps dhcp<br>bridge-utils</p>
+<p>然后开放firewall的端口,输入：system-config-securitylevel 我只是开放了端口8443, 8773, 8774 ,8775四<br>个端口。传说对于前端前三个端口是必须开的。对于Node来说8775是必须开的。但是Eucalyptus建议：最好把全部的防火墙都关了吧。可见这个项目仅仅是实<br>现</p>
+<p>了云，但是对于云的安全性尚没有考虑。</p>
+<p>5。这里前端要安装的命令如下：（这里所说的前端是指和用户打交道的一个PC,node可以看作是集群中的一个节点），以下命令中的x86_64可以替换。我安装时就<br>使用的586. 安装云的命令中x86_64有的又变为i386.不过不管怎样。似乎是把里面的rpm包都安装完即可。</p>
+<p>&#x2F;&#x2F;安装第三方软件 cd eucalyptus-1.5.2-rpm-deps-x86_64 rpm -Uvh<br>aoetools-21-1.el4.x86_64.rpm &#x2F; euca-axis2c-1.5.0-2.x86_64.rpm &#x2F; euca-<br>rampartc-1.2.0-1.x86_64.rpm &#x2F; vblade-14-1mdv2008.1.x86_64.rpm cd .. &#x2F;&#x2F;安装云 rpm<br>-Uvh eucalyptus-1.5.2-1.x86_64.rpm &#x2F; eucalyptus-cloud-1.5.2-1.x86_64.rpm &#x2F;<br>eucalyptus-gl-1.5.2-1.x86_64.rpm &#x2F; eucalyptus-cc-1.5.2-1.x86_64.rpm</p>
+<p>6。Node要安装的包</p>
+<p>cd eucalyptus-1.5.2-rpm-deps-x86_64 rpm -Uvh aoetools-21-1.el4.x86_64.rpm &#x2F;<br>euca-axis2c-1.5.0-2.x86_64.rpm &#x2F; euca-rampartc-1.2.0-1.x86_64.rpm &#x2F; euca-<br>libvirt-1.5-1.x86_64.rpm &#x2F; vblade-14-1mdv2008.1.x86_64.rpm</p>
+<p>&#x2F;&#x2F;安装node controller rpm -Uvh eucalyptus-1.5.2-1.x86_64.rpm &#x2F; eucalyptus-<br>gl-1.5.2-1.x86_64.rpm &#x2F; eucalyptus-nc-1.5.2-1.x86_64.rpm</p>
+<p>7。我这里为了方便。将node和front-end（前端）放在一个PC上。不知道是否可行，姑且一试。执行完第五步后，再回到</p>
+<p>eucalyptus-1.5.2-rpm-deps-i586, 安装 euca-libvirt-1.5-1.i386.rpm<br>,然后再回上级目录安装eucalyptus-nc-1.5.2-1.i386.rpm</p>
+<p>8. 然后根据指示输入：su eucalyptus -c “virsh list” 果真fail to connect<br>xend,但是没有像传说中的一样，我这里没有显示Domain -0.</p>
+<p>9.暂时不管它，前端要执行</p>
+<p>&#x2F;etc&#x2F;init.d&#x2F;eucalyptus-cloud start &#x2F;etc&#x2F;init.d&#x2F;eucalyptus-cc start</p>
+<p>10. Node要执行：&#x2F;etc&#x2F;init.d&#x2F;eucalyptus-nc start</p>
+<p>11。对于我来说要在同一台PC上执行这三个操作。执行cloud时说You should have at least 32 loop<br>devices。可以使用命令：ls -l &#x2F;dev&#x2F;loop* | wc -l 来查看你现在有几个loop device.如果小于32，vim<br>&#x2F;etc&#x2F;modprobe.conf(这里不同的机器可能有所不同)，增加一行：options loop max_loop&#x3D;64,然后modprobe<br>loop。再输入ls-l &#x2F;dev&#x2F;loop* | wc -l 看看是否为64。</p>
+<p>如果是64之后继续敲命令。可能会在启动nc的时候报出失败:</p>
+<p>You should have at least 32 loop devices<br>Starting Eucalyptus services: Node Controller cannot be started: errors in<br>&#x2F;opt&#x2F;eucalyptus&#x2F;var&#x2F;log&#x2F;eucalyptus&#x2F;euca_test_nc.log  </p>
+<p>我查看了以下&#x2F;opt&#x2F;eucalyptus&#x2F;var&#x2F;log&#x2F;eucalyptus&#x2F;euca_test_nc.log这个文件。有以下几行。</p>
+<p>libvir: Xen Daemon error : internal error failed to connect to xend<br>libvir: Xen Daemon error : unable to connect to ‘localhost:8000’: Connection<br>refused<br>libvirt error: unable to connect to ‘localhost:8000’: Connection refused<br>(code&#x3D;38)</p>
+<p>难道是8000端口没有开？关闭防火墙和SELinux之后，再试。结果还是这个错误。莫非是有什么软件没有装？再试试这个命令:</p>
+<pre><code>yum install -y java-1.6.0-openjdk-devel ant ant-nodeps libvirt-devel curl-devel /  
+
+ httpd httpd-devel apr-devel openssl-devel dhcp   
+结果还是不行。看来不是包没有装。再使用su eucalyptus -c &quot;virsh list&quot; 命令，得到的信息为&quot; libvir: 错误 : 操作失败 :   
+
+xenProxyOpen错误: 连接到管理程序失败。那可能是xend 服务没有看。使用xend start结果抛出了异常。  
+
+（不能使用system-config-services来查看xend是否已经启动。因为我查看过，结果为对勾，害我又查了很久。）如何开启呢？  
+
+首先要重启，grub会有新的一行出现（在重启之前一定要先关闭SElinux,方法为system-config-securitylevel的第二个选项卡，  
+
+选择禁止即可。否则进入Xen会等待很长时间。）。进入Xen之后。首先Xend start,然后可以使用xm list。这次你应该能看到  
+
+那个domain-0了吧。之后就使用eucalyptus的命令启动即可。不过可能还会遇到loop device less than 32的警告。  
+
+再次更改 /etc/modprobe.conf文件,加入 options loop max_loop=64 保存后在命令行中输入:modprobe loop即可。  
+
+再使用下面的命令：  
+
+eucalyptus-cloud start  
+
+eucalyptus-cc start  
+
+eucalyptus-nc start   
+
+cloud启动时可能会有Is cloud alread start?的提示。如果不放心就使用eucalyptus-cloud restart好了。这次应该啥错误都没有了！  
+
+安装结束！(我只用了一台机器安装云...多台的暂时没有尝试。)
+</code></pre>
+<p>如果出现了以下的错误：</p>
+<p>Restarting Eucalyptus cluster controller: (13)Permission denied: make_sock:<br>could not bind to address [::]:8774<br>(13)Permission denied: make_sock: could not bind to address 0.0.0.0:8774<br>no listening sockets available, shutting down<br>Unable to open logs<br>Failed to start the CC!</p>
+<p>那一定是system-config-security中，防火墙没有置为disable或者seLinux没有置为passivate或者disable导致的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag"># 云计算</a>
+              <a href="/tags/centos/" rel="tag"># centos</a>
+              <a href="/tags/%E5%B9%B3%E5%8F%B0/" rel="tag"># 平台</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2009/09/14/4550353/" rel="prev" title="Eucalyptus使用日志">
+                  <i class="fa fa-angle-left"></i> Eucalyptus使用日志
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2009/09/17/4562908/" rel="next" title="Eucalyptus安装到centos5.3配置日志">
+                  Eucalyptus安装到centos5.3配置日志 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

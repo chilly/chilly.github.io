@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="计算机数据存储有两种字节优先顺序：高位字节优先和低位字节优先。Internet上数据以高位字节优先顺序在网络上传输，所以对于在内部是以低位字节优先方式存储数据的机器，在Internet上传输数据时就需要进行转换。我们要讨论的第一个结构类型是：struct sockaddr，该类型是用来保存socket信息的：struct sockaddr {unsigned short sa_family; &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 下 Socket编程">
+<meta property="og:url" content="http://chillyc.info/2007/04/23/1576438/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="计算机数据存储有两种字节优先顺序：高位字节优先和低位字节优先。Internet上数据以高位字节优先顺序在网络上传输，所以对于在内部是以低位字节优先方式存储数据的机器，在Internet上传输数据时就需要进行转换。我们要讨论的第一个结构类型是：struct sockaddr，该类型是用来保存socket信息的：struct sockaddr {unsigned short sa_family; &amp;#">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2007-04-23T10:53:00.000Z">
+<meta property="article:modified_time" content="2023-10-05T04:34:49.393Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="socket">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="struct">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2007/04/23/1576438/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2007/04/23/1576438/","path":"2007/04/23/1576438/","title":"Linux 下 Socket编程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux 下 Socket编程 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/04/23/1576438/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux 下 Socket编程 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux 下 Socket编程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-04-23 18:53:00" itemprop="dateCreated datePublished" datetime="2007-04-23T18:53:00+08:00">2007-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>计算机数据存储有两种字节优先顺序：高位字节优先和低位字节优先。Internet上数据以高位字节优先顺序在网络上传输，所以对于在内部是以低位字节优先方式存储数<br>据的机器，在Internet上传输数据时就需要进行转换。<br>我们要讨论的第一个结构类型是：struct sockaddr，该类型是用来保存socket信息的：<br>struct sockaddr {<br>unsigned short sa_family; &#x2F;* 地址族， AF_xxx <em>&#x2F;<br>char sa_data[14]; &#x2F;</em> 14 字节的协议地址 <em>&#x2F; };<br>sa_family一般为AF_INET；sa_data则包含该socket的IP地址和端口号。<br>另外还有一种结构类型：<br>struct sockaddr_in {<br>short int sin_family; &#x2F;</em> 地址族 <em>&#x2F;<br>unsigned short int sin_port; &#x2F;</em> 端口号 <em>&#x2F;<br>struct in_addr sin_addr; &#x2F;</em> IP地址 <em>&#x2F;<br>unsigned char sin_zero[8]; &#x2F;</em> 填充0 以保持与struct sockaddr同样大小 *&#x2F;<br>};<br>这个结构使用更为方便。sin_zero(它用来将sockaddr_in结构填充到与struct<br>sockaddr同样的长度)应该用bzero()或memset()函数将其置为零。指向sockaddr_in<br>的指针和指向sockaddr的指针可以相互转换，这意味着如果一个函数所需参数类型是sockaddr时，你可以在函数调用的时候将一个指向<br>sockaddr_in的指针转换为指向sockaddr的指针；或者相反。sin_family通常被赋AF_INET；sin_port和<br>sin_addr应该转换成为网络字节优先顺序；而sin_addr则不需要转换。<br>我们下面讨论几个字节顺序转换函数：<br>htons()–”Host to Network Short” ; htonl()–”Host to Network Long”<br>ntohs()–”Network to Host Short” ; ntohl()–”Network to Host Long”<br>在这里， h表示”host” ，n表示”network”，s 表示”short”，l表示 “long”。<br>打开socket 描述符、建立绑定并建立连接<br>socket函数原型为：<br>int socket(int domain, int type, int protocol);<br>domain参数指定socket的类型：SOCK_STREAM<br>或SOCK_DGRAM；protocol通常赋值”0”。Socket()调用返回一个整型socket描述符，你可以在后面的调用使用它。<br>一旦通过socket调用返回一个socket描述符，你应该将该socket与你本机上的一个端口相关联（往往当你在设计服务器端程序时需要调用该函数。随后你就可<br>以在该端口监听服务请求;而客户端一般无须调用该函数）。 Bind函数原型为：<br>int bind(int sockfd,struct sockaddr <em>my_addr, int addrlen);<br>Sockfd是一个socket描述符，my_addr是一个指向包含有本机IP地址及端口号等信息的sockaddr类型的指针;addrlen常被设置为size<br>of(struct sockaddr)。<br>最后，对于bind 函数要说明的一点是，你可以用下面的赋值实现自动获得本机IP地址和随机获取一个没有被占用的端口号：<br>my_addr.sin_port &#x3D; 0; &#x2F;</em> 系统随机选择一个未被使用的端口号 <em>&#x2F;<br>my_addr.sin_addr.s_addr &#x3D; INADDR_ANY; &#x2F;</em> 填入本机IP地址 *&#x2F;<br>通过将my_addr.sin_port置为0，函数会自动为你选择一个未占用的端口来使用。同样，通过将 my_addr.sin_addr.s_addr置为IN<br>ADDR_ANY，系统会自动填入本机IP地址。Bind()函数在成功被调用时返回0；遇到错误时返回”-1”并将errno置为相应的错误号。另外要注意的是，当<br>调用函数时，一般不要将端口号置为小于1024的值，因为1~1024是保留端口号，你可以使用大于1024中任何一个没有被占用的端口号。<br>Connect()函数用来与远端服务器建立一个TCP连接，其函数原型为：<br>int connect(int sockfd, struct sockaddr <em>serv_addr, int addrlen);<br>Sockfd是目的服务器的sockt描述符；serv_addr是包含目的机IP地址和端口号的指针。遇到错误时返回-1，并且errno中包含相应的错误码。进行<br>客户端程序设计无须调用bind()，因为这种情况下只需知道目的机器的IP地址，而客户通过哪个端口与服务器建立连接并不需要关心，内核会自动选择一个未被占用的端<br>口供客户端来使用。<br>Listen()——监听是否有服务请求<br>在服务器端程序中，当socket与某一端口捆绑以后，就需要监听该端口，以便对到达的服务请求加以处理。<br>int listen(int sockfd， int backlog);<br>Sockfd是Socket系统调用返回的socket 描述符；backlog指定在请求队列中允许的最大请求数，进入的连接请求将在队列中等待accept()它<br>们（参考下文）。Backlog对队列中等待服务的请求的数目进行了限制，大多数系统缺省值为20。当listen遇到错误时返回-1，errno被置为相应的错误码<br>。<br>故服务器端程序通常按下列顺序进行函数调用：<br>socket(); bind(); listen(); &#x2F;</em> accept() goes here *&#x2F;<br>accept()——连接端口的服务请求。<br>当某个客户端试图与服务器监听的端口连接时，该连接请求将排队等待服务器accept()它。通过调用accept()函数为其建立一个连接，<br>accept()函数将返回一个新的socket描述符，来供这个新连接来使用。而服务器可以继续在以前的那个<br>socket上监听，同时可以在新的socket描述符上进行数据send()（发送）和recv()（接收）操作：<br>int accept(int sockfd, void *addr, int *addrlen);<br>sockfd是被监听的socket描述符，addr通常是一个指向sockaddr_in变量的指针，该变量用来存放提出连接请求服务的主机的信息（某台主机从某个<br>端口发出该请求）；addrten通常为一个指向值为sizeof(struct sockaddr_in)的整型指针变量。错误发生时返回一个-<br>1并且设置相应的errno值。<br>Send()和recv()——数据传输<br>这两个函数是用于面向连接的socket上进行数据传输。<br>Send()函数原型为：<br>int send(int sockfd, const void *msg, int len, int flags);<br>Sockfd是你想用来传输数据的socket描述符，msg是一个指向要发送数据的指针。<br>Len是以字节为单位的数据的长度。flags一般情况下置为0（关于该参数的用法可参照man手册）。<br>char *msg &#x3D; “Beej was here!”; int len， bytes_sent; … …<br>len &#x3D; strlen(msg); bytes_sent &#x3D; send(sockfd, msg,len,0); … …<br>Send()函数返回实际上发送出的字节数，可能会少于你希望发送的数据。所以需要对send()的返回值进行测量。当send()返回值与len不匹配时，应该对这<br>种情况进行处理。<br>recv()函数原型为：<br>int recv(int sockfd,void *buf,int len,unsigned int flags);<br>Sockfd是接受数据的socket描述符；buf<br>是存放接收数据的缓冲区；len是缓冲的长度。Flags也被置为0。Recv()返回实际上接收的字节数，或当出现错误时，返回-1并置相应的errno值。<br>Sendto()和recvfrom()——利用数据报方式进行数据传输<br>在无连接的数据报socket方式下，由于本地socket并没有与远端机器建立连接，所以在发送数据时应指明目的地址，sendto()函数原型为：<br>int sendto(int sockfd, const void *msg,int len,unsigned int flags,const struct<br>sockaddr *to, int tolen);<br>该函数比send()函数多了两个参数，to表示目地机的IP地址和端口号信息，而tolen常常被赋值为sizeof (struct<br>sockaddr)。Sendto 函数也返回实际发送的数据字节长度或在出现发送错误时返回-1。<br>Recvfrom()函数原型为：<br>int recvfrom(int sockfd,void *buf,int len,unsigned int flags,struct sockaddr<br>*from,int *fromlen);<br>from是一个struct sockaddr类型的变量，该变量保存源机的IP地址及端口号。fromlen常置为sizeof (struct sockaddr<br>)。当recvfrom()返回时，fromlen包含实际存入from中的数据字节数。Recvfrom()函数返回接收到的字节数或当出现错误时返回-1，并置相<br>应的errno。<br>应注意的一点是，当你对于数据报socket调用了connect()函数时，你也可以利用 send()和recv()进行数据传输，但该socket仍然是数据报<br>socket，并且利用传输层的UDP服务。但在发送或接收数据报时，内核会自动为之加上目地和源地址信息。<br>Close()和shutdown()——结束数据传输<br>当所有的数据操作结束以后，你可以调用close()函数来释放该socket，从而停止在该socket上的任何数据操作：close(sockfd);<br>你也可以调用shutdown()函数来关闭该socket。该函数允许你只停止在某个方向上的数据传输，而一个方向上的数据传输继续进行。如你可以关闭某socke<br>t的写操作而允许继续在该socket上接受数据，直至读入所有数据。<br>int shutdown(int sockfd,int how);<br>Sockfd的含义是显而易见的，而参数 how可以设为下列值：<br>·0——-不允许继续接收数据<br>·1——-不允许继续发送数据<br>·2——-不允许继续发送和接收数据，均为允许则调用close ()<br>shutdown在操作成功时返回0，在出现错误时返回-1（并置相应errno）。<br>DNS——域名服务相关函数<br>由于IP地址难以记忆和读写，所以为了读写记忆方便，人们常常用域名来表示主机，这就需要进行域名和IP地址的转换。函数gethostbyname()就是完成这种<br>转换的，函数原型为：<br>struct hostent *gethostbyname(const char *name);<br>函数返回一种名为hosten的结构类型，它的定义如下：<br>struct hostent {<br>char <em>h_name; &#x2F;</em> 主机的官方域名 *&#x2F;<br>char *<em>h_aliases; &#x2F;</em> 一个以NULL结尾的主机别名数组 <em>&#x2F;<br>int h_addrtype; &#x2F;</em> 返回的地址类型，在Internet环境下为AF-INET *&#x2F;<br>int h_length; &#x2F;*地址的字节长度 *&#x2F;<br>char <em><em>h_addr_list; &#x2F;</em> 一个以0结尾的数组，包含该主机的所有地址</em>&#x2F;<br>};<br>#define h_addr h_addr_list[0] &#x2F;<em>在h-addr-list中的第一个地址</em>&#x2F;</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/socket/" rel="tag"># socket</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/struct/" rel="tag"># struct</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2007/04/22/1575016/" rel="prev" title="网页乱码 UTF-8与GB2312 及 JSP中文问题">
+                  <i class="fa fa-angle-left"></i> 网页乱码 UTF-8与GB2312 及 JSP中文问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2007/04/25/1583639/" rel="next" title="搭建CVS服务器和CVS客户端">
+                  搭建CVS服务器和CVS客户端 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
