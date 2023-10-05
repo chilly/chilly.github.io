@@ -93,7 +93,7 @@
       <p class="site-title">帐前卒专栏</p>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels. 代码,软件架构,博客和小说</p>
   </div>
 
   <div class="site-nav-right">
@@ -243,15 +243,15 @@
     
     <div class="post-body" itemprop="articleBody"><p>对于python的字符串来说。如果是a &#x3D; ‘abc’,这就是代表是一个正常的字符串类型为str。如果是a&#x3D; b’abc’这就代表着一个bytes<br>object。对于bytes object<br>来说，可以使用decode而非encode;对于正常字符串而言可以使用encode，但是却不能使用decode.如果想将bytes<br>object直接转换为字符串型，可以使用str()或者repr()。但是这里对于已经进行编码的字符串而言，这样做没有任何好处。</p>
 <p>今天碰到一个一个问题，使用python取得网页内容的时候：</p>
-<p>request &#x3D; urllib.request.urlopen(‘<a target="_blank" rel="noopener" href="http://www.csdn.net/">http://www.csdn.net</a>‘) content &#x3D;<br>request.read()</p>
+<p>request &#x3D; urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldC8=">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>‘) content &#x3D;<br>request.read()</p>
 <p>这里content就是一个bytes object.如果使用正则式title[&#x2F;d&#x2F;D]*?title就会失效，抛出exception,说不能将findal<br>l(),finditer()等函数用在bytes object上。所以要进行decode()</p>
 <p>代码如下：</p>
-<p>import urllib.request import re request &#x3D;<br>urllib.request.urlopen(‘<a target="_blank" rel="noopener" href="http://www.csdn.net/">http://www.csdn.net</a>‘) content &#x3D; request.read() reg &#x3D;<br>re.compile(‘title[&#x2F;d&#x2F;D]*?title’) print(reg.findall(content.decode(‘utf-8’)))</p>
+<p>import urllib.request import re request &#x3D;<br>urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldC8=">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>‘) content &#x3D; request.read() reg &#x3D;<br>re.compile(‘title[&#x2F;d&#x2F;D]*?title’) print(reg.findall(content.decode(‘utf-8’)))</p>
 <p>如果想搜索中文，正则式中也可以放入中文。</p>
 <p>还有一点不好的地方，就在于这个decode()中到底放入什么编解码方式。这取决于那个网页的信息了。一般都会给出。csdn.net给出的就是charset&#x3D;u<br>tf-8.也可以使用下面的代码得到编解码方式：</p>
-<p>request &#x3D; urllib.request.urlopen(‘<a target="_blank" rel="noopener" href="http://www.csdn.net/">http://www.csdn.net</a>‘) information &#x3D;<br>request.info() print(information)</p>
+<p>request &#x3D; urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldC8=">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>‘) information &#x3D;<br>request.info() print(information)</p>
 <p>可惜的一点是，这里的information是字符串型。传说它是 <code>http.client.HTTPMessage的实例并且 </code> 继承 <code>了email. message.Message。根据文档说是用information.get_charset()就能得到编码是啥类型。可惜我没有试出来，返回值为None.使 用csdn的例子可以得到info的信息为：</code></p>
-<p>Server: nginx&#x2F;0.6.36<br>Date: Sun, 16 Aug 2009 15:51:04 GMT<br>Content-Type: text&#x2F;html; charset&#x3D;utf-8<br>Connection: close<br>Vary: Accept-Encoding<br>Cache-Control: max-age&#x3D;604800<br>Content-Length: 109205<br>Content-Location: <a target="_blank" rel="noopener" href="http://www.csdn.net/index.htm">http://www.csdn.net/index.htm</a><br>Last-Modified: Sat, 15 Aug 2009 11:11:04 GMT<br>Accept-Ranges: bytes<br>ETag: “f4756814991dca1:aa9”<br>X-Powered-By: ASP.NET<br>X-UA-Compatible: IE&#x3D;EmulateIE7<br>Age: 19<br>X-Cache: HIT from FECACHE<br>X-Cache-Lookup: HIT from FECACHE:80<br>Via: 1.0 cachedev.CSDN.NET (WebCache)</p>
+<p>Server: nginx&#x2F;0.6.36<br>Date: Sun, 16 Aug 2009 15:51:04 GMT<br>Content-Type: text&#x2F;html; charset&#x3D;utf-8<br>Connection: close<br>Vary: Accept-Encoding<br>Cache-Control: max-age&#x3D;604800<br>Content-Length: 109205<br>Content-Location: <span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldC9pbmRleC5odG0=">http://www.csdn.net/index.htm<i class="fa fa-external-link-alt"></i></span><br>Last-Modified: Sat, 15 Aug 2009 11:11:04 GMT<br>Accept-Ranges: bytes<br>ETag: “f4756814991dca1:aa9”<br>X-Powered-By: ASP.NET<br>X-UA-Compatible: IE&#x3D;EmulateIE7<br>Age: 19<br>X-Cache: HIT from FECACHE<br>X-Cache-Lookup: HIT from FECACHE:80<br>Via: 1.0 cachedev.CSDN.NET (WebCache)</p>
 
     </div>
 

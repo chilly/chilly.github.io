@@ -93,7 +93,7 @@
       <p class="site-title">帐前卒专栏</p>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels. 代码,软件架构,博客和小说</p>
   </div>
 
   <div class="site-nav-right">
@@ -241,7 +241,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>看了酷壳的这篇帖子： <a target="_blank" rel="noopener" href="http://coolshell.cn/articles/11021.html"> http://coolshell.cn/articles/11021.html</a> （从黑掉 github 学web安全开发）</p>
+    <div class="post-body" itemprop="articleBody"><p>看了酷壳的这篇帖子： <span class="exturl" data-url="aHR0cDovL2Nvb2xzaGVsbC5jbi9hcnRpY2xlcy8xMTAyMS5odG1s"> http://coolshell.cn/articles/11021.html<i class="fa fa-external-link-alt"></i></span> （从黑掉 github 学web安全开发）</p>
 <p>觉得有几点需要学习或者了解：</p>
 <p>1. ff&#x2F;chrome 都认为 <code>&lt;img src=”///attackersite.com”&gt;</code> 这个是一个绝对路径， 最终会转换为 <code>&lt;img src=”attackersite.com”&gt;</code> ， 但是server的开发可能会用正则匹配，认为这个是一个相对路径。赞呀~~就我个人开发而言，我一般看到 开头是 “&#x2F;“, 就认为是一个相对路径，当然还会做一个补刀操作就是在 “&#x2F;” 之前加入自己网站的sheme, 整个域,port， web content path等。 例如 ** &#x2F;&#x2F;&#x2F;attackersite.com ** 就会补为：<a href="http://chillyc.info/">http://chillyc.info</a> ** &#x2F;&#x2F;&#x2F;attackersite.com ** , 然后我估计就跳转到一个404的页面了。大家可以试试。</p>
 <p>2. Referer 漏洞。 这个观念应该加强。 主要原因是，如果有外域的图片或者其他的什么信息，当前的url路径就会变为 reference 送给外域。特别是喜欢在 url中加入特殊认证信息的地方。例如sid啥的。 这里有两点可以规避， 第一是内域使用Https， 对于外域一般使用http,这样隐秘信息就不会通过reference 发送给外域。当然浏览器的某些版本也可能会禁止访问从Https页面发送给http页面的请求。第二个就是在HTML5, 使用<a>, <area> 标签可以加入 noreferer 这个属性，表示点击这个链接不会有Referer header发送。但是酷壳这篇文中使用的是 img 标签， 并且还是个内域的。这就无能为力了。</p>

@@ -93,7 +93,7 @@
       <p class="site-title">帐前卒专栏</p>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels. 代码,软件架构,博客和小说</p>
   </div>
 
   <div class="site-nav-right">
@@ -243,8 +243,8 @@
     
     <div class="post-body" itemprop="articleBody"><p>最近开始关注安全问题。 同时也在关注由于关注了安全导致的性能问题。</p>
 <p>第一件事是 微信收藏。 详细的内容点击： <a href="http://chillyc.info/blog/2013/08/30/wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/"> 微信公众平台的安全问题。 </a>另外再原文的基础上补充几点：微信公众平台最不安全的地方就是它的内容是通过http方式传输的。只要能抓到包，内容都很容易知道。关键问题就是非常不容易抓到包。所以微信平台才不使用Https传输。而不使用https传输的第二个原因是因为 https ssl密钥交换协议很耗时。第三个原因，强求第三方内容供应商提供https支持的话，第三方供应商需要申请相应的域名证书，然后还需要配置，非常繁琐。所以微信客户端传输到微信服务器走的是https,而微信服务器到第三方服务器走的是http.</p>
-<p>第二件事是 https 传输时需要注意 连接重用和密钥重用。 http connection能开重用就重用吧。另外同时找到了windows 库中connection虽然重用，但是new request仍然不断的和server交换ssl密钥的问题。详见 <a target="_blank" rel="noopener" href="http://hi.baidu.com/zzppallas/item/ad8d30c38ffa92310831c605"> 这篇blog（winInet对于https保持keep alive需要注意的地方）</a> 。大意就是HttpOpenRequest 这个函数中需要去掉INTERNET_FLAG_IGNORE_CERT_CN_INVALID这个 Flag，然后需要添加OnWinInetError代码。如果证书出错（ERROR_INTERNET_INVALID_CA），那么就重新试一次。这样就可以保证INTERNET_FLAG_KEEP_CONNECTION。</p>
-<p>第三件事是 https的请求中夹杂着http请求的问题。这个问题在FireFox 23.0.1中出现。其他各个浏览器都是成功的。详细原因在： <a target="_blank" rel="noopener" href="http://superfly81.blog.51cto.com/6302302/1284376">火狐混合内容拦截 </a>。也就是说如果是https的页面，里面的任何请求都需要是Https的。否则请求是不能发送出去的。而在chrome下，显示的就是<strong>此网页包含不安全的内容</strong> 。该问题在IE10下面，会在最下面弹出一个小tab，问你是否继续。  </p>
+<p>第二件事是 https 传输时需要注意 连接重用和密钥重用。 http connection能开重用就重用吧。另外同时找到了windows 库中connection虽然重用，但是new request仍然不断的和server交换ssl密钥的问题。详见 <span class="exturl" data-url="aHR0cDovL2hpLmJhaWR1LmNvbS96enBwYWxsYXMvaXRlbS9hZDhkMzBjMzhmZmE5MjMxMDgzMWM2MDU="> 这篇blog（winInet对于https保持keep alive需要注意的地方）<i class="fa fa-external-link-alt"></i></span> 。大意就是HttpOpenRequest 这个函数中需要去掉INTERNET_FLAG_IGNORE_CERT_CN_INVALID这个 Flag，然后需要添加OnWinInetError代码。如果证书出错（ERROR_INTERNET_INVALID_CA），那么就重新试一次。这样就可以保证INTERNET_FLAG_KEEP_CONNECTION。</p>
+<p>第三件事是 https的请求中夹杂着http请求的问题。这个问题在FireFox 23.0.1中出现。其他各个浏览器都是成功的。详细原因在： <span class="exturl" data-url="aHR0cDovL3N1cGVyZmx5ODEuYmxvZy41MWN0by5jb20vNjMwMjMwMi8xMjg0Mzc2">火狐混合内容拦截 <i class="fa fa-external-link-alt"></i></span>。也就是说如果是https的页面，里面的任何请求都需要是Https的。否则请求是不能发送出去的。而在chrome下，显示的就是<strong>此网页包含不安全的内容</strong> 。该问题在IE10下面，会在最下面弹出一个小tab，问你是否继续。  </p>
 
     </div>
 

@@ -40,7 +40,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"page/3/index.html","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>帐前卒专栏 - code, software architect, articles and novels.</title>
+<title>帐前卒专栏 - code, software architect, articles and novels. 代码,软件架构,博客和小说</title>
   
 
 
@@ -87,7 +87,7 @@
       <h1 class="site-title">帐前卒专栏</h1>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels. 代码,软件架构,博客和小说</p>
   </div>
 
   <div class="site-nav-right">
@@ -242,16 +242,16 @@
 <p>好吧上面就历史背景。在这个背景下。我这边入库组件，写了一个分布式的，多线程解析，多线程批量入库的代码。本来觉得这种设计挺好。但是因为gap lock,<br>多线程和分布式的问题，批量写总是在不知不觉中造成死锁。为了代码的精简，为了不引入更多的问题，索性将批量写改为了单条写。</p>
 <p>好了，这下memory leak问题来了。难道是因为之前都死锁了，所以memory leak 就没有暴露出来？ 有可能哦~</p>
 <p>先看一下gc log。为啥是memory leak。看一下下图。其中蓝线的是内存使用情况。蓝线的最低点是每次Full GC<br>带来的内存大量释放。GC的最低点你可以看到是不断增加的。所以很大的可能是内存泄露。</p>
-<p>![](<a target="_blank" rel="noopener" href="http://img.blog.csdn.net/20160126214648953?watermark/2/text/aHR0cDovL2Jsb2">http://img.blog.csdn.net/20160126214648953?watermark/2/text/aHR0cDovL2Jsb2</a><br>cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70&#x2F;gravit<br>y&#x2F;Center)<br>为什么说很大可能是内存泄露呢？不同的程序有不同的内存使用模式。比如说我的程序中有一个大map.<br>这个map会不断的填充数据。但是数据集是有限的。但是这个map在最终填充完毕前，内存的使用量会不断的增长。如果内存不够了，仍然会有outofmemory 错<br>误,并且那个gc的图和我给的gc图会很像。这不代表这内存泄露，这只能说内存不够用。但是这需要先证明数据集是有限的，并且系统空闲内存可以完全放入这个数据集。否<br>则你只能采取其他方法来防范内存不够用的情况。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwMTI2MjE0NjQ4OTUzP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20160126214648953?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br>cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70&#x2F;gravit<br>y&#x2F;Center)<br>为什么说很大可能是内存泄露呢？不同的程序有不同的内存使用模式。比如说我的程序中有一个大map.<br>这个map会不断的填充数据。但是数据集是有限的。但是这个map在最终填充完毕前，内存的使用量会不断的增长。如果内存不够了，仍然会有outofmemory 错<br>误,并且那个gc的图和我给的gc图会很像。这不代表这内存泄露，这只能说内存不够用。但是这需要先证明数据集是有限的，并且系统空闲内存可以完全放入这个数据集。否<br>则你只能采取其他方法来防范内存不够用的情况。</p>
 <p>好吧。我看到这个图。感觉是内存泄露。为啥？因为我的数据集有限，并且粗略算了一下也不大。即使有缓存计算的策略存在，这些空间仍然不会造成outofMemory的<br>现象。那到底是什么原因？先使用一下jmap -histo [pid]. 看了一下比例。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> num     #instances         #bytes  class name</span><br><span class="line">----------------------------------------------</span><br><span class="line">   1:      21571308     1163654064  [B</span><br><span class="line">   2:       1770275      125384008  [I</span><br><span class="line">   3:       1715985      120562976  [[B</span><br><span class="line">   4:       1715382      120535928  [Ljava.io.InputStream;</span><br><span class="line">   5:       3430930      109789592  [Z</span><br><span class="line">   6:       1715198       68607920  com.mysql.jdbc.PreparedStatement$BatchParams</span><br><span class="line">   7:        621372       44778960  [C</span><br><span class="line">   8:         59015       11608344  [Ljava.lang.Object;</span><br><span class="line">   9:        469551       11269224  java.lang.String</span><br><span class="line">  10:        335730        8057520  org.dom4j.tree.DefaultAttribute</span><br><span class="line">  11:         76733        2455456  org.dom4j.tree.DefaultElement</span><br><span class="line">  12:         49621        2376880  [Ljava.lang.String;</span><br><span class="line">  13:         47685        1525920  java.util.HashMap$Node</span><br><span class="line">  14:         41482        1327424  com.paratera.importdata.CacheKeys</span><br><span class="line">  15:         46753        1122072  java.lang.StringBuilder</span><br><span class="line">  16:         44715        1073160  java.util.ArrayList</span><br><span class="line">  17:         32577        1042464  java.util.concurrent.ConcurrentHashMap$Node</span><br><span class="line">  18:         40990         983760  java.lang.Long</span><br><span class="line">  19:         13911         667728  java.nio.HeapCharBuffer</span><br><span class="line">  20:         13832         663936  java.nio.HeapByteBuffer</span><br><span class="line">  21:         24729         593496  java.lang.StringBuffer</span><br><span class="line">  22:         13476         539040  [Ljava.util.Formatter$Flags;</span><br></pre></td></tr></table></figure>
 
 <p>哦哦哦~排名第一的是byte[] , 我X. 其实根本查不出来是什么原因。除非你的代码里，很多 new byte[]. 否则使用byte[]<br>基本是你的调用的各种组件里的byte[]. 好吧。现在的怀疑的对象扩展到了自己的全部组件。。</p>
 <p>前五名都看不出任何问题。直到第六名。</p>
-<p>![](<a target="_blank" rel="noopener" href="http://img.blog.csdn.net/20160127111800214?watermark/2/text/aHR0cDovL2Jsb2">http://img.blog.csdn.net/20160127111800214?watermark/2/text/aHR0cDovL2Jsb2</a><br>cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70&#x2F;gravit<br>y&#x2F;Center)<br>就是这货。这货的变量里 byte[] byte[][] , int[] ， InputStream[]<br>排名前几的都有！！！不用说了。一定是这货。这货就是mysql jdbc执行 addBatch() 放入的。然后我细细看了一下代码。发现<br>executeBatch() 调用才会清理了 addBatch()中的 BatchParam,<br>如果只是调用了execute()方法，则写入数据库时不会清理BatchParam.<br>所以还是之前将批量入库转换为单条数据入库导致的。只将executeBatch()改为了execute()，<br>虽然功能上立马变成了单条数据入库。但实际上却直接引入了内存泄露问题。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwMTI3MTExODAwMjE0P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20160127111800214?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br>cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70&#x2F;gravit<br>y&#x2F;Center)<br>就是这货。这货的变量里 byte[] byte[][] , int[] ， InputStream[]<br>排名前几的都有！！！不用说了。一定是这货。这货就是mysql jdbc执行 addBatch() 放入的。然后我细细看了一下代码。发现<br>executeBatch() 调用才会清理了 addBatch()中的 BatchParam,<br>如果只是调用了execute()方法，则写入数据库时不会清理BatchParam.<br>所以还是之前将批量入库转换为单条数据入库导致的。只将executeBatch()改为了execute()，<br>虽然功能上立马变成了单条数据入库。但实际上却直接引入了内存泄露问题。</p>
 <p>当然因为代码封装&#x2F;函数化的问题， addBatch() 和 executeBatch()<br>被放入到了不同的函数中。。。。所以再次自己挖坑自己埋。自己掉坑里，一定是自己之前坑挖的不对。最后的解决方法也很简单。将addBatch()去掉就立马好了。</p>
 <p>好了。。。。写的多了。。。天晚了。。。洗洗睡去了。。。</p>
-<p>** 哦对了。打条公司信息，有想加入【并行科技】java团队的发简历到<a href="mailto:&#x68;&#114;&#x40;&#x70;&#x61;&#x72;&#x61;&#x74;&#x65;&#114;&#x61;&#46;&#x63;&#x6f;&#109;">&#x68;&#114;&#x40;&#x70;&#x61;&#x72;&#x61;&#x74;&#x65;&#114;&#x61;&#46;&#x63;&#x6f;&#109;</a>（请注明来源，方便过hr关）.  公司只做高大上的超算&#x2F;高性能计算的 toB  toG 业务，不做 toC业务。待遇不是问题。问题是你到底值不值你要的待遇。。。 **</p>
+<p>** 哦对了。打条公司信息，有想加入【并行科技】java团队的发简历到<span class="exturl" data-url="bWFpbHRvOiYjMTA0OyYjeDcyOyYjeDQwOyYjMTEyOyYjeDYxOyYjMTE0OyYjOTc7JiMxMTY7JiN4NjU7JiN4NzI7JiN4NjE7JiM0NjsmIzk5OyYjeDZmOyYjeDZkOw==">&#104;&#x72;&#x40;&#112;&#x61;&#114;&#97;&#116;&#x65;&#x72;&#x61;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>（请注明来源，方便过hr关）.  公司只做高大上的超算&#x2F;高性能计算的 toB  toG 业务，不做 toC业务。待遇不是问题。问题是你到底值不值你要的待遇。。。 **</p>
 
       
     </div>
@@ -346,13 +346,13 @@
 <p>问题&#x3D;&gt; 解决问题&#x3D;&gt; 后果（坏） 则继续解决问题；后果（好）则制造点新的问题。一步步推进，直到结局。不过高潮时一定要快速的制造和解决问题。</p>
 <p>下面到了影片的吐槽时间：</p>
 <p>你们知道吗？使用超级计算机不用一直连着网线，作业提交后就不用再管，直到算出结果后看两眼。而且像他这种权限的根本不能进入到超级计算机的机房中。对了，公司最近做<br>了一款应用ParaAlarm，可以在手机上跟踪提交到超算系统中的作业状态。下载二维码在这里：</p>
-<p>![](<a target="_blank" rel="noopener" href="http://img.blog.csdn.net/20151222103511331?watermark/2/text/aHR0cDovL2Jsb2">http://img.blog.csdn.net/20151222103511331?watermark/2/text/aHR0cDovL2Jsb2</a><br>cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70&#x2F;gravit<br>y&#x2F;Center)<br>你们知道吗？这种发射火箭的大项目都不用测试。这就是找死。做软件的都知道。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUxMjIyMTAzNTExMzMxP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20151222103511331?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br>cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70&#x2F;gravit<br>y&#x2F;Center)<br>你们知道吗？这种发射火箭的大项目都不用测试。这就是找死。做软件的都知道。</p>
 <p>你们知道吗？全队成员都飞回去了，怎么还留给你几百吨的氢气呢？</p>
 <p>你们知道吗？如果气压都能把气仓炸飞，那怎么可能用塑料布就可以密封了？早知道这样，都用塑料带布搭建基地就可以了呀。</p>
 <p>你们知道吗？中国的火箭根本不会叫太阳神号。因为太阳神是西方崇拜的神。中国从来不崇拜太阳。有的就只有金乌这种鸟，并且还要让后羿射下来几个。所以火箭绝对不会叫太<br>阳神，那一定会被射下来的。而且我觉得可能是在哪个国家上映就在哪个国家播使用那个国家的火箭。比如在印度播出的话，那些片段就会变成印度的太阳神火箭。</p>
 <p>不过那个宇航员不管是胖变瘦还是瘦变胖，还是很令人佩服的(LP说使用的是替身…恕我眼瞎)。在开始没有多久，土豆发芽的一幕还是挺不错。最后营救时两个宇航员死<br>活抓不住还是很令人揪心的。</p>
 <p>另外电影要下架了。最后再贴张海报吧。</p>
-<p>![](<a target="_blank" rel="noopener" href="http://img.blog.csdn.net/20151222103548743?watermark/2/text/aHR0cDovL2Jsb2">http://img.blog.csdn.net/20151222103548743?watermark/2/text/aHR0cDovL2Jsb2</a><br>cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70&#x2F;gravit<br>y&#x2F;Center)  </p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUxMjIyMTAzNTQ4NzQzP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20151222103548743?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br>cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70&#x2F;gravit<br>y&#x2F;Center)  </p>
 
       
     </div>
@@ -561,8 +561,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>上一篇大概说了一下JS是怎么画UML 图形的。<br>这一篇简单介绍一下这个JS 解析 UML语法是怎么实现的。<br><a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf"> https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf
-</a><br>这个是Markdown UML语言的语法结构。摘抄了部分：<br>这一部分是将词和词组成语句。而语句和语句就组成篇章。</p>
+          <p>上一篇大概说了一下JS是怎么画UML 图形的。<br>这一篇简单介绍一下这个JS 解析 UML语法是怎么实现的。<br><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYy9ncmFtbWFyLmVibmY="> https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf
+<i class="fa fa-external-link-alt"></i></span><br>这个是Markdown UML语言的语法结构。摘抄了部分：<br>这一部分是将词和词组成语句。而语句和语句就组成篇章。</p>
 <pre><code>document ::= statement*
 statement ::=
 ( &#39;title&#39; &#39;:&#39; message
@@ -767,13 +767,13 @@ message
     
     <div class="post-body" itemprop="articleBody">
           <p>这一篇开始讨论代码层面的问题。主要是markdown的功能的设计实现。</p>
-<p>这一篇先从markdown外围的代码开始讲起：<br>UML序列图是从 <a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams"> https://github.com/bramp/js-sequence-diagrams
-</a> copy得到的。</p>
+<p>这一篇先从markdown外围的代码开始讲起：<br>UML序列图是从 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1z"> https://github.com/bramp/js-sequence-diagrams
+<i class="fa fa-external-link-alt"></i></span> copy得到的。</p>
 <p>当如这个UML代码还用到了两个JS,功能库和画图.</p>
 <pre><code>&lt;script src=&quot;underscore-min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;raphael-min.js&quot;&gt;&lt;/script&gt;
 </code></pre>
-<p>首先讲讲这个JS最核心的类：<br>[ <a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-">https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-</a><br>diagram.js ](<a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src">https://github.com/bramp/js-sequence-diagrams/blob/master/src</a><br>&#x2F;sequence-diagram.js)</p>
+<p>首先讲讲这个JS最核心的类：<br>[ <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYy9zZXF1ZW5jZS0=">https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-<i class="fa fa-external-link-alt"></i></span><br>diagram.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYw==">https://github.com/bramp/js-sequence-diagrams/blob/master/src<i class="fa fa-external-link-alt"></i></span><br>&#x2F;sequence-diagram.js)</p>
 <p>首先这个类分为其实使用两种风格的。一种就是现在CSDN采用的风格，叫做simple. 另外一种是手绘风格，叫做hand。定义如下：</p>
 <pre><code>var themes = &#123;
 simple : RaphaelTheme,
@@ -837,11 +837,11 @@ drawing.draw(container);
 </code></pre>
 <p>表现：</p>
 <p>Created with Raphaël 2.1.2  距离是什么？  A  A  B  B  我们两个角色之间的间距  包括上下两个方块和中间的竖线<br>I’m A</p>
-<p>[ <a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/jquery-">https://github.com/bramp/js-sequence-diagrams/blob/master/src/jquery-</a><br>plugin.js ](<a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src">https://github.com/bramp/js-sequence-diagrams/blob/master/src</a><br>&#x2F;jquery-plugin.js)</p>
+<p>[ <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYy9qcXVlcnkt">https://github.com/bramp/js-sequence-diagrams/blob/master/src/jquery-<i class="fa fa-external-link-alt"></i></span><br>plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYw==">https://github.com/bramp/js-sequence-diagrams/blob/master/src<i class="fa fa-external-link-alt"></i></span><br>&#x2F;jquery-plugin.js)</p>
 <p><img src="http://img.blog.csdn.net/20150317225017889" alt="这里写图片描述"></p>
 <p>这个类中，如果没有定义option属性，那么就只能用simple的形式了。感觉CSDN的dev好像没有定义这个option. 我这边也无能为力。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/diagram.js]"> [ https://github.com/bramp/js-sequence-diagrams/blob/master/src/diagram.js]
-</a><br>这个类没有什么好讲的，就是通过parser构造出来的实体类。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYy9kaWFncmFtLmpzXQ=="> [ https://github.com/bramp/js-sequence-diagrams/blob/master/src/diagram.js]
+<i class="fa fa-external-link-alt"></i></span><br>这个类没有什么好讲的，就是通过parser构造出来的实体类。</p>
 <p>剩下的两个gammar JS. 这种词法解析的放到后面一篇再说. 网络实在不好，啥都timeout, 另外也该睡觉了。</p>
 
       
@@ -931,13 +931,13 @@ drawing.draw(container);
 </code></pre>
 <p>Created with Raphaël 2.1.2  A  A  B  B  X  X  一句话证明你很寂寞。  thinking  counting<br>这句话有一共六十九笔  SB</p>
 <p>如果Note中的对象名没有出现过，就会自建一个。另外还可以使用Note left of。</p>
-<p>这个js是使用的 <a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams"> https://github.com/bramp/js-sequence-diagrams
-</a></p>
+<p>这个js是使用的 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1z"> https://github.com/bramp/js-sequence-diagrams
+<i class="fa fa-external-link-alt"></i></span></p>
 <h1 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h1><pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 开始吃饭</span><br><span class="line">e=&gt;end: 结束吃饭</span><br><span class="line">op=&gt;operation: 埋头苦吃</span><br><span class="line">cond=&gt;condition: 已经吃饱了？</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br></pre></td></tr></table></figure>
 </code></pre>
 <p>Created with Raphaël 2.1.2  开始吃饭  埋头苦吃  已经吃饱了？  结束吃饭  yes  no</p>
-<p>流程图的代码： <a target="_blank" rel="noopener" href="https://github.com/adrai/flowchart.js"> https://github.com/adrai/flowchart.js
-</a></p>
+<p>流程图的代码： <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FkcmFpL2Zsb3djaGFydC5qcw=="> https://github.com/adrai/flowchart.js
+<i class="fa fa-external-link-alt"></i></span></p>
 <p>看了一下代码，准备下一篇讲一讲 UML 序列图和流程的实现。</p>
 
       
@@ -1156,7 +1156,7 @@ $\forall$, $\exists$, $\emptyset$,
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-06 01:32:50" itemprop="dateModified" datetime="2023-10-06T01:32:50+08:00">2023-10-06</time>
     </span>
 
   
@@ -1264,17 +1264,15 @@ $\forall$, $\exists$, $\emptyset$,
 <h2 id="4-粗体和斜体"><a href="#4-粗体和斜体" class="headerlink" title="4. 粗体和斜体"></a>4. 粗体和斜体</h2><p>粗体和斜体： 一个 <code>*</code> 两个 <code>*</code> 还是三个 <code>*</code> . 注意 <code>**[你的字符]**</code> 中 <code>*</code> 号和你的字符之间没有空格。<br>一个 <code>*</code> : <code>*你是斜体*</code> _ 你是斜体 _<br>两个 <code>*</code> : <code>**不对，你是粗体**</code> ** 不对，你是粗体 **<br>三个 <code>*</code> : <code>***你又粗又斜***</code> ** _ 你又粗又斜 _ **</p>
 <hr>
 <h2 id="5-链接"><a href="#5-链接" class="headerlink" title="5. 链接"></a>5. 链接</h2><ul>
-<li>在引用中加链接，第一个中括号添加需要添加的文字，第二个中括号中是引用链接的id，之后在引用中，使用id加链接：如下：<br>[link text][id]<br>[id]: <a target="_blank" rel="noopener" href="http://example.com/">http://example.com/</a> “optional title here”</li>
+<li>在引用中加链接，第一个中括号添加需要添加的文字，第二个中括号中是引用链接的id，之后在引用中，使用id加链接：如下：<br>[link text][id]<br>[id]: <span class="exturl" data-url="aHR0cDovL2V4YW1wbGUuY29tLw==">http://example.com/<i class="fa fa-external-link-alt"></i></span> “optional title here”</li>
 </ul>
 <p>上面的文字将展示为：</p>
-<p><a target="_blank" rel="noopener" href="http://example.com/"> link text </a>  </p>
+<p><span class="exturl" data-url="aHR0cDovL2V4YW1wbGUuY29tLw=="> link text <i class="fa fa-external-link-alt"></i></span>  </p>
 <ul>
 <li>在文中直接引用链接，直接使用尖括号，把链接加入到尖括号中就可以实现，如下：</li>
 </ul>
-<p><a target="_blank" rel="noopener" href="http://example.com/"> http://example.com/ </a> or <a href="mailto:address@example.com"> address@example.com
-</a></p>
-<p>展示如下：<br><a target="_blank" rel="noopener" href="http://example.com/"> http://example.com/ </a> or <a href="mailto:address@example.com"> address@example.com
-</a></p>
+<p><span class="exturl" data-url="aHR0cDovL2V4YW1wbGUuY29tLw=="> http://example.com/ <i class="fa fa-external-link-alt"></i></span> or <span class="exturl" data-url="bWFpbHRvOmFkZHJlc3NAZXhhbXBsZS5jb20="> address@example.com<i class="fa fa-external-link-alt"></i></span></p>
+<p>展示如下：<br><span class="exturl" data-url="aHR0cDovL2V4YW1wbGUuY29tLw=="> http://example.com/ <i class="fa fa-external-link-alt"></i></span> or <span class="exturl" data-url="bWFpbHRvOmFkZHJlc3NAZXhhbXBsZS5jb20="> address@example.com<i class="fa fa-external-link-alt"></i></span></p>
 <ul>
 <li>插入互联网上图片，格式如下：</li>
 </ul>
@@ -1403,8 +1401,8 @@ ___
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>第一篇简单介绍了markdown. <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/article/details/44206543"> 第一篇地址
-</a><br>第二篇主要会介绍不熟悉markdown语言的人如何使用CSDN新的编辑器。这里主要介绍图形编辑器。已经掌握的人请挪步。</p>
+          <p>第一篇简单介绍了markdown. <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FydGljbGUvZGV0YWlscy80NDIwNjU0Mw=="> 第一篇地址
+<i class="fa fa-external-link-alt"></i></span><br>第二篇主要会介绍不熟悉markdown语言的人如何使用CSDN新的编辑器。这里主要介绍图形编辑器。已经掌握的人请挪步。</p>
 <p><img src="http://img.blog.csdn.net/20150312220752199" alt="编辑器bar"></p>
 <ul>
 <li><p>前面几个都非常简单。例如对字体 ** 加粗 ** 和 ** _ 斜体 _ ** 。 </p>
@@ -1596,8 +1594,8 @@ ___
 <li>markdown的基础语法表达较少。例如如果我想对换一下这个字体的颜色，或者换一下背景色。这个还是需要借助于css.</li>
 </ul>
 <p>看起来markdown的缺点吐槽吐的有点多。但这并不影响它成为更加实用的语言。仔细想想，blog中除了字就是图。没有颜色，没有样式也不影响阅读。</p>
-<h1 id="csdn-markdown-对比"><a href="#csdn-markdown-对比" class="headerlink" title="csdn markdown 对比"></a>csdn markdown 对比</h1><p>呃..我找到这一款markdown： <a target="_blank" rel="noopener" href="https://www.zybuluo.com/mdeditor"> https://www.zybuluo.com/mdeditor
-</a></p>
+<h1 id="csdn-markdown-对比"><a href="#csdn-markdown-对比" class="headerlink" title="csdn markdown 对比"></a>csdn markdown 对比</h1><p>呃..我找到这一款markdown： <span class="exturl" data-url="aHR0cHM6Ly93d3cuenlidWx1by5jb20vbWRlZGl0b3I="> https://www.zybuluo.com/mdeditor
+<i class="fa fa-external-link-alt"></i></span></p>
 <h1 id="markdown-使用细节"><a href="#markdown-使用细节" class="headerlink" title="markdown 使用细节"></a>markdown 使用细节</h1><p>这里需要注意的是，如果你希望上一行的样式不要应用到下一行，那么就要在中间空一行。所以两次回车是新起一个段落。新手一定犯这个错误。</p>
 <p>如果段落开头需要两个空格，那么还是得加入两个 <code>&amp;nbsp;&amp;nbsp;</code><br>当然咱们的是中文字，每个字符占空格宽度好像是四个，所以这里需要八个空格。当然这里可能也和字体有关系。</p>
 <p>这是我的段落开始~<br>你看这里~~</p>

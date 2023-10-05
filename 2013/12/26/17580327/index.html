@@ -93,7 +93,7 @@
       <p class="site-title">帐前卒专栏</p>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.</p>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels. 代码,软件架构,博客和小说</p>
   </div>
 
   <div class="site-nav-right">
@@ -249,7 +249,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//graph.drawImage(cropedImage, 0, 0, targetW, targetH, null);</span><br><span class="line">graph.drawImage(cropedImage, 0, 0, targetW, targetH, Color.white,null);</span><br></pre></td></tr></table></figure>
 
 <p>加一个Color.white即可。</p>
-<p>下面要解决的是图片变红问题。 <a target="_blank" rel="noopener" href="http://chilly.info/"> 帐前卒 </a> 认为这个问题其实是alpha通道需要变为透明的。而原始程序是判断，如果<br>该图片是定义为Custom的图片，那么就变为透明。显然custom的图片不一定是透明图片。所以这里需要判断image是否为透明的。代码变为:</p>
+<p>下面要解决的是图片变红问题。 <span class="exturl" data-url="aHR0cDovL2NoaWxseS5pbmZvLw=="> 帐前卒 <i class="fa fa-external-link-alt"></i></span> 认为这个问题其实是alpha通道需要变为透明的。而原始程序是判断，如果<br>该图片是定义为Custom的图片，那么就变为透明。显然custom的图片不一定是透明图片。所以这里需要判断image是否为透明的。代码变为:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// int type = image.getType() == 0 ? BufferedImage.TRANSLUCENT</span><br><span class="line">                    : image.getType();</span><br><span class="line">            // BufferedImage compressedImage = new BufferedImage(targetW, targetH, type);</span><br><span class="line">            BufferedImage compressedImage = null;</span><br><span class="line">            if (image.isAlphaPremultiplied()) &#123;</span><br><span class="line">                compressedImage = new BufferedImage(photoType.getWidth(), photoType.getHeight(),                 BufferedImage.TRANSLUCENT);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                compressedImage = new BufferedImage(photoType.getWidth(), photoType.getHeight(),                 BufferedImage.TYPE_INT_RGB);</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
 
 <p>然后变红问题就解决了。下面是压缩图片时，发现很多地方不光滑，这里也非常好解决。帐 前卒的代码如下： &#96;&#96;&#96;</p>
