@@ -93,7 +93,7 @@
       <p class="site-title">帐前卒专栏</p>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels. 代码,软件架构,博客和小说</p>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.<br/>代码，软件架构，博客和小说</p>
   </div>
 
   <div class="site-nav-right">
@@ -259,7 +259,7 @@
 <p>第二列就是你可以使用的image.不过有些可能没有kernel,有些没有random disk,可能不能使用。所以最好去那个网站上  <a target="_blank" rel="noopener" href="https://mayhem9.cs.ucsb.edu:8443/#images"><br>https://mayhem9.cs.ucsb.edu:8443/#images
 </a> 找合适的。找到后，按照上面的命令输入:euca-run-<br>instances -k mykey -n 1 emi-AD9013E6 我选择生成一个ubuntu的实例。然后会看到如下的输出：</p>
 <p>RESERVATION     r-3C7907AD      chico   chico-default<br>INSTANCE        i-3BCA0634      emi-AD9013E6    0.0.0.0 0.0.0.0 pending<br>2009-09-14T07:31:05.127Z        eki-618C1258    eri-5C861240<br>看到第二行为instance,就是你生成的instance，它的id为 i-3BCA0634.然后你可以看它的具体描述：传说需要自己配这个实例的IP,不过我<br>使用的是Eucalyptus已经搭建起来的云，所以就不用配置了。看看这个实例的描述,使用命令euca-describle-<br>instances,看到如下的输出:</p>
-<p>RESERVATION     r-3C7907AD      chico   default<br>INSTANCE        i-3BCA0634      emi-AD9013E6    128.111.45.39   128.111.45.39<br>pending         0       m1.small        2009-09-14T07:31:05.127Z        epc<br>eki-618C1258    eri-5C861240<br>这个和上面的差不多。但是你可以看到那个实例ID后面有 128.111.45.39<br>128.111.45.39，如果是亚马逊的弹性计算云，前面的就是外部IP，后面的就是内部ip. Eucalyptus可能简单些，就有一个ip.那我们怎么登录<br>上去呢？亚马逊的使用方法是http:&#x2F;&#x2F;<host>&#x2F;。Eucalyptus使用的是如下命令:ssh -i mykey.private root<br>@<accessible-instance-ip> 如果我敲的话就是：ssh -i mykey.private<br><span class="exturl" data-url="bWFpbHRvOiYjeDcyOyYjMTExOyYjMTExOyYjeDc0OyYjNjQ7JiN4MzE7JiM1MDsmIzU2OyYjeDJlOyYjNDk7JiM0OTsmIzQ5OyYjeDJlOyYjeDM0OyYjNTM7JiM0NjsmIzUxOyYjNTc7">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#50;&#56;&#x2e;&#49;&#49;&#49;&#x2e;&#x34;&#53;&#46;&#51;&#57;<i class="fa fa-external-link-alt"></i></span>输入命令后再根据提示输入yes.你将看到:</p>
+<p>RESERVATION     r-3C7907AD      chico   default<br>INSTANCE        i-3BCA0634      emi-AD9013E6    128.111.45.39   128.111.45.39<br>pending         0       m1.small        2009-09-14T07:31:05.127Z        epc<br>eki-618C1258    eri-5C861240<br>这个和上面的差不多。但是你可以看到那个实例ID后面有 128.111.45.39<br>128.111.45.39，如果是亚马逊的弹性计算云，前面的就是外部IP，后面的就是内部ip. Eucalyptus可能简单些，就有一个ip.那我们怎么登录<br>上去呢？亚马逊的使用方法是http:&#x2F;&#x2F;<host>&#x2F;。Eucalyptus使用的是如下命令:ssh -i mykey.private root<br>@<accessible-instance-ip> 如果我敲的话就是：ssh -i mykey.private<br><span class="exturl" data-url="bWFpbHRvOiYjeDcyOyYjeDZmOyYjMTExOyYjMTE2OyYjNjQ7JiN4MzE7JiM1MDsmIzU2OyYjNDY7JiN4MzE7JiM0OTsmIzQ5OyYjNDY7JiM1MjsmIzUzOyYjNDY7JiN4MzM7JiM1Nzs=">&#x72;&#x6f;&#111;&#116;&#64;&#x31;&#50;&#56;&#46;&#x31;&#49;&#49;&#46;&#52;&#53;&#46;&#x33;&#57;<i class="fa fa-external-link-alt"></i></span>输入命令后再根据提示输入yes.你将看到:</p>
 <p>Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by<br>applicable law.  </p>
 <p>To access official Ubuntu documentation, please visit:<br><span class="exturl" data-url="aHR0cDovL2hlbHAudWJ1bnR1LmNvbS8=">http://help.ubuntu.com/<i class="fa fa-external-link-alt"></i></span><br>Last login: Sun May 10 18:38:38 2009 from localhost.localdomain<br>root@ubuntu:~#<br>哈哈～得到另一个新的操作系统！还有一个好处就是增加了很多硬盘空间。你可以使用df<br>-lh查看以下。所有的ubuntu命令都可以在那上面使用了！使用完毕后，别忘记关掉instances.使用命令:euca-terminate-<br>instances <instance1 ID> <instance2 ID>,就可以关闭所有的instance.如果你再次使用euca-<br>describle-instances查看那些实例，状态应该会被标记为terminate.</p>
 <p>对我们个人而言。Eucalyptus以及亚马逊的弹性云EC2都让你多了控制网上电脑的能力。但是对于灰鸽子的制造者来说，他们提供了24小时服务，并且是合法的，<br>不过缺点就是要收费。</p>
