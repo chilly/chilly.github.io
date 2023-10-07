@@ -18,17 +18,17 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/config.min.js"></script>
 
-    <meta name="description" content="转自：http:&#x2F;&#x2F;www.sqlite.com.cn&#x2F;MySqlite&#x2F;4&#x2F;539.Html 2、    事务(Transaction) 2.1、事务的周期(Transaction Lifecycles)程 序与事务之间有两件事值得注意：（1）    哪些对象在事务下运行——这直接与API有关。（2）    事务的生命周期，即什么时候开始，什么时候结束以及它在什么时候开始影响别的连接（这点对于并">
+    <meta name="description" content="转自：http:&#x2F;&#x2F;www.sqlite.com.cn&#x2F;MySqlite&#x2F;4&#x2F;539.Html 2、    事务(Transaction) 2.1、事务的周期(Transaction Lifecycles) 程 序与事务之间有两件事值得注意： （1）    哪些对象在事务下运行——这直接与API有关。 （2）    事务的生命周期，即什么时候开始，什么时候结束以及它在什么时候开始影响别的连接（这点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="事务和锁(SQLite)">
 <meta property="og:url" content="http://chillyc.info/2010/04/20/5505831/">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="转自：http:&#x2F;&#x2F;www.sqlite.com.cn&#x2F;MySqlite&#x2F;4&#x2F;539.Html 2、    事务(Transaction) 2.1、事务的周期(Transaction Lifecycles)程 序与事务之间有两件事值得注意：（1）    哪些对象在事务下运行——这直接与API有关。（2）    事务的生命周期，即什么时候开始，什么时候结束以及它在什么时候开始影响别的连接（这点对于并">
+<meta property="og:description" content="转自：http:&#x2F;&#x2F;www.sqlite.com.cn&#x2F;MySqlite&#x2F;4&#x2F;539.Html 2、    事务(Transaction) 2.1、事务的周期(Transaction Lifecycles) 程 序与事务之间有两件事值得注意： （1）    哪些对象在事务下运行——这直接与API有关。 （2）    事务的生命周期，即什么时候开始，什么时候结束以及它在什么时候开始影响别的连接（这点">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://hi.csdn.net/attachment/201004/20/0_12717444856lL0.gif">
 <meta property="article:published_time" content="2010-04-20T02:41:00.000Z">
@@ -100,6 +100,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -107,12 +108,38 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-feeds"><a href="/atom.xml" rel="section"><i class="fa fa-feed fa-fw"></i>feeds</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
@@ -152,12 +179,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-count">735</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -171,7 +198,7 @@
       </span>
   </div>
   <div class="cc-license animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
   </div>
 
         </div>
@@ -245,13 +272,70 @@
     
     <div class="post-body" itemprop="articleBody"><p>转自：<span class="exturl" data-url="aHR0cDovL3d3dy5zcWxpdGUuY29tLmNuL015U3FsaXRlLzQvNTM5Lkh0bWw=">http://www.sqlite.com.cn/MySqlite/4/539.Html<i class="fa fa-external-link-alt"></i></span></p>
 <p>2、    事务(Transaction)</p>
-<p>2.1、事务的周期(Transaction Lifecycles)<br>程 序与事务之间有两件事值得注意：<br>（1）    哪些对象在事务下运行——这直接与API有关。<br>（2）    事务的生命周期，即什么时候开始，什么时候结束以及它在什么时候开始影响别的连接（这点对于并发性很重要）——这涉及到SQLite的具体实现。<br>一 个连接（connection）可以包含多个(statement)，而且每个连接有一个与数据库关联的B-tree和一个pager。Pager在连接<br>中起着很重要的作用，因为它管理事务、锁、内存缓存以及负责崩溃恢复(crash<br>recovery)。当你进行数据库写操作时，记住最重要的一件事：在任何时候，只在一个事务下执行一个连接。这些回答了第一个问题。<br>一般来说， 一个事务的生命和statement差不多，你也可以手动结束它。默认情况下，事务自动提交，当然你也可以通过BEGIN..COMMIT手动提交。接下<br>来就是锁的问题。<br><img src="http://hi.csdn.net/attachment/201004/20/0_12717444856lL0.gif" alt="锁状态"><br>2.2、锁的状态(Lock States)<br>锁 对于实现并发访问很重要，而对于大型通用的DBMS，锁的实现也十分复杂，而SQLite相对较简单。通常情况下，它的持续时间和事务一致。一个事务开<br>始，它会先加锁，事务结束，释放锁。但是系统在事务没有结束的情况下崩溃，那么下一个访问数据库的连接会处理这种情况。<br>在SQLite中有5种不 同状态的锁，连接（connection）任何时候都处于其中的一个状态。下图显示了相应的状态以及锁的生命周期。</p>
-<p>关于这个图有以下几点 值得注意：<br>（1）    一个事务可以在UNLOCKED，RESERVED或EXCLUSIVE三种状态下开始。默认情况下在UNLOCKED时开始。<br>（2）    白色框中的UNLOCKED, PENDING, SHARED和 RESERVED可以在一个数据库的同一时存在。<br>（3）    从灰色的PENDING开始，事情就变得严格起来，意味着事务想得到排斥锁(EXCLUSIVE)（注意与白色框中的区别）。<br>虽然锁有这么多状 态，但是从体质上来说，只有两种情况：读事务和写事务。  </p>
-<p>2.3、读事务(Read Transactions)<br>我们先来看看SELECT语句执行时锁的状态变化过程，非常简单：一个连接执行select语句，触<br>发一个事务，从UNLOCKED到SHARED，当事务COMMIT时，又回到UNLOCKED，就这么简单。<br>考虑下面的例子(为了简单，这里用 了伪码)：<br>** db &#x3D; open(‘foods.db’)<br>db.exec(‘BEGIN’)<br>db.exec(‘SELECT * FROM episodes’)<br>db.exec(‘SELECT * FROM episodes’)<br>db.exec(‘COMMIT’)<br>db.close() **  </p>
-<p>由 于显式的使用了BEGIN和COMMIT，两个SELECT命令在一个事务下执行。第一个exec()执行时，connection处于SHARED，然<br>后第二个exec()执行，当事务提交时，connection又从SHARED回到UNLOCKED状态，如下：<br>UNLOCKED→PENDING→SHARED→UNLOCKED<br>如 果没有BEGIN和COMMIT两行时如下：<br>UNLOCKED→PENDING→SHARED→UNLOCKED→PENDING→ SHARED→UNLOCKED  </p>
-<p>2.4、写事务（Write Transactions）<br>下面我们来考虑写数据库，比如UPDATE。和读事务一样，它也会经历 UNLOCKED→PENDING→SHARED，但接下来却是灰色的PENDING，  </p>
-<p>2.4.1、The Reserved States<br>当一个连接（connection）向数据库写数据时，从<br>SHARED状态变为RESERVED状态，如果它得到RESERVED锁，也就意味着它已经准备好进行写操作了。即使它没有把修改写入数据库，也可以把<br>修改保存到位于pager中缓存中（page cache）。<br>当一个连接进入RESERVED状态，pager就开始初始化恢复日志 （rollback<br>journal）。在RESERVED状态下，pager管理着三种页面：<br>(1)    Modified pages：包含被B-树修改的记录，位于page cache中。<br>(2)    Unmodified pages：包含没有被B-tree修改的记录。<br>(3)    Journal pages：这是修改页面以前的版本，这些并不存储在page cache中，而是在B-tree修改页面之前写入日志。<br>Page cache非常重要，正是因为它的存在，一个处于RESERVED状态的连接可以真正的开始工作，而不会干扰其它的（读）连接。所以，SQLite可以高<br>效的处理在同一时刻的多个读连接和一个写连接。  </p>
-<p>2.4.2 、The Pending States<br>当一个连接完成修改，就真正开始提交事务，执行该过程的pager进入EXCLUSIVE状态。从 RESERVED状态，pager试着获取<br>PENDING锁，一旦得到，就独占它，不允许任何其它连接获得PENDING锁（PENDING is a gateway<br>lock）。既然写操作持有PENDING锁，其它任何连接都不能从UNLOCKED状态进入SHARED状态，即没有任何连接可以进入数据（no new<br>readers, no new<br>writers）。只有那些已经处于SHARED状态的连接可以继续工作。而处于PENDING状态的Writer会一直等到所有这些连接释放它们的锁，<br>然后对数据库加EXCUSIVE锁，进入EXCLUSIVE状态，独占数据库(讨论到这里，对SQLite的加锁机制应该比较清晰了)。<br>2.4.3、The Exclusive State<br>在EXCLUSIVE状态下，主 要的工作是把修改的页面从page cache写入数据库文件，这是真正进行写操作的地方。<br>在pager写入modified<br>pages之前，它还得先做一件事：写日志。它检查是否所有的日志都写入了磁盘，而这些通常位于操作的缓冲区中，所以pager得告诉OS把所有的文件写<br>入磁盘，这是由程序synchronous(通过调用OS的相应的API实现)完成的。<br>日志是数据库进行恢复的惟一方法，所以日志对于DBMS非<br>常重要。如果日志页面没有完全写入磁盘而发生崩溃，数据库就不能恢复到它原来的状态，此时数据库就处于不一致状态。日志写入完成后，pager就把所有的<br>modified pages写入数据库文件。接下来就取决于事务提交的模式，如果是自动提交，那么pager清理日志，page<br>cache，然后由EXCLUSIVE进入UNLOCKED。如果是手动提交，那么pager继续持有EXCLUSIVE锁和保存日志，直到COMMIT<br>或者ROLLBACK。  </p>
+<p>2.1、事务的周期(Transaction Lifecycles)<br />
+程 序与事务之间有两件事值得注意：<br />
+（1）    哪些对象在事务下运行——这直接与API有关。<br />
+（2）    事务的生命周期，即什么时候开始，什么时候结束以及它在什么时候开始影响别的连接（这点对于并发性很重要）——这涉及到SQLite的具体实现。<br />
+一 个连接（connection）可以包含多个(statement)，而且每个连接有一个与数据库关联的B-tree和一个pager。Pager在连接<br />
+中起着很重要的作用，因为它管理事务、锁、内存缓存以及负责崩溃恢复(crash<br />
+recovery)。当你进行数据库写操作时，记住最重要的一件事：在任何时候，只在一个事务下执行一个连接。这些回答了第一个问题。<br />
+一般来说， 一个事务的生命和statement差不多，你也可以手动结束它。默认情况下，事务自动提交，当然你也可以通过BEGIN…COMMIT手动提交。接下<br />
+来就是锁的问题。<br />
+<img src="http://hi.csdn.net/attachment/201004/20/0_12717444856lL0.gif" alt="锁状态" /><br />
+2.2、锁的状态(Lock States)<br />
+锁 对于实现并发访问很重要，而对于大型通用的DBMS，锁的实现也十分复杂，而SQLite相对较简单。通常情况下，它的持续时间和事务一致。一个事务开<br />
+始，它会先加锁，事务结束，释放锁。但是系统在事务没有结束的情况下崩溃，那么下一个访问数据库的连接会处理这种情况。<br />
+在SQLite中有5种不 同状态的锁，连接（connection）任何时候都处于其中的一个状态。下图显示了相应的状态以及锁的生命周期。</p>
+<p>关于这个图有以下几点 值得注意：<br />
+（1）    一个事务可以在UNLOCKED，RESERVED或EXCLUSIVE三种状态下开始。默认情况下在UNLOCKED时开始。<br />
+（2）    白色框中的UNLOCKED, PENDING, SHARED和 RESERVED可以在一个数据库的同一时存在。<br />
+（3）    从灰色的PENDING开始，事情就变得严格起来，意味着事务想得到排斥锁(EXCLUSIVE)（注意与白色框中的区别）。<br />
+虽然锁有这么多状 态，但是从体质上来说，只有两种情况：读事务和写事务。</p>
+<p>2.3、读事务(Read Transactions)<br />
+我们先来看看SELECT语句执行时锁的状态变化过程，非常简单：一个连接执行select语句，触<br />
+发一个事务，从UNLOCKED到SHARED，当事务COMMIT时，又回到UNLOCKED，就这么简单。<br />
+考虑下面的例子(为了简单，这里用 了伪码)：<br />
+** db = open(‘foods.db’)<br />
+db.exec(‘BEGIN’)<br />
+db.exec(‘SELECT * FROM episodes’)<br />
+db.exec(‘SELECT * FROM episodes’)<br />
+db.exec(‘COMMIT’)<br />
+db.close() **</p>
+<p>由 于显式的使用了BEGIN和COMMIT，两个SELECT命令在一个事务下执行。第一个exec()执行时，connection处于SHARED，然<br />
+后第二个exec()执行，当事务提交时，connection又从SHARED回到UNLOCKED状态，如下：<br />
+UNLOCKED→PENDING→SHARED→UNLOCKED<br />
+如 果没有BEGIN和COMMIT两行时如下：<br />
+UNLOCKED→PENDING→SHARED→UNLOCKED→PENDING→ SHARED→UNLOCKED</p>
+<p>2.4、写事务（Write Transactions）<br />
+下面我们来考虑写数据库，比如UPDATE。和读事务一样，它也会经历 UNLOCKED→PENDING→SHARED，但接下来却是灰色的PENDING，</p>
+<p>2.4.1、The Reserved States<br />
+当一个连接（connection）向数据库写数据时，从<br />
+SHARED状态变为RESERVED状态，如果它得到RESERVED锁，也就意味着它已经准备好进行写操作了。即使它没有把修改写入数据库，也可以把<br />
+修改保存到位于pager中缓存中（page cache）。<br />
+当一个连接进入RESERVED状态，pager就开始初始化恢复日志 （rollback<br />
+journal）。在RESERVED状态下，pager管理着三种页面：<br />
+(1)    Modified pages：包含被B-树修改的记录，位于page cache中。<br />
+(2)    Unmodified pages：包含没有被B-tree修改的记录。<br />
+(3)    Journal pages：这是修改页面以前的版本，这些并不存储在page cache中，而是在B-tree修改页面之前写入日志。<br />
+Page cache非常重要，正是因为它的存在，一个处于RESERVED状态的连接可以真正的开始工作，而不会干扰其它的（读）连接。所以，SQLite可以高<br />
+效的处理在同一时刻的多个读连接和一个写连接。</p>
+<p>2.4.2 、The Pending States<br />
+当一个连接完成修改，就真正开始提交事务，执行该过程的pager进入EXCLUSIVE状态。从 RESERVED状态，pager试着获取<br />
+PENDING锁，一旦得到，就独占它，不允许任何其它连接获得PENDING锁（PENDING is a gateway<br />
+lock）。既然写操作持有PENDING锁，其它任何连接都不能从UNLOCKED状态进入SHARED状态，即没有任何连接可以进入数据（no new<br />
+readers, no new<br />
+writers）。只有那些已经处于SHARED状态的连接可以继续工作。而处于PENDING状态的Writer会一直等到所有这些连接释放它们的锁，<br />
+然后对数据库加EXCUSIVE锁，进入EXCLUSIVE状态，独占数据库(讨论到这里，对SQLite的加锁机制应该比较清晰了)。<br />
+2.4.3、The Exclusive State<br />
+在EXCLUSIVE状态下，主 要的工作是把修改的页面从page cache写入数据库文件，这是真正进行写操作的地方。<br />
+在pager写入modified<br />
+pages之前，它还得先做一件事：写日志。它检查是否所有的日志都写入了磁盘，而这些通常位于操作的缓冲区中，所以pager得告诉OS把所有的文件写<br />
+入磁盘，这是由程序synchronous(通过调用OS的相应的API实现)完成的。<br />
+日志是数据库进行恢复的惟一方法，所以日志对于DBMS非<br />
+常重要。如果日志页面没有完全写入磁盘而发生崩溃，数据库就不能恢复到它原来的状态，此时数据库就处于不一致状态。日志写入完成后，pager就把所有的<br />
+modified pages写入数据库文件。接下来就取决于事务提交的模式，如果是自动提交，那么pager清理日志，page<br />
+cache，然后由EXCLUSIVE进入UNLOCKED。如果是手动提交，那么pager继续持有EXCLUSIVE锁和保存日志，直到COMMIT<br />
+或者ROLLBACK。</p>
 <p>总之，从性能方面来说，进程占有排斥锁的时间应该尽可能的短，所以DBMS通常都是在真正写文件时才会占有排斥 锁，这样能大大提高并发性能。</p>
 
     </div>
@@ -366,23 +450,30 @@
 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/next-boot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/bookmark.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/search/local-search.min.js"></script>
+
+
+
+
+
+
 
   
 
 
 
 
-
-
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
 
 
 <script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
-<script src="/js/third-party/comments/utterances.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/comments/utterances.min.js"></script>
 
 </body>
 </html>

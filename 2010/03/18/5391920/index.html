@@ -18,21 +18,21 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/config.min.js"></script>
 
-    <meta name="description" content="转自  Ashish Bansal  ( [&amp;#x61;&amp;#x62;&amp;#x61;&amp;#x6e;&amp;#115;&amp;#x61;&amp;#x6c;&amp;#x40;&amp;#105;&amp;#x65;&amp;#x65;&amp;#101;&amp;#46;&amp;#111;&amp;#114;&amp;#x67; ](mailto:&amp;#x61;&amp;#98;&amp;#x61;&amp;#x6e;&amp;#x73;&amp;#x61;&amp;#108;&amp;#x40;&amp;#105;&amp;#101;&amp;#x65;&amp;#x65;&amp;#">
+    <meta name="description" content="转自 Ashish Bansal abansal@ieee.org, 软件工程师, Sapient 公司 Lex Lex 是一种生成扫描器的工具。扫描器是一种识别文本中的词汇模式的程序。这些词汇模式（或者常规表达式）在一种特殊的句子结构中定义，这个我们一会儿就要讨论。 一种匹配的常规表达式可能会包含相关的动作。这一动作可能还包括返回一个标记。当 Lex 接收到文件或文本形式的输入时，它试图将文本与">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Yacc与lex入门">
 <meta property="og:url" content="http://chillyc.info/2010/03/18/5391920/">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="转自  Ashish Bansal  ( [&amp;#x61;&amp;#x62;&amp;#x61;&amp;#x6e;&amp;#115;&amp;#x61;&amp;#x6c;&amp;#x40;&amp;#105;&amp;#x65;&amp;#x65;&amp;#101;&amp;#46;&amp;#111;&amp;#114;&amp;#x67; ](mailto:&amp;#x61;&amp;#98;&amp;#x61;&amp;#x6e;&amp;#x73;&amp;#x61;&amp;#108;&amp;#x40;&amp;#105;&amp;#101;&amp;#x65;&amp;#x65;&amp;#">
+<meta property="og:description" content="转自 Ashish Bansal abansal@ieee.org, 软件工程师, Sapient 公司 Lex Lex 是一种生成扫描器的工具。扫描器是一种识别文本中的词汇模式的程序。这些词汇模式（或者常规表达式）在一种特殊的句子结构中定义，这个我们一会儿就要讨论。 一种匹配的常规表达式可能会包含相关的动作。这一动作可能还包括返回一个标记。当 Lex 接收到文件或文本形式的输入时，它试图将文本与">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://www.ibm.com/i/c.gif">
 <meta property="article:published_time" content="2010-03-18T03:20:00.000Z">
-<meta property="article:modified_time" content="2023-10-05T04:41:45.873Z">
+<meta property="article:modified_time" content="2023-10-07T06:14:18.087Z">
 <meta property="article:author" content="帐前卒">
 <meta property="article:tag" content="yacc">
 <meta property="article:tag" content="终端">
@@ -100,6 +100,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -107,12 +108,38 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-feeds"><a href="/atom.xml" rel="section"><i class="fa fa-feed fa-fw"></i>feeds</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
@@ -152,12 +179,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-count">735</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -171,7 +198,7 @@
       </span>
   </div>
   <div class="cc-license animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
   </div>
 
         </div>
@@ -231,7 +258,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-07 14:14:18" itemprop="dateModified" datetime="2023-10-07T14:14:18+08:00">2023-10-07</time>
     </span>
 
   
@@ -243,34 +270,55 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>转自 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L3Nkay9sZXgvaW5kZXguaHRtbCNhdXRob3I="> Ashish Bansal
-<i class="fa fa-external-link-alt"></i></span> ( [<br><span class="exturl" data-url="bWFpbHRvOiYjeDYxOyYjeDYyOyYjeDYxOyYjeDZlOyYjMTE1OyYjeDYxOyYjeDZjOyYjeDQwOyYjMTA1OyYjeDY1OyYjeDY1OyYjMTAxOyYjNDY7JiMxMTE7JiMxMTQ7JiN4Njc7">&#x61;&#x62;&#x61;&#x6e;&#115;&#x61;&#x6c;&#x40;&#105;&#x65;&#x65;&#101;&#46;&#111;&#114;&#x67;<i class="fa fa-external-link-alt"></i></span> ](mailto:<span class="exturl" data-url="bWFpbHRvOiYjeDYxOyYjOTg7JiN4NjE7JiN4NmU7JiN4NzM7JiN4NjE7JiMxMDg7JiN4NDA7JiMxMDU7JiMxMDE7JiN4NjU7JiN4NjU7JiN4MmU7JiMxMTE7JiN4NzI7JiMxMDM7">&#x61;&#98;&#x61;&#x6e;&#x73;&#x61;&#108;&#x40;&#105;&#101;&#x65;&#x65;&#x2e;&#111;&#x72;&#103;<i class="fa fa-external-link-alt"></i></span>?subject&#x3D;Yacc%20%E4%B8%8E%20Lex%20%E<br>5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8&amp;cc&#x3D;<span class="exturl" data-url="bWFpbHRvOiYjOTc7JiM5ODsmIzk3OyYjeDZlOyYjMTE1OyYjeDYxOyYjeDZjOyYjeDQwOyYjeDY5OyYjMTAxOyYjeDY1OyYjeDY1OyYjNDY7JiMxMTE7JiMxMTQ7JiN4Njc7">&#97;&#98;&#97;&#x6e;&#115;&#x61;&#x6c;&#x40;&#x69;&#101;&#x65;&#x65;&#46;&#111;&#114;&#x67;<i class="fa fa-external-link-alt"></i></span>) ), 软件工程师, Sapient 公司</p>
+    <div class="post-body" itemprop="articleBody"><p>转自<br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L3Nkay9sZXgvaW5kZXguaHRtbCNhdXRob3I=">Ashish Bansal<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="bWFpbHRvOmFiYW5zYWxAaWVlZS5vcmc/c3ViamVjdD1ZYWNjJTIwJUU0JUI4JThFJTIwTGV4JTIwJUU1JUJGJUFCJUU5JTgwJTlGJUU1JTg1JUE1JUU5JTk3JUE4JmNjPWFiYW5zYWxAaWVlZS5vcmc=">abansal@ieee.org<i class="fa fa-external-link-alt"></i></span>, 软件工程师, Sapient 公司</p>
 <p>Lex</p>
 <p>Lex 是一种生成扫描器的工具。扫描器是一种识别文本中的词汇模式的程序。这些词汇模式（或者常规表达式）在一种特殊的句子结构中定义，这个我们一会儿就要讨论。</p>
-<p>一种匹配的常规表达式可能会包含相关的动作。这一动作可能还包括返回一个标记。当 Lex<br>接收到文件或文本形式的输入时，它试图将文本与常规表达式进行匹配。它一次读入一个输入字符，直到找到一个匹配的模式。如果能够找到一个匹配的模式，Lex<br>就执行相关的动作（可能包括返回一个标记）。另一方面，如果没有可以匹配的常规表达式，将会停止进一步的处理，Lex 将显示一个错误消息。</p>
-<p>Lex 和 C 是强耦合的。一个 _ .lex _ 文件（Lex 文件具有 _ .lex _ 的扩展名）通过 lex 公用程序来传递，并生成 C<br>的输出文件。这些文件被编译为词法分析器的可执行版本。</p>
+<p>一种匹配的常规表达式可能会包含相关的动作。这一动作可能还包括返回一个标记。当 Lex<br />
+接收到文件或文本形式的输入时，它试图将文本与常规表达式进行匹配。它一次读入一个输入字符，直到找到一个匹配的模式。如果能够找到一个匹配的模式，Lex<br />
+就执行相关的动作（可能包括返回一个标记）。另一方面，如果没有可以匹配的常规表达式，将会停止进一步的处理，Lex 将显示一个错误消息。</p>
+<p>Lex 和 C 是强耦合的。一个 _ .lex _ 文件（Lex 文件具有 _ .lex _ 的扩展名）通过 lex 公用程序来传递，并生成 C<br />
+的输出文件。这些文件被编译为词法分析器的可执行版本。</p>
 <p>Lex 的常规表达式</p>
-<p>常规表达式是一种使用元语言的模式描述。表达式由符号组成。符号一般是字符和数字，但是 Lex 中还有一些具有特殊含义的其他标记。 下面两个表格定义了 Lex<br>中使用的一些标记并给出了几个典型的例子。</p>
+<p>常规表达式是一种使用元语言的模式描述。表达式由符号组成。符号一般是字符和数字，但是 Lex 中还有一些具有特殊含义的其他标记。 下面两个表格定义了 Lex<br />
+中使用的一些标记并给出了几个典型的例子。</p>
 <p>用 Lex 定义常规表达式</p>
-<p>** 字符 **<br>** 含义 **</p>
-<p>** A-Z, 0-9, a-z **<br>构成了部分模式的字符和数字。</p>
-<p>** . **<br>匹配任意字符，除了 &#x2F;n。</p>
-<p>** - **<br>用来指定范围。例如：A-Z 指从 A 到 Z 之间的所有字符。</p>
-<p>** [ ] **<br>一个字符集合。匹配括号内的 _ 任意 _ 字符。如果第一个字符是 ** ^ ** 那么它表示否定模式。例如: [abC] 匹配 a, b, 和<br>C中的任何一个。</p>
-<hr>
+<p>** 字符 **<br />
+** 含义 **</p>
+<p>** A-Z, 0-9, a-z **<br />
+构成了部分模式的字符和数字。</p>
+<p>** . **<br />
+匹配任意字符，除了 /n。</p>
+<p>** - **<br />
+用来指定范围。例如：A-Z 指从 A 到 Z 之间的所有字符。</p>
+<p>** [ ] **<br />
+一个字符集合。匹配括号内的 _ 任意 _ 字符。如果第一个字符是 ** ^ ** 那么它表示否定模式。例如: [abC] 匹配 a, b, 和<br />
+C中的任何一个。</p>
+<hr />
 <p>匹配 _ 0个 _ 或者多个上述的模式。</p>
-<p>** + **<br>匹配 _ 1个 _ 或者多个上述模式。</p>
-<p>** ? **<br>匹配 _ 0个或1个 _ 上述模式。</p>
-<p>** $ **<br>作为模式的最后一个字符匹配一行的结尾。</p>
-<p>** { } **<br>指出一个模式可能出现的次数。 例如: A{1,3} 表示 A 可能出现1次或3次。</p>
-<p>** &#x2F; **<br>用来转义元字符。同样用来覆盖字符在此表中定义的特殊意义，只取字符的本意。</p>
-<p>** ^ **<br>否定。</p>
-<p>** | **<br>表达式间的逻辑或。</p>
-<p>** “&lt;一些符号&gt;” **<br>字符的字面含义。元字符具有。</p>
-<p>** &#x2F; **<br>向前匹配。如果在匹配的模版中的“&#x2F;”后跟有后续表达式，只匹配模版中“&#x2F;”前面的部分。如：如果输入 A01，那么在模版 A0&#x2F;1 中的 A0 是匹配的。</p>
-<p>** ( ) **<br>将一系列常规表达式分组。</p>
+<p>** + **<br />
+匹配 _ 1个 _ 或者多个上述模式。</p>
+<p>** ? **<br />
+匹配 _ 0个或1个 _ 上述模式。</p>
+<p>** $ **<br />
+作为模式的最后一个字符匹配一行的结尾。</p>
+<p>** { } **<br />
+指出一个模式可能出现的次数。 例如: A{1,3} 表示 A 可能出现1次或3次。</p>
+<p>** / **<br />
+用来转义元字符。同样用来覆盖字符在此表中定义的特殊意义，只取字符的本意。</p>
+<p>** ^ **<br />
+否定。</p>
+<p>** | **<br />
+表达式间的逻辑或。</p>
+<p>** “&lt;一些符号&gt;” **<br />
+字符的字面含义。元字符具有。</p>
+<p>** / **<br />
+向前匹配。如果在匹配的模版中的“/”后跟有后续表达式，只匹配模版中“/”前面的部分。如：如果输入 A01，那么在模版 A0/1 中的 A0 是匹配的。</p>
+<p>** ( ) **<br />
+将一系列常规表达式分组。</p>
 <p>常规表达式举例</p>
-<p>** 常规表达式 **<br>** 含义 **</p>
+<p>** 常规表达式 **<br />
+** 含义 **</p>
 <p>joke[rs]</p>
 <p>匹配 jokes 或 joker。</p>
 <p>A{1,2}shis+</p>
@@ -278,9 +326,12 @@
 <p>(A[b-e])+</p>
 <p>匹配在 A 出现位置后跟随的从 b 到 e 的所有字符中的 0 个或 1个。</p>
 <p>注：这小朋友将A{1,2}shis*写为了A{1,2}shis+。</p>
-<p>Lex 中的标记声明类似 C 中的变量名。每个标记都有一个相关的表达式。（下表中给出了标记和表达式的例子。）使用这个表中的例子，我们就可以编一个字数统计的程<br>序了。我们的第一个任务就是说明如何声明标记。</p>
+<p>Lex 中的标记声明类似 C 中的变量名。每个标记都有一个相关的表达式。（下表中给出了标记和表达式的例子。）使用这个表中的例子，我们就可以编一个字数统计的程<br />
+序了。我们的第一个任务就是说明如何声明标记。</p>
 <p>标记声明举例</p>
-<p>** 标记 **<br>** 相关表达式 **<br>** 含义 **</p>
+<p>** 标记 **<br />
+** 相关表达式 **<br />
+** 含义 **</p>
 <p>数字(number)</p>
 <p>([0-9])+</p>
 <p>1个或多个数字</p>
@@ -288,7 +339,7 @@
 <p>[A-Za-z]</p>
 <p>任意字符</p>
 <p>空格(blank)</p>
-<p>“ “</p>
+<p>&quot; &quot;</p>
 <p>一个空格</p>
 <p>字(word)</p>
 <p>(chars)+</p>
@@ -298,23 +349,59 @@
 <p>Lex 编程</p>
 <p>Lex 编程可以分为三步：</p>
 <ol>
-<li>以 Lex 可以理解的格式指定模式相关的动作。 </li>
-<li>在这一文件上运行 Lex，生成扫描器的 C 代码。 </li>
+<li>以 Lex 可以理解的格式指定模式相关的动作。</li>
+<li>在这一文件上运行 Lex，生成扫描器的 C 代码。</li>
 <li>编译和链接 C 代码，生成可执行的扫描器。</li>
 </ol>
-<p>注意: 如果扫描器是用 Yacc 开发的解析器的一部分，只需要进行第一步和第二步。关于这一特殊问题的帮助请阅读 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L3Nkay9sZXgvaW5kZXguaHRtbCM5"> Yacc
-<i class="fa fa-external-link-alt"></i></span> 和 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#15"> 将 Lex 和<br>Yacc 结合起来 </a><br>部分。</p>
-<p>现在让我们来看一看 Lex 可以理解的程序格式。一个 Lex 程序分为三个段：第一段是 C 和 Lex 的全局声明，第二段包括模式（C<br>代码），第三段是补充的 C 函数。 例如, 第三段中一般都有 main() 函数。这些段以%%来分界。 那么，回到字数统计的 Lex<br>程序，让我们看一下程序不同段的构成。</p>
+<p>注意: 如果扫描器是用 Yacc 开发的解析器的一部分，只需要进行第一步和第二步。关于这一特殊问题的帮助请阅读 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#9"> Yacc<br />
+</a> 和 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#15"> 将 Lex 和<br />
+Yacc 结合起来 </a><br />
+部分。</p>
+<p>现在让我们来看一看 Lex 可以理解的程序格式。一个 Lex 程序分为三个段：第一段是 C 和 Lex 的全局声明，第二段包括模式（C<br />
+代码），第三段是补充的 C 函数。 例如, 第三段中一般都有 main() 函数。这些段以%%来分界。 那么，回到字数统计的 Lex<br />
+程序，让我们看一下程序不同段的构成。</p>
 <p>C 和 Lex 的全局声明</p>
 <p>这一段中我们可以增加 C 变量声明。这里我们将为字数统计程序声明一个整型变量，来保存程序统计出来的字数。我们还将进行 Lex 的标记声明。</p>
-<p>** 字数统计程序的声明 **<br>           %{<br>            int wordCount &#x3D; 0;<br>            %}<br>            chars [A-za-z&#x2F;_&#x2F;‘&#x2F;.&#x2F;“]<br>            numbers ([0-9])+<br>            delim [“ “&#x2F;n&#x2F;t]<br>            whitespace {delim}+<br>            words {chars}+<br>            %%<br>两个百分号标记指出了 Lex 程序中这一段的结束和三段中第二段的开始。</p>
+<p>** 字数统计程序的声明 **<br />
+%{<br />
+int wordCount = 0;<br />
+%}<br />
+chars [A-za-z/_/'/./“]<br />
+numbers ([0-9])+<br />
+delim [” &quot;/n/t]<br />
+whitespace {delim}+<br />
+words {chars}+<br />
+%%<br />
+两个百分号标记指出了 Lex 程序中这一段的结束和三段中第二段的开始。</p>
 <p>Lex 的模式匹配规则</p>
 <p>让我们看一下 Lex 描述我们所要匹配的标记的规则。（我们将使用 C 来定义标记匹配后的动作。）继续看我们的字数统计程序，下面是标记匹配的规则。</p>
-<p>** 字数统计程序中的 Lex 规则 **<br>           {words} { wordCount++; &#x2F;*<br>            increase the word count by one*&#x2F; }<br>            {whitespace} { &#x2F;* do<br>            nothing*&#x2F; }<br>            {numbers} { &#x2F;* one may<br>            want to add some processing here*&#x2F; }<br>            %%<br>C 代码</p>
-<p>Lex 编程的第三段，也就是最后一段覆盖了 C 的函数声明（有时是主函数）。注意这一段必须包括 yywrap() 函数。 Lex<br>有一套可供使用的函数和变量。 其中之一就是 yywrap。一般来说，yywrap() 的定义如下例。我们将在 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L3Nkay9sZXgvaW5kZXguaHRtbCM4"> 高级 Lex
-<i class="fa fa-external-link-alt"></i></span> 中探讨这一问题。</p>
-<p>** 字数统计程序的 C 代码段 **<br>           void main()<br>            {<br>            yylex(); &#x2F;* start the<br>            analysis*&#x2F;<br>            printf(“ No of words:<br>            %d&#x2F;n”, wordCount);<br>            }<br>            int yywrap()<br>            {<br>            return 1;<br>            }<br>上一节我们讨论了 Lex 编程的基本元素，它将帮助你编写简单的词法分析程序。 在 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L3Nkay9sZXgvaW5kZXguaHRtbCM4"> 高级 Lex
-<i class="fa fa-external-link-alt"></i></span> 这一节中我们将讨论<br>Lex 提供的函数，这样你就能编写更加复杂的程序了</p>
+<p>** 字数统计程序中的 Lex 规则 **<br />
+{words} { wordCount++; /*<br />
+increase the word count by one*/ }<br />
+{whitespace} { /* do<br />
+nothing*/ }<br />
+{numbers} { /* one may<br />
+want to add some processing here*/ }<br />
+%%<br />
+C 代码</p>
+<p>Lex 编程的第三段，也就是最后一段覆盖了 C 的函数声明（有时是主函数）。注意这一段必须包括 yywrap() 函数。 Lex<br />
+有一套可供使用的函数和变量。 其中之一就是 yywrap。一般来说，yywrap() 的定义如下例。我们将在 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#8"> 高级 Lex<br />
+</a> 中探讨这一问题。</p>
+<p>** 字数统计程序的 C 代码段 **<br />
+void main()<br />
+{<br />
+yylex(); /* start the<br />
+analysis*/<br />
+printf(&quot; No of words:<br />
+%d/n&quot;, wordCount);<br />
+}<br />
+int yywrap()<br />
+{<br />
+return 1;<br />
+}<br />
+上一节我们讨论了 Lex 编程的基本元素，它将帮助你编写简单的词法分析程序。 在 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#8"> 高级 Lex<br />
+</a> 这一节中我们将讨论<br />
+Lex 提供的函数，这样你就能编写更加复杂的程序了</p>
 <p>将它们全部结合起来</p>
 <p>_ .lex _ 文件是 Lex 的扫描器。它在 Lex 程序中如下表示：</p>
 <pre><code>   $ lex &lt;file name.lex&gt;  
@@ -322,14 +409,15 @@
 <p>这生成了 lex.yy.c 文件，它可以用 C 编译器来进行编译。它还可以用解析器来生成可执行程序，或者在链接步骤中通过选项�ll 包含 Lex 库。</p>
 <p>这里是一些 Lex 的标志：</p>
 <ul>
-<li>_ -c _ 表示 C 动作，它是缺省的。 </li>
-<li>_ -t _ 写入 lex.yy.c 程序来代替标准输出。 </li>
-<li>_ -v _ 提供一个两行的统计汇总。 </li>
+<li>_ -c _ 表示 C 动作，它是缺省的。</li>
+<li>_ -t _ 写入 lex.yy.c 程序来代替标准输出。</li>
+<li>_ -v _ 提供一个两行的统计汇总。</li>
 <li>_ -n _ 不打印 -v 的汇总。</li>
 </ul>
 <p>高级 Lex</p>
-<p>Lex 有几个函数和变量提供了不同的信息，可以用来编译实现复杂函数的程序。下表中列出了一些变量和函数，以及它们的使用。 详尽的列表请参考 Lex 或<br>Flex 手册（见后文的 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L3Nkay9sZXgvaW5kZXguaHRtbCNyZXNvdXJjZXM="> 资源
-<i class="fa fa-external-link-alt"></i></span> ）。</p>
+<p>Lex 有几个函数和变量提供了不同的信息，可以用来编译实现复杂函数的程序。下表中列出了一些变量和函数，以及它们的使用。 详尽的列表请参考 Lex 或<br />
+Flex 手册（见后文的 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#resources"> 资源<br />
+</a> ）。</p>
 <p>Lex 变量</p>
 <p>yyin</p>
 <p>FILE* 类型。 它指向 lexer 正在解析的当前文件。</p>
@@ -345,104 +433,126 @@
 <p>yylex()</p>
 <p>这一函数开始分析。 它由 Lex 自动生成。</p>
 <p>yywrap()</p>
-<p>这一函数在文件（或输入）的末尾调用。如果函数的返回值是1，就停止解析。 因此它可以用来解析多个文件。代码可以写在第三段，这就能够解析多个文件。 方法是使用<br>yyin 文件指针（见上表）指向不同的文件，直到所有的文件都被解析。最后，yywrap() 可以返回 1 来表示解析的结束。</p>
+<p>这一函数在文件（或输入）的末尾调用。如果函数的返回值是1，就停止解析。 因此它可以用来解析多个文件。代码可以写在第三段，这就能够解析多个文件。 方法是使用<br />
+yyin 文件指针（见上表）指向不同的文件，直到所有的文件都被解析。最后，yywrap() 可以返回 1 来表示解析的结束。</p>
 <p>yyless(int n)</p>
 <p>这一函数可以用来送回除了前�n? 个字符外的所有读出标记。</p>
 <p>yymore()</p>
 <p>这一函数告诉 Lexer 将下一个标记附加到当前标记后。</p>
 <p>对 Lex 的讨论就到这里。下面我们来讨论 Yacc…</p>
 <p>Yacc</p>
-<p>Yacc 代表 Yet Another Compiler Compiler。 Yacc 的 GNU 版叫做<br>Bison。它是一种工具，将任何一种编程语言的所有语法翻译成针对此种语言的 Yacc 语 法解析器。它用巴科斯范式(BNF, Backus Naur<br>Form)来书写。按照惯例，Yacc 文件有 .y 后缀。编译行如下调用 Yacc 编译器：</p>
+<p>Yacc 代表 Yet Another Compiler Compiler。 Yacc 的 GNU 版叫做<br />
+Bison。它是一种工具，将任何一种编程语言的所有语法翻译成针对此种语言的 Yacc 语 法解析器。它用巴科斯范式(BNF, Backus Naur<br />
+Form)来书写。按照惯例，Yacc 文件有 .y 后缀。编译行如下调用 Yacc 编译器：</p>
 <pre><code>       $ yacc &lt;options&gt;  
         &lt;filename ending with .y&gt;  
 </code></pre>
-<p>在进一步阐述以前，让我们复习一下什么是语法。在上一节中，我们看到 Lex<br>从输入序列中识别标记。如果你在查看标记序列，你可能想在这一序列出现时执行某一动作。这种情况下有效序列的规范称为语法。Yacc<br>语法文件包括这一语法规范。它还包含了序列匹配时你想要做的事。</p>
-<p>为了更加说清这一概念，让我们以英语为例。 这一套标记可能是：名词, 动词,<br>形容词等等。为了使用这些标记造一个语法正确的句子，你的结构必须符合一定的规则。一个简单的句子可能是名词+动词或者名词+动词+名词。(如 I care.<br>See spot run.)</p>
+<p>在进一步阐述以前，让我们复习一下什么是语法。在上一节中，我们看到 Lex<br />
+从输入序列中识别标记。如果你在查看标记序列，你可能想在这一序列出现时执行某一动作。这种情况下有效序列的规范称为语法。Yacc<br />
+语法文件包括这一语法规范。它还包含了序列匹配时你想要做的事。</p>
+<p>为了更加说清这一概念，让我们以英语为例。 这一套标记可能是：名词, 动词,<br />
+形容词等等。为了使用这些标记造一个语法正确的句子，你的结构必须符合一定的规则。一个简单的句子可能是名词+动词或者名词+动词+名词。(如 I care.<br />
+See spot run.)</p>
 <p>所以在我们这里，标记本身来自语言（Lex），并且标记序列允许用 Yacc 来指定这些标记(标记序列也叫语法)。</p>
-<p><img src="http://www.ibm.com/i/c.gif"></p>
-<p>** 终端和非终端符号 **<br>** 终端符号 ** : 代表一类在语法结构上等效的标记。终端符号有三种类型： </p>
+<p><img src="http://www.ibm.com/i/c.gif" alt="" /></p>
+<p>** 终端和非终端符号 **<br />
+** 终端符号 ** : 代表一类在语法结构上等效的标记。终端符号有三种类型：</p>
 <p>_ 命名标记 _ : 这些由 _ %token _ 标识符来定义。按照惯例，它们都是大写。</p>
 <p>_ 字符标记 _ : 字符常量的写法与 C 相同。例如, – 就是一个字符标记。</p>
-<p>_ 字符串标记 _ : 写法与 C 的字符串常量相同。例如，”&lt;&lt;” 就是一个字符串标记。</p>
+<p>_ 字符串标记 _ : 写法与 C 的字符串常量相同。例如，“&lt;&lt;” 就是一个字符串标记。</p>
 <p>lexer 返回命名标记。</p>
-<p>** 非终端符号 ** : 是一组非终端符号和终端符号组成的符号。按照惯例，它们都是小写。 在例子中，file 是一个非终端标记而 NAME 是一个终端标记。 </p>
+<p>** 非终端符号 ** : 是一组非终端符号和终端符号组成的符号。按照惯例，它们都是小写。 在例子中，file 是一个非终端标记而 NAME 是一个终端标记。</p>
 <p>。</p>
 <p>用 Yacc 编写语法</p>
-<p>如同 Lex 一样, 一个 Yacc 程序也用双百分号分为三段。它们是：声明、语法规则和 C 代码。 我们将解析一个格式为 姓名 &#x3D;<br>年龄的文件作为例子，来说明语法规则。我们假设文件有多个姓名和年龄，它们以空格分隔。 在看 Yacc 程序的每一段时，我们将为我们的例子编写一个语法文件。</p>
+<p>如同 Lex 一样, 一个 Yacc 程序也用双百分号分为三段。它们是：声明、语法规则和 C 代码。 我们将解析一个格式为 姓名 =<br />
+年龄的文件作为例子，来说明语法规则。我们假设文件有多个姓名和年龄，它们以空格分隔。 在看 Yacc 程序的每一段时，我们将为我们的例子编写一个语法文件。</p>
 <p>C 与 Yacc 的声明</p>
-<p>C 声明可能会定义动作中使用的类型和变量，以及宏。还可以包含头文件。每个 Yacc<br>声明段声明了终端符号和非终端符号（标记）的名称，还可能描述操作符优先级和针对不同符号的数据类型。 lexer (Lex)<br>一般返回这些标记。所有这些标记都必须在 Yacc 声明中进行说明。</p>
-<p>在文件解析的例子中我们感兴趣的是这些标记：name, equal sign, 和 age。Name 是一个完全由字符组成的值。 Age<br>是数字。于是声明段就会像这样：</p>
-<p>** 文件解析例子的声明 **<br>           %<br>            #typedef char* string; &#x2F;*<br>            to specify token types as char* <em>&#x2F;<br>            #define YYSTYPE string &#x2F;</em><br>            a Yacc variable which has the value of returned token <em>&#x2F;<br>            %}<br>            %token NAME EQ AGE<br>            %%<br>你可能会觉得 YYSTYPE 有点奇怪。但是类似 Lex, Yacc 也有一套变量和函数可供用户来进行功能扩展。 YYSTYPE 定义了用来将值从<br>lexer 拷贝到解析器或者 Yacc 的 yylval （另一个 Yacc 变量）的类型。默认的类型是 int。 由于字符串可以从 lexer<br>拷贝，类型被重定义为 char</em>。 关于 Yacc 变量的详细讨论，请参考 Yacc 手册（见 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L3Nkay9sZXgvaW5kZXguaHRtbCNyZXNvdXJjZXM="> 资源
-<i class="fa fa-external-link-alt"></i></span> ）。</p>
+<p>C 声明可能会定义动作中使用的类型和变量，以及宏。还可以包含头文件。每个 Yacc<br />
+声明段声明了终端符号和非终端符号（标记）的名称，还可能描述操作符优先级和针对不同符号的数据类型。 lexer (Lex)<br />
+一般返回这些标记。所有这些标记都必须在 Yacc 声明中进行说明。</p>
+<p>在文件解析的例子中我们感兴趣的是这些标记：name, equal sign, 和 age。Name 是一个完全由字符组成的值。 Age<br />
+是数字。于是声明段就会像这样：</p>
+<p>** 文件解析例子的声明 **<br />
+%<br />
+#typedef char* string; /*<br />
+to specify token types as char* <em>/<br />
+#define YYSTYPE string /</em><br />
+a Yacc variable which has the value of returned token <em>/<br />
+%}<br />
+%token NAME EQ AGE<br />
+%%<br />
+你可能会觉得 YYSTYPE 有点奇怪。但是类似 Lex, Yacc 也有一套变量和函数可供用户来进行功能扩展。 YYSTYPE 定义了用来将值从<br />
+lexer 拷贝到解析器或者 Yacc 的 yylval （另一个 Yacc 变量）的类型。默认的类型是 int。 由于字符串可以从 lexer<br />
+拷贝，类型被重定义为 char</em>。 关于 Yacc 变量的详细讨论，请参考 Yacc 手册（见 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#resources"> 资源<br />
+</a> ）。</p>
 <p>Yacc 语法规则</p>
 <p>Yacc 语法规则具有以下一般格式：</p>
-<pre><code>       result: components &#123; /*  
-        action to be taken in C */ &#125;  
-        ;  
-</code></pre>
-<p>在这个例子中，result 是规则描述的非终端符号。Components 是根据规则放在一起的不同的终端和非终端符号。 如果匹配特定序列的话<br>Components 后面可以跟随要执行的动作。 考虑如下的例子：</p>
-<pre><code>       param : NAME EQ NAME &#123;  
-        printf(&quot;/tName:%s/tValue(name):%s/n&quot;, $1,$3);&#125;  
-            | NAME EQ VALUE&#123;  
-            printf(&quot;/tName:%s/tValue(value):%s/n&quot;,$1,$3);&#125;  
-        ;  
-</code></pre>
-<p>如果上例中序列 NAME EQ NAME 被匹配，将执行相应的 { } 括号中的动作。 这里另一个有用的就是 $1 和 $3 的使用, 它们引用了标记<br>NAME 和 NAME（或者第二行的 VALUE）的值。 lexer 通过 Yacc 的变量 yylval 返回这些值。标记 NAME 的 Lex<br>代码是这样的：</p>
-<pre><code>       char [A-Za-z]  
-        name &#123;char&#125;+  
-        %%  
-        &#123;name&#125; &#123; yylval = strdup(yytext);  
-        return NAME; &#125;  
-</code></pre>
-<p>这里yylval&#x3D;strdup(yytext);需要进行强制转换。否则有warning.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">result: components &#123; /*  </span><br><span class="line"> action to be taken in C */ &#125;  </span><br><span class="line"> ;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在这个例子中，result 是规则描述的非终端符号。Components 是根据规则放在一起的不同的终端和非终端符号。 如果匹配特定序列的话<br />
+Components 后面可以跟随要执行的动作。 考虑如下的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">param : NAME EQ NAME &#123;  </span><br><span class="line"> printf(&quot;/tName:%s/tValue(name):%s/n&quot;, $1,$3);&#125;  </span><br><span class="line">     | NAME EQ VALUE&#123;  </span><br><span class="line">     printf(&quot;/tName:%s/tValue(value):%s/n&quot;,$1,$3);&#125;  </span><br><span class="line"> ;  </span><br></pre></td></tr></table></figure>
+<p>如果上例中序列 NAME EQ NAME 被匹配，将执行相应的 { } 括号中的动作。 这里另一个有用的就是 $1 和 $3 的使用, 它们引用了标记<br />
+NAME 和 NAME（或者第二行的 VALUE）的值。 lexer 通过 Yacc 的变量 yylval 返回这些值。标记 NAME 的 Lex<br />
+代码是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">char [A-Za-z]  </span><br><span class="line"> name &#123;char&#125;+  </span><br><span class="line"> %%  </span><br><span class="line"> &#123;name&#125; &#123; yylval = strdup(yytext);  </span><br><span class="line"> return NAME; &#125;  </span><br></pre></td></tr></table></figure>
+<p>这里yylval=strdup(yytext);需要进行强制转换。否则有warning.</p>
 <p>文件解析例子的规则段是这样的：</p>
-<p>** 文件解析的语法 **<br>           file : record file<br>            | record<br>            ;<br>            record: NAME EQ AGE {<br>            printf(“%s is now %s years old!!!”, $1, $3);}<br>            ;<br>            %%<br>附加 C 代码</p>
-<p>现在让我们看一下语法文件的最后一段，附加 C 代码。（这一段是可选的，如果有人想要略过它的话：）一个函数如 main() 调用 yyparse()<br>函数（Yacc 中 Lex 的 yylex() 等效函数）。 一般来说，Yacc 最好提供 yyerror(char msg) 函数的代码。<br>当解析器遇到错误时调用 yyerror(char msg)。错误消息作为参数来传递。 一个简单的 yyerror( char* ) 可能是这样的：</p>
-<pre><code>       int yyerror(char* msg)  
-        &#123;  
-        printf(&quot;Error: %s  
-        encountered at line number:%d/n&quot;, msg, yylineno);  
-        &#125;  
-</code></pre>
+<p>** 文件解析的语法 **</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">file : record file  </span><br><span class="line"> | record  </span><br><span class="line"> ;  </span><br><span class="line"> record: NAME EQ AGE &#123;  </span><br><span class="line"> printf(&quot;%s is now %s years old!!!&quot;, $1, $3);&#125;  </span><br><span class="line"> ;  </span><br><span class="line"> %%  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>附加 C 代码</p>
+<p>现在让我们看一下语法文件的最后一段，附加 C 代码。（这一段是可选的，如果有人想要略过它的话：）一个函数如 main() 调用 yyparse()<br />
+函数（Yacc 中 Lex 的 yylex() 等效函数）。 一般来说，Yacc 最好提供 yyerror(char msg) 函数的代码。<br />
+当解析器遇到错误时调用 yyerror(char msg)。错误消息作为参数来传递。 一个简单的 yyerror( char* ) 可能是这样的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">yyerror</span><span class="params">(<span class="type">char</span>* msg)</span>  </span><br><span class="line"> &#123;  </span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;Error: %s  </span></span><br><span class="line"><span class="string"> encountered at line number:%d/n&quot;</span>, msg, yylineno);  </span><br><span class="line"> &#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>yylineno 提供了行数信息。</p>
 <p>这一段还包括文件解析例子的主函数：</p>
-<p>** 附加 C 代码 **<br>           void main()<br>            {<br>                yyparse();<br>            }<br>            int yyerror(char* msg)<br>            {<br>            printf(“Error: %s<br>            encountered &#x2F;n”, msg);<br>要生成代码，可能用到以下命令：</p>
+<p>** 附加 C 代码 **</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>  </span><br><span class="line"> &#123;  </span><br><span class="line">     yyparse();  </span><br><span class="line"> &#125;  </span><br><span class="line"> <span class="type">int</span> <span class="title function_">yyerror</span><span class="params">(<span class="type">char</span>* msg)</span>  </span><br><span class="line"> &#123;  </span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;Error: %s  </span></span><br><span class="line"><span class="string"> encountered /n&quot;</span>, msg);  </span><br></pre></td></tr></table></figure>
+<p>要生成代码，可能用到以下命令：</p>
 <pre><code>       $ yacc _d &lt;filename.y&gt;  
 </code></pre>
 <p>这里的命令有误：其实为 yacc -d &lt;filename.y&gt;</p>
 <p>这生成了输出文件 y.tab.h 和 y.tab.c，它们可以用 UNIX 上的任何标准 C 编译器来编译（如 gcc）。</p>
 <p>命令行的其他常用选项</p>
 <ul>
-<li>_ ‘-d’ ,’–defines’ _ : 编写额外的输出文件，它们包含这些宏定义：语法中定义的标记类型名称，语义的取值类型 _ YYSTYPE _ , 以及一些外部变量声明。如果解析器输出文件名叫 ‘name.c’, 那么 ‘-d’ 文件就叫做 ‘name.h’。 如果你想将 _ yylex _ 定义放到独立的源文件中，你需要 ‘name.h’, 因为 _ yylex _ 必须能够引用标记类型代码和 _ yylval _ 变量。 </li>
-<li>_ ‘-b file-prefix’ ,’–file-prefix&#x3D;prefix’ _ : 指定一个所有Yacc输出文件名都可以使用的前缀。选择一个名字，就如输入文件名叫 ‘prefix.c’. </li>
-<li>_ ‘-o outfile’ ,’–output-file&#x3D;outfile’ _ : 指定解析器文件的输出文件名。其他输出文件根据 ‘-d’ 选项描述的输出文件来命名。</li>
+<li>_ ‘-d’ ,‘–defines’ _ : 编写额外的输出文件，它们包含这些宏定义：语法中定义的标记类型名称，语义的取值类型 _ YYSTYPE _ , 以及一些外部变量声明。如果解析器输出文件名叫 ‘name.c’, 那么 ‘-d’ 文件就叫做 ‘name.h’。 如果你想将 _ yylex _ 定义放到独立的源文件中，你需要 ‘name.h’, 因为 _ yylex _ 必须能够引用标记类型代码和 _ yylval _ 变量。</li>
+<li>_ ‘-b file-prefix’ ,‘–file-prefix=prefix’ _ : 指定一个所有Yacc输出文件名都可以使用的前缀。选择一个名字，就如输入文件名叫 ‘prefix.c’.</li>
+<li>_ ‘-o outfile’ ,‘–output-file=outfile’ _ : 指定解析器文件的输出文件名。其他输出文件根据 ‘-d’ 选项描述的输出文件来命名。</li>
 </ul>
 <p>Yacc 库通常在编译步骤中自动被包括。但是它也能被显式的包括，以便在编译步骤中指定 _ �ly _ 选项。这种情况下的编译命令行是：</p>
-<pre><code>       $ cc &lt;source file  
-        names&gt; -ly  
-</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cc &lt;<span class="built_in">source</span> file names&gt; -ly  </span><br></pre></td></tr></table></figure>
 <p>将 Lex 与 Yacc 结合起来</p>
 <p>到目前为止我们已经分别讨论了 Lex 和 Yacc。现在让我们来看一下他们是怎样结合使用的。</p>
 <p>一个程序通常在每次返回一个标记时都要调用 _ yylex() _ 函数。只有在文件结束或者出现错误标记时才会终止。</p>
-<p>一个由 Yacc 生成的解析器调用 _ yylex() _ 函数来获得标记。 _ yylex() _ 可以由 Lex 来生成或完全由自己来编写。 对于由<br>Lex 生成的 lexer 来说，要和 Yacc 结合使用，每当 Lex 中匹配一个模式时都必须返回一个标记。 因此 Lex 中匹配模式时的动作一般格式为：</p>
+<p>一个由 Yacc 生成的解析器调用 _ yylex() _ 函数来获得标记。 _ yylex() _ 可以由 Lex 来生成或完全由自己来编写。 对于由<br />
+Lex 生成的 lexer 来说，要和 Yacc 结合使用，每当 Lex 中匹配一个模式时都必须返回一个标记。 因此 Lex 中匹配模式时的动作一般格式为：</p>
 <pre><code>       &#123;pattern&#125; &#123; /* do smthg*/  
         return TOKEN_NAME; &#125;  
 </code></pre>
-<p>于是 Yacc 就会获得返回的标记。当 Yacc 编译一个带有 _d 标记的 _ .y _ 文件时，会生成一个头文件，它对每个标记都有 _ #define<br>_ 的定义。 如果 Lex 和 Yacc 一起使用的话，头文件必须在相应的 Lex 文件 _ .lex _ 中的 C 声明段中包括。</p>
+<p>于是 Yacc 就会获得返回的标记。当 Yacc 编译一个带有 _d 标记的 _ .y _ 文件时，会生成一个头文件，它对每个标记都有 _ #define<br />
+_ 的定义。 如果 Lex 和 Yacc 一起使用的话，头文件必须在相应的 Lex 文件 _ .lex _ 中的 C 声明段中包括。</p>
 <p>让我们回到名字和年龄的文件解析例子中，看一看 Lex 和 Yacc 文件的代码。</p>
-<p>** Name.y - 语法文件 **<br>           %<br>            typedef char* string;<br>            #define YYSTYPE string<br>            %}<br>            %token NAME EQ AGE<br>            %%<br>            file : record file<br>            | record<br>            ;<br>            record : NAME EQ AGE {<br>            printf(“%s is %s years old!!!&#x2F;n”, $1, $3); }<br>            ;<br>            %%<br>            int main()<br>            {<br>            yyparse();<br>            return 0;<br>            }<br>            int yyerror(char <em>msg)<br>            {<br>            printf(“Error<br>            encountered: %s &#x2F;n”, msg);<br>            }<br>** Name.lex - Lex 的解析器文件 **<br>           %{<br>            #include “y.tab.h”<br>            #include &lt;stdio.h&gt;<br>            #include &lt;string.h&gt;<br>            extern char</em> yylval;<br>            %}<br>            char [A-Za-z]<br>            num [0-9]<br>            eq [&#x3D;]<br>            name {char}+<br>            age {num}+<br>            %%<br>            {name} { yylval &#x3D; strdup(yytext);<br>            return NAME; }<br>            {eq} { return EQ; }<br>            {age} { yylval &#x3D; strdup(yytext);<br>            return AGE; }<br>            %%<br>            int yywrap()<br>            {<br>            return 1;<br>            }<br>作为一个参考，我们列出了 _ y.tab.h _ , Yacc 生成的头文件。</p>
-<p>** y.tab.h - Yacc 生成的头文件 **<br>           # define NAME 257<br>            # define EQ 258<br>            # define AGE 259<br>当然即使你执行了yacc -d &lt;filename.y&gt;,也执行了lex &lt;filename.l&gt;, 并且执行了gcc y.tab.c lex.yy.c<br>-o <filename> -ly</p>
-<p>还是有可能会报错。 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAxMC8wMy8xOC81MzkzOTE0LmFzcHg="> 欲知解决方案请参考我的下篇文章
-<i class="fa fa-external-link-alt"></i></span> 。</p>
+<p>** Name.y - 语法文件 **</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;%  </span><br><span class="line">            typedef char* string;  </span><br><span class="line">            #define YYSTYPE string  </span><br><span class="line">            %&#125;  </span><br><span class="line">            %token NAME EQ AGE  </span><br><span class="line">            %%  </span><br><span class="line">            file : record file  </span><br><span class="line">            | record  </span><br><span class="line">            ;  </span><br><span class="line">            record : NAME EQ AGE &#123;  </span><br><span class="line">            printf(&quot;%s is %s years old!!!/n&quot;, $1, $3); &#125;  </span><br><span class="line">            ;  </span><br><span class="line">            %%  </span><br><span class="line">            int main()  </span><br><span class="line">            &#123;  </span><br><span class="line">            yyparse();  </span><br><span class="line">            return 0;  </span><br><span class="line">            &#125;  </span><br><span class="line">            int yyerror(char *msg)  </span><br><span class="line">            &#123;  </span><br><span class="line">            printf(&quot;Error  </span><br><span class="line">            encountered: %s /n&quot;, msg);  </span><br><span class="line">            &#125;  </span><br></pre></td></tr></table></figure>
+<p>** Name.lex - Lex 的解析器文件 **</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">%&#123;  </span><br><span class="line"> #include &quot;y.tab.h&quot;  </span><br><span class="line"> #include &lt;stdio.h&gt;  </span><br><span class="line"> #include &lt;string.h&gt;  </span><br><span class="line"> extern char* yylval;  </span><br><span class="line"> %&#125;  </span><br><span class="line"> char [A-Za-z]  </span><br><span class="line"> num [0-9]  </span><br><span class="line"> eq [=]  </span><br><span class="line"> name &#123;char&#125;+  </span><br><span class="line"> age &#123;num&#125;+  </span><br><span class="line"> %%  </span><br><span class="line"> &#123;name&#125; &#123; yylval = strdup(yytext);  </span><br><span class="line"> return NAME; &#125;  </span><br><span class="line"> &#123;eq&#125; &#123; return EQ; &#125;  </span><br><span class="line"> &#123;age&#125; &#123; yylval = strdup(yytext);  </span><br><span class="line"> return AGE; &#125;  </span><br><span class="line"> %%  </span><br><span class="line"> int yywrap()  </span><br><span class="line"> &#123;  </span><br><span class="line"> return 1;  </span><br><span class="line"> &#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>作为一个参考，我们列出了 _ y.tab.h _ , Yacc 生成的头文件。</p>
+<p>** y.tab.h - Yacc 生成的头文件 **<br />
+# define NAME 257<br />
+# define EQ 258<br />
+# define AGE 259<br />
+当然即使你执行了yacc -d &lt;filename.y&gt;,也执行了lex &lt;filename.l&gt;, 并且执行了gcc y.tab.c lex.yy.c<br />
+-o <filename> -ly</p>
+<p>还是有可能会报错。 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAxMC8wMy8xOC81MzkzOTE0LmFzcHg="> 欲知解决方案请参考我的下篇文章<i class="fa fa-external-link-alt"></i></span> 。</p>
 <p>我们对于 Lex 和 Yacc的讨论到此为止。今天你想要编译什么语言呢？</p>
 <p>参考资料</p>
 <ul>
-<li>您可以参阅本文在 developerWorks 全球站点上的 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2xpYnJhcnkvbC1sZXguaHRtbD9TX1RBQ1Q9MTA1QUdYNTImU19DTVA9Y24tYS1s"> 英文原文 <i class="fa fa-external-link-alt"></i></span> . </li>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMTU2NTkyMDAwNy9xaWQ9OTY2NzYxNTQyL3NyPTEtMS8xMDItOTcxMzgyOS0xNjc3NzEz"> Lex and Yacc <i class="fa fa-external-link-alt"></i></span> , Levine, Mason 和 Branson, O�Reilly 及其合作公司，2nd Ed。 </li>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMDEzMjM3Mzk3MS9xaWQ9OTY2NzYxNzAxL3NyPTEtMi8xMDItOTcxMzgyOS0xNjc3NzEz"> Program Development in UNIX <i class="fa fa-external-link-alt"></i></span> , J. T. Shen, Prentice-Hall India。 </li>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMDIwMTEwMDg4Ni9vL3FpZD05NjY3NjE3Mzkvc3I9Mi0xLzEwMi05NzEzODI5LTE2Nzc3MTM="> Compilers: Principles, Techniques and Tools <i class="fa fa-external-link-alt"></i></span> , Ahoo, Sethi 和 Ullman, Addison-Wesley Pub. Co., 1985，11。 </li>
-<li><span class="exturl" data-url="aHR0cDovL3RpbmYyLnZ1Yi5hYy5iZS9+ZHZlcm1laXIvY291cnNlcy9jb21waWxlcnMv"> Lex and Yacc and compiler writing <i class="fa fa-external-link-alt"></i></span> 指导。 </li>
-<li>Java 版的 Lex 指导, 叫做 <span class="exturl" data-url="aHR0cDovL2JtcmMuYmVya2VsZXkuZWR1L2NvdXJzZXdhcmUvY3MxNjQvZmFsbDk5L2Fzc2lnbm1lbnQvYTEvdHV0b3JpYWwuaHRtbA=="> Jlex <i class="fa fa-external-link-alt"></i></span> 。 </li>
+<li>您可以参阅本文在 developerWorks 全球站点上的 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2xpYnJhcnkvbC1sZXguaHRtbD9TX1RBQ1Q9MTA1QUdYNTImU19DTVA9Y24tYS1s"> 英文原文 <i class="fa fa-external-link-alt"></i></span> .</li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMTU2NTkyMDAwNy9xaWQ9OTY2NzYxNTQyL3NyPTEtMS8xMDItOTcxMzgyOS0xNjc3NzEz"> Lex and Yacc <i class="fa fa-external-link-alt"></i></span> , Levine, Mason 和 Branson, O�Reilly 及其合作公司，2nd Ed。</li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMDEzMjM3Mzk3MS9xaWQ9OTY2NzYxNzAxL3NyPTEtMi8xMDItOTcxMzgyOS0xNjc3NzEz"> Program Development in UNIX <i class="fa fa-external-link-alt"></i></span> , J. T. Shen, Prentice-Hall India。</li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMDIwMTEwMDg4Ni9vL3FpZD05NjY3NjE3Mzkvc3I9Mi0xLzEwMi05NzEzODI5LTE2Nzc3MTM="> Compilers: Principles, Techniques and Tools <i class="fa fa-external-link-alt"></i></span> , Ahoo, Sethi 和 Ullman, Addison-Wesley Pub. Co., 1985，11。</li>
+<li><span class="exturl" data-url="aHR0cDovL3RpbmYyLnZ1Yi5hYy5iZS9+ZHZlcm1laXIvY291cnNlcy9jb21waWxlcnMv"> Lex and Yacc and compiler writing <i class="fa fa-external-link-alt"></i></span> 指导。</li>
+<li>Java 版的 Lex 指导, 叫做 <span class="exturl" data-url="aHR0cDovL2JtcmMuYmVya2VsZXkuZWR1L2NvdXJzZXdhcmUvY3MxNjQvZmFsbDk5L2Fzc2lnbm1lbnQvYTEvdHV0b3JpYWwuaHRtbA=="> Jlex <i class="fa fa-external-link-alt"></i></span> 。</li>
 <li>使用 Lex 和 Yacc 的 <span class="exturl" data-url="aHR0cDovL3d3dy5jcy5tYW4uYWMudWsvfnBqai9jczIxMTEvZXg1X2hpbnQuaHRtbA=="> formalizing a grammar <i class="fa fa-external-link-alt"></i></span> 实例。</li>
 </ul>
 
@@ -558,23 +668,30 @@
 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/next-boot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/bookmark.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/search/local-search.min.js"></script>
+
+
+
+
+
+
 
   
 
 
 
 
-
-
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
 
 
 <script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
-<script src="/js/third-party/comments/utterances.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/comments/utterances.min.js"></script>
 
 </body>
 </html>

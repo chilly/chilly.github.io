@@ -18,17 +18,17 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/config.min.js"></script>
 
-    <meta name="description" content="BeforeThanks for inviting me to answer the question: “Design a HashMap”. The description of the question is here: 12Design methods like *put, get, containsKey, containsValue, remove* etc and answer th">
+    <meta name="description" content="Before Thanks for inviting me to answer the question: “Design a HashMap”. The description of the question is here: 12Design methods like *put, get, containsKey, containsValue, remove* etc and answer">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap Design (1)">
 <meta property="og:url" content="http://chillyc.info/2017/10/18/Architect-week4-hashmap/hashmap-design/">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="BeforeThanks for inviting me to answer the question: “Design a HashMap”. The description of the question is here: 12Design methods like *put, get, containsKey, containsValue, remove* etc and answer th">
+<meta property="og:description" content="Before Thanks for inviting me to answer the question: “Design a HashMap”. The description of the question is here: 12Design methods like *put, get, containsKey, containsValue, remove* etc and answer">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://chillyc.info/images/Architect-week4-hashmap/hashtable.png">
 <meta property="og:image" content="http://chillyc.info/images/Architect-week4-hashmap/hashmap.png">
@@ -103,6 +103,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -110,12 +111,38 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-feeds"><a href="/atom.xml" rel="section"><i class="fa fa-feed fa-fw"></i>feeds</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
@@ -135,7 +162,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Before"><span class="nav-number">1.</span> <span class="nav-text">Before</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Complexity"><span class="nav-number">2.</span> <span class="nav-text">Complexity</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Optimize"><span class="nav-number">3.</span> <span class="nav-text">Optimize?</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#before"><span class="nav-number">1.</span> <span class="nav-text"> Before</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#complexity"><span class="nav-number">2.</span> <span class="nav-text"> Complexity</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#optimize"><span class="nav-number">3.</span> <span class="nav-text"> Optimize?</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -156,12 +183,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-count">735</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -175,7 +202,7 @@
       </span>
   </div>
   <div class="cc-license animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
   </div>
 
         </div>
@@ -256,44 +283,38 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="Before"><a href="#Before" class="headerlink" title="Before"></a>Before</h1><p>Thanks for inviting me to answer the question: “Design a HashMap”. The description of the question is here:</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="before"><a class="markdownIt-Anchor" href="#before"></a> Before</h1>
+<p>Thanks for inviting me to answer the question: “Design a HashMap”. The description of the question is here:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Design methods like *put, get, containsKey, </span><br><span class="line">containsValue, remove* etc and answer the *complexity*.</span><br></pre></td></tr></table></figure>
-
 <p>All of us knows “HashMap”. It is not “HashTable” see <strong>Figure 1.1</strong>. It means there does not exist a big array to store all of data.</p>
 <div align=center>
-
-<p><img src="/images/Architect-week4-hashmap/hashtable.png" alt="hashtable.png"></p>
+<p><img src="/images/Architect-week4-hashmap/hashtable.png" alt="hashtable.png" /></p>
 <p><strong>Figure 1.1</strong> hashtable</p>
 </div>
-
-
 <p>Compute hash(key) and put the value into array[hash(key)]. If array[hash(key)] is stored by other data, you <strong>must not</strong> put it into another slot. See <strong>Figure 1.2</strong>. You should create space for storing your new data.</p>
 <div align=center>
-
-<p><img src="/images/Architect-week4-hashmap/hashmap.png" alt="hashmap.png"></p>
+<p><img src="/images/Architect-week4-hashmap/hashmap.png" alt="hashmap.png" /></p>
 <p><strong>Figure 1.2</strong> hashmap</p>
 </div>
-
-<h1 id="Complexity"><a href="#Complexity" class="headerlink" title="Complexity"></a>Complexity</h1><p>How to design it? We should have a hash function. And create an array&#x2F;list called <strong>slot&#x2F;bucket</strong> to store pointers&#x2F;references which point to real data. Simple? But we should not implement the code immediately. Consider the functions and <strong>complexity</strong> first.</p>
+<h1 id="complexity"><a class="markdownIt-Anchor" href="#complexity"></a> Complexity</h1>
+<p>How to design it? We should have a hash function. And create an array/list called <strong>slot/bucket</strong> to store pointers/references which point to real data. Simple? But we should not implement the code immediately. Consider the functions and <strong>complexity</strong> first.</p>
 <p>I assume complexity of hash function is <strong>O(hash)</strong>. And the complexity of Operator is <strong>T(n)</strong>. It means doing the operator n times. We look at <strong>put</strong> function. O(hash) often is done in constant time as O(1). But in special case like hash(Big Integer or Long String), the complexity of hash function will be O(x), x is related with the length of Big Integer or Long String. Em…Those are extreme cases, and we don’t care! So we just consider O(hash) as O(1).</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">put(key,value)</span><br><span class="line"></span><br><span class="line">T(n) = O(hash) + O(create one space) + O(insert into new space) + T(n-1)</span><br><span class="line">O(create one space) is O(1) </span><br><span class="line">so</span><br><span class="line">T(n) = O(1) + O(insert into new space) + T(n-1)</span><br></pre></td></tr></table></figure>
 <p>So what’s the O(insert into new space) ? I don’t know. If it is a single linklist, it will be O(1). We can insert the data into the head of linklist. But if we use other data structures? I will not discuss here. I should list other operaters first.</p>
-<p>We assume our hash function is extreme good. The function will decentralize keys homogeneously. According to <strong>pigeon hole principle</strong>, the length of every space is no more than (N&#x2F;m + 1). <strong>N</strong> is the total number of your data. <strong>m</strong> is the number of slots. </p>
+<p>We assume our hash function is extreme good. The function will decentralize keys homogeneously. According to <strong>pigeon hole principle</strong>, the length of every space is no more than (N/m + 1). <strong>N</strong> is the total number of your data. <strong>m</strong> is the number of slots.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">get(key)</span><br><span class="line"></span><br><span class="line">T(n) = O(hash) + O(look up key from space) + O(return value) + T(n-1)</span><br><span class="line">If key is bind with value, so you find the key, and you also find the value.</span><br><span class="line">So complexity is no more than</span><br><span class="line">T(n) &lt;= O(hash) + O(N/m + 1) +O(1) + T(n-1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if m &gt;&gt; n (m is much bigger than n), then</span><br><span class="line">T(n) &lt;= O(1)+O(1) + T(n-1) = O(1) + T(n-1)</span><br><span class="line"></span><br><span class="line">if n &gt;&gt; m, then</span><br><span class="line">T(n) &lt;= O(1) + O(N) + T(n-1) = O(N) + T(n-1)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>and containsKey</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">containsKey(key)</span><br><span class="line">T(n) = O(hash) + O(look up key from space) + T(n-1)</span><br></pre></td></tr></table></figure>
-<p>Emm…The complexity of containsKey is similar with that of get(key). <em>contain(key)</em> is equal with <em>get(key)</em> ? Maybe.<br>and next is <em>containsValue</em></p>
+<p>Emm…The complexity of containsKey is similar with that of get(key). <em>contain(key)</em> is equal with <em>get(key)</em> ? Maybe.<br />
+and next is <em>containsValue</em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">containsValue(value)</span><br><span class="line"></span><br><span class="line">T(n) = O(find value in all space) + T(n-1) </span><br></pre></td></tr></table></figure>
-
-<p>In the simple hashmap, there dose not exist value -&gt; key mappings. so the complexity is O(n). We should iterator all values to find the target one. </p>
+<p>In the simple hashmap, there dose not exist value -&gt; key mappings. so the complexity is O(n). We should iterator all values to find the target one.</p>
 <p>And next is remove</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">remove(key)</span><br><span class="line"></span><br><span class="line">T(n)  = O(hash) + O(look up key from space) + O(remove key-value) + T(n-1)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>If in put(key,value), we use single linklist and insert key-value into head every time. We find the key-value is O(N&#x2F;m +1) and remove it is O(1). So</p>
+<p>If in put(key,value), we use single linklist and insert key-value into head every time. We find the key-value is O(N/m +1) and remove it is O(1). So</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">remove(key)</span><br><span class="line"></span><br><span class="line">T(n) = O(N/m + 1) + T(n-1)</span><br></pre></td></tr></table></figure>
-
-<h1 id="Optimize"><a href="#Optimize" class="headerlink" title="Optimize?"></a>Optimize?</h1><p>Can we use other data structures to optimize some operation? Yes. But we should consider other factors. like <strong>More complex, more bugs.</strong> and <strong>Effect of optimizing operation</strong>. For example, we consider the operation <strong>containsValue(value)</strong> is bad performance O(n). We can use another kind of hashmap structure to store value -&gt; key mapping. So if we call containsValue(value), we will first call getKey(value) to get key, and then call get(key) to find the value. It sounds good! But how often we will call containsValue(value)? Maybe in every 1000 operations, only 1 operation is containsValue(value) and 999 are <em>containsKey&#x2F;put&#x2F;get&#x2F;remove</em>. There is a little better effect <strong>vs</strong> more complex code. Which do you choose? And if you don’t optimize containsValue, will user think your application is too slow to use? </p>
+<h1 id="optimize"><a class="markdownIt-Anchor" href="#optimize"></a> Optimize?</h1>
+<p>Can we use other data structures to optimize some operation? Yes. But we should consider other factors. like <strong>More complex, more bugs.</strong> and <strong>Effect of optimizing operation</strong>. For example, we consider the operation <strong>containsValue(value)</strong> is bad performance O(n). We can use another kind of hashmap structure to store value -&gt; key mapping. So if we call containsValue(value), we will first call getKey(value) to get key, and then call get(key) to find the value. It sounds good! But how often we will call containsValue(value)? Maybe in every 1000 operations, only 1 operation is containsValue(value) and 999 are <em>containsKey/put/get/remove</em>. There is a little better effect <strong>vs</strong> more complex code. Which do you choose? And if you don’t optimize containsValue, will user think your application is too slow to use?</p>
 
     </div>
 
@@ -406,23 +427,30 @@
 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/next-boot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/bookmark.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/search/local-search.min.js"></script>
+
+
+
+
+
+
 
   
 
 
 
 
-
-
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
 
 
 <script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
-<script src="/js/third-party/comments/utterances.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/comments/utterances.min.js"></script>
 
 </body>
 </html>

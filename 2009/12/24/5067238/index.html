@@ -18,17 +18,17 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/config.min.js"></script>
 
-    <meta name="description" content="桥接模式： 关闭 Xend:xend stop   修改 Xend 配置文件 &#x2F;etc&#x2F;xen&#x2F;xend-config.sxp ，取消下面两行的注释:(network-script network-bridge)(vif-script vif-bridge)   启动 Xend:xend start   DomU 配置文件中不需要指定 IP:vif &#x3D; [‘">
+    <meta name="description" content="桥接模式： 关闭 Xend: xend stop 修改 Xend 配置文件 &#x2F;etc&#x2F;xen&#x2F;xend-config.sxp ，取消下面两行的注释: (network-script network-bridge) (vif-script vif-bridge) 启动 Xend: xend start DomU 配置文件中不需要指定 IP: vif &#x3D; [‘’] 也可以指定 IP: vif &#x3D; [‘">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Xen网络配置——桥接模式">
 <meta property="og:url" content="http://chillyc.info/2009/12/24/5067238/">
 <meta property="og:site_name" content="帐前卒专栏">
-<meta property="og:description" content="桥接模式： 关闭 Xend:xend stop   修改 Xend 配置文件 &#x2F;etc&#x2F;xen&#x2F;xend-config.sxp ，取消下面两行的注释:(network-script network-bridge)(vif-script vif-bridge)   启动 Xend:xend start   DomU 配置文件中不需要指定 IP:vif &#x3D; [‘">
+<meta property="og:description" content="桥接模式： 关闭 Xend: xend stop 修改 Xend 配置文件 &#x2F;etc&#x2F;xen&#x2F;xend-config.sxp ，取消下面两行的注释: (network-script network-bridge) (vif-script vif-bridge) 启动 Xend: xend start DomU 配置文件中不需要指定 IP: vif &#x3D; [‘’] 也可以指定 IP: vif &#x3D; [‘">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2009-12-24T01:08:00.000Z">
 <meta property="article:modified_time" content="2023-10-05T04:41:45.738Z">
@@ -98,6 +98,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -105,12 +106,38 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-feeds"><a href="/atom.xml" rel="section"><i class="fa fa-feed fa-fw"></i>feeds</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
@@ -150,12 +177,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-count">735</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -169,7 +196,7 @@
       </span>
   </div>
   <div class="cc-license animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
   </div>
 
         </div>
@@ -242,18 +269,30 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>桥接模式：</p>
-<p>关闭 Xend:<br>xend stop  </p>
-<p>修改 Xend 配置文件 &#x2F;etc&#x2F;xen&#x2F;xend-config.sxp ，取消下面两行的注释:<br>(network-script network-bridge)<br>(vif-script vif-bridge)  </p>
-<p>启动 Xend:<br>xend start  </p>
-<p>DomU 配置文件中不需要指定 IP:<br>vif &#x3D; [‘’]  </p>
-<p>也可以指定 IP:<br>vif &#x3D; [‘ip&#x3D;192.168.1.252’]  </p>
-<p>创建 DomU。在 DomU 里配置 eth0 的 IP。如果在配置文件里指定了 IP，则必须保持一致:<br>ifconfig eth0 192.168.1.252  </p>
-<p>如果需要连接外网，需要配置网关，例如:<br>route add default gw 192.168.1.254</p>
-<p>如果这时可以ping通外网ip但是不能进行域名解析，就更改&#x2F;etc&#x2F;resolv.conf文件。注意这里是resolv.conf而不是resolve.con<br>f.</p>
-<p>如果希望使用dhcp服务，可以在DomU的config文件中配置dhcp &#x3D; “dhcp”。</p>
+<p>关闭 Xend:<br />
+xend stop</p>
+<p>修改 Xend 配置文件 /etc/xen/xend-config.sxp ，取消下面两行的注释:<br />
+(network-script network-bridge)<br />
+(vif-script vif-bridge)</p>
+<p>启动 Xend:<br />
+xend start</p>
+<p>DomU 配置文件中不需要指定 IP:<br />
+vif = [‘’]</p>
+<p>也可以指定 IP:<br />
+vif = [‘ip=192.168.1.252’]</p>
+<p>创建 DomU。在 DomU 里配置 eth0 的 IP。如果在配置文件里指定了 IP，则必须保持一致:<br />
+ifconfig eth0 192.168.1.252</p>
+<p>如果需要连接外网，需要配置网关，例如:<br />
+route add default gw 192.168.1.254</p>
+<p>如果这时可以ping通外网ip但是不能进行域名解析，就更改/etc/resolv.conf文件。注意这里是resolv.conf而不是resolve.con<br />
+f.</p>
+<p>如果希望使用dhcp服务，可以在DomU的config文件中配置dhcp = “dhcp”。</p>
 <p>假如使用以上配置后，进入DomU,ping不同外网，也ping不同自己的物理机，但是能ping通自己。那说明网桥处连接有问题。</p>
-<p>使用brctl show来查看网桥。这里需要注意的是：vif0.0代表的是Dom0的网络接口，vifX.0代表的是DomU的网络接口。X和DomU的id有关<br>系。。peth0是物理网卡接口。网桥如果可以通信，vif0.0,vifX.0,peth0必须在一个网桥之下。这里的网桥类似于xenbr0,virbr0的形式<br>。注意这里是两个不同的网桥。所以必须都在同一个网桥之下才行。如果不在的话，在DomU的config中设置vif &#x3D;<br>[‘bridge&#x3D;xenbr0’]就可以了。</p>
-<p>如果brctl show显示依旧不在同一网桥。那么就只写  vif &#x3D; [‘bridge&#x3D;xenbr0’]，也不要配置mac和ip,进入虚拟机之后再配置。</p>
+<p>使用brctl show来查看网桥。这里需要注意的是：vif0.0代表的是Dom0的网络接口，vifX.0代表的是DomU的网络接口。X和DomU的id有关<br />
+系。。peth0是物理网卡接口。网桥如果可以通信，vif0.0,vifX.0,peth0必须在一个网桥之下。这里的网桥类似于xenbr0,virbr0的形式<br />
+。注意这里是两个不同的网桥。所以必须都在同一个网桥之下才行。如果不在的话，在DomU的config中设置vif =<br />
+[‘bridge=xenbr0’]就可以了。</p>
+<p>如果brctl show显示依旧不在同一网桥。那么就只写  vif = [‘bridge=xenbr0’]，也不要配置mac和ip,进入虚拟机之后再配置。</p>
 <p>另外如果有出现输入xend命令dom-0自动断网的情况，可能需要禁掉selinux和iptable.</p>
 
     </div>
@@ -368,23 +407,30 @@
 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/next-boot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/bookmark.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/search/local-search.min.js"></script>
+
+
+
+
+
+
 
   
 
 
 
 
-
-
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
 
 
 <script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
-<script src="/js/third-party/comments/utterances.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/comments/utterances.min.js"></script>
 
 </body>
 </html>
