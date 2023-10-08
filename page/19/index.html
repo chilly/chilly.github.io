@@ -172,12 +172,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">736</span>
+        <span class="site-state-item-count">739</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -429,6 +429,150 @@ today, I have see a blessing in SQLite：
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/05/13/2011-05-13-windowsapachepei-zhi-xu-ni-zhu-ji/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2011/05/13/2011-05-13-windowsapachepei-zhi-xu-ni-zhu-ji/" class="post-title-link" itemprop="url">Windows Apache 配置虚拟主机</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2011-05-13 00:00:00" itemprop="dateCreated datePublished" datetime="2011-05-13T00:00:00+08:00">2011-05-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:12:48" itemprop="dateModified" datetime="2023-10-05T23:12:48+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>888</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="在windows中配置apache虚拟主机。采用单ip多端口映射。" />
+<meta name="_su_keywords" content="windows,apache,配置,虚拟,主机,多端口,单ip" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="_su_title" content="windows,apache,配置,虚拟,主机,多端口" />
+<meta name="views" content="363" />
+如果我的只有一个ip要在同一个机器上有两个或者多个网站，那就需要端口映射了。
+例如ip为192.168.1.122 端口号为80，需要有一个网站a.com
+ip为192.168.1.122 端口号为8080，需要有一个网站b.com
+在windows/system32/driver/etc中修改hosts 添加
+192.168.1.122 a.com
+192.168.1.122 b.com
+在apache的conf文件夹中，修改httpd.conf找到Listen关键词
+然后照样子修改
+Listen 80
+Listen 8080
+然后去conf\extra文件夹下，修改httpd-vhosts.conf文件。添加：
+<Directory "c:/yoursitdir">
+   AllowOverride FileInfo
+   Order allow,deny
+   Allow from all
+</Directory>
+<p>&lt;VirtualHost *:8080&gt;<br />
+ServerAdmin <span class="exturl" data-url="bWFpbHRvOndlYm1hc3RlckBhLmNvbQ==">webmaster@a.com<i class="fa fa-external-link-alt"></i></span><br />
+DocumentRoot “c:/yoursitedir”<br />
+ServerName <span class="exturl" data-url="aHR0cDovL2EuY29t">a.com<i class="fa fa-external-link-alt"></i></span><br />
+ServerAlias <span class="exturl" data-url="aHR0cDovL3d3dy5hLmNvbQ==">www.a.com<i class="fa fa-external-link-alt"></i></span><br />
+CustomLog “logs/a.com-access.log” common<br />
+ErrorLog “logs/a.com-error.log”<br />
+</VirtualHost></p>
+<p>&lt;Directory “c:/yoursitdir2”&gt;<br />
+AllowOverride FileInfo<br />
+Order allow,deny<br />
+Allow from all<br />
+</Directory></p>
+<p>&lt;VirtualHost *:80&gt;<br />
+ServerAdmin <span class="exturl" data-url="bWFpbHRvOndlYm1hc3RlckBiLmNvbQ==">webmaster@b.com<i class="fa fa-external-link-alt"></i></span><br />
+DocumentRoot “c:/yoursitedir2”<br />
+ServerName <span class="exturl" data-url="aHR0cDovL2IuY29t">b.com<i class="fa fa-external-link-alt"></i></span><br />
+ServerAlias <span class="exturl" data-url="aHR0cDovL3d3dy5iLmNvbQ==">www.b.com<i class="fa fa-external-link-alt"></i></span><br />
+CustomLog “logs/b.com-access.log” common<br />
+ErrorLog “logs/b.com-error.log”<br />
+</VirtualHost><br />
+注意在DocumentRoot “c:/yoursitedir2&quot;和&lt;Directory “c:/yoursitdir2”&gt;中路径的最后不能有”/&quot;.<br />
+然后重启apache即可。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/05/13/2011-05-13-eucalyptus-ssh-login/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -649,150 +793,6 @@ Then you should open brower and type:</p>
 <p>if you open install.php in your local computer with brower, it will report</p>
 <blockquote>Error: PHP is not running</blockquote>
 in your brower, the url address does not prefix with "http://"
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/05/13/2011-05-13-windowsapachepei-zhi-xu-ni-zhu-ji/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/05/13/2011-05-13-windowsapachepei-zhi-xu-ni-zhu-ji/" class="post-title-link" itemprop="url">Windows Apache 配置虚拟主机</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2011-05-13 00:00:00" itemprop="dateCreated datePublished" datetime="2011-05-13T00:00:00+08:00">2011-05-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:12:48" itemprop="dateModified" datetime="2023-10-05T23:12:48+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>888</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="在windows中配置apache虚拟主机。采用单ip多端口映射。" />
-<meta name="_su_keywords" content="windows,apache,配置,虚拟,主机,多端口,单ip" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="windows,apache,配置,虚拟,主机,多端口" />
-<meta name="views" content="363" />
-如果我的只有一个ip要在同一个机器上有两个或者多个网站，那就需要端口映射了。
-例如ip为192.168.1.122 端口号为80，需要有一个网站a.com
-ip为192.168.1.122 端口号为8080，需要有一个网站b.com
-在windows/system32/driver/etc中修改hosts 添加
-192.168.1.122 a.com
-192.168.1.122 b.com
-在apache的conf文件夹中，修改httpd.conf找到Listen关键词
-然后照样子修改
-Listen 80
-Listen 8080
-然后去conf\extra文件夹下，修改httpd-vhosts.conf文件。添加：
-<Directory "c:/yoursitdir">
-   AllowOverride FileInfo
-   Order allow,deny
-   Allow from all
-</Directory>
-<p>&lt;VirtualHost *:8080&gt;<br />
-ServerAdmin <span class="exturl" data-url="bWFpbHRvOndlYm1hc3RlckBhLmNvbQ==">webmaster@a.com<i class="fa fa-external-link-alt"></i></span><br />
-DocumentRoot “c:/yoursitedir”<br />
-ServerName <span class="exturl" data-url="aHR0cDovL2EuY29t">a.com<i class="fa fa-external-link-alt"></i></span><br />
-ServerAlias <span class="exturl" data-url="aHR0cDovL3d3dy5hLmNvbQ==">www.a.com<i class="fa fa-external-link-alt"></i></span><br />
-CustomLog “logs/a.com-access.log” common<br />
-ErrorLog “logs/a.com-error.log”<br />
-</VirtualHost></p>
-<p>&lt;Directory “c:/yoursitdir2”&gt;<br />
-AllowOverride FileInfo<br />
-Order allow,deny<br />
-Allow from all<br />
-</Directory></p>
-<p>&lt;VirtualHost *:80&gt;<br />
-ServerAdmin <span class="exturl" data-url="bWFpbHRvOndlYm1hc3RlckBiLmNvbQ==">webmaster@b.com<i class="fa fa-external-link-alt"></i></span><br />
-DocumentRoot “c:/yoursitedir2”<br />
-ServerName <span class="exturl" data-url="aHR0cDovL2IuY29t">b.com<i class="fa fa-external-link-alt"></i></span><br />
-ServerAlias <span class="exturl" data-url="aHR0cDovL3d3dy5iLmNvbQ==">www.b.com<i class="fa fa-external-link-alt"></i></span><br />
-CustomLog “logs/b.com-access.log” common<br />
-ErrorLog “logs/b.com-error.log”<br />
-</VirtualHost><br />
-注意在DocumentRoot “c:/yoursitedir2&quot;和&lt;Directory “c:/yoursitdir2”&gt;中路径的最后不能有”/&quot;.<br />
-然后重启apache即可。</p>
 
       
     </div>
@@ -1559,7 +1559,7 @@ droid的游戏。这年头是怎么了。</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">23:50</span>
+    <span title="Reading time total">23:58</span>
   </span>
 </div>
 
