@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,175 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/12/04/8257909/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2012/12/04/8257909/" class="post-title-link" itemprop="url">Log4j的使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2012-12-04 22:55:00" itemprop="dateCreated datePublished" datetime="2012-12-04T22:55:00+08:00">2012-12-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <pre><code>import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+</code></pre>
+<p>今天又偶然用了一下log4j，不免有些生疏。所以贴出来总结一下：</p>
+<p>首先Log4j需要准备一个configure文件:log4j.properties</p>
+<p>文件格式：</p>
+<pre><code># Configure the log dir and file names here
+my.log.dir=./log
+my.log.file=my.log
+
+# Define the root logger for deployment
+# This is the default level and appender
+log4j.rootLogger=INFO,my
+
+# Global Logging Threshold
+log4j.threshhold=ALL
+#这里定义输出文件以及输出的样式
+#
+# Daily Rolling File Appender for my
+#
+log4j.appender.my=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.my.File=$&#123;my.log.dir&#125;/$&#123;my.log.file&#125;
+# Rollover at midnight
+log4j.appender.my.DatePattern=.yyyy-MM-dd
+# Output logs above INFO for this appender
+log4j.appender.my.Threshold=INFO 
+log4j.appender.my.layout=org.apache.log4j.PatternLayout
+# Pattern format: Date LogLevel [ThreadName] LoggerName: LogMessage
+log4j.appender.my.layout.ConversionPattern=%d&#123;ISO8601&#125; %-5p [%t] %C: %m%n
+# Custom Logging levels
+# Only output ERRORs for other libraries
+log4j.logger.org=ERROR
+# Output logs above INFO for ydrive
+</code></pre>
+<p>log4j.logger.somepackage=INFO</p>
+<pre><code>这里需要注意additivity,如果不写，那么就默认继承上面一个appender
+log4j.additivity.somepackage.my=false
+log4j.logger.somepackage.my=INFO,my
+</code></pre>
+<p>log4j.properties就是这样的格式。上面的意思除了输出文件和输出文件的格式大家基本都是一致的。对于下面怎么添加appender，每个人的写法就有<br />
+区别了。如果</p>
+<pre><code>log4j.logger.somepackage=INFO,my
+log4j.logger.somepackage.my=INFO,my
+</code></pre>
+<p>如果某个类somepackage.my.MyClass要输出log的话，那么在文件里就会输出相同的两行。原因就在于s</p>
+<pre><code>log4j.additivity.somepackage.my=false
+</code></pre>
+<p>omepackage.my不光是要打印自己的log，也要打印somepackage的log.所以才有</p>
+<pre><code>log4j.additivity.somepackage.my=false
+</code></pre>
+<p>这里就会抹掉sompackage的影响。</p>
+<p>另外INFO,my代表输出等级是INFO和my 这个appender输出。至于my appender的定义。其实就是</p>
+<pre><code>log4j.appender.my
+</code></pre>
+<p>下面是代码里的写法：</p>
+<p>加载log4j.properties很简单：</p>
+<pre><code>File log4jFile = new File(&quot;log4j.properties&quot;);
+System.out.println(&quot;Read log4j.propeties at&quot; + log4jFile.getAbsolutePath());
+PropertyConfigurator.configureAndWatch(log4jFile.getAbsolutePath());
+</code></pre>
+<p>加载完之后，就可以使用log4j：</p>
+<p>首先要import下面两个包</p>
+<pre><code>import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+</code></pre>
+<p>然后代码里可以这样写：</p>
+<pre><code>private static final Log LOG = LogFactory.getLog(MyClass.class);
+&#123;
+     LOG.info(&quot;print&quot;);
+&#125;
+</code></pre>
+<p>然后你就可以看到</p>
+<pre><code># Configure the log dir and file names here
+my.log.dir=./log
+my.log.file=my.log
+</code></pre>
+<p>log目录的my.log里有你的print.</p>
+<p>有时候，这个my.log很有可能是空的。原因在于还没有到log4j<br />
+flush的时候，你可以多输出些东西。log4j是异步的输出。所以可能那个my.log是个空白。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -5296,116 +5465,6 @@ public:
 &#125;;
 </code></pre>
 <p>这样就没有错误了.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/08/07/7840950/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/08/07/7840950/" class="post-title-link" itemprop="url">Linux，MAC下使用有道云笔记发送长微博</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-08-07 22:17:00" itemprop="dateCreated datePublished" datetime="2012-08-07T22:17:00+08:00">2012-08-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>706</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近有道云笔记实现了客户端长微博发送的功能。但是客户端只有windows版的。对于linux,<br />
-mac的用户，还需要再等一段时间。现在教大家如何使用web页面发送长微博.</p>
-<p><span class="exturl" data-url="aHR0cDovL3huLS1jaHJvbWVub3RlLXB5OXBnMTNrY2JqaG8wZTJneWcueW91ZGFvLmNvbQ==">首先用chrome打开note.youdao.com<i class="fa fa-external-link-alt"></i></span> 登陆后， 然后F12， 点击放大镜<br />
-<img src="http://my.csdn.net/uploads/201208/07/1344352073_3470.jpg" alt="" /> , 然后点击第二栏的缩略图<br />
-<img src="http://my.csdn.net/uploads/201208/07/1344352092_4054.jpg" alt="" /> ，然后看到这样一串<br />
-<img src="http://my.csdn.net/uploads/201208/07/1344352104_7139.jpg" alt="" /> 。将字串中的data-note-<br />
-id代替url中的p参数（<span class="exturl" data-url="aHR0cDovL25vdGUueW91ZGFvLmNvbS95d3MvbWFwaS93ZWliby9zaGFyZT9wPS9hODlHRUZnb0x1QS8wMjQwRjNFMDM3ODc0">note.youdao.com/yws/mapi/weibo/share?p=/a89GEFgoLuA/0240F3E037874<i class="fa fa-external-link-alt"></i></span><br />
-7DAB9A01ED4348EC0B0&amp;weibo=sina&amp;any=PC&amp;method=gen）。然后将该url贴入浏览器，然后就会得到Json串，将js<br />
-on串中的url贴入到浏览器，就可以发送长微博了.</p>
-<p>现在有道云笔记的长微博中还存在有些不足。</p>
-<p>1.是有些字体的缺失，会替换为默认字体。</p>
-<p>2.是某些特殊的html标签，解析不是很好。导致了整个图生成的相当诡异。特别是html中带有<table>标签的图，生成的都会有多多少少的问题。这个或许在后<br />
-续的版本中有些改善。</p>
-<p>3.是因为有道云笔记自身的编辑器导致了有些html格式不标准。看起来有时候字体很诡异。</p>
-<p>个人认为有道云笔记还有一些可以改进的地方。</p>
-<p>1. 一个功能可能隐藏在某个细小的角落里。或者要点击多次才能找到可用的功能。</p>
-<p>例如分享笔记链接中，要找到取消笔记链接。这多多少少要找一会。</p>
-<p>2. 开始的时候，不是码龙很难使用。虽然有介绍</p>
-<p>3.笔记附件不是让人很满意。因为同一个附件，放入笔记中会变成多个附件。这个很不爽，至少让我身边使用的人很不爽。</p>
-<p>有道云笔记其他方面都还不错，继续关注使用中。</p>
 
       
     </div>

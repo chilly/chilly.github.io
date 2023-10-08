@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,337 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/12/04/4937923/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/12/04/4937923/" class="post-title-link" itemprop="url">Automake Autoconfig Generate Make Configure自动生成</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-12-04 09:19:00" itemprop="dateCreated datePublished" datetime="2009-12-04T09:19:00+08:00">2009-12-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>自动化生成的例子还可以参照：<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2F5aWdvb2QvYXJjaGl2ZS8yMDA5LzEyLzA3LzQ5NTQ3NzIuYXNweA==">http://blog.csdn.net/sayigood/archive/2009/12/07/4954772.aspx<i class="fa fa-external-link-alt"></i></span></p>
+<p><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/u3/90876/showart_2072884.html"> 转载自：http://blog.chinaunix.net/u3/90876/showart_2072884.html<br />
+</a></p>
+<p>第一步：<br />
+----------<br />
+在/root/project/main目录下创建一个文件main.c,其内容如下：<br />
+------------------------------------------------<br />
+#include &lt;stdio.h&gt;<br />
+int main(int argc, char** argv)<br />
+{<br />
+printf(“Hello, Auto Makefile!/n”);<br />
+return 0;<br />
+}<br />
+------------------------------------------------</p>
+<p>此时状态如下：<br />
+[root@localhost main]# ** pwd **<br />
+/root/project/main<br />
+[root@localhost main]# ** ls **<br />
+** main.c **<br />
+[root@localhost main]#</p>
+<p>第二步：<br />
+----------<br />
+运行 ** autoscan ** , 自动创建两个文件： autoscan.log  configure.scan</p>
+<p>此时状态如下：<br />
+[root@localhost main]# ** autoscan **<br />
+[root@localhost main]# ** ls **<br />
+** autoscan.log  configure.scan ** main.c<br />
+[root@localhost main]#</p>
+<p>第三步：<br />
+----------<br />
+<span class="exturl" data-url="aHR0cDovL3huLS1jb25maWd1cmUtejg5bno3OHAueG4tLXNjYW5jb25maWd1cmUtbG8xdW85Znh0NmFiMzFldjU1Yy5pbg==">修改configure.scan的文件名为configure.in<i class="fa fa-external-link-alt"></i></span></p>
+<p>查看 ** <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span> ** 的内容：<br />
+------------------------------------------------<br />
+#                                               -<em>- Autoconf -</em>-</p>
+<h1 id="process-this-file-with-autoconf-to-produce-a-configure-script"><a class="markdownIt-Anchor" href="#process-this-file-with-autoconf-to-produce-a-configure-script"></a> Process this file with autoconf to produce a configure script.</h1>
+<p>AC_PREREQ(2.61)<br />
+AC_INIT(FULL-PACKAGE-NAME, VERSION, BUG-REPORT-ADDRESS)<br />
+AC_CONFIG_SRCDIR([main.c])<br />
+AC_CONFIG_HEADER([config.h])</p>
+<h1 id="checks-for-programs"><a class="markdownIt-Anchor" href="#checks-for-programs"></a> Checks for programs.</h1>
+<p>AC_PROG_CC</p>
+<h1 id="checks-for-libraries"><a class="markdownIt-Anchor" href="#checks-for-libraries"></a> Checks for libraries.</h1>
+<h1 id="checks-for-header-files"><a class="markdownIt-Anchor" href="#checks-for-header-files"></a> Checks for header files.</h1>
+<h1 id="checks-for-typedefs-structures-and-compiler-characteristics"><a class="markdownIt-Anchor" href="#checks-for-typedefs-structures-and-compiler-characteristics"></a> Checks for typedefs, structures, and compiler characteristics.</h1>
+<h1 id="checks-for-library-functions"><a class="markdownIt-Anchor" href="#checks-for-library-functions"></a> Checks for library functions.</h1>
+<p>AC_OUTPUT<br />
+------------------------------------------------</p>
+<p>解读以上的文件：</p>
+<p>------------------------------------------------<br />
+#                                               -<em>- Autoconf -</em>-</p>
+<h1 id="process-this-file-with-autoconf-to-produce-a-configure-script-2"><a class="markdownIt-Anchor" href="#process-this-file-with-autoconf-to-produce-a-configure-script-2"></a> Process this file with autoconf to produce a configure script.</h1>
+<h1 id="ac_prereq"><a class="markdownIt-Anchor" href="#ac_prereq"></a> AC_PREREQ:</h1>
+<h1 id="确保使用的是足够新的autoconf版本-如果用于创建configure的autoconf的版"><a class="markdownIt-Anchor" href="#确保使用的是足够新的autoconf版本-如果用于创建configure的autoconf的版"></a> 确保使用的是足够新的Autoconf版本。如果用于创建configure的Autoconf的版</h1>
+<h1 id="本比version-要早就在标准错误输出打印一条错误消息并不会创建configure"><a class="markdownIt-Anchor" href="#本比version-要早就在标准错误输出打印一条错误消息并不会创建configure"></a> 本比version 要早，就在标准错误输出打印一条错误消息并不会创建configure。</h1>
+<p>AC_PREREQ(2.61)</p>
+<h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
+<h1 id="初始化定义软件的基本信息包括设置包的全称版本号以及报告bug时需要用的邮箱地址"><a class="markdownIt-Anchor" href="#初始化定义软件的基本信息包括设置包的全称版本号以及报告bug时需要用的邮箱地址"></a> 初始化,定义软件的基本信息,包括设置包的全称,版本号以及报告BUG时需要用的邮箱地址</h1>
+<h1 id="-2"><a class="markdownIt-Anchor" href="#-2"></a> </h1>
+<p>AC_INIT(FULL-PACKAGE-NAME, VERSION, BUG-REPORT-ADDRESS)</p>
+<h1 id="-3"><a class="markdownIt-Anchor" href="#-3"></a> </h1>
+<h1 id="用来侦测所指定的源码文件是否存在来确定源码目录的有效性"><a class="markdownIt-Anchor" href="#用来侦测所指定的源码文件是否存在来确定源码目录的有效性"></a> 用来侦测所指定的源码文件是否存在，来确定源码目录的有效性</h1>
+<h1 id="-4"><a class="markdownIt-Anchor" href="#-4"></a> </h1>
+<p>AC_CONFIG_SRCDIR([main.c])</p>
+<h1 id="-5"><a class="markdownIt-Anchor" href="#-5"></a> </h1>
+<h1 id="用于生成configh文件以便autoheader使用"><a class="markdownIt-Anchor" href="#用于生成configh文件以便autoheader使用"></a> 用于生成config.h文件，以便autoheader使用</h1>
+<h1 id="-6"><a class="markdownIt-Anchor" href="#-6"></a> </h1>
+<p>AC_CONFIG_HEADER([config.h])</p>
+<h1 id="checks-for-programs-2"><a class="markdownIt-Anchor" href="#checks-for-programs-2"></a> Checks for programs.</h1>
+<p>AC_PROG_CC</p>
+<h1 id="checks-for-libraries-2"><a class="markdownIt-Anchor" href="#checks-for-libraries-2"></a> Checks for libraries.</h1>
+<h1 id="checks-for-header-files-2"><a class="markdownIt-Anchor" href="#checks-for-header-files-2"></a> Checks for header files.</h1>
+<h1 id="checks-for-typedefs-structures-and-compiler-characteristics-2"><a class="markdownIt-Anchor" href="#checks-for-typedefs-structures-and-compiler-characteristics-2"></a> Checks for typedefs, structures, and compiler characteristics.</h1>
+<h1 id="checks-for-library-functions-2"><a class="markdownIt-Anchor" href="#checks-for-library-functions-2"></a> Checks for library functions.</h1>
+<h1 id="-7"><a class="markdownIt-Anchor" href="#-7"></a> </h1>
+<h1 id="创建输出文件-在configurein的末尾调用本宏一次"><a class="markdownIt-Anchor" href="#创建输出文件-在configurein的末尾调用本宏一次"></a> 创建输出文件。<span class="exturl" data-url="aHR0cDovL3huLS0zZHMlNjBjb25maWd1cmUuaW4=">在`configure.in<i class="fa fa-external-link-alt"></i></span>’的末尾调用本宏一次。</h1>
+<h1 id="-8"><a class="markdownIt-Anchor" href="#-8"></a> </h1>
+<p>AC_OUTPUT<br />
+------------------------------------------------</p>
+<p>修改动作:<br />
+1.修改AC_INIT里面的参数: AC_INIT(main,1.0, <span class="exturl" data-url="bWFpbHRvOnBncHhjQDE2My5jb20=">pgpxc@163.com<i class="fa fa-external-link-alt"></i></span>)<br />
+2.添加宏AM_INIT_AUTOMAKE,<br />
+它是automake所必备的宏，也同前面一样，PACKAGE是所要产生软件套件的名称，VERSION是版本编号。<br />
+3.在AC_OUTPUT后添加输出文件Makefile<br />
+修改后的结果:<br />
+------------------------------------------------<br />
+#                                               -<em>- Autoconf -</em>-</p>
+<h1 id="process-this-file-with-autoconf-to-produce-a-configure-script-3"><a class="markdownIt-Anchor" href="#process-this-file-with-autoconf-to-produce-a-configure-script-3"></a> Process this file with autoconf to produce a configure script.</h1>
+<p>AC_PREREQ(2.61)<br />
+** AC_INIT(main, 1.0, <span class="exturl" data-url="bWFpbHRvOnBncHhjQDE2My5jb20=">pgpxc@163.com<i class="fa fa-external-link-alt"></i></span>) **<br />
+AC_CONFIG_SRCDIR([main.c])<br />
+AC_CONFIG_HEADER([config.h])<br />
+** AM_INIT_AUTOMAKE(main,1.0) **</p>
+<h1 id="checks-for-programs-3"><a class="markdownIt-Anchor" href="#checks-for-programs-3"></a> Checks for programs.</h1>
+<p>AC_PROG_CC</p>
+<h1 id="checks-for-libraries-3"><a class="markdownIt-Anchor" href="#checks-for-libraries-3"></a> Checks for libraries.</h1>
+<h1 id="checks-for-header-files-3"><a class="markdownIt-Anchor" href="#checks-for-header-files-3"></a> Checks for header files.</h1>
+<h1 id="checks-for-typedefs-structures-and-compiler-characteristics-3"><a class="markdownIt-Anchor" href="#checks-for-typedefs-structures-and-compiler-characteristics-3"></a> Checks for typedefs, structures, and compiler characteristics.</h1>
+<h1 id="checks-for-library-functions-3"><a class="markdownIt-Anchor" href="#checks-for-library-functions-3"></a> Checks for library functions.</h1>
+<p>** AC_OUTPUT([Makefile]) **<br />
+------------------------------------------------</p>
+<p>第四步:<br />
+运行 ** aclocal ** , 生成一个“ ** aclocal.m4 ** ”文件和一个缓冲文件夹 ** autom4te.cache **<br />
+，该文件主要处理本地的宏定义。</p>
+<p>此时的状态是：<br />
+[root@localhost main]# ** aclocal **<br />
+[root@localhost main]# ** ls **<br />
+** aclocal.m4  autom4te.cache ** autoscan.log  <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>  configure.in~  main.c<br />
+[root@localhost main]#<br />
+第五步：<br />
+运行 ** autoconf ** , 目的是生成 configure</p>
+<p>此时的状态是：<br />
+[root@localhost main]# ** autoconf **<br />
+[root@localhost main]# ** ls **<br />
+aclocal.m4      autoscan.log  <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>   main.c<br />
+autom4te.cache ** configure ** configure.in~<br />
+[root@localhost main]#</p>
+<p>第六步：<br />
+运行 ** autoheader ** ，它负责生成config.h.in文件。该工具通常会从“acconfig.h”文件中复制用户附加的符号定义，因此此处<br />
+没有附加符号定义，所以不需要创建“acconfig.h”文件。</p>
+<p>此时的状态是：<br />
+[root@localhost main]# ** autoheader **<br />
+[root@localhost main]# ** ls **<br />
+aclocal.m4      autoscan.log  configure     configure.in~<br />
+autom4te.cache ** <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span> ** <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>  main.c<br />
+[root@localhost main]#</p>
+<p>第七步：<br />
+下面即将运行 ** automake ** , 但在此之前应该做一下准备工作!</p>
+<p>首先<br />
+创建一个 ** <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span> ** .这一步是创建Makefile很重要的一步，<span class="exturl" data-url="aHR0cDovL3huLS1hdXRvbWFrZU1ha2VmaWxlLWswMno5NDgwYWl2Y3J5Zzg1NmcwaWd3bzljcG5pbXk4YzRtM2IuYW0=">automake要用的脚本配置文件是Makefile.am<i class="fa fa-external-link-alt"></i></span>，用户需<br />
+要自己创建相应的文件。之后，<span class="exturl" data-url="aHR0cDovL3huLS1hdXRvbWFrZU1ha2VmaWxlLXd3MTBhcDA1bmp0cWU3Zm40M3guaW4=">automake工具转换成Makefile.in<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>这个Makefile.am的内容如下：<br />
+------------------------------------------------<br />
+AUTOMAKE_OPTIONS=foreign<br />
+bin_PROGRAMS=main<br />
+main_SOURCES=main.c<br />
+------------------------------------------------</p>
+<p>下面对该脚本文件的对应项进行解释。<br />
+其中的AUTOMAKE_OPTIONS为设置automake的选项。由于GNU（在第1章中已经有所介绍）对自己发布的软件有严格的规范，比如必须附<br />
+带许可证声明文件COPYING等，否则automake执行时会报错。automake提供了三种软件等级：foreign、gnu和gnits，让用<br />
+户选择采用，默认等级为gnu。在本例使用foreign等级，它只检测必须的文件。<br />
+bin_PROGRAMS定义要产生的执行文件名。如果要产生多个执行文件，每个文件名用空格隔开。<br />
+main_SOURCES定义“main”这个执行程序所需要的原始文件。如果”main”这个程序是由多个原始文件所产生的，则必须把它所用到的所有原<br />
+始文件都列出来，并用空格隔开。例如：若目标体“main”需要“main.c”、“sunq.c”、“main.h”三个依赖文件，则定义<br />
+main_SOURCES=main.c sunq.c<br />
+main.h。要注意的是，如果要定义多个执行文件，则对每个执行程序都要定义相应的file_SOURCES。</p>
+<p>其次<br />
+使用automake对其生成“<span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>”文件，在这里使用选项“—adding-<br />
+missing”可以让automake自动添加有一些必需的脚本文件。<br />
+运行后的状态是：<br />
+------------------------------------------------<br />
+[root@localhost main]# ** automake --add-missing **<br />
+<span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbjo4">configure.in:8<i class="fa fa-external-link-alt"></i></span>: installing <code>./missing'   configure.in:8: installing </code>./install-sh’<br />
+<span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span>: installing `./depcomp’<br />
+[root@localhost main]# ** ls **<br />
+aclocal.m4      <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span>   configure.in~  main.c        <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmlu">Makefile.in<i class="fa fa-external-link-alt"></i></span><br />
+autom4te.cache  configure ** depcomp ** ** <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span> ** ** missing **<br />
+autoscan.log    <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span> ** install-sh ** Makefile.am~<br />
+[root@localhost main]#<br />
+------------------------------------------------</p>
+<p>第八步<br />
+运行 ** configure ** ，在这一步中，通过运行自动配置设置文件configure，把Makefile.in变成了最终的Makefile。<br />
+运行的结果如下：<br />
+------------------------------------------------<br />
+[root@localhost main]# ** ./configure **<br />
+checking for a BSD-compatible install… /usr/bin/install -c<br />
+checking whether build environment is sane… yes<br />
+checking for a thread-safe mkdir -p… /bin/mkdir -p<br />
+checking for gawk… gawk<br />
+checking whether make sets $(MAKE)… yes<br />
+checking for gcc… gcc<br />
+checking for C compiler default output file name… a.out<br />
+checking whether the C compiler works… yes<br />
+checking whether we are cross compiling… no<br />
+checking for suffix of executables…<br />
+checking for suffix of object files… o<br />
+checking whether we are using the GNU C compiler… yes<br />
+checking whether gcc accepts -g… yes<br />
+checking for gcc option to accept ISO C89… none needed<br />
+checking for style of include used by make… GNU<br />
+checking dependency style of gcc… gcc3<br />
+configure: creating ./config.status<br />
+** config.status: creating Makefile<br />
+** config.status: creating config.h<br />
+config.status: executing depfiles commands<br />
+[root@localhost main]# ls<br />
+aclocal.m4      <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span>    <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>   main.c        <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmlu">Makefile.in<i class="fa fa-external-link-alt"></i></span><br />
+autom4te.cache  config.log     configure.in~  Makefile ** missing **<br />
+autoscan.log    config.status ** depcomp ** <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span> ** stamp-h1 **<br />
+** config.h ** configure ** install-sh ** Makefile.am~<br />
+[root@localhost main]#<br />
+------------------------------------------------</p>
+<p>第九步<br />
+运行 ** make ** ，对配置文件Makefile进行测试一下</p>
+<p>此时的状态如下:<br />
+------------------------------------------------<br />
+[root@localhost main]# ** make **<br />
+cd . &amp;&amp; /bin/sh /root/project/main/missing --run aclocal-1.10<br />
+cd . &amp;&amp; /bin/sh /root/project/main/missing --run automake-1.10 --foreign<br />
+cd . &amp;&amp; /bin/sh /root/project/main/missing --run autoconf<br />
+/bin/sh ./config.status --recheck<br />
+running CONFIG_SHELL=/bin/sh /bin/sh ./configure   --no-create --no-recursion<br />
+checking for a BSD-compatible install… /usr/bin/install -c<br />
+checking whether build environment is sane… yes<br />
+checking for a thread-safe mkdir -p… /bin/mkdir -p<br />
+checking for gawk… gawk<br />
+checking whether make sets $(MAKE)… yes<br />
+checking for gcc… gcc<br />
+checking for C compiler default output file name… a.out<br />
+checking whether the C compiler works… yes<br />
+checking whether we are cross compiling… no<br />
+checking for suffix of executables…<br />
+checking for suffix of object files… o<br />
+checking whether we are using the GNU C compiler… yes<br />
+checking whether gcc accepts -g… yes<br />
+checking for gcc option to accept ISO C89… none needed<br />
+checking for style of include used by make… GNU<br />
+checking dependency style of gcc… gcc3<br />
+configure: creating ./config.status<br />
+/bin/sh ./config.status<br />
+config.status: creating Makefile<br />
+config.status: creating config.h<br />
+config.status: config.h is unchanged<br />
+config.status: executing depfiles commands<br />
+cd . &amp;&amp; /bin/sh /root/project/main/missing --run autoheader<br />
+rm -f stamp-h1<br />
+touch <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span><br />
+make  all-am<br />
+make[1]: Entering directory <code>/root/project/main'   gcc -DHAVE_CONFIG_H -I.     -g -O2 -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o main.c   mv -f .deps/main.Tpo .deps/main.Po   gcc  -g -O2   -o main main.o   cd . &amp;&amp; /bin/sh ./config.status config.h   config.status: creating config.h   config.status: config.h is unchanged   make[1]: Leaving directory </code>/root/project/main’<br />
+[root@localhost main]# ** ls **<br />
+aclocal.m4      autoscan.log  <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span>  config.status  <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span><br />
+depcomp ** main    main.o ** <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span>   <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmlu">Makefile.in<i class="fa fa-external-link-alt"></i></span>  stamp-h1<br />
+autom4te.cache  config.h      config.log   configure      configure.in~<br />
+install-sh  main.c  Makefile  Makefile.am~  missing<br />
+[root@localhost main]#<br />
+------------------------------------------------</p>
+<p>第十步<br />
+运行生成的文件 main：<br />
+------------------------------------------------<br />
+[root@localhost main]# ** ./main **<br />
+Hello, Auto Makefile!<br />
+[root@localhost main]#</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1261,173 +1592,6 @@ Domain-0                                    
 <li>d ：该domain正在死机中，一般来说是因为这个domain无法正确 shutdown/crashed 之故。</li>
 </ul>
 <p>先到这里吧，总算是把XEN安装上了，而且也把Domain-0给顺利启动了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/30/4748865/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/30/4748865/" class="post-title-link" itemprop="url">ubuntu9.04 Mpich2 1.2版本 搭建集群种种问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-10-30 16:53:00" itemprop="dateCreated datePublished" datetime="2009-10-30T16:53:00+08:00">2009-10-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 12:48:27" itemprop="dateModified" datetime="2023-10-07T12:48:27+08:00">2023-10-07</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>找到很多网上的文档，也是一步一步按照上面所做，可是就是有太多的问题。写一篇自己的搭建过程和错误产生的原因。</p>
-<p>开始我找了两台服务器，上面装的是Asianux的操作系统，因为含有rsh服务。所以会报出：</p>
-<p>connect to address XXXX: Connection refused<br />
-Trying krb4 rlogin…<br />
-connect to address XXXX: Connection refused<br />
-trying normal rlogin (/usr/bin/rlogin)</p>
-<p>这个问题解决方案有多种，不过最简单的一种是在配置时：./configure添加参数 -rsh=ssh如下：</p>
-<p>./configure -rsh=ssh</p>
-<p>后来我有了多台机器，并且因为要搭建云的缘故，所以只有重新来过。首先找来4台机器，一个switch,这4台机器都是内网中的。我可以通过远程ssh登录上去。然后<br />
-装系统ubuntu9.04,这里要注意的是，用户名必须一致，并且hostname设置为node1,node2,node3,node4.如果你不这样做，后面会<br />
-出来非常多的问题，我稍后会一一解决。这里先介绍一下一般流程。</p>
-<p>1。然后找一个好源，再使用apt-get更新.具体步骤详见: <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/10/14/4667460.aspx"><br />
-http://blog.csdn.net/cctt_1/archive/2009/10/14/4667460.aspx<br />
-</a></p>
-<p>然后sudo apt-get install ssh,这一步是下载并安装ssh.</p>
-<p>2。然后下载 [ mpich2-1.2 ](<span class="exturl" data-url="aHR0cDovL3d3dy5tY3MuYW5sLmdvdi9yZXNlYXJjaC9wcm9qZWN0cy9tcGljaDIvZG93bmxvYWQ=">http://www.mcs.anl.gov/research/projects/mpich2/download<i class="fa fa-external-link-alt"></i></span><br />
-s/tarballs/1.2/mpich2-1.2.tar.gz) ,当然你还可以下载一份 <a href="ftp://ftp.mcs.anl.gov/pub/mpi/mpich2-doc-install.pdf"> mpich2的安装文档<br />
-</a><br />
-。都下载到server（主节点）上,然后执行下面的操作:</p>
-<p>tar xzvf mpich2-1.2.tar.gz或者使用命令gunzip -c mpich2.tar.gz | tar xf -(后者我没有试过)</p>
-<p>3。然后mkdir mpich2在进入刚才解压的目录,执行配置文件./configure -prefix=…/mpich2 -rsh=ssh这里的-<br />
-prefix是你要安装到哪里（就是刚才的mkdir的目录）。之后make一下，然后make install 一下，看看报的错误，我当时好像缺少g++和gcc<br />
-，所以最好先apt-get 这两个东东。如果还是报错，就使用sudo ./configure -prefix=…/mpich2 -rsh=ssh,<br />
-sudo make , sudo make install.</p>
-<p>4。之后把mpich2/bin这个文件路径放入到/etc/profile的最后一行,这样写，这里/home/you/是你的用户主目录。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH＝<span class="variable">$PATH</span>:/home/you/mpich2/bin</span><br></pre></td></tr></table></figure>
-<p>然后log out再log in,如果不想这样，也可以export PATH=$PATH:/home/you/mpich2/bin临时做一下。然后echo $PATH，看看有没有添加成功。再下一步which mpd,看看有没有找到相应的路径。</p>
-<p>5。然后执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$HOME</span> <span class="built_in">touch</span> .mpd.conf <span class="comment">#创建一个文件 chmod 600 .mpd.conf #设置权限</span></span><br></pre></td></tr></table></figure>
-<p>6。下一步vi .mpd.conf,添加一行MPD_SECRETWORD=abcd,这里的abcd是自己写的，你可以变动。这一步是以后使用mpd命令必须加入<br />
-的，主要是为了机器间的通信。</p>
-<p>7。然后vi mpd.hosts,写入你的那几台机器的hostname,记住一行一个,如下:</p>
-<p>node1 node2 node3 node4</p>
-<p>这其实是你要让那些主机运行mpi的程序。</p>
-<p>8。然后你在server（主节点）运行一下以下命令。</p>
-<p>mpd &amp; #启动一个mpd mpdtrace #查看哪些主机加入到ring中 mpdallexit#退出</p>
-<p>这几个命令执行一下，如果没发生什么错误，就ok.</p>
-<p>9。之后修改/etc/hosts，添加几行ip和hostname的对应关系。在127.0.0.1<br />
-localhost之后添加几行(这里假设server节点为node1当然，你可以改动): 192.168.12.111 node1 server<br />
-#个人认为这里的server加不加都可以就只是一个名字 192.168.12.112 node2 192.168.12.113 node3<br />
-192.168.12.114 node4</p>
-<p>10。然后配置ssh自动登录，如何配置请看blog: <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/10/14/4667604.aspx"><br />
-http://blog.csdn.net/cctt_1/archive/2009/10/14/4667604.aspx<br />
-</a><br />
-.配置完毕后，在server节点依次输入:ssh node1 date，ssh node2 date, ssh node3 date , ssh node4<br />
-date.看看有没有返回date,主要是为了检测自己能否使用ssh登录到自己或其他节点。其他节点按照此法依次检测一下。如果不需要输入密码，并返回了date,<br />
-则ssh配置成功。</p>
-<p>11。之后把你的mpich2/bin这个目录(./configure时的目录)打包 tar cvf bin.tar<br />
-mpich2/bin,然后将包发送到其他节点：node2,node3…。可以使用scp命令如下:</p>
-<p>scp bin.tar you@node2:bin.tar</p>
-<p>12。使用ssh登录到其他节点上，并解压bin.tar,然后按照第4步添加此路径并检查一下。</p>
-<p>13。在各个节点上重做一下5，6，8，9，10，第7步可以不做。</p>
-<p>14。回到server,使用如下两个命令: mpd &amp; ,  mpdtrace -l，这就会得到<hostname>_<port><br />
-(ip),检查下这三项是不是对的<br />
-。hostname应该是自己的node1,port是一个随机分配的，ip是hostname对应的ip（和/etc/hosts中的一样）</p>
-<p>15。ssh到其他节点，然后输入mpd -h <hostname> -p <port><br />
-&amp;，这里的<hostname>和<port>是14步中server的。如果执行这步没有错误，输入mpdtrace,就能看到node1,node2…</p>
-<p>16。配置完成。集群已经搭建成功。以后启动的时候，只需要在server上执行mpdboot -n <number> -f<br />
-mpd.hosts,这里的<number>是你想启动的mpi程序数(会分配到不同的节点上)，mpd.hosts是第七步创建的文件。</p>
-<p>种种问题～～～～～～～:</p>
-<p>1.没有使用相同的用户名(ubuntu上root用户你是不可能知道密码的)，所以只有开始安装Ubuntu时的用户。你要做的是必须在所有节点都添加一个相同的用<br />
-户。因为mpich2在后续使用mpd －h <host> -p<br />
-<port>&amp;命令加入到已存在的ring中时使用的是相同的用户名。并且如果你的用户名不同，ssh node2, ssh<br />
-node3,是不可能通过的，除非你使用了ssh you@node3,但mpd不会这样作，除非你要修改它的源码。要建立用户可以使用我下面编写的小脚本，并且加入<br />
-的用户获得了和你安装用户一样的权限(除了自己组权限)。记得要使用sudo命令来执行并且chmod +x XXXscript。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/sh newone=&quot;mpich&quot; #这里添加的用户为mpich,你也可以改动。 hostloc=&quot;/etc/hosts&quot; # create</span></span><br><span class="line">a new member and input the password useradd -m <span class="variable">$newone</span> passwd <span class="variable">$newone</span> <span class="comment"># get</span></span><br><span class="line">the admin member <span class="built_in">who</span> | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> &gt;&gt; tmpuser user=`<span class="built_in">head</span> -n 1 tmpuser` <span class="comment">#</span></span><br><span class="line">get the admin member<span class="string">&#x27;s groups and remove the self group groupinfo=`groups</span></span><br><span class="line"><span class="string">$user | awk &#x27;</span>&#123;<span class="built_in">print</span>&#125;<span class="string">&#x27;| sed &#x27;</span>s/<span class="string">&#x27;$user&#x27;</span>//<span class="string">&#x27;` # copy the groups to the new member</span></span><br><span class="line"><span class="string">for i in $groupinfo;do gpasswd -a $newone $i done echo `groups $newone`</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
-<p>2.hostname并不是node1,node2,node3,而是其他的名字。这里必须要改，否则mpd -h <host> -p<br />
-<port>&amp;命令时会有rsh connect refused 或者timeout的情况。并且mpdtrace<br />
--l时，会有ip和hostname不对应的情况。如下是更改方法:先在/etc/hosts中删除原来的hostname,然后 vi<br />
-/etc/hostname改成你想要的，注意必须顶行写。然后使用sudo<br />
-/etc/init.d/hostname来重新得到hostname,logout一下再login就会改掉。</p>
-<p>3. rsh krb4 krb5问题，就使用./configure -rsh=ssh就可以解决</p>
-<p>4. ./configure时有时会让你添加–disable-c++,你需要升级你的g<ins>了，sudo apt-get install g</ins></p>
-<p>5.make时文件冲突，只要使用sudo make即可</p>
-<p>6.创建了新用户，记得使用新用户来执行ssh-keygen。ssh和用户是相关的。</p>
-<p>7.清看清我的blog题目，如果你的不是mpich2-1.2可能搭建起来与此过程不同。mpich-<br />
-1中mpd是非安装的。我之前曾照网上的文档安装就是走不通。原因是版本不对。那个官方文档是mpich2-1.0.6的…好像也稍有不同。</p>
 
       
     </div>

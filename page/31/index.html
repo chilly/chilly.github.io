@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,121 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/01/27/5261357/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/01/27/5261357/" class="post-title-link" itemprop="url">centos5.3 安装 Kscope</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-01-27 13:41:00" itemprop="dateCreated datePublished" datetime="2010-01-27T13:41:00+08:00">2010-01-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>网上貌似没有多好的解决方案，装一个kscope太难了。</p>
+<p>kscope很方便的图形代码编辑器。</p>
+<p>首先先去 <a target="_blank" rel="noopener" href="http://sourceforge.net/projects/kscope/files/"> http://sourceforge.net/projects/kscope/files/<br />
+</a><br />
+下载一个kscope的版本，据说1.6左右的比较稳定。下载后解压。</p>
+<p>然后运行./configure文件。之后报找不到X11错误。然后在软件包管理器（图形界面中应用程序–&gt;安装/删除软件）中搜索x11,找到libx11-de<br />
+vel的包。之后执行./configure报出找不到libxext的错误。然后搜索libxext，安装带有libxext-<br />
+devel名的包。然后搜索qt3,安装qt3-devel的包。如果你之前装过qt4的包这里需要把过去的包卸载掉。你可以使用rpm命令进行卸载：</p>
+<p>rpm -qa qt //查看qt的版本信息 rpm -e XXX //这里的XX就是上面得到的qt版本信息，照抄即可。</p>
+<p>之后运行./configure的错误为：in the prefix, you’ve chosen, are no KDE headers installed<br />
+.搜索kdelibs-devel的包并安装。然后继续使用./configure命令。就ok了。如果中途因为安装了上面的包，运行./configure却依旧得<br />
+到相同的错误信息。那么可以重启或者注销试试。</p>
+<p>make的时候报出g++: /usr/lib/libkateinterfaces.so: No such file or directory和g++:<br />
+/usr/lib/libkateutils.so: No such file or directory<br />
+两个错误。应该是没有kate库。所以再软件管理器中搜索kate,安装kate-devel.make成功之后，再次make install.</p>
+<p>网上说第一次启动需要安装dot，即为graphviz,在这里 <a target="_blank" rel="noopener" href="http://www.graphviz.org/Download_linux_rhel.php"><br />
+http://www.graphviz.org/Download_linux_rhel.php<br />
+</a><br />
+有详细的安装过程。并且貌似针对centos有yum过程支持。命令：</p>
+<p>cd /etc/yum.repos.d/ wget <span class="exturl" data-url="aHR0cDovL3d3dy5ncmFwaHZpei5vcmcvZ3JhcGh2aXotcmhlbC5yZXBv">http://www.graphviz.org/graphviz-rhel.repo<i class="fa fa-external-link-alt"></i></span> yum list<br />
+available graphviz yum install graphviz</p>
+<p>然后在图形界面上应用程序—&gt;编程—&gt;kscope</p>
+<p>第一次的话，它会让你配置ctags,cscope,dot,先让它自己guess一下。如果你没有装ctags那么在软件管理器中找一下。配置成功应用即可。</p>
+<p>开始使用咯～～</p>
+<p>如果在kscope中make一个工程后，写print还是没有函数提示,那么尝试安装kernel-devel</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1317,122 +1432,6 @@ Write first formula using latex here:
 <p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>α</mi><mo>+</mo><mi>β</mi><mo>=</mo><msup><mi>x</mi><mrow><mi>δ</mi><mo>+</mo><mn>3</mn></mrow></msup><mi mathvariant="normal">/</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">\alpha+\beta=x^{\delta+3}/y 
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.149108em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03785em;">δ</span><span class="mbin mtight">+</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span></p>
 <p>wooo~~~~</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/01/06/2010-01-06-funny-picture/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/01/06/2010-01-06-funny-picture/" class="post-title-link" itemprop="url">Funny Picture</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-01-06 00:00:00" itemprop="dateCreated datePublished" datetime="2010-01-06T00:00:00+08:00">2010-01-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:20" itemprop="dateModified" datetime="2023-10-06T22:54:20+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/prose/" itemprop="url" rel="index"><span itemprop="name">prose</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>303</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="1620" />
-I have found some funny picture in web.  Now I share them:
-<p>How to play a computer game:</p>
-<p><a href="http://chillyc.info/wp-content/uploads/2010/01/p_large_1zJg_6593000280582d14.jpg"><img class="alignnone size-medium wp-image-9" title="p_large_1zJg_6593000280582d14" src="http://chillyc.info/wp-content/uploads/2010/01/p_large_1zJg_6593000280582d14-283x300.jpg" alt="" width="283" height="300" /></a></p>
-<p>How to escape from the mouth of wolf</p>
-<p><a href="http://chillyc.info/wp-content/uploads/2010/01/p_large_5eVD_1e1a0000b2112d13.jpg"><img class="alignnone size-medium wp-image-10" title="p_large_5eVD_1e1a0000b2112d13" src="http://chillyc.info/wp-content/uploads/2010/01/p_large_5eVD_1e1a0000b2112d13-127x300.jpg" alt="" width="127" height="300" /></a></p>
-<p>can pig swim?</p>
-<p><a href="http://chillyc.info/wp-content/uploads/2010/01/p_large_tlf6_659300027f962d14.jpg"><img class="alignnone size-medium wp-image-15" title="p_large_tlf6_659300027f962d14" src="http://chillyc.info/wp-content/uploads/2010/01/p_large_tlf6_659300027f962d14-300x199.jpg" alt="" width="300" height="199" /></a></p>
-<p>Do you know lots of programming language than him?</p>
-<p><a href="http://chillyc.info/wp-content/uploads/2010/01/p_large_7WK8_60a600029ae82d10.jpg"><img class="alignnone size-medium wp-image-11" title="p_large_7WK8_60a600029ae82d10" src="http://chillyc.info/wp-content/uploads/2010/01/p_large_7WK8_60a600029ae82d10-170x300.jpg" alt="" width="170" height="300" /></a></p>
-<p>How to find Osama bin Laden?</p>
-<p><a href="http://chillyc.info/wp-content/uploads/2010/01/p_large_jNiH_2a5100001f022d0b.jpg"><img class="alignnone size-medium wp-image-14" title="p_large_jNiH_2a5100001f022d0b" src="http://chillyc.info/wp-content/uploads/2010/01/p_large_jNiH_2a5100001f022d0b-300x260.jpg" alt="" width="300" height="260" /></a></p>
-<p>Have you seen the smiles of those people? rotate 180 Degree!</p>
-<p><a href="http://chillyc.info/wp-content/uploads/2010/01/p_large_Eyu1_659100014bed2d14.jpg"><img class="alignnone size-medium wp-image-13" title="p_large_Eyu1_659100014bed2d14" src="http://chillyc.info/wp-content/uploads/2010/01/p_large_Eyu1_659100014bed2d14-300x237.jpg" alt="" width="300" height="237" /></a></p>
-<p>how to get back your stolened? If you learned Chinese, you will know the meaning of this letter.</p>
-<p><a href="http://chillyc.info/wp-content/uploads/2010/01/p_large_eItK_659100014c062d14.jpg"><img class="alignnone size-medium wp-image-12" title="p_large_eItK_659100014c062d14" src="http://chillyc.info/wp-content/uploads/2010/01/p_large_eItK_659100014c062d14-233x300.jpg" alt="" width="233" height="300" /></a></p>
 
       
     </div>

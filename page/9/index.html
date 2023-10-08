@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,178 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/08/20/10098165/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/08/20/10098165/" class="post-title-link" itemprop="url">Mvn Multi Mirrors 从多个地方下载</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-08-20 10:34:00" itemprop="dateCreated datePublished" datetime="2013-08-20T10:34:00+08:00">2013-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:48" itemprop="dateModified" datetime="2023-10-05T12:34:48+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>首先mvn这个东西和ant差不多。都是编译工程+打包的东西。 很多开源软件都用。这些开源软件里面有大量的第三方依赖。很可惜，这些第三方依赖很有可能在很多个r<br />
+epository中。查找StackOverFlow发现大多回答是这样的：</p>
+<p>在conf/setting.xml中写入：</p>
+<pre><code>  &lt;mirrors&gt;
+    &lt;mirror&gt;
+      &lt;id&gt;UK&lt;/id&gt;
+      &lt;name&gt;UK Central&lt;/name&gt;
+      &lt;url&gt;http://uk.maven.org/maven2&lt;/url&gt;
+      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+    &lt;/mirror&gt;
+  &lt;/mirrors&gt;
+</code></pre>
+<p>这样就加入了一个。</p>
+<pre><code>  &lt;mirrors&gt;
+    &lt;mirror&gt;
+      &lt;id&gt;UK&lt;/id&gt;
+      &lt;name&gt;UK Central&lt;/name&gt;
+      &lt;url&gt;http://uk.maven.org/maven2&lt;/url&gt;
+      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+    &lt;/mirror&gt;
+        &lt;mirror&gt;  
+            &lt;id&gt;soap&lt;/id&gt;  
+            &lt;name&gt;internal nexus repository&lt;/name&gt;  
+            &lt;url&gt;http://www.soapui.org/repository/maven2&lt;/url&gt;
+						&lt;mirrorOf&gt;!UK,*&lt;/mirrorOf&gt;
+        &lt;/mirror&gt;
+  &lt;/mirrors&gt;
+</code></pre>
+<p>这样就加入俩。</p>
+<p>这是StackOverflow的解答。那么如果加入三个是否是下面这样：</p>
+<pre><code>&lt;mirrors&gt;
+    &lt;mirror&gt;
+      &lt;id&gt;UK&lt;/id&gt;
+      &lt;name&gt;UK Central&lt;/name&gt;
+      &lt;url&gt;http://uk.maven.org/maven2&lt;/url&gt;
+      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+    &lt;/mirror&gt;
+        &lt;mirror&gt;  
+            &lt;id&gt;soap&lt;/id&gt;  
+            &lt;name&gt;internal nexus repository&lt;/name&gt;  
+            &lt;url&gt;http://www.soapui.org/repository/maven2&lt;/url&gt;
+						&lt;mirrorOf&gt;!UK,*&lt;/mirrorOf&gt;
+        &lt;/mirror&gt;
+&lt;mirror&gt;  
+            &lt;id&gt;nightlabs&lt;/id&gt;  
+            &lt;name&gt;internal nexus repository&lt;/name&gt;  
+            &lt;url&gt;http://dev.nightlabs.org/maven-repository/maven.jahia.org-cache/&lt;/url&gt;
+						&lt;mirrorOf&gt;!UK,!soap,*&lt;/mirrorOf&gt;
+        &lt;/mirror&gt;  
+  &lt;/mirrors&gt;
+</code></pre>
+<p>对不起…答案是错误的…</p>
+<p>所以三个及以上的做法是这样的：</p>
+<pre><code>&lt;mirrors&gt;
+    &lt;mirror&gt;
+      &lt;id&gt;UK&lt;/id&gt;
+      &lt;name&gt;UK Central&lt;/name&gt;
+      &lt;url&gt;http://uk.maven.org/maven2&lt;/url&gt;
+      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+    &lt;/mirror&gt;
+&lt;mirror&gt;  
+            &lt;id&gt;nexus-central&lt;/id&gt;  
+            &lt;name&gt;internal nexus repository&lt;/name&gt;  
+            &lt;url&gt;http://nexus.corp.com/nexus/content/repositories/public/&lt;/url&gt;
+						&lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+        &lt;/mirror&gt;  
+        &lt;mirror&gt;  
+            &lt;id&gt;soap&lt;/id&gt;  
+            &lt;name&gt;internal nexus repository&lt;/name&gt;  
+            &lt;url&gt;http://www.soapui.org/repository/maven2&lt;/url&gt;
+						&lt;mirrorOf&gt;!UK,central&lt;/mirrorOf&gt;
+        &lt;/mirror&gt;
+&lt;mirror&gt;  
+            &lt;id&gt;nightlabs&lt;/id&gt;  
+            &lt;name&gt;internal nexus repository&lt;/name&gt;  
+            &lt;url&gt;http://dev.nightlabs.org/maven-repository/maven.jahia.org-cache/&lt;/url&gt;
+						&lt;mirrorOf&gt;!UK,!soap,central&lt;/mirrorOf&gt;
+        &lt;/mirror&gt;  
+  &lt;/mirrors&gt;
+</code></pre>
+<p>要把<em>改为central,<br />
+因为mvn碰到</em>就后边的都不会继续做下去了。虽然apache的官方文档说，只能有一个central,但其实可以有多个加上!mirrorId的central.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1202,124 +1374,6 @@ Content-Disposition: form-data; name=&quot;content&quot;;charset=UTF-8
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.commons.CommonsMultipartResolver;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 帐前卒</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyMultipartResolver</span> <span class="keyword">extends</span> <span class="title class_">CommonsMultipartResolver</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String excludeUrls;   </span><br><span class="line">    <span class="keyword">private</span> String[] excludeUrlArray;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getExcludeUrls</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> excludeUrls;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setExcludeUrls</span><span class="params">(String excludeUrls)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.excludeUrls = excludeUrls;</span><br><span class="line">        <span class="built_in">this</span>.excludeUrlArray = excludeUrls.split(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 这里是处理Multipart http的方法。如果这个返回值为true,那么Multipart http body就会MyMultipartResolver 消耗掉.如果这里返回false</span></span><br><span class="line"><span class="comment">     * 那么就会交给后面的自己写的处理函数处理例如刚才ServletFileUpload 所在的函数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> org.springframework.web.multipart.commons.CommonsMultipartResolver#isMultipart(javax.servlet.http.HttpServletRequest)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isMultipart</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (String url: excludeUrlArray) &#123;</span><br><span class="line">            <span class="comment">// 这里可以自己换判断</span></span><br><span class="line">            <span class="keyword">if</span> (request.getRequestURI().contains(url)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.isMultipart(request);</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>然后在web.xml中这样写：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;multipartResolver&quot;</span> <span class="attr">class</span>=<span class="string">&quot;example.MyMultipartResolver&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;excludeUrls&quot;</span> <span class="attr">value</span>=<span class="string">&quot;example&quot;</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- url中带有example的http请求就不会被multipartResolver先解析--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/05/20/8948669/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/05/20/8948669/" class="post-title-link" itemprop="url">JAVA 各种Reference和垃圾回收机制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-05-20 08:43:00" itemprop="dateCreated datePublished" datetime="2013-05-20T08:43:00+08:00">2013-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天好好学习了一下java中的各种reference.一共分为以下几种：</p>
-<p>1. 强引用<br />
-2. 软引用 SoftReference<br />
-3. 弱引用 WeakReference<br />
-4. 虚引用 PhantomReference<br />
-5. FinalReference 所有实现finalize()方法的对象</p>
-<p>一下是Oracle JDK. IBM的JDK会有些不同。</p>
-<p>** 强引用 ** ：<br />
-String a = new String(“A”);</p>
-<p>一般程序都在使用。申请太多时，会有OutOfMemory异常。gc不会自动释放。</p>
-<p>** 软引用 ** ：<br />
-SoftReference<String> a = new SoftReference<String>(new String(“A”));<br />
-String real = a.get(); // if memory is near/equal to threshold of memory, real may be null.</p>
-<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.  适合作为cache.</p>
-<p>** 弱引用 ** ：<br />
-WeakReference<String> a = new WeakReference<String>(new String(“A”));<br />
-String real = a.get(); // may null</p>
-<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.  适合作为Cache, 并且这里的意思为:如果能在内存中看到这个cache对象最好，看不到，load这个对象也不会损失很多效率。</p>
-<p>** 虚引用 ** :<br />
-PhantomReference<String> a = new PhantomReference<String>(new String(“A”));<br />
-String real = a.get(); // is always null</p>
-<p>gc不会自动释放, 会有OutOfMemory。对象在垃圾回收/finalize()之后才会放入到ReferenceQueue中。这里会保证对象不会再次引用。也可以用于判断该对象是否已经从内存中移除。</p>
-<p>** FinalReference ** :<br />
-其实不能直接使用。这个的子类 Finalizer也不能直接使用。系统会在运行时启动FinalizerThread。这个Thread用于清理ReferenceQueue中的对象。首先调用该对象finalize()方法，然后将引用赋值为null. 这样就解除了引用和对象的关系。这里的ReferenceQueue可以看做是以上各个引用都被最终放入到的queue对象。因为所有对象都有finalize()方法。  另外垃圾回收有两步，第一步确定垃圾回收的对象，第二步调用finalize()方法，将对象从内存中移除。在finalize()方法调用前，强引用是可以召回对象，使对象不会移除内存。这样会导致垃圾回收会反反复复回收多次，仍未能将该对象移除。但是如果使用虚引用，就能确保，进入ReferenceQueue中的引用，其对象一定已经移除内存。</p>
-<p>参考：<br />
-<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2phdmEvai1sby1sYW5ncmVmLw==">http://www.ibm.com/developerworks/cn/java/j-lo-langref/<i class="fa fa-external-link-alt"></i></span><br />
-<span class="exturl" data-url="aHR0cHM6Ly93ZWJsb2dzLmphdmEubmV0L2Jsb2cvMjAwNi8wNS8wNC91bmRlcnN0YW5kaW5nLXdlYWstcmVmZXJlbmNlcw==">https://weblogs.java.net/blog/2006/05/04/understanding-weak-references<i class="fa fa-external-link-alt"></i></span><br />
-<span class="exturl" data-url="aHR0cDovL3lhbmdndWFuZ2Z1Lml0ZXllLmNvbS9ibG9nLzg0OTMxNw==">http://yangguangfu.iteye.com/blog/849317<i class="fa fa-external-link-alt"></i></span></p>
 
       
     </div>

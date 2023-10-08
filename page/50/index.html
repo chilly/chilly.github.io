@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,146 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/09/18/2949118/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/09/18/2949118/" class="post-title-link" itemprop="url">在Ubuntu 8.04上安装postgresql 8.3核心</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-09-18 22:10:00" itemprop="dateCreated datePublished" datetime="2008-09-18T22:10:00+08:00">2008-09-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我的系统是虚拟机上的ubuntu8</p>
+<p>1。先去 <span class="exturl" data-url="aHR0cDovL3d3dy5wb3N0Z3Jlc3FsLm9yZy8="> http://www.postgresql.org <i class="fa fa-external-link-alt"></i></span> 那里下个postgreSQL<br />
+core 8.3.<br />
+2.使用命令tar -xvf postgreSQL-8.3.3.tar.bz2   解压</p>
+<p>3.去那个解压的文件夹,使用./configure 命令，它将自动检查系统配置</p>
+<p>4.很不幸得是报了一个&quot;c cannot output the executable file&quot;</p>
+<p>5.然后在网上找了找资料，发现没有升级libc所以使用命令:sudo apt-get install libc6-dev gcc g++</p>
+<p>6再运行&quot;./configure&quot;，却报了readline library is not found，如果这个错误你能解决最好，还有可能报zlib is<br />
+not found</p>
+<p>7.不幸的是我找了2个多小时，下载了无数相关的包，最后以readline5-dev包不能正常安装告终。</p>
+<p>8.所以没有办法，只好这样运行./configure --without-readline --without-zlib</p>
+<p>9然后make</p>
+<p>10下面命令是要加sudo的<br />
+make install<br />
+adduser postgres<br />
+mkdir /usr/local/pgsql/data<br />
+chown postgres /usr/local/pgsql/data<br />
+到了这里，我们要创建logfile 文件然后把它拷贝到 /usr/local/pgsql/data/ （好像不拷贝也可以，大家可以试试）<br />
+然后切换用户sudo - postgres<br />
+/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data<br />
+/usr/local/pgsql/bin/postgres -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;<br />
+/usr/local/pgsql/bin/createdb test<br />
+/usr/local/pgsql/bin/psql test</p>
+<p>最后，你能看到sql 交互界面…大功告成…</p>
+<p>下面是自己写的英文安装手册, 英语语法错误多多指正(非大小写)。</p>
+<p>how to install pgSQL in ubuntu</p>
+<p>I installed Ubuntu 8.04 in VMMachine.<br />
+1. goto the <span class="exturl" data-url="aHR0cDovL3d3dy5wb3N0Z3Jlc3FsLm9yZy8="> http://www.postgresql.org <i class="fa fa-external-link-alt"></i></span> to<br />
+download postgreSQL core 8.3.<br />
+2. tar -xvf postgreSQL-8.3.3.tar.bz2   (I don’t know your downloaded file<br />
+name. You can change it)<br />
+3. go the unpacked folder then “./configure”<br />
+4. it will check the environment of your computer.<br />
+5. Unluck, it showed error to me. IF it report like “c cannot output the<br />
+executable file”, then &quot;sudo apt-get install</p>
+<p>libc6-dev gcc g++<br />
+6. The run “./configure” again. It report “readline library is not found.”.<br />
+7. ./configure --without-readline --without-zlib<br />
+8. make</p>
+<p>sudo<br />
+make install<br />
+adduser postgres<br />
+mkdir /usr/local/pgsql/data<br />
+chown postgres /usr/local/pgsql/data<br />
+create a file called logfile and copy it to /usr/local/pgsql/data/<br />
+sudo - postgres<br />
+/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data<br />
+/usr/local/pgsql/bin/postgres -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;<br />
+/usr/local/pgsql/bin/createdb test<br />
+/usr/local/pgsql/bin/psql test</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -4563,205 +4703,6 @@ BinaryTree，也未尝不可。</p>
 间玩游戏的枯燥。</p>
 <p>5.解谜游戏。此款游戏的游戏模式无外乎将各种物品放在正确的地方。暑假期间玩过几款：CSI——谋杀的三维、幽灵庄园和精密的仪器。游戏之所以能让我坚持不懈的玩通<br />
 关在于漂亮的CG和开始引入游戏的少许故事情节。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/08/02/2758897/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/08/02/2758897/" class="post-title-link" itemprop="url">C# Thread 点点滴滴</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-08-02 17:47:00" itemprop="dateCreated datePublished" datetime="2008-08-02T17:47:00+08:00">2008-08-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>用C#的Thread做了一个简单计时器。为了让自己45分钟后就可以休息一次，45分钟过后会响音乐提示。</p>
-<p>开始使用的TimeSpan相减的方式，在Thread的启动函数中也就是这样写的：</p>
-<ol>
-<li>** public  ** ** void  ** CountTime()</li>
-<li>{</li>
-<li>
-<ol start="4">
-<li>** while  ** (  ** true  ** )</li>
-</ol>
-</li>
-<li>{</li>
-<li>
-<ol start="7">
-<li>TimeSpan tsNew =  ** new  ** TimeSpan(DateTime.Now.Ticks);</li>
-</ol>
-</li>
-<li>TimeSpan tsIn = tsNew - tsOld;</li>
-<li>
-<ol start="10">
-<li>** if  ** (tsIn.Minutes &gt;= 1)</li>
-</ol>
-</li>
-<li>{</li>
-<li>
-<ol start="13">
-<li>** while  ** (  ** true  ** )</li>
-</ol>
-</li>
-<li>{</li>
-<li>TimeSpan tsNewer =  ** new  ** TimeSpan(DateTime.Now.Ticks);</li>
-<li>TimeSpan tsIner = tsNewer - tsNew;</li>
-<li>
-<ol start="18">
-<li>** if  ** (tsIner.Minutes &gt;= 10)</li>
-</ol>
-</li>
-<li>{</li>
-<li>//十分钟后线程重启</li>
-<li>tsOld = tsNew;</li>
-<li>** break  ** ;</li>
-<li>}</li>
-<li>
-<ol start="25">
-<li>}</li>
-</ol>
-</li>
-<li>
-<ol start="27">
-<li>}</li>
-</ol>
-</li>
-<li>
-<ol start="29">
-<li>}</li>
-</ol>
-</li>
-<li>}</li>
-</ol>
-<p>后来发现这种方法效率太低了。当然，可以使用Thread.Sleep(20);这个函数降低CPU占用时间。其实中间加入Thread.Sleep(20);就可明<br />
-显的降低CPU消耗。后来发现C#中的Thread中自带有函数join(),这个函数可以使线程等待一段时间。调用方法如下</p>
-<p>th.Join(new TimeSpan(hours, minutes, seconds));在等待的这段时间里线程处于WaitSleepJoin状态。</p>
-<p>当然也可以调用Thread.Sleep(millionseconds);这里提一下Sleep和Join的区别</p>
-<p>当线程执行Sleep时系统就退出执行队列一段时间，当睡眠结束时，系统会产生一个时钟中断，从而使线程回到执行队列中恢复线程的执行。  ** Sleep方法如果<br />
-参数是0，代表这个线程应当挂起让其他等待的线程运行，这里cpu回重新分配控制权，也有可能是刚才的执行的程序。这样就会有cpu占用总是100%的情况发生。<br />
-** 有时你界面死了，但是你还是可以移动鼠标。如果是Timeout.Infinite,就代表将使线程休眠，直到它被调用 Thread.Interrupt<br />
-的另一个线程中断或被 Thread.Abort 中止为止。<br />
-如果父线程先于子线程结束，那么子线程将在父线程结束的同时被迫结束。Thread.Join()方法使父线程等待，直到子线程结束。  Join方法有返回值，当值<br />
-为true，代表线程终止。false的话代表线程在等待了那段时间后还未终止。如果在线程Unstarted状态时，调用join()就会有<br />
-ThreadStateException异常。如果线程已经终止，那么调用这个函数，会立即得到返回值。</p>
-<p>例如下面的主程序</p>
-<p>…</p>
-<p>ThreadStart st = New ThreadStart(fun);</p>
-<p>Thread th = new Thread(ThreadStart st);</p>
-<p>th.Start();</p>
-<p>Application.Exit();</p>
-<p>…</p>
-<p>//下面是fun函数</p>
-<p>void fun()</p>
-<p>{</p>
-<p>while(true)</p>
-<p>{</p>
-<p>…</p>
-<p>}</p>
-<p>}</p>
-<p>这段程序的唯一毛病就是有可能在主程序退出后，从线程还没有结束。(这个从线程真可怜…)</p>
-<p>这里顺便再提一下线程的几个状态：</p>
-<p>创建：当创建一个新进程时，也为该进程创建了一个线程。线程还可以创建新线程。</p>
-<p>就绪：线程已获得除处理机外的所有资源。</p>
-<p>运行：线程正在处理机上执行。</p>
-<p>阻塞：线程因等待某事件而暂停运行。</p>
-<p>终止：一个线程已完成。</p>
-<p>但是C#的线程中多了几个状态：</p>
-<p>Aborted，AbortRequested，Background，Running，Stopped，StopRequested，Suspended，Susp<br />
-endRequested，Unstarted，WaitSleepJoin。</p>
-<p>Abort()将导致ThreadState.AbortRequested调用Abort()的线程获得控制权之后导致ThreadState.Aborted，A<br />
-bortRequested与Aborted的区别在于一个停止一个未停止。而Stopped则是线程终止。但是我反复试验多次发现当调用Abort()函数后，线程<br />
-状态会变为Stopped。如何变为Aborted状态，还在研究中。其他几个状态差不多。都是调用相应的函数会产生相应的状态请求，还有过一段时间才能到底相应的状<br />
-态。至于Unstarted是还未调用Start()函数，Running是调用Start()或者Resume()函数的结果。WaitSleepJoin是在等待<br />
-I/O，或者是调用Join()方法。  **<br />
-这里Join()和Sleep()方法的不同还在于调用Join()线程状态进入WaitSleepJoin，调用Sleep()线程状态还是Running。 **</p>
-<p>挂起线程的方法是Suspend();调用这个方法后，线程处于SuspendRequest状态。Suspended()调用后如果线程仍然在执行join()方法<br />
-，因为Suspended()要让线程到达安全点之后它才可以将该线程挂起，此时那线程状态就是SuspendRequested|WaitSleepJoin。但是<br />
-这里的join里的时钟依然在计数。所以现在还不知道用什么方法来暂停这个join计数，当然也可以不使用join解决彻底暂停线程这个问题。现在不明白哪个Susp<br />
-ended()函数是干什么的，因为线程依旧在运行中。另外值得一提的是现在不提倡使用Suspend()和让线程调用Suspend()后再次恢复的Resume(<br />
-)方法。  ** 原因很简单，因为这两个方法是由另外的线程执行，另外的线程并不能准确的知道被Suspend()的线程处于何种状态，如某个类的构造函数执行时期<br />
-，或者析构等。所以用这个函数来同步很危险。 **</p>
-<hr />
-<p>** 另外，要注意的是Thread.Sleep(n)这个n不能精确的控制时间。如果你认为要线程要隔多长时间，这个控制就有问题。如果当前的线程是一个前台线程，那么Thread.Sleep(n)就要在大于n的时间才能退出。如果是后台进程，当主程序退出后，这线程就再也不能唤醒…悲惨…所以一般也建议不用Thread.Sleep()函数。另外Sleep函数也不能用于同步.peter说程序的Sleep函数代表了一个很烂的设计。  **</p>
-<p>做了个计时器竟然引发了这些问题…疯…</p>
 
       
     </div>

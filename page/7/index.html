@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,114 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/26/17580327/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/12/26/17580327/" class="post-title-link" itemprop="url">JAVA迅速解决图片变红、变黑、压缩平滑问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-12-26 12:29:00" itemprop="dateCreated datePublished" datetime="2013-12-26T12:29:00+08:00">2013-12-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>小卒 最近在做头像上传功能，发现对于带有alpha通道的图片，有的会变红，有的会变黑，有时压缩不平滑。发现是有几处程序写错了。</p>
+<p>首先贴一下原始的程序，这段程序的功能是将原图的(x,y,w,h)图块，转变为 (0,0,targetW,targetH)图片，并输出为jpg格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">private byte[] cropAndCompressImage(int x, int y, int w, int h,</span><br><span class="line">                                        BufferedImage image, int targetW, int targetH) throws Exception&#123;</span><br><span class="line">        if (w == -1 &amp;&amp; h == -1 &amp;&amp; image != null) &#123;</span><br><span class="line">            // use full image</span><br><span class="line">            w = image.getWidth();</span><br><span class="line">            h = image.getHeight();</span><br><span class="line">        &#125; </span><br><span class="line">        if (x &lt; 0 || y &lt; 0 || w &lt;= 0 || h &lt;= 0 || image == null) &#123;</span><br><span class="line">            // error</span><br><span class="line">        &#125;</span><br><span class="line">        w = Math.min(x+w, image.getWidth()) - x;</span><br><span class="line">        h = Math.min(y+h, image.getHeight()) - y;</span><br><span class="line">        try &#123;</span><br><span class="line">            BufferedImage cropedImage = image.getSubimage(x, y, w, h);</span><br><span class="line"></span><br><span class="line">            // do image compression</span><br><span class="line">            int type = image.getType() == 0 ? BufferedImage.TRANSLUCENT</span><br><span class="line">                    : image.getType();</span><br><span class="line">            BufferedImage compressedImage = new BufferedImage(targetW, targetH, type);</span><br><span class="line">            Graphics2D graph = compressedImage.createGraphics();</span><br><span class="line">            graph.drawImage(cropedImage, 0, 0, targetW, targetH, null);</span><br><span class="line">            graph.dispose();</span><br><span class="line"></span><br><span class="line">            ByteArrayOutputStream bytes = new ByteArrayOutputStream();</span><br><span class="line">            ImageIO.write(compressedImage, &quot;jpg&quot;, bytes);</span><br><span class="line"></span><br><span class="line">            return bytes.toByteArray();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            // error</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>首先是背景有时变黑，这里最简单的做法是将最后的背景图片设置为白色。见下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//graph.drawImage(cropedImage, 0, 0, targetW, targetH, null);</span><br><span class="line">graph.drawImage(cropedImage, 0, 0, targetW, targetH, Color.white,null);</span><br></pre></td></tr></table></figure>
+<p>加一个Color.white即可。</p>
+<p>下面要解决的是图片变红问题。 <span class="exturl" data-url="aHR0cDovL2NoaWxseS5pbmZv"> 帐前卒 <i class="fa fa-external-link-alt"></i></span> 认为这个问题其实是alpha通道需要变为透明的。而原始程序是判断，如果<br />
+该图片是定义为Custom的图片，那么就变为透明。显然custom的图片不一定是透明图片。所以这里需要判断image是否为透明的。代码变为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// int type = image.getType() == 0 ? BufferedImage.TRANSLUCENT</span><br><span class="line">                    : image.getType();</span><br><span class="line">            // BufferedImage compressedImage = new BufferedImage(targetW, targetH, type);</span><br><span class="line">            BufferedImage compressedImage = null;</span><br><span class="line">            if (image.isAlphaPremultiplied()) &#123;</span><br><span class="line">                compressedImage = new BufferedImage(photoType.getWidth(), photoType.getHeight(),                 BufferedImage.TRANSLUCENT);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                compressedImage = new BufferedImage(photoType.getWidth(), photoType.getHeight(),                 BufferedImage.TYPE_INT_RGB);</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+<p>然后变红问题就解决了。下面是压缩图片时，发现很多地方不光滑，这里也非常好解决。帐 前卒的代码如下： ```</p>
+<pre><code>// graph.drawImage(cropedImage, 0, 0, targetW, targetH, null);
+            // graph.drawImage(cropedImage, 0, 0, targetW, targetH, Color.white,null);
+            graph.drawImage(cropedImage.getScaledInstance(targetW,  targetH,  BufferedImage.SCALE_SMOOTH), 0, 0,             Color.white,null);
+</code></pre>
+<pre class="highlight"><code class="">
+加入SCALE_SMOOTH参数就完成了~~  
+
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1147,100 +1255,6 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
 <p>古人云：德者本也，财者末也。为什么古人要写这句话呢？因为古人所在的时空和今人所处的时空都是一样一样的。这和草履虫有趋光性是一样一样的。</p>
 <p>好吧，希望下次写出的服务没有被沦为垃圾的发源地，希望下次的服务没有XSS，希望下次的服务没有CSRF。</p>
 <p>关于安全问题，又想起来不久前给老爸申诉QQ号的事情。在一遍一遍外部申诉凑齐7龙珠一般凑齐7个人后，结果被QQ运营一次次驳回申诉。每次的原因都一样：请更多的人帮忙申诉…我总感觉QQ运营是和盗号的是一伙的。后来彻底对QQ外部运营失望了，走了腾讯内部申诉，很快就申诉成功了。当安全信息沦为盗号者的工具时，我觉得还是人更靠谱些。嗯不，是熟人更靠谱些。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/10/17242757/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/10/17242757/" class="post-title-link" itemprop="url">Resin下webapps路径无法删除问题(自动恢复)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-12-10 13:17:00" itemprop="dateCreated datePublished" datetime="2013-12-10T13:17:00+08:00">2013-12-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>306</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="这个问题的解决方法是"><a class="markdownIt-Anchor" href="#这个问题的解决方法是"></a> 这个问题的解决方法是：</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">停掉resin</span><br><span class="line"></span><br><span class="line">在conf/resin.xml中找到 </span><br><span class="line">      &lt;web-app id=&quot;/share&quot; root-directory=&quot;webapps/share&quot;/&gt;</span><br><span class="line">这样的节点</span><br><span class="line"></span><br><span class="line">然后删除节点，再删除webapps中对应的文件夹。</span><br><span class="line"></span><br><span class="line">重启 resin</span><br></pre></td></tr></table></figure>
-<p>导致这个文件夹，在重启之后，会自动复原的原因可能是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 启动 resin后，resin会将 war包解压，并将解压路径记录到resin.xml中。</span><br><span class="line">2. 一旦重启。resin的watchdog会查看 resin.xml然后根据 &lt;web-app&gt;节点从临时文件夹中将webapp复原。</span><br></pre></td></tr></table></figure>
 
       
     </div>

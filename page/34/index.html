@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,173 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/30/4748865/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/10/30/4748865/" class="post-title-link" itemprop="url">ubuntu9.04 Mpich2 1.2版本 搭建集群种种问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-10-30 16:53:00" itemprop="dateCreated datePublished" datetime="2009-10-30T16:53:00+08:00">2009-10-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 12:48:27" itemprop="dateModified" datetime="2023-10-07T12:48:27+08:00">2023-10-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>找到很多网上的文档，也是一步一步按照上面所做，可是就是有太多的问题。写一篇自己的搭建过程和错误产生的原因。</p>
+<p>开始我找了两台服务器，上面装的是Asianux的操作系统，因为含有rsh服务。所以会报出：</p>
+<p>connect to address XXXX: Connection refused<br />
+Trying krb4 rlogin…<br />
+connect to address XXXX: Connection refused<br />
+trying normal rlogin (/usr/bin/rlogin)</p>
+<p>这个问题解决方案有多种，不过最简单的一种是在配置时：./configure添加参数 -rsh=ssh如下：</p>
+<p>./configure -rsh=ssh</p>
+<p>后来我有了多台机器，并且因为要搭建云的缘故，所以只有重新来过。首先找来4台机器，一个switch,这4台机器都是内网中的。我可以通过远程ssh登录上去。然后<br />
+装系统ubuntu9.04,这里要注意的是，用户名必须一致，并且hostname设置为node1,node2,node3,node4.如果你不这样做，后面会<br />
+出来非常多的问题，我稍后会一一解决。这里先介绍一下一般流程。</p>
+<p>1。然后找一个好源，再使用apt-get更新.具体步骤详见: <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/10/14/4667460.aspx"><br />
+http://blog.csdn.net/cctt_1/archive/2009/10/14/4667460.aspx<br />
+</a></p>
+<p>然后sudo apt-get install ssh,这一步是下载并安装ssh.</p>
+<p>2。然后下载 [ mpich2-1.2 ](<span class="exturl" data-url="aHR0cDovL3d3dy5tY3MuYW5sLmdvdi9yZXNlYXJjaC9wcm9qZWN0cy9tcGljaDIvZG93bmxvYWQ=">http://www.mcs.anl.gov/research/projects/mpich2/download<i class="fa fa-external-link-alt"></i></span><br />
+s/tarballs/1.2/mpich2-1.2.tar.gz) ,当然你还可以下载一份 <a href="ftp://ftp.mcs.anl.gov/pub/mpi/mpich2-doc-install.pdf"> mpich2的安装文档<br />
+</a><br />
+。都下载到server（主节点）上,然后执行下面的操作:</p>
+<p>tar xzvf mpich2-1.2.tar.gz或者使用命令gunzip -c mpich2.tar.gz | tar xf -(后者我没有试过)</p>
+<p>3。然后mkdir mpich2在进入刚才解压的目录,执行配置文件./configure -prefix=…/mpich2 -rsh=ssh这里的-<br />
+prefix是你要安装到哪里（就是刚才的mkdir的目录）。之后make一下，然后make install 一下，看看报的错误，我当时好像缺少g++和gcc<br />
+，所以最好先apt-get 这两个东东。如果还是报错，就使用sudo ./configure -prefix=…/mpich2 -rsh=ssh,<br />
+sudo make , sudo make install.</p>
+<p>4。之后把mpich2/bin这个文件路径放入到/etc/profile的最后一行,这样写，这里/home/you/是你的用户主目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH＝<span class="variable">$PATH</span>:/home/you/mpich2/bin</span><br></pre></td></tr></table></figure>
+<p>然后log out再log in,如果不想这样，也可以export PATH=$PATH:/home/you/mpich2/bin临时做一下。然后echo $PATH，看看有没有添加成功。再下一步which mpd,看看有没有找到相应的路径。</p>
+<p>5。然后执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$HOME</span> <span class="built_in">touch</span> .mpd.conf <span class="comment">#创建一个文件 chmod 600 .mpd.conf #设置权限</span></span><br></pre></td></tr></table></figure>
+<p>6。下一步vi .mpd.conf,添加一行MPD_SECRETWORD=abcd,这里的abcd是自己写的，你可以变动。这一步是以后使用mpd命令必须加入<br />
+的，主要是为了机器间的通信。</p>
+<p>7。然后vi mpd.hosts,写入你的那几台机器的hostname,记住一行一个,如下:</p>
+<p>node1 node2 node3 node4</p>
+<p>这其实是你要让那些主机运行mpi的程序。</p>
+<p>8。然后你在server（主节点）运行一下以下命令。</p>
+<p>mpd &amp; #启动一个mpd mpdtrace #查看哪些主机加入到ring中 mpdallexit#退出</p>
+<p>这几个命令执行一下，如果没发生什么错误，就ok.</p>
+<p>9。之后修改/etc/hosts，添加几行ip和hostname的对应关系。在127.0.0.1<br />
+localhost之后添加几行(这里假设server节点为node1当然，你可以改动): 192.168.12.111 node1 server<br />
+#个人认为这里的server加不加都可以就只是一个名字 192.168.12.112 node2 192.168.12.113 node3<br />
+192.168.12.114 node4</p>
+<p>10。然后配置ssh自动登录，如何配置请看blog: <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/10/14/4667604.aspx"><br />
+http://blog.csdn.net/cctt_1/archive/2009/10/14/4667604.aspx<br />
+</a><br />
+.配置完毕后，在server节点依次输入:ssh node1 date，ssh node2 date, ssh node3 date , ssh node4<br />
+date.看看有没有返回date,主要是为了检测自己能否使用ssh登录到自己或其他节点。其他节点按照此法依次检测一下。如果不需要输入密码，并返回了date,<br />
+则ssh配置成功。</p>
+<p>11。之后把你的mpich2/bin这个目录(./configure时的目录)打包 tar cvf bin.tar<br />
+mpich2/bin,然后将包发送到其他节点：node2,node3…。可以使用scp命令如下:</p>
+<p>scp bin.tar you@node2:bin.tar</p>
+<p>12。使用ssh登录到其他节点上，并解压bin.tar,然后按照第4步添加此路径并检查一下。</p>
+<p>13。在各个节点上重做一下5，6，8，9，10，第7步可以不做。</p>
+<p>14。回到server,使用如下两个命令: mpd &amp; ,  mpdtrace -l，这就会得到<hostname>_<port><br />
+(ip),检查下这三项是不是对的<br />
+。hostname应该是自己的node1,port是一个随机分配的，ip是hostname对应的ip（和/etc/hosts中的一样）</p>
+<p>15。ssh到其他节点，然后输入mpd -h <hostname> -p <port><br />
+&amp;，这里的<hostname>和<port>是14步中server的。如果执行这步没有错误，输入mpdtrace,就能看到node1,node2…</p>
+<p>16。配置完成。集群已经搭建成功。以后启动的时候，只需要在server上执行mpdboot -n <number> -f<br />
+mpd.hosts,这里的<number>是你想启动的mpi程序数(会分配到不同的节点上)，mpd.hosts是第七步创建的文件。</p>
+<p>种种问题～～～～～～～:</p>
+<p>1.没有使用相同的用户名(ubuntu上root用户你是不可能知道密码的)，所以只有开始安装Ubuntu时的用户。你要做的是必须在所有节点都添加一个相同的用<br />
+户。因为mpich2在后续使用mpd －h <host> -p<br />
+<port>&amp;命令加入到已存在的ring中时使用的是相同的用户名。并且如果你的用户名不同，ssh node2, ssh<br />
+node3,是不可能通过的，除非你使用了ssh you@node3,但mpd不会这样作，除非你要修改它的源码。要建立用户可以使用我下面编写的小脚本，并且加入<br />
+的用户获得了和你安装用户一样的权限(除了自己组权限)。记得要使用sudo命令来执行并且chmod +x XXXscript。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/sh newone=&quot;mpich&quot; #这里添加的用户为mpich,你也可以改动。 hostloc=&quot;/etc/hosts&quot; # create</span></span><br><span class="line">a new member and input the password useradd -m <span class="variable">$newone</span> passwd <span class="variable">$newone</span> <span class="comment"># get</span></span><br><span class="line">the admin member <span class="built_in">who</span> | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> &gt;&gt; tmpuser user=`<span class="built_in">head</span> -n 1 tmpuser` <span class="comment">#</span></span><br><span class="line">get the admin member<span class="string">&#x27;s groups and remove the self group groupinfo=`groups</span></span><br><span class="line"><span class="string">$user | awk &#x27;</span>&#123;<span class="built_in">print</span>&#125;<span class="string">&#x27;| sed &#x27;</span>s/<span class="string">&#x27;$user&#x27;</span>//<span class="string">&#x27;` # copy the groups to the new member</span></span><br><span class="line"><span class="string">for i in $groupinfo;do gpasswd -a $newone $i done echo `groups $newone`</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+<p>2.hostname并不是node1,node2,node3,而是其他的名字。这里必须要改，否则mpd -h <host> -p<br />
+<port>&amp;命令时会有rsh connect refused 或者timeout的情况。并且mpdtrace<br />
+-l时，会有ip和hostname不对应的情况。如下是更改方法:先在/etc/hosts中删除原来的hostname,然后 vi<br />
+/etc/hostname改成你想要的，注意必须顶行写。然后使用sudo<br />
+/etc/init.d/hostname来重新得到hostname,logout一下再login就会改掉。</p>
+<p>3. rsh krb4 krb5问题，就使用./configure -rsh=ssh就可以解决</p>
+<p>4. ./configure时有时会让你添加–disable-c++,你需要升级你的g<ins>了，sudo apt-get install g</ins></p>
+<p>5.make时文件冲突，只要使用sudo make即可</p>
+<p>6.创建了新用户，记得使用新用户来执行ssh-keygen。ssh和用户是相关的。</p>
+<p>7.清看清我的blog题目，如果你的不是mpich2-1.2可能搭建起来与此过程不同。mpich-<br />
+1中mpd是非安装的。我之前曾照网上的文档安装就是走不通。原因是版本不对。那个官方文档是mpich2-1.0.6的…好像也稍有不同。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1044,7 +1211,7 @@ x
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 12:46:13" itemprop="dateModified" datetime="2023-10-07T12:46:13+08:00">2023-10-07</time>
+      <time title="Modified: 2023-10-08 16:59:15" itemprop="dateModified" datetime="2023-10-08T16:59:15+08:00">2023-10-08</time>
     </span>
 
   
@@ -1374,7 +1541,7 @@ Victor jimmy-the Von weasel<br />
 反转解释  
 首 先，该脚本包含三个由分号隔开的单独 sed 命令：'1!G'、'h' 和 '\$!d'。现在，需要好好理解用于第一个和第三个命令的地址。如果第一个命令是
 '1G'，则 'G' 命令将只应用第一行。然而，还有一个 '!' 字符 -- 该 '!' 字符忽略该地址，即，'G'
-命令将应用到除第一行之外的所有行。'$!d' 命令与之类似。如果命令是 '\$d'，则将只把 'd' 命令应用到文件中的最后一行（'\$'
+命令将应用到除第一行之外的所有行。'\$!d' 命令与之类似。如果命令是 '\$d'，则将只把 'd' 命令应用到文件中的最后一行（'\$'
 地址是指定最后一行的简单方式）。然而，有了 '!' 之后，'\$!d' 将把 'd'
 命令应用到除最后一行之外的所有行。现在，我们所要理解的是这些命令本身做什么。  
   
@@ -2709,163 +2876,6 @@ device上。</p>
 <p>** interface Authenticator ** 是将X509证书和EucalyptusMessage中信息来生成是否授权的Msg的接口。</p>
 <p>** aws-base.xml~aws-zones.xml ** 是将java类映射为XML,是否为Hibernate就不得而知了。</p>
 <p>** Axis2.xml~class AxisHttpResponseImpl ** 可以认为是和Axis2打交道的东西。可以以后再研究下。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/20/4703558/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/20/4703558/" class="post-title-link" itemprop="url">SQL中的各种join</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-10-20 14:40:00" itemprop="dateCreated datePublished" datetime="2009-10-20T14:40:00+08:00">2009-10-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>SQL中有各种join操作，例如 inner join, outer join, full join, cross join, natural join等。</p>
-<h2 id="-"><a class="markdownIt-Anchor" href="#-"></a> -----------------------------------------------------------------------------</h2>
-<p>inner join内连接 也是最普通的join操作。只有join的两个属性值满足join条件后才能生成新的元组。类似于条件连接。例如select *<br />
-from tableA inner join tableB on tableA.attributeA = tableB.attributeB 等价于<br />
-select * from tableA join tableB on tableA.attributeA = tableB.attributeB也等价于<br />
-select * from tableA, tableB where tableA.attributeA = tableB.attributeB</p>
-<p>tableA</p>
-<p>id attributeA</p>
-<p>1     1</p>
-<p>2     2</p>
-<p>tableB</p>
-<p>id attributeB</p>
-<p>1    2</p>
-<p>3    3</p>
-<p>最终结果</p>
-<p><span class="exturl" data-url="aHR0cDovL3RhYmxlQS5pZA==">tableA.id<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cDovL3RhYmxlQi5pZA==">tableB.id<i class="fa fa-external-link-alt"></i></span> attributeA attributeB</p>
-<p>2             1              2            2</p>
-<h2 id="--2"><a class="markdownIt-Anchor" href="#--2"></a> -----------------------------------------------------------------------------</h2>
-<p>outer join外连接，分为left outer join（简写为left join）和 right outer join*（简写为right join<br />
-）,左右外连接可以保存一边的所有元组值。即使join的两个属性值不满足join的条件，依然能留下一个表的元组，另外一半属性就填充为NULL.例如tableA<br />
-.attributeA = tableB.attributeB为连接条件。可是tableA.attributeA含有X值，但是tableB.attribut<br />
-eB却没有X值。如果直接使用inner join,<br />
-含X值的元组就会被丢弃。如果我们想在结果中保留tableA.attributeA的X类似的元组,拿上面的例子来说如果我想保留tableA中的1<br />
-1元组。那么就是用类似于下面的SQL: select * from tableA left join tableB on tableA.attributeA<br />
-= tableB.attributeB 等价于 select * from tableB right join tableA on<br />
-tableA.attributeA = tableB.attributeB, left join 是保留左边表的元组，right<br />
-join是保留右边表的元组。</p>
-<p>最终结果为：</p>
-<p><span class="exturl" data-url="aHR0cDovL3RhYmxlQS5pZA==">tableA.id<i class="fa fa-external-link-alt"></i></span> attributeA  <span class="exturl" data-url="aHR0cDovL3RhYmxlQi5pZA==">tableB.id<i class="fa fa-external-link-alt"></i></span>  attributeB</p>
-<p>1             1             null            null</p>
-<p>2             2               1               2</p>
-<h2 id="--3"><a class="markdownIt-Anchor" href="#--3"></a> -----------------------------------------------------------------------------</h2>
-<p>full join 全连接（或者为full outer join），left/right join只能保留一边的表元组，full<br />
-join可以保留两边表的元组。select * from tableA full join tableB on tableA.attributeA =<br />
-tableB.attributeB</p>
-<p>最终结果为：</p>
-<p><span class="exturl" data-url="aHR0cDovL3RhYmxlQS5pZA==">tableA.id<i class="fa fa-external-link-alt"></i></span> attributeA  <span class="exturl" data-url="aHR0cDovL3RhYmxlQi5pZA==">tableB.id<i class="fa fa-external-link-alt"></i></span>  attributeB</p>
-<p>1             1             null            null</p>
-<p>2             2               1               2</p>
-<p>null         null            3                3</p>
-<h2 id="--4"><a class="markdownIt-Anchor" href="#--4"></a> -----------------------------------------------------------------------------</h2>
-<p>cross join笛卡尔积，这个就是每一个A中元组和每个B中元组拼接成新的元组。</p>
-<p>最终结果为：</p>
-<p><span class="exturl" data-url="aHR0cDovL3RhYmxlQS5pZA==">tableA.id<i class="fa fa-external-link-alt"></i></span> attributeA  <span class="exturl" data-url="aHR0cDovL3RhYmxlQi5pZA==">tableB.id<i class="fa fa-external-link-alt"></i></span>  attributeB</p>
-<p>1           1                 1            2</p>
-<p>1           1                 3            3</p>
-<p>2           2                 1            2</p>
-<p>2           2                 3            3</p>
-<h2 id="--5"><a class="markdownIt-Anchor" href="#--5"></a> -----------------------------------------------------------------------------</h2>
-<p>natural join自然连接。这个是将两个表的公共属性做连接，同名公共属性只保留一份在最终结果里。例如tableA和tableB中都有id字段，自然连接<br />
-后，结果里只保留一个id字段。例如select * from tableA natural join tableB</p>
-<p>最终结果为：</p>
-<p>id attributeA   attributeB</p>
-<p>1           1            2</p>
-<h2 id="--6"><a class="markdownIt-Anchor" href="#--6"></a> -----------------------------------------------------------------------------</h2>
-<p>半连接。貌似没有半连接对应的SQL关键字。半连接就是保留一张表参与连接的元组。所以我们可以再连接之后加入字段的选择。例如select attributeA<br />
-from tableA join tableB on tableA.attributeA = tableB.attributeB.</p>
-<p>最终结果为：</p>
-<p>id attributeA</p>
-<p>2       2</p>
-<h2 id="--7"><a class="markdownIt-Anchor" href="#--7"></a> -----------------------------------------------------------------------------</h2>
-<p>自连接，这个名字我不记得在哪里见过。不过传说是有的。和其他join操作不一样之处在于自连接要加入distinct关键字，所以SQL类似于select<br />
-distinct attributeA from tableA cross join tableB</p>
-<p>最终结果为：</p>
-<p>attributeA</p>
-<p>1</p>
-<p>2</p>
 
       
     </div>

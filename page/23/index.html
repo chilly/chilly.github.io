@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,110 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/08/19/5824898/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/08/19/5824898/" class="post-title-link" itemprop="url">快速生成大文件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-08-19 20:48:00" itemprop="dateCreated datePublished" datetime="2010-08-19T20:48:00+08:00">2010-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>749</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在linux下如果不考虑断电系统重启等其他原因可以使用ftruncate()函数，这个函数输入参数为file descriptor 和 offset,<br />
+这个函数在unistd.h中，windows一般是用不了这个的。</p>
+<p>另外使用文件名得到文件描述符的方法就是int fileno(FILE*); 注意之后别忘了fclose(),下面的代码里忘记写了。</p>
+<p>#include<iostream> #include<cstdio> #include&lt;unistd.h&gt; using namespace std;<br />
+int main(){ FILE* f = fopen(“abc.txt”,“w”); int fd = fileno(f); long long<br />
+offset = 1024<em>1024</em>1024*(long long)2; ftruncate(fd,offset); return 0; }</p>
+<p>在windows及其他平台可以使用fseeko(FILE* , offset, pos)这个方法</p>
+<p>#include<iostream> #include<cstdio> using namespace std; int main(){ FILE* f =<br />
+fopen(“abc.txt”,“w”); long long offset=1024<em>1024</em>1024*(long long)2;<br />
+fseeko(f,offset,SEEK_SET); int i = 10; // write i to file end<br />
+fwrite(&amp;i,sizeof(int),1,f); fclose(f); return 0; }</p>
+<p>这样就可以快速得到2G的文件了。另外编译时不要忘记添加编译参数  -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64</p>
+<p>想看大文件测试的结果到 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2010/05/23/5618652.aspx"> http://blog.csdn.net/cctt_1/archive/2010/05/23/5618652.aspx<br />
+</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1196,263 +1300,6 @@ key1.hashCode() == key2.hashCode())这句应该变为：</p>
 <p>This effect is like use wget to downloading files. You will see the process bar moving. How to display this effect? Use the following code:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;cstdio&amp;gt;</span><br><span class="line">#include&amp;lt;unistd.h&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    printf(&quot;====&amp;gt;\r&quot;);</span><br><span class="line">    fflush(stdout);       #flush buffer</span><br><span class="line">    sleep(2);             # wait</span><br><span class="line">    printf(&quot;======&amp;gt;\r&quot;);</span><br><span class="line">    fflush(stdout);</span><br><span class="line">    sleep(3);</span><br><span class="line">    printf(&quot;========&amp;gt;\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>In the above code, ‘\r’ is “Enter” character, and ‘\n’ is “newline” character. If input ‘\n’ into printf(), it will go to a new line. If input ‘\r’ into printf(), the output cursor will go to the beginning. If you do not use fflush(stdout); you will never your output without ‘\n’.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/07/07/2010-07-07-absolute-valueinteger/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/07/07/2010-07-07-absolute-valueinteger/" class="post-title-link" itemprop="url">Get Absolute Value(integer)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-07-07 00:00:00" itemprop="dateCreated datePublished" datetime="2010-07-07T00:00:00+08:00">2010-07-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:05" itemprop="dateModified" datetime="2023-10-06T22:54:05+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="how to use bit operator and simple +-*/ to get absolute number." />
-<meta name="_su_keywords" content="bit,operator,absolute,complement,number,priority" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="bit operators absolute complement number priority" />
-<meta name="views" content="1060" />
-<meta name="_wp_old_slug" content="absolute-numberinteger" />
-How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&nbsp; )
-<ul>
-	<li>if number &gt;= 0 , then number &gt;&gt; 31 == 0</li>
-</ul>
-<ul>
-	<li>if number &lt; 0&nbsp;&nbsp; , then number &gt;&gt; 31 == 0xFFFFFFFF</li>
-</ul>
-If some number exclusive or( xor ) 0xFFFFFFFF means each bit becomes its "opposite" number. (1 becomes 0, and 0 becomes 1).And If a number xor 0x00000000 means nothing happened to this number. So:
-<ul>
-	<li>number ^ 0xFFFFFFFF = ~number</li>
-	<li>number ^ 0x00000000 = number</li>
-</ul>
-In this question, you should also know something about<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TaWduZWRfbnVtYmVyX3JlcHJlc2VudGF0aW9ucyNPbmVzLjI3X2NvbXBsZW1lbnQ="> complement number(see two's complement)<i class="fa fa-external-link-alt"></i></span>. When a number is negative, |number| = ~number +1 or you can use |number| = !number + 1. When a number is positive, |number| = number.
-<p>If you know above, then the goal of |x| = (x^(x&gt;&gt;31))+(~(x&gt;&gt;31)+1).</p>
-<p>(x^(x&gt;&gt;31)) means:</p>
-<ul>
-	<li>x &gt;= 0, x^(x&gt;&gt;31) = x^0x00000000 = x</li>
-	<li>x &lt; 0, x^(x&gt;&gt;31) = x^0xFFFFFFFF = ~x</li>
-</ul>
-And (~(x&gt;&gt;31)+1)means:
-<ul>
-	<li>x &gt;= 0, ~(x&gt;&gt;31)+1 = 0xFFFFFFFF+1 = 0</li>
-	<li>x &lt; 0, ~(x&gt;&gt;31)+1 = 0x00000000+1 = 1</li>
-</ul>
-And we should take care of those brackets, because the priorities of operators are: ~ <span style="color: rgb(128, 0, 0); font-size: 16pt;"><strong>&gt;</strong></span> */ <span style="color: rgb(153, 51, 0); font-size: 16pt;"><strong>&gt;</strong></span> + - <strong><span style="color: rgb(153, 51, 0); font-size: 16pt;">&gt;</span></strong> bit operators(&amp;,^,|)
-<table>
-<tbody>
-<tr>
-<th>Level</th>
-<th>Operator</th>
-<th>Description</th>
-<th>Grouping</th>
-</tr>
-<tr>
-<td>1</td>
-<td><tt>::</tt></td>
-<td>scope</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>2</td>
-<td><tt>() [] . -&gt; ++ -- dynamic_cast static_cast  reinterpret_cast const_cast typeid</tt></td>
-<td>postfix</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td rowspan="3">3</td>
-<td><tt>++ -- ~ ! sizeof new delete</tt></td>
-<td>unary  (prefix)</td>
-<td rowspan="3">Right-to-left</td>
-</tr>
-<tr>
-<td><tt>* &amp;</tt></td>
-<td>indirection and reference (pointers)</td>
-</tr>
-<tr>
-<td><tt>+ -</tt></td>
-<td>unary sign operator</td>
-</tr>
-<tr>
-<td>4</td>
-<td><tt>(type)</tt></td>
-<td>type casting</td>
-<td>Right-to-left</td>
-</tr>
-<tr>
-<td>5</td>
-<td><tt>.* -&gt;*</tt></td>
-<td>pointer-to-member</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>6</td>
-<td><tt>* / %</tt></td>
-<td>multiplicative</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>7</td>
-<td><tt>+ -</tt></td>
-<td>additive</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>8</td>
-<td><tt>&lt;&lt; &gt;&gt;</tt></td>
-<td>shift</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>9</td>
-<td><tt>&lt; &gt; &lt;= &gt;=</tt></td>
-<td>relational</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>10</td>
-<td><tt>== !=</tt></td>
-<td>equality</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>11</td>
-<td><tt>&amp;</tt></td>
-<td>bitwise AND</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>12</td>
-<td><tt>^</tt></td>
-<td>bitwise XOR</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>13</td>
-<td><tt>|</tt></td>
-<td>bitwise OR</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>14</td>
-<td><tt>&amp;&amp;</tt></td>
-<td>logical AND</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>15</td>
-<td><tt>||</tt></td>
-<td>logical OR</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>16</td>
-<td><tt>?:</tt></td>
-<td>conditional</td>
-<td>Right-to-left</td>
-</tr>
-<tr>
-<td>17</td>
-<td><tt>= *= /= %= += -= &gt;&gt;= &lt;&lt;= &amp;= ^= |=</tt></td>
-<td>assignment</td>
-<td>Right-to-left</td>
-</tr>
-<tr>
-<td>18</td>
-<td><tt>,</tt></td>
-<td>comma</td>
-<td>Left-to-right</td>
-</tr>
-</tbody>
-</table>
 
       
     </div>

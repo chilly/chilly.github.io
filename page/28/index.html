@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,125 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/09/2010-04-09-some-bugs-in-programing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/09/2010-04-09-some-bugs-in-programing/" class="post-title-link" itemprop="url">Some Bugs in Programing</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-09 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-09T00:00:00+08:00">2010-04-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:52" itemprop="dateModified" datetime="2023-10-06T22:53:52+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="459" />
+when you use double type to count, it will be dangerous. see like that
+<p>[codesyntax lang=“c” tab_width=“2”]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">  double i;</span><br><span class="line">  for(i=0; i != 5; i++)&#123;</span><br><span class="line">    printf(&quot;%lf &quot;,i);</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>it will never stop, because the condition of i != 5 will never satisfied. If you want to count, using int type. When you compare two double type number, you should use fabs(a-b) &lt; 0.001, 0.001 is threshold. Sometimes, double is not precision. macro is a great tool, but it is also dangerous. I often forget the language of define. The correct language is :</p>
+<p>#define</p>
+<p>#if defined</p>
+<p>#if !defined</p>
+<p>#ifndef</p>
+<p>#ifdef</p>
+<p>#endif</p>
+<p>compile .c file with math lib in linux. It will be like that: cc test.c -o test <span style="color: rgb(255, 102, 0);">-lm</span></p>
+<p>stdio redirect to file use freopen() function. like that:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">// don&#x27;t write freopen here, it will be some compile error.</span><br><span class="line">//freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);</span><br><span class="line">//freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);</span><br><span class="line">int main()&#123;</span><br><span class="line">	int n,i;</span><br><span class="line">	#if defined REDIRECT</span><br><span class="line">	freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);</span><br><span class="line">	#endif</span><br><span class="line">	scanf(&quot;%d&quot;,&amp;amp;n);</span><br><span class="line">	for(i = 0; i &amp;lt; n; i++)&#123;</span><br><span class="line">		printf(&quot;%d &quot;,i);</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>if you want redirect to file, use the code and compile it with -D REDIRECT. cc test.c -o test -D REDIRECT</p>
+<p>If you want to use struct FILE to do the same thing:</p>
+<p>[codesyntax lang=“c” tab_width=“2”]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include&amp;lt;math.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">  FILE * fin, *fout;</span><br><span class="line">  fin = fopen(&quot;z.in&quot;,&quot;rb&quot;);</span><br><span class="line">  fout = fopen(&quot;z.out&quot;,&quot;wb&quot;);</span><br><span class="line">  int n;</span><br><span class="line">  #ifdef REDIRECT</span><br><span class="line">  #define fin stdin</span><br><span class="line">  #define fout stdout</span><br><span class="line">  #endif</span><br><span class="line"></span><br><span class="line">  fscanf(fin,&quot;%d&quot;,&amp;amp;n);</span><br><span class="line">  fprintf(fout,&quot;%d,%lf&quot;,n,sqrt(n));</span><br><span class="line">  fclose(fin);</span><br><span class="line">  fclose(fout);</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>try cc t3.c -o t3 -lm -D REDIRECT and cc t3.c -o t3 -lm</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1236,108 +1355,6 @@ download:
           <meta name="_edit_last" content="1" />
 <meta name="views" content="636" />
 use douban: <span class="exturl" data-url="aHR0cDovL2RvdWJhbi5mbS9yYWRpbw==">http://douban.fm/radio<i class="fa fa-external-link-alt"></i></span>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/21/5402004/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/21/5402004/" class="post-title-link" itemprop="url">用编译原理编写计算器程序中需要注意的问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-03-21 18:29:00" itemprop="dateCreated datePublished" datetime="2010-03-21T18:29:00+08:00">2010-03-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>572</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>计算器程序有优先级。所以文法归于必须有先后顺序。也就是高优先级的先规约，低优先级的后规约。也就是在写文法时，见到高优先级便扩展。</p>
-<p>例如: -+在*/之后扩展</p>
-<p>Express = Express ‘+’ F | Express ‘-’ F F = T ‘*’ T | T ‘/’ T T = terminal</p>
-<p>这就完事了吗？no…因为这样很有可能产生shift/reduce文法错误。解决方法为:</p>
-<p>Express = Express ‘+’ F | Express ‘-’ F | F F = F ‘*’ T | F ‘/’ T | T T = num</p>
-<h1 id="这里num和terminal一致-都为终结符"><a class="markdownIt-Anchor" href="#这里num和terminal一致-都为终结符"></a> 这里num和terminal一致。都为终结符</h1>
-<p>这样做完之后，不会出现shift/reduce错误。我觉得解决shift/reduce可能有某种规律，例如在左递归文法中,每句几乎都是以非终结符开始，并以终<br />
-结符结束。并且在最后一种扩展中添加下一个非终结符。当然这对于简单文法可能是成立的。至少这样不会有错。但是如果这个是文法的话，计算器不会终止。也就是说如果执行<br />
-1+2*3-4/5,则在最后一个低优先级符号处结束。也就是说最后规约为7-0.8,之后不会继续规约。所以这里必须将明确的结束符告诉程序。例如下一段中最终的结<br />
-束符为=或者回车：</p>
-<p>Value = Express ‘/n’ | Express ‘=’ Express = Express ‘+’ F | Express ‘-’ F | F<br />
-F = F ‘*’ T | F ‘/’ T | T T = num</p>
 
       
     </div>

@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,136 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/27/8619554/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/02/27/8619554/" class="post-title-link" itemprop="url">笔试面试题 —— 天平称重与二进制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-02-27 22:38:00" itemprop="dateCreated datePublished" datetime="2013-02-27T22:38:00+08:00">2013-02-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>796</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>有人曾问 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前卒 <i class="fa fa-external-link-alt"></i></span> 一道题：至少需要多少个砝码，才能称出1~50g物体？</p>
+<p>这道题有两个变种：</p>
+<p>1.至少需要多少砝码(左物右码)，才能称出1~50g物体？</p>
+<p>2.至少需要多少砝码(砝码可以放在任意一边)，才能称出1~50g物体？</p>
+<p>第一问可以变为: 至少多少个数字相加，可以表示1~50之间的任意数。又可以演变为：如何快速的从一堆苹果中取出你想要的个数？</p>
+<p>第一问对于每个数字其实就是两种状态，加、不加。也就是1,0. 对应的公式就是,对于任意数x</p>
+<pre><code>x = 1*a0 + 2*a1 + 4*a2...+2^k*ak   (a0...ak 可取0或者1)
+</code></pre>
+<p>也就是计算机界常见的2进制表示法。当全部ai都取1时，那么1+2+4…+2^k = 2^(k+1) - 1 &gt;= x, 将x=50带入，k+1即为所求。</p>
+<p>所以第一问的答案就是 log(50+1)  取上整</p>
+<p><span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前 卒 <i class="fa fa-external-link-alt"></i></span> 这样解决了第一问，那么第二问应该就是第一问的变种。</p>
+<p>因为砝码可以放左边、右边、不放。那么就有三种状态(-1,1,0). 这就是如何用三种状态来标示一个数。那么</p>
+<pre><code>x = 1*a0 + 3*a1 + 9*a2 + ... + 3^k*ak 其中ai可以取-1,0,1
+</code></pre>
+<p>当全部ai都取1时，那么1+3+9…+3^k = (3^(k+1) - 1)/2 &gt;=x, 把x=50带入，那么k+1即为所求</p>
+<p>所以第二问的答案是 log3(x*2+1) 取上整 为 5</p>
+<p><span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐 前 卒 <i class="fa fa-external-link-alt"></i></span> 又想起快速幂级运算</p>
+<p>a^k 如果一次乘个a,那么需要乘k次。如果使用二分法 那么 只需要乘log(k)取上整次就可以做完。</p>
+<p>a^0</p>
+<p>a^1</p>
+<p>a^2</p>
+<p>a^3</p>
+<p>a^4</p>
+<p>a^5</p>
+<p>1</p>
+<p>a^1</p>
+<p>a^2</p>
+<p>a1*a^2</p>
+<p>1*a^4</p>
+<p>a^1 * a^4</p>
+<p>这样表示就会发现其实a^k 其实就是把k表示为2进制的形式。</p>
+<p>5 就是 101   就是 a^1 * a^4</p>
+<p>下面写就比较好写程序了。</p>
+<pre><code>total=1; // total就是所求，k就是幂，a就是底数
+while(k) &#123;
+     if (k&amp;1) total*=a;
+     a*=a;
+     k&gt;&gt;=1;
+&#125;
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1154,175 +1284,6 @@ name中包含下划线，则忽略掉。<br />
 处理办法：</p>
 <p>1：配置中http部分 增加underscores_in_headers on; 配置<br />
 2：用减号-替代下划线符号_，避免这种变态问题。nginx默认忽略掉下划线可能有些原因。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/12/04/8257909/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/12/04/8257909/" class="post-title-link" itemprop="url">Log4j的使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-12-04 22:55:00" itemprop="dateCreated datePublished" datetime="2012-12-04T22:55:00+08:00">2012-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <pre><code>import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-</code></pre>
-<p>今天又偶然用了一下log4j，不免有些生疏。所以贴出来总结一下：</p>
-<p>首先Log4j需要准备一个configure文件:log4j.properties</p>
-<p>文件格式：</p>
-<pre><code># Configure the log dir and file names here
-my.log.dir=./log
-my.log.file=my.log
-
-# Define the root logger for deployment
-# This is the default level and appender
-log4j.rootLogger=INFO,my
-
-# Global Logging Threshold
-log4j.threshhold=ALL
-#这里定义输出文件以及输出的样式
-#
-# Daily Rolling File Appender for my
-#
-log4j.appender.my=org.apache.log4j.DailyRollingFileAppender
-log4j.appender.my.File=$&#123;my.log.dir&#125;/$&#123;my.log.file&#125;
-# Rollover at midnight
-log4j.appender.my.DatePattern=.yyyy-MM-dd
-# Output logs above INFO for this appender
-log4j.appender.my.Threshold=INFO 
-log4j.appender.my.layout=org.apache.log4j.PatternLayout
-# Pattern format: Date LogLevel [ThreadName] LoggerName: LogMessage
-log4j.appender.my.layout.ConversionPattern=%d&#123;ISO8601&#125; %-5p [%t] %C: %m%n
-# Custom Logging levels
-# Only output ERRORs for other libraries
-log4j.logger.org=ERROR
-# Output logs above INFO for ydrive
-</code></pre>
-<p>log4j.logger.somepackage=INFO</p>
-<pre><code>这里需要注意additivity,如果不写，那么就默认继承上面一个appender
-log4j.additivity.somepackage.my=false
-log4j.logger.somepackage.my=INFO,my
-</code></pre>
-<p>log4j.properties就是这样的格式。上面的意思除了输出文件和输出文件的格式大家基本都是一致的。对于下面怎么添加appender，每个人的写法就有<br />
-区别了。如果</p>
-<pre><code>log4j.logger.somepackage=INFO,my
-log4j.logger.somepackage.my=INFO,my
-</code></pre>
-<p>如果某个类somepackage.my.MyClass要输出log的话，那么在文件里就会输出相同的两行。原因就在于s</p>
-<pre><code>log4j.additivity.somepackage.my=false
-</code></pre>
-<p>omepackage.my不光是要打印自己的log，也要打印somepackage的log.所以才有</p>
-<pre><code>log4j.additivity.somepackage.my=false
-</code></pre>
-<p>这里就会抹掉sompackage的影响。</p>
-<p>另外INFO,my代表输出等级是INFO和my 这个appender输出。至于my appender的定义。其实就是</p>
-<pre><code>log4j.appender.my
-</code></pre>
-<p>下面是代码里的写法：</p>
-<p>加载log4j.properties很简单：</p>
-<pre><code>File log4jFile = new File(&quot;log4j.properties&quot;);
-System.out.println(&quot;Read log4j.propeties at&quot; + log4jFile.getAbsolutePath());
-PropertyConfigurator.configureAndWatch(log4jFile.getAbsolutePath());
-</code></pre>
-<p>加载完之后，就可以使用log4j：</p>
-<p>首先要import下面两个包</p>
-<pre><code>import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-</code></pre>
-<p>然后代码里可以这样写：</p>
-<pre><code>private static final Log LOG = LogFactory.getLog(MyClass.class);
-&#123;
-     LOG.info(&quot;print&quot;);
-&#125;
-</code></pre>
-<p>然后你就可以看到</p>
-<pre><code># Configure the log dir and file names here
-my.log.dir=./log
-my.log.file=my.log
-</code></pre>
-<p>log目录的my.log里有你的print.</p>
-<p>有时候，这个my.log很有可能是空的。原因在于还没有到log4j<br />
-flush的时候，你可以多输出些东西。log4j是异步的输出。所以可能那个my.log是个空白。</p>
 
       
     </div>

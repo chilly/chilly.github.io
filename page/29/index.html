@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,108 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/21/5402004/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/21/5402004/" class="post-title-link" itemprop="url">用编译原理编写计算器程序中需要注意的问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-21 18:29:00" itemprop="dateCreated datePublished" datetime="2010-03-21T18:29:00+08:00">2010-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>572</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>计算器程序有优先级。所以文法归于必须有先后顺序。也就是高优先级的先规约，低优先级的后规约。也就是在写文法时，见到高优先级便扩展。</p>
+<p>例如: -+在*/之后扩展</p>
+<p>Express = Express ‘+’ F | Express ‘-’ F F = T ‘*’ T | T ‘/’ T T = terminal</p>
+<p>这就完事了吗？no…因为这样很有可能产生shift/reduce文法错误。解决方法为:</p>
+<p>Express = Express ‘+’ F | Express ‘-’ F | F F = F ‘*’ T | F ‘/’ T | T T = num</p>
+<h1 id="这里num和terminal一致-都为终结符"><a class="markdownIt-Anchor" href="#这里num和terminal一致-都为终结符"></a> 这里num和terminal一致。都为终结符</h1>
+<p>这样做完之后，不会出现shift/reduce错误。我觉得解决shift/reduce可能有某种规律，例如在左递归文法中,每句几乎都是以非终结符开始，并以终<br />
+结符结束。并且在最后一种扩展中添加下一个非终结符。当然这对于简单文法可能是成立的。至少这样不会有错。但是如果这个是文法的话，计算器不会终止。也就是说如果执行<br />
+1+2*3-4/5,则在最后一个低优先级符号处结束。也就是说最后规约为7-0.8,之后不会继续规约。所以这里必须将明确的结束符告诉程序。例如下一段中最终的结<br />
+束符为=或者回车：</p>
+<p>Value = Express ‘/n’ | Express ‘=’ Express = Express ‘+’ F | Express ‘-’ F | F<br />
+F = F ‘*’ T | F ‘/’ T | T T = num</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1999,7 +2101,7 @@ extern int f(); 和int f();<br />
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:28" itemprop="dateModified" datetime="2023-10-06T22:54:28+08:00">2023-10-06</time>
+      <time title="Modified: 2023-10-08 16:59:15" itemprop="dateModified" datetime="2023-10-08T16:59:15+08:00">2023-10-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -2039,7 +2141,7 @@ extern int f(); 和int f();<br />
           <meta name="_edit_last" content="1" />
 <meta name="views" content="887" />
 Now I should do some work in investgate Facebook API. The Facebook API can be called as the following format( I use php as an example):
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&amp;lt;?php</span><br><span class="line">/**</span><br><span class="line">* Set the configuration settings for Facebook</span><br><span class="line">*/</span><br><span class="line">$facebook_config[&#x27;debug&#x27;] = false;</span><br><span class="line">$facebook_config[&#x27;api_key&#x27;] = &#x27;&amp;lt;your_api_key&amp;gt;&#x27;;</span><br><span class="line">$facebook_config[&#x27;secret_key&#x27;] = &#x27;&amp;lt;your_secret_key&amp;gt;&#x27;;</span><br><span class="line">/**</span><br><span class="line">* include the Facebook client library</span><br><span class="line">*/</span><br><span class="line">require_once(&#x27;&amp;lt;path_to_client_library&amp;gt;/facebook.php&#x27;);</span><br><span class="line">/**</span><br><span class="line">* Set up the facebook object</span><br><span class="line">*/</span><br><span class="line">$facebook = new Facebook($facebook_config[&#x27;api_key&#x27;],</span><br><span class="line">$facebook_config[&#x27;secret&#x27;]);</span><br><span class="line">/**</span><br><span class="line">* Ensure the user has logged on to Facebook</span><br><span class="line">*/</span><br><span class="line">$user = $facebook-&amp;gt;require_login();</span><br><span class="line">/**</span><br><span class="line">* Make an API call to call get a user&#x27;s friends using the PHP library&#x27;s</span><br><span class="line">* library</span><br><span class="line">*/</span><br><span class="line">$friends = $facebook-&amp;gt;api_client-&amp;gt;friends_get();</span><br><span class="line">echo &quot;&amp;lt;pre&amp;gt;Friends:&quot; . print_r($friends, true). &quot;&amp;lt;/pre&amp;gt;&quot;;</span><br><span class="line">?&amp;gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&amp;lt;?php</span><br><span class="line">/**</span><br><span class="line">* Set the configuration settings for Facebook</span><br><span class="line">*/</span><br><span class="line">~~$~~facebook_config[&#x27;debug&#x27;] = false;</span><br><span class="line">$facebook_config[&#x27;api_key&#x27;] = &#x27;&amp;lt;your_api_key&amp;gt;&#x27;;</span><br><span class="line">$facebook_config[&#x27;secret_key&#x27;] = &#x27;&amp;lt;your_secret_key&amp;gt;&#x27;;</span><br><span class="line">/**</span><br><span class="line">* include the Facebook client library</span><br><span class="line">*/</span><br><span class="line">require_once(&#x27;&amp;lt;path_to_client_library&amp;gt;/facebook.php&#x27;);</span><br><span class="line">/**</span><br><span class="line">* Set up the facebook object</span><br><span class="line">*/</span><br><span class="line">$facebook = new Facebook($facebook_config[&#x27;api_key&#x27;],</span><br><span class="line">$facebook_config[&#x27;secret&#x27;]);</span><br><span class="line">/**</span><br><span class="line">* Ensure the user has logged on to Facebook</span><br><span class="line">*/</span><br><span class="line">$user = $facebook-&amp;gt;require_login();</span><br><span class="line">/**</span><br><span class="line">* Make an API call to call get a user&#x27;s friends using the PHP library&#x27;s</span><br><span class="line">* library</span><br><span class="line">*/</span><br><span class="line">$friends = $facebook-&amp;gt;api_client-&amp;gt;friends_get();</span><br><span class="line">echo &quot;&amp;lt;pre&amp;gt;Friends:&quot; . print_r($friends, true). &quot;&amp;lt;/pre&amp;gt;&quot;;</span><br><span class="line">?&amp;gt;</span><br></pre></td></tr></table></figure>
 <p>The structure of the above codes is:</p>
 <ul>
 	<li>set api_key and secret_key by your own</li>
@@ -2155,110 +2257,6 @@ In technology, facebook uses RESTful technology, such as web services. facebook 
 <meta name="views" content="750" />
 the price of borrowing a boy-friend in international women's day.
 <p>[gallery]</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/01/5334844/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/01/5334844/" class="post-title-link" itemprop="url">回京</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-03-01 09:55:00" itemprop="dateCreated datePublished" datetime="2010-03-01T09:55:00+08:00">2010-03-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天12点的火车，想想这三个星期也没有在家干啥事。不过是吃吃喝喝，看看电视电影，聚聚会，玩玩游戏，编编程。不过在家里就是放松，不管啥时候进家都犯困。今天自己<br />
-查了下这个blog的pagerank,发现已经到6.还算不错。自己新开的blog：chillyc.info还依旧是0。虽然在春节前后经历了垃圾评论的洪泛攻击<br />
-，点击率是直线上升，可惜pr依旧是0。这只能说指向它的那几个网站排名还相对差一点，以及他指向的还大多是无名的网站。不过seo倒是挺有点子，找到某个网站的跟帖<br />
-处，只要没有验证码就不停的洪泛呀，评论里不忘粘贴些自己的地址啥的。这样做虽然有点技术含量，但是google貌似已经对此种做法有一定的戒备，所以得不偿失。只是<br />
-可怜我不停的删除垃圾评论。暑假里也看了阿凡达、风声、吉普森的一家、潘神的迷宫啥的。都是一些不错的片子。只不过没有来得及写下自己的评论。玩过不少的游戏，也没有<br />
-一一做评。归家的火车上看到一群科苑的小朋友们在火车上玩三国杀，玩得不亦乐乎。但是距他们较远，并且自己需看好行李，所以也就没有参与。杀人游戏规则是相对简单的，<br />
-但是要求人们要诚实守信。三国杀到没这要求，不过规则比较繁琐，并且大都是有二义性的规则构成，所以解释起来比较麻烦。在家参加聚会，大多只是和三五个好友一起聚聚。<br />
-人多反而觉得不热闹。工作的都工作的安居乐业，学习的也多混出了点名堂。浩浩说要回国，我实在想不通在日本打工和在中国打工到底有啥差别。在国外打工的钱至少还能在国<br />
-内买套房子。浩浩或者自觉不是苦命的主，可能决心回国创业。小杜子在德意志幸好学对了专业，如果学金融恐怕回国都找不到工作。话说老板有心让门下的弟子去德意志学学计<br />
-算机，可惜没有积极响应号召的人。或许大家都觉得德国经济维持不了他们的工资罢了。不过学了八年之后德国经济是否能养的起呢？这又是一个未知数。正如做研究，总是在未<br />
-知中寻找已知。却发现啥事往往是自己说了算，无须证明。因为这本来就是一个NP，没有人会怪你为啥不能更好。计算机界的科研中或许有许多有趣的现象，好看的规律，值得<br />
-人们去研究。不过在研究的路上有一个难题人们始终无法解决。人们喜欢绕开它继续前行。不知谁曾说过一句话：计算机科学本不是科学。我更觉得它只是在数据上的数学推演。<br />
-不知是看透才觉得黑暗，还是因为看不透才觉得更加黑暗。既然大家都在走，那就认定一个方向走呗。走的再远，心还是近的。</p>
-<p>该是出发的时候了。</p>
 
       
     </div>

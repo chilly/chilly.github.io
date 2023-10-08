@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,124 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/05/20/8948669/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/05/20/8948669/" class="post-title-link" itemprop="url">JAVA 各种Reference和垃圾回收机制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-05-20 08:43:00" itemprop="dateCreated datePublished" datetime="2013-05-20T08:43:00+08:00">2013-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天好好学习了一下java中的各种reference.一共分为以下几种：</p>
+<p>1. 强引用<br />
+2. 软引用 SoftReference<br />
+3. 弱引用 WeakReference<br />
+4. 虚引用 PhantomReference<br />
+5. FinalReference 所有实现finalize()方法的对象</p>
+<p>一下是Oracle JDK. IBM的JDK会有些不同。</p>
+<p>** 强引用 ** ：<br />
+String a = new String(“A”);</p>
+<p>一般程序都在使用。申请太多时，会有OutOfMemory异常。gc不会自动释放。</p>
+<p>** 软引用 ** ：<br />
+SoftReference<String> a = new SoftReference<String>(new String(“A”));<br />
+String real = a.get(); // if memory is near/equal to threshold of memory, real may be null.</p>
+<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.  适合作为cache.</p>
+<p>** 弱引用 ** ：<br />
+WeakReference<String> a = new WeakReference<String>(new String(“A”));<br />
+String real = a.get(); // may null</p>
+<p>gc自动释放。不会有OutOfMemory异常，但是在垃圾回收之前/finalize()之前就会放入到引用队列 ReferenceQueue.  适合作为Cache, 并且这里的意思为:如果能在内存中看到这个cache对象最好，看不到，load这个对象也不会损失很多效率。</p>
+<p>** 虚引用 ** :<br />
+PhantomReference<String> a = new PhantomReference<String>(new String(“A”));<br />
+String real = a.get(); // is always null</p>
+<p>gc不会自动释放, 会有OutOfMemory。对象在垃圾回收/finalize()之后才会放入到ReferenceQueue中。这里会保证对象不会再次引用。也可以用于判断该对象是否已经从内存中移除。</p>
+<p>** FinalReference ** :<br />
+其实不能直接使用。这个的子类 Finalizer也不能直接使用。系统会在运行时启动FinalizerThread。这个Thread用于清理ReferenceQueue中的对象。首先调用该对象finalize()方法，然后将引用赋值为null. 这样就解除了引用和对象的关系。这里的ReferenceQueue可以看做是以上各个引用都被最终放入到的queue对象。因为所有对象都有finalize()方法。  另外垃圾回收有两步，第一步确定垃圾回收的对象，第二步调用finalize()方法，将对象从内存中移除。在finalize()方法调用前，强引用是可以召回对象，使对象不会移除内存。这样会导致垃圾回收会反反复复回收多次，仍未能将该对象移除。但是如果使用虚引用，就能确保，进入ReferenceQueue中的引用，其对象一定已经移除内存。</p>
+<p>参考：<br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2phdmEvai1sby1sYW5ncmVmLw==">http://www.ibm.com/developerworks/cn/java/j-lo-langref/<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cHM6Ly93ZWJsb2dzLmphdmEubmV0L2Jsb2cvMjAwNi8wNS8wNC91bmRlcnN0YW5kaW5nLXdlYWstcmVmZXJlbmNlcw==">https://weblogs.java.net/blog/2006/05/04/understanding-weak-references<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL3lhbmdndWFuZ2Z1Lml0ZXllLmNvbS9ibG9nLzg0OTMxNw==">http://yangguangfu.iteye.com/blog/849317<i class="fa fa-external-link-alt"></i></span></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1484,136 +1602,6 @@ be made.</p>
 <p>Disables VM support for ** oldjdb **</p>
 <p><code>-Djava.compiler=NONE</code></p>
 <p>Disables the JIT compiler. This is required for debugging under the classic VM</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/27/8619554/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/02/27/8619554/" class="post-title-link" itemprop="url">笔试面试题 —— 天平称重与二进制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-02-27 22:38:00" itemprop="dateCreated datePublished" datetime="2013-02-27T22:38:00+08:00">2013-02-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>796</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>有人曾问 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前卒 <i class="fa fa-external-link-alt"></i></span> 一道题：至少需要多少个砝码，才能称出1~50g物体？</p>
-<p>这道题有两个变种：</p>
-<p>1.至少需要多少砝码(左物右码)，才能称出1~50g物体？</p>
-<p>2.至少需要多少砝码(砝码可以放在任意一边)，才能称出1~50g物体？</p>
-<p>第一问可以变为: 至少多少个数字相加，可以表示1~50之间的任意数。又可以演变为：如何快速的从一堆苹果中取出你想要的个数？</p>
-<p>第一问对于每个数字其实就是两种状态，加、不加。也就是1,0. 对应的公式就是,对于任意数x</p>
-<pre><code>x = 1*a0 + 2*a1 + 4*a2...+2^k*ak   (a0...ak 可取0或者1)
-</code></pre>
-<p>也就是计算机界常见的2进制表示法。当全部ai都取1时，那么1+2+4…+2^k = 2^(k+1) - 1 &gt;= x, 将x=50带入，k+1即为所求。</p>
-<p>所以第一问的答案就是 log(50+1)  取上整</p>
-<p><span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前 卒 <i class="fa fa-external-link-alt"></i></span> 这样解决了第一问，那么第二问应该就是第一问的变种。</p>
-<p>因为砝码可以放左边、右边、不放。那么就有三种状态(-1,1,0). 这就是如何用三种状态来标示一个数。那么</p>
-<pre><code>x = 1*a0 + 3*a1 + 9*a2 + ... + 3^k*ak 其中ai可以取-1,0,1
-</code></pre>
-<p>当全部ai都取1时，那么1+3+9…+3^k = (3^(k+1) - 1)/2 &gt;=x, 把x=50带入，那么k+1即为所求</p>
-<p>所以第二问的答案是 log3(x*2+1) 取上整 为 5</p>
-<p><span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐 前 卒 <i class="fa fa-external-link-alt"></i></span> 又想起快速幂级运算</p>
-<p>a^k 如果一次乘个a,那么需要乘k次。如果使用二分法 那么 只需要乘log(k)取上整次就可以做完。</p>
-<p>a^0</p>
-<p>a^1</p>
-<p>a^2</p>
-<p>a^3</p>
-<p>a^4</p>
-<p>a^5</p>
-<p>1</p>
-<p>a^1</p>
-<p>a^2</p>
-<p>a1*a^2</p>
-<p>1*a^4</p>
-<p>a^1 * a^4</p>
-<p>这样表示就会发现其实a^k 其实就是把k表示为2进制的形式。</p>
-<p>5 就是 101   就是 a^1 * a^4</p>
-<p>下面写就比较好写程序了。</p>
-<pre><code>total=1; // total就是所求，k就是幂，a就是底数
-while(k) &#123;
-     if (k&amp;1) total*=a;
-     a*=a;
-     k&gt;&gt;=1;
-&#125;
-</code></pre>
 
       
     </div>

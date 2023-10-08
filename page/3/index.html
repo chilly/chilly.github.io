@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,193 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2016/03/28/50995490/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2016/03/28/50995490/" class="post-title-link" itemprop="url">Fastjson 定制化解析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-03-28 10:28:00" itemprop="dateCreated datePublished" datetime="2016-03-28T10:28:00+08:00">2016-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近写了一个简单的定制解析。</p>
+<p>fastjson 解析 Map key value时有bug.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public static class KVPair&lt;K,V&gt; &#123;</span><br><span class="line">        private K key;</span><br><span class="line">        private V value;</span><br><span class="line">        public KVPair()&#123;&#125;</span><br><span class="line">        public KVPair(K key, V value)&#123;</span><br><span class="line">            this.key = key;</span><br><span class="line">            this.value = value;</span><br><span class="line">        &#125;</span><br><span class="line">        public K getKey() &#123;</span><br><span class="line">            return key;</span><br><span class="line">        &#125;</span><br><span class="line">        public void setKey(K key) &#123;</span><br><span class="line">            this.key = key;</span><br><span class="line">        &#125;</span><br><span class="line">        public V getValue() &#123;</span><br><span class="line"></span><br><span class="line">            return value;</span><br><span class="line">        &#125;</span><br><span class="line">        public void setValue(V value) &#123;</span><br><span class="line">            this.value = value;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这是一个简单的 KeyValue 类。这个类被fastjson解析出来的结果是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        KVPair&lt;String, String&gt; kv = new KVPair&lt;String, String&gt;(&quot;aaa&quot;, &quot;bbb&quot;);</span><br><span class="line">        System.out.println(JSON.toJSONString(kv));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">输出结果为：</span><br><span class="line">&#123;&quot;key&quot;:&quot;aaa&quot;,&quot;value&quot;:&quot;bbb&quot;&#125;</span><br></pre></td></tr></table></figure>
+<p>在fastjson 1.1.23 版本时， 只要改动一下 setValue() 这个方法，就可以得到这样的解析结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">改动后的 setValue(V value) 方法为：</span><br><span class="line"></span><br><span class="line">public V setValue(V value) &#123;</span><br><span class="line">      this.value = value;</span><br><span class="line">      return this.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">输出结果为：</span><br><span class="line">&#123;&quot;aaa&quot;:&quot;bbb&quot;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这明显是 fastjson的bug。所以在1.1.46版本，已经不存在这个问题了。不管如何变化 setValue()函数，最后的输出结果仍然为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">输出结果：</span><br><span class="line">&#123;&quot;key&quot;:&quot;aaa&quot;,&quot;value&quot;:&quot;bbb&quot;&#125;</span><br></pre></td></tr></table></figure>
+<p>现在问题来了。我更希望解析为下面的这种。 ```</p>
+<pre><code>&#123;&quot;aaa&quot;:&quot;bbb&quot;&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这样占用的资源更少，并且也很清楚的表达了意思。这怎么写？fastjson提供的specialConfig 来提供特殊的序列化配置。  </span><br><span class="line">首先我们先对这个class创建一个特殊的序列化方法：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>public static final SerializeConfig JSON_WRITE_CONFIG = new SerializeConfig();
+    static &#123;
+        JSON_WRITE_CONFIG.put(KVPair.class, new KVPairSerailzer());
+    &#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">然后我们来构造这个特殊的序列化类：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>public class KVPairSerailzer implements ObjectSerializer&#123;
+
+    @SuppressWarnings(&quot;rawtypes&quot;)
+    @Override
+    public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType) throws IOException &#123;
+        
+        SerializeWriter out = serializer.getWriter();
+        if (object ==null) &#123;
+            return ;
+        &#125;
+        KVPair pair = (KVPair)object; 
+        out.write(&quot;&#123;&quot;);
+        write(out,pair.getKey());
+        out.write(&quot;:&quot;);
+        write(out,pair.getValue());
+        out.write(&quot;&#125;&quot;);
+    &#125;
+    
+    public void write(SerializeWriter out, Object value) &#123;
+        if (value == null) &#123;
+            return;
+        &#125; else if (value instanceof Integer) &#123;
+            out.writeInt((Integer)value);
+        &#125; else if (value instanceof Long) &#123;
+            out.writeLong((Long)value);
+        &#125; else if (value instanceof String) &#123;
+            out.write(&quot;\&quot;&quot;);
+            out.write((String)value);
+            out.write(&quot;\&quot;&quot;);
+        &#125; else if (value instanceof Double) &#123;
+            out.write(Double.toString((Double)value));
+        &#125; else if (value instanceof Float) &#123;
+            out.write(Float.toString((Float)value));
+        &#125; else &#123;
+            throw new RuntimeException(&quot;not support value:&quot;+value);
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">fastjson的逻辑是： 开始要传入一个序列化配置。这个序列化配置中有针对各个类如何进行序列化的子类(也就是映射关系)。如果我们将JSON_WRITE_C</span><br><span class="line">ONFIG传入到序列化过程中，那么针对 KVPair.class这个类，就可以使用KVPairSerialzer()进行序列化。KVPairSerialze</span><br><span class="line">r在这个类需要继承ObjectSerializer, 重要的是重构这个方法：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType)
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里只要获取  serializer  .getWriter()，然后将序列化后的字符串写入到writer中就结束了。SerializerWriter</span><br><span class="line">其实就是一个可变长char数组,细节没有什么好讲的。</span><br><span class="line"></span><br><span class="line">另外 1.1.46 之前的版本如果不希望将某些field不放在序列化后的json中，需要加入一个</span><br><span class="line">实现了PropertyPreFilter的类才行。例如下面这个类：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>public class FieldJsonIgnoreFilter implements PropertyPreFilter  &#123;
+    private Set&lt;String&gt; excludes;
+
+    @Override
+    public boolean apply(JSONSerializer serializer, Object object, String name) &#123;
+        if(object instanceof ComputerCluster) &#123;
+            return !excludes.contains(name);
+        &#125;
+        return true;
+    &#125;
+    public FieldJsonIgnoreFilter() &#123;
+        this.excludes = Sets.newHashSet();
+        
+    &#125;
+    public void add(String excludeFieldName) &#123;
+        excludes.add(excludeFieldName);
+    &#125;
+    
+    public static final FieldJsonIgnoreFilter FIELD_JSON_IGNORE_FILTER = new FieldJsonIgnoreFilter();
+    static &#123;
+        FIELD_JSON_IGNORE_FILTER.add(&quot;aaa&quot;);  // 如果fieldName 为 aaa 则不进行序列化。
+        FIELD_JSON_IGNORE_FILTER.add(&quot;bbb&quot;);
+        FIELD_JSON_IGNORE_FILTER.add(&quot;ccc&quot;);
+        
+    &#125;
+&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1.1.46版本之后只需要在在field上面加入Annotation.就可以实现上面的效果。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>@JSONField(serialize=false)
+private String aaa;
+</code></pre>
+<pre class="highlight"><code class="">
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1839,143 +2026,6 @@ echo “世界上最好的语言”;<br />
 <p>我以为csdn markdown 也支持 <code>&lt;i class=&quot;icon-undo&quot;&gt;</code> 这个内部标签功能呢。因为在后台它是这样显示的：</p>
 <p><img src="http://img.blog.csdn.net/20150312231529247" alt="这里写图片描述" /></p>
 <p>但是发布之后，却无法显示出来这个图标。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/11/44206543/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/03/11/44206543/" class="post-title-link" itemprop="url">CSDN Markdown 编辑器 第一篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-03-11 22:23:00" itemprop="dateCreated datePublished" datetime="2015-03-11T22:23:00+08:00">2015-03-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近CSDN 新出了markdown编辑器。我这也算是尝鲜。<br />
-最初接触markdown编辑器是在2011年。那个时候，使用markdown编辑器写blog。然后将blog放到github上托管。markdown还不能像<br />
-现在这样可以实时编辑显现。那个时候有一个markdown engine专门将markdown语法转换成html. 每次感觉自己写对了。实际上语法各种不对。</p>
-<h1 id="究竟什么是markdown"><a class="markdownIt-Anchor" href="#究竟什么是markdown"></a> 究竟什么是markdown?</h1>
-<blockquote>
-<p>markdown是一种更加贴近自然表达的语法，它可以转换成互联网上通用展示的html格式。 — 帐前卒</p>
-</blockquote>
-<p>所以这个特点，造就了markdown的巨大优势。</p>
-<h1 id="markdown优势"><a class="markdownIt-Anchor" href="#markdown优势"></a> markdown优势</h1>
-<p>优势其实就只有一点： ** _ 简单 _ **</p>
-<ul>
-<li>如果写blog用html写。那么需要写一个空格，需要写 <code>&amp;nbsp;</code> 但是有了markdown, 我只需要这样写：</li>
-</ul>
-<blockquote>
-<p>这里有一个空格， ，真的。</p>
-</blockquote>
-<ul>
-<li>如果我想使用html换一行，或者新起一个段落，需要写 <code>&lt;br&gt;</code> 或者 <code>&lt;p&gt;</code> 但是我如果使用markdown,那么我直接打两个回车。例如：</li>
-</ul>
-<blockquote>
-<p>新开一行吧</p>
-</blockquote>
-<p>不知道这样是不是省字数。不过从初学者的角度一定是：markdown的语法更接近于自己所见。所以 ** 所见即所得 ** 以及 ** 易学易用 **<br />
-是markdown语法的终极目标。</p>
-<p>说了这么多markdown的好处。那markdown能否替换掉“世界上最好的语言”php呢？来看看他的不足</p>
-<h1 id="markdown缺点"><a class="markdownIt-Anchor" href="#markdown缺点"></a> markdown缺点</h1>
-<ul>
-<li>现在还没有浏览器直接支持markdown</li>
-<li>markdown解析器bug很多，而且也不知道什么时候能fix.</li>
-<li>markdown的基础语法表达较少。例如如果我想对换一下这个字体的颜色，或者换一下背景色。这个还是需要借助于css.</li>
-</ul>
-<p>看起来markdown的缺点吐槽吐的有点多。但这并不影响它成为更加实用的语言。仔细想想，blog中除了字就是图。没有颜色，没有样式也不影响阅读。</p>
-<h1 id="csdn-markdown-对比"><a class="markdownIt-Anchor" href="#csdn-markdown-对比"></a> csdn markdown 对比</h1>
-<p>呃…我找到这一款markdown： <a target="_blank" rel="noopener" href="https://www.zybuluo.com/mdeditor"> https://www.zybuluo.com/mdeditor<br />
-</a></p>
-<h1 id="markdown-使用细节"><a class="markdownIt-Anchor" href="#markdown-使用细节"></a> markdown 使用细节</h1>
-<p>这里需要注意的是，如果你希望上一行的样式不要应用到下一行，那么就要在中间空一行。所以两次回车是新起一个段落。新手一定犯这个错误。</p>
-<p>如果段落开头需要两个空格，那么还是得加入两个 <code>&amp;nbsp;&amp;nbsp;</code><br />
-当然咱们的是中文字，每个字符占空格宽度好像是四个，所以这里需要八个空格。当然这里可能也和字体有关系。</p>
-<p>这是我的段落开始~<br />
-你看这里~~</p>
-<p>另外如果某些字符不能在html中展示，那么就要加两个 <code>``</code> , 例如</p>
-<pre><code>`&amp;nbsp;`
-</code></pre>
-<p>说实话，上面这个好难打出来。需要先打一个[tab]然后再写原始字符。这样被认为是一个代码块，就不会被转义了。</p>
-<p>这一篇先写到这里。<br />
-下一篇准备写 CSDN markdown 简单使用</p>
 
       
     </div>

@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,114 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/19/2010-04-19-quicksort-in-linux-or-unix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/19/2010-04-19-quicksort-in-linux-or-unix/" class="post-title-link" itemprop="url">Quicksort in Linux or Unix</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-19T00:00:00+08:00">2010-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:54:00" itemprop="dateModified" datetime="2023-10-06T22:54:00+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="views" content="1142" />
+<meta name="_edit_last" content="1" />
+qsort is quicksort function in linux or Unix. The function prototype is
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void qsort(const void* array, const int number, const size_t sizeof_element,int (*cmp_fun)(const void*,const void*));</span><br></pre></td></tr></table></figure>
+<p>maybe I write too many const here:) I will write some examples to sort numbers below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdlib.h&amp;gt;</span><br><span class="line">// in c++ use cstdlib</span><br><span class="line">int cmp(const void * a, const void * b)&#123;</span><br><span class="line">	const int *tmp_a = (const int*)a;</span><br><span class="line">	const int *tmp_b = (const int *)b;</span><br><span class="line">	return *tmp_a-*tmp_b; // this is ASCE</span><br><span class="line">&#125; // this is function for comparing two Int type</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">	int array[100],i,flag = 0;</span><br><span class="line">	for(i =0; i &amp;lt;100; i++)&#123;</span><br><span class="line">		scanf(&quot;%d&quot;,&amp;amp;array[i]);	</span><br><span class="line">	&#125;</span><br><span class="line">	qsort(array,100, sizeof(array[0]), cmp);</span><br><span class="line">	// here you can use sizeof(int) instead</span><br><span class="line">	for(i = 0; i &amp;lt; 100; i++)&#123;</span><br><span class="line">		if(!flag)&#123;</span><br><span class="line">			printf(&quot;%d&quot;, array[i]);</span><br><span class="line">			flag = 1;</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			printf(&quot; %d&quot;, array[i]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	printf(&quot;\n&quot;);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>qsort function will change the content of array. If you want use complex object in qsort. You should just convert const void* to object*. If you will use point in array, you should compare with objects use **tmp_a-**tmp_b. If you want to compare double or float type, you should have a look at my another article: <a title="Permanent Link: compare double numbers in c/c++ language" rel="bookmark" href="../archives/172">compare  double numbers in c/c++ language.</a></p>
+<p>If you want a stable compare function, you can use qsort also. First you should construct a class or struct, then and index or other information into struct. And compare when two values are equal.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int cmp(const void * a, const void * b)&#123;</span><br><span class="line">	const Object *tmp_a = (const Object*)a;</span><br><span class="line">	const Object *tmp_b = (const Object *)b;</span><br><span class="line">	if(tmp_a-&amp;gt;value == tmp_b-&amp;gt;value)&#123;</span><br><span class="line">		if(tmp_a-&amp;gt;index &amp;lt; tmp_b-&amp;gt;index)&#123;</span><br><span class="line">			return -1;</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			return 1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return tmp_a-&amp;gt;value-tmp_b-&amp;gt;value; // this is ASCE</span><br><span class="line">&#125; // this is function for comparing two Int type</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1334,125 +1442,6 @@ SASL to provide. 0 means no encryption, 1 means ### integrity-checking only,<br 
 values larger than 1 are correlated ### to the effective key length for<br />
 encryption (e.g. 128 means 128-bit ### encryption). The values below are the<br />
 defaults. # min-encryption = 0 # max-encryption = 256</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/09/2010-04-09-some-bugs-in-programing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/09/2010-04-09-some-bugs-in-programing/" class="post-title-link" itemprop="url">Some Bugs in Programing</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-04-09 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-09T00:00:00+08:00">2010-04-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:53:52" itemprop="dateModified" datetime="2023-10-06T22:53:52+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="459" />
-when you use double type to count, it will be dangerous. see like that
-<p>[codesyntax lang=“c” tab_width=“2”]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">  double i;</span><br><span class="line">  for(i=0; i != 5; i++)&#123;</span><br><span class="line">    printf(&quot;%lf &quot;,i);</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>it will never stop, because the condition of i != 5 will never satisfied. If you want to count, using int type. When you compare two double type number, you should use fabs(a-b) &lt; 0.001, 0.001 is threshold. Sometimes, double is not precision. macro is a great tool, but it is also dangerous. I often forget the language of define. The correct language is :</p>
-<p>#define</p>
-<p>#if defined</p>
-<p>#if !defined</p>
-<p>#ifndef</p>
-<p>#ifdef</p>
-<p>#endif</p>
-<p>compile .c file with math lib in linux. It will be like that: cc test.c -o test <span style="color: rgb(255, 102, 0);">-lm</span></p>
-<p>stdio redirect to file use freopen() function. like that:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">// don&#x27;t write freopen here, it will be some compile error.</span><br><span class="line">//freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);</span><br><span class="line">//freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);</span><br><span class="line">int main()&#123;</span><br><span class="line">	int n,i;</span><br><span class="line">	#if defined REDIRECT</span><br><span class="line">	freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);</span><br><span class="line">	#endif</span><br><span class="line">	scanf(&quot;%d&quot;,&amp;amp;n);</span><br><span class="line">	for(i = 0; i &amp;lt; n; i++)&#123;</span><br><span class="line">		printf(&quot;%d &quot;,i);</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>if you want redirect to file, use the code and compile it with -D REDIRECT. cc test.c -o test -D REDIRECT</p>
-<p>If you want to use struct FILE to do the same thing:</p>
-<p>[codesyntax lang=“c” tab_width=“2”]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include&amp;lt;math.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">  FILE * fin, *fout;</span><br><span class="line">  fin = fopen(&quot;z.in&quot;,&quot;rb&quot;);</span><br><span class="line">  fout = fopen(&quot;z.out&quot;,&quot;wb&quot;);</span><br><span class="line">  int n;</span><br><span class="line">  #ifdef REDIRECT</span><br><span class="line">  #define fin stdin</span><br><span class="line">  #define fout stdout</span><br><span class="line">  #endif</span><br><span class="line"></span><br><span class="line">  fscanf(fin,&quot;%d&quot;,&amp;amp;n);</span><br><span class="line">  fprintf(fout,&quot;%d,%lf&quot;,n,sqrt(n));</span><br><span class="line">  fclose(fin);</span><br><span class="line">  fclose(fout);</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>try cc t3.c -o t3 -lm -D REDIRECT and cc t3.c -o t3 -lm</p>
 
       
     </div>

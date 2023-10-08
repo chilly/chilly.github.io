@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">792</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">735</span>
+        <span class="site-state-item-count">736</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,100 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/10/17242757/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/12/10/17242757/" class="post-title-link" itemprop="url">Resin下webapps路径无法删除问题(自动恢复)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-12-10 13:17:00" itemprop="dateCreated datePublished" datetime="2013-12-10T13:17:00+08:00">2013-12-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>306</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="这个问题的解决方法是"><a class="markdownIt-Anchor" href="#这个问题的解决方法是"></a> 这个问题的解决方法是：</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">停掉resin</span><br><span class="line"></span><br><span class="line">在conf/resin.xml中找到 </span><br><span class="line">      &lt;web-app id=&quot;/share&quot; root-directory=&quot;webapps/share&quot;/&gt;</span><br><span class="line">这样的节点</span><br><span class="line"></span><br><span class="line">然后删除节点，再删除webapps中对应的文件夹。</span><br><span class="line"></span><br><span class="line">重启 resin</span><br></pre></td></tr></table></figure>
+<p>导致这个文件夹，在重启之后，会自动复原的原因可能是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 启动 resin后，resin会将 war包解压，并将解压路径记录到resin.xml中。</span><br><span class="line">2. 一旦重启。resin的watchdog会查看 resin.xml然后根据 &lt;web-app&gt;节点从临时文件夹中将webapp复原。</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1109,178 +1203,6 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
 </code></pre>
 <p>这样可以去掉mvn install中，request retry, request fail的问题。印象中<br />
 <span class="exturl" data-url="aHR0cDovL2RzdG92YWxsLm9yZy9tYXZlbjIvJUU4JUJGJTk5JUU0JUI4JUFBJUU1JUJBJTk0JUU4JUFGJUE1JUU2JTk4JUFGJUU4JUEyJUFCJUU1JUEyJTk5JUU2JThFJTg5JUU0JUJBJTg2">http://dstovall.org/maven2/这个应该是被墙掉了<i class="fa fa-external-link-alt"></i></span>.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/08/20/10098165/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/08/20/10098165/" class="post-title-link" itemprop="url">Mvn Multi Mirrors 从多个地方下载</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-08-20 10:34:00" itemprop="dateCreated datePublished" datetime="2013-08-20T10:34:00+08:00">2013-08-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:48" itemprop="dateModified" datetime="2023-10-05T12:34:48+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>首先mvn这个东西和ant差不多。都是编译工程+打包的东西。 很多开源软件都用。这些开源软件里面有大量的第三方依赖。很可惜，这些第三方依赖很有可能在很多个r<br />
-epository中。查找StackOverFlow发现大多回答是这样的：</p>
-<p>在conf/setting.xml中写入：</p>
-<pre><code>  &lt;mirrors&gt;
-    &lt;mirror&gt;
-      &lt;id&gt;UK&lt;/id&gt;
-      &lt;name&gt;UK Central&lt;/name&gt;
-      &lt;url&gt;http://uk.maven.org/maven2&lt;/url&gt;
-      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;/mirror&gt;
-  &lt;/mirrors&gt;
-</code></pre>
-<p>这样就加入了一个。</p>
-<pre><code>  &lt;mirrors&gt;
-    &lt;mirror&gt;
-      &lt;id&gt;UK&lt;/id&gt;
-      &lt;name&gt;UK Central&lt;/name&gt;
-      &lt;url&gt;http://uk.maven.org/maven2&lt;/url&gt;
-      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;/mirror&gt;
-        &lt;mirror&gt;  
-            &lt;id&gt;soap&lt;/id&gt;  
-            &lt;name&gt;internal nexus repository&lt;/name&gt;  
-            &lt;url&gt;http://www.soapui.org/repository/maven2&lt;/url&gt;
-						&lt;mirrorOf&gt;!UK,*&lt;/mirrorOf&gt;
-        &lt;/mirror&gt;
-  &lt;/mirrors&gt;
-</code></pre>
-<p>这样就加入俩。</p>
-<p>这是StackOverflow的解答。那么如果加入三个是否是下面这样：</p>
-<pre><code>&lt;mirrors&gt;
-    &lt;mirror&gt;
-      &lt;id&gt;UK&lt;/id&gt;
-      &lt;name&gt;UK Central&lt;/name&gt;
-      &lt;url&gt;http://uk.maven.org/maven2&lt;/url&gt;
-      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;/mirror&gt;
-        &lt;mirror&gt;  
-            &lt;id&gt;soap&lt;/id&gt;  
-            &lt;name&gt;internal nexus repository&lt;/name&gt;  
-            &lt;url&gt;http://www.soapui.org/repository/maven2&lt;/url&gt;
-						&lt;mirrorOf&gt;!UK,*&lt;/mirrorOf&gt;
-        &lt;/mirror&gt;
-&lt;mirror&gt;  
-            &lt;id&gt;nightlabs&lt;/id&gt;  
-            &lt;name&gt;internal nexus repository&lt;/name&gt;  
-            &lt;url&gt;http://dev.nightlabs.org/maven-repository/maven.jahia.org-cache/&lt;/url&gt;
-						&lt;mirrorOf&gt;!UK,!soap,*&lt;/mirrorOf&gt;
-        &lt;/mirror&gt;  
-  &lt;/mirrors&gt;
-</code></pre>
-<p>对不起…答案是错误的…</p>
-<p>所以三个及以上的做法是这样的：</p>
-<pre><code>&lt;mirrors&gt;
-    &lt;mirror&gt;
-      &lt;id&gt;UK&lt;/id&gt;
-      &lt;name&gt;UK Central&lt;/name&gt;
-      &lt;url&gt;http://uk.maven.org/maven2&lt;/url&gt;
-      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;/mirror&gt;
-&lt;mirror&gt;  
-            &lt;id&gt;nexus-central&lt;/id&gt;  
-            &lt;name&gt;internal nexus repository&lt;/name&gt;  
-            &lt;url&gt;http://nexus.corp.com/nexus/content/repositories/public/&lt;/url&gt;
-						&lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-        &lt;/mirror&gt;  
-        &lt;mirror&gt;  
-            &lt;id&gt;soap&lt;/id&gt;  
-            &lt;name&gt;internal nexus repository&lt;/name&gt;  
-            &lt;url&gt;http://www.soapui.org/repository/maven2&lt;/url&gt;
-						&lt;mirrorOf&gt;!UK,central&lt;/mirrorOf&gt;
-        &lt;/mirror&gt;
-&lt;mirror&gt;  
-            &lt;id&gt;nightlabs&lt;/id&gt;  
-            &lt;name&gt;internal nexus repository&lt;/name&gt;  
-            &lt;url&gt;http://dev.nightlabs.org/maven-repository/maven.jahia.org-cache/&lt;/url&gt;
-						&lt;mirrorOf&gt;!UK,!soap,central&lt;/mirrorOf&gt;
-        &lt;/mirror&gt;  
-  &lt;/mirrors&gt;
-</code></pre>
-<p>要把<em>改为central,<br />
-因为mvn碰到</em>就后边的都不会继续做下去了。虽然apache的官方文档说，只能有一个central,但其实可以有多个加上!mirrorId的central.</p>
 
       
     </div>
