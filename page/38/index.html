@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/01/09/1478201/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/08/14/4447790/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/01/09/1478201/" class="post-title-link" itemprop="url">又做了一个郁闷的项目</a>
+          <a href="/2009/08/14/4447790/" class="post-title-link" itemprop="url">HashTable和HashMap的区别</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,14 +243,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-01-09 16:20:00" itemprop="dateCreated datePublished" datetime="2007-01-09T16:20:00+08:00">2007-01-09</time>
+      <time title="Created: 2009-08-14 19:31:00" itemprop="dateCreated datePublished" datetime="2009-08-14T19:31:00+08:00">2009-08-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -260,7 +260,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>330</span>
+      <span>909</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -278,12 +278,34 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>快要做完项目才发现真正的需求不是这样子的。快要做完了才发现距离需求还差很远。</p>
-<p>项目进行中四个小组都做了需求分析，可是很可惜各有各的需求。到项目整合的时候才发现项目中的需求并没有整合。结果大家做的都乱了。最后功能只是刚刚满足需求。</p>
-<p>详细设计这是能搭一个比较详细的框架，而这个框架在日后的编码过程中肯定要在做改动。而且有可能做大的改动。没有想到的场景，没有预料到的情况，怎么可能有人详细设计<br />
-写好了就不用改了呢？至少现在的软件工程水平还做不到这一点。</p>
-<p>项目的感悟到不是太多。找到的需求漏洞倒是很多。听小宁讲的人生哲理倒是很多。正如老边所说：“不要指望一门课能是你成为编程的高手，或软件工程中的专家。”学到的s<br />
-oftskill感觉还是挺有用的。至少知道怎样和人们沟通了。嘿嘿</p>
+          <p>转至 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdHJlZXJvb3Qv"> http://blog.csdn.net/treeroot/ <i class="fa fa-external-link-alt"></i></span></p>
+<p>HashTable的应用非常广泛，HashMap是新框架中用来代替HashTable的类，也就是说建议使用HashMap，不要使用HashTable。可能你<br />
+觉得HashTable很好用，为什么不用呢？这里简单分析他们的区别。</p>
+<p>1.HashTable的方法是同步的，HashMap未经同步，所以在多线程场合要手动同步HashMap这个区别就像Vector和ArrayList一样。</p>
+<p>2.HashTable不允许null值(key和value都不可以),HashMap允许null值(key和value都可以)。</p>
+<p>3.HashTable有一个contains(Object value)，功能和containsValue(Object value)功能一样。</p>
+<p>4.HashTable使用Enumeration，HashMap使用Iterator。</p>
+<p>以上只是表面的不同，它们的实现也有很大的不同。</p>
+<p>5.HashTable中hash数组默认大小是11，增加的方式是 old*2+1。HashMap中hash数组的默认大小是16，而且一定是2的指数。</p>
+<p>6.哈希值的使用不同，HashTable直接使用对象的hashCode，代码是这样的：<br />
+int hash = key.hashCode();<br />
+int index = (hash &amp; 0x7FFFFFFF) % tab.length;<br />
+而HashMap重新计算hash值，而且用与代替求模：<br />
+int hash = hash(k);<br />
+int i = indexFor(hash, table.length);</p>
+<p>static int hash(Object x) {<br />
+int h = x.hashCode();</p>
+<p>h += ~(h &lt;&lt; 9);<br />
+h ^= (h &gt;&gt;&gt; 14);<br />
+h += (h &lt;&lt; 4);<br />
+h ^= (h &gt;&gt;&gt; 10);<br />
+return h;<br />
+}<br />
+static int indexFor(int h, int length) {<br />
+return h &amp; (length-1);<br />
+}<br />
+以上只是一些比较突出的区别，当然他们的实现上还是有很多不同的，比如<br />
+HashMap对null的操作。</p>
 
       
     </div>
@@ -310,7 +332,7 @@ oftskill感觉还是挺有用的。至少知道怎样和人们沟通了。嘿嘿
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/01/08/1476749/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/07/16/4354779/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -328,7 +350,7 @@ oftskill感觉还是挺有用的。至少知道怎样和人们沟通了。嘿嘿
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/01/08/1476749/" class="post-title-link" itemprop="url">极限编程感悟</a>
+          <a href="/2009/07/16/4354779/" class="post-title-link" itemprop="url">学习正则式（现学现卖）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -339,14 +361,14 @@ oftskill感觉还是挺有用的。至少知道怎样和人们沟通了。嘿嘿
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-01-08 09:10:00" itemprop="dateCreated datePublished" datetime="2007-01-08T09:10:00+08:00">2007-01-08</time>
+      <time title="Created: 2009-07-16 20:59:00" itemprop="dateCreated datePublished" datetime="2009-07-16T20:59:00+08:00">2009-07-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -356,623 +378,7 @@ oftskill感觉还是挺有用的。至少知道怎样和人们沟通了。嘿嘿
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>极限编程又称xp方法，是敏捷开发的软件过程模型。</p>
-<p>极限编程的4条准则：沟通，简单，反馈和勇气（修复缺陷，集中攻关和放弃原有的代码）。</p>
-<p>基本原则：快速反馈，假设简单，递增更改，提倡更改，优质工作。</p>
-<p>开发软件的4项基本工作：编码，测试，倾听和设计</p>
-<p>首先使用计划游戏，根据功能的优先级和实际进程来决定游戏的玩法，并只是制定下一阶段的计划，希望程序员主动的接受责任，并对预期实现的时间进行估计。不断发布小版本<br />
-（小但是有价值）。使用隐喻，用有关整个系统如何运行的简单、众所周知的故事来指导所有的开发。使用的是简单的设计。通过测试来增强运行程序的信心，测试包括程序员进<br />
-行的单元测试和客户方进行的功能测试，程序员们编写的每个测试都必须是独立的、自动化的。通过重构来简化程序并提高程序的柔性。采用结对编程，结对编程是xp方法的实<br />
-践过程。代码归集体所有，防治复杂的代码进入系统，系统中不能包含重复的代码（有且仅有一次），系统拥有尽可能少的类，拥有尽可能少的方法。持续的集成，每次集成都要<br />
-完成一项任务。规定每周工作时间是40个小时。要求有现场客户，要求使用统一的编码标准。分阶段的交付产品，进行迅速而具体的反馈，清晰的参赛系统的业务要求和为特殊<br />
-任务配备的专家。</p>
-<p>在xp中，团队负责体系结构。Xp不注重体系结构，但有几点机制可以确保它的实现：探究、隐喻、第一次迭代、小版本、重构和团队实践。</p>
-<p>Xp方法一天的开发流程是：</p>
-<p>1.  确定问题和解决问题的人。</p>
-<p>2.  配对－快速设计会议。在战略上选择伙伴，战术上考虑选择输入编码的人。并周期性的交换角色。</p>
-<p>3.  Test，Q&amp;A。在编码之前验证测试失败，测试可能出错的地方，如果不明确答案是什么就询问客户。</p>
-<p>4.  Refactor。找出“代码的味道”（感觉不对的地方）应用重构，验证单元测试，并使其依然通过。采用小幅度改动，每次行动后都要做单元测试。</p>
-<p>5.  集成或丢弃代码。将集成的代码生成系统，运行所有的测试，测试必须全部通过。如果不容易集成到过去的代码中，就丢弃它，明天重试。</p>
-<p>结对编程，有利于团队成员间的互相学习。结对编程的伙伴不仅要求人在现场，而且更重要的是对任务做出承诺。伙伴能帮助保证团队的价值观不被忽略。伙伴允许你做必须做的<br />
-事，这也许意味着丢弃代码，保持学习，并从头开始。结对编程弥补了键入代码和大脑高质量思考的矛盾。因此而导致了高质量代码的快速产出。国外的结对编程经验表明追求完<br />
-美的开发人员与多产的开发人员结对的效果最好。</p>
-<p>Xp的方法提倡为了胜利而比赛。人们喜欢胜利，喜欢学习，喜欢与别人交流，喜欢成为团队的一部分，喜欢将事情控制在自己的手中，喜欢受到信任。喜欢出色的完成任务。喜<br />
-欢使自己制作出的软件发挥作用。</p>
-<p>Xp方法的好处：</p>
-<p>1.  有利于团队的整体进步。</p>
-<p>2.  不会因为一两个人的离队而使项目停滞不前。</p>
-<p>3.  开发过程带给程序员快乐和趣味。</p>
-<p>4.  开发出来的项目有质量的保证。</p>
-<p>经过自己使用xp管理团队管理的一年的实践过程中发现，  Xp方法不适用具有一下特点的团队：</p>
-<p>1.  还没有任何编出一个项目的团队。</p>
-<p>2.  团队中多数人并不理解xp的方法。</p>
-<p>3.  团体中的编程人员不愿意交流。或有些编程人员希望自己独立写代码。</p>
-<p>4.  设计未动，开发先行的团队。</p>
-<p>5.  团队中多数人并没有学习必要的软件工程知识。或不重视团队的重要性。</p>
-<p>6.  成员没有掌握足够的技能来评估自己的代码，或做必要的测试。</p>
-<p>7.  成员中没有人能知道自己要实现的功能将会花费多少时间。</p>
-<p>8.  没有充足编程时间的团队。</p>
-<p>同时也发现xp方法不适用的项目：</p>
-<p>1．  没有客户方积极参与的项目.</p>
-<p>2．  复杂而庞大的项目.</p>
-<p>3．  有“高科技”攻关的项目.</p>
-<p>4．  项目组不熟悉的项目类型.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/12/22/1453755/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/12/22/1453755/" class="post-title-link" itemprop="url">成为一个管理者应注意5点</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-12-22 18:37:00" itemprop="dateCreated datePublished" datetime="2006-12-22T18:37:00+08:00">2006-12-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>291</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1。不要老说一个人或者一个部门工作有问题。经常说出问题正是因为那个部门或那个人经常干事。<br />
-没有干事就不会有错误。<br />
-2。重视自己的部下，不管他们做的怎么样。他们都在努力。<br />
-3。鼓励周围的人多提意见，不过意见有没有用处，都会给部门带来好处。<br />
-4。和部下多交流，没有交流思想就不能流通。没有人理解自己，自己的任务就能很好的完成。<br />
-5。不要让部下们干连自己都不愿意干的事。</p>
-<p>一个好的团队，需要全体人员的配合。不是志同道合的人，就不该加入到团队中来。没有共同的目标，什么事情都会受到阻碍。当团队中出现可以依赖的人的时候，就是团队开始<br />
-有凝聚力的时候了。把工作拆分，然后交给可靠的人来做，将节省自己很多时间。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/12/17/1446910/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/12/17/1446910/" class="post-title-link" itemprop="url">《疯狂农场》带来的启示</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-12-17 18:36:00" itemprop="dateCreated datePublished" datetime="2006-12-17T18:36:00+08:00">2006-12-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 11:30:41" itemprop="dateModified" datetime="2023-10-06T11:30:41+08:00">2023-10-06</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>784</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1。Strong man stands up for himself。The Stronger man Stands up for<br />
-others。强者保护自己，更强的保护他人。  我们每个人都希望成为强者，希望鹤立鸡群。但是这之后呢？有没有想过为别人做点什么呢？</p>
-<p>2。Everyone can help you in particular time。结交的每一个人都可能在特定的时期帮你一把。<br />
-有时自己感觉结交了些朋友。但感觉他们的用处不大。但是请记住上面的那句话。每个朋友都有帮你的时候。</p>
-<p>3。Team Work can deal with trouble which  one cannot deal with.团队能解决一个人不能解决的问题。<br />
-当我们忙不过来的时候，有没有考虑一下团队协作。将任务拆分交给团队来处理，即使团队还不成熟，也可以帮助自己解决一些棘手问题。记得一个问题：当中午吃饭的时候，上<br />
-面派给你紧急任务，要你下午几点完成。这时你将怎么处理？最佳答案是：吃饭的时候简单拆分下任务，和自己的同事们一起完成这个任务。</p>
-<p>![《疯狂牧场》海报](<span class="exturl" data-url="aHR0cDovL25ld3MueGluaHVhbmV0LmNvbS9lbnQvMjAwNi0wNy8yOC94aW5zcmNfNDIyMDcwMzI4MTQ1MjMyOA==">http://news.xinhuanet.com/ent/2006-07/28/xinsrc_4220703281452328<i class="fa fa-external-link-alt"></i></span><br />
-1765342.jpg) (<span class="exturl" data-url="aHR0cDovL25ld3MueGluaHVhbmV0LmNvbS9lbnQvMjAwNi0wNy8yOC9jb250ZW50XzQ4ODkxMjEuaHRt">http://news.xinhuanet.com/ent/2006-07/28/content_4889121.htm<i class="fa fa-external-link-alt"></i></span>)</p>
-<p>片名：  Barnyard: The Original Party Animals<br />
-译名：  疯狂牧场/疯狂农庄<br />
-导演：  史蒂夫·奥德科克 Adam McKay<br />
-配音：  凯文·詹姆斯 Kevin James<br />
-萨姆·艾略特 Sam Elliott<br />
-丹尼·格洛弗 Danny GloverSacha Baron Cohen<br />
-科特妮·考克斯 Courteney CoxGary Cole<br />
-类型：  动画/喜剧/家庭<br />
-片长：  暂无<br />
-级别：  PG级<br />
-出品：  派拉蒙<br />
-上映日期：  2006年8月4日</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/12/15/1444057/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/12/15/1444057/" class="post-title-link" itemprop="url">“技术工作”感悟</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-12-15 13:39:00" itemprop="dateCreated datePublished" datetime="2006-12-15T13:39:00+08:00">2006-12-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>74</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>工作是为了吃饭，吃饭是为了更好的工作。或者换过来说：吃饭是为了工作，工作是为了吃更好的饭。</p>
-<p>先进的未必是最好的，更未必是成功的，谁死在最后，谁就是王者</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/12/08/1435288/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/12/08/1435288/" class="post-title-link" itemprop="url">Csdn记数器停止了</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-12-08 20:32:00" itemprop="dateCreated datePublished" datetime="2006-12-08T20:32:00+08:00">2006-12-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>42</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>发现csdn blog中的网页的记数器停止了。</p>
-<p>现在连写blog都没有激情了。。。。。。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/12/04/1428754/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/12/04/1428754/" class="post-title-link" itemprop="url">院刊青春缘代码---介绍本院</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-12-04 08:22:00" itemprop="dateCreated datePublished" datetime="2006-12-04T08:22:00+08:00">2006-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>58</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>出来第二期院刊。。。。。介绍本院。。。。。。。</p>
-<p>不过感觉办得还是与期望差了些。。。不过大一的办成这样应该也算可以。。。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/12/03/1427585/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/12/03/1427585/" class="post-title-link" itemprop="url">软件体系结构 构件和软件复用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-12-03 10:50:00" itemprop="dateCreated datePublished" datetime="2006-12-03T10:50:00+08:00">2006-12-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.1k</span>
+      <span>2.4k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -990,1279 +396,949 @@ others。强者保护自己，更强的保护他人。  我们每个人都希望
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>一<br />
-在业界，软件体系结构和建筑学的设计框架可以类比。如果把软件体系结构类比做建筑学的蓝图，那构件就可以比作一砖一瓦，或者更大概念如：庭院，花园等。软件体系结构之<br />
-所以可以独立于软件的数据结构和软件的算法，是因为业界把软件的数据结构和算法看做了烧砖的方法，或设计庭院的思想。但没有扩展到整个软件系统。一个软件系统是庞杂的<br />
-。但是分治之后的东西仍然用到了最基本的软件算法和数据结构思想。之所以也有些人说SA可以不用，是因为算法和数据结构的扩张有代替现在的SA的可能。完美的构件是可<br />
-以进行黑箱复用的。不太完美的复用构件就是白盒复用，要在原来代码的基础上做些必要的改动。软件工程的思想正是体现在软件流程、软件模块和软件文档的复用之上。否则也<br />
-就没有工程的说法。但是又有人提出软件体系结构复用的思想。这应该被认为是迄今为止最大粒度的复用。如果建筑师可以把自己以前的建筑蓝图拿来稍作修改就可以进行多次施<br />
-工，那么软件架构师们为什么不能拿过去的系统设计方案稍作修改并实施到新的项目中去？但是很可惜，没有一个企业的业务流程和另一个企业是完全相同的。所以软件体系结构<br />
-的复用起来比建筑蓝图的复用要复杂的多。软件体系结构直接决定了软件系统的运行框架,其优劣不但决定了软件系统是否可以满足针对此软件的功能需求,而且还决定了这些功<br />
-能需求是否能被合理、高效地实现,即也决定了软件系统基本的非功能属性[1].每个用户的非功能属性多多少少的有所不同，也就决定着软件体系结构的复用的复杂性。软件<br />
-体系结构是描述软件单元(element)、软件单元的属性(property)以及这些单元之间关系(relationship)的结构[2].这里的软件单元应该<br />
-就是构件。软件体系结构是构建计算机软件实践的基础，与建筑师设定建筑项目的设计原则和目标，作为绘图员画图的基础一样。没有蓝图就不能构建出雄伟的大厦。没有好的体<br />
-系结构也就不能构造出庞大的系统。但是对于小型的系统，体系结构的思想似乎是一种多余。对于大厦，我们应该有建筑蓝图，但是对于建造小茅屋，似乎再画草图就是一种多余<br />
-。软件体系结构表示了一个软件系统的高层结构，主要特点有：1）软件体系结构是一个高层次上的抽象，它并不涉及具体的系统结构（比如B/S还是C/S），也不关心具体<br />
-的实现。2）软件体系结构必须支持系统所要求的功能，在设计软件体系结构的时候，必须考虑系统的动态行为。3）在设计软件体系结构的时候，必须考虑有现有系统的兼容性<br />
-、安全性和可靠性。同时还要考虑系统以后的扩展性和伸缩性。所以有时候必须在多个不同方向的目标中进行决策。[3]抽象的东西之所以对我们有指导的意义。是因为我们可<br />
-以运用这个抽象的东西对具体问题做具体分析。法无定法，也就是这个道理。</p>
-<p>[1] Bass L, Clements P, Kazman R. Software Architecture in Practice. Addison-<br />
-Wesley, 1998.<br />
-[2] Sun CA, Jin MZ, Liu C. Overviews on software architecture research.<br />
-Journal of Software, 2002,13(7):1228−1237 (in Chinese with English abstract).<br />
-<a target="_blank" rel="noopener" href="http://www.jos.org.cn/1000-9825/13/1228.pdf"> http://www.jos.org.cn/1000-9825/13/1228.pdf<br />
-</a><br />
-[3] <a target="_blank" rel="noopener" href="http://www.itisedu.com/phrase/200602281725525.html"> http://www.itisedu.com/phrase/200602281725525.html<br />
+          <p>自己一直没有正儿八经的学过正则式，虽知道原理，却一直没有咋用过。近来项目要用。所以只好现学。</p>
+<p>首先用python写，建立一个文件。把乱七八糟的字符串往里丢呀。做了一个小实验，感觉与犹未尽。于是随便开了一个网页，找到源码。指定一行，然后写pattern<br />
+.</p>
+<p>我写的pattern比较简单。因为本来就简单。</p>
+<p>比如你想匹配这样一段：</p>
+<pre><code>                      &lt;div class=&quot;pd-dload&quot;&gt;
+
+&lt;a href=&quot;/projects/inkscape/files/inkscape/Inkscape-0.47pre0-1.win32.exe/download&quot; mce_href=&quot;projects/inkscape/files/inkscape/Inkscape-0.47pre0-1.win32.exe/download&quot; class=&quot;button button-dload dload &#123; url: 'http://downloads.sourceforge.net/sourceforge/inkscape/Inkscape-0.47pre0-1.win32.exe' &#125;&quot;  title=&quot;Inkscape-0.47pre0-1.win32.exe: 0.47pre0 released on Jul 02 2009&quot;&gt;&lt;span&gt;&lt;b&gt;Download Now!&lt;/b&gt; Inkscape-0.47pre0-1.win32... (36.4 MiB)&lt;/span&gt;&lt;/a&gt;&lt;small&gt;OR&lt;/small&gt;&lt;a href=&quot;/projects/inkscape/files/&quot; mce_href=&quot;projects/inkscape/files/&quot; class=&quot;button button-more&quot;&gt;&lt;span&gt;View all files&lt;/span&gt;&lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+<p>如果&lt; div  class  =  “pd-dload”</p>
+<blockquote>
+<p>就出现过一次那就很简单。（多次的我还没有遇到，所以没有解决）pattern的最后结尾为</div>。那么应该是’&lt; div  class  =  “pd-<br />
+dload”  &gt;XOXOXOXOXOX</div>'的形式，其中的那段怎么写呢？/w是匹配所有的字符[a-zA-Z0-9_]，那么先用这个&lt; div<br />
+class  =  “pd-dload”  &gt;[/w]<em>?</div>,这里</em>?在python代表最小匹配，例如<abcd>siisis<ss>这样一个串，<br />
+如果写&lt;[/w]<em>&gt;为其pattern，其中的&gt;就无法匹配，但是你写&lt;[/w]</em>?&gt;就可将<abcd>匹配成功。</p>
+</blockquote>
+<p>代码这样写：</p>
+<p>import re f = open(‘C://Python31//regular//a.txt’) content = f.read()<br />
+print(content) reg = re.compile(“&lt;div class=/“pd-dload/”&gt;[/w]*?</div>”)<br />
+print(reg.findall(content))</p>
+<p>结果是啥都没有[],现在将[/w]<em>?</div>去掉，变为&lt; div  class  =  “pd-dload”  &gt;，是不是可以匹配一部分？哈哈~那就是<br />
+说后面的那个写的有问题。仔细看看你的那些字符，其中有可能有各种各样的字符例如/n、空格、：、“、’、.等。其中/s可以匹配很多诸如空格回车之类的符号，然后你<br />
+再手工添加其他的符号.添加完毕后，pattern就为：&lt;div class=/“pd-<br />
+dload/”&gt;[/s/w|.:=?&lt;&gt;//&quot;////-{}/'()!]</em>?</div>，记住这里////其实就是对/进行匹配。将reg =<br />
+re.compile(“”)中的做替换试试。发现还是[].</p>
+<p>现在怎么办呢？方法很简单，一步一步的尝试。首先我匹配到：</p>
+<pre><code>&lt;div
+
+ class
+
+=&quot;pd-dload&quot;
+
+&gt;  
+         &lt;a
+</code></pre>
+<p>pattern为&lt;div class=/“pd-<br />
+dload/”&gt;[/s/w|.:=?&lt;&gt;//&quot;////-{}/'()!]<em>?&lt;a,然后出来结果了.继续向前找直到  pipmak-0.2.7-windows<br />
+.zip，这里会出现问题。我很奇怪的一点是/w可以匹配数字，为什么这里匹配不出来呢？最后想到了匹配这样串的简单方法[/d/D]</em>?，这样就包括了所有的情况.<br />
+/d是所有的数字，/d是所有的非数字。合起来就是全部的字符。最后的pattern为：  &lt;div class=/“pd-<br />
+dload/”&gt;[/d/D]*?</div></p>
+<p>我想应该有更加简单的pattern才对.</p>
+<p>如果想知道到某一个匹配的串的中的内容，可以这样写：例如</p>
+<p class="pd-www"><span class="exturl" data-url="aHR0cDovL3d3dy5hbGxpYW5jZXAycC5jb20=">http://www.alliance3p.com<i class="fa fa-external-link-alt"></i></span></p>  
+我希望能够找到  http://www.alliance3p.com，那应该怎么匹配呢？
+<p>f = open(‘XXX.txt’) content = f.read() m = re.search(‘&lt;p class=/“pd-<br />
+www/”&gt;[/D/d]<em>?&lt;a[/D/d]</em>?&gt;([^&quot;]+)</a>’,content,re.IGNORECASE) print(m.group(1))<br />
+f.close()</p>
+<p>不过使用re.search就只能找到一行匹配的代码。对于要找到多行匹配的代码，可以使用findall()，然后再自己写代码掐头去尾好了。或者将找到的串在使用<br />
+re.search进行匹配。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/07/12/4342861/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/07/12/4342861/" class="post-title-link" itemprop="url">宗教和信仰——宗教的荒谬 赏析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-07-12 22:29:00" itemprop="dateCreated datePublished" datetime="2009-07-12T22:29:00+08:00">2009-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>540</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天看了《宗教的荒谬》，里面有一句话说的很好：“信仰，是一种不加思考的美德。”怎么看这句话都不像是赞美。至于信不信宗教，信不信科学，这完全是自己的事情。别人<br />
+干涉不了，只有自己改变。至于有信仰而不敢有半点怀疑的人，的确应该值得思考一下。肯定是因为相信才能给自己带来好处。说人本来就是自私的这句话不知道对不对。但是为<br />
+了想进入天堂而做善事，其本质还是为了自己。</p>
+<p>如果上帝是存在的话，真的想问问上帝。他创造了这么多东西。要不是他的世界中真实存在，那他一定就是一个伟大的发明家。另外他创造这么多东西干啥呢？是不是和我编数据<br />
+结构是一个想法呢？有点亵渎神灵了。</p>
+<p>有很多人不信神灵，但是却不敢公然骂神灵。即使在我们这个无神论的国家中，他们也不敢。因为我从来没有听过旁人骂过神灵，只是不信而已。心理学说这是因为信得到的好处<br />
+多，骂神冒的风险大的缘故。</p>
+<p>在当代科学中，如果你听见有人不停的在你耳边私语，那你真的应该去非正常人类研究中心呆一段时间了。虽然治愈的几率几乎是0.但是信神者总是说有神灵在自己耳边对自己<br />
+说着什么。这是正常现象还是不正常现象？是真正的神经有问题，还是因为相信而变得大脑真正听见了？</p>
+<p>你有信仰吗？你相信神灵吗？</p>
+<p>如果我们不去思考，我们还能存活多久？</p>
+<p>电影里面有一句话诠释人生的目的：成长和死亡。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/07/06/4324285/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/07/06/4324285/" class="post-title-link" itemprop="url">windows/centOS/RedHat 更改 MAC 地址方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-07-06 09:52:00" itemprop="dateCreated datePublished" datetime="2009-07-06T09:52:00+08:00">2009-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>392</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>因为公司绑定IP，自己的windows MAC竟然和CentOS的不一致，所以要改动CentOS中的MAC</p>
+<p>1./etc/init.d/network stop</p>
+<p>2.如果你的网卡是eth0,那么打开文件/etc/sysconfig/network-scripts/ifcfg-eth0</p>
+<p>如果那个文件中有MACADDR=XX:XX:XX:XX:XX:XX那么就更改为你需要的<br />
+MACADDR=OO:OO:OO:OO:OO:OO,如果没有那么就在最后添加一行MACADDR=OO:OO:OO:OO:OO:OO</p>
+<p>3./etc/init.d/network start</p>
+<p>4.ping 一下新浪域名…</p>
+<p>RedHat更改MAC的方式和CentOS一致</p>
+<p>如果是windows，那么就在找到本地连接-&gt;属性-&gt;配置-&gt;高级-&gt;本地管理的地址</p>
+<p>选中值，然后填入你希望的那个MAC地址即可。然后重启网络配置</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/30/4308774/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/06/30/4308774/" class="post-title-link" itemprop="url">仙剑三 片尾曲 忘记时间</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-30 10:11:00" itemprop="dateCreated datePublished" datetime="2009-06-30T10:11:00+08:00">2009-06-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>331</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>忘记时间</p>
+<p>唱：胡歌 曲：程振兴  词：孙艺</p>
+<p>沉默着走了有 多遥远<br />
+抬起头 蓦然间 才发现<br />
+一直倒退 倒退到原点<br />
+倔强坚持 对抗时间</p>
+<p>说好了的永远 断了线<br />
+期许了 不变的 却都已改变<br />
+紧闭 双眼 才能看的见<br />
+那些曾经温暖 鲜艳过的画面</p>
+<p>渐渐地忘记 赶不上明天<br />
+只要用力地抓紧了想念<br />
+明天再也 没有你的笑脸<br />
+渐渐地忘记 忘记了时间<br />
+我只要沿着记忆的路线<br />
+到最深处 纵然那只是瞬间</p>
+<p>当眼泪 滑落的 是句点<br />
+心里面 始终你 从没有走远<br />
+耳边 誓言 还在回旋<br />
+我会好好珍惜 没有你的明天</p>
+<p>渐渐地忘记 赶不上明天<br />
+只要用力地抓紧了想念<br />
+明天再也 没有你的笑脸<br />
+渐渐地忘记 忘记了时间<br />
+我只要沿着记忆的路线<br />
+到最深处 纵然那只是瞬间<br />
+渐渐地忘记 忘记了时间<br />
+我只要沿着记忆的路线<br />
+到最深处 纵然那只是瞬间<br />
+仙剑三总体说来比仙剑一拍得好。但是又是那奇怪的玉佩，最后结局诡异的李逍遥。这编剧…真的是…</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/23/4291222/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/06/23/4291222/" class="post-title-link" itemprop="url">Python 中文分词——FMM 算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-23 12:04:00" itemprop="dateCreated datePublished" datetime="2009-06-23T12:04:00+08:00">2009-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>FMM算法的最简单思想是使用贪心算法向前找n个，如果这n个组成的词在词典中出现，就ok，如果没有出现，那么找n-<br />
+1个…然后继续下去。假如n个词在词典中出现，那么从n+1位置继续找下去，知道句子结束。</p>
+<p>import re def PreProcess(sentence,edcode=“utf-8”): sentence =<br />
+sentence.decode(edcode) sentence=re.sub(u&quot;[。，,！……!《》&lt;&gt;/“':：？/?、/|“”‘’；]”,&quot;<br />
+“,sentence) return sentence def FMM(sentence,diction,result = [],maxwordLength<br />
+= 4,edcode=“utf-8”): i = 0 sentence = PreProcess(sentence,edcode) length =<br />
+len(sentence) while i &lt; length: # find the ascii word tempi=i<br />
+tok=sentence[i:i+1] while re.search(”[0-9A-Za-z/-/+#@_/.]{1}“,tok)&lt;&gt;None: i=<br />
+i+1 tok=sentence[i:i+1] if i-tempi&gt;0:<br />
+result.append(sentence[tempi:i].lower().encode(edcode)) # find chinese word<br />
+left = len(sentence[i:]) if left == 1: “”“go to 4 step over the FMM””&quot;<br />
+“”“should we add the last one? Yes, if not blank”“” if sentence[i:] &lt;&gt; &quot; “:<br />
+result.append(sentence[i:].encode(edcode)) return result m =<br />
+min(left,maxwordLength) for j in xrange(m,0,-1): leftword =<br />
+sentence[i:j+i].encode(edcode) # print leftword.decode(edcode) if<br />
+LookUp(leftword,diction): # find the left word in dictionary # it’s the right<br />
+one i = j+i result.append(leftword) break elif j == 1: “”“only one word, add<br />
+into result, if not blank””&quot; if leftword.decode(edcode) &lt;&gt; &quot; &quot;:<br />
+result.append(leftword) i = i+1 else: continue return result def<br />
+LookUp(word,dictionary): if dictionary.has_key(word): return True return False<br />
+def ConvertGBKtoUTF(sentence): return sentence.decode(‘gbk’).encode(‘utf-8’)</p>
+<p>测试代码：</p>
+<p>dictions = {} dictions[“ab”] = 1 dictions[“cd”] = 2 dictions[“abc”] = 1<br />
+dictions[“ss”] = 1 dictions[ConvertGBKtoUTF(“好的”)] = 1<br />
+dictions[ConvertGBKtoUTF(“真的”)] = 1 sentence = “asdfa好的是这样吗vasdiw呀真的daf dasfiw<br />
+asid是吗？” s = FMM(ConvertGBKtoUTF(sentence),dictions) for i in s: print<br />
+i.decode(“utf-8”)</p>
+<p>文本测试代码：</p>
+<p>test = open(“test.txt”,“r”) for line in test: s =<br />
+FMM(CovertGBKtoUTF(line),dictions) for i in s: print i.decode(“utf-8”)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/23/4290974/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/06/23/4290974/" class="post-title-link" itemprop="url">Viterbi算法 Python版</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-23 10:59:00" itemprop="dateCreated datePublished" datetime="2009-06-23T10:59:00+08:00">2009-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>牛mm细心给我讲了一个小时，终于明白它的含义，然后花了一两节分布式数据库的课实现了。当时牛mm还说不可能这么快实现，结果不可能事还是发生了。发现python<br />
+果真非常好用。不明白此算法可以看这篇blog <a target="_blank" rel="noopener" href="http://blog.csdn.net/NirvanaFeng/archive/2009/05/12/4171799.aspx"><br />
+http://blog.csdn.net/NirvanaFeng/archive/2009/05/12/4171799.aspx<br />
 </a></p>
-<p>二</p>
-<p>构件的概念类似于通用模块的定义。如同小时候我们玩的积木一样，可以松散连接，自由组合。但是业界还没有真正的这样的一个标准来制定构件，让它能同积木一样好用。实际<br />
-上我们使用的“构件”还要进行一些修改之后才能满足一个系统的要求。构件应该是系统中实际存在的可更换部分，它实现特定的功能，符合一套接口标准并实现一组接口。【1<br />
-】<br />
-软件复用一直被视为改善软件工程的重要手段，软件复用是将已有的软件及其有效成分用于构造新的软件或系统。它不仅是对软件程序的复用，还包括对软件生产过程中其它劳动<br />
-成果的复用。因此，软件复用包括软件产品复用和软件过程复用两部分的内容。借此来提高生产率，改善产品的质量。软件复用一般又分为源码级复用和二进制级复用。【2】也<br />
-就是白盒复用和黑盒复用<br />
-黑盒复用指对已有产品或构件不需作任何修改，直接进行复用，这是理想的复用方式。白盒复用指根据用户需求对已有产品进行适应性修改后才可使用。【3】<br />
-无论白盒复用还是黑盒复用，都需要花费一定的代价熟悉和掌握被复用的软件系统。作为经济上的考虑，要求复用的代价必须大大小于重新开发的代价，否则就不应该考虑。<br />
-之所以业界使用构件这个概念，也是为了扩大复用的粒度。因为曾经的函数和过程已经不能满足日益庞大的软件的需要。</p>
-<p>【1】 <a target="_blank" rel="noopener" href="http://www.itisedu.com/phrase/200604161439595.html"> http://www.itisedu.com/phrase/200604161439595.html<br />
-</a><br />
-【2】 <a target="_blank" rel="noopener" href="http://arch.pconline.com.cn/pcedu/empolder/life/0403/343931.html"> http://arch.pconline.com.cn/pcedu/empolder/life/0403/343931.html<br />
-</a><br />
-【3】 <a target="_blank" rel="noopener" href="http://www.tongtech.com/jsqy/yqxwview.asp?id=209"> http://www.tongtech.com/jsqy/yqxwview.asp?id=209<br />
+<p>初始化方法：</p>
+<p>def InitDicForViterbi(nodes,posw,posdi,n): newWordList = [] # 解决未登录词 for i in<br />
+nodes: if not posw.has_key(i): newWordList.append(i) maxPosList =<br />
+NPos(posdi,n) print maxPosList<br />
+GenerateDicPos(newWordList,maxPosList,posw,posdi) def<br />
+InitViterbi(node,posw,posdi): viStatePath = [] for i in posw[node]: if i &lt;&gt;<br />
+“@@@”: print “i:”,i viStatePath.append([posw[node][i]*posdi[i][“@@@”],[i]])<br />
+return viStatePath</p>
+<p>viterbi算法函数</p>
+<p>“”&quot; nodes 就是分好的词, posw 是词转换为词性的概率，posdi是词性之间的转换概率,n 是n个最大的词性将此用于未登录词中,<br />
+weightNone是未出现的词性转移的概率 nodes format {word1,word2…} , posw format<br />
+{word1:{pos1:fre,pos2:fre,…“@@@”:totalnum},…“@@@”:total} posdi format<br />
+{pos1:{pos2:fre,pos3:fre…“@@@”:total},…“@@@”:total} “”&quot; def<br />
+Viterbi(nodes,posw,posdi,n,weightNone): InitDicForViterbi(nodes,posw,posdi,n)<br />
+viStatePath = InitViterbi(nodes[0],posw,posdi) length = len(nodes) currentNode<br />
+= 1 while currentNode &lt; length: currentPosList = posw[nodes[currentNode]]<br />
+paths = [] # print “vstate:”,viStatePath for k in currentPosList: if k &lt;&gt;<br />
+“@@@”: ajk = weightNone heap = [] for j in xrange(len(viStatePath)): # compute<br />
+every state j to every state k in ti # temppath = viStatePath[j] # print<br />
+“lastpos:”,temppath lastpos = viStatePath[j][1][-1] lastweight =<br />
+viStatePath[j][0] lastposList = posdi[lastpos] if lastposList.has_key(k): ajk<br />
+=lastposList[k] currentweight = lastweight * ajk * currentPosList[k] # print<br />
+“viStatePath:”,viStatePath[j][1] pathNew = [data for data in<br />
+viStatePath[j][1]] pathNew.append(k) # print “pathNew:”,pathNew<br />
+heappush(heap,[currentweight,pathNew]) # get the max possibility of state k in<br />
+ti # print “path:”,path paths.append(nlargest(1,heap)[0]) del viStatePath<br />
+viStatePath = paths # print “paths:”,paths currentNode = currentNode + 1 heap<br />
+= [] # get the max possibility path for i in viStatePath: heappush(heap,i)<br />
+return nlargest(1,heap)</p>
+<p>结果打印输出函数：</p>
+<p>“”“nodes format {word1,word2,…} path is [weight,[pos1,pos2…]]”“” def<br />
+Result(nodes,path,edcode=“utf-8”): realPath = path[0][1]<br />
+ResultPrint(nodes,realPath,edcode) “”“nodes format {word1,word2,…} path is<br />
+[pos1,pos2…]”“” def ResultPrint(nodes,path,edcode=“utf-8”): for i in<br />
+xrange(len(nodes)): print nodes[i].decode(edcode),“/”,path[i].decode(edcode)</p>
+<p>下面是测试代码：</p>
+<p>aa = ConvertGBKtoUTF(“球球”) bb = ConvertGBKtoUTF(“娃娃”) cc =<br />
+ConvertGBKtoUTF(“吃饭”) dd = ConvertGBKtoUTF(“好”) ee =<br />
+ConvertGBKtoUTF(“dddwieoewkem”) dictions =<br />
+{aa:{bb:1,“@@@”:4},bb:{cc:2,aa:3,“@@@”:40},“@@@”:400} posdi = {“n”:{“s”:3,“v”:<br />
+3,“@@@”:40},“s”:{“v”:2,“e”:3,“@@@”:33},“v”:{“@@@”:1},“@@@”:100} posw = {aa:{“n<br />
+“:1,“v”:3,”@@@”:29},bb:{“n”:1,“s”:1,“@@@”:19},cc:{“n”:1,“@@@”:1},“@@@”:10002}<br />
+nodes = [aa,bb,cc,ee,dd,bb,aa,cc] path = Viterbi(nodes,posw,posdi,3,0.01)<br />
+print path Result(nodes,path)</p>
+<p>这里不要问为啥要encode,然后再decode 因为只有这样才能在屏幕上打印出中文。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/14/4268747/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/06/14/4268747/" class="post-title-link" itemprop="url">农家乐一日游</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-14 18:30:00" itemprop="dateCreated datePublished" datetime="2009-06-14T18:30:00+08:00">2009-06-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>437</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前几天去北大软件学院…那里果真是能体会到什么是中国的地大物博，地广人稀。一眼望去好多树呀。来来回回跑的都是车…没有人。不过一个软件学院就一百来人占这么<br />
+大块地方很不错了（剩下的两百多人都不知道去哪里了）。中科院软件所几千号人占丁点大的地方，人均土地还是北大多些。</p>
+<p>这里感谢下菲菲和亚红，虽然软件学院没有啥好看的，看两位ppmm也不错。</p>
+<p>自愿的被拉去听课（语义矛盾），北大请rational的总经理讲云计算。总结一句话：云计算就是一种在云里飘的计算。——这是我给的定义。云计算要关注的是安全。另<br />
+外我个人认为因为中国或者其他企业的文化，这种计算环境推行起来还是比较困难。有一个家伙问的问题很好，让我引申到另一个层面。大公司要做云计算，要卖钱。为啥不做一<br />
+种通用的技术，比如，我公司过去有这么多机器，这些机器如果有某种技术可以合并在一起。为啥偏偏要买你云计算的服务？所以我准备研究“海计算”…海纳百川~~~</p>
+<p>胡扯中…</p>
+<p>另外辛苦菲菲和亚红带我在软件学院中跑来跑去…下次还有机会继续带好吃的过去。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/10/4258470/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/06/10/4258470/" class="post-title-link" itemprop="url">Oracle数据导入导出</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-10 18:25:00" itemprop="dateCreated datePublished" datetime="2009-06-10T18:25:00+08:00">2009-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>698</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这里提供比较简单的方法。如果需要复杂配置，可以找本Oracle的书籍来看。</p>
+<p>导出数据（整个数据库）</p>
+<p>使用exp <span class="exturl" data-url="bWFpbHRvOnN5c3RlbS94eHhAZmVuZ0RC"> system/xxx@fengDB <i class="fa fa-external-link-alt"></i></span></p>
+<p>这里exp是在windows 命令行中输入的命令。system是某个用户。xxx是system的密码，fengDB是你要导出的那个数据库。然后系统会询问你缓<br />
+冲区大小，你可以设置4096。下面提示你输入导出的文件名。你可以写d:/data.dmp。然后导出整个表,输入E,导出权限还是啥的输入yes 或者<br />
+no.这里只对导出数据那里必须输入yes.其他的自己看情况选择。</p>
+<p>导入数据。如果你的Oracle数据库中尚没有fengDB，那么你可以新建立一个名为fengDB的数据库。在Database configuration<br />
+assistant中建立一个叫做fengDB的数据库。创建数据库类型需要选择new<br />
+database。当然看自己情况需要了。如果你导出的数据本来来自于dataware house这里就要建dataware house.</p>
+<p>建好之后，在命令行下输入：imp <span class="exturl" data-url="bWFpbHRvOnN5c3RlbS94eHhAZmVuZ0RC"> system/xxx@fengDB <i class="fa fa-external-link-alt"></i></span><br />
+file=d:/data.dmp fromuser=system touser=system这里imp是导入命令，system是你要导入fengDB数据库的<br />
+帐号（和上面的fengDB不在同一个PC上。总不会有人导出数据库后导入相同的数据吧？不过如果是更改过过去的数据库然后想导入也可以）xxx是system的密码<br />
+,<br />
+file就是刚才导出的file.fromuser是data.dmp中的某个权限用户，touser是现在fengDB中的某个权限用户。你也可以使用fully<br />
+= y</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/08/4250809/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/06/08/4250809/" class="post-title-link" itemprop="url">Oracle 远程连接TNS 超时问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-08 10:37:00" itemprop="dateCreated datePublished" datetime="2009-06-08T10:37:00+08:00">2009-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>704</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>传说一般是由于防火墙问题造成的。最简单的方法是关闭防火墙。</p>
+<p>解决方案如下：</p>
+<p>Oracle在windows平台下使用的是Socket专用模式。要改为共享模式才行。</p>
+<p>首先到你的远程数据所在的机器下</p>
+<p>在运行处regedit</p>
+<p>找到HKEY_LOCAL_MACHINE—&gt;SOFTWARE—&gt;ORACLE—&gt;HOME0</p>
+<p>添加一个字符串USE_SHARED_SOCKET 值为TRUE</p>
+<p>然后去控制面板，例外处，添加一个例外端口:1521(这里的例外端口可以在你的Oracle Enterprise Manager<br />
+Console中点击数据库名，看看右边的port,就是那个值)</p>
+<p>然后去你的Oracle安装目录，找一个类似init.ora的文件。这个文件可能有很多，找到你的数据库名所在的目录下的文件例如我的数据库名叫chicoDB,那<br />
+么找到oracle/admin/chicoDB下的那几个init.ora文件可能文件后面有一大串数字…在那些文件末尾添加一行</p>
+<p>mts_dispatchers=“(address=(protocol=tcp)(host=chico)(port=1521))(dispatchers=1<br />
+)”</p>
+<p>这里的host是你的主机名。</p>
+<p>然后去你的Oracle Enterprise Manager Console关闭chicoDB，然后再启动它即可。</p>
+<p>当然你的首要条件是已经建立的public database link, 已经在tnsnames.ora中添加的协议适配器。</p>
+<p>如果不知道如何添加，参考我的blog:</p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/06/05/4245996.aspx"> http://blog.csdn.net/cctt_1/archive/2009/06/05/4245996.aspx<br />
 </a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/11/21/1401688/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/11/21/1401688/" class="post-title-link" itemprop="url">软件工程所要解决的问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-11-21 15:28:00" itemprop="dateCreated datePublished" datetime="2006-11-21T15:28:00+08:00">2006-11-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>55</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>个人认为软件工程所要解决的问题有3个：</p>
-<p>1、程序（代码）连接－－－并行开发</p>
-<p>2、需求变动－－－软件变动</p>
-<p>3、人员交流</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/11/18/1394288/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/11/18/1394288/" class="post-title-link" itemprop="url">大学4年</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-11-18 15:21:00" itemprop="dateCreated datePublished" datetime="2006-11-18T15:21:00+08:00">2006-11-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>82</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>大一时认为鱼与熊掌可以兼得；</p>
-<p>大二时渐渐了解鱼与熊掌不可兼得；</p>
-<p>大三时知道什么是鱼什么是熊掌；</p>
-<p>大四时有人去煮鱼，有人去炖熊掌。</p>
-<p>而我想喝些别人的鱼汤再去炖熊掌。。。。。。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/11/10/1377720/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/11/10/1377720/" class="post-title-link" itemprop="url">如何学习数据结构－－致刚上大二的学弟学妹</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-11-10 15:50:00" itemprop="dateCreated datePublished" datetime="2006-11-10T15:50:00+08:00">2006-11-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>556</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>数据结构其实是从各种应用中抽象出来的东西。刚开始学习的时候可能感觉有些费力。而且不知道学了有什么用处。这对于大二的学生来说，是很正常的事。而且大二刚学会c与<br />
-c＋＋，对模版，指针的编程可能还有些困难。但是只要从简单的做起，从最基本的线性表开始编程，也还是会有突破的。但要切忌：绝对不能比这书本敲代码，即使书本已经帮<br />
-你实现了。因为那样写出来的代码不是自己的。要学会自己思考着写代码，写自己的代码。</p>
-<p>数据结构的精髓就在于它的思想。而并不是编程怎样实现。因为现在c＋＋，java，c＃都已经帮你实现好了这些数据结构。要学会怎么利用这些数据结构来解决现实中的问<br />
-题。而不是单单只会编一个栈或着一个树之类的。</p>
-<p>在学数据结构的时候，可以把思路放开扩些。看看现实中什么地方用到了这些数据结构。也多想想这些数据结构将会用在什么地方。</p>
-<p>现在要编写数据结构的代码，不一定非用指针不可，也不一定非用模版。链表可以用数组代替，指针可以用数组下标代替。虽然写出来的程序不通用。但是却可以掌握了某种数据<br />
-结构的特性。（虽然在一定的情况下，数组不能代替链表）</p>
-<p>数据结构本来就应该用在应用中间。当没有任何需求的时候，任何数据结构都是垃圾。所以我主张大家学数据结构的时候先写main来进行测试。将想实现的功能先放在mai<br />
-n中，然后在一点点的实现自己的数据结构。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/10/27/1353672/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/10/27/1353672/" class="post-title-link" itemprop="url">上士闻道</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-10-27 19:40:00" itemprop="dateCreated datePublished" datetime="2006-10-27T19:40:00+08:00">2006-10-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>622</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>上士闻道，勤而行之；中士闻道，若存若亡；下士闻道，大笑之——弗笑，不足以为道。</p>
-<p>翻译成现代文:</p>
-<p>优等学生听人讨论道以后，学以致用，勤奋实践；<br />
-中等学生听人讨论道以后，将信将疑，辩证推敲；<br />
-一般学生听人讨论道以后，断章取义，驳斥讥笑；</p>
-<p>天下评注:<br />
-其实，讥笑是必须的，因为没有经历讥笑或怀疑的阶段是无法真正领会“道”的。就像大家嘴上经常说的：<br />
-最近的道路也许乍眼看去格外得昏暗曲折。<br />
-前进的道路可能暂时导致无奈地远离目标。<br />
-平坦的道路有时暗藏隐密众多的陷阱障碍。</p>
-<p>小卒观点:</p>
-<p>感觉中士之道更值得自己学习,毕竟这世上的理论不能全盘否认,也不能全盘肯定.听说最近西南交大的一名硕士生在理论上证明爱因斯坦的相对论有误,并且也认为牛顿的万有<br />
-引力要改正.很多理学专家和他辩论几个小时,仍然未果.如果那个硕士是正确的,那就意味这我们曾经学过的各种物理书籍都将变为一堆废纸.不过如果他错了有能怎么样呢?<br />
-不过是真理愈辩愈名罢了.但是不过结果怎样,我们都不应该大笑之.毕竟,人家那气魄和胆识也是我们常人说没有的.</p>
-<p>天下语论&quot;亲朋友众&quot;:</p>
-<p>第一类人是用缘分沟通的，叫做亲。<br />
-第二类人是用兴趣沟通的，叫做朋。<br />
-第三类人是用机锋沟通的，叫做友。<br />
-第四类人是用权势压迫，用利益引诱的，叫做众。</p>
-<p>小卒观点:</p>
-<p>看后认为这可谓至理名言.透彻的分析了人与人之间的关系.每当我们见面打招呼的时候,都可以用这四条标准来衡量自己身边的人.虽然口头上说是朋友.但是不是呢?用以上<br />
-四条分析过后就彻底明白了.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/10/08/1325762/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/10/08/1325762/" class="post-title-link" itemprop="url">《时空捍将》留给程序员的启示</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-10-08 12:44:00" itemprop="dateCreated datePublished" datetime="2006-10-08T12:44:00+08:00">2006-10-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>360</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1.  Please drop the wickedness programmes or projects even if they are<br />
-perfact.  放弃或停止邪恶的完美代码。程序员们或许感觉有段代码写的很经典就继续保留或使用，但希望那些代码不是邪恶的。正如过去的“大脑”病毒一样。代码<br />
-写的很完美，但是却是人类邪恶智慧的结晶。电影中同样造出了拥有智力的邪恶代码，编制者极力的保留这段代码，但最终还是害人害己，没有一个好的下场。</p>
-<p>2.  There is no perfact thing in the world.  不知道什么才是完美。但是这世上的确没有完美的东西。程序也罢，人也<br />
-好。总是有各自的缺点。正如程序中没有bug一样，人也不可能没有任何缺点。拥有智力的代码终究被人删除。其放在人类世界中的炸弹也被人拆除。没有什么可以做到完美。<br />
-因为这世上根本没有完美。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/10/04/1320212/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/10/04/1320212/" class="post-title-link" itemprop="url">有感人生</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-10-04 09:34:00" itemprop="dateCreated datePublished" datetime="2006-10-04T09:34:00+08:00">2006-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>341</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>好友的父亲去世了.就在十一前后.自己身在别处,没有给他帮上什么忙.想安慰他,有不知道说什么好.最后还是发了封不知所云的短信.</p>
-<p>人生实在太短暂,终止的也太突然.正如诗人所说:&quot;  人生苦短,多有患难,出来如花,又被割下.飞去如影,不能存留<br />
-.&quot;活着好端端一个人,突然就消失在我们眼前.有感生命的脆弱.</p>
-<p>现在想想海伦的&lt;&lt;假如我只有3天光明&gt;&gt;,感觉光明对于生存又算得了什么?如果题目改为&lt;&lt;假如只有3天生命&gt;&gt;不知道海伦又将怎样去写.不管题目是什么,海伦都将<br />
-积极的应对吧.</p>
-<p>想看破繁华似锦的世界,3天毕竟太少.但是能知道自己生命还有几天也必定会珍惜.最可怕的是根本不知道自己生命还有多长时间,却导致最终碌碌无为的走过自己的一生.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/09/29/1307859/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/09/29/1307859/" class="post-title-link" itemprop="url">数学，原理，方法，技巧</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-09-29 20:37:00" itemprop="dateCreated datePublished" datetime="2006-09-29T20:37:00+08:00">2006-09-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>629</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>学校里学到的东西为什么没有用处？主要是学到的东西大部份都有人去实现了。比如数据结构中学做一个二叉树。其实在外边干活的时候根本不需要。谁会让你去编写一个二叉树<br />
-？即使做项目的时候真的有用，大概也有已经实现的类代替了。所以有人说学校里学到的东西基本没有用。不过也难怪，因为这些人只是学到了原理或者方法。</p>
-<p>学校教授的知识大概都是一些原理性的知识，或者是真正做项目要用到的一些方法。掌握了这些知识或者方法只是算一个平常的学生。在往上走就是多做些项目，在项目中得到一<br />
-些技巧性的东西。这样的人，在学院也好，工作岗位也好，都是一个很出色的人。从程序员的角度上讲，那是一些编程高手。但是我总感觉这还是不够的。其实如果把每一本计算<br />
-机的书理解透了。在某种意义上讲：那就是一本数学书。老师授课也好，学生学习也罢，都只是学到了表面的层次。好的或许可以提高到熟能生巧的地步。但是在表面层次之下隐<br />
-藏的数学逻辑，如同操作傀儡的细线，把一本本计算机的书做成了傀儡。</p>
-<p>为什么程序员们很累？为什么技术总是在变化？我们并没有发现其中最本质的东西。有些东西其实就是数学的延伸。只是做到了应用的层次上。</p>
-<p>做一个题目也好，做一个项目也罢。有时我们只是知道方法再去应用。有时我们懂得原理再去实践。但是我们没有想过各种原理的相通之处。在各种原理的背后是不是还隐藏着什<br />
-么？我们没有挖掘过。</p>
-<p>当个程序员是很累，也很少有时间去想想各种技术的背后究竟隐藏着什么。不过如果能做到这一点，以后定不会被世界的潮流所抛弃。。。。。。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/09/29/1307524/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/09/29/1307524/" class="post-title-link" itemprop="url">创办院刊杂志——青春缘代码</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-09-29 19:13:00" itemprop="dateCreated datePublished" datetime="2006-09-29T19:13:00+08:00">2006-09-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>347</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这个星期可是忙死了。制做了一份电子院刊。虽然那院刊是用iebook制作的，并且很多贴图和flash动画是从网上下的。可是真正做起来也是蛮费力的。本来说是和报<br />
-纸版的一样的样式。可是后来加的东西越来越多。最后做成了40页的杂志。里面有军训日记、军训照片、招新启示等等内容。特别是校庆信息。我大改了3次，“发布了”近4<br />
-0个版本。最后终于可以拿出去见人了。可能要贴到我们的院网上去吧。本来是在科技部做事的，现在改转到编辑部了。最后或许也可以把编辑部发生的事情拍成电视剧叫做“新<br />
-编辑部的故事”。 <img src="/fckeditor/editor/images/smiley/msn/regular_smile.gif" alt="" /></p>
-<p>面对着十一，我现在可以放松一下了。</p>
-<p>对了有兴趣的可以到 <a target="_blank" rel="noopener" href="http://ss.hnu.cn/newweb/students/yuankan/index.htm"> http://ss.hnu.cn/newweb/students/yuankan/index.htm<br />
-</a><br />
-上下载院刊。具体的网址我还不太清楚，反正会挂在那个网上的。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/09/20/1254736/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/09/20/1254736/" class="post-title-link" itemprop="url">李开复——21 世纪最需要的 7 种人才</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-09-20 18:52:00" itemprop="dateCreated datePublished" datetime="2006-09-20T18:52:00+08:00">2006-09-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>536</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>** 创新实践者——What matters is not innovation , but useful innovation。 **</p>
-<p>** 跨领域合成者——What matters is not analysis but synthesis。 **</p>
-<p>** 三商合作者——EQ is 9 times more important than IQ。 **</p>
-<p>** 高效能沟通者——The man who can think and does not know how to express what he thinks is at the level of him who cannot think。 **</p>
-<p>** 热爱工作者——If you find a job you love , you will never work a day in your life。 **</p>
-<hr />
-<p>** 积极主动者——In a few hundred years , the most important event those historians will see is that for the first time , people will have a choice. They will have to manage themselves。 **</p>
-<p>** 乐观向上者——The glass is half full or half empty depending on whether you’re pouring in or out **</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/09/19/1246469/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/09/19/1246469/" class="post-title-link" itemprop="url">微软，Google齐聚湖大</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-09-19 16:16:00" itemprop="dateCreated datePublished" datetime="2006-09-19T16:16:00+08:00">2006-09-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>187</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨天上午听了微软工程院和微软研究院的研发部的高级经理的讲座。晚上在体育馆参与google的李开复的湖大googlecamp的开营仪式。这种机遇恐怕在大学的短<br />
-短4年里也顶多只有这一次了。</p>
-<p>i’m a lucky dog…</p>
-<p>当了googlecamp的志愿者混了件T-shirt和李开复的签名。。。</p>
-<p>虽然自己对李开复没有太多的崇拜情节，但是这个签名却可以在那些开复的fans前炫耀一翻。。。。<br />
-<img src="/fckeditor/editor/images/smiley/msn/wink_smile.gif" alt="" /></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/09/16/1231409/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/09/16/1231409/" class="post-title-link" itemprop="url">与凌小宁交流--PM要务</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-09-16 16:00:00" itemprop="dateCreated datePublished" datetime="2006-09-16T16:00:00+08:00">2006-09-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>251</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>上个星期五找小宁博士谈了谈.有人问他PM(program manager)的任务是什么…</p>
-<p>他这样认为:(下面掺了些我的话… <img src="/fckeditor/editor/images/smiley/msn/regular_smile.gif" alt="" /><br />
-)</p>
-<p>1.PM就是负责整个项目按时按质的完工.</p>
-<p>2.交流是PM的重要技能.</p>
-<p>3.需求分析的高手.</p>
-<p>4.要成为PM,先做到有责任心,喜欢与人交流,能协调好团队里各种人际关系.当有两个人吵架时,能迅速的把风波平定下来.</p>
-<p>5.能将一群人组织成一个真正的团队.(可以在业余时间搞点小活动)</p>
-<p>小卒观点:</p>
-<p>PM其实就是协调开发和测试两组来保质保量的完成项目.除此指望PM要做需求分析要画界面原型.不过不必要编码.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/09/14/1222456/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/09/14/1222456/" class="post-title-link" itemprop="url">需求作业...</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-09-14 15:38:00" itemprop="dateCreated datePublished" datetime="2006-09-14T15:38:00+08:00">2006-09-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近blog也没有什么好写的,写点老师布置的作业吧.</p>
-<p>上个星期老师布置了一次需求作业,摘录如下:</p>
-<p>** 2  ** 查阅一些有关介绍需求工程或软件项目管理的网站，读一篇写得不错的文章，用  1  －  2  页概括文章的内容（要求注明文章来源）。<br />
-** 3  ** 人们已经认识到软件项目失败的直接原因主要是  (1)  缺乏用户的参与；  (2)  不完整的需求描述；（  3  ）不完整的  SRS  ；（  4  ）将三个层次的需求混淆在一起。请你结合客户的  10  项权利和  10  项义务，谈一谈做好软件需求应该注意的问题。</p>
-<p>自己的第3题的回答就将第2道题当成为客户的需求分析了一遍…</p>
-<p>原文如下:</p>
-<p>如果把做作业也可以看成一个项目的话，作业要求就是客户的需求，对作业要求的分析就是需求分析，客户是老师，用户是批改作业的助教，我就是需求分析员。客户的需求并不<br />
-很明确。“写  1  －  2  页纸”，每一个人都不同的理解方法。五号字写  1  －  2  ，或者是一号字写  1  －  2  ？是  word<br />
-的  A4  纸写  1  －  2  页，还是  800  字格子纸写  1  －  2<br />
-页？客户认为这是很日常的问题，如同怎么洗澡。开发方可能与客户的理解完全不同。模糊的需求造成了需求的歧异性。而且我做作业并没有  向<br />
-老师询问什么，没有做好需求调研，只是按照自己的想法去理解写  1  －  2<br />
-页纸。开发方与客户缺乏良好的沟通，就立即动手开始做项目，这是一种非常危险的行为。因为开发时，自己觉得  very cool<br />
-的功能，很有可能不被用户和客户们认可。如果按照自己的理解用一号字写了  1  －  2  页纸，恐怕下次上课自己的名字就会被老师打到  ppt  里去了。</p>
-<p>假设我去做进一步的调研（询问老师）：“请问老师  1  －  2  页什么意思？”如果老师很忙，没有什么时间，可能这样回答：“就是  1  －  2  页作<br />
-业纸。”如果这样就完成了一次调研，其实我什么东西也没有得到。我当时如果认为客户方清晰的描述需求是项义务，但是客户方有可能也认为“作业纸”的回答已经是清晰的描<br />
-述。我当然需要进一步的要求客户方加以描述，这  时  老师可能不耐烦的拿出过去别人做过的作业让我看。我必须从那堆作业中对作业纸的概念做一个概括。如果老师拿出<br />
-来的作业纸只是过去上交作业纸的某种特殊的类型（例如无格纸），这就有可能使我对“作业纸”这个概念的概括产生偏差。最后交的作业就会用无格纸写。在项目审批阶段，助<br />
-教认为本次作业的作业纸不符合作业的规定，作业应当重新完成。这种严重的后果是谁造成？其实当初我可以这样提问：“作业纸是指的这种纸吗？”（我可以事先准备几种可能<br />
-的作业纸）老师会对此进行选择。如果老师对这些纸都不满意，可以让老师讲出这种纸到底是什么样式，什么大小，有什么具体要求。也可以让老师找到相似的纸样。我要纸的具<br />
-体信息，老师有可能不知道，或者不耐烦，或者知道也说不清楚。老师那里可能再也得不到什么有用的信息。</p>
-<p>下面去调查助教们。助教可能很多，可能权利还不一样。得到的信息可能五花八门。有要求用  800  字方格纸；有希望用湖大作业本；有的认为交上来就行，不管什么纸<br />
-。我认为要求最苛刻的是需求的最好的约束条件。到底用什么作业纸的矛盾冲突应该由助教，老师和我协商解决。</p>
-<p>假设我们开了一次会议，我在会上提出我的解决方案：用  A4  纸写（这种方案对我有利）。老师和助教也都认为这个方案不错。于是我们定下用  A4  纸写。这样<br />
-为以后留下的一点隐患。我如果当时有很好的洞察力就应该发现以后还要引入另外的附加问题：用什么字体，用什么字号写，用不用斜体、粗体、下划线写，有没有什么格式等等<br />
-遗漏的需求问题。可以这样认为：一旦提出了更好的解决方案，就一定会带来新的问题。需求是无穷无尽的，完美的需求是不存在的。只要做到客户满意即可。</p>
-<p>假设以上问题都已经搞定，那么看看现在我已经收集到什么信息：</p>
-<p>“查阅一些有关介绍需求工程或软件项目管理的网站”得到题目范围是“需求工程”和“软件项目管理”的领域。如果我还不知道这两个概念，可以上网查阅。反正一句话：每个<br />
-词我都要明白，并且能用清晰的术语  向  老师和助教表达我的观点。</p>
-<p>“读一篇写得不错的文章”，这句话有很大的迷惑性。首先写得不错是什么概念？这是一个模糊词。我感觉我这篇文章也写的不错，贴到网上应该也也符和以上要求。假如我们不<br />
-能对这个“写的不错”有什么准确的理解，可以用“写的很差”的反面定义。总之，需求的过程就是将模糊的东西明确下来的过程。我对写的不错的定义是：阅读此篇文章的人超<br />
-过千人，并且有  60  ％以上的评论者认为有指导意义。下面我进一步分析：读一篇其实是一种暗示，老师的意思应该是至少读一篇，虽然只是写一篇文章的概括。我认为<br />
-已经将这个潜在的需求挖掘出来。</p>
-<p>“用  1  －  2  页概括文章的内容”这一个限制条件，经过我先前做的调研，可以这样清晰的描述。用  A4<br />
-纸，白纸黑字，字体：宋体，字体大小：五号，常规字体无加粗等特殊表现形式，无特殊文体格式。字数限制：  1  －  2<br />
-页，无其他特殊要求。文字内容：对需求工程或软件项目管理的写的不错的文章（前有定义）的内容概括。</p>
-<p>“（要求注明文章来源）”这也是约束条件。而且是必须做到的。</p>
-<p>此外还有特殊的规定：“  2004-9-13  号上交”这是时间约定。</p>
-<p>现在我来区分业务、用户、功能和非功能需求。业务需求：老师的作业要求；用户需求：各个助教对本次作业的要求。可以看到各个助教对老师的作业要求并没有异议。更多的用<br />
-户需求：字迹工整，页面整洁等等。但是我是用  A4<br />
-纸打印出来，这些需求都可以满足。我的功能需求：有对以上老师布置作业的详尽解答。非功能需求：解答简单易懂，符合软件需求这门课的专业术语。（省略  SRS<br />
-的制作和签约）</p>
-<p>假设我现在有台高智能的计算机，我只要将以上的规约转变为它能懂的字符即可，现在一切搞定。就差这台计算机了  ……</p>
-<p>从纯理论来说，在需求这个阶段，客户和需求分析员两个角色就像是在下棋，最终的目标是要走成和棋。下棋的过程，便是更改需求的过程。客户不会谦让你，每次更改需求都有<br />
-可能对项目造成不可估量的后果。那你就必须是下棋的高手。每走一步都要小心谨慎，走错一步都有可能成为死棋。不管将死谁，对于项目组来说，都是种损失。如果需求分析员<br />
-能够预测到客户下一步棋，那么走和棋的概率将增加。现在所有的方法论的东西都只能增加你走和棋的概率，不能保障你一定能走成和棋。下棋用的棋谱是这样，关于软件需求的<br />
-各种期刊杂志也是这样。</p>
-<p>“一是理论，二是实践经验。这两者在任何时候都缺一不可。”这真要感谢我的  马哲  老师和我的良好记忆力。需求分析员这一角色不是单靠某某理论就能胜任的。没有和<br />
-客户打交道的经验，没有宏观和微观把握事情的能力，很难担当这一角色。能够从细节中推出正确的需求，也能从客户和用户的利益冲突的地方找到潜在的需求。如此看来，这一<br />
-种角色很难担当，甚至不可能有人担当这一角色。但实际的情况并非如此。这就想我们编程一样：操作系统里有  bug  ，编译环境中也有  bug<br />
-，谁能保证自己的程序中没有  bug  呢？需求的缺陷就向  bug  一样难以排除。既然我们可以控制  bug<br />
-的数量，就也可以控制需求的缺陷。从另一个角度看，其实需求缺陷就是  bug  。首先我们必须明确一个结论：“没有完美的需求”。现在我们用一大堆的约束条件来约<br />
-束需求，我们只是在满足客户的条件下达到一种可行解，而不是最优解。虽然客户希望随时随地改变这些约束条件，然而开发方却希望将这些约束条件尽可能固定下来。需求的变<br />
-动将对项目的完工产生致命的影响。除非客户非要对需求修改，并承担项目延期发布造成的后果。而且项目的后期，确保需求不被改动。否则这个项目可能永远都完成不了。如果<br />
-非要改动，就放到下一个版本去吧。</p>
-<p>不管怎么说，需求是最耗费脑力活动的事情。也是软件工程的起始，如果起点就错了，最后的项目不可能让客户满意。但是即使起点对了，最后的项目也不一定会让客户满意。因<br />
-为需求这个环节毕竟是软件工程流程中的一环而已。</p>
-<p>当初为了把字数限制在3页字以内,就省略了很多需求的过程.</p>
-<p>现在感觉这份需求分析还是有许多要改进的地方.</p>
 
       
     </div>
@@ -2282,7 +1358,7 @@ perfact.  放弃或停止邪恶的完美代码。程序员们或许感觉有段�
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/37/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/39/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/37/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/39/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

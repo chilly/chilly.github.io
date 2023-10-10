@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">793</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -205,264 +205,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/08/23/1755650/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/08/23/1755650/" class="post-title-link" itemprop="url">C# Ref关键字</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-08-23 10:49:00" itemprop="dateCreated datePublished" datetime="2007-08-23T10:49:00+08:00">2007-08-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>C# 语言参考</p>
-<p>ref（C# 参考）</p>
-<p>** ref ** 关键字使参数按引用传递。其效果是，当控制权传递回调用方法时，在方法中对参数所做的任何更改都将反映在该变量中。若要使用 ** ref ** 参数，则方法定义和调用方法都必须显式使用 ** ref ** 关键字。例如：</p>
-<p>[ <img src="http://msdn2.microsoft.com/msdn/Controls/CodeSnippet/zh-cn/copy_off.gif" alt="" /><br />
-复制代码 ](javascript:CopyCode(‘ctl00_LibFrame_ctl06other’)😉</p>
-<pre><code>class RefExample
-&#123;
-    static void Method(ref int i)
-    &#123;
-        i = 44;
-    &#125;
-    static void Main()
-    &#123;
-        int val = 0;
-        Method(ref val);
-        // val is now 44
-    &#125;
-&#125;
-</code></pre>
-<p>传递到 ** ref ** 参数的参数必须最先初始化。这与 out 不同，out 的参数在传递之前不需要显式初始化。（请参见 <a target="_blank" rel="noopener" href="http://msdn2.microsoft.com/zh-cn/library/t3c3bfhx(VS.80).aspx"> out<br />
-</a> 。）</p>
-<p>尽管 ** ref ** 和 ** out ** 在运行时的处理方式不同，但它们在编译时的处理方式是相同的。因此，如果一个方法采用 ** ref **<br />
-参数，而另一个方法采用 [ out ](<span class="exturl" data-url="aHR0cDovL21zZG4yLm1pY3Jvc29mdC5jb20vemgt">http://msdn2.microsoft.com/zh-<i class="fa fa-external-link-alt"></i></span><br />
-cn/library/t3c3bfhx(VS.80).aspx)<br />
-参数，则无法重载这两个方法。例如，从编译的角度来看，以下代码中的两个方法是完全相同的，因此将不会编译以下代码：</p>
-<p>[ <img src="http://msdn2.microsoft.com/msdn/Controls/CodeSnippet/zh-cn/copy_off.gif" alt="" /><br />
-复制代码 ](javascript:CopyCode(‘ctl00_LibFrame_ctl09other’)😉</p>
-<pre><code>class CS0663_Example 
-&#123;
-    // compiler error CS0663: &quot;cannot define overloaded 
-    // methods that differ only on ref and out&quot;
-    public void SampleMethod(ref int i) &#123;  &#125;
-    public void SampleMethod(out int i) &#123;  &#125;
-&#125;
-</code></pre>
-<p>但是，如果一个方法采用 ** ref ** 或 [ out ](<span class="exturl" data-url="aHR0cDovL21zZG4yLm1pY3Jvc29mdC5jb20vemgt">http://msdn2.microsoft.com/zh-<i class="fa fa-external-link-alt"></i></span><br />
-cn/library/t3c3bfhx(VS.80).aspx) 参数，而另一个方法不采用这两类参数，则可以进行重载，如下所示：</p>
-<p>[ <img src="http://msdn2.microsoft.com/msdn/Controls/CodeSnippet/zh-cn/copy_off.gif" alt="" /><br />
-复制代码 ](javascript:CopyCode(‘ctl00_LibFrame_ctl11other’)😉</p>
-<pre><code>class RefOutOverloadExample
-&#123;
-    public void SampleMethod(int i) &#123;  &#125;
-    public void SampleMethod(ref int i) &#123;  &#125;
-&#125;
-</code></pre>
-<p>[ ![备注](<span class="exturl" data-url="aHR0cDovL21zZG4yLm1pY3Jvc29mdC5jb20vbXNkbi9Db250cm9scy9Db2xsYXBzaWJsZUFyZWEvZW4t">http://msdn2.microsoft.com/msdn/Controls/CollapsibleArea/en-<i class="fa fa-external-link-alt"></i></span><br />
-us/minus.gif) 备注 ](<span class="exturl" data-url="aHR0cDovL21zZG4yLm1pY3Jvc29mdC5jb20vemgt">http://msdn2.microsoft.com/zh-<i class="fa fa-external-link-alt"></i></span><br />
-cn/library/14akc2c7(VS.80).aspx#)<br />
-属性不是变量，因此不能作为 ** ref ** 参数传递。</p>
-<p>有关传递数组的信息，请参见</p>
-<p>[ 使用 ref 和 out 传递数组 ](<span class="exturl" data-url="aHR0cDovL21zZG4yLm1pY3Jvc29mdC5jb20vemgt">http://msdn2.microsoft.com/zh-<i class="fa fa-external-link-alt"></i></span><br />
-cn/library/szasx730(VS.80).aspx) 。</p>
-<p>[ ![示例](<span class="exturl" data-url="aHR0cDovL21zZG4yLm1pY3Jvc29mdC5jb20vbXNkbi9Db250cm9scy9Db2xsYXBzaWJsZUFyZWEvZW4t">http://msdn2.microsoft.com/msdn/Controls/CollapsibleArea/en-<i class="fa fa-external-link-alt"></i></span><br />
-us/minus.gif) 示例 ](<span class="exturl" data-url="aHR0cDovL21zZG4yLm1pY3Jvc29mdC5jb20vemgt">http://msdn2.microsoft.com/zh-<i class="fa fa-external-link-alt"></i></span><br />
-cn/library/14akc2c7(VS.80).aspx#)<br />
-按引用传递值类型（如上所示）是有用的，但是 ** ref **<br />
-对于传递引用类型也是很有用的。这允许被调用的方法修改该引用所引用的对象，因为引用本身是按引用来传递的。下面的示例显示出当引用类型作为 ** ref **<br />
-参数传递时，可以更改对象本身。</p>
-<pre><code>class RefRefExample
-&#123;
-    static void Method(ref string s)
-    &#123;
-        s = &quot;changed&quot;;
-    &#125;
-    static void Main()
-    &#123;
-        string str = &quot;original&quot;;
-        Method(ref str);
-        // str is now &quot;changed&quot;
-    &#125;
-&#125;
-</code></pre>
-<p>[ <img src="http://msdn2.microsoft.com/msdn/Controls/CodeSnippet/zh-cn/copy_off.gif" alt="" /><br />
-复制代码 ](javascript:CopyCode(‘ctl00_LibFrame_ctl15other’)😉</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/08/23/1755306/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/08/23/1755306/" class="post-title-link" itemprop="url">图片导入工具实现</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-08-23 08:42:00" itemprop="dateCreated datePublished" datetime="2007-08-23T08:42:00+08:00">2007-08-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>134</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>可以将图片集上传到数据库了。</p>
-<p>采用了C-<br />
-S模式，Server使用的是多线程循环服务器。没有考虑效率，下次改进准备使用线程池机制。上传图片时使用每发一次数据断开一次链接，下次要做不断开链接的。</p>
-<p>图片对比使用的是逐点对比，速度较慢，准备改进。使用索引对比法。准备添加掩码机制。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1238,6 +980,193 @@ over了。</p>
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/31/1719043/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/07/31/1719043/" class="post-title-link" itemprop="url">MiniDB实训第十六天--HashTable,红黑树序列化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-07-31 13:25:00" itemprop="dateCreated datePublished" datetime="2007-07-31T13:25:00+08:00">2007-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>224</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>昨天搞定了HashTable,红黑树序列化 ，数据文件终于可以保存了。但是调试的时候如果不是正常关闭，还是会有多多少少的问题。</p>
+<p>界面那里要大改一些。因为他传来的值就是界面上得到的值，那么我数据底层就没有办法删除空行。过去使用的是delete * 现在没有办法在那样做了，因为表关联的时<br />
+候，不能删除关联的行，但是却插入了更改后的行。而更改前的行还留在那里。最后又回归到第一个版本，点击插入才能插入，点击删除才能删除。</p>
+<p>关联。。。。痛苦。。。。。调试中。。。。。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/29/1715205/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/07/29/1715205/" class="post-title-link" itemprop="url">MiniDB实训第十五天---泪水胜过成果</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-07-29 17:44:00" itemprop="dateCreated datePublished" datetime="2007-07-29T17:44:00+08:00">2007-07-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>108</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天上午不断的修补bug，终于可以跑起来了。下午又花了半个小时改了下ppt。本想着这次我们又能得一个西瓜，没想到我们的成果竟然没有胜过孙亚红小同学的泪水。。<br />
+不过同情一下吧，毕竟人家哭了。。。</p>
+<p>下次一定要拿个西瓜。。。。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/63/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><span class="page-number current">64</span><a class="page-number" href="/page/65/">65</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/65/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1269,7 +1198,7 @@ over了。</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:10</span>
   </span>
 </div>
 

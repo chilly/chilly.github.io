@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/04/12/4067714/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/03/02/2011-03-02-bigdata/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/04/12/4067714/" class="post-title-link" itemprop="url">C++ Enum类型的使用</a>
+          <a href="/2011/03/02/2011-03-02-bigdata/" class="post-title-link" itemprop="url">笔试面试题集——大数据量处理</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,14 +243,23 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-04-12 22:14:00" itemprop="dateCreated datePublished" datetime="2009-04-12T22:14:00+08:00">2009-04-12</time>
+      <time title="Created: 2011-03-02 00:00:00" itemprop="dateCreated datePublished" datetime="2011-03-02T00:00:00+08:00">2011-03-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 23:09:15" itemprop="dateModified" datetime="2023-10-05T23:09:15+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
     </span>
 
   
@@ -260,14 +269,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>385</span>
+      <span>6.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>6 mins.</span>
     </span>
 </div>
 
@@ -278,15 +287,146 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>为了调用方便…我这里就全部写成Public的访问权限.虽然自己知道这样不好。</p>
-<p>但是时间比较紧张。能省点力气就省点力气。</p>
-<p>class Status { public: static enum stat{success, failure, duplicate,<br />
-overflow}; stat st; Status() { st = failure; } Status(stat s):st(s) { } Status<br />
-operator=(const Status&amp; s) { if(this != &amp;s) { this-&gt;st = <span class="exturl" data-url="aHR0cDovL3Muc3Q=">s.st<i class="fa fa-external-link-alt"></i></span>; } return *this;<br />
-} Status operator=(const stat &amp; s) { this-&gt;st = s; return *this; } ~Status() {<br />
-} };</p>
-<p>这里的调用应该这样写：</p>
-<p>if(<span class="exturl" data-url="aHR0cDovL3Muc3Q=">s.st<i class="fa fa-external-link-alt"></i></span> == Status::overflow) { // do something }</p>
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="big data process solution" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="_su_title" content="big data process" />
+<meta name="views" content="294" />
+<meta name="_wp_old_slug" content="bigdat" />
+<div id="blog_article">
+<p>转自：<span class="exturl" data-url="aHR0cDovL2kueW9oby5jbi80NzMyNjAvbG9ndmlldy8xODE2NzMwLmh0bWw=">http://i.yoho.cn/473260/logview/1816730.html<i class="fa fa-external-link-alt"></i></span></p>
+<p>大数据量的问题是很多面试笔试中经常出现的问题，比如baidu google 腾讯 这样的一些涉及到海量数据的公司经常会问到。</p>
+<p>下面的方法是我对海量数据的处理方法进行了一个一般性的总结，当然这些方法可能并不能完全覆盖所有的问题，但是这样的一些方法也基本可以处理绝大多数遇到的问题。下面的一些问题基本直接来源于公司的面试笔试题目，方法不一定最优，如果你有更好的处理方法，欢迎与我讨论。</p>
+<p>1.Bloom filter</p>
+<p>适用范围：可以用来实现数据字典，进行数据的判重，或者集合求交集</p>
+<p>基本原理及要点：<br />
+对 于原理来说很简单，位数组+k个独立hash函数。将hash函数对应的值的位数组置1，查找时如果发现所有hash函数对应位都是1说明存在，很明显这 个过程并不保证查找的结果是100%正确的。同时也不支持删除一个已经插入的关键字，因为该关键字对应的位会牵动到其他的关键字。所以一个简单的改进就是  counting Bloom filter，用一个counter数组代替位数组，就可以支持删除了。</p>
+<p>还有一个比较重要的问题，如 何根据输入元素个数n，确定位数组m的大小及hash函数个数。当hash函数个数k=(ln2)<em>(m/n)时错误率最小。在错误率不大于E的情况 下，m至少要等于n</em>lg(1/E)才能表示任意n个元素的集合。但m还应该更大些，因为还要保证bit数组里至少一半为0，则m应 该&gt;=nlg(1/E)*lge 大概就是nlg(1/E)1.44倍(lg表示以2为底的对数)。</p>
+<p>举个例子我们假设错误率为0.01，则此时m应大概是n的13倍。这样k大概是8个。</p>
+<p>注意这里m与n的单位不同，m是bit为单位，而n则是以元素个数为单位(准确的说是不同元素的个数)。通常单个元素的长度都是有很多bit的。所以使用bloom filter内存上通常都是节省的。</p>
+<p>扩展：<br />
+Bloom  filter将集合中的元素映射到位数组中，用k（k为哈希函数个数）个映射位是否全1表示元素在不在这个集合中。Counting bloom  filter（CBF）将位数组中的每一位扩展为一个counter，从而支持了元素的删除操作。Spectral Bloom  Filter（SBF）将其与集合元素的出现次数关联。SBF采用counter中的最小值来近似表示元素的出现频率。</p>
+<p>问题实例：给你A,B两个文件，各存放50亿条URL，每条URL占用64字节，内存限制是4G，让你找出A,B文件共同的URL。如果是三个乃至n个文件呢？</p>
+<p>根 据这个问题我们来计算下内存的占用，4G=2^32大概是40亿*8大概是340亿，n=50亿，如果按出错率0.01算需要的大概是650亿个bit。 现在可用的是340亿，相差并不多，这样可能会使出错率上升些。另外如果这些urlip是一一对应的，就可以转换成ip，则大大简单了。</p>
+<p>2.Hashing</p>
+<p>适用范围：快速查找，删除的基本数据结构，通常需要总数据量可以放入内存</p>
+<p>基本原理及要点：<br />
+hash函数选择，针对字符串，整数，排列，具体相应的hash方法。<br />
+碰撞处理，一种是open hashing，也称为拉链法；另一种就是closed hashing，也称开地址法，opened addressing。</p>
+<p>扩展：<br />
+d-left  hashing中的d是多个的意思，我们先简化这个问题，看一看2-left hashing。2-left  hashing指的是将一个哈希表分成长度相等的两半，分别叫做T1和T2，给T1和T2分别配备一个哈希函数，h1和h2。在存储一个新的key时，同 时用两个哈希函数进行计算，得出两个地址h1[key]和h2[key]。这时需要检查T1中的h1[key]位置和T2中的h2[key]位置，哪一个 位置已经存储的（有碰撞的）key比较多，然后将新key存储在负载少的位置。如果两边一样多，比如两个位置都为空或者都存储了一个key，就把新key  存储在左边的T1子表中，2-left也由此而来。在查找一个key时，必须进行两次hash，同时查找两个位置。</p>
+<p>问题实例：<br />
+1).海量日志数据，提取出某日访问百度次数最多的那个IP。</p>
+<p>IP的数目还是有限的，最多2^32个，所以可以考虑使用hash将ip直接存入内存，然后进行统计。</p>
+<p>3.bit-map</p>
+<p>适用范围：可进行数据的快速查找，判重，删除，一般来说数据范围是int的10倍以下</p>
+<p>基本原理及要点：使用bit数组来表示某些元素是否存在，比如8位电话号码</p>
+<p>扩展：bloom filter可以看做是对bit-map的扩展</p>
+<p>问题实例：</p>
+<p>1)已知某个文件内包含一些电话号码，每个号码为8位数字，统计不同号码的个数。</p>
+<p>8位最多99 999 999，大概需要99m个bit，大概10几m字节的内存即可。</p>
+<p>2)2.5亿个整数中找出不重复的整数的个数，内存空间不足以容纳这2.5亿个整数。</p>
+<p>将bit-map扩展一下，用2bit表示一个数即可，0表示未出现，1表示出现一次，2表示出现2次及以上。或者我们不用2bit来进行表示，我们用两个bit-map即可模拟实现这个2bit-map。</p>
+<p>4.堆</p>
+<p>适用范围：海量数据前n大，并且n比较小，堆可以放入内存</p>
+<p>基 本原理及要点：最大堆求前n小，最小堆求前n大。方法，比如求前n小，我们比较当前元素与最大堆里的最大元素，如果它小于最大元素，则应该替换那个最大元 素。这样最后得到的n个元素就是最小的n个。适合大数据量，求前n小，n的大小比较小的情况，这样可以扫描一遍即可得到所有的前n元素，效率很高。</p>
+<p>扩展：双堆，一个最大堆与一个最小堆结合，可以用来维护中位数。</p>
+<p>问题实例：<br />
+1)100w个数中找最大的前100个数。</p>
+<p>用一个100个元素大小的最小堆即可。</p>
+<p>5.双层桶划分</p>
+<p>适用范围：第k大，中位数，不重复或重复的数字</p>
+<p>基本原理及要点：因为元素范围很大，不能利用直接寻址表，所以通过多次划分，逐步确定范围，然后最后在一个可以接受的范围内进行。可以通过多次缩小，双层只是一个例子。</p>
+<p>扩展：</p>
+<p>问题实例：<br />
+1).2.5亿个整数中找出不重复的整数的个数，内存空间不足以容纳这2.5亿个整数。</p>
+<p>有点像鸽巢原理，整数个数为2<sup>32,也就是，我们可以将这2</sup>32个数，划分为2^8个区域(比如用单个文件代表一个区域)，然后将数据分离到不同的区域，然后不同的区域在利用bitmap就可以直接解决了。也就是说只要有足够的磁盘空间，就可以很方便的解决。</p>
+<p>2).5亿个int找它们的中位数。</p>
+<p>这个例子比上面那个更明显。首先我们将int划分为2^16个区域，然后读取数据统计落到各个区域里的数的个数，之后我们根据统计结果就可以判断中位数落到那个区域，同时知道这个区域中的第几大数刚好是中位数。然后第二次扫描我们只统计落在这个区域中的那些数就可以了。</p>
+<p>实 际上，如果不是int是int64，我们可以经过3次这样的划分即可降低到可以接受的程度。即可以先将int64分成2^24个区域，然后确定区域的第几 大数，在将该区域分成2<sup>20个子区域，然后确定是子区域的第几大数，然后子区域里的数的个数只有2</sup>20，就可以直接利用direct addr  table进行统计了。</p>
+<p>6.数据库索引</p>
+<p>适用范围：大数据量的增删改查</p>
+<p>基本原理及要点：利用数据的设计实现方法，对海量数据的增删改查进行处理。<br />
+扩展：<br />
+问题实例：</p>
+<p>7.倒排索引(Inverted index)</p>
+<p>适用范围：搜索引擎，关键字查询</p>
+<p>基本原理及要点：为何叫倒排索引？一种索引方法，被用来存储在全文搜索下某个单词在一个文档或者一组文档中的存储位置的映射。</p>
+<p>以英文为例，下面是要被索引的文本：<br />
+T0 = “it is what it is”<br />
+T1 = “what is it”<br />
+T2 = “it is a banana”<br />
+我们就能得到下面的反向文件索引：<br />
+“a”:      {2}<br />
+“banana”: {2}<br />
+“is”:     {0, 1, 2}<br />
+“it”:     {0, 1, 2}<br />
+“what”:   {0, 1}<br />
+检索的条件&quot;what&quot;, “is” 和 “it” 将对应集合的交集。</p>
+<p>正 向索引开发出来用来存储每个文档的单词的列表。正向索引的查询往往满足每个文档有序频繁的全文查询和每个单词在校验文档中的验证这样的查询。在正向索引 中，文档占据了中心的位置，每个文档指向了一个它所包含的索引项的序列。也就是说文档指向了它包含的那些单词，而反向索引则是单词指向了包含它的文档，很 容易看到这个反向的关系。</p>
+<p>扩展：</p>
+<p>问题实例：文档检索系统，查询那些文件包含了某单词，比如常见的学术论文的关键字搜索。</p>
+<p>8.外排序</p>
+<p>适用范围：大数据的排序，去重</p>
+<p>基本原理及要点：外排序的归并方法，置换选择 败者树原理，最优归并树</p>
+<p>扩展：</p>
+<p>问题实例：<br />
+1).有一个1G大小的一个文件，里面每一行是一个词，词的大小不超过16个字节，内存限制大小是1M。返回频数最高的100个词。</p>
+<p>这个数据具有很明显的特点，词的大小为16个字节，但是内存只有1m做hash有些不够，所以可以用来排序。内存可以当输入缓冲区使用。</p>
+<p>9.trie树</p>
+<p>适用范围：数据量大，重复多，但是数据种类小可以放入内存</p>
+<p>基本原理及要点：实现方式，节点孩子的表示方式</p>
+<p>扩展：压缩实现。</p>
+<p>问题实例：<br />
+1).有10个文件，每个文件1G， 每个文件的每一行都存放的是用户的query，每个文件的query都可能重复。要你按照query的频度排序 。</p>
+<p>2).1000万字符串，其中有些是相同的(重复),需要把重复的全部去掉，保留没有重复的字符串。请问怎么设计和实现？</p>
+<p>3).寻找热门查询：查询串的重复度比较高，虽然总数是1千万，但如果除去重复后，不超过3百万个，每个不超过255字节。</p>
+<p>10.分布式处理 mapreduce</p>
+<p>适用范围：数据量大，但是数据种类小可以放入内存</p>
+<p>基本原理及要点：将数据交给不同的机器去处理，数据划分，结果归约。</p>
+<p>扩展：</p>
+<p>问题实例：</p>
+<p>1).The canonical example application of MapReduce is a process to count the appearances of</p>
+<p>each different word in a set of documents:<br />
+void map(String name, String document):<br />
+// name: document name<br />
+// document: document contents<br />
+for each word w in document:<br />
+EmitIntermediate(w, 1);</p>
+<p>void reduce(String word, Iterator partialCounts):<br />
+// key: a word<br />
+// values: a list of aggregated partial counts<br />
+int result = 0;<br />
+for each v in partialCounts:<br />
+result += ParseInt(v);<br />
+Emit(result);<br />
+Here, each document is split in words, and each word is counted initially with a “1” value by</p>
+<p>the Map function, using the word as the result key. The framework puts together all the pairs</p>
+<p>with the same key and feeds them to the same call to Reduce, thus this function just needs to</p>
+<p>sum all of its input values to find the total appearances of that word.</p>
+<p>2).海量数据分布在100台电脑中，想个办法高效统计出这批数据的TOP10。</p>
+<p>3).一共有N个机器，每个机器上有N个数。每个机器最多存O(N)个数并对它们操作。如何找到N^2个数的中数(median)？</p>
+<p>经典问题分析</p>
+<p>上千万or亿数据（有重复），统计其中出现次数最多的前N个数据,分两种情况：可一次读入内存，不可一次读入。</p>
+<p>可用思路：trie树+堆，数据库索引，划分子集分别统计，hash，分布式计算，近似统计，外排序</p>
+<p>所 谓的是否能一次读入内存，实际上应该指去除重复后的数据量。如果去重后数据可以放入内存，我们可以为数据建立字典，比如通过  map，hashmap，trie，然后直接进行统计即可。当然在更新每条数据的出现次数的时候，我们可以利用一个堆来维护出现次数最多的前N个数据，当 然这样导致维护次数增加，不如完全统计后在求前N大效率高。</p>
+<p>如果数据无法放入内存。一方面我们可以考虑上面的字典方法能否被改进以适应这种情形，可以做的改变就是将字典存放到硬盘上，而不是内存，这可以参考数据库的存储方法。</p>
+<p>当 然还有更好的方法，就是可以采用分布式计算，基本上就是map-reduce过程，首先可以根据数据值或者把数据hash(md5)后的值，将数据按照范 围划分到不同的机子，最好可以让数据划分后可以一次读入内存，这样不同的机子负责处理各种的数值范围，实际上就是map。得到结果后，各个机子只需拿出各 自的出现次数最多的前N个数据，然后汇总，选出所有的数据中出现次数最多的前N个数据，这实际上就是reduce过程。</p>
+<p>实际上可能想直 接将数据均分到不同的机子上进行处理，这样是无法得到正确的解的。因为一个数据可能被均分到不同的机子上，而另一个则可能完全聚集到一个机子上，同时还可 能存在具有相同数目的数据。比如我们要找出现次数最多的前100个，我们将1000万的数据分布到10台机器上，找到每台出现次数最多的前  100个，归并之后这样不能保证找到真正的第100个，因为比如出现次数最多的第100个可能有1万个，但是它被分到了10台机子，这样在每台上只有1千 个，假设这些机子排名在1000个之前的那些都是单独分布在一台机子上的，比如有1001个，这样本来具有1万个的这个就会被淘汰，即使我们让每台机子选 出出现次数最多的1000个再归并，仍然会出错，因为可能存在大量个数为1001个的发生聚集。因此不能将数据随便均分到不同机子上，而是要根据hash  后的值将它们映射到不同的机子上处理，让不同的机器处理一个数值范围。</p>
+<p>而外排序的方法会消耗大量的IO，效率不会很高。而上面的分布式方法，也可以用于单机版本，也就是将总的数据根据值的范围，划分成多个不同的子文件，然后逐个处理。处理完毕之后再对这些单词的及其出现频率进行一个归并。实际上就可以利用一个外排序的归并过程。</p>
+<p>另外还可以考虑近似计算，也就是我们可以通过结合自然语言属性，只将那些真正实际中出现最多的那些词作为一个字典，使得这个规模可以放入内存。</p>
+<p>转载请注明出处：<span class="exturl" data-url="aHR0cDovL2Jicy54anR1LmVkdS5jbi8=">http://bbs.xjtu.edu.cn<i class="fa fa-external-link-alt"></i></span><br />
+作者phylips@bmy</p>
+<p>参考文献：<br />
+<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhb21lbmcvYXJjaGl2ZS8yMDA3LzAzLzA4LzE1MjM5NDAuYXNweA==">http://blog.csdn.net/jiaomeng/archive/2007/03/08/1523940.aspx<i class="fa fa-external-link-alt"></i></span> d-Left Hashing<br />
+<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhb21lbmcvYXJjaGl2ZS8yMDA3LzAxLzI3LzE0OTU1MDAuYXNweA==">http://blog.csdn.net/jiaomeng/archive/2007/01/27/1495500.aspx<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9CbG9vbV9maWx0ZXI=">http://en.wikipedia.org/wiki/Bloom_filter<i class="fa fa-external-link-alt"></i></span><br />
+<span class="exturl" data-url="aHR0cDovL2hpLmJhaWR1LmNvbS94ZHpoYW5nX2NoaW5hL2Jsb2cvaXRlbS8yODQ3Nzc3ZTgzZmIwMjAyMjkzODhhMTUuaHRtbA==">http://hi.baidu.com/xdzhang_china/blog/item/2847777e83fb020229388a15.html<i class="fa fa-external-link-alt"></i></span> 应用Bloom Filter的几个小技巧<br />
+<span class="exturl" data-url="aHR0cDovL3poLndpa2lwZWRpYS5vcmcvd2lraS8lRTUlODAlOTIlRTYlOEUlOTIlRTclQjQlQTIlRTUlQkMlOTU=">http://zh.wikipedia.org/wiki/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95<i class="fa fa-external-link-alt"></i></span></p>
+</div>
+<table cellspacing="0" cellpadding="0">
+<tbody></tbody>
+</table>
 
       
     </div>
@@ -313,7 +453,7 @@ operator=(const Status&amp; s) { if(this != &amp;s) { this-&gt;st = <span class=
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/04/11/4064281/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/22/6200191/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -331,7 +471,7 @@ operator=(const Status&amp; s) { if(this != &amp;s) { this-&gt;st = <span class=
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/04/11/4064281/" class="post-title-link" itemprop="url">ODBC连接Oracle 9i, C#连接字符串</a>
+          <a href="/2011/02/22/6200191/" class="post-title-link" itemprop="url">如何登陆自己的Blog</a>
         </h2>
 
         <div class="post-meta-container">
@@ -342,14 +482,649 @@ operator=(const Status&amp; s) { if(this != &amp;s) { this-&gt;st = <span class=
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-04-11 09:57:00" itemprop="dateCreated datePublished" datetime="2009-04-11T09:57:00+08:00">2009-04-11</time>
+      <time title="Created: 2011-02-22 15:38:00" itemprop="dateCreated datePublished" datetime="2011-02-22T15:38:00+08:00">2011-02-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-06 01:34:55" itemprop="dateModified" datetime="2023-10-06T01:34:55+08:00">2023-10-06</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>20</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><img src="http://hi.csdn.net/attachment/201102/22/0_1298360191We9e.gif" alt="" /></p>
+<p><img src="http://hi.csdn.net/attachment/201102/22/0_12983601942sy0.gif" alt="" /></p>
+<p><img src="http://hi.csdn.net/attachment/201102/22/0_129836018804Tf.gif" alt="" /></p>
+<p><img src="http://hi.csdn.net/attachment/201102/22/0_1298360180zNam.gif" alt="" /></p>
+<p>然后再浏览器中输入blog地址就可以了…</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/22/2011-02-22-dian-ying-ji/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2011/02/22/2011-02-22-dian-ying-ji/" class="post-title-link" itemprop="url">电影记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2011-02-22 00:00:00" itemprop="dateCreated datePublished" datetime="2011-02-22T00:00:00+08:00">2011-02-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:08:54" itemprop="dateModified" datetime="2023-10-05T23:08:54+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/movie/" itemprop="url" rel="index"><span itemprop="name">movie</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="集合各种影评，色遇，最强喜事，将爱情进行到底，平凡与浮华，怎样才算是成功。" />
+<meta name="_su_keywords" content="影评,电影,喜剧" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="_su_title" content="电影,影评,赏析,让子弹飞,最强喜事,非诚勿扰,封杀,三傻大闹宝莱坞,大笑江湖" />
+<meta name="views" content="341" />
+近期还是看了蛮多电影的..从小沈阳的大笑江湖再到姜文的让子弹飞，再到阔别十年的将爱，再到刚刚看的三傻大闹宝莱坞。电影是看的很多，有很多电影却不知道到底要讲什么。简简单单的惩恶扬善永远是国产电影的主题。但是花样不是那么多，主题情节还是老套，也不知道是否应该变变样子。
+<p>不过让子弹飞的情节还是蛮丰富的，各种人物的勾心斗角小心算计还是演的蛮有意思的。影片和配乐挺有霸气，但是故事中的深层含义还是不便分析，当然也可能根本没有啥深层含义。</p>
+<p>小沈阳和赵本山的大笑江湖足足让我们睡了很长时间。那叫一个困呀…本来就是喜剧片拍得跟电视剧似地，一直枯燥的对话，能不让人昏昏欲睡吗？(值得一提的是，我很喜欢大笑江湖的主题歌，朗朗上口。)喜剧如果从到到尾一直喜，观众未免要喜得疲劳。最强喜事一直喜庆中…不过亮点在于全是大明星，依菲宝的话说就是比较养眼…喜剧嘛就要拍的像武林外传、致命伴旅、三傻、喜羊羊一样，不要全是喜事，酸甜苦辣才是有喜感的剧情。</p>
+<p>再说说将爱，那拍得可是有功底了。每三秒一个广告，国产的感冒冲剂都流行到法国了…总之拍电影就拍电影，不是拍广告剧。其主要原因还是现在的国人想钱想疯了。不过现在社会衡量的某人成功的标准大概也就只有钱了。要不怎么说钱是一切商品的等价物。不过将爱中第二个场景中的XX贩卖机真的存在吗？将爱情进行到底是一部很有趣的影片，影片反映了当代离婚的现状。它真的拍得不如葛大爷的非2好看。非2虽不真实但也说的是实话。将爱却充满了小资的浮华和故作的苍凉。</p>
+<p>最好看的还是三傻，平凡中说事，事却不平凡。简易的剧情，却无所谓好人坏人，无所谓善人恶人。所谓大善，除了佛祖我还不知道有谁…所谓大恶，除了撒旦，我也不知道有谁…佛曰，无不可度之人。大抵也是这个意思。</p>
+<p>不过三傻中提到教育制度的改革，我想改革之后，也不会有很多人上学了吧。那又怎么论成败呢？远古的时候成败是打架打出来的，古代成败是考举人考出来的，近代是挣钱挣出来的。不过也挺好，至少不用再打架了。</p>
+<p>近期我的blog被伟大的东西封了。不知道为什么，可能是因为里面挂了twitter的外链，也可能是写了穿越的方法。不过因为我的blog不是很出名的缘故，所以伟大的不会使用专门封杀IP的方式，它只是采用了DNS不解析的重置服务。所以改改hosts还是可以上的。不会的人可以参考 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAxMS8wMi8yMi82MjAwMTkxLmFzcHg=">这里<i class="fa fa-external-link-alt"></i></span>。“一切顺利，追求卓越”代表了三傻的积极人生态度——苦尽总有甘来时。</p>
+<p>祝大家一切顺利。祝大家能在自己喜欢的工作中追求卓越。当然如果不喜欢任何的工作的…请<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x">猛击这里<i class="fa fa-external-link-alt"></i></span>!</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/18/6194163/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2011/02/18/6194163/" class="post-title-link" itemprop="url">路由和交换机</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2011-02-18 19:56:00" itemprop="dateCreated datePublished" datetime="2011-02-18T19:56:00+08:00">2011-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>381</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我在内网，要自己组网。</p>
+<p>自己组网并且要dhcp服务。那咋米办呢？就借了路由当dhcp.首先将路由的wan口接到内网中，然后将交换机的1口接入到路由的lan口中。然后想接多少机器就都<br />
+可以了。另外并没有使用啥直连线，全部都是双绞线…</p>
+<p>另外接入内网的路由将lan端的ip设好(例如192.168.2.1)，再将dhcp打开可以分配(192.168.2.2~192.168.2.255这个网段即<br />
+使和内网冲突也没有关系，因为路由之下的机器外网一般不可见。)，然后将路由的wan端ip和mac地址设置为自己的机器地址就ok了。这样路由之下的PC就可以通过<br />
+路由连外网了。</p>
+<p>如果想让外网的连到路由之下的机器，需要将路由中的某项服务打开(输入<span class="exturl" data-url="aHR0cDovL3huLS1jZXM2YTkwOG80NHY=">http://路由地址<i class="fa fa-external-link-alt"></i></span>，如果开始没有这是路由地址，一般是<span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguMA==">http://192.168.0<i class="fa fa-external-link-alt"></i></span>.<br />
+1   D-Link的是这样)，然后在UI上找找就可以找到。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/18/6193614/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2011/02/18/6193614/" class="post-title-link" itemprop="url">虚拟机Nat连接问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2011-02-18 16:13:00" itemprop="dateCreated datePublished" datetime="2011-02-18T16:13:00+08:00">2011-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>777</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天花了两个小时解决了Nat连接问题。（环境：vmware workstation 7.0，外部os是XP,虚拟机OS也是XP.<br />
+另外防火墙和安全卫士360将vmware.exe设置为例外，内部网络为DHCP。所以我的机器一旦重启ip地址一般会变化。虚拟机的网络设置为NAT）</p>
+<p>是用的vmware workstation 7.0,然后虚拟机里面的os是xp.之后xp就怎么都不可以访问外网。</p>
+<p>首先检查了下vmware nat服务是否已经启动了。然后虚拟机配置中Network Adapter是否是NAT模式。之后是用ipconfig<br />
+/all看看外面的xp是否有VMnet8 这个接口。这时发现VMnet8这个接口存在，就是它的ip实在是太诡异了：<span class="exturl" data-url="aHR0cDovLzE2Mi5YWFguWFhYLlhYWA==">162.XXX.XXX.XXX<i class="fa fa-external-link-alt"></i></span>,子网掩码是<br />
+255.255.0.0.另外看看虚拟机中的ip地址，<span class="exturl" data-url="aHR0cDovL3huLS0xNjIta2Q5ZHEyMGlzY2F3MTdsdnNlLlhYWC5YWFguWFhY">显示的也是162.XXX.XXX.XXX<i class="fa fa-external-link-alt"></i></span>,也有子网掩码，但是没有DNS和网关，并且虚拟机中的网络连接显示<br />
+受限连接。于是顺手把虚拟机中的ip地址从自动获取改为固定的ip,并且将网关ip写为外面os的VMnet8中的ip地址。这时网络连接不再受限，并且可以由虚拟机<br />
+ping通外部os的VMnet8 ip地址。但是依旧不能出外网。</p>
+<p>再后来索性看到vmware的工具栏菜单的编辑选项卡中有编辑虚拟网络。然后看到其中的NAT网络。这个网络的子网是192.168.128.0。外部os<br />
+VMnet8和虚拟os ip的地址根本就不在这个范围内。难怪有问题。所以解决方案为：</p>
+<p>在vmware中编辑-&gt;编辑虚拟网络-&gt;选中 VMnet8在下面的subnet IP 中将192.168.128.0改为192.168.127.0（这里只要<br />
+和其他的网络不冲突即可）,然后Apply.可以马上看到外部OS的VMnet8在连接中。之后将虚拟机中的网络连接重启，即可。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/01/17/6147369/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2011/01/17/6147369/" class="post-title-link" itemprop="url">云计算的缺陷</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2011-01-17 17:04:00" itemprop="dateCreated datePublished" datetime="2011-01-17T17:04:00+08:00">2011-01-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这鬼东西让我很头痛。我知道云计算是非常重要的，也被推上了各种公司政府的计划。但是我总觉得云这东东和熟知的系统比较起来…貌似还是差了一截。当然或许因为它尚处<br />
+于发展的初级阶段。关于它的缺陷总结起来有那么几句话：</p>
+<p>1.它充分的利用了硬件的资源，它也内耗了相当一部分硬件资源。当我看到某某机房中每个网站占用一个服务器的时候，觉得云计算是非常非常有必要的东西。其实那些服务器<br />
+很费电而且服务器中的网站从我开始用互联网到今天，从来没有登录过。那些网站是知名的…吗？当我用自己的机器在linux下全虚拟化出一个xp的时候。我顿时觉<br />
+得虚拟化就是一坨…不,是一坨坨…机器是不能持久超负荷运转的；满负荷机器也是不能搞虚拟化的；另外廉价的服务器对我来说还是挺贵的。</p>
+<p>2.GFS的确是绕过了虚拟化技术。hash,排序加二分。很好很强大。只不过BigTable + mapReduce +<br />
+GFS有时还是不如mysql灵活。怎么说mysql, sqlite也支持个事务…想要创建个事务需要自己添加用户锁的代码。如何想加入行级锁或者列族级锁…<br />
+.可以考虑修改源码…再说安装hadoop和安装mysql一样灵活吗?</p>
+<p>3.锁还是不锁，这是分布式头痛的问题。我也很头痛。锁吧，效率低，不锁吧，check一致性。于是折中，只加写锁。写读和写写冲突解决了。读写冲突还继续残留着…<br />
+于是保持写的势头，不在意读的先后。反正程序不嫌烦，多读几次也没关系。</p>
+<p>4.租房真的很划算吗？租机器真的很节省吗？我觉得它只适用于短期的大项目以及长期的小项目。Facebook目前是租了部分Amazon,不过如果Amazon的价<br />
+格变动了,每年环比上涨一下下…你懂吗？…</p>
+<p>5.一坨怎么搅拌都还是一坨…或者是一坨坨…MIPS（million instructions per second）小的机器，咋米都难虚拟出mips<br />
+大的机器。(你想让每个服务器都自动超频吗？…这貌似可以成为破坏云的好方法…)所以个人认为：廉价的机器搭云的确需要像Google那样找到理想的大规模并<br />
+行分布式计算模型mapReduce.否则使用虚拟化方法,性能只降不升。mapreduce模型是分布式中常用的hash+summary,效果很好,就是针对特殊<br />
+可优化计算时性能较差。</p>
+<p>关于未来：</p>
+<p>我觉得云还是很有前途的。否则我研究它干啥?但是云应该发展成为异质网络，另外虚拟化技术还要再发展发展。另外编程语言还要再进步些。另外就说这么多了…</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/12/24/2010-12-24-own-timer-replace-crontab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/12/24/2010-12-24-own-timer-replace-crontab/" class="post-title-link" itemprop="url">Own Timer Replace Crontab</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-12-24 00:00:00" itemprop="dateCreated datePublished" datetime="2010-12-24T00:00:00+08:00">2010-12-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:54:07" itemprop="dateModified" datetime="2023-10-06T22:54:07+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="crontab can not execute some program.
+Its environment setting is hard to compare with that of system " />
+<meta name="_su_keywords" content="crontab,execute,environment,timer,code,setting,profile" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="_su_title" content="own timer replace crontab" />
+<meta name="views" content="460" />
+Sometime crontab in Linux or Unix can not run some program. Because the environment of crontab is not as same as that of system. If you want to know the difference between those two environments settings. look up /etc/cron.d/anacron file and ~/.profile and ~/.bashrc and xxxx. I can not remember all of them. /etc/cron.d/anacron file is just for crontab. ~/.profile and ~/.bashrc is for system. If you want to know more, search "linux environment file" in Google.
+<p>I think to find all difference between two environment is waste time obviously. Another method is write own timer codes. So Here is my solution:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">#include &amp;lt;iostream&amp;gt;</span><br><span class="line">#include &amp;lt;string&amp;gt;</span><br><span class="line">#include &amp;lt;stdlib.h&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line">/**</span><br><span class="line"> * @author chico chen chillycreator #@@&amp;amp; gmail.com</span><br><span class="line"> */</span><br><span class="line">void usage()&#123;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;timer&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;input your time point:[minute] [hour] [innerday] [innerweek]&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;input your program name:[your program]&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;all of input should be more than zero!&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;you should run this program earlier than you wanted.&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;or else your program will run at next time point.&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line"></span><br><span class="line">	// user input</span><br><span class="line">	int min, hour, howday, howweek;</span><br><span class="line">	string program;</span><br><span class="line">	cout&amp;lt;&amp;lt; &quot;input [min] [hour] [innerdays] [innerweeks]&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cin &amp;gt;&amp;gt; min &amp;gt;&amp;gt; hour &amp;gt;&amp;gt; howday &amp;gt;&amp;gt; howweek;</span><br><span class="line">	cout &amp;lt;&amp;lt;&quot;input your program&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cin &amp;gt;&amp;gt; program;</span><br><span class="line">	if (program.size() &amp;lt;= 0 || min &amp;lt; 0 || hour &amp;lt; 0 || howday &amp;lt; 0 || howweek &amp;lt; 0)&#123;</span><br><span class="line">		usage();</span><br><span class="line">		return 1;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;your timer will run program at &quot;&amp;lt;&amp;lt;hour&amp;lt;&amp;lt;&quot;:&quot;&amp;lt;&amp;lt;min&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;your program is &quot;&amp;lt;&amp;lt;program&amp;lt;&amp;lt;endl;</span><br><span class="line">	if (0 == howday || 1 == howday)&#123;</span><br><span class="line">		howday = 1;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;run this program in every day&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;run this program at &quot;&amp;lt;&amp;lt;howday &amp;lt;&amp;lt;&quot; days intervals.&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	if (0 == howweek)&#123;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;run this program in every week&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;run this program at &quot;&amp;lt;&amp;lt;howweek &amp;lt;&amp;lt;&quot; weeks intervals.&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	// set sleep time and loop time</span><br><span class="line">	int looptime = (howday-1)*3600*24 + howweek * 7 * 3600 * 24;</span><br><span class="line">	int sleeptime = 0;</span><br><span class="line">	bool bFirst = true;</span><br><span class="line">	while(true)&#123;</span><br><span class="line">		time_t now;</span><br><span class="line">		time(&amp;amp;now);</span><br><span class="line">		struct tm * timeinfo = localtime(&amp;amp;now);</span><br><span class="line">		timeinfo-&amp;gt;tm_hour = hour;</span><br><span class="line">		timeinfo-&amp;gt;tm_min = min;</span><br><span class="line">		time_t futuretime = mktime(timeinfo);</span><br><span class="line">		sleeptime = futuretime - now;</span><br><span class="line">		sleeptime = sleeptime &amp;gt;= 0 ? sleeptime : 24*3600+sleeptime;</span><br><span class="line">		if (!bFirst)&#123;</span><br><span class="line">			sleeptime += looptime;</span><br><span class="line">		&#125;</span><br><span class="line">		bFirst = false;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;wait time:&quot;&amp;lt;&amp;lt;sleeptime&amp;lt;&amp;lt;endl;</span><br><span class="line">		sleep(sleeptime);</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;start to run:&quot;&amp;lt;&amp;lt;program&amp;lt;&amp;lt;endl;</span><br><span class="line">		system(program.c_str());</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;end program...&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	// loop end</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Write your own code will bring new bugs in your solution. Another drawback is spending your own time and this timer is not in common. However, you can control it!</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/12/06/2010-12-06-jobs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/12/06/2010-12-06-jobs/" class="post-title-link" itemprop="url">IT Jobs</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-12-06 00:00:00" itemprop="dateCreated datePublished" datetime="2010-12-06T00:00:00+08:00">2010-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:08:03" itemprop="dateModified" datetime="2023-10-05T23:08:03+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
     </span>
 
   
@@ -377,32 +1152,24 @@ operator=(const Status&amp; s) { if(this != &amp;s) { this-&gt;st = <span class=
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>1.首先装好你的Oracle 9i。然后再控制面板-&gt;管理工具-&gt;数据源(odbc)</p>
-<p>2.双击数据源(odbc)-&gt;选择系统DSN-&gt;添加-&gt;Microsoft ODBC for Oracle , 数据源名称:chicoDB<br />
-(这个是用来在C#中写连接字符串用的), 服务器名称：chicoDB (这个是你安装Oracle的时候建立的sid名称即数据库名)。然后确定</p>
-<p>3.打开你的pl/sql 建立几个表（新建-&gt;表）…我使用的system帐号登陆权限为SYSDBA,数据库为chicoDB.(不过使用PL/SQL好像不用<br />
-用户名密码也可以登陆)比如我建立的是client 表。我的所有者为system.在列中输入：CLIENTID （nvarchar(11)），ID(nvarc<br />
-har(11))，NAME(nvarchar(50))，SEX(char(1))，TEL(nvarchar(11))，INCOME(NUMBERIC)，JO<br />
-B(nvarchar(50))。</p>
-<p>4.建立一个c#工程项目，连接字符串这样写：const string connstr =<br />
-“DSN=chicoDB;UID=System;Pwd=zaqwsx;”;</p>
-<p>前面要using System.Data.Odbc; 想建立连接的话就写：OdbcConnection cn = new<br />
-OdbcConnection(connstr);</p>
-<p>const string connstr = “DSN=chicoDB;UID=System;Pwd=zaqwsx;”; OdbcConnection<br />
-cn= new OdbcConnection(connstr); cn.Open(); //<br />
-这里的基本上都是string类型，出了income是double String sqlInsert = “insert into System.client<br />
-values('” + clientId + “‘,’” + id + “‘,’” + name + “‘,to_char(’” + sex +<br />
-“‘),’” + tel + “',” + income + “,'” + job + “')”; OdbcCommand oc = new<br />
-OdbcCommand(slqInsert, cn); oc.CommandType = System.Data.CommandType.Text; int<br />
-rows =oc.ExecuteNonQuery(); System.Console.WriteLine(rows);// 打印被影响的行数 String<br />
-sql = “select * from system.client”; oc.CommandText = sql; OdbcDataReader<br />
-dbreader= oc.ExecuteReader(); //这个Reader好像不能脱机操作…(具体没有查) object[] o = null;<br />
-if (dbreader.HasRows) { o = new object[dbreader.FieldCount];<br />
-dbreader.GetValues(o); } // 这里你自己写个打印语句将查询出来的记录打印出来吧… dbreader.Close();<br />
-oc.Dispose(); cn.Close();</p>
-<p>操作完毕…</p>
-<p>这里要注意的一点，如果你在sql语句末尾加入了’;'，那么Oracle就会报错。另外我本来想用OdbcParament来写.后来屡次失败。不知道愿意。有写出<br />
-来的且能运行的.帮忙贴在我的评论里。</p>
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="找工作的一些经验教训和总结" />
+<meta name="_su_keywords" content="经验,教训,总结,IT" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="_su_title" content="找工作，IT job,IT工作" />
+<meta name="views" content="475" />
+工作是定下来了。与之前本科的工作相比，没有什么值得骄傲的。只不过薪水多了一些。不过公司不大，还在成长阶段。福利待遇算是可以。户口问题是要拼人品的。大概就这些。
+<p>找工作面试笔试还是很重要的。我往往死在笔试那一环，所以以后的面试自然都没有机会。或者往往笔试成绩不佳，当了别人的备胎，等别人推掉了那个offer，自己才能有点机会。所以工作还是早点找或者晚点找。中间时段和别人抢着找，实在吃力不讨好。主要因为在普通大学读书的小朋友们有更多的时间复习，而自己却还必须在实验室干活。幸好在研究生之前有过大公司的实习经历。否则简历关就会被筛掉。在科苑读研有不用交学费的好处，不过读书阶段不能实习而且需要在实验室干活是一个弊端。不过对于找个稳定工作的人来说，留在科苑也是不错的选择。今天还碰到一位刚拿到实验室offer的小朋友，他还在问这里有没有饭补。</p>
+<p>首先呢，要比别人更早的去面试笔试。我的两个offer就是在8月时搞定的。当别人还在看书复习时，offer已经到手。这个时候不要吝惜各种内推的途径以及各个bbs中的工作帖。另外值得注意的一点是：一旦被内推，一定不要参加它的大规模笔试。否则内推就没有用了。</p>
+<p>得到offer最重要是看户口，钱什么的都是浮云。因为物价在上涨，通货在膨胀。当然有些hr说的户口，也是很不靠谱的。这个要自己衡量一下。</p>
+<p>如果不幸的沦落到需要参加大规模笔试。那就几个人一起准备一下吧。一个人准备是很难搞定所有可能的问题的。不过笔试题大题小题变化不大。大题：无非是链表，排序，动态规划。小题：操作系统，数据库，语言编译加运行。反正变着花样，这个公司的题明年会在另一个公司的题中出现。背诵默写一下总会过笔试的。即使你以前没有写过代码。葵花宝典（程序员面试宝典）等秘笈一定一定要看的…要做好自宫的准备…当然看到最后一页会发现自宫是没有必要的…</p>
+<p>面试大都问问项目经历，哪个项目重要，你的贡献，你的优缺点。然后现场技术题。不幸的是我11月初才掌握技术题通用写法，并传授给了我家mm。</p>
+<p>offer没有拿很多，有一部分是我说已经有XX offer后，他们觉得自己给不了那么多，索性把我拒掉了。偶太诚实了。</p>
+<p>一两个小时的面试，很难面出一个人啥品质。谦虚的人可能被认为自卑，技术大牛被认为傲慢。反正啥情况都会出现。往往在于你能不能让面官看中…这和相亲以及闪婚差不多。当然首先要从hr那里打听：面你的是谁以及性别问题。例如mm面mm,那就不能打扮的太pp,否则面官会有很大压力。依此类推…当然这些都是从我mm的面经中总结出来的。</p>
+<p>IT工作的大类一般分三种：项目经理(产品经理)，开发(研发)，测试。当然还有研究员等等。我只面过开发研发，其他一概忽略。主要因为在这个浮躁的大环境下，核心技术的开发是有必要的。测试的氛围不行裁员严重，另外待遇也低。</p>
+<p>另外语言相对来说较为重要，虽然行业中有传言：只要懂编程，不用太在意语言。但其实招聘的时候这方面是相当看重的。例如招网站或者做J2EE项目的就不会看中c程序员。而操作系统，数据库，算法开发的招聘鄙视java程序员。所以还是不要轻信传言了。大公司的招聘只看潜力不看重编程能力的年代一去不复返了.</p>
+<p>另外发现一个很有趣的现象：就是公司培训。我惊讶于某些逃课的小朋友会看重这个事情。</p>
+<p>当然工作最重要的是钱多、清闲、离家近。找工作就像买机器一样，挑个性价比最高的。只不过这个机器也会挑人罢了。</p>
 
       
     </div>
@@ -429,7 +1196,7 @@ oc.Dispose(); cn.Close();</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/04/04/4048515/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/12/01/6047036/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -447,7 +1214,7 @@ oc.Dispose(); cn.Close();</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/04/04/4048515/" class="post-title-link" itemprop="url">Java webservice开发和调用(jdk1.5+eclipse3.4 + tomcat5.5+axis1.4+xfire1.2.6)</a>
+          <a href="/2010/12/01/6047036/" class="post-title-link" itemprop="url">统计</a>
         </h2>
 
         <div class="post-meta-container">
@@ -458,14 +1225,14 @@ oc.Dispose(); cn.Close();</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-04-04 15:53:00" itemprop="dateCreated datePublished" datetime="2009-04-04T15:53:00+08:00">2009-04-04</time>
+      <time title="Created: 2010-12-01 10:12:00" itemprop="dateCreated datePublished" datetime="2010-12-01T10:12:00+08:00">2010-12-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
     </span>
 
   
@@ -475,206 +1242,7 @@ oc.Dispose(); cn.Close();</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>0. 下载一个 [ jdk1.5版本 ](<span class="exturl" data-url="aHR0cDovL2Nkcy5zdW4uY29tL2lzLWJpbi9JTlRFUlNIT1AuZW5maW5pdHkvV0ZTL0NEUy0=">http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-<i class="fa fa-external-link-alt"></i></span><br />
-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-1_5_0_18-windows-i586-p.ex<br />
-e?BundledLineItemUUID=1KhIBe.mgfsAAAEg5uQI93Ap&amp;OrderID=6gVIBe.mONgAAAEg2uQI93A<br />
-p&amp;ProductID=79FIBe.nKlMAAAEfLBlzHdQ4&amp;FileName=/jdk-<br />
-1_5_0_18-windows-i586-p.exe) 的。并且如果Oracle与之冲突…就删掉Oracle的所有环境变量。虽然这样做有点过，但是我的确<br />
-受够了jdk1.6+eclipse3.1+oracle中的jre 1.1.3和<br />
-1.8.1版本的冲突。另外jdk1.6会与eclipse3.1在启动tomcat上冲突。我也不知道具体是什么原因。</p>
-<p>1. 下载一个Eclipse 3.4 for J2EE版本的 [ <span class="exturl" data-url="aHR0cDovL3d3dy5lY2xpcHNlLm9yZy9kb3dubG9hZHMvZG93bmxvYWQucGg=">http://www.eclipse.org/downloads/download.ph<i class="fa fa-external-link-alt"></i></span><br />
-p?file=/technology/epp/downloads/release/ganymede/SR2/eclipse-jee-ganymede-<br />
-SR2-win32.zip ](<span class="exturl" data-url="aHR0cDovL3d3dy5lY2xpcHNlLm9yZy9kb3dubG9hZHMvZG93bmxvYWQucGhwP2ZpbGU9L3RlY2hub2xvZ3k=">http://www.eclipse.org/downloads/download.php?file=/technology<i class="fa fa-external-link-alt"></i></span><br />
-/epp/downloads/release/ganymede/SR2/eclipse-jee-ganymede-SR2-win32.zip)<br />
-2. 下载tomcat 5.5。 [ <span class="exturl" data-url="aHR0cDovL2FwYWNoZS5jcy51dGFoLmVkdS90b21jYXQvdG9tY2F0LTUvdjUuNS4yNy9iaW4=">http://apache.cs.utah.edu/tomcat/tomcat-5/v5.5.27/bin<i class="fa fa-external-link-alt"></i></span><br />
-/apache-tomcat-5.5.27.exe<br />
-](<span class="exturl" data-url="aHR0cDovL2FwYWNoZS5jcy51dGFoLmVkdS90b21jYXQvdG9tY2F0LTUvdjUuNS4yNy9iaW4vYXBhY2hlLQ==">http://apache.cs.utah.edu/tomcat/tomcat-5/v5.5.27/bin/apache-<i class="fa fa-external-link-alt"></i></span><br />
-tomcat-5.5.27.exe) ,下载一个 安装到默认目录。安装完毕之后，不要启动。另外注意，你启动monitor后再点击Exit，不代表服务关闭了。<br />
-你要选择Stop Service 才可以。<br />
-3. 下载xfire-1.2.6。 [ <span class="exturl" data-url="aHR0cDovL3JlcG9zaXRvcnkuY29kZWhhdXMub3JnL29yZy9jb2RlaGF1cy94ZmlyZS94ZmlyZS0=">http://repository.codehaus.org/org/codehaus/xfire/xfire-<i class="fa fa-external-link-alt"></i></span><br />
-distribution/1.2.6/xfire-distribution-1.2.6.zip<br />
-](<span class="exturl" data-url="aHR0cDovL3JlcG9zaXRvcnkuY29kZWhhdXMub3JnL29yZy9jb2RlaGF1cy94ZmlyZS94ZmlyZS1kaXN0cmlidXRpb24vMS4yLjY=">http://repository.codehaus.org/org/codehaus/xfire/xfire-distribution/1.2.6<i class="fa fa-external-link-alt"></i></span><br />
-/xfire-distribution-1.2.6.zip)<br />
-4. 在Eclipse中windows-&gt;preference-&gt;Server-&gt;Runtime Environments。点击add,选中tomcat<br />
-5.5, next, 浏览到你的tomcat 5.5的安装路径。然后Finish.<br />
-5. 新建一个工程（dynamic web project），取名为TestHelloWebService<br />
-6. 在此工程中添加一个新类：hello ，其package为test.<br />
-7. in hello.java中：<br />
-package test; public class Hello { public String hello() { return “hello”; } }</p>
-<p>8. 在web.xml中</web-app>之前添加<br />
-<servlet> <servlet-name>XFireServlet</servlet-name> <servlet-class><br />
-org.codehaus.xfire.transport.http.XFireConfigurableServlet </servlet-class><br />
-</servlet> <servlet-mapping> <servlet-name>XFireServlet</servlet-name> <url-
-pattern>/servlet/XFireServlet/<em></url-pattern> </servlet-mapping> <servlet-
-mapping> <servlet-name>XFireServlet</servlet-name> <url-pattern>/services<br />
-/</em></url-pattern> </servlet-mapping><br />
-9. 将xfire-1.2.6解压，然后将xfire-all-1.2.6.jar 和所有在xfire-1.2.6的lib中的jar<br />
-copy到WebContent/WEB-INF/lib下。<br />
-10.在WEB-INF中创建classes文件夹，并将META-INF文件夹移到classes文件夹下，<br />
-并在META-INF下创建一个xfire文件夹。在xfire中创建一个services.xml文件。<br />
-service.xml文件内容如下：</p>
-<?xml version="1.0" encoding="UTF-8"?> <beans
-<p>xmlns=“<span class="exturl" data-url="aHR0cDovL3hmaXJlLmNvZGVoYXVzLm9yZy9jb25maWcvMS4w">http://xfire.codehaus.org/config/1.0<i class="fa fa-external-link-alt"></i></span>”&gt; <service> <name>Hello</name> <na
-mespace><span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDkwL1Rlc3RIZWxsb1dlYlNlcnZpY2Uvc2VydmljZXMvSGVsbG8=">http://localhost:8090/TestHelloWebService/services/Hello<i class="fa fa-external-link-alt"></i></span></namespace><br />
-<serviceClass>test.Hello</serviceClass> </service> </beans><br />
-其中name是你要提供service的类名<br />
-namespace 是你要访问的服务地址。这里我的端口因为与Oracle冲突所以不是8080.你自己改为你当时配置端口。<br />
-格式为:<span class="exturl" data-url="aHR0cDovL3huLS1pcC13ejJjbTg5Zw==">http://主机ip<i class="fa fa-external-link-alt"></i></span>:端口号/项目工程名/services/类名<br />
-serviceClass是你的包名.类名<br />
-11.右击的工程-&gt;Run as-&gt; Run on server. Finish。这里如果在eclipse之外还启动了tomcat就会报错。<br />
-12.访问 <a target="_blank" rel="noopener" href="http://localhost:8090/TestHelloWebService/services/Hello?WSDL"> http://localhost:8090/TestHelloWebService/services/Hello?WSDL<br />
-</a></p>
-<p>13.如何访问WebService…你可以用c#，那是非常简单的…见一个C#工程，添加一个web reference.<br />
-然后就像你使用本地方法一样使用这个webservice.注意要using webservice的名字空间。对于非本地的webservice调用就比较麻烦。<br />
-有时还要使用用户验证。这里不详细介绍。</p>
-<p>13.如果使用java来调用webService 流行的方法是使用axis。<br />
-<span class="exturl" data-url="aHR0cDovL3RvcGljLmNzZG4ubmV0L3QvMjAwMzA0MDMvMDkvMTYxMjA3Mi5odG1s">http://topic.csdn.net/t/20030403/09/1612072.html<i class="fa fa-external-link-alt"></i></span><br />
-java里使用webservice 安装配置Axis<br />
-下载一个Axis1.4。下载地址<span class="exturl" data-url="aHR0cDovL3dzLmFwYWNoZS5vcmcvYXhpcy9yZWxlYXNlcy5odG1s">http://ws.apache.org/axis/releases.html<i class="fa fa-external-link-alt"></i></span><br />
-解压Axis1.4.zip包，找到webapps目录下的axis文件夹，拷贝axis文件夹到Tomcat中的webapps文件夹下。</p>
-<p>将Tomcat中的axis目录下的WEB-INF/lib中的所有的文件copy到Tomcat的common/lib目录中。(以后凡是要在axis的lib中添<br />
-加jar文件，都要copy一份到Tomcat的common/lib目录下)。</p>
-<p>我的电脑-&gt;属性-&gt;高级-&gt;环境变量-&gt;系统变量（用户变量也可以）中添加：<br />
-TOMCAT_HOME<br />
-这里是你的TOMCAT安装目录。我的是C:/Program Files/Apache Software Foundation/Tomcat 5.5<br />
-反正这个目录下一定要有webapps</p>
-<p>AXIS_HOME<br />
-%TOMCAT_HOME%/webapps/axis(TOMCAT的目录)</p>
-<p>AXIS_LIB<br />
-%AXIS_HOME%/lib</p>
-<p>AXISCLASSPATH<br />
-%AXIS_LIB%/axis.jar;%AXIS_LIB%/commons-discovery.jar; %AXIS_LIB%/commons-<br />
-logging.jar;%AXIS_LIB%/jaxrpc.jar;<br />
-%AXIS_LIB%/saaj.jar;%AXIS_LIB%/log4j-1.2.8.jar; %AXIS_LIB%/xml-<br />
-apis.jar;%AXIS_LIB%/xercesImpl.jar</p>
-<p>修改或创建CLASSPATH ，在末尾加上：<br />
-%AXIS_LIB%/axis.jar;%AXIS_LIB%/commons-discovery.jar; %AXIS_LIB%/commons-<br />
-logging.jar;%AXIS_LIB%/jaxrpc.jar;<br />
-%AXIS_LIB%/saaj.jar;%AXIS_LIB%/log4j-1.2.8.jar; %AXIS_LIB%/xml-<br />
-apis.jar;%AXIS_LIB%/xercesImpl.jar</p>
-<p>注意检查CLASSPATH是否正确：（有些软件会在用户变量区设置一个classpath，会有影响，如:XMLSPY）<br />
-在运行输入cmd,然后：Echo %CLASSPATH%<br />
-检查配置：<br />
-启动Tomcat，访问<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDkwL2F4aXMvJUVGJUJDJThD">http://localhost:8090/axis/，<i class="fa fa-external-link-alt"></i></span><br />
-验证axis的是否工作：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDkwL2F4aXMvaGFwcHlheGlzLmpzcCVFNSVBNiU4MiVFNiU5RSU5QyVFNiVBRCVBMyVFNSVCOCVCOCVFNiU5OCVCRSVFNyVBNCVCQSVFOCVBMSVBOCVFNyVBNCVCQSVFNiVBRCVBMyVFNSVCOCVCOCVFMyU4MCU4Mg==">http://localhost:8090/axis/happyaxis.jsp如果正常显示表示正常。<i class="fa fa-external-link-alt"></i></span><br />
-14. 你要建立一个新的工程（一个常规的java工程即可）…创建一个包名test,添加一个类TestWebService<br />
-代码如下：<br />
-package test; import org.apache.axis.client.Call; import<br />
-org.apache.axis.client.Service; import org.apache.axis.encoding.XMLType;<br />
-public class TestWebService { public static void main(String[] args) { try {<br />
-<a target="_blank" rel="noopener" href="//xn--WebServiceservices-dn22a898c1z0ejqmzk7ila8956knuwa02e.xn--xmlnamespace-794sv67dz61j">//还记得刚才的那个WebService的services.xml中的namespace吗</a>？ String endpoint =<br />
-“<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDkwL1Rlc3RIZWxsb1dlYlNlcnZpY2Uvc2VydmljZXMvSGVsbG8=">http://localhost:8090/TestHelloWebService/services/Hello<i class="fa fa-external-link-alt"></i></span>”; Service service =<br />
-new Service(); Call call = (Call) service.createCall();<br />
-call.setTargetEndpointAddress(new java.net.URL(endpoint));<br />
-call.setOperationName(“hello”); // 这里是的Hello类中的方法名（注意大小写）<br />
-call.setReturnType(XMLType.XSD_STRING); // 返回值类型。 Object[] o =<br />
-null;//如果你的方法中没有参数，那么就这样写吧。 String hello = (String) call.invoke(o);// 做方法执行。<br />
-System.out.println(hello); } catch (Exception e) {<br />
-System.err.println(e.toString()); } } }<br />
-网上的这段代码是用来调用一个float add(float a, float b)的方法。你现在应该知道怎么进行webservice调用了吧。<br />
-不管webservice提供的函数有没有参数，你应该都会调用了。<br />
-// Float i = new Float(1); // Float j = new Float(2); //<br />
-call.setOperationName(“add”); // call.addParameter(“i”,<br />
-org.apache.axis.encoding.XMLType.XSD_FLOAT, //<br />
-<span class="exturl" data-url="aHR0cDovL2phdmF4LnhtbC5ycGMuUGFyYW1ldGVyTW9kZS5JTg==">javax.xml.rpc.ParameterMode.IN<i class="fa fa-external-link-alt"></i></span>); // call.addParameter(“j”,<br />
-org.apache.axis.encoding.XMLType.XSD_FLOAT, //<br />
-<span class="exturl" data-url="aHR0cDovL2phdmF4LnhtbC5ycGMuUGFyYW1ldGVyTW9kZS5JTg==">javax.xml.rpc.ParameterMode.IN<i class="fa fa-external-link-alt"></i></span>); // call.setReturnType(XMLType.XSD_FLOAT); //<br />
-Float ret = (Float) call.invoke(new Object[] { i, j });</p>
-<p>15.运行你的TestWebService试试。Done。（你刚才的webservice项目还在运行…，否则…）</p>
-<p>真的很可惜，我过去使用的eclipse3.1,添加了很多plugin,死活都建不成webservice.再后来我使用Myclipse 4.0GA版本，还是看<br />
-不到webservice。或者运行时候后来有好心MM传给我MyEclipse5.0GA,结果报出灾难性崩溃…只得重装了jdk,并且下了较新的eclips<br />
-e.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/04/03/4045905/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/04/03/4045905/" class="post-title-link" itemprop="url">为自己出征</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-04-03 11:29:00" itemprop="dateCreated datePublished" datetime="2009-04-03T11:29:00+08:00">2009-04-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>32</span>
+      <span>0</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -692,11 +1260,7 @@ e.</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>我拥有宇宙<br />
-却也一无所有<br />
-因我无法了解一切未知<br />
-就如我无法放弃一切所知</p>
-
+          
       
     </div>
 
@@ -722,7 +1286,7 @@ e.</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/27/4030309/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/11/13/6007217/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -740,7 +1304,7 @@ e.</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/27/4030309/" class="post-title-link" itemprop="url">在linux下开发常用命令..</a>
+          <a href="/2010/11/13/6007217/" class="post-title-link" itemprop="url">Http 错误码</a>
         </h2>
 
         <div class="post-meta-container">
@@ -751,14 +1315,14 @@ e.</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-03-27 16:44:00" itemprop="dateCreated datePublished" datetime="2009-03-27T16:44:00+08:00">2009-03-27</time>
+      <time title="Created: 2010-11-13 18:09:00" itemprop="dateCreated datePublished" datetime="2010-11-13T18:09:00+08:00">2010-11-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
     </span>
 
   
@@ -768,222 +1332,7 @@ e.</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>5.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这个可能不是大家常用的命令。但是这个是自己这几天常在用的命令。</p>
-<p>首先是找些国内的源：（将下面的一段复制粘贴到你的source.list中，你也可使用创建一个新文件然后再去覆盖的方法。注意这里要在命令前使用sudo ）</p>
-<h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
-<h1 id="deb-cdromxubuntu-804-hardy-heron-release-i386-200804221-hardy"><a class="markdownIt-Anchor" href="#deb-cdromxubuntu-804-hardy-heron-release-i386-200804221-hardy"></a> deb cdrom:[Xubuntu 8.04 <em>Hardy Heron</em> - Release i386 (20080422.1)]/ hardy</h1>
-<p>main multiverse restricted universe</p>
-<h1 id="deb-cdromxubuntu-804-hardy-heron-release-i386-200804221-hardy-2"><a class="markdownIt-Anchor" href="#deb-cdromxubuntu-804-hardy-heron-release-i386-200804221-hardy-2"></a> deb cdrom:[Xubuntu 8.04 <em>Hardy Heron</em> - Release i386 (20080422.1)]/ hardy</h1>
-<p>main multiverse restricted universe</p>
-<h1 id="see-httphelpubuntucomcommunityupgradenotes-for-how-to-upgrade-to"><a class="markdownIt-Anchor" href="#see-httphelpubuntucomcommunityupgradenotes-for-how-to-upgrade-to"></a> See <span class="exturl" data-url="aHR0cDovL2hlbHAudWJ1bnR1LmNvbS9jb21tdW5pdHkvVXBncmFkZU5vdGVz">http://help.ubuntu.com/community/UpgradeNotes<i class="fa fa-external-link-alt"></i></span> for how to upgrade to</h1>
-<h1 id="newer-versions-of-the-distribution"><a class="markdownIt-Anchor" href="#newer-versions-of-the-distribution"></a> newer versions of the distribution.</h1>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-main-restricted"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-main-restricted"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-main-restricted"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-main-restricted"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted</h1>
-<h2 id="major-bug-fix-updates-produced-after-the-final-release-of-the"><a class="markdownIt-Anchor" href="#major-bug-fix-updates-produced-after-the-final-release-of-the"></a> Major bug fix updates produced after the final release of the</h2>
-<h2 id="distribution"><a class="markdownIt-Anchor" href="#distribution"></a> distribution.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-updates-main-restricted"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-updates-main-restricted"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-main-restricted"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-main-restricted"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted</h1>
-<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu"><a class="markdownIt-Anchor" href="#nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu"></a> N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
-<h2 id="team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to"><a class="markdownIt-Anchor" href="#team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to"></a> team, and may not be under a free licence. Please satisfy yourself as to</h2>
-<h2 id="your-rights-to-use-the-software-also-please-note-that-software-in"><a class="markdownIt-Anchor" href="#your-rights-to-use-the-software-also-please-note-that-software-in"></a> your rights to use the software. Also, please note that software in</h2>
-<h2 id="universe-will-not-receive-any-review-or-updates-from-the-ubuntu-security"><a class="markdownIt-Anchor" href="#universe-will-not-receive-any-review-or-updates-from-the-ubuntu-security"></a> universe WILL NOT receive any review or updates from the Ubuntu security</h2>
-<h2 id="team"><a class="markdownIt-Anchor" href="#team"></a> team.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-universe"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-universe"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy universe</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-universe"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-universe"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy universe</h1>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-updates-universe"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-updates-universe"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates universe</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-universe"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-universe"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates universe</h1>
-<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu-2"><a class="markdownIt-Anchor" href="#nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu-2"></a> N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
-<h2 id="team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to-2"><a class="markdownIt-Anchor" href="#team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to-2"></a> team, and may not be under a free licence. Please satisfy yourself as to</h2>
-<h2 id="your-rights-to-use-the-software-also-please-note-that-software-in-2"><a class="markdownIt-Anchor" href="#your-rights-to-use-the-software-also-please-note-that-software-in-2"></a> your rights to use the software. Also, please note that software in</h2>
-<h2 id="multiverse-will-not-receive-any-review-or-updates-from-the-ubuntu"><a class="markdownIt-Anchor" href="#multiverse-will-not-receive-any-review-or-updates-from-the-ubuntu"></a> multiverse WILL NOT receive any review or updates from the Ubuntu</h2>
-<h2 id="security-team"><a class="markdownIt-Anchor" href="#security-team"></a> security team.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-multiverse"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-multiverse"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy multiverse</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-multiverse"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-multiverse"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy multiverse</h1>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-updates-multiverse"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-updates-multiverse"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates multiverse</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-multiverse"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-multiverse"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates multiverse</h1>
-<h2 id="uncomment-the-following-two-lines-to-add-software-from-the-backports"><a class="markdownIt-Anchor" href="#uncomment-the-following-two-lines-to-add-software-from-the-backports"></a> Uncomment the following two lines to add software from the ‘backports’</h2>
-<h2 id="repository"><a class="markdownIt-Anchor" href="#repository"></a> repository.</h2>
-<h2 id="nb-software-from-this-repository-may-not-have-been-tested-as"><a class="markdownIt-Anchor" href="#nb-software-from-this-repository-may-not-have-been-tested-as"></a> N.B. software from this repository may not have been tested as</h2>
-<h2 id="extensively-as-that-contained-in-the-main-release-although-it-includes"><a class="markdownIt-Anchor" href="#extensively-as-that-contained-in-the-main-release-although-it-includes"></a> extensively as that contained in the main release, although it includes</h2>
-<h2 id="newer-versions-of-some-applications-which-may-provide-useful-features"><a class="markdownIt-Anchor" href="#newer-versions-of-some-applications-which-may-provide-useful-features"></a> newer versions of some applications which may provide useful features.</h2>
-<h2 id="also-please-note-that-software-in-backports-will-not-receive-any-review"><a class="markdownIt-Anchor" href="#also-please-note-that-software-in-backports-will-not-receive-any-review"></a> Also, please note that software in backports WILL NOT receive any review</h2>
-<h2 id="or-updates-from-the-ubuntu-security-team"><a class="markdownIt-Anchor" href="#or-updates-from-the-ubuntu-security-team"></a> or updates from the Ubuntu security team.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-backports-main-restricted"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-backports-main-restricted"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted</h1>
-<p>universe multiverse</p>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-backports-main-restricted"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-backports-main-restricted"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted</h1>
-<p>universe multiverse</p>
-<h2 id="uncomment-the-following-two-lines-to-add-software-from-canonicals"><a class="markdownIt-Anchor" href="#uncomment-the-following-two-lines-to-add-software-from-canonicals"></a> Uncomment the following two lines to add software from Canonical’s</h2>
-<h2 id="partner-repository-this-software-is-not-part-of-ubuntu-but-is"><a class="markdownIt-Anchor" href="#partner-repository-this-software-is-not-part-of-ubuntu-but-is"></a> ‘partner’ repository. This software is not part of Ubuntu, but is</h2>
-<h2 id="offered-by-canonical-and-the-respective-vendors-as-a-service-to-ubuntu"><a class="markdownIt-Anchor" href="#offered-by-canonical-and-the-respective-vendors-as-a-service-to-ubuntu"></a> offered by Canonical and the respective vendors as a service to Ubuntu</h2>
-<h2 id="users"><a class="markdownIt-Anchor" href="#users"></a> users.</h2>
-<h1 id="deb-httparchivecanonicalcomubuntu-hardy-partner"><a class="markdownIt-Anchor" href="#deb-httparchivecanonicalcomubuntu-hardy-partner"></a> deb <span class="exturl" data-url="aHR0cDovL2FyY2hpdmUuY2Fub25pY2FsLmNvbS91YnVudHU=">http://archive.canonical.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy partner</h1>
-<h1 id="deb-src-httparchivecanonicalcomubuntu-hardy-partner"><a class="markdownIt-Anchor" href="#deb-src-httparchivecanonicalcomubuntu-hardy-partner"></a> deb-src <span class="exturl" data-url="aHR0cDovL2FyY2hpdmUuY2Fub25pY2FsLmNvbS91YnVudHU=">http://archive.canonical.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy partner</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-httpsecurityubuntucomubuntu-hardy-security-main-restricted"><a class="markdownIt-Anchor" href="#deb-httpsecurityubuntucomubuntu-hardy-security-main-restricted"></a> deb <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-2"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-2"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-src-httpsecurityubuntucomubuntu-hardy-security-main-restricted"><a class="markdownIt-Anchor" href="#deb-src-httpsecurityubuntucomubuntu-hardy-security-main-restricted"></a> deb-src <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-3"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-3"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-httpsecurityubuntucomubuntu-hardy-security-universe"><a class="markdownIt-Anchor" href="#deb-httpsecurityubuntucomubuntu-hardy-security-universe"></a> deb <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security universe</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-4"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-4"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-src-httpsecurityubuntucomubuntu-hardy-security-universe"><a class="markdownIt-Anchor" href="#deb-src-httpsecurityubuntucomubuntu-hardy-security-universe"></a> deb-src <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security universe</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-5"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-5"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-httpsecurityubuntucomubuntu-hardy-security-multiverse"><a class="markdownIt-Anchor" href="#deb-httpsecurityubuntucomubuntu-hardy-security-multiverse"></a> deb <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security multiverse</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-6"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-6"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-src-httpsecurityubuntucomubuntu-hardy-security-multiverse"><a class="markdownIt-Anchor" href="#deb-src-httpsecurityubuntucomubuntu-hardy-security-multiverse"></a> deb-src <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security multiverse</h1>
-<h1 id="deb-httpmedibuntusos-stscomrepo-hardy-free-non-free"><a class="markdownIt-Anchor" href="#deb-httpmedibuntusos-stscomrepo-hardy-free-non-free"></a> deb <span class="exturl" data-url="aHR0cDovL21lZGlidW50dS5zb3Mtc3RzLmNvbS9yZXBvLw==">http://medibuntu.sos-sts.com/repo/<i class="fa fa-external-link-alt"></i></span> hardy free non-free</h1>
-<h1 id="deb-src-httpmedibuntusos-stscomrepo-hardy-free-non-free"><a class="markdownIt-Anchor" href="#deb-src-httpmedibuntusos-stscomrepo-hardy-free-non-free"></a> deb-src <span class="exturl" data-url="aHR0cDovL21lZGlidW50dS5zb3Mtc3RzLmNvbS9yZXBvLw==">http://medibuntu.sos-sts.com/repo/<i class="fa fa-external-link-alt"></i></span> hardy free non-free</h1>
-<p>deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted<br />
-universe multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted<br />
-universe multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted<br />
-universe multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-proposed main multiverse<br />
-restricted universe<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse</p>
-<p>deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-proposed main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted universe<br />
-multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-proposed main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted<br />
-universe multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2FyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted<br />
-universe multiverse</p>
-<p>替换掉etc/apt/source.list, 然后使用 sudo apt-get update</p>
-<p>然后下个subversion,使用sudo apt-get apt-get install subversion</p>
-<p>首先从网上用svn checkout svn://URL [where to store]</p>
-<p>不过因为网络的原因，很有可能它会说没有这个URL</p>
-<p>其实你也可以用移动硬盘直接把别人checkout之后的代码copy过来。同样含有svn信息。</p>
-<p>然后如果代码有更新，到你的代码的顶级目录下使用：svn update.如果这里说你的client太old,那么就下个最新的svn.</p>
-<p>下面是改代码阶段。</p>
-<p>你改动了很多代码…你如果记得所有代码的位置，可以删除后再使用 svn update. 但是这个方法很笨。</p>
-<p>你也可以使用svn revert [foldername or filename]</p>
-<p>如果你svn update之后，发现突然编译失败了.那么可能有个小孩把错误的代码commit到了svn数据库中。</p>
-<p>你可以使用svn log | more 命令还看看你想恢复到那个版本。</p>
-<p>然后呢，再使用svn up -r 22323 比如这里版本为r22323那么svn就会回退到那个r22323版本</p>
-<p>如果你想打一个patch包或diff包。使用 svn diff [path] &gt; [filename]</p>
-<p>path 是你想diff的目录，filename是最后生成的patch包名字.</p>
-<p>如果你想快速的找一个代码文件在什么位置，使用</p>
-<p>find [folder] -name ‘filename’ 这里的filename可以使用正则表达。</p>
-<p>如果你不知道哪个变量或者函数在什么位置，或者那些文件使用了这个变量，那么使用</p>
-<p>grep -i ‘varialbe’ filename</p>
-<p>或者</p>
-<p>grep -i ‘variable’ ./*  (这里说查找当前文件夹下的所有文件)</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/24/4018965/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/24/4018965/" class="post-title-link" itemprop="url">Vmware 虚拟硬盘空间不够 解决方案</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-24 07:26:00" itemprop="dateCreated datePublished" datetime="2009-03-24T07:26:00+08:00">2009-03-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>209</span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1001,1498 +1350,76 @@ universe multiverse</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>输入：cd 到 当前vmware所在目录</p>
-<p>vmware-vdiskmanager.exe -x 1GB myDisk.vmdk</p>
-<p>如果输入这个命令出错的话,输入下面的命令：</p>
-<p>vmware-vdiskmanager.exe -r myDisk.vmdk -t 0 myDestDisk.vmdk</p>
-<p>这个命令是克隆命令,建一个可以增长空间的vmdk</p>
-<p>然后再输入：</p>
-<p>vmware-vdiskmanager.exe -x 1GB myDestDisk.vmdk</p>
-<p>done</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/21/4012632/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/21/4012632/" class="post-title-link" itemprop="url">Eclipse Java Version Error</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-21 18:54:00" itemprop="dateCreated datePublished" datetime="2009-03-21T18:54:00+08:00">2009-03-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>471</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近新装了机器。然后装了Oracle 9i，然后又装了jdk6.0，再后来我运行eclipse。结果发现问题. 报出：</p>
-<p>Required Java Version 1.4.1 Available 1.3.1</p>
-<p>后来发现原来Oracle安装过程中装入了jdk1.3版本的。然后再安装jdk6.0 eclipse就找不到相应的高版本的jdk。</p>
-<p>解决方案：</p>
-<p>在eclipse.exe 文件夹所在处创建一个start.bat 文件：</p>
-<p>eclipse.exe -vm “C:/Program Files/Java/jre1.6.0_03/bin/javaw.exe” -data<br />
-“D:/eclipse/workspace”</p>
-<p>如果这时点击start.bat文件。也可以运行eclipse。但是会有黑屏。</p>
-<p>解决方法：</p>
-<p>创建一个a.vbs文件</p>
-<p>然后写入：</p>
-<p>Set shell = Wscript.createobject(“wscript.shell”)<br />
-a = shell.run (“start.bat”,0)<br />
-保存。</p>
-<p>点击a.vbs就可以运行了…</p>
-<p>这当然是在xp环境下…在linux下…写和bat差不多的bash脚本即可。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/17/3997290/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/17/3997290/" class="post-title-link" itemprop="url">用Telnet看星战</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-17 10:42:00" itemprop="dateCreated datePublished" datetime="2009-03-17T10:42:00+08:00">2009-03-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>60</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在windows XP的运行里输入：</p>
-<p>telnet <span class="exturl" data-url="aHR0cDovL3Rvd2VsLmJsaW5rZW5saWdodHMubmw=">towel.blinkenlights.nl<i class="fa fa-external-link-alt"></i></span></p>
-<p>然后等待…</p>
-<p>看到文本方式的星战…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/16/3995449/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/16/3995449/" class="post-title-link" itemprop="url">如何看一个网页的更新时间</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-16 19:53:00" itemprop="dateCreated datePublished" datetime="2009-03-16T19:53:00+08:00">2009-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>56</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在浏览器的地址栏中输入：</p>
-<p>javascript:alert(document.lastModified)</p>
-<p>然后回车…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/12/3982781/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/12/3982781/" class="post-title-link" itemprop="url">用Python求解组合问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-12 08:59:00" itemprop="dateCreated datePublished" datetime="2009-03-12T08:59:00+08:00">2009-03-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>251</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>改动一下排列的代码，迅速变成组合问题的求解：</p>
-<p>def perm(n,m,current,lists=[]): if m == len(lists): print ’ '.join(<br />
-map(str,lists)) return 1 sum = 0 for i in range(current,n+1): if i not in<br />
-lists: sum+=perm(n,m,i+1,lists+[i]) return sum n,m = [int(i) for i in<br />
-raw_input().split()] print perm(n,m,1)</p>
-<p>python 上手果真比较快…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/12/3982727/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/12/3982727/" class="post-title-link" itemprop="url">用Python写成的排列问题求解代码</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-12 08:31:00" itemprop="dateCreated datePublished" datetime="2009-03-12T08:31:00+08:00">2009-03-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>267</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>用python写代码果然很简练</p>
-<p>def perm(n,m,lists): if(m == len(lists)): print ’ '.join(map(str,lists))<br />
-return 1 sum = 0 for i in range(1,n+1): if i not in lists: sum +=<br />
-perm(n,m,lists+[i]) return sum number = [int(i) for i in raw_input().split()]<br />
-perm(number[0],number[1],[])</p>
-<p>用习惯了c/c++和java，用python的确不能得心应手…有时候不懂语言才好…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/11/3979610/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/11/3979610/" class="post-title-link" itemprop="url">C++ 类中Static变量初始化问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-11 12:42:00" itemprop="dateCreated datePublished" datetime="2009-03-11T12:42:00+08:00">2009-03-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>687</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>首先static变量只有一次初始化，不管在类中还是在函数中…有这样一个函数：</p>
-<p>void Foo() { static int a=3; // initialize std::cout &lt;&lt; a; a++; }</p>
-<p>这里的static int a=3只执行了一次。在main中调用Foo()两次，结果为34.将上面的函数改为</p>
-<p>void Foo() { static int a; a=3; // not initialize std::cout &lt;&lt; a; a++; }</p>
-<p>同样在Foo()中调用两次.结果为33</p>
-<p>在类中使用非const的static类成员变量。初始化时要使用typename classname::variablename = value的形式</p>
-<p>例如：</p>
-<p>class myClass { public: static int a; myClass() { } }; int myClass::a = 3; //<br />
-here initialize int main() { cout &lt;&lt; myClass::a; return 0; }</p>
-<p>如果使用的是const类型的static变量，那么就要在类中初始化：</p>
-<p>class myClass { public: const static int a=3; // here initialize myClass() { }<br />
-};</p>
-<p>如果是模板中使用非const的static的变量…那需要根据具体类型初始化。</p>
-<p>例如 int myClass<int>::a = 4;那么如果你调用的是cout &lt;&lt; myClass<double>::a,那一定会编译出错的。</p>
-<p>因为模板是不是具体类型，myClass<int>, myClass<double>才是一个具体类型，而一个类静态成员在特定类中被初始化一次。这样就好理解了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/10/3977976/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/10/3977976/" class="post-title-link" itemprop="url">转载 为唐雨寒所写的募捐信——让爱汇成海洋</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-10 22:25:00" itemprop="dateCreated datePublished" datetime="2009-03-10T22:25:00+08:00">2009-03-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>884</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <!-- /* Font Definitions */ @font-face {font-family:宋体; panose-1:2 1 6 0 3 1 1
-1 1 1; mso-font-alt:SimSun; mso-font-charset:134; mso-generic-font-
-family:auto; mso-font-pitch:variable; mso-font-signature:3 135135232 16 0
-262145 0;} @font-face {font-family:"/@宋体"; panose-1:2 1 6 0 3 1 1 1 1 1; mso-
-font-charset:134; mso-generic-font-family:auto; mso-font-pitch:variable; mso-
-font-signature:3 135135232 16 0 262145 0;} /* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal {mso-style-parent:""; margin:0cm;
-margin-bottom:.0001pt; text-align:justify; text-justify:inter-ideograph; mso-
-pagination:none; font-size:10.5pt; mso-bidi-font-size:12.0pt; font-
-family:"Times New Roman"; mso-fareast-font-family:宋体; mso-font-kerning:1.0pt;}
-/* Page Definitions */ @page {mso-page-border-surround-header:no; mso-page-
-border-surround-footer:no;} @page Section1 {size:612.0pt 792.0pt;
-margin:72.0pt 90.0pt 72.0pt 90.0pt; mso-header-margin:36.0pt; mso-footer-
-margin:36.0pt; mso-paper-source:0;} div.Section1 {page:Section1;} \-->
-<p>人们经常问这样的问题，人活着为了什么？就如人出生所具有的原始渴望一样，这个问题也常在人们心间涌动，<br />
-但对于大多数人生一帆风顺，没有面对过死神考验的人们来说，这个问题始终难有清晰的答案来使自己信服。所以对活着的问题是多了一些娱乐，而少了一份严肃。</p>
-<p>她，一个名叫唐雨寒的  23<br />
-岁女孩，刚走出大学校门半年，准备在社会的大舞台追逐自己的梦想的时候，却过早地感受到了生命的沉重。一场突如其来的白血病将她的梦想击碎  ，如今的她只能静静躺在<br />
-病床上与那个恐怖的杀手做着生命的较量。发病前的一个月里，走几分钟路她便会感觉气喘嘘嘘，她也常常因腰痛而在半夜里痛醒过来，这个本来坚强的女孩还以为是初涉工作的<br />
-不适，直到大家都沉浸在新年的气氛里，一次突然的晕倒将这个噩耗带给了她，带给了她的父母，也带给了她所有的亲戚朋友。原本应该欢乐的新年却让每个人心里布满愁云，也<br />
-让她承受着前所未有的打击。</p>
-<p>她也和我们一样，也曾满怀壮志去为人生打拼，毕业时的豪言壮言犹在耳边，可不战胜病魔，她怎么能和我们一起并肩战斗？她是家里惟一的女儿，父母对自己的女儿的未来了充<br />
-满期待，可不战胜病魔，  她怎么能满足一对普通父母的心愿。一次次化疗使这个原本美丽的女孩变得面目全非，面对死神的挟持，她显得筋疲力尽，我们再难见她往日的笑容<br />
-。巨额的治疗费用是这个并不富裕的家庭难以承受的，一个原本幸福的家庭也陷入无尽的恐慌之中。</p>
-<p>病魔并不那么可怕，只要我们有战胜它的勇气与决心，病魔的肆虐让我们思索活着的意义。人活着就会有永远不会消失的笑容，一个梦想就会继续下去。<br />
-人活着就不会使一个家庭陷入残缺，也不会使一段段友谊变成伤心住事。人为什么活着？不如在心底问为什么要向死神屈服呢？活着多好啊。</p>
-<p>一个家庭的力量是弱小的，为战胜巨大的病魔，这需要我们每个人伸出自己的援手，与她站在一起，汶川大地震时流传着这样一句话：一个大灾难除以  13<br />
-亿就变得很小了，一个小小的爱心乘以  13  亿就是无穷大爱。我想“只要人人都献出一份爱”，那就会汇成爱的海洋，这个美丽的女孩就会重新回到我们美好的生活当中<br />
-来。让我们一起祝愿她坚定战胜病魔的信心，早日康复，至少还有我们在关心着她。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/10/3977951/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/10/3977951/" class="post-title-link" itemprop="url">转载 为唐雨寒捐款倡议书</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-10 22:19:00" itemprop="dateCreated datePublished" datetime="2009-03-10T22:19:00+08:00">2009-03-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>793</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>各位亲爱的校友，在我们正在享受牛年牛市的喜悦、沐浴春天气息到来的时候，我们身边的一位可爱的学妹正在与病魔殊死抗争着。</p>
-<p><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/20090310/clip_image001.jpg" alt="唐雨寒" /></p>
-<p>雨寒家在湖南郴州，为家中的独生女，母亲下岗多年。  2008  年  12  月，雨寒在重庆出差期间连续身体不适，在重庆就医后并无好转。  2009  年<br />
-1  月  11  日  ，雨寒突然在家中晕倒，送至广州中山三院救治后，被确诊为白血病，病情非常严重。  2009  年  1  月  14  日<br />
-，雨寒转院至广东省人民医院血液科，并被确诊为急性髓性白血病。</p>
-<p>现在，雨寒正在接受第一阶段化疗。整个治疗过程需要多个化疗疗程，痛苦而漫长，而且直到找到合适骨髓才能进行骨髓移植手术。期间治疗费用高昂，一个七天周期的疗程约需<br />
-五万元费用；如找到合适骨髓，手术费则高达  40  万左右。由于大部份治疗用药都不在社保报销范围内，治疗所需的费用，对于这个家庭来说，无疑是一个天文数字。</p>
-<p>病魔也许可以夺去生命的健康，但却不能夺去校友间的真情。让我们深圳的校友团结起来、发动起来，平时少抽一包烟、聚会少点一道菜、夜晚少泡一次吧、出行少打一次车，省<br />
-出来的钱就完全能够挽救一个我们身边的亲人。再小的善心乘以我们在深上万名湖大校友也将成为一片爱的海洋，捐资不论多少，善举不分先后，贵在有一份真挚的爱心。她需要<br />
-您、需要我、需要我们大家伸出双手。</p>
-<p>为了帮助雨寒度过难关，为了分秒之间的生存机会，我们呼吁所有能够听到的人，我们期待所有人的关注，我们和雨寒全家一样，急切的盼望着、感激着您的善良。</p>
-<p>您可以通过以下方式献出爱心  ：</p>
-<p>直接将捐款款项打入唐雨寒的银行卡，帐号信息如下：</p>
-<p>帐户姓名：唐雨寒</p>
-<p>帐户卡号：  6013 8219 0005 2343 030</p>
-<p>开户行：  中国银行广州天文苑支行</p>
-<p>注意：  <span class="exturl" data-url="bWFpbHRvOiVFNiU4OSU4MCVFNiU5QyU4OSVFNiU4RCU5MCVFNiVBQyVCRSVFNyU5QSU4NCVFNiVBMCVBMSVFNSU4RiU4QiVFOCVBRiVCNyVFNSU4RiU5MSVFOSU4MCU4MSVFOSU4MiVBRSVFNCVCQiVCNiVFNSU4OCVCMGp1YW5rdWFuQDE2My5jb20="> 所有捐款的校友请发送邮件到  juankuan@163.com <i class="fa fa-external-link-alt"></i></span> 或短信  13682606046  ，注明：捐款人姓名、金额以方便统计、公示及感激。</p>
-<p>并急寻  AB  血型的校友，深圳捐款或献血联系人：万其鹏  13682606046</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/10/3977933/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/10/3977933/" class="post-title-link" itemprop="url">转载 唐雨寒的近况</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-10 22:15:00" itemprop="dateCreated datePublished" datetime="2009-03-10T22:15:00+08:00">2009-03-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <!-- /* Font Definitions */ @font-face {font-family:宋体; panose-1:2 1 6 0 3 1 1
-1 1 1; mso-font-alt:SimSun; mso-font-charset:134; mso-generic-font-
-family:auto; mso-font-pitch:variable; mso-font-signature:3 135135232 16 0
-262145 0;} @font-face {font-family:Calibri; mso-font-alt:"Century Gothic";
-mso-font-charset:0; mso-generic-font-family:swiss; mso-font-pitch:variable;
-mso-font-signature:-1610611985 1073750139 0 0 159 0;} @font-face {font-
-family:"/@宋体"; panose-1:2 1 6 0 3 1 1 1 1 1; mso-font-charset:134; mso-
-generic-font-family:auto; mso-font-pitch:variable; mso-font-signature:3
-135135232 16 0 262145 0;} /* Style Definitions */ p.MsoNormal, li.MsoNormal,
-div.MsoNormal {mso-style-parent:""; margin:0cm; margin-bottom:.0001pt; text-
-align:justify; text-justify:inter-ideograph; mso-pagination:none; font-
-size:10.5pt; mso-bidi-font-size:11.0pt; font-family:Calibri; mso-fareast-font-
-family:宋体; mso-bidi-font-family:"Times New Roman"; mso-font-kerning:1.0pt;} /*
-Page Definitions */ @page {mso-page-border-surround-header:no; mso-page-
-border-surround-footer:no;} @page Section1 {size:595.3pt 841.9pt;
-margin:72.0pt 90.0pt 72.0pt 90.0pt; mso-header-margin:42.55pt; mso-footer-
-margin:49.6pt; mso-paper-source:0; layout-grid:15.6pt;} div.Section1
-{page:Section1;} \-->
-<p>今天我和广仔去医院看望雨寒，带着大家的祝福，我们的脚步稍显沉重。依旧是  21  楼，<br />
-依旧是护士台旁边的病房，踏进那扇门，我们惊喜的看见雨寒坐在病床边，腿和脚被毛巾被包裹着，踩在小板凳上。今天没有打点滴，只是头上缠着一个毛巾。“我<br />
-剃光头了！”雨寒看见我们笑着说，有些不好意思，精神状况还不错。把头上的毛巾往后拿掉一些，我们看见了有些头发茬的小光头！“她这几天头发一直掉，我们<br />
-怕会因为不干净，会感染，今天剃头的人刚好过来，就把头发剃了。也不敢刮，就用推剪，怕会划伤出血。”雨寒妈妈给我们解释道。我的心痛痛的。</p>
-<p>化 疗真的很折磨人。雨寒的手现在都是黑黑的，左手的手肘窝处的静脉血管扎着一个管子，是一直经血管到心脏的，这样药水可以直接到心脏迅速稀释，并到全身。雨<br />
-寒不时用右手去拨弄左手指，也只能这样，因为导药水的管子原因，左手臂不能大幅度的动。在没扎这个管子之前，是通过右手的静脉血管输液的，才一天半的时<br />
-间，血管就黑掉了。雨寒每天都要做血常规，每天一次的扎手指，是病房里的病人们都惧怕的事情。雨寒的手指已经扎得全是小洞了。我和广仔心痛地按住自己的胸<br />
-口，为雨寒加油鼓劲，“一定要坚强，一定会好的！”</p>
-<p>去医院前，我们通过上网也了解了一些白血病的知识，所以向雨寒的爸爸和男朋友了解了一些具体的情况。前些天刚定了性，是急性髓系白血病  M2  。<br />
-目前她做完了第一次化疗，今天不发烧了，等到星期一，状况比较好的话，做骨髓穿刺（又是极度痛苦的啊！），看一下第一次化疗的效果，如果白细胞，血小板等<br />
-指标合格，就可以回去休息几天，再过来做第二次的化疗。如果不好的话，就要马上继续第二次的化疗。要知道，化疗对全身的脏器都是有损伤的，并且即使治愈<br />
-后，也会对今后的生活产生影响。所以我们希望雨寒的周一化验结果能够好一些！</p>
-<p>前天省委警卫连的战士又过来为雨寒献血了，而且他们说，愿意随时持续为雨寒无偿献  AB<br />
-型血小板。感动得我眼泪汪汪的，人民子弟兵真的是很伟大！其中献血的连长叫刘延章，让我们记住这位好心人的名字。也祝愿这些可爱的人，永远健康，一生平安。</p>
-<p>我 们和雨寒一样，也是刚刚大学毕业，家人盼着我们顺利毕业，找到满意的工作，终于可以看见将来的即使平淡，但是幸福美好的画面。老天却如晴天霹雳，击碎了这<br />
-原本欢乐的一家人的梦，就如从天堂，瞬间坠到了地狱一样。偏偏这个家庭没那么富裕，母亲下岗多年，父亲在临武县电信局做职员，月工资不像沿海的电信局那么<br />
-可观，每月一千多块，养活着这个家。医生跟雨寒爸爸说，至少要准备六，七十万。这让他们除了担忧女儿的病情，还要担忧这笔巨大的医疗费，该怎么筹措。家族<br />
-里老老少少，六十多口人，甚至把养老钱也拿了出来，凑了二十多万。可还是远远不够！雨寒爸爸说，家族里的大人小孩都承诺，将来只要国家需要，只要自己的型<br />
-号匹配，愿意无偿捐献骨髓，帮助需要帮助的人。这是对像刘延章连长那样好心人的感恩，是对那么多正在为雨寒奔走担忧的人们的感恩，也是对这个社会的期待。</p>
-<p>目前我们需要大家的支持，正如之前中华同学写的，让爱汇成海洋。为雨寒祈福，为她加油！我们在如何为雨寒募捐的问题上遇到了困难，不知道向社会公布雨寒的个人账户会不<br />
-会与法律相违背。所以如果好心的朋友要捐赠，请与您身边的湖南大学  04  级软件学院的同学联系，或者与所在地的湖南大学校友会联系，然后通过他们把善款汇到雨寒<br />
-的账户上，同时务必附上您的姓名和捐赠款数发到指定邮箱，方便我们做公示和统计。</p>
-<p>谢谢大家的关心，祝愿好人一生平安！</p>
-<p>![检查报告](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA5MA==">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/20090<i class="fa fa-external-link-alt"></i></span><br />
-310/20090211026.jpg)<br />
-![骨髓检查报告](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA=">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/200<i class="fa fa-external-link-alt"></i></span><br />
-90310/20090211025.jpg)</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/06/3962294/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/06/3962294/" class="post-title-link" itemprop="url">C++ Template Template Parameter以及error C3201</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-06 10:47:00" itemprop="dateCreated datePublished" datetime="2009-03-06T10:47:00+08:00">2009-03-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近学c++ template,发现可以使用 template template parameter</p>
-<p>然后自己编了一段小代码…</p>
-<p>// template template parameter template &lt;typename T, template<typename X><br />
-class CONE = std::deque&gt; class MyClass { public: CONE<T> a; MyClass() { } };</p>
-<p>发现编译器报错为 error C3201: the template parameter list for class template<br />
-‘std::deque’ does not match the template parameter list for template parameter<br />
-‘CONE’</p>
-<p>这个错误查了一下，说: 不要本来没有模板的类你乱加模板…</p>
-<p>可是我这里使用的是标准STL deque，没有理由冒出这样一句话呀</p>
-<p>然后我又试了一下</p>
-<p>// template template parameter template &lt;typename T,class CONE = std::deque<T></p>
-<blockquote>
-<p>class MyClass { public: CONE a; MyClass() { } };</p>
-</blockquote>
-<p>哈哈，这样是可以编译通过的。没有问题，那么能不能用这段代码代替上面那段代码呢？找了一下…这里会有安全问题。一种情况 MyClass&lt;int, deque&lt;<br />
-int&gt;&gt;这样是可以的，另外一种情况MyClass&lt;double,deque<int>&gt;.如果我们可能会把第一个T类型的变量放入到CONE中，那么这里就不可<br />
-避免要有数值转换问题。这里丢掉了精度，并且可能导致一个bug。但是如果MyClass&lt;std::string,deque&lt;const char<br />
-*&gt;&gt;则会引发编译问题。那么我们怎么能避免这个问题呢？使用下面的代码：</p>
-<p>// template template parameter template &lt;typename T,template<typename X> class<br />
-CONE&gt; class MyClass { public: CONE<T> a; MyClass() { } };</p>
-<p>这样就可以保持变量类型 T与<br />
-CONE中的类型一致了。如果我还是希望有一个缺省的模板，让我不是每次非要加入std::deque.这样还不又回到了第一段代码？那么还是会引发error<br />
-C3201错误。后来我查了下standard STL库中deque的构造函数，deque需要两个参数例如： deque&lt;int , allocator<in
-t>&gt;,这样做的原因在于每次申请空间的时候，都是按照int的大小，当然STL允许你自己定义自己的allocator。下面这样写可以既有安全性，又有一定的灵活<br />
-性：</p>
-<p>// template template parameter template &lt;typename T,typename A,<br />
-template&lt;typename X,class Alloc&gt; class CONE = std::deque&gt; class MyClass {<br />
-public: CONE&lt;T,A&gt; a; MyClass() { } };</p>
-<p>同时模板使用有几点要多加注意：一个是template template parameter中 template&lt;template <typename T><br />
-class CONE&gt;记住这里一定是class.一般我们使用template，class<br />
-和typename是没有区别的。但是这里例外。typename是类型的名字(既可以为类名，也可以为 aribtrary type基本类型)，而class可能<br />
-是模板或者class和struct。举例：std::deque这个是模板名，而std::deque<int>这个是类名。所以两者还是有一定的区别。另外有些编<br />
-译可以将我的第一段代码编译成功，我使用的是vs2005.还有在第二个template中 typename X, 与 class<br />
-Alloc只是一个文档参数，就是没有实际作用。只是为了标记CONE的。可以认为和函数声明差不多。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/26/3938910/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/02/26/3938910/" class="post-title-link" itemprop="url">数据挖掘是科学还是宗教？</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-02-26 12:01:00" itemprop="dateCreated datePublished" datetime="2009-02-26T12:01:00+08:00">2009-02-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这世间万事万物都是有联系的。一个因素诱使另一个因素的发生。美洲的蝴蝶或许会引起飓风，USA的经济让全世界人民买单…或许这就是规律。近来上了高级数据挖掘课。<br />
-想想从众多属性因素中找到关联的规律，确实不是一件简单的事情。</p>
-<p>课上老师说：超市中发现某天尿布和啤酒大多是同时卖出的。然后老师做的解释说，估计全家人以后几天想在家庆祝不想外出。然后超市就可以根据这个规律来制定产品的价格并<br />
-进行促销活动。其实我发现这样规律实在太多了，并且也总是有些离谱。</p>
-<p>假设这样一个例子：对高级职称的评审预测。</p>
-<p>id    name    age    work-year   title</p>
-<p>1      明明        20         3             经理</p>
-<p>2      红红        21         1             部门经理</p>
-<p>3      白白        20         1             项目经理</p>
-<p>4      小小        40         2             高级工程师</p>
-<p>…</p>
-<p>等等这样一个例子中，如果我们抽出 age work-year title进行预测分析或许可以得到一个age work-year<br />
-与title的相互关联规则，然后放入叫 XX的人，age 30  work-year 2 预测title是什么。这样做大家都认为…是可以的，因为title<br />
-是类别嘛！其他都是属性，这么做其实是经典的数据挖掘…可是如果我们把姓名和我们人为加入的id放入其中呢？那估计得到的结果让人啼笑皆非。比如有这样的结果被挖<br />
-掘出来：有叠字的可以做经理,或者id为10的倍数的人可以做高级工程师…我们大家心理非常清楚这种联系是不可取的。【虽然有“姓名预测学”这种学科，并且几乎所有<br />
-的中国人都认为名字很重要（因为我不曾听说过家长对儿女的名字不关心的）】但是如果挖掘出有复姓的小朋友可以做经理…有叠字的小朋友可以做高工…那我们很大程度<br />
-就知道我们未来了…不管是谁，估计不会怎么信…这个预测尚且说的过去，那id号是10的倍数的预测…就是无稽之谈…当然我们虽然也在现实生活中经常注意并<br />
-且追逐“8”，“6”之类的数字。但是这个id号毕竟是我们自己加的…我改动一下，难道那人几年后就会有不一样的命运…你不信，我也不信。但是数据挖掘的人信。<br />
-很多东西在一定程度都是我们自己加入的属性或者生成的属性，并且有些属性我们很难判断这个和我们想要挖掘出来的规律到底有何种关联，甚至就是根本没有关联。没有人知道<br />
-这些。可是我们还是想挖…不管挖出的是石油还是垃圾…</p>
-<p>当然，我们也可以从挖出的规律中找到自己认为可能是正确的规律。但是我们也不是很清楚是不是那些垃圾数据间接影响了这些正确规律的诞生呢？你相信它是正确，那就一定是<br />
-正确的？还是因为它是正确的，你才去相信？突然想起来计算机生成随机数的例子：想让0多些，0就多些；想让1多些，1就多些。</p>
-<p>1000多年前，宗教也是一门科学。1000年后，科学也是一门宗教。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/21/3919321/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/02/21/3919321/" class="post-title-link" itemprop="url">果壳中的宇宙</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-02-21 23:25:00" itemprop="dateCreated datePublished" datetime="2009-02-21T23:25:00+08:00">2009-02-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>447</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>霍金写的，不错。彩页，好看，就像看连环画一样。不过使用的文字对我来说还是有点深奥。</p>
-<p>和过去一样，我们还是追求知识，探索宇宙的奥秘，希望知晓过去和未来，乐意探知世界的边际。</p>
-<p>有个理论很有趣。这或许是我见识短浅。时间也是有形状的，和空间一样。那么时间能不能弯曲回到过去呢?书上说，时间有开始也有终止。黑洞可以记录物质信息，时间在黑洞<br />
-中停止。那么当人进入黑洞，会是怎样的一种感觉？没有时间，那还能思考吗？没有时间，还能运动吗？吸入黑洞的一霎那，正物质被抛出，那么我们的负物质又会在何方，会是<br />
-怎样的形态？</p>
-<p>我们的物理很神奇…探讨的是一个有时间和空间的范围。假设时间消失了,空间还存在吗？存在的话，有时怎样的形态呢？有没有可能时间还在流失，空间却不在了呢？</p>
-<p>反正我也不去想了…因为想多了，就没有办法睡觉了…或者这正是我们没有成为牛顿，爱因斯坦，霍金等人的缘故吧…</p>
-<p>想起来守城的两个神灵一个看着未来，一个回想着过去，结果城池还是被攻破，攻城的人说：因为那两个神灵忽视了现在。对我而言，比起过去和未来，现在才是最重要的</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/21/3919194/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/02/21/3919194/" class="post-title-link" itemprop="url">飞跃疯人院</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-02-21 22:48:00" itemprop="dateCreated datePublished" datetime="2009-02-21T22:48:00+08:00">2009-02-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>513</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>说实话，这部影片确实没有看懂…也不怪那些奥斯卡的评委把当年的最佳奖颁给“阿甘正传”。因为评委也看不懂。飞跃二字体现在何处呢？？</p>
-<p>不过我这里想说在片中那个护士真的很烂…想想神经病医院的护士应该也好不到哪里去。护士感觉上挺温柔，其实却根本没有把那些人当人看。所以个人认为学医护专业的最<br />
-好先修身养性，虽然解剖尸体多了，也不能把活人当尸体一样对待。现代医学不知道注意到这点没有。不过我个人不是学医的，妄加揣测一番。其实我自己感觉患有精神疾病的人<br />
-应该IQ不应该是个60左右的样子。而片中人的智商明显都偏低。</p>
-<p>片中麦克虽不是医护人员，却懂得怎样治愈那些疾病，不知道是否是反语。</p>
-<p>-------------------------------------------------------------</p>
-<p>终于在老师的讲解下看懂了。</p>
-<p>原来麦克是做了额叶白质切除手术。听说做过那个手术的人，只会吃饭睡觉，其他的什么都不会了。没有情感没有激情也没有任何疯狂的想法。想想这个手术是非常残忍的，无异<br />
-于把正常人变成猴子…甚至连猴子都不如。这项技术的发明者授予了诺贝尔医学奖。但是施行几年后，被美国全面禁止。听说最近广东某某医院还把它当成新的技术并用于戒毒<br />
-。可怕…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/19/3909534/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/02/19/3909534/" class="post-title-link" itemprop="url">堆个雪人！</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-02-19 12:38:00" itemprop="dateCreated datePublished" datetime="2009-02-19T12:38:00+08:00">2009-02-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>228</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>夜里下了雪，白茫茫挺好的。</p>
-<p>上完早上课，和保增一起去堆雪人。找了半天…选中了塔下的空地。</p>
-<p>看到看门的老大爷早已经堆了一个像样的雪人。我们说要堆自己的。于是保增滚了一个头，我滚了一个身子。</p>
-<p>开始感觉雪很冷.后来发现一直接触雪就不冷了。</p>
-<p>下面的身体还是感觉太矮太胖了…谁让是我滚出来的雪球呢？</p>
-<p>![雪人1](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA5MDI=">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/200902<i class="fa fa-external-link-alt"></i></span><br />
-19/雪人.JPG)</p>
+          <h2 id="所有-http-状态代码及其定义-代码-指示2xx-成功200-正常请求已完成-201-正常紧接-post-命令-202-正常已接受用于处理但处理尚未完成-203-正常部分信息-返回的信息只是一部分-204-正常无响应-已接收请求但不存在要回送的信息-3xx-重定向301-已移动-请求的数据具有新的位置且更改是永久的-302-已找到-请求的数据临时具有不同-uri-303-请参阅其它-可在另一-uri-下找到对请求的响应且应使用-get-方法检索此响应-304-未修改-未按预期修改文档-305-使用代理-必须通过位置字段中提供的代理来访问请求的资源-306-未使用-不再使用保留此代码以便将来使用-4xx-客户机中出现的错误400-错误请求-请求中有语法问题或不能满足请求-401-未授权-未授权客户机访问数据-402-需要付款-表示计费系统已有效-403-禁止-即使有授权也不需要访问-404-找不到-服务器找不到给定的资源文档不存在-407-代理认证请求-客户机首先必须使用代理认证自身-415-介质类型不受支持-服务器拒绝服务请求因为不支持请求实体的格式-5xx-服务器中出现的错误500-内部错误-因为意外情况服务器不能完成请求-501-未执行-服务器不支持请求的工具-502-错误网关-服务器接收到来自上游服务器的无效响应-503-无法获得服务-由于临时过载或维护服务器无法处理请求-"><a class="markdownIt-Anchor" href="#所有-http-状态代码及其定义-代码-指示2xx-成功200-正常请求已完成-201-正常紧接-post-命令-202-正常已接受用于处理但处理尚未完成-203-正常部分信息-返回的信息只是一部分-204-正常无响应-已接收请求但不存在要回送的信息-3xx-重定向301-已移动-请求的数据具有新的位置且更改是永久的-302-已找到-请求的数据临时具有不同-uri-303-请参阅其它-可在另一-uri-下找到对请求的响应且应使用-get-方法检索此响应-304-未修改-未按预期修改文档-305-使用代理-必须通过位置字段中提供的代理来访问请求的资源-306-未使用-不再使用保留此代码以便将来使用-4xx-客户机中出现的错误400-错误请求-请求中有语法问题或不能满足请求-401-未授权-未授权客户机访问数据-402-需要付款-表示计费系统已有效-403-禁止-即使有授权也不需要访问-404-找不到-服务器找不到给定的资源文档不存在-407-代理认证请求-客户机首先必须使用代理认证自身-415-介质类型不受支持-服务器拒绝服务请求因为不支持请求实体的格式-5xx-服务器中出现的错误500-内部错误-因为意外情况服务器不能完成请求-501-未执行-服务器不支持请求的工具-502-错误网关-服务器接收到来自上游服务器的无效响应-503-无法获得服务-由于临时过载或维护服务器无法处理请求-"></a> 所有 HTTP 状态代码及其定义。<br />
+代码  指示<br />
+2xx  成功<br />
+200  正常；请求已完成。<br />
+201  正常；紧接 POST 命令。<br />
+202  正常；已接受用于处理，但处理尚未完成。<br />
+203  正常；部分信息 — 返回的信息只是一部分。<br />
+204  正常；无响应 — 已接收请求，但不存在要回送的信息。<br />
+3xx  重定向<br />
+301  已移动 — 请求的数据具有新的位置且更改是永久的。<br />
+302  已找到 — 请求的数据临时具有不同 URI。<br />
+303  请参阅其它 — 可在另一 URI 下找到对请求的响应，且应使用 GET 方法检索此响应。<br />
+304  未修改 — 未按预期修改文档。<br />
+305  使用代理 — 必须通过位置字段中提供的代理来访问请求的资源。<br />
+306  未使用 — 不再使用；保留此代码以便将来使用。<br />
+4xx  客户机中出现的错误<br />
+400  错误请求 — 请求中有语法问题，或不能满足请求。<br />
+401  未授权 — 未授权客户机访问数据。<br />
+402  需要付款 — 表示计费系统已有效。<br />
+403  禁止 — 即使有授权也不需要访问。<br />
+404  找不到 — 服务器找不到给定的资源；文档不存在。<br />
+407  代理认证请求 — 客户机首先必须使用代理认证自身。<br />
+415  介质类型不受支持 — 服务器拒绝服务请求，因为不支持请求实体的格式。<br />
+5xx  服务器中出现的错误<br />
+500  内部错误 — 因为意外情况，服务器不能完成请求。<br />
+501  未执行 — 服务器不支持请求的工具。<br />
+502  错误网关 — 服务器接收到来自上游服务器的无效响应。<br />
+503  无法获得服务 — 由于临时过载或维护，服务器无法处理请求。<br />
+-----------------------------------------------------------------------------</h2>
+<p>HTTP 400 - 请求无效<br />
+HTTP 401.1 - 未授权：登录失败<br />
+HTTP 401.2 - 未授权：服务器配置问题导致登录失败<br />
+HTTP 401.3 - ACL 禁止访问资源<br />
+HTTP 401.4 - 未授权：授权被筛选器拒绝<br />
+HTTP 401.5 - 未授权：ISAPI 或 CGI 授权失败<br />
+HTTP 403 - 禁止访问<br />
+HTTP 403 - 对 Internet 服务管理器 (HTML) 的访问仅限于 Localhost<br />
+HTTP 403.1 禁止访问：禁止可执行访问<br />
+HTTP 403.2 - 禁止访问：禁止读访问<br />
+HTTP 403.3 - 禁止访问：禁止写访问<br />
+HTTP 403.4 - 禁止访问：要求 SSL<br />
+HTTP 403.5 - 禁止访问：要求 SSL 128<br />
+HTTP 403.6 - 禁止访问：IP 地址被拒绝<br />
+HTTP 403.7 - 禁止访问：要求客户证书<br />
+HTTP 403.8 - 禁止访问：禁止站点访问<br />
+HTTP 403.9 - 禁止访问：连接的用户过多<br />
+HTTP 403.10 - 禁止访问：配置无效<br />
+HTTP 403.11 - 禁止访问：密码更改<br />
+HTTP 403.12 - 禁止访问：映射器拒绝访问<br />
+HTTP 403.13 - 禁止访问：客户证书已被吊销<br />
+HTTP 403.15 - 禁止访问：客户访问许可过多<br />
+HTTP 403.16 - 禁止访问：客户证书不可信或者无效<br />
+HTTP 403.17 - 禁止访问：客户证书已经到期或者尚未生效<br />
+HTTP 404.1 - 无法找到 Web 站点<br />
+HTTP 404 - 无法找到文件<br />
+HTTP 405 - 资源被禁止<br />
+HTTP 406 - 无法接受<br />
+HTTP 407 - 要求代理身份验证<br />
+HTTP 410 - 永远不可用<br />
+HTTP 412 - 先决条件失败<br />
+HTTP 414 - 请求 - URI 太长<br />
+HTTP 500 - 内部服务器错误<br />
+HTTP 500.100 - 内部服务器错误 - ASP 错误<br />
+HTTP 500-11 服务器关闭<br />
+HTTP 500-12 应用程序重新启动<br />
+HTTP 500-13 - 服务器太忙<br />
+HTTP 500-14 - 应用程序无效<br />
+HTTP 500-15 - 不允许请求 global.asa<br />
+Error 501 - 未实现<br />
+HTTP 502 - 网关错误</p>
 
       
     </div>
@@ -2512,7 +1439,7 @@ Alloc只是一个文档参数，就是没有实际作用。只是为了标记CON
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/22/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/22/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

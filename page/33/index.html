@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/29/1715203/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/12/04/4937923/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/29/1715203/" class="post-title-link" itemprop="url">MiniDB实训第十四天</a>
+          <a href="/2009/12/04/4937923/" class="post-title-link" itemprop="url">Automake Autoconfig Generate Make Configure自动生成</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,14 +243,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-07-29 17:40:00" itemprop="dateCreated datePublished" datetime="2007-07-29T17:40:00+08:00">2007-07-29</time>
+      <time title="Created: 2009-12-04 09:19:00" itemprop="dateCreated datePublished" datetime="2009-12-04T09:19:00+08:00">2009-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -260,14 +260,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>100</span>
+      <span>7.8k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>7 mins.</span>
     </span>
 </div>
 
@@ -278,8 +278,247 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>昨天发现MatrixList的bug…痛苦的MatrixList…昨天郭军把红黑树和HashTable做了序列化。我借用了下MySq<br />
-l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
+          <p>自动化生成的例子还可以参照：<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2F5aWdvb2QvYXJjaGl2ZS8yMDA5LzEyLzA3LzQ5NTQ3NzIuYXNweA==">http://blog.csdn.net/sayigood/archive/2009/12/07/4954772.aspx<i class="fa fa-external-link-alt"></i></span></p>
+<p><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/u3/90876/showart_2072884.html"> 转载自：http://blog.chinaunix.net/u3/90876/showart_2072884.html<br />
+</a></p>
+<p>第一步：<br />
+----------<br />
+在/root/project/main目录下创建一个文件main.c,其内容如下：<br />
+------------------------------------------------<br />
+#include &lt;stdio.h&gt;<br />
+int main(int argc, char** argv)<br />
+{<br />
+printf(“Hello, Auto Makefile!/n”);<br />
+return 0;<br />
+}<br />
+------------------------------------------------</p>
+<p>此时状态如下：<br />
+[root@localhost main]# ** pwd **<br />
+/root/project/main<br />
+[root@localhost main]# ** ls **<br />
+** main.c **<br />
+[root@localhost main]#</p>
+<p>第二步：<br />
+----------<br />
+运行 ** autoscan ** , 自动创建两个文件： autoscan.log  configure.scan</p>
+<p>此时状态如下：<br />
+[root@localhost main]# ** autoscan **<br />
+[root@localhost main]# ** ls **<br />
+** autoscan.log  configure.scan ** main.c<br />
+[root@localhost main]#</p>
+<p>第三步：<br />
+----------<br />
+<span class="exturl" data-url="aHR0cDovL3huLS1jb25maWd1cmUtejg5bno3OHAueG4tLXNjYW5jb25maWd1cmUtbG8xdW85Znh0NmFiMzFldjU1Yy5pbg==">修改configure.scan的文件名为configure.in<i class="fa fa-external-link-alt"></i></span></p>
+<p>查看 ** <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span> ** 的内容：<br />
+------------------------------------------------<br />
+#                                               -<em>- Autoconf -</em>-</p>
+<h1 id="process-this-file-with-autoconf-to-produce-a-configure-script"><a class="markdownIt-Anchor" href="#process-this-file-with-autoconf-to-produce-a-configure-script"></a> Process this file with autoconf to produce a configure script.</h1>
+<p>AC_PREREQ(2.61)<br />
+AC_INIT(FULL-PACKAGE-NAME, VERSION, BUG-REPORT-ADDRESS)<br />
+AC_CONFIG_SRCDIR([main.c])<br />
+AC_CONFIG_HEADER([config.h])</p>
+<h1 id="checks-for-programs"><a class="markdownIt-Anchor" href="#checks-for-programs"></a> Checks for programs.</h1>
+<p>AC_PROG_CC</p>
+<h1 id="checks-for-libraries"><a class="markdownIt-Anchor" href="#checks-for-libraries"></a> Checks for libraries.</h1>
+<h1 id="checks-for-header-files"><a class="markdownIt-Anchor" href="#checks-for-header-files"></a> Checks for header files.</h1>
+<h1 id="checks-for-typedefs-structures-and-compiler-characteristics"><a class="markdownIt-Anchor" href="#checks-for-typedefs-structures-and-compiler-characteristics"></a> Checks for typedefs, structures, and compiler characteristics.</h1>
+<h1 id="checks-for-library-functions"><a class="markdownIt-Anchor" href="#checks-for-library-functions"></a> Checks for library functions.</h1>
+<p>AC_OUTPUT<br />
+------------------------------------------------</p>
+<p>解读以上的文件：</p>
+<p>------------------------------------------------<br />
+#                                               -<em>- Autoconf -</em>-</p>
+<h1 id="process-this-file-with-autoconf-to-produce-a-configure-script-2"><a class="markdownIt-Anchor" href="#process-this-file-with-autoconf-to-produce-a-configure-script-2"></a> Process this file with autoconf to produce a configure script.</h1>
+<h1 id="ac_prereq"><a class="markdownIt-Anchor" href="#ac_prereq"></a> AC_PREREQ:</h1>
+<h1 id="确保使用的是足够新的autoconf版本-如果用于创建configure的autoconf的版"><a class="markdownIt-Anchor" href="#确保使用的是足够新的autoconf版本-如果用于创建configure的autoconf的版"></a> 确保使用的是足够新的Autoconf版本。如果用于创建configure的Autoconf的版</h1>
+<h1 id="本比version-要早就在标准错误输出打印一条错误消息并不会创建configure"><a class="markdownIt-Anchor" href="#本比version-要早就在标准错误输出打印一条错误消息并不会创建configure"></a> 本比version 要早，就在标准错误输出打印一条错误消息并不会创建configure。</h1>
+<p>AC_PREREQ(2.61)</p>
+<h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
+<h1 id="初始化定义软件的基本信息包括设置包的全称版本号以及报告bug时需要用的邮箱地址"><a class="markdownIt-Anchor" href="#初始化定义软件的基本信息包括设置包的全称版本号以及报告bug时需要用的邮箱地址"></a> 初始化,定义软件的基本信息,包括设置包的全称,版本号以及报告BUG时需要用的邮箱地址</h1>
+<h1 id="-2"><a class="markdownIt-Anchor" href="#-2"></a> </h1>
+<p>AC_INIT(FULL-PACKAGE-NAME, VERSION, BUG-REPORT-ADDRESS)</p>
+<h1 id="-3"><a class="markdownIt-Anchor" href="#-3"></a> </h1>
+<h1 id="用来侦测所指定的源码文件是否存在来确定源码目录的有效性"><a class="markdownIt-Anchor" href="#用来侦测所指定的源码文件是否存在来确定源码目录的有效性"></a> 用来侦测所指定的源码文件是否存在，来确定源码目录的有效性</h1>
+<h1 id="-4"><a class="markdownIt-Anchor" href="#-4"></a> </h1>
+<p>AC_CONFIG_SRCDIR([main.c])</p>
+<h1 id="-5"><a class="markdownIt-Anchor" href="#-5"></a> </h1>
+<h1 id="用于生成configh文件以便autoheader使用"><a class="markdownIt-Anchor" href="#用于生成configh文件以便autoheader使用"></a> 用于生成config.h文件，以便autoheader使用</h1>
+<h1 id="-6"><a class="markdownIt-Anchor" href="#-6"></a> </h1>
+<p>AC_CONFIG_HEADER([config.h])</p>
+<h1 id="checks-for-programs-2"><a class="markdownIt-Anchor" href="#checks-for-programs-2"></a> Checks for programs.</h1>
+<p>AC_PROG_CC</p>
+<h1 id="checks-for-libraries-2"><a class="markdownIt-Anchor" href="#checks-for-libraries-2"></a> Checks for libraries.</h1>
+<h1 id="checks-for-header-files-2"><a class="markdownIt-Anchor" href="#checks-for-header-files-2"></a> Checks for header files.</h1>
+<h1 id="checks-for-typedefs-structures-and-compiler-characteristics-2"><a class="markdownIt-Anchor" href="#checks-for-typedefs-structures-and-compiler-characteristics-2"></a> Checks for typedefs, structures, and compiler characteristics.</h1>
+<h1 id="checks-for-library-functions-2"><a class="markdownIt-Anchor" href="#checks-for-library-functions-2"></a> Checks for library functions.</h1>
+<h1 id="-7"><a class="markdownIt-Anchor" href="#-7"></a> </h1>
+<h1 id="创建输出文件-在configurein的末尾调用本宏一次"><a class="markdownIt-Anchor" href="#创建输出文件-在configurein的末尾调用本宏一次"></a> 创建输出文件。<span class="exturl" data-url="aHR0cDovL3huLS0zZHMlNjBjb25maWd1cmUuaW4=">在`configure.in<i class="fa fa-external-link-alt"></i></span>’的末尾调用本宏一次。</h1>
+<h1 id="-8"><a class="markdownIt-Anchor" href="#-8"></a> </h1>
+<p>AC_OUTPUT<br />
+------------------------------------------------</p>
+<p>修改动作:<br />
+1.修改AC_INIT里面的参数: AC_INIT(main,1.0, <span class="exturl" data-url="bWFpbHRvOnBncHhjQDE2My5jb20=">pgpxc@163.com<i class="fa fa-external-link-alt"></i></span>)<br />
+2.添加宏AM_INIT_AUTOMAKE,<br />
+它是automake所必备的宏，也同前面一样，PACKAGE是所要产生软件套件的名称，VERSION是版本编号。<br />
+3.在AC_OUTPUT后添加输出文件Makefile<br />
+修改后的结果:<br />
+------------------------------------------------<br />
+#                                               -<em>- Autoconf -</em>-</p>
+<h1 id="process-this-file-with-autoconf-to-produce-a-configure-script-3"><a class="markdownIt-Anchor" href="#process-this-file-with-autoconf-to-produce-a-configure-script-3"></a> Process this file with autoconf to produce a configure script.</h1>
+<p>AC_PREREQ(2.61)<br />
+** AC_INIT(main, 1.0, <span class="exturl" data-url="bWFpbHRvOnBncHhjQDE2My5jb20=">pgpxc@163.com<i class="fa fa-external-link-alt"></i></span>) **<br />
+AC_CONFIG_SRCDIR([main.c])<br />
+AC_CONFIG_HEADER([config.h])<br />
+** AM_INIT_AUTOMAKE(main,1.0) **</p>
+<h1 id="checks-for-programs-3"><a class="markdownIt-Anchor" href="#checks-for-programs-3"></a> Checks for programs.</h1>
+<p>AC_PROG_CC</p>
+<h1 id="checks-for-libraries-3"><a class="markdownIt-Anchor" href="#checks-for-libraries-3"></a> Checks for libraries.</h1>
+<h1 id="checks-for-header-files-3"><a class="markdownIt-Anchor" href="#checks-for-header-files-3"></a> Checks for header files.</h1>
+<h1 id="checks-for-typedefs-structures-and-compiler-characteristics-3"><a class="markdownIt-Anchor" href="#checks-for-typedefs-structures-and-compiler-characteristics-3"></a> Checks for typedefs, structures, and compiler characteristics.</h1>
+<h1 id="checks-for-library-functions-3"><a class="markdownIt-Anchor" href="#checks-for-library-functions-3"></a> Checks for library functions.</h1>
+<p>** AC_OUTPUT([Makefile]) **<br />
+------------------------------------------------</p>
+<p>第四步:<br />
+运行 ** aclocal ** , 生成一个“ ** aclocal.m4 ** ”文件和一个缓冲文件夹 ** autom4te.cache **<br />
+，该文件主要处理本地的宏定义。</p>
+<p>此时的状态是：<br />
+[root@localhost main]# ** aclocal **<br />
+[root@localhost main]# ** ls **<br />
+** aclocal.m4  autom4te.cache ** autoscan.log  <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>  configure.in~  main.c<br />
+[root@localhost main]#<br />
+第五步：<br />
+运行 ** autoconf ** , 目的是生成 configure</p>
+<p>此时的状态是：<br />
+[root@localhost main]# ** autoconf **<br />
+[root@localhost main]# ** ls **<br />
+aclocal.m4      autoscan.log  <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>   main.c<br />
+autom4te.cache ** configure ** configure.in~<br />
+[root@localhost main]#</p>
+<p>第六步：<br />
+运行 ** autoheader ** ，它负责生成config.h.in文件。该工具通常会从“acconfig.h”文件中复制用户附加的符号定义，因此此处<br />
+没有附加符号定义，所以不需要创建“acconfig.h”文件。</p>
+<p>此时的状态是：<br />
+[root@localhost main]# ** autoheader **<br />
+[root@localhost main]# ** ls **<br />
+aclocal.m4      autoscan.log  configure     configure.in~<br />
+autom4te.cache ** <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span> ** <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>  main.c<br />
+[root@localhost main]#</p>
+<p>第七步：<br />
+下面即将运行 ** automake ** , 但在此之前应该做一下准备工作!</p>
+<p>首先<br />
+创建一个 ** <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span> ** .这一步是创建Makefile很重要的一步，<span class="exturl" data-url="aHR0cDovL3huLS1hdXRvbWFrZU1ha2VmaWxlLWswMno5NDgwYWl2Y3J5Zzg1NmcwaWd3bzljcG5pbXk4YzRtM2IuYW0=">automake要用的脚本配置文件是Makefile.am<i class="fa fa-external-link-alt"></i></span>，用户需<br />
+要自己创建相应的文件。之后，<span class="exturl" data-url="aHR0cDovL3huLS1hdXRvbWFrZU1ha2VmaWxlLXd3MTBhcDA1bmp0cWU3Zm40M3guaW4=">automake工具转换成Makefile.in<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>这个Makefile.am的内容如下：<br />
+------------------------------------------------<br />
+AUTOMAKE_OPTIONS=foreign<br />
+bin_PROGRAMS=main<br />
+main_SOURCES=main.c<br />
+------------------------------------------------</p>
+<p>下面对该脚本文件的对应项进行解释。<br />
+其中的AUTOMAKE_OPTIONS为设置automake的选项。由于GNU（在第1章中已经有所介绍）对自己发布的软件有严格的规范，比如必须附<br />
+带许可证声明文件COPYING等，否则automake执行时会报错。automake提供了三种软件等级：foreign、gnu和gnits，让用<br />
+户选择采用，默认等级为gnu。在本例使用foreign等级，它只检测必须的文件。<br />
+bin_PROGRAMS定义要产生的执行文件名。如果要产生多个执行文件，每个文件名用空格隔开。<br />
+main_SOURCES定义“main”这个执行程序所需要的原始文件。如果”main”这个程序是由多个原始文件所产生的，则必须把它所用到的所有原<br />
+始文件都列出来，并用空格隔开。例如：若目标体“main”需要“main.c”、“sunq.c”、“main.h”三个依赖文件，则定义<br />
+main_SOURCES=main.c sunq.c<br />
+main.h。要注意的是，如果要定义多个执行文件，则对每个执行程序都要定义相应的file_SOURCES。</p>
+<p>其次<br />
+使用automake对其生成“<span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>”文件，在这里使用选项“—adding-<br />
+missing”可以让automake自动添加有一些必需的脚本文件。<br />
+运行后的状态是：<br />
+------------------------------------------------<br />
+[root@localhost main]# ** automake --add-missing **<br />
+<span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbjo4">configure.in:8<i class="fa fa-external-link-alt"></i></span>: installing <code>./missing'   configure.in:8: installing </code>./install-sh’<br />
+<span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span>: installing `./depcomp’<br />
+[root@localhost main]# ** ls **<br />
+aclocal.m4      <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span>   configure.in~  main.c        <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmlu">Makefile.in<i class="fa fa-external-link-alt"></i></span><br />
+autom4te.cache  configure ** depcomp ** ** <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span> ** ** missing **<br />
+autoscan.log    <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span> ** install-sh ** Makefile.am~<br />
+[root@localhost main]#<br />
+------------------------------------------------</p>
+<p>第八步<br />
+运行 ** configure ** ，在这一步中，通过运行自动配置设置文件configure，把Makefile.in变成了最终的Makefile。<br />
+运行的结果如下：<br />
+------------------------------------------------<br />
+[root@localhost main]# ** ./configure **<br />
+checking for a BSD-compatible install… /usr/bin/install -c<br />
+checking whether build environment is sane… yes<br />
+checking for a thread-safe mkdir -p… /bin/mkdir -p<br />
+checking for gawk… gawk<br />
+checking whether make sets $(MAKE)… yes<br />
+checking for gcc… gcc<br />
+checking for C compiler default output file name… a.out<br />
+checking whether the C compiler works… yes<br />
+checking whether we are cross compiling… no<br />
+checking for suffix of executables…<br />
+checking for suffix of object files… o<br />
+checking whether we are using the GNU C compiler… yes<br />
+checking whether gcc accepts -g… yes<br />
+checking for gcc option to accept ISO C89… none needed<br />
+checking for style of include used by make… GNU<br />
+checking dependency style of gcc… gcc3<br />
+configure: creating ./config.status<br />
+** config.status: creating Makefile<br />
+** config.status: creating config.h<br />
+config.status: executing depfiles commands<br />
+[root@localhost main]# ls<br />
+aclocal.m4      <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span>    <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span>   main.c        <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmlu">Makefile.in<i class="fa fa-external-link-alt"></i></span><br />
+autom4te.cache  config.log     configure.in~  Makefile ** missing **<br />
+autoscan.log    config.status ** depcomp ** <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span> ** stamp-h1 **<br />
+** config.h ** configure ** install-sh ** Makefile.am~<br />
+[root@localhost main]#<br />
+------------------------------------------------</p>
+<p>第九步<br />
+运行 ** make ** ，对配置文件Makefile进行测试一下</p>
+<p>此时的状态如下:<br />
+------------------------------------------------<br />
+[root@localhost main]# ** make **<br />
+cd . &amp;&amp; /bin/sh /root/project/main/missing --run aclocal-1.10<br />
+cd . &amp;&amp; /bin/sh /root/project/main/missing --run automake-1.10 --foreign<br />
+cd . &amp;&amp; /bin/sh /root/project/main/missing --run autoconf<br />
+/bin/sh ./config.status --recheck<br />
+running CONFIG_SHELL=/bin/sh /bin/sh ./configure   --no-create --no-recursion<br />
+checking for a BSD-compatible install… /usr/bin/install -c<br />
+checking whether build environment is sane… yes<br />
+checking for a thread-safe mkdir -p… /bin/mkdir -p<br />
+checking for gawk… gawk<br />
+checking whether make sets $(MAKE)… yes<br />
+checking for gcc… gcc<br />
+checking for C compiler default output file name… a.out<br />
+checking whether the C compiler works… yes<br />
+checking whether we are cross compiling… no<br />
+checking for suffix of executables…<br />
+checking for suffix of object files… o<br />
+checking whether we are using the GNU C compiler… yes<br />
+checking whether gcc accepts -g… yes<br />
+checking for gcc option to accept ISO C89… none needed<br />
+checking for style of include used by make… GNU<br />
+checking dependency style of gcc… gcc3<br />
+configure: creating ./config.status<br />
+/bin/sh ./config.status<br />
+config.status: creating Makefile<br />
+config.status: creating config.h<br />
+config.status: config.h is unchanged<br />
+config.status: executing depfiles commands<br />
+cd . &amp;&amp; /bin/sh /root/project/main/missing --run autoheader<br />
+rm -f stamp-h1<br />
+touch <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span><br />
+make  all-am<br />
+make[1]: Entering directory <code>/root/project/main'   gcc -DHAVE_CONFIG_H -I.     -g -O2 -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o main.c   mv -f .deps/main.Tpo .deps/main.Po   gcc  -g -O2   -o main main.o   cd . &amp;&amp; /bin/sh ./config.status config.h   config.status: creating config.h   config.status: config.h is unchanged   make[1]: Leaving directory </code>/root/project/main’<br />
+[root@localhost main]# ** ls **<br />
+aclocal.m4      autoscan.log  <span class="exturl" data-url="aHR0cDovL2NvbmZpZy5oLmlu">config.h.in<i class="fa fa-external-link-alt"></i></span>  config.status  <span class="exturl" data-url="aHR0cDovL2NvbmZpZ3VyZS5pbg==">configure.in<i class="fa fa-external-link-alt"></i></span><br />
+depcomp ** main    main.o ** <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmFt">Makefile.am<i class="fa fa-external-link-alt"></i></span>   <span class="exturl" data-url="aHR0cDovL01ha2VmaWxlLmlu">Makefile.in<i class="fa fa-external-link-alt"></i></span>  stamp-h1<br />
+autom4te.cache  config.h      config.log   configure      configure.in~<br />
+install-sh  main.c  Makefile  Makefile.am~  missing<br />
+[root@localhost main]#<br />
+------------------------------------------------</p>
+<p>第十步<br />
+运行生成的文件 main：<br />
+------------------------------------------------<br />
+[root@localhost main]# ** ./main **<br />
+Hello, Auto Makefile!<br />
+[root@localhost main]#</p>
 
       
     </div>
@@ -306,7 +545,7 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/27/1712239/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/12/01/4915241/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -324,7 +563,7 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/27/1712239/" class="post-title-link" itemprop="url">MiniDB实训第十三天</a>
+          <a href="/2009/12/01/4915241/" class="post-title-link" itemprop="url">为啥要用Tag?</a>
         </h2>
 
         <div class="post-meta-container">
@@ -335,14 +574,14 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-07-27 21:32:00" itemprop="dateCreated datePublished" datetime="2007-07-27T21:32:00+08:00">2007-07-27</time>
+      <time title="Created: 2009-12-01 16:04:00" itemprop="dateCreated datePublished" datetime="2009-12-01T16:04:00+08:00">2009-12-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -352,7 +591,7 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>329</span>
+      <span>234</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -370,13 +609,10 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今天又重构了多个方法。包括一个Select方法，返回的只是Row的指针，并没有重新克隆一个新的Row返回。这个方法更加通用，其他的select方法只是在此基<br />
-础上克隆了新的Row。</p>
-<p>修改了一下Insert（）和delete（）的对外接口，现在发现更新并没有太多的用处。。暂时还没有测试和更改更新数据这项功能。</p>
-<p>将PrimaryKey和ForeignKey抽取出来做了各种各样的小方法。现在CDBTable中的方法已经达到五十多个。但是实现的有用的方法大约只是四十多个<br />
-。有些只是做的接口，还没有实现。</p>
-<p>明天将把HashTable和BinTree序列化。看着别的组使用的是fstream…我组还是使用c语言。但想想，还是不改了继续做下去吧。</p>
-<p>明天还要插入父表和子表。。。。</p>
+          <p>如果自然语言处理技术不错的话，其实没有必要人来标注Tag.因为Tag其实就是关键词也就是keyword.多少年前就有从文中抽取关键字的技术。不过可能还不成熟<br />
+。所以才需要人为添加Tag.所谓的Tag Cloud,其实是根据Tag的不同权重而对Tag进行展现的方式，其实是一个很不错的人机接口。</p>
+<p>Tag的作用其实很多，比如做索引，或者做abstract,或者做文章之间的关联度分析。不管怎样，平均来说比原来文章字数上要少很多。所以也就好做处理。可以认为<br />
+是一种降低复杂度的方法。</p>
 
       
     </div>
@@ -403,7 +639,7 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/26/1709885/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/29/4898845/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -421,7 +657,7 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/26/1709885/" class="post-title-link" itemprop="url">MiniDB实训第12天</a>
+          <a href="/2009/11/29/4898845/" class="post-title-link" itemprop="url">开源软件的未来</a>
         </h2>
 
         <div class="post-meta-container">
@@ -432,14 +668,14 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-07-26 18:23:00" itemprop="dateCreated datePublished" datetime="2007-07-26T18:23:00+08:00">2007-07-26</time>
+      <time title="Created: 2009-11-29 10:12:00" itemprop="dateCreated datePublished" datetime="2009-11-29T10:12:00+08:00">2009-11-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -449,7 +685,7 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>214</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -467,10 +703,25 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今天上午上了文件检索课。下午把主键判断做了。发现多个主键真的难做。后来把多个主键合并为一个，然后再插入索引。插入数据的时候先要去检索本表的主键值是否重复，然<br />
-后再通过TableManager来传入本表的父表，然后再通过父表的检查主键是否重复来判断是否外键值一致。</p>
-<p>福勇要做红黑树。不过我们已经把二叉排序树实现了，下面他要做的工作是将节点加入父节点和颜色。然后再改掉BinSearchTree的插入节点和删除节点的实现函数<br />
-就差不多了。</p>
+          <p>自己一直在做开源方面的工作，包括源代码的搜集整理。同时也看过不少源代码。不过当前开源界的代码大部分处于无注释或少注释状态，有的代码只有license是注释.<br />
+…如果是少数几个人开发，大家都相互认识，只不过是借用了开源这个壳来完成自己的事情的话，无注释也没有什么大不了的。开源的代码的很多，不过成功的太少。也有<br />
+很多代码写得很烂，也少人问津。</p>
+<p>开源项目的类型大概有四种，可能总结的不是很全面。1，已经有相关功能的实现，但是没有开源。2我或者周围的人知道某种需求并没有人实现。3为完成推广活动，而开源。<br />
+4，just for fun.</p>
+<p>开源项目是否要依照经典的软件过程来走？答案是不确定。很少有开源软件有自己的蓝图，连linux都没有！也就是说开源软件大部分时间处于无设计阶段。因为没有明确的<br />
+需求，也就没有明确的设计。大部分需求是几个核心组织者拍拍脑袋得到的idea以及以前版本中得到的用户反馈。</p>
+<p>那么今后的开源应该做成什么样子呢？我个人认为第一至少API化。读源码然后做逆向工程，然后再更改少量代码，除了用来骗钱，增强个人能力外，对真正意义上的快速开发<br />
+作用并不大。如果有编程API可用，为何不直接调用，还要读大量的相关源码呢？公司会傻到先让程序员看linux核心代码再编c程吗？第二要有软件蓝图。此开源软件的<br />
+未来究竟是什么样子的，应该明确一下。有啥功能不再升级应该说一下。否则使用了某个功能模块，结果下个版本说因为含有系统漏洞而不再支持。那借助此开源软件的开发者就<br />
+疯了。第三相关功能的融合。A开源软件有下载模块，B开源软有下载模块,C…,为啥不整合到一起，形成API呢？当然会有人说因为使用不同，下载方式及流程可能<br />
+有不同。但是我想一个gcc有约上百个参数供人调用，一个下载模块提供几十个参数应该也就够用了。分散力量做某事，往往做得不好。第四，当前软件的框架结构、文档和注<br />
+释应该整齐。开发者往往不屑于文档，这是通病。“代码就是文档”这只对开发此代码的人适用。另外某些公司把自己的代码开源了，结果代码里只有license是注释。我<br />
+觉得这些代码还不如用混淆器混淆一下然后再宣布自己支持开源来得痛快。我个人认为开源应该是为别人提供方便，而不仅仅为了做个代码的网上备份。不过当前为了宣传和推广<br />
+开源，这些同学的做法还是欢迎的。但是这样的做法肯定不是推崇的。第五，开源项目应该有专门的培训人员。现在大部分项目都宣称来IRC上问问题吧，大家都会解答。这其<br />
+实是一种责任分散的做法。心理学上讲当责任分散到每个人身上，那每个人也就没有责任了。例如大家都围观落水者或者急需救助的人，而不提供援手。所以我建议开源项目应有<br />
+专人培训新人。</p>
+<p>回顾自己的文章，好像是对开源软件的建议，并没有和题目所写的开源软件的未来相联系。我个人能力有限，的确很难预测未来。未来还是靠我们共同创造吧。😃</p>
+<p>欢迎开源人士评阅。但言辞不要激进，smile again:)</p>
 
       
     </div>
@@ -497,7 +748,7 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/25/1707667/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/28/4893319/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -515,7 +766,7 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/25/1707667/" class="post-title-link" itemprop="url">MiniDB实训第十天</a>
+          <a href="/2009/11/28/4893319/" class="post-title-link" itemprop="url">各大知名公司服务器迁移国外？</a>
         </h2>
 
         <div class="post-meta-container">
@@ -526,879 +777,14 @@ l中的Hash函数。然后进行痛苦的调试…bug,bug,不断的bug</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-07-25 18:22:00" itemprop="dateCreated datePublished" datetime="2007-07-25T18:22:00+08:00">2007-07-25</time>
+      <time title="Created: 2009-11-28 09:51:00" itemprop="dateCreated datePublished" datetime="2009-11-28T09:51:00+08:00">2009-11-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>33</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨天完成HashTable和BinSearchTree的部分功能…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/25/1707665/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/25/1707665/" class="post-title-link" itemprop="url">MiniDB实训第十一天</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-25 18:19:00" itemprop="dateCreated datePublished" datetime="2007-07-25T18:19:00+08:00">2007-07-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>576</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天想到索引永久化保存。这个就意味这索引中存放的不能是地址的值。这样再还原就会出现问题。</p>
-<p>又想是否可以存相对位置，但是这样又要改AList类中的remove方法。否则删除一行，本行以下的所有的行的相对位置都变化了。后来准备做一个亚元来代替删除行记<br />
-录。</p>
-<p>想象HashTable对于等值比较速度非常快，但是对于大于小于等操作，HashTable基本就无用了。那就可以直接用红黑树来代替。这样做也做到了底层数据结构<br />
-和用户接口的无关性。用户不必自己选择使用哪种数据结构来建立索引。</p>
-<p>今天碰到一个问题：vs2005调试的时候监控的变量的值总是会变的莫名其妙。后来发现是使用了release而不是debug.晕…</p>
-<p>又碰到一个c++的问题：</p>
-<p>void DividWhereSet(char * pStrWhereSet, char * pStrColumnName, char * oper,<br />
-char * pValue)；我在函数体内改动了pStrColumnName和pValue的值。但是编译器就有问题了。后来改成：</p>
-<p>void DividWhereSet(char * pStrWhereSet, char ** pStrColumnName, char * oper,<br />
-char ** pValue)；原因是改变了指针的地址，那么还是用指针的指针来改变，否则又犯了传值的毛病…</p>
-<p>明天又要上文件检索课。连续上三天然后考试。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/25/1707652/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/25/1707652/" class="post-title-link" itemprop="url">MiniDB实训第9天</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-25 18:03:00" itemprop="dateCreated datePublished" datetime="2007-07-25T18:03:00+08:00">2007-07-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>33</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前天一天都在写详细设计文档。文档感觉很重要，但是又不是非常的重要。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/22/1702210/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/22/1702210/" class="post-title-link" itemprop="url">MiniDB实训第八天--赢得一个西瓜</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-22 18:32:00" itemprop="dateCreated datePublished" datetime="2007-07-22T18:32:00+08:00">2007-07-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>287</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>锦哥说胜出的队伍会得到西瓜。</p>
-<p>于是我们组做了精致的ppt,<br />
-然后release一个版本。我上台做了进度报告，报告中吹嘘我们的解决方案。用吹嘘不太好，应该说推销了我们的解决方案。然后展示了半成品。</p>
-<p>老师们给了很高的评价。不过说界面还要做。因为用户的可用性很差。不过我感觉我们组的界面美化度已经是全部组中的第一名了。在ppt的倒数第二页，展望了下未来，然后<br />
-ppt上写了这样一行话：“我们想要一个西瓜！”结果投票的人有15个人。我们得了12票。（做数据库的组不能相互投票）最终我们得到一个大西瓜。</p>
-<p>回来给了组员假期。又分给其他各个组西瓜吃。呵呵…happy的一天。</p>
-<p>下次我们还将得一个西瓜…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/21/1701555/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/21/1701555/" class="post-title-link" itemprop="url">MiniDB实训第七天</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-21 19:28:00" itemprop="dateCreated datePublished" datetime="2007-07-21T19:28:00+08:00">2007-07-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>241</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天上午上完睿哥的课程<br />
-，听懂了分支定界法，启发查找和A*算法。听后，感觉就是这些算法不过如此。或许睿哥今天讲的好吧。不过我数据库的实现并没有这种算法的要求。</p>
-<p>上午又迫于压力去听了林院长的课。讲web…后来感觉讲的无聊，最后悄悄拿出书包里的web测试书看起来了。然后又有测试课。我在门口听了两分钟发现是将兼容性测<br />
-试要注意：操作系统兼容，硬件，浏览器，数据库都要进行兼容测试。发现没有新意，就走了。</p>
-<p>上午回来搞定了Update方法。下午和界面模块结合起来运行。今天终于可以从界面创建新表了！</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/21/1701341/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/21/1701341/" class="post-title-link" itemprop="url">MiniDB实训第六天</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-21 13:09:00" itemprop="dateCreated datePublished" datetime="2007-07-21T13:09:00+08:00">2007-07-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>360</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨天实现了CDBTable中的Select方法和Delete方法，另外做好了dll中的接口中的Select方法和Delete方法。方便外界访问。但是现在Se<br />
-lect出了问题。如果dll将一个Matrix矩阵传了出去，但外界将这个Matrix删除掉或者做了什么手脚，那么里面的Matrix矩阵中的数据也将改变。如果<br />
-将Matrix矩阵中的Row删除了，那就会出现意想不到的效果。所以现在的实现方法是在Select方法传出Matrix前，将重新申请一块内存区做Matrix的<br />
-副本。但是我现在希望能够重构一个select方法。用来查找对应的Row，以此来方便删除，更新操作。但是现在想想好些这样实现有点难度。主要是最基本的数据结构L<br />
-ist设计有点问题。迭代器的使用不方便。造成了删除和查找不能用一个select方法。</p>
-<p>再想想吧。。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/19/1699278/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/19/1699278/" class="post-title-link" itemprop="url">MiniDB实训第五天</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-19 19:09:00" itemprop="dateCreated datePublished" datetime="2007-07-19T19:09:00+08:00">2007-07-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>107</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天进度有些缓慢。。。</p>
-<p>实现了CFileRW类。</p>
-<p>写了一点点CDBTable类</p>
-<p>又完善了以下CTableManager类…</p>
-<p>今天结对编程出了点问题。郭军编的时候。。我不知道在干些什么。。我编的时候。。他也不知道在干些什么。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/19/1698322/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/19/1698322/" class="post-title-link" itemprop="url">MiniDB实训第4天</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-19 08:47:00" itemprop="dateCreated datePublished" datetime="2007-07-19T08:47:00+08:00">2007-07-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>302</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨天将搭好的框架代码化，又重新调整了下软件的结构。</p>
-<p>现在的软件结构中添加了RedBlackTree，和Matrix类，使用List将接口抽取出来。下面使用AList和LList类继承了List的方法。Matr<br />
-ix实际上一个邻接表。数组类AList中填入的是LList类。</p>
-<p>我和郭军在CreateTable这个方法上争论很久。后来达成统一意见。CreateTable在dll中和在CTableManager中的含义是一样的。而在C<br />
-DBTable中的含义不一样。</p>
-<p>昨天的工作实现了Link类，LList类，AList类，Matrix类，Column类。</p>
-<p>今天准备实现CDBTable类和CTableManager类。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/17/1695396/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/17/1695396/" class="post-title-link" itemprop="url">MiniDB实训第三天</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-17 18:51:00" itemprop="dateCreated datePublished" datetime="2007-07-17T18:51:00+08:00">2007-07-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>640</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>上午和郭军共同搭了框架。使用纯虚类封了接口。 在CTable中继承了IOper的各种方法。在Oper.dll文件中重新包装了下IOper的方法，并成为对外的<br />
-接口（对用户界面的接口）。CTable成为创建各种表的模板。表的结构存储在文件中，表的数据域也存储在内存中。文件中数据格式的读写是关键的。不过第一个版本并不<br />
-实现。</p>
-<p>第一个版本只是对内存中存放数据，并不涉及文件的操作。我们将表的结构设计为一个类来存放所有的数据。CTable中还有一个类来专门做索引。只要判断类型，就可以知<br />
-道是用红黑树还是使用HashTable来构建数据的索引。CTable类中还要存放全部数据的结构体。</p>
-<p>对于CTable实例化是在CCTableManger内实现的。外界调用的时候只需将名字传入，CCTableManger负责创建此实例，并且通过对已经实例化的<br />
-CTable的TableName进行对比，可以防止重复的将文件中的数据读入内存。还可以使用LRU算法对内存进行控制。</p>
-<p>有时发现两个人分别做事情有时比两个人合作要效果要差很多。这些想法是我们俩想到的。如果一个人可能就想不到这些东东了。记得我想到CCTableManger的时候<br />
-，郭军高呼：这个不错。。。然后又想到了内存管理等等东西。于是想了更多更好的实现方法。这样合作，这个项目应该问题不大。</p>
-<p>下一步准备结对编程进行编码了。</p>
-<p>今天又找了下我blog，发现搜索帐前卒竟然第一条是别人的圈子。百度做的真有点意思。而且好像还搜不到我的东西。Google的好像也是一样。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/17/1694323/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/17/1694323/" class="post-title-link" itemprop="url">MiniDB实训第二天--设计Mini数据库</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-17 08:42:00" itemprop="dateCreated datePublished" datetime="2007-07-17T08:42:00+08:00">2007-07-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1426,12 +812,12 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>昨天上午上课：菜菜讲了dll文件的使用和生成，vs中如何进行最基本的配置。下午继续上课：更深入的讲解MVC架构。</p>
-<p>上完课请kaonuonuo，童梓吃饭。吃的很饱，童梓把晚上饭一起吃出来了。一个今天要回家，一个今天三下乡。祝她们一路顺风。</p>
-<p>下午上完课后开会，睿哥估计我们做的项目风险太大。准备调红亮过来。结果还是一样，把他调过来。。。他们组就散了。</p>
-<p>开会时间太长了。大一的还要请问吃饭。洪莲，张磊，曼霞呆呆的看这菜单等了很长时间了。我又吃了很多。不过最后还是把蛋糕吃完了。很饱。。。</p>
-<p>晚上8点吃完饭，回实验室搭架构。看测试计划。终于搞明白了这个Mini数据库要怎么样设计</p>
-<p>感觉如果想这样不停的开会。。。项目就要延期了。</p>
+          <p>因为我这里的连接分为国内国外。最近因为国外流量少，而是用国内流量上网。却发现很多过去用国内连接曾经能打开网页，现在都打不开了。包括gmail,<span class="exturl" data-url="aHR0cDovL2cuY24=">g.cn<i class="fa fa-external-link-alt"></i></span>,xi<br />
+<span class="exturl" data-url="aHR0cDovL2FvbmVpLmNvbQ==">aonei.com<i class="fa fa-external-link-alt"></i></span>,<span class="exturl" data-url="aHR0cDovL3h1bmxlaS5jb20=">xunlei.com<i class="fa fa-external-link-alt"></i></span>,<span class="exturl" data-url="aHR0cDovL2JhaWR1LmNvbQ==">baidu.com<i class="fa fa-external-link-alt"></i></span>,163.com等，不过还好，csdn还是能打开的。过去是用多内连接，登录QQ和飞信也是可以的，<br />
+现在也不行了。</p>
+<p>所以我得出两个可能的结论：1，可能是那群网管希望多挣我的钱。故意让网络中国内连接打不开知名网站。2，知名网站纷纷迁移到国外的服务器。</p>
+<p>另外我想我们还是要少依赖于那些搜索引擎。万一他们都game<br />
+over了。我难道就没有办法上网了？sigh~搭建自己的搜索引擎…或许是个不错的想法。😃</p>
 
       
     </div>
@@ -1458,7 +844,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/15/1692414/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/27/4888191/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1476,7 +862,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/15/1692414/" class="post-title-link" itemprop="url">MiniDB实训第一天</a>
+          <a href="/2009/11/27/4888191/" class="post-title-link" itemprop="url">Ubuntu 3D桌面</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1487,14 +873,14 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-07-15 19:46:00" itemprop="dateCreated datePublished" datetime="2007-07-15T19:46:00+08:00">2007-07-15</time>
+      <time title="Created: 2009-11-27 13:53:00" itemprop="dateCreated datePublished" datetime="2009-11-27T13:53:00+08:00">2009-11-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1504,7 +890,133 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>238</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转载自： <span class="exturl" data-url="aHR0cDovL25mZmlzaC5jb20vYXJjaGl2ZXMvMTA4"> http://nffish.com/archives/108 <i class="fa fa-external-link-alt"></i></span></p>
+<p>研究了好久3D桌面效果，终于找到这个好方法了。  CompizConfig设置管理器的功能实在是太强大了。在Ubuntu 8.04下测试通过。<br />
+首先安装  CompizConfig设置管理器（3D驱动必须装好）</p>
+<p>sudo apt-get install compizconfig-settings-manager</p>
+<p>运行 系统-&gt;首选项-&gt;Advanced Desktop Effects Settings，点击General Compiz options，（<br />
+这里只需要在System-&gt;Preference-&gt;compiz config setting manager点开即可  ）把Desktop<br />
+Size选项卡里的“水平虚拟大小”设置为4，“垂直虚拟大小”设置为1，“桌面数”设置为4，（<br />
+这里我的设置是6，因为设置4时机器很卡，设置6机器就不卡了。诡异  ）后退，勾选“桌面立方体”“旋转立方体”“立方体倒映” “Cube Caps<br />
+”几项，按住Ctrl+alt，再按住鼠标左键移动，3D桌面效果出现。（<br />
+我这里其实有一点点的3D桌面的意思，但是速度太快，而且立方体太大，不知道为啥。可能是显示器的原因吧  ）</p>
+<p>在Gube Gears前面打钩，然后找到前面打过钩的桌面立方体，点击，选择Transparent Cube，将Opacity During<br />
+Rotation降到50左右，再将3D桌面调出来，立方体成半透明的了，并且里面有三个齿轮在滚动！</p>
+<p>点击旋转立方体-&gt;一般，把缩放调整到1.0，把速度调整到0.7，再按Ctrl+alt+向左/向右键，可以看到立方体运动时的慢动作，并且立方体小了很多。</p>
+<p>将鼠标在桌面上的空白位置点击一下，然后转动鼠标的滚轮，出现旋转的3D桌面效果。按住Super键(Ctrl与Alt中间的那个键）+Tab键，桌面水平排列。</p>
+<p>进入调整大小-&gt;动作，点击一般前面的小三角，双击“启动所有窗口的窗口拾取器”，选中Topleft，点击OK。现在将你的鼠标移动到桌面左上角，就能实现类似Ma<br />
+c os X的Expose特效了。</p>
+<p>进入CompizConfig设置管理器的主界面，点击Expo-&gt;动作，在窗口中的Expo上面双击，勾选Top<br />
+Right，然后OK。将鼠标移动到桌面的右上角，4个桌面整齐排列在一个3D空间内（同super+E效果），可以将窗口从一个桌面拖动到另一个桌面，<br />
+甚至放在两个桌面中间！</p>
+<p>在CompizConfig设置主界面选择Shift Switcher-&gt;动作-&gt;Initial(All<br />
+workspace)下，勾选Bottomleft。鼠标移动到桌面的左下角，出现iPhone的Cover<br />
+Flow特效。可以用鼠标滚轮和方向键切换桌面。回到Shift Switcher，点击外观，在Switcher<br />
+mode中选择Flip。鼠标移动到桌面的左下角，出现windows vista中的Flip3D特效。</p>
+<p>在CompizConfig设置管理器主界面选择“在屏幕上绘制火焰”前面的复选框，现在就可以直接按住Super+shift键，然后用鼠<br />
+标左键在屏幕写了。火焰的默认颜色是红色，可以直接进入“在屏幕上绘制火焰”设置项里，调整火焰颜色，或者干脆“随机”，取消火焰的时候同时按<br />
+Super+Shift+C。</p>
+<p>再次回到主界面中，勾选Windows Previews，这样将鼠标移动到任务栏会出现预览窗口。</p>
+<p>在CCSM（CompizConfig设置管理器）主界面选择移动窗口，将其设置界面中的不透明度设置到60左右，这样你移动窗口的时候就会 有半透明的效果。<br />
+同样在主界面中选择General Options-&gt;Opacity Settings，点击ADD（添加）。在OpacityWindows<br />
+中输入Dock，OpacityWIndow<br />
+Values输入数值80。再以同样的方式添加DropDownMenu和PopupMenu，数值都为80。输入完毕之后，不管是什么菜单，现在都是以<br />
+半透明的方式显示了，包括右键菜单。</p>
+<p>在CCSM主界面中选择Animations-&gt;CloseAnimation，在窗口中的第一个Glide2上双击，然后从CloseEffect的下拉菜单中选择<br />
+Burn，这样每次关闭窗口的时候会有火焰的效果。</p>
+<p>点击Effect Settings，找到下面的Fire，点击小三角形出现火焰选项，然后勾选其中的“随机颜色火焰”后面的复选框，火焰颜色随机。也可以去Open<br />
+Animation里设置开启窗口时的动画特效，或者就选“随机”。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/27/4887019/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/11/27/4887019/" class="post-title-link" itemprop="url">ubuntu9.04 安装Openoffice , 数学公式, 字体等</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-11-27 11:02:00" itemprop="dateCreated datePublished" datetime="2009-11-27T11:02:00+08:00">2009-11-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>893</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1522,10 +1034,24 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>上午不知道开了几个会了。调整了组内的人员。一开始分组我要带4个女生，天知道我能不能做完。还好李睿有先见之明，给我分了郭军和林富勇过来。本来我想招剑哥的。但那<br />
-家伙死活要在他原来的组做。于是就尊重了他的意见。</p>
-<p>下午组内召开会议。分了下工，讨论下需求和进度。最后认为要在4号完工.迭代开发。每个阶段一个星期。每个阶段核心代码公关4天。希望能搞定。对未知事情还是有点怕。</p>
-<p>文件读写，红黑树，网络通信，同步互斥这几个关键技术需要实现。很可惜这几种技术自己都不是很熟练。只好抓紧下努力一点了。</p>
+          <p>首先要有openoffice.在system-&gt;administration-&gt;synaptic package Manager中输入openoffice,<br />
+<span class="exturl" data-url="aHR0cDovL3huLS1vcGVub2ZmaWNlLXV0MnAyODdhMGthMDE5bGlvMWVvbDVkLm9yZw==">并选中列出的openoffice.org<i class="fa fa-external-link-alt"></i></span>。然后再输入openoffice math, 选中texlive-math-extra。然后点击apply开始安装。</p>
+<p>再启动openoffice之后，在Insert-&gt;object-&gt;formula中就可以创建公式了。点击一个，在下方可以编辑“&lt;?&gt;”来替代文中的方块。</p>
+<p>添加字体转载自：<span class="exturl" data-url="aHR0cDovL3d3dy5md29sZi5jb20vYmxvZy9wb3N0LzE3MA==">http://www.fwolf.com/blog/post/170<i class="fa fa-external-link-alt"></i></span></p>
+<p>windows的字体一般存放在c:/windows/fonts目录下，我拷贝到linux下的字体有：</p>
+<p>simfang.ttf 仿宋体 simhei.ttf 黑体 simkai.ttf 楷体 simsun.ttf 宋体和新宋体，原文件名simsun.ttc<br />
+tahoma.ttf tahoma字体 tahomabd.ttf tahoma字体的粗体形式 verdana.ttf verdana字体<br />
+verdanab.ttf verdana字体的粗体形式 verdanai.ttf verdana字体的斜体形式 verdanaz.ttf<br />
+verdana字体的粗体＋斜体形式</p>
+<p>拷贝过来的字体文件放在了/home/fwolf/tools/fonts目录下。</p>
+<p>** 二、将字体加入到linux的可使用字体中 **</p>
+<p>首先把字体文件链接到存放字体的目录中</p>
+<p>cd /usr/share/fonts ln -s /home/fwolf/tools/fonts xpfonts cd xpfonts<br />
+mkfontscale mkfontdir</p>
+<p>这样作和把字体拷贝到/usr/share/fonts的一个目录下的效果是一样的。后面的两个mkfont命令是生成xpfonts目录下所包含的字体的索引信息<br />
+。然后运行fc-cache命令更新字体缓存：</p>
+<p>fc-cache</p>
+<p>在openoffice中其中仿宋体的字体名是FangSong_GB2312，黑体是SimHei，楷体是KaiTi_GB2312，宋体是SimSun</p>
 
       
     </div>
@@ -1552,7 +1078,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/14/1690199/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/16/4818068/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1570,7 +1096,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/14/1690199/" class="post-title-link" itemprop="url">今日实训正式开始</a>
+          <a href="/2009/11/16/4818068/" class="post-title-link" itemprop="url">I Will Try Google Doc</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1581,14 +1107,14 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-07-14 11:25:00" itemprop="dateCreated datePublished" datetime="2007-07-14T11:25:00+08:00">2007-07-14</time>
+      <time title="Created: 2009-11-16 20:49:00" itemprop="dateCreated datePublished" datetime="2009-11-16T20:49:00+08:00">2009-11-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1598,7 +1124,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>289</span>
+      <span>17</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1616,12 +1142,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>上午实训动员大会。大家分组。海哥非常想让我加入他的项目–将湘钢管理系统案例化。说实话，我不太想干这事情，没有什么技术含量。<br />
-于是我打电话找睿哥商量，希望能加入他的项目。睿哥有打电话给老边…老边说我们去微软那三个只能有一个做睿哥的项目。想想红亮是肯定进去的。无望！</p>
-<p>提交报名的是锦哥，还好给他共同做了SIT。我说谁都不收，也不能不收我。锦哥说：善。</p>
-<p>想想好像和海哥闹僵了。不过没有什么办法，本来就不应该强行规定。如果老边再让我去海哥那里，我真的不如自己单干好了。等待名单分配中…</p>
-<p>一个小小的实训也搞的如此麻烦。这东西真的有问题。</p>
-<p>尊重民意只是说给大家听的，真正实施的时候哪有什么民意？…无语</p>
+          <p>I will try google doc</p>
 
       
     </div>
@@ -1648,7 +1169,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/13/1689399/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/14/4811198/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1666,7 +1187,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/13/1689399/" class="post-title-link" itemprop="url">小宁哥请客</a>
+          <a href="/2009/11/14/4811198/" class="post-title-link" itemprop="url">关于户口和三方协议的问题</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1677,14 +1198,14 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-07-13 20:08:00" itemprop="dateCreated datePublished" datetime="2007-07-13T20:08:00+08:00">2007-07-13</time>
+      <time title="Created: 2009-11-14 19:43:00" itemprop="dateCreated datePublished" datetime="2009-11-14T19:43:00+08:00">2009-11-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1694,7 +1215,129 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>508</span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转自北邮，北邮又可能转自清华。所以我写转自<span class="exturl" data-url="aHR0cDovL3F1bi5xcS5jb20vYWlyLyM4ODM0MjQ1Mi9iYnMvdmlldy9jZC8yL3RkLzg=">http://qun.qq.com/air/#88342452/bbs/view/cd/2/td/8<i class="fa fa-external-link-alt"></i></span></p>
+<p>最近补了一下课。首先企业和学生申报户口的大概流程是这样的：</p>
+<p>1，单位申报本年度的户口指标。各区申报截止时间不同，基本走人事局的在12月前就申报完成，基本是在11月15日前。</p>
+<p>2，人事部门审批单位申报的指标。人事局的基本都在12月底到1月中会下来，也有很牛的企业会更早的；人事部的2月中下来。会严格控制数量。需要注意：指标的多少基本<br />
+只跟公司的规模，行业，性质，纳税等等方面有关，跟学生材料没有丝毫关系。</p>
+<p>3，单位、学生正式申报。此时人事部门根据之前审批给单位的户口名额，再综合考虑学生的情况（专业是否紧俏，是否对口，是否双外）和单位的情况（牛不牛）进行审批。事<br />
+业单位部委都通过人事部申请指标，审批也是走人事部，相对好批；私企，民企和外企等通过人事局申请指标，到时也是走人事局审批材料，相对不好批。</p>
+<p>关于三方的作用</p>
+<p>三方主要两个作用，一是规范公司和学生的行为。二是户口、转档用。而实际上第二个作用才是主要的作用，第一个作用是可以通过双方协议（因为学生还不能签劳动合同，所以<br />
+学生和单位自己签订非劳动合同形式的协议）达到的，而第二个是无法代替的。</p>
+<p>** 因此，如果单位不能解决户口，实际上就没有权利签三方，如果签了，只会让学生浪费申报户口的机会！！  ** 这一点一定要注意！因为如果我们愿意去这个单位A，但又想解决户口，唯一的办法就是挂到其他可以解决户口的单位B，比如自己买户口。这时候，单位B必须拿到你的三方才能给你申报户口。而且不仅如此，就算不找其他在京单位解决户口了，档案户口回家乡，家乡单位也需要和你签署三方呀。更大的麻烦是：提出不给你办户口却要和你签三方的要求的单位，往往是对应届毕业生就业制度一无所知，所以千万不要给他们，一旦给了，等你发现需要新三方来纠正这件事情的时候学校往往会要求你拿回原三方，而你去向单位要的时候，他们因为不懂，往往以为你要违约，说什么都不给你，那时候就只剩一个字了：“晕！！”</p>
+<p>单位A想给你申报户口，但不能保证申报成功，怎么办？</p>
+<p>这时候一定要注意让单位填三方时在审批通过之前不要在三方中填写“单位信息”，这是因为：审批时虽然需要用到三方协议，但此时除个人及学校信息栏外，其他栏，包括单位<br />
+信息栏，空白即可，也即由单位上报的三方中其实不需要包括它自己单位的信息。一般正规的做法是，是公司先把你的其他审批材料上报给北京人事局或国家人事部，等“户口接<br />
+收函”快下来前才会把三方中的“单位信息栏”填完，然后盖上章交给人事局或人事部，这时才完成户口审批。而如果审批失败，则单位可以将三方立刻退给你，你可以立刻拿这<br />
+张三方找其他单位申报（比如买户口），而不必去学校重新换一张三方。学校换一张三方有什么坏处？有些学校不乐意学生换，所以会为难我们，清华的倒不存在这个问题，但没<br />
+必要多此一举，而且正规的公司应该按规定主动在审批结果没下来之前不在单位信息栏中填写信息。</p>
+<p>另外有一点，如果我们在单位A申报不成功，那么之后想再申报户口就会很困难，因为在人事局已经有记录了，其他单位再申报你的信息时可以被认为是“多头申报”（即同一个<br />
+人在不同的单位进行申报，即便不是同时申报的，这是严厉禁止的）。目前了解到考国家公务员和到基层单位就业可能不存在这个问题。因此，如果一个单位本身很难解决户口，<br />
+我们不如一开始就跟单位说好只签双方的协议，而把宝贵的三方留作自己解决户口时才用（比如买户口）。</p>
+<p>还有一种情况是单位承诺如果单位的在A城市的分公司A不能解决户口的话，可以在B城市的分公司B给予解决。这时候单位信息栏也很明显不能填，因为分公司 A一旦发现户<br />
+口审批没有成功，就可以立刻拿着这份空白三方再去分公司B申报。此时因为A、B两个公司不在同一个城市，不是由同一个人事局审批，也就不存在多头申报的可能了。</p>
+<p>单位不能解决户口，也不想买户口，又想在单位工作，怎么办？</p>
+<p>应该办理灵活就业手续，领取回生源地人事局的二分报到证，同时将户档落回生源地。这样的好处是：首先，你在国家规定的派遣时间内领取报到证，避免将来因种种原因错过报<br />
+到证办理期限，失去“干部”身份（如果晚了就会落到劳动局，就是工人身份了）；其次，你将来有可能按“人才引进”的方式将户口调入实际工作单位所在地，但是需要注意的<br />
+是，实际上从06年开始，人才引进在实际操作中已经不审批了，所以如果单位给你人才引进的承诺，基本上是口头支票。<br />
+关于违约</p>
+<p>虽然叫三方，你和企业签了之后实际上就生效了，即便学校没签，想违约也要交违约金（其实这时候不能交违约，因为学校没签三方也就没生效，但是是不是叫违约并不重要，关<br />
+键是能否领回单位手里的三方），因为不交的话单位不会交回三方你也就无法领到新的三方。</p>
+<p>另外，如果在上报就业方案后（6月份）再违约，就属于改派，原则上不能再在北京或上海等不便落户的地方落户，学校一般也不喜欢改派。</p>
+<p>前面说了其实三方的规范公司和学生行为的作用实际上是次要的作用，但又往往很多企业很在乎，而且很多企业要求学生赶紧交三方，不管是有指标的企业还是最终没有指标的企<br />
+业，这一是因为公司的HR根本不懂户籍相关的政策，二是因为HR把三方的用处认为是劳动合同签订之前的补充了，想用三方来约束我们违约的情况。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/13/4807117/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/11/13/4807117/" class="post-title-link" itemprop="url">模2除法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-11-13 14:09:00" itemprop="dateCreated datePublished" datetime="2009-11-13T14:09:00+08:00">2009-11-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>446</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1712,24 +1355,15 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>11号，小宁带着我们几个又去甜甜向上吃了顿饭。</p>
-<p>他说我还是点了那个相同的菜…看来小宁哥记忆力较强，或者说他还是没有忘记请我们吃顿饭。 所以记性太好也不是件好事。</p>
-<p>吃饭时谈论一些微软里面的规矩。并说什么样的实习生是被看中的。什么东西在微软是被禁止的。</p>
-<p>办公时讨论的email,源代码，公司的种种制度，文档，产品的发布日期。以上这些是绝对不能向外界公布的。</p>
-<p>最好不要用公司里的东西做自己的事情。例如打印小说等。</p>
-<p>email的写法要简洁，客气。回信速度要快。</p>
-<p>当有事情不能按时完成时候列举原因。</p>
-<p>当有事情没有把握的时候让上级知道你的进度。研究下问题。估算下时间。新人往往高估自己。</p>
-<p>如果半个小时仍不清楚如何解决问题，去询问周围的人。</p>
-<p>与人合作，乐于助人。</p>
-<p>一起吃饭。</p>
-<p>不要以自我为中心。</p>
-<p>不要乱看别人的机器。</p>
-<p>可以上上级汇报自己的成果，但不必写大篇幅的吹捧之词。</p>
-<p>保持身体洁净，注意整洁。</p>
-<p>有灵性，对事情负责。</p>
-<p>阿咪有点太客气了，吃了一点就说饱了，然后是许晖老师，再者是红亮。那家伙下午和我一起吃饭时候说中午没有吃饱，结果晚上吃得特别多，害得我差点没有吃饱。我一直在吃<br />
-…小宁哥就吃了两碗饭，也太少了。饭后，我问他北京的菜怎么样？他说非常合他胃口。我期待中。</p>
+          <p>这或许是一个简单的问题，但是我早就忘记咋解了。</p>
+<p>关于一个二进制数1111000 除以1101，模2除法的商为1011，余数为111.这个结果不同于十进制除法。所以特记下。具体步骤如下：</p>
+<p>#第一步 1111000 1101 0010000 ----余数，商为1，只要第一位非0商就是1<br />
+#第二步，每步移一位，当起始位为0时，除以0；为1时除以除数。 010000 0000 010000 ----余数，商为0，只要第一位是0商就是0 #第三步<br />
+10000 1101 01010 -----余数，商为1，这里的余数你猜出，其实就是对应位异或 #第四步 1010 1101 0111<br />
+------余数，商为1，如果位数比除数还小，不再继续运算 #最终余数为111，商为1011</p>
+<p>模2除法，参考了下网络资源。最后得到的结论。不知道是正确与否。</p>
+<p>模2除法可以用在CRC冗余校验上。K,H均为2进制数，K向左移R，然后K除以H。模2除得到的余数在放到R位中。例如：K=1111,H=1101,R=3，移位<br />
+之后得1111000，最后CRC=1111111。</p>
 
       
     </div>
@@ -1756,7 +1390,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/08/1682841/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/09/4788611/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1774,7 +1408,7 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/08/1682841/" class="post-title-link" itemprop="url">各种考试改革</a>
+          <a href="/2009/11/09/4788611/" class="post-title-link" itemprop="url">ubuntu9.04 (Server版) 配置Xen虚拟机</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1785,14 +1419,14 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2007-07-08 17:08:00" itemprop="dateCreated datePublished" datetime="2007-07-08T17:08:00+08:00">2007-07-08</time>
+      <time title="Created: 2009-11-09 10:20:00" itemprop="dateCreated datePublished" datetime="2009-11-09T10:20:00+08:00">2009-11-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1802,14 +1436,14 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>357</span>
+      <span>6k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -1820,555 +1454,144 @@ CTable的TableName进行对比，可以防止重复的将文件中的数据读�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今天一整天和小李子讨论考试的问题。最后得到一个结论：工科的不适合使用考试这个东西来评判。</p>
-<p>后来有给了一个建议：学生考老师，如果老师回答不出，学生就加分。这样即锻炼了师资队伍有扩展了学生们的思维广度和深度。多媒体…问小李子：H26*系列有多少种<br />
-。MPEG系列又有多少种。他问我G.211的编码采用的是什么。呵呵。很可惜这些都没有出。出来两道大题：Huffman编码和算数编码。其他都是计算题。小李子说<br />
-这年头就怕算错数。我同样，每道计算题都算了3遍。半个小时做完的试卷检查了一个小时…</p>
-<p>中午对小李子说：中午在计专107考试。让他记住。然后对他说这就叫做备份。两个人同时忘记的概率比较小。然后我说我和你不住同一间寝室，所以这又叫异地备份。小李子<br />
-说你疯了。计算机网络，安全已经不考了。想想也是现在的生活全部被计算机文化同化了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/06/1681315/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/06/1681315/" class="post-title-link" itemprop="url">生日蛋糕</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-06 18:40:00" itemprop="dateCreated datePublished" datetime="2007-07-06T18:40:00+08:00">2007-07-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>126</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨日，稀里糊涂就过了一次生日。</p>
-<p>kaonuonuo因为考试一结束就要离校，所以提前给我订了生日蛋糕。于是生日只好提前过一次。只是没有人送我生日礼物。唉！<br />
-童梓说她考完试要三下乡，估计又要提前再过一次生日。</p>
-<p>现在才知道生日什么时候都可以过，只要有人买蛋糕给我。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/05/1679634/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/05/1679634/" class="post-title-link" itemprop="url">JAVA从入门到精通</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-05 14:18:00" itemprop="dateCreated datePublished" datetime="2007-07-05T14:18:00+08:00">2007-07-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>11k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>10 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Java Learning Path （一）、工具篇<br />
-一、 JDK (Java Development Kit)</p>
-<p>JDK是整个Java的核心，包括了Java运行环境（Java Runtime Envirnment），一堆Java工具和Java基础的类库(rt.jar)。<br />
-不论什么Java应用服务器实质都是内置了某个版本的JDK。因此掌握JDK是学好Java的第一步。最主流的JDK是Sun公司发布的JDK，除了Sun之外，还有<br />
-很多公司和组织都开发了自己的JDK，例如IBM公司开发的JDK，BEA公司的Jrocket，还有GNU组织开发的JDK等等。其中IBM的JDK包含的JVM（<br />
-Java Virtual Machine）运行效率要比Sun JDK包含的JVM高出许多。而专门运行在x86平台的Jrocket在服务端运行效率也要比Sun<br />
-JDK好很多。但不管怎么说，我们还是需要先把Sun JDK掌握好。</p>
-<p>1、 JDK的下载和安装</p>
-<p>JDK又叫做J2SE（Java2 SDK Standard<br />
-Edition），可以从Sun的Java网站上下载到，<span class="exturl" data-url="aHR0cDovL2phdmEuc3VuLmNvbS9qMnNlL2Rvd25sb2Fkcy5odG1s">http://java.sun.com/j2se/downloads.html<i class="fa fa-external-link-alt"></i></span> ，JDK当前最新的版本<br />
-是J2SDK1.4.2，建议下载该版本的JDK，下载页面在这里：<span class="exturl" data-url="aHR0cDovL2phdmEuc3VuLmNvbS9qMnNlLzEuNC4yL2Rvd25sb2FkLmh0bWwlRTMlODAlODI=">http://java.sun.com/j2se/1.4.2/download.html。<i class="fa fa-external-link-alt"></i></span></p>
-<p>下载好的JDK是一个可执行安装程序，默认安装完毕后会在C:/Program Files/Java/目录下安装一套JRE（供浏览器来使用），在C:/j2sdk<br />
-1.4.2下安装一套JDK（也包括一套JRE）。然后我们需要在环境变量PATH的最前面增加java的路径C:/j2sdk1.4.2/bin。这样JDK就安装<br />
-好了。</p>
-<p>2、 JDK的命令工具</p>
-<p>JDK的最重要命令行工具：</p>
-<p>java： 启动JVM执行class</p>
-<p>javac： Java编译器</p>
-<p>jar： Java打包工具</p>
-<p>javadoc： Java文档生成器</p>
-<p>这些命令行必须要非常非常熟悉，对于每个参数都要很精通才行。对于这些命令的学习，JDK Documentation上有详细的文档。<br />
-二、 JDK Documentation</p>
-<p>Documentation在JDK的下载页面也有下载连接，建议同时下载Documentation。Documentation是最最重要的编程手册，涵盖了整个<br />
-Java所有方面的内容的描述。可以这样说，学习Java编程，大部分时间都是花在看这个Documentation上面的。我是随身携带的，写Java代码的时候，<br />
-随时查看，须臾不离手。</p>
-<p>三、 应用服务器(App Server)</p>
-<p>App Server是运行Java企业组件的平台，构成了应用软件的主要运行环境。当前主流的App Server是BEA公司的Weblogic Server和<br />
-IBM公司的Websphere以及免费的Jboss，选择其中一个进行学习就可以了，个人推荐Weblogic，因为它的体系结构更加干净，开发和部署更加方便，是<br />
-Java企业软件开发人员首选的开发平台。下面简要介绍几种常用的App Server：</p>
-<p>1、 Tomcat</p>
-<p>Tomcat严格意义上并不是一个真正的App Server，它只是一个可以支持运行Serlvet/JSP的Web容器，不过Tomcat也扩展了一些App<br />
-Server的功能，如JNDI，数据库连接池，用户事务处理等等。Tomcat被非常广泛的应用在中小规模的Java<br />
-Web应用中，因此本文做一点下载、安装和配置Tomcat的介绍：</p>
-<p>Tomcat是Apache组织下Jakarta项目下的一个子项目，它的主网站是：<span class="exturl" data-url="aHR0cDovL2pha2FydGEuYXBhY2hlLm9yZy90b21jYXQv">http://jakarta.apache.org/tomcat/<i class="fa fa-external-link-alt"></i></span> ，Tom<br />
-cat最新版本是Tomcat4.1.27，软件下载的连接是：<span class="exturl" data-url="aHR0cDovL3d3dy5hcGFjaGUub3JnL2Rpc3QvamFrYXJ0YS90b21jYXQtNC9iaW5h">http://www.apache.org/dist/jakarta/tomcat-4/bina<i class="fa fa-external-link-alt"></i></span><br />
-ries/ 。</p>
-<p>下载Tomcat既可以直接下载zip包，也可以下载exe安装包（个人建议zip更干净些），不管哪种情况，下载完毕安装好以后（zip直接解压缩就可以了）。需要<br />
-设置两个环境变量：</p>
-<p>JAVA_HOME=C:/j2sdk1.4.2</p>
-<p>CATALINA_HOME=D:/tomcat4 (你的Tomcat安装目录)</p>
-<p>这样就安装好了，启动Tomcat运行CATALINA_HOME/bin/startup.bat，关闭Tomcat运行shutdown.bat脚本。Tomca<br />
-t启动以后，默认使用8080端口，因此可以用浏览器访问http://localhost:8080来测试Tomcat是否正常启动。</p>
-<p>Tomcat提供了两个Web界面的管理工具，URL分别是：</p>
-<p><span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDgwL2FkbWluL2luZGV4LmpzcA==">http://localhost:8080/admin/index.jsp<i class="fa fa-external-link-alt"></i></span></p>
-<p><span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDgwL21hbmFnZXIvaHRtbA==">http://localhost:8080/manager/html<i class="fa fa-external-link-alt"></i></span></p>
-<p>在启用这两个管理工具之前，先需要手工配置一下管理员用户和口令。用一个文本工具打开CATALINA_HOME/conf/tomcat-<br />
-users.xml这个文件，加入如下几行：</p>
-<role rolename="manager"/>  
-<role rolename="admin"/>  
-<user username="robbin" password="12345678" roles="admin,manager,tomcat"/>  
-<p>这样用户“robbin”就具备了超级管理员权限。重新启动Tomcat以后，你就可以使用该用户来登陆如上的两个管理工具，通过Web方式进行Tomcat的配置和<br />
-管理了。</p>
-<p>2、 BEA Weblogic</p>
-<p>Weblogic可以到BEA的网站上免费注册之后下载到最新的Weblogic8.1企业版，License可以免费使用1年时间，其实这已经完全足够了。Webl<br />
-ogic的下载连接：<span class="exturl" data-url="aHR0cDovL2NvbW1lcmNlLmJlYS5jb20vaW5kZXguanNwJUVGJUJDJThDV2VibG9naWMlRTclOUElODQlRTUlOUMlQTglRTclQkElQkYlRTYlOTYlODclRTYlQTElQTMlRUYlQkMlOUFodHRwOi8vZWRvY3MuYmVhLmNvbQ==">http://commerce.bea.com/index.jsp，Weblogic的在线文档：http://edocs.bea.com<i class="fa fa-external-link-alt"></i></span><br />
-/ 。</p>
-<p>3、 IBM Webshpere</p>
-<p>Websphere同样可以下载到免费的试用版本，到IBM的developerWorks网站可以看到Websphere试用产品的下载和相关的Websphere<br />
-的资料，developerWorks中文网站的连接是：<span class="exturl" data-url="aHR0cDovL3d3dy05MDAuaWJtLmNvbS9kZXZlbG9wZXJXb3Jrcy9jbi93c2RkLw==">http://www-900.ibm.com/developerWorks/cn/wsdd/<i class="fa fa-external-link-alt"></i></span><br />
-，Websphere的下载连接：<span class="exturl" data-url="aHR0cDovL3d3dzdiLnNvZnR3YXJlLmlibS5jb20vd3NkZC9kb3dubG9hZHMvV0FTc3VwcG9ydC5odG1s">http://www7b.software.ibm.com/wsdd/downloads/WASsupport.html<i class="fa fa-external-link-alt"></i></span> 。</p>
-<p>4、 Jboss</p>
-<p>Jboss是免费开源的App Server，可以免费的从Jboss网站下载：<span class="exturl" data-url="aHR0cDovL3d3dy5qYm9zcy5vcmcvaW5kZXguaHRtbCVFRiVCQyU4QyVFNyU4NCVCNiVFOCU4MCU4Q0pib3NzJUU3JTlBJTg0">http://www.jboss.org/index.html，然而Jboss的<i class="fa fa-external-link-alt"></i></span><br />
-文档是不免费，需要花钱购买，所以为我们学习Jboss设置了一定的障碍。在Jdon上有几篇不错的Jboss配置文档，可以用来参考： <a target="_blank" rel="noopener" href="http://www.jdon.com/idea.htm"><br />
-http://www.jdon.com/idea.htm </a></p>
-<p>四、 Java应用的运行环境</p>
-<p>Java的应用可以简单分为以下几个方面：</p>
-<p>1、 Java的桌面应用</p>
-<p>桌面应用一般仅仅需要JRE的支持就足够了。</p>
-<p>2、 Java Web应用</p>
-<p>Java的Web应用至少需要安装JDK和一个web容器（例如Tomcat），以及一个多用户数据库，Web应用至少分为三层：</p>
-<p>Browser层：浏览器显示用户页面</p>
-<p>Web层：运行Servlet/JSP</p>
-<p>DB层：后端数据库，向Java程序提供数据访问服务</p>
-<p>3、 Java企业级应用</p>
-<p>企业级应用比较复杂，可以扩展到n层，最简单情况会分为4层：</p>
-<p>Browser层：浏览器显示用户页面</p>
-<p>Client层：Java客户端图形程序（或者嵌入式设备的程序）直接和Web层或者EJB层交互</p>
-<p>Web层：运行Servlet/JSP</p>
-<p>EJB层：运行EJB，完成业务逻辑运算</p>
-<p>DB层：后端数据库，向Java程序提供数据访问服务</p>
-<p>4、 Java嵌入式应用</p>
-<p>Java嵌入式应用是一个方兴未艾的领域，从事嵌入式开发，需要从Sun下载J2ME开发包，J2ME包含了嵌入式设备专用虚拟机KVM，和普通的JDK中包含的JV<br />
-M有所不同。另外还需要到特定的嵌入式厂商那里下载模拟器。<br />
-Java Learning Path（二）、书籍篇</p>
-<p>学习一门新的知识，不可能指望只看一本，或者两本书就能够完全掌握。需要有一个循序渐进的阅读过程。我推荐Oreilly出版的Java系列书籍。</p>
-<p>在这里我只想补充一点看法，很多人学习Java是从《Thinking in<br />
-Java》这本书入手的，但是我认为这本书是不适合初学者的。我认为正确的使用这本书的方法应该是作为辅助的读物。《Thinking in<br />
-Java》并不是在完整的介绍Java的整个体系，而是一种跳跃式的写作方法，是一种类似tips的方法来对Java很多知识点进行了深入的分析和解释。</p>
-<p>对于初学者来说，最好是找一本Java入门的书籍，但是比较完整的循序的介绍Java的语法，面向对象的特性，核心类库等等，在看这本书的同时，可以同步来看《Thi<br />
-nking in Java》，来加深对Java的理解和原理的运用，同时又可以完整的了解Java的整个体系。</p>
-<p>对于Java的入门书籍，蔡学镛推荐的是Oreilly的《Exploring Java, 2nd Edition》 或者《Java in a<br />
-Nutshell,2nd Edition（针对C++背景）》，我并没有看过这两本书。其实我觉得电子工业出版社的《Java 2编程详解》或者《Java<br />
-2从入门到精通》就很不错。</p>
-<p>在所有的Java书籍当中，其实最最有用的，并不是O´reilly的 Java Serials，真正最最有用处是JDK的Documentation！几乎你想获<br />
-得的所有的知识在Documentation里面全部都有，其中最主要的部分当然是Java基础类库的API文档，是按照package来组织的，对于每一个clas<br />
-s都有详细的解释，它的继承关系，是否实现了某个接口，通常用在哪些场合，还可以查到它所有的public的属性和方法，每个属性的解释，意义，每个方法的用途，调用<br />
-的参数，参数的意义，返回值的类型，以及方法可能抛出的异常等等。可以这样来说，所有关于Java编程方面的书籍其实都不过是在用比较通俗易懂的语言，和良好的组织方<br />
-式来介绍Documentation里面的某个package里面包含的一些类的用法而已。所以万变不离其宗，如果你有足够的能力来直接通过Documentatio<br />
-n来学习Java的类库，那么基本上就不需要看其他的书籍了。除此之外，Documentation也是编程必备的手册，我的桌面上有三个Documentation<br />
-的快捷方式，分别是J2SDK1.4.1的Documentation，Servlet2.3的Documentation和J2SDKEE1.3.1的Docume<br />
-ntation。有了这个三个Documentation，什么其他的书籍都不需要了。</p>
-<p>对于Java Web 编程来说，最核心的是要熟悉和掌握HTTP协议，这个就和Java无关了，在熟悉HTTP协议之后，就需要熟悉Java的实现HTTP协议的类<br />
-库，也就是Servlet API，所以最重要的东西就是Servlet API。当然对于初学者而言，直接通过Servlet<br />
-API来学习Web编程有很大的难度，我推荐O´reilly的《Java Server Pages 》这本书来学习Web 编程。</p>
-<p>EJB的书籍当中，《Enterprise Java Beans?, 2nd Edition》是一本很不错的书，<br />
-EJB的学习门槛是比较高，入门很难，但是这本书完全降低了学习的难度，特别重要的一点是，EJB的学习需要结合一种App<br />
-Server的具体实现，所以在学习EJB的同时，必须同步的学习某种App Server，而这本书相关的出了三本书，分别是Weblogic6.1，Websph<br />
-ere4.0和JBoss3.0上面部署书中例子的实做。真是既有理论，又有实践。在学习EJB的同时，可以边看边做，EJB的学习会变得很轻松。</p>
-<p>但是这本书也有一个问题，就是版本比较旧，主要讲EJB1.1规范和部分EJB2.0的规范。而Ed Roman写的《Mastering EJB<br />
-2.0》这本书完全是根据EJB2.0规范写的，深入浅出，覆盖了EJB编程的各个方面，并且还有很多编程经验tips，也是学习EJB非常推荐的书籍之一。</p>
-<p>如果是结合Weblogic来学习J2EE的话，《J2EE应用与BEA Weblogic Server》绝对是首选读物，虽然是讲述的Weblogic6.0，仍<br />
-然值得购买，这本书是BEA官方推荐的教材，作者也是BEA公司的工程师。现在中文版已经随处可见了。这本书结合Weblogic介绍了J2EE各个方面的技术在We<br />
-blogic平台上的开发和部署，实践指导意义非常强。</p>
-<p>在掌握了Java平台基础知识和J2EE方面的知识以后，更进一步的是学习如何运用OO的方法进行软件的设计，那么就一定要学习“设计模式”。Sun公司出版了一本《<br />
-J2EE核心模式》，是每个开发Java企业平台软件的架构师必备的书籍。这本书全面的介绍了J2EE体系架构的各种设计模式，是设计师的必读书籍<br />
-Java Learning Path（三）过程篇</p>
-<p>每个人的学习方法是不同的，一个人的方法不见得适合另一个人，我只能是谈自己的学习方法。因为我学习Java是完全自学的，从来没有问过别人，所以学习的过程基本上完<br />
-全是自己摸索出来的。我也不知道这种方法是否是比较好的方法，只能给大家提供一点参考了。</p>
-<p>学习Java的第一步是安装好JDK，写一个Hello World，? 其实JDK的学习没有那么简单，关于JDK有两个问题是很容易一直困扰Java程序员的地方<br />
-：一个是CLASSPATH的问题，其实从原理上来说，是要搞清楚JRE的ClassLoader是如何加载Class的；另一个问题是package和import<br />
-问题，如何来寻找类的路径问题。把这两个问题摸索清楚了，就扫除了学习Java和使用JDK的最大障碍。推荐看一下王森的《Java深度历险》，对这两个问题进行了深<br />
-入的探讨。</p>
-<p>第二步是学习Java的语法。Java的语法是类C<ins>的，基本上主流的编程语言不是类C，就是类C</ins>的，没有什么新东西，所以语法的学习，大概就是半天的时间足够<br />
-了。唯一需要注意的是有几个不容易搞清楚的关键字的用法，public，protected，private，static，什么时候用，为什么要用，怎么用，这可能<br />
-需要有人来指点一下，我当初是完全自己琢磨出来的，花了很久的时间。不过后来我看到《Thinking in Java》这本书上面是讲了这些概念的。</p>
-<p>第三步是学习Java的面向对象的编程语言的特性的地方。比如继承，构造器，抽象类，接口，方法的多态，重载，覆盖，Java的异常处理机制。对于一个没有面向对象语<br />
-言背景的人来说，我觉得这个过程需要花很长很长时间，因为学习Java之前没有C<ins>的经验，只有C的经验，我是大概花了一个月左右吧，才彻底把这些概念都搞清楚，把<br />
-书上面的例子反复的揣摩，修改，尝试，把那几章内容反复的看过来，看过去，看了不下5遍，才彻底领悟了。不过我想如果有C</ins>经验的话，应该一两天时间足够了。那么在<br />
-这个过程中，可以多看看《Thinking in<br />
-Java》这本书，对面向对象的讲解非常透彻。可惜的是我学习的时候，并没有看到这本书，所以自己花了大量的时间，通过自己的尝试和揣摩来学会的。</p>
-<p>第四步就是开始熟悉Java的类库。Java的基础类库其实就是JDK安装目录下面jre/lib/rt.jar这个包。学习基础类库就是学习rt.jar。基础类库<br />
-里面的类非常非常多。据说有3000多个，我没有统计过。但是真正对于我们来说最核心的只有4个，分别是</p>
-<p>java.lang.*;</p>
-<p><span class="exturl" data-url="aHR0cDovL2phdmEuaW8=">java.io<i class="fa fa-external-link-alt"></i></span>.*;</p>
-<p>java.util.*;</p>
-<p>java.sql.*;</p>
-<p>这四个包的学习，每个包的学习都可以写成一本厚厚的教材，而O´reilly也确实是这样做的。我觉得如果时间比较紧，是不可能通过读四本书来学习。我觉得比较好的学<br />
-习方法是这样的：</p>
-<p>首先要通读整个package的框架，了解整个package的class，interface，exception的构成，最好是能够找到介绍整个包框架的文章。这<br />
-些专门介绍包的书籍的前几章应该就是这些总体的框架内容介绍。</p>
-<p>对包整体框架的把握并不是要熟悉每个类的用法，记住它有哪些属性，方法。想记也记不住的。而是要知道包有哪些方面的类构成的，这些类的用途是什么，最核心的几个类分别<br />
-是完成什么功能的。我在给人培训的时候一般是一次课讲一个包，所以不可能详细的介绍每个类的用法，但是我反复强调，我给你们讲这些包的不是要告诉你们类的方法是怎么调<br />
-用的，也不要求你们记住类的方法调用，而是要你们了解，Java给我们提供了哪些类，每个类是用在什么场合，当我遇到问题的时候，我知道哪个类，或者哪几个类的组合可<br />
-以解决我的问题，That´all！，当我们具体写程序的时候，只要你知道该用哪个类来完成你的工作就足够了。编码的时候，具体的方法调用，是边写代码，边查Docu<br />
-mentation，所有的东西都在Documentation里面，不要求你一定记住，实际你也记不住3000多个类的总共将近10万个方法调用。所以对每个包的总<br />
-体框架的把握就变得极为重要。</p>
-<p>第五步，通过上面的学习，如果学的比较扎实的话，就打好了Java的基础了，剩下要做的工作是扫清Documentation里面除了上面4个包之外的其他一些比较有<br />
-用处的类。相信进展到这一步，Java的自学能力已经被培养出来了，可以到了直接学习Documentation的水平了。除了要做GUI编程之外，JDK里面其他会<br />
-有用处的包是这些：</p>
-<p>java.text.*;</p>
-<p><span class="exturl" data-url="aHR0cDovL2phdmEubmV0">java.net<i class="fa fa-external-link-alt"></i></span>.*;</p>
-<p>javax.naming.*;</p>
-<p>这些包里面真正用的比较多的类其实很少，只有几个，所以不需要花很多时间。</p>
-<p>第六步，Java Web 编程</p>
-<p>Web编程的核心是HTTP协议，HTTP协议和Java无关，如果不熟悉HTTP协议的话，虽然也可以学好Servlet/JSP编程，但是达不到举一反三，一通百<br />
-通的境界。所以HTTP协议的学习是必备的。如果熟悉了HTTP协议的话，又有了Java编程的良好的基础，学习Servlet/JSP简直易如反掌，我学习Serv<br />
-let/JSP就用了不到一周的时间，然后就开始用JSP来做项目了。</p>
-<p>在Servlet/JSP的学习中，重头仍然是Servlet Documentation。Servlet API最常用的类很少，花比较少的时间就可以掌握了。把<br />
-这些类都看一遍，多写几个例子试试。Servlet/JSP编程本质就是在反复调用这些类来通过HTTP协议在Web<br />
-Server和Brower之间交谈。另外对JSP，还需要熟悉几个常用JSP的标记，具体的写法记不住的话，临时查就是了。</p>
-<p>此外Java Web编程学习的重点要放在Web Application的设计模式上，如何进行业务逻辑的分析，并且进行合理的设计，按照MVC设计模式的要求，运<br />
-用Servlet和JSP分别完成不同的逻辑层，掌握如何在Servlet和JSP之间进行流程的控制和数据的共享，以及Web<br />
-Application应该如何配置和部署</p>
-<p>第七步，J2EE编程</p>
-<p>以上的学习过程如果是比较顺利的话，进行到这一步，难度又陡然提高。因为上面的知识内容都是只涉及一个方面，而像EJB，JMS，JTA等核心的J2EE规范往往是几<br />
-种Java技术的综合运用的结晶，所以掌握起来难度比较大。</p>
-<p>首先一定要学习好JNDI，JNDI是App Server定位服务器资源（EJB组件，Datasouce，JMS）查找方法，如果对JNDI不熟悉的话，EJB，<br />
-JMS这些东西几乎学不下去。JNDI其实就是javax.naming.*这个包，运用起来很简单。难点在于服务器资源文件的配置。对于服务器资源文件的配置，就需<br />
-要看看专门的文档规范了，比如web.xml的写法，ejb-jar.xml的写法等等。针对每种不同的App<br />
-Server，还有自己的服务资源配置文件，也是需要熟悉的。</p>
-<p>然后可以学习JTA，主要是要理解JTA对于事务的控制的方法，以及该在什么场合使用JTA。这里可以简单的举个例子，我们知道一般情况可以对于一个数据库连接进行事<br />
-务控制(conn.setAutoCommit(false),…,conn.commit())，做为一个原子操作，但是假设我的业务需求是要把对两个不同数<br />
-据库的操作做为一个原子操作，你能做的到吗？这时候只能用JTA了。假设操作过程是先往A数据库插一条记录，然后删除B数据库另一个记录，我们自己写代码是控制不了把<br />
-整个操作做为一个原子操作的。用JTA的话，由App Server来完成控制。</p>
-<p>在学习EJB之前要学习对象序列化和RMI，RMI是EJB的基础。接着学习JMS和EJB，对于EJB来说，最关键是要理解EJB是如何通过RMI来实现对远端对象<br />
-的调用的，以及在什么情况下要用到EJB。</p>
-<p>在学习完EJB，JMS这些东西之后，你可能会意识到要急不可待学习两个领域的知识，一个是UML，另一个是Design Pattern。Java企业软件的设计非<br />
-常重视框架(Framework)的设计，一个好的软件框架是软件开发成功的必要条件。在这个时候，应该开始把学习的重点放在设计模式和框架的学习上，通过学习和实际<br />
-的编程经验来掌握EJB的设计模式和J2EE的核心模式。</p>
-<p>J2EE规范里面，除了EJB，JMS，JTA，Servlet/JSP，JDBC之外还有很多很多的企业技术，这里不一一进行介绍了。</p>
-<p>另外还有一个最新领域Web Services。Web Services也完全没有任何新东西，它像是一种黏合剂，可以把不同的服务统一起来提供一个统一的调用接口<br />
-，作为使用者来说，我只要获得服务提供者给我的WSDL（对服务的描述），就够了，我完全不知道服务器提供者提供的服务究竟是EJB组件，还是.Net组件，还是什么<br />
-CORBA组件，还是其他的什么实现，我也不需要知道。Web<br />
-Services最伟大的地方就在于通过统一的服务提供方式和调用方式，实现了整个Internet服务的共享，是一个非常令人激动的技术领域。Web<br />
-Services好像目前还没有什么很好的书籍，但是可以通过在网络上面查资料的方式来学习。<br />
-Java Learning Path（四） 方法篇</p>
-<p>Java作为一门编程语言，最好的学习方法就是写代码。当你学习一个类以后，你就可以自己写个简单的例子程序来运行一下，看看有什么结果，然后再多调用几个类的方法，<br />
-看看运行结果，这样非常直观的把类给学会了，而且记忆非常深刻。然后不应该满足把代码调通，你应该想想看如果我不这样写，换个方式，再试试行不行。记得哪个高人说过学<br />
-习编程就是个破坏的过程，把书上的例子，自己学习Documentation编写的例子在运行通过以后，不断的尝试着用不同的方法实现，不断的尝试破坏代码的结构，看<br />
-看它会有什么结果。通过这样的方式，你会很彻底的很精通的掌握Java。</p>
-<p>举个例子，我们都编过Hello World</p>
-<p>public class HelloWorld {<br />
-public static void main(String[] args) {<br />
-System.out.println(“Hello World”);<br />
-}<br />
-}</p>
-<p>很多初学者不是很理解为什么main方法一定要这样来定义public static void main(String[] args)，能不能不这样写？包括我刚<br />
-学习Java的时候也有这样的疑问。想知道答案吗？很简单，你把main改个名字运行一下，看看报什么错误，然后根据出错信息进行分析；把main的public取掉<br />
-，在试试看，报什么错误；static去掉还能不能运行；不知道main方法是否一定要传一个String[]数组的，把String[]改掉，改成int[]，或者<br />
-String试试看；不知道是否必须写args参数名称的，也可以把args改成别的名字，看看运行结果如何。</p>
-<p>我当初学习Java的时候就是这样做的，把Hello World程序反复改了七八次，不断运行，分析运行结果，最后就彻底明白为什么了main方法是这样定义的了。</p>
-<p>此外，我对于staic，public，private，Exception，try{ }catch {}finally{}等等等等一开始都不是很懂，都是把参考<br />
-书上面的例子运行成功，然后就开始破坏它，不断的根据自己心里面的疑问来重新改写程序，看看能不能运行，运行出来是个什么样子，是否可以得到预期的结果。这样虽然比较<br />
-费时间，不过一个例子程序这样反复破坏几次之后。我就对这个相关的知识彻底学通了。有时候甚至故意写一些错误的代码来运行，看看能否得到预期的运行错误。这样对于编程<br />
-的掌握是及其深刻的。</p>
-<p>其中特别值得一提的是JDK有一个非常棒的调试功能，-verbose</p>
-<p>java ?Cverbose</p>
-<p>javac ?Cverbose 以及其它很多JDK工具都有这个选项</p>
-<p>-verbose 可以显示在命令执行的过程中，JVM都依次加载哪里Class，通过这些宝贵的调试信息，可以帮助我们分析出JVM在执行的过程中都干了些什么。</p>
-<p>另外，自己在学习过程中，写的很多的这种破坏例程，应该有意识的分门别类的保存下来，在工作中积累的典型例程也应该定期整理，日积月累，自己就有了一个代码库了。遇到<br />
-类似的问题，到代码库里面 Copy &amp; Paste ，Search &amp;<br />
-Replace，就好了，极大提高了开发速度。最理想的情况是把一些通用的例程自己再抽象一层，形成一个通用的类库，封装好。那么可复用性就更强了。</p>
-<p>所以我觉得其实不是特别需要例程的，自己写的破坏例程就是最好的例子，如果你实在对自己写的代码不放心的话，我强烈推荐你看看JDK基础类库的Java源代码。在JD<br />
-K安装目录下面会有一个src.zip，解开来就可以完整的看到整个JDK基础类库，也就是rt.jar的Java源代码，你可以参考一下Sun是怎么写Java程序<br />
-的，规范是什么样子的。我自己在学习Java的类库的时候，当有些地方理解的不是很清楚的时候，或者想更加清晰的理解运作的细节的时候，往往会打开相应的类的源代码，<br />
-通过看源代码，所有的问题都会一扫而空。</p>
-<p>Java Learning Path（五）资源篇</p>
-<p>1、 <span class="exturl" data-url="aHR0cDovL2phdmEuc3VuLmNvbS8="> http://java.sun.com/ <i class="fa fa-external-link-alt"></i></span> (英文)</p>
-<p>Sun的Java网站，是一个应该经常去看的地方。不用多说。</p>
-<p>2、<span class="exturl" data-url="aHR0cDovL3d3dy05MDAuaWJtLmNvbS9kZXZlbG9wZXJXb3Jrcy9jbi8=">http://www-900.ibm.com/developerWorks/cn/<i class="fa fa-external-link-alt"></i></span></p>
-<p>IBM的developerWorks网站，英语好的直接去英文主站点看。这里不但是一个极好的面向对象的分析设计网站，也是Web<br />
-Services，Java，Linux极好的网站。强烈推荐！！！</p>
-<p>3、<span class="exturl" data-url="aHR0cDovL3d3dy5qYXZhd29ybGQuY29tLw==">http://www.javaworld.com/<i class="fa fa-external-link-alt"></i></span> (英文)</p>
-<p>关于Java很多新技术的讨论和新闻。想多了解Java的方方面面的应用，这里比较好。</p>
-<p>4、<span class="exturl" data-url="aHR0cDovL2RldjJkZXYuYmVhLmNvbS5jbi9pbmRleC5qc3A=">http://dev2dev.bea.com.cn/index.jsp<i class="fa fa-external-link-alt"></i></span></p>
-<p>BEA的开发者园地，BEA作为最重要的App Server厂商，有很多独到的技术，在Weblogic上做开发的朋友不容错过。</p>
-<p>5、<span class="exturl" data-url="aHR0cDovL3d3dy5odWlob28uY29tLw==">http://www.huihoo.com/<i class="fa fa-external-link-alt"></i></span></p>
-<p>灰狐动力网站，一个专业的中间件网站，虽然不是专业的Java网站，但是在J2EE企业应用技术方面有深厚的造诣。</p>
-<p>6、<span class="exturl" data-url="aHR0cDovL3d3dy50aGVzZXJ2ZXJzaWRlLmNvbS9ob21lLw==">http://www.theserverside.com/home/<i class="fa fa-external-link-alt"></i></span> (英文)</p>
-<p>The Server Side?是一个著名的专门面向Java Server端应用的网站。</p>
-<p>7、<span class="exturl" data-url="aHR0cDovL3d3dy5qYXZhcmVzZWFyY2gub3JnLw==">http://www.javaresearch.org/<i class="fa fa-external-link-alt"></i></span></p>
-<p>Java研究组织，有很多优秀的Java方面的文章和教程，特别是在JDO方面的文章比较丰富。</p>
-<p>8、<span class="exturl" data-url="aHR0cDovL3d3dy5jbmpzcC5vcmcv">http://www.cnjsp.org/<i class="fa fa-external-link-alt"></i></span></p>
-<p>JSP技术网站，有相当多的Java方面的文章和资源。</p>
-<p>9、<span class="exturl" data-url="aHR0cDovL3d3dy5qZG9uLmNvbS8=">http://www.jdon.com/<i class="fa fa-external-link-alt"></i></span></p>
-<p>Jdon论坛，是一个个人性质的中文J2EE专业技术论坛，在众多的Java的中文论坛中，Jdon一个是技术含量非常高，帖子质量非常好的论坛。</p>
-<p>10、<span class="exturl" data-url="aHR0cDovL3NvdXJjZWZvcmdlLm5ldC8=">http://sourceforge.net/<i class="fa fa-external-link-alt"></i></span></p>
-<p>Sourge Forge?是一个开放源代码软件的大本营，其中也有非常非常丰富的Java的开放源代码的著名的软件。</p>
-<p>11、<span class="exturl" data-url="aHR0cDovL3d3dy5kZHZpcC5uZXQv">http://www.ddvip.net/<i class="fa fa-external-link-alt"></i></span><br />
-很多关于JAVA教学的文章，值得一看</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/07/01/1674263/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/07/01/1674263/" class="post-title-link" itemprop="url">一个宏定义值得注意的地方</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-07-01 19:34:00" itemprop="dateCreated datePublished" datetime="2007-07-01T19:34:00+08:00">2007-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>471</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>下面一段宏定义：</p>
-<p>#include<iostream><br />
-using namespace std;<br />
-#define MAX(x,y) (x)&gt;(y)?(x):(y)<br />
-int _tmain(int argc, _TCHAR* argv[])<br />
-{<br />
-int a=5,b=2,c=3,d=3,t;<br />
-t=MAX(a+b,c+d)*10;<br />
-printf(“%d/n”,t);<br />
-system(“pause”);<br />
-return 0;<br />
-}</p>
-<p>打印结果：7//问题…不应该是70吗？</p>
-<p>分析：使用替换的方法看看  t=MAX(a+b,c+d)*10;到底是什么：</p>
-<p>t = (a+b)&gt;(c+d)?(a+b):(c+d)*10</p>
-<p>原来最后的10乘了(c+d)</p>
-<p>改进后</p>
-<p>#include<iostream><br />
-using namespace std;<br />
-#define MAX(x,y) ((x)&gt;(y)?(x):(y))//注意括号<br />
-int _tmain(int argc, _TCHAR* argv[])<br />
-{<br />
-int a=5,b=2,c=3,d=3,t;<br />
-t=MAX(a+b,c+d)*10;<br />
-printf(“%d/n”,t);<br />
-system(“pause”);<br />
-return 0;<br />
-}</p>
-<p>打印结果 70</p>
+          <p>转载自：<span class="exturl" data-url="aHR0cDovL3dlbGxzLm9zYWxsLmNvbS9ibG9nL2luZGV4LnBocD91aWQ9MSZtPWNvbnRlbnQmcD0xNDM0I2FydGljbGVfY29udGU=">http://wells.osall.com/blog/index.php?uid=1&amp;m=content&amp;p=1434#article_conte<i class="fa fa-external-link-alt"></i></span><br />
+nt.php%3Fid%3D1434%26uid%3D1%26dt%3DY:pane:N;</p>
+<h1 id="bitime-咀嚼时光"><a class="markdownIt-Anchor" href="#bitime-咀嚼时光"></a> BITimE // 咀嚼时光</h1>
+<p>前两天买了个Seagate的320G的2.5寸SATA硬盘，真便宜，300多元，差不多每G一元钱了。于是就把原来移动硬盘里的160G的硬盘装在那台ATOM小<br />
+PC上了。如果大家还没忘记的话，应该还记得 <a target="_blank" rel="noopener" href="http://wells.osall.com/blog/index.php?uid=1&amp;m=content&amp;p=1417"> 我的那个ATOM小PC里面是用的8G的CF转IDE作为硬盘<br />
+</a><br />
+的。现在突然存储设备容量大了20倍，那就让它干更多的活吧。兔子老是跟我说他在他的服务器上装了 <a target="_blank" rel="noopener" href="http://blog.lalacafe.com/category/xen/"> n多虚拟机<br />
+</a> ，充分利用硬件资源，那我也来试一下吧。</p>
+<p>Linux上有很多虚拟机软件， <span class="exturl" data-url="aHR0cDovL3d3dy54ZW4ub3JnLw=="> XEN <i class="fa fa-external-link-alt"></i></span> 、 [ KVM ](http://www.linux-<br />
+<span class="exturl" data-url="aHR0cDovL2t2bS5vcmcvcGFnZS9NYWluX1BhZ2U=">kvm.org/page/Main_Page<i class="fa fa-external-link-alt"></i></span>) 、 <span class="exturl" data-url="aHR0cDovL3d3dy52bXdhcmUuY29tLw=="> VMWare <i class="fa fa-external-link-alt"></i></span> 、 <a target="_blank" rel="noopener" href="http://www.virtualbox.org/"> VirtualBox<br />
+</a><br />
+，从开源角度和性能角度来考量，当然选XEN啦。XEN性能非常优异，虚拟的主机的性能几乎和原生主机一致，如果主机硬件支持 <a target="_blank" rel="noopener" href="http://www.intel.com/technology/virtualization/"> VT (intel)<br />
+</a> 或者 [ SVM (AMD) ](<span class="exturl" data-url="aHR0cDovL3d3dw==">http://www<i class="fa fa-external-link-alt"></i></span><br />
+.amd.com/us/products/technologies/virtualization/Pages/virtualization.aspx)<br />
+的技术的话，则可以虚拟任何能在x86架构上运行的操作系统。可惜我的ATOM 330<br />
+CPU不支持VT技术，因此只能玩半虚拟模式，虚拟出内核支持XEN的操作系统了。</p>
+<p>换上新硬盘，首先就是安装新的操作系统。我一直用惯了Ubuntu，因此就安装了 <a target="_blank" rel="noopener" href="http://www.ubuntu.com/products/WhatIsUbuntu/serveredition"> Ubuntu 9.04 Server Edition 64位<br />
+</a><br />
+版本。安装OS的过程就不多说了，直接说XEN的安装配置吧。</p>
+<p>在XEN虚拟机环境上第一个被启动的操作系统被称为Domain-0，而之后启动的其他虚拟操作系统则被称为Domain-U，每一个Domain 就是一台虚拟机<br />
+。Domain-0除了可以运行应用程序外，还担负着XEN的控制功能，所以也被称为XEN Hypervisor。在Domain-<br />
+0上启动了XEN服务后，最重要的一个进程就是xend，这就是XEN的服务进程。</p>
+<p>我们新安装的操作系统如果没有安装XEN软件，则就相当于普通的一个单机使用。如果安装了XEN软件，并且以XEN化的内核启动，则这个操作系统环<br />
+境就变成了Domain-0，而后在这个环境下安装的其他操作系统则就是Domain-U了，都可以通过Domain-0来进行控制。</p>
+<p>![虚拟机架构](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA5">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/2009<i class="fa fa-external-link-alt"></i></span><br />
+1109/hypervisor_01.png)</p>
+<p>要安装并使用XEN，首先更新软件源的信息。</p>
+<h1 id="sudo-apt-get-update"><a class="markdownIt-Anchor" href="#sudo-apt-get-update"></a> sudo apt-get update</h1>
+<p>然后安装xen服务器软件和工具。</p>
+<h1 id="sudo-apt-get-install-ubuntu-xen-server-sudo-apt-get-install-ubuntu-xen-"><a class="markdownIt-Anchor" href="#sudo-apt-get-install-ubuntu-xen-server-sudo-apt-get-install-ubuntu-xen-"></a> sudo apt-get install ubuntu-xen-server # sudo apt-get install ubuntu-xen-</h1>
+<p>desktop<br />
+这时候我们去/boot目录看，可以看到一个xen3.3.gz文件，但是没有供操作系统使用的XEN化的内核，因此此时的操作系统还不是Doamin-0。我找了好<br />
+久都没找到现成的XEN化内核，于是就只能根据XEN手册自己编译一个内核了。</p>
+<p>下载安装最新的kernel文件。</p>
+<h1 id="sudo-apt-get-install-linux-image-server-linux-server"><a class="markdownIt-Anchor" href="#sudo-apt-get-install-linux-image-server-linux-server"></a> sudo apt-get install linux-image-server linux-server</h1>
+<p>安装编译所需要的一些工具包。</p>
+<h1 id="sudo-apt-get-install-build-essential-libncurses5-dev-gawk-mercurial"><a class="markdownIt-Anchor" href="#sudo-apt-get-install-build-essential-libncurses5-dev-gawk-mercurial"></a> sudo apt-get install build-essential libncurses5-dev gawk mercurial</h1>
+<p>接下来下载XEN所提供的XEN化的内核的源代码。</p>
+<h1 id="mkdir-p-~buildlinux-2627-xen-cd-usrsrc-sudo-hg-clone"><a class="markdownIt-Anchor" href="#mkdir-p-~buildlinux-2627-xen-cd-usrsrc-sudo-hg-clone"></a> mkdir -p ~/build/linux-2.6.27-xen # cd /usr/src/ # sudo hg clone</h1>
+<p><span class="exturl" data-url="aHR0cDovL3hlbmJpdHMueGVuc291cmNlLmNvbS9leHQvbGludXgtMi42LjI3LXhlbi5oZw==">http://xenbits.xensource.com/ext/linux-2.6.27-xen.hg<i class="fa fa-external-link-alt"></i></span><br />
+配置内核选项。</p>
+<h1 id="cd-usrsrclinux-2627-xenhg-sudo-make-o~buildlinux-2627-xen"><a class="markdownIt-Anchor" href="#cd-usrsrclinux-2627-xenhg-sudo-make-o~buildlinux-2627-xen"></a> cd /usr/src/linux-2.6.27-xen.hg # sudo make O=~/build/linux-2.6.27-xen/</h1>
+<p>menuconfig<br />
+出现内核参数的配置菜单后，根据如下的选项修改配置。</p>
+<p>1。General setup —&gt; Choose SLAB allocator (SLUB (Unqueued Allocator)) —&gt;<br />
+(X) SLAB</p>
+<p>2。Processor type and features —&gt; Subarchitecture Type (PC-compatible) —&gt;<br />
+(X) Enable Xen compatible kernel</p>
+<p>3。</p>
+<p>Bus options (PCI etc.) —&gt; [<em>] PCI support [</em>] Xen PCI Frontend [ ] Xen PCI<br />
+Frontend Debugging (NEW)<br />
+4。将 <M> 802.1d Ethernet Bridging 修改为 &lt;*&gt; 802.1d Ethernet Bridging:</p>
+<p>Networking support —&gt; Networking options —&gt; &lt;*&gt; 802.1d Ethernet Bridging</p>
+<p>5。关闭 10000 Mbit Ethernet 支持（否则可能编译失败）：</p>
+<p>Device Drivers —&gt; [*] Network device support —&gt; [ ] Ethernet (10000 Mbit)<br />
+—&gt;</p>
+<p>6。在 XEN 选项区中，按照下面选择选项（确认选择 Xen version compatibility (3.0.4 and later) 来取代原来的<br />
+Xen version compatibility (3.0.2 and later)）：<br />
+Device Drivers —&gt; XEN —&gt; [<em>] Privileged Guest (domain 0) &lt;</em>&gt; Backend<br />
+driver support (NEW) &lt;<em>&gt; Block-device backend driver (NEW) &lt;</em>&gt; Block-device<br />
+tap backend driver (NEW) &lt;<em>&gt; Network-device backend driver (NEW) (8) Maximum<br />
+simultaneous transmit requests (as a power of 2) (NEW) [ ] Pipelined<br />
+transmitter (DANGEROUS) (NEW) &lt; &gt; Network-device loopback driver (NEW) &lt;</em>&gt;<br />
+PCI-device backend driver (NEW) PCI Backend Mode (Virtual PCI) —&gt; [ ] PCI<br />
+Backend Debugging (NEW) &lt; &gt; TPM-device backend driver (NEW) <M> SCSI backend<br />
+driver (NEW) <M> Block-device frontend driver <M> Network-device frontend<br />
+driver <M> Network-device frontend driver acceleration for Solarflare NICs<br />
+(NEW) <M> SCSI frontend driver (NEW) &lt;<em>&gt; User-space granted page access driver<br />
+(NEW) &lt;</em>&gt; Framebuffer-device frontend driver (NEW) &lt;<em>&gt; Keyboard-device<br />
+frontend driver (NEW) [</em>] Disable serial port drivers (NEW) &lt;*&gt; Export Xen<br />
+attributes in sysfs (NEW) (256) Number of guest devices (NEW) Xen version<br />
+compatibility (3.0.4 and later) —&gt;<br />
+ESC退出并保存完配置后就可以开始编译内核了。</p>
+<p>可能这里要先 make mrproper</p>
+<h1 id="sudo-make-o~buildlinux-2627-xen"><a class="markdownIt-Anchor" href="#sudo-make-o~buildlinux-2627-xen"></a> sudo make O=~/build/linux-2.6.27-xen/</h1>
+<h1 id="sudo-make-o~buildlinux-2627-xen-modules_install-install"><a class="markdownIt-Anchor" href="#sudo-make-o~buildlinux-2627-xen-modules_install-install"></a> sudo make O=~/build/linux-2.6.27-xen/ modules_install install</h1>
+<p>通过漫长的等待（我的Atom 330<br />
+CPU花了大约3个小时），终于编译完内核了。编译安装完成后，去/boot目录检查，应该可以看到生成了支持xen的2.6.27.5的内核了。</p>
+<h1 id="ls-l-boot"><a class="markdownIt-Anchor" href="#ls-l-boot"></a> ls -l /boot</h1>
+<p>total 72697<br />
+-rw-r–r-- 1 root root   525592 2009-04-17 12:05 abi-2.6.28-11-server<br />
+-rw-r–r-- 1 root root   524602 2009-07-25 11:14 abi-2.6.28-14-server<br />
+-rw-r–r-- 1 root root    87448 2009-08-13 19:50 config-2.6.27.5<br />
+-rw-r–r-- 1 root root    90587 2009-04-17 12:05 config-2.6.28-11-server<br />
+-rw-r–r-- 1 root root    90560 2009-07-25 11:14 config-2.6.28-14-server<br />
+drwxr-xr-x 2 root root     1024 2009-08-13 20:04 grub<br />
+-rw-r–r-- 1 root root  8259056 2009-08-14 03:31 initrd.img-2.6.28-11-server<br />
+-rw-r–r-- 1 root root  8272673 2009-08-13 15:02 initrd.img-2.6.28-14-server<br />
+drwxr-xr-x 2 root root    12288 2009-08-14 03:17 lost+found<br />
+-rw-r–r-- 1 root root   128796 2009-03-28 04:12 memtest86+.bin<br />
+-rw-r–r-- 1 root root  1651431 2009-08-13 19:50 System.map-2.6.27.5<br />
+-rw-r–r-- 1 root root  1871187 2009-04-17 12:05 System.map-2.6.28-11-server<br />
+-rw-r–r-- 1 root root  1863183 2009-07-25 11:14 System.map-2.6.28-14-server<br />
+-rw-r–r-- 1 root root     1169 2009-04-17 12:09 vmcoreinfo-2.6.28-11-server<br />
+-rw-r–r-- 1 root root     1169 2009-07-25 11:16 vmcoreinfo-2.6.28-14-server<br />
+-rw-r–r-- 1 root root  3145318 2009-08-13 19:50 vmlinuz-2.6.27.5<br />
+-rw-r–r-- 1 root root  3520832 2009-04-17 12:05 vmlinuz-2.6.28-11-server<br />
+-rw-r–r-- 1 root root  3510496 2009-07-25 11:14 vmlinuz-2.6.28-14-server<br />
+-rw-r–r-- 1 root root   470084 2009-06-18 16:16 xen-3.3.gz</p>
+<p>内核有了，但是还没有initrd.img也就是启动时所需的ramdisk文件，手动来生成一个。</p>
+<h1 id="sudo-depmod-26275"><a class="markdownIt-Anchor" href="#sudo-depmod-26275"></a> sudo depmod 2.6.27.5</h1>
+<h1 id="sudo-update-initramfs-c-k-26275"><a class="markdownIt-Anchor" href="#sudo-update-initramfs-c-k-26275"></a> sudo update-initramfs -c -k 2.6.27.5</h1>
+<p>更新grub引导程序。</p>
+<h1 id="update-grub"><a class="markdownIt-Anchor" href="#update-grub"></a> update-grub</h1>
+<p>现在XEN的环境基本上都建好了，我们需要来修改一下配置文件了。</p>
+<p>XEN服务的配置文件都在/etc/xen目录下。XEN服务的主配置文件是 /etc/xen/xend-<br />
+config.sxp。打开这个文件，我们要确认的是XEN虚拟服务器的网络连接方式，这是相当重要的。我选择了桥接模式， 也就是说，Domain-<br />
+U虚拟机和Domain-0在同一子网，用Domain-0的物理网卡来进行桥接到虚拟机的虚拟网卡。</p>
+<h1 id="sudo-vi-etcxenxend-configsxp"><a class="markdownIt-Anchor" href="#sudo-vi-etcxenxend-configsxp"></a> sudo vi /etc/xen/xend-config.sxp</h1>
+<p>确认网络部分是这样配置的：<br />
+(network-script network-bridge)<br />
+下一步要根据你的习惯来修改。你喜欢将虚拟机安装在哪里？是用一个镜像文件来虚拟成磁盘，还是将一个LVM逻辑卷虚拟成磁盘，或者干脆就是将物理磁盘给虚拟机使用？</p>
+<p>对于后两种选择，你可以跳过这一步。但如果你选择了在现有的文件系统中建立一个镜像文件来虚拟成一个虚拟机的物理磁盘，那就要按照下面修改默认配置了。</p>
+<p>由于镜像文件在加载的时候是作为回圈设备（loop device），因此要将操作系统的默认最大回圈设备数量调大，以免出现不必要的问题。</p>
+<h1 id="sudo-vi-etcmodules"><a class="markdownIt-Anchor" href="#sudo-vi-etcmodules"></a> sudo vi /etc/modules</h1>
+<p>将loop这一行修改为：<br />
+loop max_loop=64<br />
+好啦，重启主机，进入Domain-0的世界！！！</p>
+<h1 id="sudo-shutdown-r-now"><a class="markdownIt-Anchor" href="#sudo-shutdown-r-now"></a> sudo shutdown -r now</h1>
+<p>重启完成后检查一下kernel版本，是不是XEN化的那个2.6.27.5？</p>
+<h1 id="uname-r"><a class="markdownIt-Anchor" href="#uname-r"></a> uname -r</h1>
+<p>2.6.27.5<br />
+现在可以使用XEN的管理命令xm，来看看虚拟机运行状况啦！</p>
+<h1 id="sudo-xm-list"><a class="markdownIt-Anchor" href="#sudo-xm-list"></a> sudo xm list</h1>
+<p>Name                                        ID   Mem VCPUs      State<br />
+Time(s)<br />
+Domain-0                                     0  1473     4     r-----    479.8<br />
+哈哈，可以看到Domain-0正常运行！！！你可以使用xm help来学习如何通过xm来管理虚拟机。</p>
+<p>在State列，看到Domain-0是r的状态，也就是说，这个Domain正在运行中，并有任务在该Domain上运行。虚拟机还有如下几种状态：</p>
+<ul>
+<li>r ：该domain正在消耗CPU资源，任务运行中；</li>
+<li>b ：该domain正被暂时搁置(blockded)，一般来说是因为这个domain在闲置中，等待输入或输出(I/O)；</li>
+<li>p ：该domain处于暂停状态，通常是因为管理员使用 xm pause 暂停了这个domain。当domain至于暂停状态时，Xen的管理器将不会处理这个domain的任何动作；</li>
+<li>s ：该domain正在关机；</li>
+<li>c ：该domain已经crash了，但是没有关机。一般来说是因为domain的配置文件没有设置 on_crash 动作所致；</li>
+<li>d ：该domain正在死机中，一般来说是因为这个domain无法正确 shutdown/crashed 之故。</li>
+</ul>
+<p>先到这里吧，总算是把XEN安装上了，而且也把Domain-0给顺利启动了。</p>
 
       
     </div>
@@ -2388,7 +1611,7 @@ return 0;<br />
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/32/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/34/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/32/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/34/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

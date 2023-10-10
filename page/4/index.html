@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/26/17580327/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/11/44206543/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/26/17580327/" class="post-title-link" itemprop="url">JAVA迅速解决图片变红、变黑、压缩平滑问题</a>
+          <a href="/2015/03/11/44206543/" class="post-title-link" itemprop="url">CSDN Markdown 编辑器 第一篇</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,14 +243,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-12-26 12:29:00" itemprop="dateCreated datePublished" datetime="2013-12-26T12:29:00+08:00">2013-12-26</time>
+      <time title="Created: 2015-03-11 22:23:00" itemprop="dateCreated datePublished" datetime="2015-03-11T22:23:00+08:00">2015-03-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -260,14 +260,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.1k</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>1 mins.</span>
     </span>
 </div>
 
@@ -278,24 +278,53 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>小卒 最近在做头像上传功能，发现对于带有alpha通道的图片，有的会变红，有的会变黑，有时压缩不平滑。发现是有几处程序写错了。</p>
-<p>首先贴一下原始的程序，这段程序的功能是将原图的(x,y,w,h)图块，转变为 (0,0,targetW,targetH)图片，并输出为jpg格式</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">private byte[] cropAndCompressImage(int x, int y, int w, int h,</span><br><span class="line">                                        BufferedImage image, int targetW, int targetH) throws Exception&#123;</span><br><span class="line">        if (w == -1 &amp;&amp; h == -1 &amp;&amp; image != null) &#123;</span><br><span class="line">            // use full image</span><br><span class="line">            w = image.getWidth();</span><br><span class="line">            h = image.getHeight();</span><br><span class="line">        &#125; </span><br><span class="line">        if (x &lt; 0 || y &lt; 0 || w &lt;= 0 || h &lt;= 0 || image == null) &#123;</span><br><span class="line">            // error</span><br><span class="line">        &#125;</span><br><span class="line">        w = Math.min(x+w, image.getWidth()) - x;</span><br><span class="line">        h = Math.min(y+h, image.getHeight()) - y;</span><br><span class="line">        try &#123;</span><br><span class="line">            BufferedImage cropedImage = image.getSubimage(x, y, w, h);</span><br><span class="line"></span><br><span class="line">            // do image compression</span><br><span class="line">            int type = image.getType() == 0 ? BufferedImage.TRANSLUCENT</span><br><span class="line">                    : image.getType();</span><br><span class="line">            BufferedImage compressedImage = new BufferedImage(targetW, targetH, type);</span><br><span class="line">            Graphics2D graph = compressedImage.createGraphics();</span><br><span class="line">            graph.drawImage(cropedImage, 0, 0, targetW, targetH, null);</span><br><span class="line">            graph.dispose();</span><br><span class="line"></span><br><span class="line">            ByteArrayOutputStream bytes = new ByteArrayOutputStream();</span><br><span class="line">            ImageIO.write(compressedImage, &quot;jpg&quot;, bytes);</span><br><span class="line"></span><br><span class="line">            return bytes.toByteArray();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            // error</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>首先是背景有时变黑，这里最简单的做法是将最后的背景图片设置为白色。见下面代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//graph.drawImage(cropedImage, 0, 0, targetW, targetH, null);</span><br><span class="line">graph.drawImage(cropedImage, 0, 0, targetW, targetH, Color.white,null);</span><br></pre></td></tr></table></figure>
-<p>加一个Color.white即可。</p>
-<p>下面要解决的是图片变红问题。 <span class="exturl" data-url="aHR0cDovL2NoaWxseS5pbmZv"> 帐前卒 <i class="fa fa-external-link-alt"></i></span> 认为这个问题其实是alpha通道需要变为透明的。而原始程序是判断，如果<br />
-该图片是定义为Custom的图片，那么就变为透明。显然custom的图片不一定是透明图片。所以这里需要判断image是否为透明的。代码变为:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// int type = image.getType() == 0 ? BufferedImage.TRANSLUCENT</span><br><span class="line">                    : image.getType();</span><br><span class="line">            // BufferedImage compressedImage = new BufferedImage(targetW, targetH, type);</span><br><span class="line">            BufferedImage compressedImage = null;</span><br><span class="line">            if (image.isAlphaPremultiplied()) &#123;</span><br><span class="line">                compressedImage = new BufferedImage(photoType.getWidth(), photoType.getHeight(),                 BufferedImage.TRANSLUCENT);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                compressedImage = new BufferedImage(photoType.getWidth(), photoType.getHeight(),                 BufferedImage.TYPE_INT_RGB);</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
-<p>然后变红问题就解决了。下面是压缩图片时，发现很多地方不光滑，这里也非常好解决。帐 前卒的代码如下： ```</p>
-<pre><code>// graph.drawImage(cropedImage, 0, 0, targetW, targetH, null);
-            // graph.drawImage(cropedImage, 0, 0, targetW, targetH, Color.white,null);
-            graph.drawImage(cropedImage.getScaledInstance(targetW,  targetH,  BufferedImage.SCALE_SMOOTH), 0, 0,             Color.white,null);
+          <p>最近CSDN 新出了markdown编辑器。我这也算是尝鲜。<br />
+最初接触markdown编辑器是在2011年。那个时候，使用markdown编辑器写blog。然后将blog放到github上托管。markdown还不能像<br />
+现在这样可以实时编辑显现。那个时候有一个markdown engine专门将markdown语法转换成html. 每次感觉自己写对了。实际上语法各种不对。</p>
+<h1 id="究竟什么是markdown"><a class="markdownIt-Anchor" href="#究竟什么是markdown"></a> 究竟什么是markdown?</h1>
+<blockquote>
+<p>markdown是一种更加贴近自然表达的语法，它可以转换成互联网上通用展示的html格式。 — 帐前卒</p>
+</blockquote>
+<p>所以这个特点，造就了markdown的巨大优势。</p>
+<h1 id="markdown优势"><a class="markdownIt-Anchor" href="#markdown优势"></a> markdown优势</h1>
+<p>优势其实就只有一点： ** _ 简单 _ **</p>
+<ul>
+<li>如果写blog用html写。那么需要写一个空格，需要写 <code>&amp;nbsp;</code> 但是有了markdown, 我只需要这样写：</li>
+</ul>
+<blockquote>
+<p>这里有一个空格， ，真的。</p>
+</blockquote>
+<ul>
+<li>如果我想使用html换一行，或者新起一个段落，需要写 <code>&lt;br&gt;</code> 或者 <code>&lt;p&gt;</code> 但是我如果使用markdown,那么我直接打两个回车。例如：</li>
+</ul>
+<blockquote>
+<p>新开一行吧</p>
+</blockquote>
+<p>不知道这样是不是省字数。不过从初学者的角度一定是：markdown的语法更接近于自己所见。所以 ** 所见即所得 ** 以及 ** 易学易用 **<br />
+是markdown语法的终极目标。</p>
+<p>说了这么多markdown的好处。那markdown能否替换掉“世界上最好的语言”php呢？来看看他的不足</p>
+<h1 id="markdown缺点"><a class="markdownIt-Anchor" href="#markdown缺点"></a> markdown缺点</h1>
+<ul>
+<li>现在还没有浏览器直接支持markdown</li>
+<li>markdown解析器bug很多，而且也不知道什么时候能fix.</li>
+<li>markdown的基础语法表达较少。例如如果我想对换一下这个字体的颜色，或者换一下背景色。这个还是需要借助于css.</li>
+</ul>
+<p>看起来markdown的缺点吐槽吐的有点多。但这并不影响它成为更加实用的语言。仔细想想，blog中除了字就是图。没有颜色，没有样式也不影响阅读。</p>
+<h1 id="csdn-markdown-对比"><a class="markdownIt-Anchor" href="#csdn-markdown-对比"></a> csdn markdown 对比</h1>
+<p>呃…我找到这一款markdown： <a target="_blank" rel="noopener" href="https://www.zybuluo.com/mdeditor"> https://www.zybuluo.com/mdeditor<br />
+</a></p>
+<h1 id="markdown-使用细节"><a class="markdownIt-Anchor" href="#markdown-使用细节"></a> markdown 使用细节</h1>
+<p>这里需要注意的是，如果你希望上一行的样式不要应用到下一行，那么就要在中间空一行。所以两次回车是新起一个段落。新手一定犯这个错误。</p>
+<p>如果段落开头需要两个空格，那么还是得加入两个 <code>&amp;nbsp;&amp;nbsp;</code><br />
+当然咱们的是中文字，每个字符占空格宽度好像是四个，所以这里需要八个空格。当然这里可能也和字体有关系。</p>
+<p>这是我的段落开始~<br />
+你看这里~~</p>
+<p>另外如果某些字符不能在html中展示，那么就要加两个 <code>``</code> , 例如</p>
+<pre><code>`&amp;nbsp;`
 </code></pre>
-<pre class="highlight"><code class="">
-加入SCALE_SMOOTH参数就完成了~~  
-
-</code></pre>
+<p>说实话，上面这个好难打出来。需要先打一个[tab]然后再写原始字符。这样被认为是一个代码块，就不会被转义了。</p>
+<p>这一篇先写到这里。<br />
+下一篇准备写 CSDN markdown 简单使用</p>
 
       
     </div>
@@ -322,7 +351,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/23/17499063/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/11/44194045/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -340,7 +369,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/23/17499063/" class="post-title-link" itemprop="url">私人定制 观感</a>
+          <a href="/2015/03/11/44194045/" class="post-title-link" itemprop="url">Android开发第一课 ~ Android Studio 使用说明</a>
         </h2>
 
         <div class="post-meta-container">
@@ -351,14 +380,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-12-23 09:49:00" itemprop="dateCreated datePublished" datetime="2013-12-23T09:49:00+08:00">2013-12-23</time>
+      <time title="Created: 2015-03-11 09:47:00" itemprop="dateCreated datePublished" datetime="2015-03-11T09:47:00+08:00">2015-03-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -368,7 +397,195 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.6k</span>
+      <span>5.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>很久没有写blog了</p>
+<p>公司发了一个android 手机，所以准备学习一下android开发。如果再发一个mac的话，准备学习一下IOS开发。嗯。然后就是去android的官网：</p>
+<p><span class="exturl" data-url="aHR0cDovL2RldmVsb3Blci5hbmRyb2lkLmNvbS90cmFpbmluZy9pbmRleC5odG1s">http://developer.android.com/training/index.html<i class="fa fa-external-link-alt"></i></span></p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjA1MTA1P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090605105?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)<br />
+就是这里了。如果你打不开，说明被墙了。如果你挂了代理还打不开，说明你的代理也被墙了。总之，这个地方已经被墙了。</p>
+<p>点击Build Your First App然后看介绍。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjA4MjI1P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090608225?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>介绍说，让我们先下载Android Studio再说.  点击去下载页面</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjExMDY0P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090611064?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)<br />
+开始下载吧：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjE3MDg2P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090617086?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)<br />
+还要确认协议等。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjIwMTI4P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090620128?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>这里不要用浏览器的默认下载方式，把链接获取到，然后放到迅雷中下载吧。这样速度更快。在下载的空闲时间里看了一下介绍。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjIzNDE5P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090623419?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>上面说这个Android Studio多好多好。啥都有，你放心的下吧。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNzQwODEwP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090740810?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>我于是又看了下一节： Andding SDK Packages.</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjI5NjEzP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090629613?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>这一节说Android SDK 要啥没啥。Android Studio 是 IDE + android SDK.<br />
+这里最主要是说你要下载那几个package,否则不能用。其实你下载了Android Studio, 本身就带了那几个package.其实不需要再下载了。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNzU0OTI4P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090754928?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>下载结束了，双击运行吧。 但你最好检查一下JDK的是有1.7的版本。1.8的某些版本也可以。但是1.8的最新版，Android<br />
+Studio还不支持。然后一路next.</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjMyNDUyP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090632452?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>去安装的目录就看到这两个文件夹，一个是IDE( idea IDE) 另外一个就是Android SDK.</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNzU4MTQyP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090758142?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>进入Android Studio, 然后再进入bin. 然后看到一堆exe 文件。 如果你是64位机器，使用studio64.exe<br />
+运行，32用studio.exe运行。这里要修改一下idea.properties.</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwODAxMjYyP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090801262?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>如果你不做任何修改，直接打开了studio.exe或者studio64.exe, 中国地区的朋友们一般会卡在这个地方：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNjUwMDY0P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090650064?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>就是Fetching Android SDK component information.<br />
+这里是我非常鄙视google的地方。本来就是一个本地能用的东西。Google的做法是先更新，再使用，而且还不检查网络是否有问题。网上有人评价Android<br />
+是 too young too naive. 我觉得也是。那么解决这个问题的方法就是修改之前的idea.properties文件， 添加一行：</p>
+<p>** disable.android.first.run=true **</p>
+<p>要么你就所有的请求，http/https/socket都能走代理。嗯，我公司的代理不能支持全部请求代理。有能用的代理的同仁请捐助我一个全局代理。跳过fetc<br />
+hing阶段就到了：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwODA3MTc0P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090807174?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>为了让中国地区的朋友们不在创建新项目中卡住。一般会在这里卡住 Gradle: resolve dependancies ‘_debugCompile’<br />
+。这里一定要先config… 然后是project default.</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwODE1NjE0P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090815614?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>然后是 Setting 选项.</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNzI4NDg3P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090728487?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>这里搜索到gradle,然后将  ** offline work ** 勾选，点击apply. 然后返回。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNzMzNjgyP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090733682?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>然后就是点击project stucture。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwNzI4NDg3P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090728487?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>你可以看到你安装的sdk和Jdk的位置是否正确。如果正确的话，就略过吧。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwOTE4Mzg4P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090918388?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>然后返回到创建新项目的页面：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwODA4MDgwP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090808080?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>然后一路next. 你就能看到你的工程：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUwMzExMDkwODEwOTE5P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20150311090810919?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/Center)</p>
+<p>嗯，终于安装结束了。我试过让java 使用代理的方式访问网络。但是还是不行。自从去年公司的代理被封掉，现在的代理就只能通过sock5来做事情。添加成全局代理<br />
+后，百度都连接不上。完全不知道如何使用。有会使用的，请在下方留言。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/02/25/43935141/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2015/02/25/43935141/" class="post-title-link" itemprop="url">给大家发个大红包~~~</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-02-25 10:30:00" itemprop="dateCreated datePublished" datetime="2015-02-25T10:30:00+08:00">2015-02-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>220</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -386,15 +603,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>有点滴剧透，没看过的误入…那就没有办法了…请增加点击率后，自动退出吧。</p>
-<p>私人定制一共讲了五个故事。分别是“xxx”, “性本善”，“一腔俗血”，“有钱”和“道歉”。第四个故事忘记名字了，不过主题意思是道歉。而第一个故事叫什么名字，因为去的晚，没有看到。总感觉这五个故事是不连贯的，虽然反映了社会的方方面面，但是每个人物的性格表现还是太弱了。对于第一个故事不做评价，而第二个故事讥讽力度还是不够的，大多点到为止，笑看官场亦怕官。不过取名“性本善”和孟子的主张是一致的。不过如果每个人都是善的，为何有了恶的根源。突然想起了《黑镜》的第一个故事，每个人都是推波助澜的根源。让我想到集体主义和个人主义冲突的时候…为什么个人主义必须服从集体主义呢？或许是因为个人离开了集体必然会导致死亡。而牺牲了个人，似乎可以让剩余的集体生存，甚至让个人仍能存活下去。所以在生存和屈辱之间，还是毅然决然的选择生存。不过这样说似乎抹灭了先烈们的光辉事迹。嗯，牺牲个人利益的先烈们，仍然是可敬的。</p>
-<p>对于第三个故事，一腔俗血。看起来是导演的自嘲。只有在俗中才能生存，而玩弄雅的&quot;1942&quot;必定是死的艺术。不过艺术是什么？是大雅之道还是大俗之路呢？突然想起《战国鬼才传》，物极必反。追求极雅，恍惚之间弄得人物皆非，是可笑的。而真正的雅，仍然在平时的生活之中。</p>
-<p>而第四个故事“有钱”。是我和LP大人都觉得不错的故事。钱是生存之物，时间也是。导演没有说金钱乃身外之物，这么俗套的台词。而插曲却明显的表现了这一思路。这有让我想到《时间规划局》这一科幻的题材，时间等价于金钱。想法很好，可惜导演不咋地。对于有钱人的意淫，仍旧是痴人说梦。我们中的大多数都是平凡的人，暴发了几个亿的人，我觉得也不会看到我的blog。我们幻想着以后自己如何如何的有钱，然后不屑于已经有钱的各种作为。然后说一句“金钱乃身外之物，生不带来，死不带去”，自嘲式的让自己活得心安理得。而在故事中也隐隐的提及了亲情和报恩之情。</p>
-<p>第二个故事到第四个故事，其实完全可以提高到《黑镜》第二集的高度，不过导演想到如果再高雅起来，票房就会像1942一样难看吧。人生就是一个循环，人永远不知道在为什么干活。知道干活能赚到钱这个简单的目的，从来没有想过干活最终是为谁在干活，以及干活到底是为了什么，对于这个社会而言有什么必要性？但是社会就是一个俗场，不管如何的高雅，最终都会被这社会的俗所淹没。不管人生如何的抗争过，却都会软弱的存活于社会之中。当然真正的高雅之士，真正的抗争之人，真正的正义之士都已经game over了。因为他们都被社会淘汰了。</p>
-<p>而第五个故事“道歉”。或许是对自然难以报恩的愧疚之情。不过我和LP大人都觉得这个故事是没有必要的，在第四个故事其实影片就可以结束。而导演又开始玩点雅的，导致<br />
-大家莫名其妙。</p>
-<p>总结一下：《时间都去哪了》 这个歌不错。来，贴一下歌词和歌的链接： <span class="exturl" data-url="aHR0cDovL211c2ljLmJhaWR1LmNvbS9zb25nLzE0Mzg1NTAw"> http://music.baidu.com/song/14385500<i class="fa fa-external-link-alt"></i></span></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">门前老树长新芽</span><br><span class="line"></span><br><span class="line">院里枯木又开花</span><br><span class="line"></span><br><span class="line">半生存了好多话</span><br><span class="line"></span><br><span class="line">藏进了满头白发</span><br><span class="line"></span><br><span class="line">记忆中的小脚丫</span><br><span class="line"></span><br><span class="line">肉嘟嘟的小嘴巴</span><br><span class="line"></span><br><span class="line">一生把爱交给他</span><br><span class="line"></span><br><span class="line">只为那一声爸妈</span><br><span class="line"></span><br><span class="line">时间都去哪儿了</span><br><span class="line"></span><br><span class="line">还没好好感受年轻就老了</span><br><span class="line"></span><br><span class="line">生儿养女一辈子</span><br><span class="line"></span><br><span class="line">满脑子都是孩子哭了笑了</span><br><span class="line"></span><br><span class="line">时间都去哪儿了</span><br><span class="line"></span><br><span class="line">还没好好看看你眼睛就花了</span><br><span class="line"></span><br><span class="line">柴米油盐半辈子</span><br><span class="line"></span><br><span class="line">转眼就只剩下满脸的皱纹了</span><br><span class="line"></span><br><span class="line">记忆中的小脚丫</span><br><span class="line"></span><br><span class="line">肉嘟嘟的小嘴巴</span><br><span class="line"></span><br><span class="line">一生把爱交给他</span><br><span class="line"></span><br><span class="line">只为那一声爸妈</span><br><span class="line"></span><br><span class="line">时间都去哪儿了</span><br><span class="line"></span><br><span class="line">还没好好感受年轻就老了</span><br><span class="line"></span><br><span class="line">生儿养女一辈子</span><br><span class="line"></span><br><span class="line">满脑子都是孩子哭了笑了</span><br><span class="line"></span><br><span class="line">时间都去哪儿了</span><br><span class="line"></span><br><span class="line">还没好好看看你眼睛就花了</span><br><span class="line"></span><br><span class="line">柴米油盐半辈子</span><br><span class="line"></span><br><span class="line">转眼就只剩下满脸的皱纹了</span><br></pre></td></tr></table></figure>
+          <p>有道云笔记 开工利是红包  vs  微信/支付宝红包</p>
+<p>最近被支付宝，微信红包折腾够了。要么手抖了半天也不发钱，要么发就发了1分钱。还美其名曰“红包”。嗯, 马云 and<br />
+麻花腾，你们给乞丐一分钱试试，你看乞丐打不打你们。作为良民，嗯，我还是忍了。下面还是发一下有道云笔记的 开工利是 红包吧。大家见者有份。才不像马云 and<br />
+麻花腾那么小气。</p>
+<p>下面是开工利是红包地址~   猛戳吧~~<br />
+<a target="_blank" rel="noopener" href="http://note.youdao.com/hongbao/web/index.html"> http://note.youdao.com/hongbao/web/index.html<br />
+</a></p>
 
       
     </div>
@@ -421,7 +636,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/20/17434939/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/12/12/41897501/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -439,7 +654,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/20/17434939/" class="post-title-link" itemprop="url">CSDN邮件病毒？</a>
+          <a href="/2014/12/12/41897501/" class="post-title-link" itemprop="url">AWS 技术峰会</a>
         </h2>
 
         <div class="post-meta-container">
@@ -450,522 +665,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-12-20 09:26:00" itemprop="dateCreated datePublished" datetime="2013-12-20T09:26:00+08:00">2013-12-20</time>
+      <time title="Created: 2014-12-12 22:14:00" itemprop="dateCreated datePublished" datetime="2014-12-12T22:14:00+08:00">2014-12-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>4.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>各位的用户注意一下来自CSDN的邮件 可能含有病毒。 今天上午收到一封来自CSDN的邮件。</p>
-<p><img src="http://img.blog.csdn.net/20131220092413984?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /></p>
-<p>标题引起了我的注意。并且它还带有一个附件。没有正文内容。查看了一下信头</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Received: from csdn.net (unknown [218.93.225.174])</span><br><span class="line">	by mx3 (Coremail) with SMTP id NcCowEC5+mIspLJSghUHAQ--.1389S2;</span><br><span class="line">	Thu, 19 Dec 2013 15:45:50 +0800 (CST)</span><br><span class="line">From: xiehai@csdn.net</span><br><span class="line">To: --</span><br><span class="line">Subject: nyboealdzx</span><br><span class="line">Date: Thu, 19 Dec 2013 15:46:39 +0800</span><br><span class="line">MIME-Version: 1.0</span><br></pre></td></tr></table></figure>
-<p>这个看起来是从csdn.net那个域发送过来的。不过unknown意味着没有进行签名。后来觉得是不是CSDN的邮件都是这样的？然后查看了之前几个CSDN邮件的信头：</p>
-<p>这个是邀我参加开源中国的邀请邮件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Received: from mx151.csdn.net (unknown [124.193.87.153])</span><br><span class="line">	by mx49 (Coremail) with SMTP id Y8CowEApI079esJR1SMTCw--.1499S2;</span><br><span class="line">	Thu, 20 Jun 2013 11:46:05 +0800 (CST)</span><br><span class="line">Received: by mx151.csdn.net (Postfix, from userid 0)</span><br><span class="line">	id 99C7E40A18; Thu, 20 Jun 2013 11:39:21 +0800 (CST)</span><br><span class="line">Content-Type: multipart/mixed; boundary=&quot;===============2088245834==&quot;</span><br><span class="line">MIME-Version: 1.0</span><br><span class="line">Subject: =?GB2312?B?Q1NETsnnx/izz9H7xPqyzrzTILXasMu97KGwv6rUtNbQufq/qtS0ysC956GxuN+35cLbzLM=?=</span><br><span class="line">From: CSDN&lt;sender@mx153.csdn.net&gt;</span><br><span class="line">To: --</span><br></pre></td></tr></table></figure>
-<p>这个看起来是一个csdn的子域发送过来的。然后查看了另外一个csdn的邮件，这个是赠送图书的。<span class="exturl" data-url="aHR0cDovL3huLS1tYWlsLXV0NWY2M2UxMjFidDB1MHI4Y2JlM2EuY3Nkbi5uZXQ=">这封信来自于mail.csdn.net<i class="fa fa-external-link-alt"></i></span>, 但是真实发出的是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gaoshan-PC (unknown [192.168.4.111])</span><br></pre></td></tr></table></figure>
-<p>下面是详细内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Received: from mail.csdn.net (unknown [211.103.135.164])</span><br><span class="line">	by mx18 (Coremail) with SMTP id RMCowECpvUNu1uhRmXtoAQ--.527S2;</span><br><span class="line">	Fri, 19 Jul 2013 14:02:22 +0800 (CST)</span><br><span class="line">Received: from localhost (localhost.mail.csdn.net [127.0.0.1])</span><br><span class="line">	by mail.csdn.net (EMOS V1.5 (Postfix)) with ESMTP id 258322A18013;</span><br><span class="line">	Fri, 19 Jul 2013 13:52:23 +0800 (CST)</span><br><span class="line">X-Virus-Scanned: amavisd-new at csdn.net</span><br><span class="line">Received: from mail.csdn.net ([127.0.0.1])</span><br><span class="line">	by localhost (mail.csdn.net [127.0.0.1]) (amavisd-new, port 10024)</span><br><span class="line">	with ESMTP id rSjhuVYKv6Ko; Fri, 19 Jul 2013 13:52:22 +0800 (CST)</span><br><span class="line">Received: from gaoshan-PC (unknown [192.168.4.111])</span><br><span class="line">	by mail.csdn.net (EMOS V1.5 (Postfix)) with ESMTPA id B01A967E0582;</span><br><span class="line">	Fri, 19 Jul 2013 13:52:22 +0800 (CST)</span><br><span class="line">Date: Fri, 19 Jul 2013 14:02:21 +0800</span><br><span class="line">From: admin &lt;admin@csdn.net&gt;</span><br><span class="line">Reply-To: admin &lt;admin@csdn.net&gt;</span><br><span class="line">Subject: =?gb2312?B?Q1NETtH7xPqyzrzTobDQtMrpxsC1w7y8yvXNvMrp067PwtTYt9ahsbKpv83XqLzSoaKw5tb316jK9Lvutq8=?=</span><br><span class="line">Disposition-Notification-To: admin &lt;admin@csdn.net&gt;</span><br></pre></td></tr></table></figure>
-<p>另外我怀着好奇心，查看一下其他邮箱从QQ那边发来邮件。注意其中含有DKIM签名。这个是验证域用的。<span class="exturl" data-url="aHR0cDovL3huLS1xcS1oZjNjeThqMnRjZTAwY2Y1d2dnc252NmF1eGwuY29t">里面可以看到来自qq.com<i class="fa fa-external-link-alt"></i></span>。这就可以放心，这封邮件至少不是伪造的。但是很可惜，这里签名用错了。</p>
-<pre><code>Received: from smtpbg15.qq.com (unknown [183.60.61.204])
-	by mx45 (Coremail) with SMTP id X8CowEB5TGDld7FRy8pfBQ--.918S2;
-	Fri, 07 Jun 2013 14:04:21 +0800 (CST)
-</code></pre>
-<p>虽然下面是qq域的DKIM签名，但是上面还是显示unknown， <span class="exturl" data-url="aHR0cDovL3huLS1ES0lNcXEtdnk3aXcxMWIwOWZidmNsOTZkaWE1NjQ1Y3R0b2M2NWUueG4tLWNvbXNtdHBiZzE1LWZ0MXJwNjhiaHpuaWs2Y2NhOTgxMmV5NDllLnFxLmNvbQ==">这是因为DKIM签名的域是qq.com但是发送的域是smtpbg15.qq.com<i class="fa fa-external-link-alt"></i></span></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s0907;</span><br><span class="line">	t=1370585061; bh=vXVivKNEwifo2iLclSc6hbMDASAhfzVUi+Zil5icxDU=;</span><br><span class="line">	h=X-QQ-STYLE:From:To:Subject:Message-ID:Mime-Version:Content-Type:</span><br><span class="line">	 Content-Transfer-Encoding;</span><br><span class="line">	b=Wy8ROvt1N4Z0L/+sVpRbP6Kw9zPPWFy70mdtYBjd48snQhmbV6g+4atAE83epDHNY</span><br><span class="line">	 rDw2m+sjY2yQScbkdHlvRLfpgI42uiHe2s1tDCzktKLMhOkKfoKVUuokYxy6E38</span><br><span class="line">X-QQ-STYLE: 1</span><br></pre></td></tr></table></figure>
-<p>又看了一下国外的邮件。这封是Apple的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Received: by 10.52.240.19 with SMTP id vw19csp6991vdc;</span><br><span class="line">        Thu, 19 Dec 2013 09:53:37 -0800 (PST)</span><br><span class="line">X-Received: by 10.182.199.70 with SMTP id ji6mr2349588obc.36.1387475616772;</span><br><span class="line">        Thu, 19 Dec 2013 09:53:36 -0800 (PST)</span><br><span class="line">Return-Path: &lt;n_i_bounces@insideapple.apple.com&gt;</span><br><span class="line">Received: from msbadger0406.apple.com (msbadger0406.apple.com. [17.254.6.147])</span><br><span class="line">        by mx.google.com with ESMTP id kv3si3864744obb.149.2013.12.19.09.53.36</span><br><span class="line">        for --;</span><br><span class="line">        Thu, 19 Dec 2013 09:53:36 -0800 (PST)</span><br><span class="line">Received-SPF: pass (google.com: domain of n_i_bounces@insideapple.apple.com designates 17.254.6.147 as permitted sender) client-ip=17.254.6.147;</span><br><span class="line">Authentication-Results: mx.google.com;</span><br><span class="line">       spf=pass (google.com: domain of n_i_bounces@insideapple.apple.com designates 17.254.6.147 as permitted sender) smtp.mail=n_i_bounces@insideapple.apple.com;</span><br><span class="line">       dkim=pass header.i=@insideapple.apple.com;</span><br><span class="line">       dmarc=pass (p=REJECT dis=NONE) header.from=insideapple.apple.com</span><br><span class="line">DKIM-Signature: v=1; a=rsa-sha1; d=insideapple.apple.com; s=insideapple2048; c=relaxed/simple;</span><br><span class="line">	q=dns/txt; i=@insideapple.apple.com; t=1387475613;</span><br><span class="line">	h=From:Subject:Date:To:MIME-Version:Content-Type;</span><br><span class="line">	bh=Bv+phsUVfuOBtsYL10tJhisQ4Wo=;</span><br><span class="line">	b=ZH+peisWOL02/c8ekXM3LGk1LQeRGXQecRnvRreYqL+neIvqQw/dZL8kzTxUC/mf</span><br><span class="line">	NMLqzVTil0qwoqnxSDzxNX4vRdqszeQsJRXZh2dvZQhJZ6hDeHc0Jh0AaWPQPN3Z</span><br><span class="line">	M1tRvtGkdek2VzH8sU7pAPT6lB+4SEFtHvBIFUi+aQ/yoqHGEfsSs9qwgK3iAHtl</span><br><span class="line">	1Sc+5GcTdebDUExWoA/qpc4JOGSi9qbBZUN5zsqncRHiiSHtW8qc+onJYR1EpGuQ</span><br><span class="line">	S4mOKFIozNP3r7YYt9GCP6gXKkcRnrAqeWUTExSx041B1lDY+hzNLCcvq881Jp8H</span><br><span class="line">	LaMhQIxfwT+OS6O4wopSIA==;</span><br></pre></td></tr></table></figure>
-<p>SPF， DKIM非常详细，并且最重要的是 DKIM签名的域就是发送域。所以有这样一句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Received: from msbadger0406.apple.com (msbadger0406.apple.com. [17.254.6.147])</span><br></pre></td></tr></table></figure>
-<p>这样的邮件是安心可以点击的邮件。各种unknown域的邮件，大部分是可以造假的。</p>
-<p>后来我又从其他邮箱中找到了各种来自豆瓣，知乎，三巨头 阿里，百度，QQ的邮件。所有的邮件中要么没有DKIM,要么DKIM的域和发送的域不一致。导致都是unknown的IP地址。这样的邮件大部分可以伪造，想想如果CSDN/支付宝/百度/腾讯，让你提交个身份证 Or 地址电话什么的。大概也会有人连想都不想直接点开链接，下载其中的附件。所以，国内的email环境实在是不安全。以后，看到CSDN发送过来的邮件，还是三思而后打开吧…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/19/17413169/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/19/17413169/" class="post-title-link" itemprop="url">HTTP/1.1 413 FULL Head</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-12-19 12:32:00" itemprop="dateCreated datePublished" datetime="2013-12-19T12:32:00+08:00">2013-12-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>920</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨天，server调用新浪的OpenAPI功能失效。出现的现象是：服务器上线时是可以正常使用的。但是隔一段时间就变得不可用。刚开始以为是socket连接过多或者socket等资源没有释放。后来查了一下socket连接发现不是这样子的. 下面是连接新浪服务器的tcp。发现只有两个。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ netstat -np | grep 123.125.29</span><br><span class="line"></span><br><span class="line">tcp        0      0 -- ::ffff:123.125.29.244:443   ESTABLISHED -                   </span><br><span class="line">tcp        0      0 -- ::ffff:123.125.29.244:443   ESTABLISHED -                   </span><br><span class="line">$ netstat -np | grep 180.149.135</span><br><span class="line">tcp       28      0 -- ::ffff:180.149.135.176:443  CLOSE_WAIT  -                   </span><br><span class="line">tcp       28      0 -- ::ffff:180.149.135.176:443  CLOSE_WAIT  -     </span><br></pre></td></tr></table></figure>
-<p>后来还看了HttpClient的源码和PoolingClientConnectionManager, 发现并不是这个引起的。另外给大家说个事情。使用Http Client+PoolingClientConnectionManager，然后再使用HttpGet和HttpPost的话，HttpGet和HttpPost是不需要release的.另外socket也不需要显示的关掉。唯一需要注意的是HttpResponse需要把Entity中的Stream流关掉。否则请求有可能被Hold住。详细的介绍见 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FydGljbGUvZGV0YWlscy84MTY2MDY3"> HttpClient 卡死 response为null .  <i class="fa fa-external-link-alt"></i></span> 如果你不是使用HttpClient+PoolingClientConnectionManager， 而是每次new出来的新HttpClient,那就需要关闭Socket，详细解决方法见 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FydGljbGUvZGV0YWlscy85MDIxNTQz"> JAVA的HttpClient问题：The server failed to respond with a valid HTTP response <i class="fa fa-external-link-alt"></i></span> 。但是上面都没有解决问题， 最后还是将HTTP的status code打印出来。发现是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 413 FULL head</span><br></pre></td></tr></table></figure>
-<p>这问题出在，有多个线程在往HTTP 请求中增加Header， 而且header一直没有清空。就导致了这个问题。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/18/17389287/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/18/17389287/" class="post-title-link" itemprop="url">Mysql分布式和分区limit Offset加速</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-12-18 08:45:00" itemprop="dateCreated datePublished" datetime="2013-12-18T08:45:00+08:00">2013-12-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>457</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前一段时间在写分页语句。单机的mysql一般使用:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>] limit [length] <span class="keyword">offset</span> [<span class="keyword">offset</span>]</span><br></pre></td></tr></table></figure>
-<p>这里的问题在于offset如果很大，那么意味着你要扫描整个表。当然如果offset很小，那这个速度还是相当快的。当然替换方案是使用where子句而不使用offset.</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>] <span class="keyword">where</span> <span class="keyword">column</span> <span class="operator">&gt;</span> [pre_column_value] limit [length]</span><br></pre></td></tr></table></figure>
-<p>然而对于使用主键做了Range分区，hash分区，或者使用了mysql搭建的分布式数据库。这里的问题在于分区的索引是局部的，而不是全局的。对于limit和offset操作不光要获取到更多的数据，而言看起来也不是很安全。所以建议还是使用对主键进行order by。SQL语句是这样:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>] <span class="keyword">where</span> key_column <span class="operator">&gt;</span> [pre_key_column_value] <span class="keyword">order</span> <span class="keyword">by</span> key_column limit [length]</span><br></pre></td></tr></table></figure>
-<p>这样才是最保险的.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/18/17389153/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/18/17389153/" class="post-title-link" itemprop="url">Mysql存储过程加速</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-12-18 08:31:00" itemprop="dateCreated datePublished" datetime="2013-12-18T08:31:00+08:00">2013-12-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>首先看一个存储过程，这个存储过程是为了构造数据使用的。当然贴出来的存储过程简化了一些不必要的表结构。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> modifyRootEntry()</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DECLARE</span> done <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="literal">FALSE</span>;</span><br><span class="line">  <span class="keyword">DECLARE</span> userId <span class="type">INT</span>;  </span><br><span class="line">  <span class="keyword">DECLARE</span> userIdIter <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> user_id <span class="keyword">from</span> entries;</span><br><span class="line">  <span class="keyword">OPEN</span> userIdIter;</span><br><span class="line"></span><br><span class="line">  read_loop: LOOP</span><br><span class="line">    <span class="keyword">FETCH</span> userIdIter <span class="keyword">INTO</span> userId;   </span><br><span class="line">    IF done <span class="keyword">THEN</span></span><br><span class="line">      LEAVE read_loop;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line">	<span class="keyword">INSERT</span> <span class="keyword">INTO</span> entries (id, name, user_id, parent_id) <span class="keyword">VALUES</span>(<span class="number">0</span>, <span class="string">&#x27;root_parent&#x27;</span>, userId, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">UPDATE</span> entries <span class="keyword">SET</span> parent_id<span class="operator">=</span><span class="number">0</span> <span class="keyword">where</span> user_id<span class="operator">=</span>userId <span class="keyword">AND</span> name<span class="operator">=</span><span class="string">&#x27;file_root&#x27;</span> <span class="keyword">AND</span> parent_id <span class="keyword">is</span> <span class="keyword">NULL</span>;</span><br><span class="line">  <span class="keyword">END</span> LOOP;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">CLOSE</span> userIdIter;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
-<p>这个存储过程运行了10分钟，好像仅插入了6w行记录。这个真是太慢了。首先一个问题，就是这里使用了隐式提交，所以这里需要写明transaction开始和commit.修改如下：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> modifyRootEntry()</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DECLARE</span> done <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="literal">FALSE</span>;</span><br><span class="line">  <span class="keyword">DECLARE</span> userId <span class="type">INT</span>;  </span><br><span class="line">  <span class="keyword">DECLARE</span> userIdIter <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> user_id <span class="keyword">from</span> entries;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">START</span> TRANSACTION; <span class="operator">/</span><span class="operator">/</span> here <span class="operator">!</span></span><br><span class="line">  <span class="keyword">OPEN</span> userIdIter;</span><br><span class="line">   	</span><br><span class="line">  read_loop: LOOP</span><br><span class="line">    <span class="keyword">FETCH</span> userIdIter <span class="keyword">INTO</span> userId;   </span><br><span class="line">    IF done <span class="keyword">THEN</span></span><br><span class="line">      LEAVE read_loop;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line">	<span class="keyword">INSERT</span> <span class="keyword">INTO</span> entries (id, name, user_id, parent_id) <span class="keyword">VALUES</span>(<span class="number">0</span>, <span class="string">&#x27;root_parent&#x27;</span>, userId, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">UPDATE</span> entries <span class="keyword">SET</span> parent_id<span class="operator">=</span><span class="number">0</span> <span class="keyword">where</span> user_id<span class="operator">=</span>userId <span class="keyword">AND</span> name<span class="operator">=</span><span class="string">&#x27;file_root&#x27;</span> <span class="keyword">AND</span> parent_id <span class="keyword">is</span> <span class="keyword">NULL</span>;</span><br><span class="line">  <span class="keyword">END</span> LOOP;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">CLOSE</span> userIdIter;</span><br><span class="line">  <span class="keyword">COMMIT</span>;<span class="operator">/</span><span class="operator">/</span> here <span class="operator">!</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
-<p>还有一个问题，就是</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> entries <span class="keyword">SET</span> parent_id<span class="operator">=</span><span class="number">0</span> <span class="keyword">where</span> user_id<span class="operator">=</span>userId <span class="keyword">AND</span> name<span class="operator">=</span><span class="string">&#x27;file_root&#x27;</span> <span class="keyword">AND</span> parent_id <span class="keyword">is</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
-<p>这句话应该放在LOOP的外面。因为每次执行的都一样。修改为：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> modifyRootEntry()</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DECLARE</span> done <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="literal">FALSE</span>;</span><br><span class="line">  <span class="keyword">DECLARE</span> userId <span class="type">INT</span>;  </span><br><span class="line">  <span class="keyword">DECLARE</span> userIdIter <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> user_id <span class="keyword">from</span> entries;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">START</span> TRANSACTION; <span class="operator">/</span><span class="operator">/</span> here <span class="operator">!</span></span><br><span class="line">  <span class="keyword">OPEN</span> userIdIter;</span><br><span class="line">   	</span><br><span class="line">  read_loop: LOOP</span><br><span class="line">    <span class="keyword">FETCH</span> userIdIter <span class="keyword">INTO</span> userId;   </span><br><span class="line">    IF done <span class="keyword">THEN</span></span><br><span class="line">      LEAVE read_loop;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line">	<span class="keyword">INSERT</span> <span class="keyword">INTO</span> entries (id, name, user_id, parent_id) <span class="keyword">VALUES</span>(<span class="number">0</span>, <span class="string">&#x27;root_parent&#x27;</span>, userId, <span class="number">0</span>);</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">END</span> LOOP;</span><br><span class="line">  <span class="keyword">UPDATE</span> entries <span class="keyword">SET</span> parent_id<span class="operator">=</span><span class="number">0</span> <span class="keyword">where</span> user_id<span class="operator">=</span>userId <span class="keyword">AND</span> name<span class="operator">=</span><span class="string">&#x27;file_root&#x27;</span> <span class="keyword">AND</span> parent_id <span class="keyword">is</span> <span class="keyword">NULL</span>; <span class="operator">/</span><span class="operator">/</span> here<span class="operator">!</span></span><br><span class="line">  <span class="keyword">CLOSE</span> userIdIter;</span><br><span class="line">  <span class="keyword">COMMIT</span>;<span class="operator">/</span><span class="operator">/</span> here <span class="operator">!</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
-<p>其实上面的语句仍然不够快，原因在于这个是一行行插入的。可以使用辅助表进行加速。从网上直接copy过来的。这里因为每次插入的是2^n个行，所以速度大大提高。辅助表的写法：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> pFastCreateNums (cnt <span class="type">INT</span> UNSIGNED)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">DECLARE</span> s <span class="type">INT</span> UNSIGNED <span class="keyword">DEFAULT</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> Nums;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> Nums <span class="keyword">SELECT</span> s;</span><br><span class="line">WHILE s<span class="operator">*</span><span class="number">2</span> <span class="operator">&lt;=</span> cnt DO</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> Nums <span class="keyword">SELECT</span> a<span class="operator">+</span>s <span class="keyword">FROM</span> Nums;</span><br><span class="line"><span class="keyword">SET</span> s <span class="operator">=</span> s<span class="operator">*</span><span class="number">2</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">END</span> WHILE;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>上面的是生成一个数字列。当然我们没有必要生成这样一个数字列，但是思想完全可以通用。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/17/17370121/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/17/17370121/" class="post-title-link" itemprop="url">使用Mysql遇到的问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-12-17 10:06:00" itemprop="dateCreated datePublished" datetime="2013-12-17T10:06:00+08:00">2013-12-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>844</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-key lock的事情防止幻读。但是如果你直接在事务中使用</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>];</span><br></pre></td></tr></table></figure>
-<p>这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>] <span class="keyword">for</span> <span class="keyword">update</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>] lock <span class="keyword">in</span> share mode;</span><br></pre></td></tr></table></figure>
-<p>以上两句都可以防止幻读。第二句要优于第一句，因为加的是读锁而不是写锁。</p>
-<p>另外介绍一下幻读：</p>
-<p>幻读就是当一个事务进行查询时没有发现该记录，或者没有发现该记录被更改。结果在正在插入该记录或者真正要改该记录时，发现这条记录已经被其他事务改过了。</p>
-<p>例如</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">事务<span class="number">1</span>， <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>];</span><br><span class="line"></span><br><span class="line">这时进行事务<span class="number">2</span>， <span class="keyword">insert</span> <span class="keyword">into</span> [<span class="keyword">table</span>] <span class="keyword">select</span> xx; <span class="keyword">commit</span>;  </span><br><span class="line">事务<span class="number">1</span> 再执行 <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>]; 这里是没有 事务<span class="number">2</span> 的数据的。</span><br><span class="line"></span><br><span class="line">这里只要事务<span class="number">1</span>再次执行 <span class="keyword">insert</span> <span class="keyword">into</span> [<span class="keyword">table</span>] <span class="keyword">select</span> xx; 这样就发现这个行已经存在了；这就是幻读。</span><br></pre></td></tr></table></figure>
-<p>2. 另外发现update的一个问题。如果使用事务， 首先select 数据然后再使用该数据进行update，有可能会有问题。一般使用 update [table] set col = col + value where …这种形式进行更新，比select col from [table]; 取到col然后再进行update [table] set col = 刚才select 出的col value + value; 这样更加正确，因为update自身可以加写锁。保证了不会幻读。</p>
-<p>3. 另外一个问题涉及到 limit. 例如 select * from [table] limit [len] offset [offset]; 如果这里offset比较小，那么这样做是可以的。如果这里offset很大，那么这样做类似于扫表。这里需要使用where子句来加速。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/15/17332801/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/15/17332801/" class="post-title-link" itemprop="url">2013 PyCon总结</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-12-15 15:10:00" itemprop="dateCreated datePublished" datetime="2013-12-15T15:10:00+08:00">2013-12-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -993,51 +700,64 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>昨天参加一下2013<br />
-PyCon。原本以为是python的小规模交流聚会。结果是GDG赞助的布道会。感觉起来还是交流太少，结识的人也少，只是听取思路和知识点。一句话：太耗时间。<br />
-首先介绍了一个叫做Leo的项目。这个项目看起来使用的Python的自完备IDE。即是开发Python的，也是用Python开发的。所有的代码都可以集成到Le<br />
-o上面。听起来不错。只是不知道开发效率怎么样？</p>
-<p>然后是豆瓣开发了一个和Google App Engine很像的东西。叫做DAE。只能运行Python的APP。这样做的好处是方便部署，减少运维团队。豆瓣只有<br />
-4个SA。这个东西想想贵司也是做过的。只是正规的项目都难以迁移到那个上面，所以现在沦为了静态页面和简单website的聚集地。看起来应该豆瓣强迫所有的项目都<br />
-移植到那个上面吧。豆瓣的service会达到5K qps.这个service水平，听起来比词典要低好多好多呀…搜索了一下，豆瓣过去使用的是github的<br />
-企业版，看起来这两年估计觉得缴费太多才使用了gitlab自己搞了一套？我觉得应该不是豆瓣自己用python写了一套同样的gitlab吧？DAE这个系统开发了<br />
-两年，现在还是私有的。当然不知道他们用了多少个人做这个开发。这个DAE有一个不错的东西功能：灰度上线。不过对于基本上都是website的网站，可能这样做灰度<br />
-上线切一下nginx就好了。想想如果有多个端，怎么做灰度上线呢？特别是发布各个端APP的平台都是第三方的。这个就更难做了。DAE这个还有几点是可以借鉴的。第<br />
-一是内部的服务使用thrift,外部的服务使用HTTP。二是内部使用的UDP socket而不是TCP socket（这里…不知道对错）。</p>
-<p>然后是Uliweb 一款python的web框架，现在的版本是0.9+,<br />
-看来在作者心目中仍然没有到1.0…我觉得这样的产品还是作者自己先玩玩。等升到1.0，我等再拿来看看。其不错的特点就是可以将css和JS压缩打包。</p>
-<p>下面是Buildout，类似maven的一款依赖解决打包软件。为什么不用pip,作者说因为pip只能下载stable版本…自己查了一下pip的文档。自从<br />
-1.4版本后，pip就支持pre-release version和devlopment version. 下面是原文：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Pre-release Versions</span><br><span class="line"></span><br><span class="line">Starting with v1.4, pip will only install stable versions as specified by PEP426 by default. If a version cannot be parsed as a compliant PEP426 version then it is assumed to be a pre-release.</span><br><span class="line"></span><br><span class="line">If a Requirement specifier includes a pre-release or development version (e.g. &gt;=0.0.dev0) then pip will allow pre-release and development versions for that requirement. This does not include the != flag.</span><br><span class="line"></span><br><span class="line">The pip install command also supports a –pre flag that will enable installing pre-releases and development releases.</span><br></pre></td></tr></table></figure>
-<p>所以尚不清楚Buildout的作者是否又在造轮子。<br />
-然后演讲的是python的玄机，除了deep<br />
-copy经常遇到。其他的好像都没有碰到过…要么是自己太遵循c/java的规范了，要么是用python的编程年头还太少。</p>
-<p>之后上午的演讲就全部结束了。结束后去自动化所吃了个非常难吃的饭。我头一次把各种肉剩下，而只吃了米饭。</p>
-<p>下午演讲继续。去哪儿运维人员用python+openstack + flask+postgreSQL+extJS+nginx做了一个后台的运维系统。主要是为<br />
-了加入新的设备，程序的部署和发布。这个系统看起来相当不错。最主要的是这个系统把整个发布流程简化，只需要运维人员审批同意，就可以自动上线。管理机器也很方便。我<br />
-觉得运维到那家公司应该很轻松。我想如果把整个文档需求设计=&gt;开发=&gt;代码评审=&gt;测试环境部署=&gt;测试=&gt;线上部署/发布<br />
-流程整个都自动化的去做。这个公司的人都会很轻松。</p>
-<p>下面是python + Hadoop,对于Hadoop的优化，讲到主要看三个东西：tcp_mem, socket stat,<br />
-tcp_max_orphans。另外他们把整个计算模式分为三个：pig, cascading, streaming.其中pig就是使用SQL-<br />
-like的语言来执行Map-reducing操作的。cascading就是Map-Reduce操作JAVA库和API。这里应该是某些难于用SQL-<br />
-like语句写的，就用编程的方式实现。而streaming是使用单独的脚步和命令作为Map-<br />
-Reduce的输入的，所以这里应该是对于需要快速实现，而且又很少需要维护的应用建立起来的（例如运营人员的特殊要求）。</p>
-<p>另外也介绍一下Seafile这个开源项目。该项目是企业云存储云盘，为文档为中心的协作平台。可以聊天可以写wiki等。但是我唯一感觉到的不足之处在于文件存储于<br />
-S3/swift/ceph之上。觉得如果存储在server搭建的本地磁盘或者SAN/NAS上更易于现在的企业使用。另外还有一个问题，seafile的所有数据<br />
-都是加密的形式传入到server。我觉得至少分享给团队的文件不应该使用个人的密钥进行加密，或者在企业内部分享的文档不应该加密。一旦某人离职，他的文档就要被其<br />
-他人员接手，否则那份文档就变得不可控了。这样做很安全，但是很不方便。另外Seafile将用户的密钥加密中间密钥，然后使用中间密钥对各个文档进行加密，用户自己<br />
-的密钥是不传给服务器的，这样解决了改密码，所有文件需要重新加密的问题。这里仍然有些问题。一旦用户忘记密码，他的所有文件都拿不回来了。另外一个问题，如果用户删<br />
-除了自己的本地数据包括中间密钥。他如何重新生成中间密钥。如果使用用户id+特殊字符做的可重复生成的中间密钥，那么一旦算法公布，这个很容易被破解。如果是随机密<br />
-钥或者不可以重复生成的密钥，那就意味着数据一定会丢失，或者有运维人员介入。所以细细想想都不是可靠的协议/算法。<br />
-在这个会里，除了有这些总结外。还有非技术的总结：</p>
-<p>1.    ppt最好不要使用黑色背景。虽然这是脑残MAC粉的最爱。因为你们很喜爱，导致台下各位看不清，这样就不对了。</p>
-<p>2.    如果脑残到一定要用黑色背景，请一定使用白色的文字（而不是其他颜色的文字）。</p>
-<p>3.    演讲一定要兴趣点，如果开发出一款很像造轮子的应用/产品/框架，请简单的定义和比较你的应用/产品/框架（最好两三页PPT）。如果两三页PPT讲不完<br />
-，这说明这个东西太复杂了。如果还凑不齐一页，那就忽略区别吧。用实际的例子说明更好。枯燥的文字，看得大家都很想睡觉。</p>
-<p>4.    如果ppt中copy了命令行、或者把命令行截图了。那么背景也不要是黑色。如果是，请把字体都变成白色。</p>
-<p>5.    演讲中尽量用图而不是用文字。</p>
-<p>6.    演讲一定要对着台下的听众。如果你觉得背对着听众演讲更为出色的话，也请不要挡住ppt的大屏幕。<br />
-7.    我个人觉得手工上去敲代码，给听众演示。还不如做一个视频。做视频更为繁琐。而现场敲更容易出错。</p>
+          <p>我应该怎么说呢？AWS被AWS的市场部害惨了。</p>
+<p>这次活动是AWS的市场人员组织的吧。说出来是谁组织的吧。说出来，我们大家保证不打死他/她。</p>
+<p>开场气氛不错。但是为什么这么口渴。渴的我到处找水喝。我没有亲见AWS兑换礼品处的争吵。只是听说那块快打起来了。像码农这样温和的物种竟然也要打人，这组织的真不<br />
+错。另外为什么需要网上报名，网上报名也就罢了，还给个编号。给我打电话的人员说没有编号进不去，没编号也不让去。那，为什么还开设现场报名！另外下午那动手课排了好<br />
+长好长的队伍。竟然一节课听完要全部清场，还要出去重新排队。你们在网上报名的地方限死就好了呀。其实这些课程只要在网上公开可用，pdf可以下载就好了。为啥一个普<br />
+及的课程，还要代币。 我实在想不通。我也想不通AWS这个策略是什么. 本来就是个API文档教程，还收个费。那课程里面都是基本的API文档介绍。</p>
+<p>另外那课程响应速度极慢，我很难想象AWS基础服务会快到哪里去。嗯。这课程难道不是搭在AWS服务上的吗？AWS这是自己在抽自己耳光吗？还是说程序写的烂和AWS<br />
+基础服务无关？反正动手训练课不是充满惊喜和愉悦。加上清场和排队以及糟糕的网速和网站响应速度，周围总是充斥着:“**CK, 网页又打不开”…</p>
+<p>只有一点比云计算大会稍好些：就是中午的饭能吃饱。</p>
+<p>好吧。吐槽了这么久。“**CK”了无数，现在开始写正文：</p>
+<p>开场，胖胖的CTO做了各种讲，各种赞。然后引用glu和其他应用做了说节约成本。其实为啥大家用你的服务，还不就是因为省力省钱。很明显的原因。但是这些公司有一个<br />
+共同点：数据是隐私无关，或者需要特殊专业知识才能研读。因为除非那个黑客是跨专业的。否则数据对他来说基本上看不懂的。即使是基因这么隐秘的数据。黑客看不懂的话，<br />
+也完全没有意义。某副总裁说可以根据某人基因研发出来特殊病毒。嗯，细细想来也不对劲。因为制造病毒杀人成本太高，而且副作用也很大。这特殊病毒还要在其他人身上做试<br />
+验没有问题以证明其特殊性？</p>
+<p>好吧，不八卦了。真正开始写正文：</p>
+<p>AWS 的确给中小创业公司带来了福音。因为中小公司的新项目不知道效果好不好。可能开发了两个月，推一下市场。看看效果，行就继续，不行就换方向。如果走正常的采购<br />
+机器，部署机房的流程。那不知道拖了几个星期了。所以对于中小公司来说，快是重要的策略。因为对于已经发展了多年的应用来说，背了很多包袱和假设，根本快不起来。想清<br />
+楚方向的快是胜利，想不清楚的快是找死。对于中小公司来说，即使是找死最好代价也小一些。所以云计算平台是最好的选择。AWS, 腾讯，京东，阿里几家云计算的来说。<br />
+AWS又可以带点国际化的梦想。如果定价和腾讯/京东/百度/阿里基本持平。我觉得AWS一家独大不是梦。当然如果AWS能解决将被墙的国际节点限定到小范围内，并且<br />
+国际上的CDN再给力些。我觉得国内几家云计算公司连粥都分不到。嗯，应该说到那时，国内的互联网公司连粥都喝不到了。（所以说墙还是好的，养活了大量的国内的互联网<br />
+人士。）</p>
+<p>AWS的基础组件的确比较齐全。M/R, search, mq, db 等等。基本上对于一般的互联网应用来说也就足够了。</p>
+<p>看了一下AWS的组件：</p>
+<p>EC2 , 这个是弹性计算云(Elastic Compute Cloud)。是最核心的部分。没有这东西，基本上就啥也不能玩了。<br />
+S3, Simple Store Service.<br />
+简单存储服务。我当年研究的时候，觉得这个是个玩具。现在也是这么认为的。相比于RDB,这个简单太多了。这个对于某些应用来说就够了。例如key-value,<br />
+特别是value极大的情况。例如图片，视频，音频服务等。 这个是每个AZ上部署一份。找三个AZ分别部署。<br />
+AET（Amazon Elastic Transcoder） 媒体转码用的。这让我想到百度云的 流畅/原文 模式。<br />
+M/R (Map, Reduce) MR计算 kv 这种关系的还是很给力的。想想因为kv这种很符合现在的互联网场景。数据不断增长，刷新和重置。建立复杂索引的<br />
+速度跟不上数据变更的速度。另外一方面，数据经过简单筛选就可以变成真正有用的数据。所以kv这种模型才大行其道。而与KV相符合的MR才是有用的。<br />
+Kinesis 这个和spark是类似的。咋说呢？就是计算当前固定small时间段比较给力的工具。你可以认为是[curr-fix_interval,<br />
+curr] 这个区间的数据运算。<br />
+RDS  (relation Database service)<br />
+听起来是好东西。所有的代码都不需要变化，就可以平滑的迁入云端。不过你的应用是使用mysql, postgreSQL, 或者oracle。看起来是mysql<br />
+Wapper, postgreSQL  wapper, and Oralce  Wapper。 不过很可惜，我们的核心应用这几种数据库都没有用到。<br />
+Analytics（这个好像单独为mobile而生的）。这东西看起来应该是App Annie的竞争对手。和我们Google Analyzer,<br />
+JiaThis, 百度分析啥的基本无太多差别。<br />
+Zocalo 企业存储和共享服务。这个如果在做强大一些，就是我们的竞争对手了。不过现在看来功能还比较简单。<br />
+ElastiCache (Elastic 这里的c略写了）这个是memcache/redis wapper.<br />
+Dynamo DB 这个东西是好东西，而且是Amazon的原创。Cassandra是抄袭者。外面一般都用CS.  但是CS是免费的。这个是付费的。<br />
+CloudSearch 这个也是好东西。不过现在是否支持中文，我没有细看，最近才支持日文，另外说支持34种语言。不过我觉得中文现在可能是不支持的。（2014<br />
+-12-12）。另外这个没有在中国region中部署。<br />
+SWF(simple workflow service) 我记得我有一篇论文是关于workflow的. 知道设计模式中的 Chain Of<br />
+responsebility吧？ 这个基本上可以类比。<br />
+RedShift  这个是用于数据仓库的。看起来不错。最大数据量能达到 16TB*100.<br />
+嗯。所以这东西也只能用于中小公司。因为公司再大些，数据量再大一下，自己建立数据中心其实更省钱。<br />
+Code Pipeline/commit/deploy  这个就是提交代码=&gt; merge=&gt; 发布自动化的工具。<br />
+Lambda  基于事件驱动的计算服务。 从底层看，依旧是消息流。不过可能编程上会有改进。<br />
+Cognito 用户身份和数据同步服务。 sso(single sign on) 知道吧。那就不多说了，就是这个服务。<br />
+再说说AZ（avaliable zone）, datacentor, region之间的关系。 AZ 是由一个或者一组datacentor组成。 多个AZ+<br />
+transit构成了region. 而不同的AZ说明这两个AZ中的server相聚甚远，可以达到容灾的目的。<br />
+在同一个datacentor中的server一般不超过8w. 如果超了一般会再建一个datacentor. Why?</p>
+<p>AZ之间的传输延迟一般为2ms, 通常小于1ms. 峰值25Tbps.<br />
+对于实例不停变换ip的问题，AWS使用ELB(elastic load balance) 方案进行解决。听起来好像起了一堆nginx.<br />
+最后说一句：<br />
+AWS免费套餐不适用于AWS中国（北京）区域。具体适用地区请参见本页最后的说明。<br />
+这一句话令我非常不爽。因为除了中国区，其他地区都可以免费使用一段时间。这让我想到了植物大战僵尸这款游戏。有异曲同工之妙。<br />
+我一向反感这种所谓的差别对待。所以，最后再对AWS 说一句 “**CK”。</p>
 
       
     </div>
@@ -1064,7 +784,7 @@ S3/swift/ceph之上。觉得如果存储在server搭建的本地磁盘或者SAN/
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/13/17305955/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/11/20/41317419/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1082,7 +802,7 @@ S3/swift/ceph之上。觉得如果存储在server搭建的本地磁盘或者SAN/
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/13/17305955/" class="post-title-link" itemprop="url">SQRL Secure Quick Reliable Login 安全快速可靠登陆</a>
+          <a href="/2014/11/20/41317419/" class="post-title-link" itemprop="url">坑死人不偿命，Svn 迁移到 Git</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1093,14 +813,14 @@ S3/swift/ceph之上。觉得如果存储在server搭建的本地磁盘或者SAN/
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-12-13 18:44:00" itemprop="dateCreated datePublished" datetime="2013-12-13T18:44:00+08:00">2013-12-13</time>
+      <time title="Created: 2014-11-20 19:25:00" itemprop="dateCreated datePublished" datetime="2014-11-20T19:25:00+08:00">2014-11-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1128,38 +848,49 @@ S3/swift/ceph之上。觉得如果存储在server搭建的本地磁盘或者SAN/
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今天公司断网，身为一个互联网公司，断了一天的网。身为一个让网络变得更容易的公司，断了一天的网…这让我重新审视了所处的环境。</p>
-<p>不过还是利用断网时间，详细看了一下 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZ3JjLmNvbS9zcXJsL3NxcmwuaHRt"> 这个SQRL技术 <i class="fa fa-external-link-alt"></i></span> 。</p>
-<p>下面简单的介绍一下该技术：</p>
-<p>1. 主要使用物件作为认证的方式。现在它给的一系列技术，主要是QR(二维码)。其实最主要也就是二维码中的一个经常变化且在一定时间内唯一的Nonce串。另外我个人觉得作为扩展，现在的动态口令卡，各个银行发的电子令牌都可以归为这一类。不过SQRL使用的可以开源免费的算法，而且可以安装在任意电子设备中。所以这个是一个通用技术。比银行发的电子令牌这些更加通用。</p>
-<p>2. 只是了消除username/password这个东西。其他的安全问题基本上没有考虑。不过这个消除不知道到底是一种进步，还是一种退步。因为它仍旧使用了另外一套复杂的密钥（公钥私钥）代替了现有的username/password简单密钥。</p>
-<p>3. 仍然不能针对“人”这个实体做认证。偷走了手机，偷走了其他认证设备就意味着别人可以做为“你”登陆。</p>
-<p>4. 算法详情：<br />
-每个人都有一个唯一的256bit的ID作为自己的唯一ID。这个ID再所有可以进行SQRL认证的网站上都是统一的。另外自己的设备中有一个MasterKey(主钥)。这个Master Key可以用于生成各个网站的private-public key.<br />
-4. 1 首先设备读取到了信息(扫描二维码/获取到认证需要的url) 例如：<a href="https://chillyc.info/login?sdaf9203rfnlnvq0239sdf,%E5%85%B6%E4%B8%ADsdaf9203rfnlnvq0239sdf%E8%BF%99%E4%B8%AA%E6%98%AF%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90%E7%9A%84%E5%B9%B6%E4%B8%94%E5%9C%A8%E4%B8%80%E5%AE%9A%E6%97%B6%E9%97%B4%E5%86%85%E6%98%AF%E5%94%AF%E4%B8%80%E7%9A%84%E3%80%82">https://chillyc.info/login?sdaf9203rfnlnvq0239sdf,其中sdaf9203rfnlnvq0239sdf这个是随机生成的并且在一定时间内是唯一的。</a><br />
-4. 2 然后设备使用Master key 对 domain(<a href="http://chillyc.info">chillyc.info</a>) 进行HMAC 散列生成 只对 <a href="http://chillyc.info">chillyc.info</a> 有作用的private-public keys（其实这一步HMAC完全不需要，只需要生成一个不重复的private-public key然后再做一个site到private-public key的Map就好了。）</p>
-<p>4. 3 使用 private key对<a href="https://chillyc.info/login?sdaf9203rfnlnvq0239sdf%E8%BF%9B%E8%A1%8C%E5%8A%A0%E5%AF%86%EF%BC%8C%E7%84%B6%E5%90%8E%E5%8F%91%E9%80%81">https://chillyc.info/login?sdaf9203rfnlnvq0239sdf进行加密，然后发送</a> POST <a href="https://chillyc.info/sqrl">https://chillyc.info/sqrl</a>  并且带上public=[your publickey]和sign=[刚才用private key加密的串]</p>
-<p>4. 4 网站使用设备给的公钥对加密串进行解密。然后就取到了你的ID。这中间不需要任何 username/password.  现在讨论一下上面的算法是安全的吗？</p>
-<p>1.  整个过程使用了Https协议，可以有效的防止中间人攻击(如果客户端检查服务器证书的话)。</p>
-<p>2.  使用POST 发送数据，防止了某个中间代理截获url parameter，或者写入到log中。 例如网站使用的nginx,https证书也放在nginx上。然后…log中就出现了不该出现的东西。<br />
-3.  因为对每个网站(domain)都有不同的private-public key, 这样就将安全问题隔离在某个domain中，不会引起扩散。</p>
-<p>4.  OS 需要保护好 Master Key。如果使用我建议的做一个site到private-public key的Map，那么Master Key就不重要了。但是这需要保护的就是整个Map. 看起来只保护Master Key可能更简单一些。</p>
-<p>5.  另外SQRL 还希望，用户在扫描到二维码时，需要给用户展示一下domain,并且提示一下用户，是否对该domain进行授权。这样就防止了恶意的domain，或者假冒的domain。从算法协议层面，看起这个东西是安全的。可是仍有下面的一些不足：那个链接中有提及，我就直接照抄了。</p>
-<ul>
-<li>How are identities backed up and/or cloned to other devices?</li>
-<li>What about logging into a website displayed on the smartphone’s own browser?</li>
-<li>What if the smartphone that contains my identity is lost or stolen?</li>
-<li>What about password protecting logins on the phone?</li>
-<li>What if the phone is hacked?</li>
-<li>What about different people (and identities) sharing one phone?</li>
-<li>What about having multiple identities for the same website?</li>
-</ul>
-<p>对于第一个问题，我想解决的方案非常简单。可以对在手机生成一个二维码，用另外一个手机拍照，这样就能够获取到Master Key. 然后就能方便的生成site-public-private key.</p>
-<p>对于第二个问题，其实完全可以使用JS和native app通讯。或者 browser中带有SQRL client。</p>
-<p>对于第三个问题，这必须有一个SQRL的中心节点，该节点可以控制对已分配和已授权的Master Key进行回收和清除。不过这个问题又来了，该中心节点如何认证用户呢？看起来SQRL 这个东西不是完备的。</p>
-<p>其他的问题我觉得…都很难解决。有些并不是SQRL这个算法协议所能解决的。</p>
-<p>总结：<br />
-SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥机制代替了人工可记忆的密钥。让我想到：技术宅永远都不可能改变世界。他们只不过给世界一个美好简单的假象。当你仔细观察假象的时候，却发现竟然是由复杂丑陋的拼图拼接而成。该死的技术宅们…请研究一套能够真正能够认证“人”的技术。即使记忆可以移植，即使DNA可以复制，即使指纹可以盗用，即使所有的一切都可以复制。但是只有一样只会随着人本身发生变化，那就是每一个人在其生活环境、经历、岁月中造就的思维模式。你可以copy 我的文字，但是你写这个主题，不可能和我一字不差。不过这种变化的认证估计在我能看到的未来都不可能实现…</p>
+          <p>用git的人非常鄙视用svn的。因为要不断的开分支。而且也没有本地的分支这个概念。</p>
+<p>但是git 作为一项技术，是一定可以被svn替代的。当然替代的方法是否繁琐另当别论，但一定是能被替代。svn同样也能被git替代。大概所有的技术都是一样。都<br />
+能相互替代，只是你要为替代本身花费多长时间。</p>
+<p>git作为一种同步工具好用吗？其实真不好用。我梦想的工具一定是可以帮我自动完成merge过程的，永远不用开分支，永远不用告诉我链表头在哪里，以及怎么rese<br />
+t， 什么时候rebase, 什么时候打tag.<br />
+一个工具让使用者一直在思考，那一定不是好工具。我那锤子砸钉子的时候也没有先按几个按钮。当然svn也不是啥好工具。</p>
+<p>所以本文的观点是站在我们开发的场景中从一种不好用的工具向着另外一种不好用的工具迁移。如同砸钉子的时候，始终没有找到锤子，只找到了瑞士军刀和扳手。没办法还是要<br />
+砸。</p>
+<p>svn 迁移到git上遇到非常多的坑。大家要是开发任务紧急，就等不急的时候再迁移吧。</p>
+<p>这里也不在意你到底使用的gerrit还是gitlab还是github. 反正都不好迁移。</p>
+<p>一般使用的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone [某分支] --authors-file=users.txt --no-metadata -s （这里的分支是/trunk的上一层）</span><br></pre></td></tr></table></figure>
+<p>另外还可以是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r383874:HEAD  [你的分支] --authors-file=users.txt --no-metadata --trunk=trunk --tags=milestones --branches=branches </span><br></pre></td></tr></table></figure>
+<p>第二条命令是带上版本号的。也可以指定什么分支会变成git的trunk,什么分支会变成git的tag等等。<br />
+这里的users.txt内容是：<br />
+[svn的名字] = [git上的名字] &lt;[git上的email]&gt;<br />
+例如：<br />
+aa=bb<span class="exturl" data-url="bWFpbHRvOnl5QG9vLmNvbQ==">yy@oo.com<i class="fa fa-external-link-alt"></i></span><br />
+tt=ee<span class="exturl" data-url="bWFpbHRvOm1tQG9vLmNvbQ==">mm@oo.com<i class="fa fa-external-link-alt"></i></span><br />
+细数一下我自己遇到的问题：</p>
+<p>1. ** Can’t locate Term/ReadKey.pm in @INC ** 。 不要听网上说的装什么cpan,<br />
+也不要装什么其他的软件。直接执行 svn co [一个分支]。 输入以下自己的用户名密码，然后这个问题就不存在了。</p>
+<p>1.1 如果输入密码后，还是不行。 删除这个文件 $HOME/.subversion/auth/svn.simple/* 。 然后再 svn co , 再<br />
+git svn clone.<br />
+2. ** Do not be alarmed at the above message git-svn is just searching<br />
+aggressively for old history. ** 遇到这个提示…这个提示是吓唬你的.</p>
+<p>3. ** Author: xx not defined in users.txt file **<br />
+这是你的users.txt里面没有某些用户。可能这些用户过于久远，你忘记加入了。</p>
+<p>4.系统文件没有找到条目。会有下面的错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Initializing parent: refs/remotes/origin/trunk@22086</span><br><span class="line">W: Ignoring error from SVN, path probably does not exist: (160013): 文件系统没有条目: 找不到路径 “/xxx/ooo/101”: 额外错误:: File not found: revision 101, path &#x27;/txx/slsl/&#x27;</span><br><span class="line">W: Do not be alarmed at the above message git-svn is just searching aggressively for old history.</span><br><span class="line">This may take a while on large repositories</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这说有些 svn 版本信息太古老了。实在没有找到对应的diff啥的。也可能被svn管理员早就删除了。所以执行 git svn clone的时候最好带上<br />
+-r[A version]:[B version]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r20202:HEAD [某分支] --authors-file=users.txt --no-metadata -s</span><br></pre></td></tr></table></figure>
+<p>5. ** Use of uninitialized value $u in substitution (s///) ** 某些git<br />
+svn版本代码写的搓。只好手工改代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vi  /usr/lib/perl5/vendor_perl/5.14/Git/SVN.pm</span><br><span class="line">修改 </span><br><span class="line">        $u =~ s!^\Q$url\E(/|$)!! or die</span><br><span class="line">        &quot;$refname: &#x27;$url&#x27; not found in &#x27;$u&#x27;\n&quot;;</span><br><span class="line"></span><br><span class="line">改成：</span><br><span class="line">if(!$u) &#123;</span><br><span class="line">        $u = $pathname;</span><br><span class="line">&#125;else &#123;</span><br><span class="line">        $u =~ s!^\Q$url\E(/|$)!! or die</span><br><span class="line">        &quot;$refname: &#x27;$url&#x27; not found in &#x27;$u&#x27;\n&quot;;</span><br><span class="line">&#125;</span><br><span class="line">然后重新运行。</span><br></pre></td></tr></table></figure>
+<p>6. git svn clone 结束后， 执行一下 git branch -a, 发现没有一些之前开的分支。例如我们的milestone分支都叫<br />
+/milestoneXXX. 是之前git svn clone的命令的问题。 应该改为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r383874:HEAD  [你的分支] --authors-file=users.txt --no-metadata --trunk=trunk --tags=milestones --branches=branches </span><br></pre></td></tr></table></figure>
+<p>另外 git TAG和 svn开一个tag的性质不是很一致。 git tag依附于某一个commit. 而且是不变化的，从这个点开出来的所有分支，都从属于这<br />
+个TAG。svn的tag就是开了分支，可以从这个分支随意提交代码。从svn的这个TAG开出来的所有分支和这个svn TAG毛关系都没有。</p>
+<p>好吧。说了这么多，其实我们项目就像钉子，而svn/git都不是锤子。虽然是钉子，但是钉子数目很多。遇到以上坑的，看到这篇文章希望能很快的跳过坑去~~</p>
 
       
     </div>
@@ -1186,7 +917,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/11/17262125/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/11/14/41085013/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1204,7 +935,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/11/17262125/" class="post-title-link" itemprop="url">安全、垃圾注册、垃圾邮件</a>
+          <a href="/2014/11/14/41085013/" class="post-title-link" itemprop="url">CSA 第五届讨论会 畅想</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1215,14 +946,14 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-12-11 14:23:00" itemprop="dateCreated datePublished" datetime="2013-12-11T14:23:00+08:00">2013-12-11</time>
+      <time title="Created: 2014-11-14 23:02:00" itemprop="dateCreated datePublished" datetime="2014-11-14T23:02:00+08:00">2014-11-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1232,7 +963,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>543</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1250,11 +981,42 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>我每天做的事情都要考虑反垃圾的问题。这个问题实在让开发者和产品设计者头痛。产品的初衷是易于使用。结果因为该死的一小撮人，产品必须设计的难以使用。举个例子：我做了方便用户注册的产品。结果就被注册机利用了。举另外一个例子：做了一个方便用户发邮件的功能，结果就被垃圾邮件利用了。所以如果没有了这一小撮人，这软件设计和使用起来真的是很方便。</p>
-<p>不过人心是险恶的。所以必须小心堤防。所以才要反复的检测软件，是否留有漏洞，小心的填补每一个漏洞方为上策。这也是做安全的为什么会火。做桌面安全的为啥会火的原因。嗯，人心是险恶的。</p>
-<p>古人云：德者本也，财者末也。为什么古人要写这句话呢？因为古人所在的时空和今人所处的时空都是一样一样的。这和草履虫有趋光性是一样一样的。</p>
-<p>好吧，希望下次写出的服务没有被沦为垃圾的发源地，希望下次的服务没有XSS，希望下次的服务没有CSRF。</p>
-<p>关于安全问题，又想起来不久前给老爸申诉QQ号的事情。在一遍一遍外部申诉凑齐7龙珠一般凑齐7个人后，结果被QQ运营一次次驳回申诉。每次的原因都一样：请更多的人帮忙申诉…我总感觉QQ运营是和盗号的是一伙的。后来彻底对QQ外部运营失望了，走了腾讯内部申诉，很快就申诉成功了。当安全信息沦为盗号者的工具时，我觉得还是人更靠谱些。嗯不，是熟人更靠谱些。</p>
+          <p>参加了第五届CSA云安全联盟讨论会。人实在是太多，所以又没有找到座位。站了很久，弥补了长时间坐着办公的不足，一次补了回来。首先先介绍一下信用云，其实是分开的<br />
+：</p>
+<h2 id="信-用-云"><a class="markdownIt-Anchor" href="#信-用-云"></a> 信-用-云</h2>
+<h3 id="1-信-用-云"><a class="markdownIt-Anchor" href="#1-信-用-云"></a> 1. 信-用-云</h3>
+<p>什么是信用云。就是可信，可用，云服务。可信是安全的子集，可用就是可用性，云计算就是弹性可伸缩。</p>
+<h3 id="2-信"><a class="markdownIt-Anchor" href="#2-信"></a> 2. 信</h3>
+<p>徐博士&amp;胡老师。各自对信做了解释。胡老师讲：信基于两种，经验 or TCG（Trust Computing Group）。而徐博也讲：信是一种依赖本身可信的<br />
+源头，由此源头推倒出来一切可信。我个人觉得对于可信计算模型的构建其实分两种：一种是乐观可信，包括胡老师讲的规则，TCG, 也包括徐博讲的公式定理。还有一种就<br />
+是以不信为基础构建的悲观信任模型，认为一切都是不可信的。包括自己的程序、规则、以及动态生成的程序。对于第一种模型，人定下的规则权重最高。对于第二种模型，人定<br />
+的规则和机器生成的规则权重一致，甚至比生成的权重更低。</p>
+<p>第一种模型是可控模型，而第二种模型是不可控模型，如果第二种模型能拥有智能，那终将成为无法攻破的模型。</p>
+<h3 id="3-用"><a class="markdownIt-Anchor" href="#3-用"></a> 3. 用</h3>
+<p>在可用性方面，各个云都做的不错。除了所谓的云震，可靠性等方面都比较正常。但是性能上，以虚拟机和OpenStack为代表的虚拟os云永远比单机性能差。这是必然<br />
+的。虚拟层做多了，就会和用360软件一样，把高性能都消耗在了自己身上。</p>
+<h3 id="4-云"><a class="markdownIt-Anchor" href="#4-云"></a> 4. 云</h3>
+<p>所谓云，水平扩展性好。当然可能和弹性无关，因为只能延展不能收缩。例如已经有上千台虚拟机部署了大量的应用的云平台，现在请缩减1/3的实体机器。可能资源上也够用<br />
+，但是CPU等开销绝对猛增。收缩后可能部分的虚拟机就挂掉了，因为资源不可能真正的平均分配，也因为云平台不能真正的预测到各个云服务的动态特征。</p>
+<p>根据上面的几点，我给出我心中的信用云的几点特征：</p>
+<p>1. APP之间的隔离。App A不应影响App B。</p>
+<p>2. 一切都是不可信的。一切也都是不可靠的。</p>
+<p>3. 资源量远超需求量时可以做到平均分配。</p>
+<p>4. 云自身损耗性能的代价远小于创造价值的利润。</p>
+<p>5. 系统的可靠性由异构的节点+备份的数据+迁移的能力保障。<br />
+6. 有良好的扩展性和较长的生命力。</p>
+<h2 id="云email安全问题"><a class="markdownIt-Anchor" href="#云email安全问题"></a> 云email安全问题</h2>
+<p>email加密群发，群转发，云中检索和反垃圾<br />
+其实关键点就在于 信息可以被加密的双方完全查看外，还可以被授权的第三方<br />
+完全或者部分查看。对称密钥解决不了这个问题，非对称密钥也解决不了。另外还应该让非用户授权的第三方通过某种方式部分查看，例如反垃圾等。</p>
+<h2 id="云对抗"><a class="markdownIt-Anchor" href="#云对抗"></a> 云对抗</h2>
+<p>大潘说数据都是有结构的，这观点我很赞同。数据也是没有结构的，这观点我也赞成。因为以现在人类的观点划分数据，可能并不科学。是混沌的，还是泾渭分明的。如果利用数<br />
+据特性进行优化和改造，就应该承认数据是有结构的。如果抽象数据以包容一切，那就应该是没有结构的。</p>
+<p>大潘看上去大太多。嗯，叫老潘比较合适。不过可能老这个词很不中听。所以还是大比较合适。<br />
+ADosA 这是一个抗DDos的联盟。就是希望集群的攻击能够狙击到发起的地方。用集群对抗集群，才是解决之道。头一次听说这个联盟的存在。</p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>这次云安全联盟会议，大都是讲的云平台的安全问题。而我个人更加关注云中系统的安全问题。不算是对路，所以前几个对于云网络的防御和云层次的安全没有细细琢磨。不过扩<br />
+大一下知识面也总没有坏处。想扩大知识面的可以抽空看一下GB/T27000安全协议簇和CCM 矩阵。</p>
 
       
     </div>
@@ -1281,7 +1043,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/10/17242757/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/10/25/40453631/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1299,7 +1061,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/10/17242757/" class="post-title-link" itemprop="url">Resin下webapps路径无法删除问题(自动恢复)</a>
+          <a href="/2014/10/25/40453631/" class="post-title-link" itemprop="url">杭州小记 七 ——有道面试 第五天</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1310,14 +1072,14 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-12-10 13:17:00" itemprop="dateCreated datePublished" datetime="2013-12-10T13:17:00+08:00">2013-12-10</time>
+      <time title="Created: 2014-10-25 16:48:00" itemprop="dateCreated datePublished" datetime="2014-10-25T16:48:00+08:00">2014-10-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1327,7 +1089,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>306</span>
+      <span>176</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1345,10 +1107,14 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="这个问题的解决方法是"><a class="markdownIt-Anchor" href="#这个问题的解决方法是"></a> 这个问题的解决方法是：</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">停掉resin</span><br><span class="line"></span><br><span class="line">在conf/resin.xml中找到 </span><br><span class="line">      &lt;web-app id=&quot;/share&quot; root-directory=&quot;webapps/share&quot;/&gt;</span><br><span class="line">这样的节点</span><br><span class="line"></span><br><span class="line">然后删除节点，再删除webapps中对应的文件夹。</span><br><span class="line"></span><br><span class="line">重启 resin</span><br></pre></td></tr></table></figure>
-<p>导致这个文件夹，在重启之后，会自动复原的原因可能是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 启动 resin后，resin会将 war包解压，并将解压路径记录到resin.xml中。</span><br><span class="line">2. 一旦重启。resin的watchdog会查看 resin.xml然后根据 &lt;web-app&gt;节点从临时文件夹中将webapp复原。</span><br></pre></td></tr></table></figure>
+          <p>这是在杭州的最后一天。这篇文章应该很久之前就写的。嗯。现在补上。</p>
+<p>这天其实也没有什么好说的。最主要的是就赶火车。以及如何赶火车。</p>
+<p>为了买味千拉面，差点就没有赶上火车。</p>
+<p>晚上，有LP做的丰盛的晚餐等着。</p>
+<p>嗯。也就这么多</p>
+<p>其实也不是在写面试经历和过程，其实最注重的是吃。因为要解决温饱问题。</p>
+<p>另外面试也没有什么特殊的技巧，我摸索出来的最重要的技巧就是：靠运气。</p>
+<p>请点赞~</p>
 
       
     </div>
@@ -1375,7 +1141,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/09/17226617/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/10/16/40158767/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1393,7 +1159,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/12/09/17226617/" class="post-title-link" itemprop="url">写在周一</a>
+          <a href="/2014/10/16/40158767/" class="post-title-link" itemprop="url">有道面试 第四天 —— 杭州小记 六</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1404,14 +1170,14 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-12-09 17:55:00" itemprop="dateCreated datePublished" datetime="2013-12-09T17:55:00+08:00">2013-12-09</time>
+      <time title="Created: 2014-10-16 23:21:00" itemprop="dateCreated datePublished" datetime="2014-10-16T23:21:00+08:00">2014-10-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1421,7 +1187,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>564</span>
+      <span>456</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1439,14 +1205,19 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>新的一周开始，周一的工作结束。</p>
-<p>写了一堆testcase, 还是没有习惯先写testcase后写代码。主要原因在于Java编译器各种错误，实在讨厌。</p>
-<p>现在逐渐开始先写文档，后写接口，再写实现。发现这样效果不错。</p>
-<p>testcase中主要流程走通，然后测几个特定异常，心理上基本就认为到了可以提交的状态。</p>
-<p>今天在想，写的模块和之前的写的差不多。什么时候机器能替我思考一下，这样的代码能变成模版？</p>
-<p>今天面临分页和全部数据的取得。其实用户不会取所有的数据。希望获取所有的数据，基本上就是客户端喜欢偷懒。但是一定要坚持对所有可能获取多个值的东西做分页，虽然有时候自己也觉得这样做太荒谬。后来想想还是得这么做。因为客户端发布出去，除非强制升级，否则没有任何办法做到兼容和数据量上的扩展。真心觉得所有的客户端都应该强制升级来保证服务的一致性。否则server端真是太难维护了。</p>
-<p>我觉得公司，特别是总公司做事情应该有规划，做什么大的模块一定要统一。否则后期再做数据的统一，一是耽误时间，二是有可能数据会有丢失或者出错，三是有可能停服。现在想想，打通账号真是的非常繁琐，非常耗时，以及非常没有啥技术含量的事情。</p>
-<p>话说回来，single sign on 这鬼东西做了这么多年，最终还是没有出来一个统一的解决方案来支持账号的整合。那些work group到底是干什么吃的呀…</p>
+          <p>pd为了装修他的巢，今天一早就回京了。</p>
+<h3 id="觅食"><a class="markdownIt-Anchor" href="#觅食"></a> 觅食</h3>
+<p>今天的蛋黄花卷不错。挺好吃的。因为去的太早，也没有等到肉包子。不管什么加上腐乳都不错。这几天没有吃别的。还是一直在吃腐乳。</p>
+<h3 id="面试"><a class="markdownIt-Anchor" href="#面试"></a> 面试</h3>
+<p>今天面试的人比较少。大部分是二面。拒绝和pending的人数较多。不管是过的，被拒的，还是pending的。你们都应该在内心里觉得自己是最优秀的才对。底气和<br />
+自信是非常重要的。题目的对错也不是那么的重要，重要的是你通过面试学到了什么。</p>
+<p>不管面试者学到了什么。我反正学到了一些新的算法，一些新的出题模式。听了一些面试者讲述的项目，又为自己增加了点学术气息。这里学术派的居多，很少见代码写的漂亮的<br />
+，能写出注意各种细节的工程代码的人更加少之又少。</p>
+<h3 id="骑车夜行"><a class="markdownIt-Anchor" href="#骑车夜行"></a> 骑车夜行</h3>
+<p>在杭州骑车真不错。除了有些路段自行车道太窄，加上某些车主素质太低，骑得很不容易外，一切都还好。江边的风吹得呼呼的。。我现在脸上还有些残留着一些风。不过九溪一<br />
+般般，还是不如江面好看。今天骑行顺便还看了雷锋夕照。就是在二桥上不能停留，所以也没有拍下什么照片。</p>
+<h3 id="宵夜"><a class="markdownIt-Anchor" href="#宵夜"></a> 宵夜</h3>
+<p>今天还要继续吃吗？好吧，先看一下菜单。。。</p>
 
       
     </div>
@@ -1473,7 +1244,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/10/23/12978337/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/10/16/40127079/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1491,7 +1262,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/10/23/12978337/" class="post-title-link" itemprop="url">Java将对象注册到spring Context中</a>
+          <a href="/2014/10/16/40127079/" class="post-title-link" itemprop="url">有道面试 第三天 —— 杭州小记 五</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1502,14 +1273,14 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-10-23 20:55:00" itemprop="dateCreated datePublished" datetime="2013-10-23T20:55:00+08:00">2013-10-23</time>
+      <time title="Created: 2014-10-16 08:44:00" itemprop="dateCreated datePublished" datetime="2014-10-16T08:44:00+08:00">2014-10-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1519,222 +1290,7 @@ SO, 这东西看起来很美，但是它只不过用一套更加复杂的密钥�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>6.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>很多时候需要从spring中取出相应的对象，很多时候又需要将对象注入到spring context中。</p>
-<p>小卒碰到了这样的问题。在构件中有DAO. 其他构件需要复用这个DAO,但是连接配置各不相同，并且也有开发测试环境，milestone环境和线上环境的不同分别。需要这个DAO能够获取到其他模块/工程/构件的配置。下面不说废话了，直接上代码：</p>
-<p>首先是DAO.java 类。这个类用于load xml等信息构建出context.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DAO</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="type">DAO</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> DAO <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (DAO.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                    loadConfiguration();</span><br><span class="line">                    instance = <span class="keyword">new</span> <span class="title class_">DAO</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">DAO</span><span class="params">()</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">configBeanXML</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Class&lt;?&gt; loadClass = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setConfigBean</span><span class="params">(String xmlfilePath, Class&lt;?&gt; loadClazz)</span> &#123;</span><br><span class="line">        configBeanXML = xmlfilePath;</span><br><span class="line">        loadClass = loadClazz;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ApplicationContext ctx;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ApplicationContext <span class="title function_">getCtx</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ctx;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">loadConfiguration</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (configBeanXML != <span class="literal">null</span> &amp;&amp; loadClass != <span class="literal">null</span>) &#123;</span><br><span class="line">            LOG.info(<span class="string">&quot;load ddb configuration.&quot;</span>);</span><br><span class="line">            <span class="type">ApplicationContext</span> <span class="variable">parent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;<span class="string">&quot;raw.xml&quot;</span>&#125;, loadClass);</span><br><span class="line">            </span><br><span class="line">            <span class="type">BeanDefinitionRegistry</span> <span class="variable">reg</span> <span class="operator">=</span> (BeanDefinitionRegistry)parent.getAutowireCapableBeanFactory();</span><br><span class="line">            <span class="type">BeanDefinitionBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> BeanDefinitionBuilder.rootBeanDefinition(BoneCPDataSource.class);</span><br><span class="line">            builder.addPropertyValue(<span class="string">&quot;driverClass&quot;</span>, <span class="string">&quot;your drive class&quot;</span>);</span><br><span class="line"></span><br><span class="line">            </span><br><span class="line">            builder.addPropertyValue(<span class="string">&quot;jdbcUrl&quot;</span>, <span class="string">&quot;your url&quot;</span>);</span><br><span class="line">            </span><br><span class="line">            builder.addPropertyValue(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;username&quot;</span>);</span><br><span class="line">            builder.addPropertyValue(<span class="string">&quot;password&quot;</span>, <span class="string">&quot;password&quot;</span>);</span><br><span class="line">            </span><br><span class="line">            builder.setDestroyMethodName(<span class="string">&quot;close&quot;</span>);</span><br><span class="line">            reg.registerBeanDefinition(<span class="string">&quot;dataSource&quot;</span>, builder.getBeanDefinition());</span><br><span class="line">            ctx = <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;configBeanXML&#125;, loadClass, parent);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;database configuration can not be load.&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> JdbcTemplate <span class="title function_">getJDBCTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">DataSource</span> <span class="variable">datasource</span> <span class="operator">=</span> (DataSource) getCtx().getBean(<span class="string">&quot;dataSource&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JdbcTemplate</span>(datasource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的逻辑就是首先构造一个空的applicationContext.然后实例化DataSource后，将dataSource注册到applicationCo<br />
-ntext中。然后再用这个applicationContext作为父Context构造真正的ApplicationContext.</p>
-<p>那个raw.xml就是：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="attr">xmlns:aop</span>=<span class="string">&quot;http://www.springframework.org/schema/aop&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tx</span>=<span class="string">&quot;http://www.springframework.org/schema/tx&quot;</span> <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/context/spring-context-3.0.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- keep it empty --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>真正用于初始化各个transaction类的xml如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="attr">xmlns:aop</span>=<span class="string">&quot;http://www.springframework.org/schema/aop&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tx</span>=<span class="string">&quot;http://www.springframework.org/schema/tx&quot;</span> <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="string"><span class="tag">       http://www.springframework.org/schema/context/spring-context-3.0.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- this is the service object that we want to make transactional --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;transA&quot;</span> <span class="attr">class</span>=<span class="string">&quot;chillyc.info.dao.TransactionA&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- similarly, don&#x27;t forget the PlatformTransactionManager --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;txManager&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- the transactional advice (i.e. what &#x27;happens&#x27;; see the &lt;aop:advisor/&gt; </span></span><br><span class="line"><span class="comment">        bean below) --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tx:advice</span> <span class="attr">id</span>=<span class="string">&quot;txAdvice&quot;</span> <span class="attr">transaction-manager</span>=<span class="string">&quot;txManager&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- the transactional semantics... --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tx:attributes</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- all methods starting with &#x27;get&#x27; are read-only --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;get*&quot;</span> <span class="attr">read-only</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- other methods use the default transaction settings (see below) --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;*&quot;</span> <span class="attr">rollback-for</span>=<span class="string">&quot;java.lang.Exception&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tx:attributes</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tx:advice</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- ensure that the above transactional advice runs for any execution of </span></span><br><span class="line"><span class="comment">        an operation defined by the Transcation bean interface --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;transcationServiceOperation&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">expression</span>=<span class="string">&quot;execution(* chillyc.info.dao.transactions.*.*(..))&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:advisor</span> <span class="attr">advice-ref</span>=<span class="string">&quot;txAdvice&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;transcationServiceOperation&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;chillyc.info.dao&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- define the SqlSessionFactory --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;sqlSessionFactory&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;typeAliasesPackage&quot;</span> <span class="attr">value</span>=<span class="string">&quot;chillyc.info.dao.orm.data&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- scan for mappers and let them be autowired --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;basePackage&quot;</span> <span class="attr">value</span>=<span class="string">&quot;chillyc.info.dao.orm.mapper&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- other &lt;bean/&gt; definitions here --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这样之后，在初始化database-connection.xml时，各个bean就能获取到dataSource这个对象的引用了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/10/10/12529327/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/10/10/12529327/" class="post-title-link" itemprop="url">上海苏杭乌镇游记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-10-10 13:06:00" itemprop="dateCreated datePublished" datetime="2013-10-10T13:06:00+08:00">2013-10-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>一. 上海</p>
-<p>1.  到了上海，住姐姐家，省了不少食宿费，感谢姐姐姐夫。下午去了步行街，然后走到外滩，看了东方明珠。顺便看了情深深雨蒙蒙跳桥的外白渡桥，然后做了两元的渡船到了浦东，下渡船后可去陆家嘴坐地铁。<br />
-2.  第二天去了城隍庙，小吃真没什么好吃的。请京城来的土豪和湘川来的吃货绕道而行吧，不过金银珠宝店很多，可以逛逛，另外各种礼品店东西都很贵。<br />
-3.  从乌镇回来后，又去了上海的杜莎夫人蜡像馆。里面有几个人物相当逼真，但也有些人物怎么看都不对劲。150大洋感觉花得不怎么值，因为里面的蜡像没有几个。使劲拍照，半个小时也就看完了。</p>
-<p>二. 苏州</p>
-<p>1.  从上海出发去了苏州，去了拙政园。园林很精致，像一大盆盆景，处处能看出园主的用心。不过太多的精致却忘记了大道至简，大美至拙。看到最后反而感觉弄巧成拙了。从拙政园出来已经快下午五点，顺便去了一趟苏州博物馆。可能因为免费，排队的人非常多。我们运气好，只排了十五分钟。博物馆各种古时金银玉石青铜衣帛，看起来花纹很不错。一方面感慨当年工匠技艺高超，一方面又感觉像是假的。因为纹路太清晰了！看过大博物馆的就没必要在这里浪费时间了。晚上继续逛步行街，小吃仍旧没有什么特色。叫化鸡只卖10元，最便宜，但是没买不知味道如何。去了五方斋吃了顿，它的大菜做的味道不太好。在那里没点小吃，不过依然吃饱。又去了朱裕兴吃面。那面的确好吃但是面的配菜真不怎样，例如焖肉面，焖肉就是一大块大肥肉，肉也不好吃。</p>
-<p>2.  去苏州的第二天去了虎丘看了剑池。虎丘最好看的景就是斜塔和斜塔后的万家灯火，其他都感觉是渣渣。看着看着天公降雨。从百度上看到有人说可以直接走去七里山塘街，结果接近走了3小时，又没车搭。风雨中落汤鸡的感觉真是好极了。该死的导航指向了死胡同，所以城市旅游一定要买城市地图。什么xx导航都不管用，还不如当地搓麻将的大妈。进了山塘街就见大戏台唱戏，风雨中声音更显凌厉。山塘街上五方斋还是一贯的便宜，吃了顿饭暖暖身子。</p>
-<p>3.  在苏州看到的太湖珍珠倒是真的。不过圆润度不好，而且大小不一，觉得同一大小又圆又亮的真难找，珍珠项链贵就贵在这里，不过话说回来，人工养殖的河蚌也很便宜呀。在苏州看到的各种打银店感觉都像假的。因为一块银这样敲成镯子耗费的时间太长，而且做工也会很粗糙。银首饰灌注才是正途。so不要被表面所迷惑。话说这些天最好吃的就是kfc的甜筒，三元一个，魔都四元一个。另外苏州观前街有绝味鸭脖店，观前街附近还有哑巴生煎。特别推荐苏州的哑巴生煎，味道很好，比京城的生煎好吃太多，其他菜也都很便宜。</p>
-<p>三. 杭州</p>
-<p>1.  到了杭州住湖滨，很方便，中午在银泰绿茶吃了顿，点了四个大菜，竟然没有过百，太太太便宜了，差点撑死我。</p>
-<p>杭州插曲——观钱塘江大潮</p>
-<p>2.  吃完饭去了钱塘江边看潮，最好坐地铁到九堡，然后打车到大王庙路，下车问人在走3分钟就到钱塘边上，九堡很难打车，拼车最好。千万不要让司机找一个观潮点。这些出租车司机<em>非常狡猾</em>。如果不是我开着导航，他肯定又把我带回了西湖。土豪等有钱人可以去盐官观潮点或者老盐官。这两处在海宁（不在杭州），特别是老盐官，运气特别好的人会被请到龙宫，天天看潮。</p>
-<p>3.  晚上去了南宋御街的步行街（这几天看这种老街真是看到吐），千万不要去附近卖西湖醋鱼便宜的餐馆。我不知道西湖醋鱼是否就这味道，反正我是觉得非常非常的难吃。只吃了一口就再也没有动那个鱼，我觉得自己基本上什么菜都能吃第二口，但在<em>老杭州</em>吃的西湖醋鱼彻底改变了我对菜的期望，这才是真正的重口味菜。</p>
-<p>4.  在杭州的第二天去了西湖，周围都没有卖早餐的。饿到早上十点才找到知味观这家，梅菜饼和乌饭糕真好吃，其他吸取了西湖醋鱼的教训没敢尝鲜。</p>
-<p>5.  一定要在西湖外面买矿泉水，里面真是太贵了。真不行就在西泠印社那里买，那里三元。另外那个印社的牌坊很有特点，很像日本的鸟社。西湖十景真玩不过来，没处景都有纪念币卖，感觉集齐10个就可以召唤神龙。淘宝一定有卖，每个三十。白堤苏堤一定要逛，从白堤逛到苏堤结束，可以坐浏览车重回断桥；或者坐船到看三潭映月，然后再回到湖滨。晚上可以看音乐喷泉，每半小时一次，挺壮观的。不行还是太累了，租个自行车游应该轻松很多。话说西湖风景真的很不错：视野开阔污染小，风和日丽。</p>
-<p>6.  回来去了外婆家，下午四点排了长队，很像帝都五道口枣糕王。饭菜不错，东坡肉很好吃~有机花菜也不错，主要是饭菜非常便宜，下次来杭州准备点茶香鸡，另外也想去炉鱼那店看看。</p>
-<p>7.  灵隐飞来烧香拜佛的好地方，但是自然风景不怎么样，进山的票+灵隐寺共75了，划不来。从杭州可以坐地铁到客运中心在那里坐长途汽车去乌镇。车程1个半小时，半小时一趟车。</p>
-<p>四. 乌镇</p>
-<p>1.  乌镇在淘宝上订民宿，一定要说好住哪里。编号60+的民宿都挺偏的。不过如果你喜欢偏静，倒是可以住那里。非临水房一般300大洋。另外要贪便宜可以去住紫藤公寓，那个不是民宿，住那里也不能乘免费的游览车。如果行程就两天，坐浏览车的次数也不多，一天也就是两三次，每次5元。还是觉得没必要住景区内，除非特别热爱小镇水乡。</p>
-<p>2.  民宿早餐很丰盛，某些民宿有特色菜，不过没有吃到，最好吃的是两处卖梅菜扣肉烧饼的，物有所值，一定要买来吃。</p>
-<p>3.  乌镇东栅真没有什么好玩的，都是卖东西的。乌镇西栅早上早起基本没人，拍照非常好。乌镇的阴晴雾雨算是都被我碰到了。从乌镇东栅到火车站只有一公里左右，可以步行。从东栅到西栅有免费的班车，半小时一班。西栅到东栅也有免费班车，西栅住宿可以办理出入证。另外西栅还可以坐渡船逛逛。<br />
-4.  从乌镇可以坐长途汽车回到上海虹桥或者上海南，车程一个半小时。</p>
-<p>五.总结</p>
-<p>到景点如果想省钱就不要买东西，淘宝上什么都有，想心情舒畅就买东西，想生气就买了东西再去淘宝上查。其实只有立刻吃到的才是值得买的。各大景点如果不想看人的话就直接网上看看图片即可，想看人的话也没必要去各大景点，直接来帝都挤挤地铁就好了，2块钱，心旷神怡。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/09/11/11580521/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/09/11/11580521/" class="post-title-link" itemprop="url">Nginx Http Keep Alive 只能发100个请求！！</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-09-11 21:14:00" itemprop="dateCreated datePublished" datetime="2013-09-11T21:14:00+08:00">2013-09-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:48" itemprop="dateModified" datetime="2023-10-05T12:34:48+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>545</span>
+      <span>465</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1752,18 +1308,19 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>前几天在研究 http keepalive，使用pipeline的方式。结果发现server端只能接收到100个请求。必须断开连接后才能继续发送更多的请求。</p>
-<p>问题…问题出在哪里？</p>
-<p>1. 路由和中间节点</p>
-<p>2. nginx</p>
-<p>3. web服务器</p>
-<p>4. 程序写bug了</p>
-<p>第一个“中间路由和节点”很好排除。只要把程序放在和nginx 同一台机器上就可以了。</p>
-<p>第二个“nginx”,这个把nginx的log打开，看看收到多少个请求。<br />
-第三个&quot;web服务器&quot;，这个也好排除，只要把web服务器的log打开，打印一下就好了。</p>
-<p>第四个那就是使用client访问时，用wireshark抓个包。看看第100个请求和101个请求到底有什么不同。</p>
-<p>结果1，2，4都被排除了。只有nginx的问题。关键是没有做什么特殊设置。到底为什么只能收100个呢？扫了一下源代码，发现 keepalive_requests这个值被设置为了100，大于这个数值nginx就会发送RST包回来。和wireshark中看到的server端发送RST包的现象一致。然后改动了该值为1000，发现pipeline的请求就可以发送1000个了。</p>
-<p>另外这个100值，不知道是nginx看了tomcat,还是tomcat抄袭了nginx。反正这个设置出奇的诡异。</p>
+          <h3 id="再不觅食就要饿死星人"><a class="markdownIt-Anchor" href="#再不觅食就要饿死星人"></a> 再不觅食就要饿死星人</h3>
+<p>这种人要吃三顿饭。pd终于吃上了肉包，吃了三个，变身成PD. 如果吃包子能长点脑子，大概能变身成PHD.</p>
+<h3 id="面试"><a class="markdownIt-Anchor" href="#面试"></a> 面试</h3>
+<p>今天面的是求树中两个不同节点之间的距离。n多人没有写出来。或者写的太慢，或者写的太复杂，或者写的太丑。然后是环形dp，同样有一大波坑在此处。发现单纯设计题好<br />
+难刷人。以后是不是应该设计一个更好用设计题刷人呢？</p>
+<p>另外面试之前一定要吃口香糖。谢谢。</p>
+<p>pd每次给我薄荷糖，都给我1.5颗。 我严重怀疑，那半颗他自己嗑了。</p>
+<p>今天拒掉和pending了很多人。每天面试其实是按照笔试成绩是从上而下排的，看来笔试成绩有相当好的过滤效果。</p>
+<h3 id="晚宴"><a class="markdownIt-Anchor" href="#晚宴"></a> 晚宴</h3>
+<p>今天晚上是犒劳餐。去新白鹿吃的。走路大概10分钟左右。大家都说吃饱了。我也吃饱了，吃的很饱。但不知道为什么还是想回寝室吃个蛋，然后再去吃个宵夜。pd好说歹说<br />
+才一起去吃夜宵。然后pd越吃越饿，越饿越吃。终于吃成了PD.</p>
+<p>夜里pd搬运出一堆网易箱子。pd自嘲自己像干IT的…干IT的请揍他。不谢</p>
+<p>夜里我烧上一壶开水，看着pd的脸。发现毁容前和毁容后竟然一个样。脸上还少了很多褶子。开水效果真赞~</p>
 
       
     </div>
@@ -1790,7 +1347,7 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/09/05/11104803/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/10/16/40121447/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1808,7 +1365,7 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/09/05/11104803/" class="post-title-link" itemprop="url">安全问题二三事</a>
+          <a href="/2014/10/16/40121447/" class="post-title-link" itemprop="url">有道面试 第二天——杭州小记四</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1819,14 +1376,14 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2013-09-05 09:34:00" itemprop="dateCreated datePublished" datetime="2013-09-05T09:34:00+08:00">2013-09-05</time>
+      <time title="Created: 2014-10-16 00:11:00" itemprop="dateCreated datePublished" datetime="2014-10-16T00:11:00+08:00">2014-10-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:48" itemprop="dateModified" datetime="2023-10-05T12:34:48+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1836,7 +1393,7 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>815</span>
+      <span>498</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1854,422 +1411,20 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>最近开始关注安全问题。 同时也在关注由于关注了安全导致的性能问题。</p>
-<p>第一件事是 微信收藏。 详细的内容点击： <a href="http://chillyc.info/blog/2013/08/30/wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/"> 微信公众平台的安全问题。 </a>另外再原文的基础上补充几点：微信公众平台最不安全的地方就是它的内容是通过http方式传输的。只要能抓到包，内容都很容易知道。关键问题就是非常不容易抓到包。所以微信平台才不使用Https传输。而不使用https传输的第二个原因是因为 https ssl密钥交换协议很耗时。第三个原因，强求第三方内容供应商提供https支持的话，第三方供应商需要申请相应的域名证书，然后还需要配置，非常繁琐。所以微信客户端传输到微信服务器走的是https,而微信服务器到第三方服务器走的是http.</p>
-<p>第二件事是 https 传输时需要注意 连接重用和密钥重用。 http connection能开重用就重用吧。另外同时找到了windows 库中connection虽然重用，但是new request仍然不断的和server交换ssl密钥的问题。详见 <span class="exturl" data-url="aHR0cDovL2hpLmJhaWR1LmNvbS96enBwYWxsYXMvaXRlbS9hZDhkMzBjMzhmZmE5MjMxMDgzMWM2MDU="> 这篇blog（winInet对于https保持keep alive需要注意的地方）<i class="fa fa-external-link-alt"></i></span> 。大意就是HttpOpenRequest 这个函数中需要去掉INTERNET_FLAG_IGNORE_CERT_CN_INVALID这个 Flag，然后需要添加OnWinInetError代码。如果证书出错（ERROR_INTERNET_INVALID_CA），那么就重新试一次。这样就可以保证INTERNET_FLAG_KEEP_CONNECTION。</p>
-<p>第三件事是 https的请求中夹杂着http请求的问题。这个问题在FireFox 23.0.1中出现。其他各个浏览器都是成功的。详细原因在： <span class="exturl" data-url="aHR0cDovL3N1cGVyZmx5ODEuYmxvZy41MWN0by5jb20vNjMwMjMwMi8xMjg0Mzc2">火狐混合内容拦截 <i class="fa fa-external-link-alt"></i></span>。也就是说如果是https的页面，里面的任何请求都需要是Https的。否则请求是不能发送出去的。而在chrome下，显示的就是<strong>此网页包含不安全的内容</strong> 。该问题在IE10下面，会在最下面弹出一个小tab，问你是否继续。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/" class="post-title-link" itemprop="url">微信公众平台开发中的安全问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-08-30 05:37:00" itemprop="dateCreated datePublished" datetime="2013-08-30T05:37:00+08:00">2013-08-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:20:29" itemprop="dateModified" datetime="2023-10-05T23:20:29+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="0-我在开发中"><a class="markdownIt-Anchor" href="#0-我在开发中"></a> 0. 我在开发中</h2>
-<p>    近期一直在利用有道云笔记API在微信上开发一款应用。因为是服务器端与服务器端的交互。所以有很多安全问题值得考虑。</p>
-<h2 id="1-微信的认证"><a class="markdownIt-Anchor" href="#1-微信的认证"></a> 1. 微信的认证</h2>
-<p>    微信的认证很简单，标准的认证是这样子的：<br />
-<img src="http://mp.weixin.qq.com/wiki/images/9/90/Callbackprofile.jpg" alt="token 授权" /><br />
-    微信这种授权模式相当的山寨，如果只是单纯的靠这种token授权，服务器很容易被攻破。这里需要填写的url必须是使用80端口，而且url中也不能有很特殊的字符。不过token中可以有特殊字符。所以开发者需要尽量将自己的token设的复杂。微信首先认证连接时会将signature,echostr,nonce,timestamp这四个URL参数以GET请求的方式发送过来。数据则以POST请求的方式发送到同样的URL上，并且URL参数变为signature,echostr,nonce。nonce是和请求中的timestamp成对的。也就是说timestamp+nonce是唯一的。所以这里可以防止重放攻击。另外server与server通信之间,timestamp的单位是秒，一般误差也就是分钟级别的。这样可以从另外一个角度防止重放攻击。所以开发者应该在GET,POST请求中都加入这些参数的校验。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/08/28/10425267/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/08/28/10425267/" class="post-title-link" itemprop="url">Elf File OS ABI Invalid</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-08-28 08:14:00" itemprop="dateCreated datePublished" datetime="2013-08-28T08:14:00+08:00">2013-08-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:48" itemprop="dateModified" datetime="2023-10-05T12:34:48+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>205</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨天调用第三方库的JNI时发现如下问题：</p>
-<p>elf file OS ABI invalid</p>
-<p>问题出自ldd，先看一下ldd的版本号。使用： ldd --version</p>
-<p>这个问题是因为在ldd 为2.12的机器上编译。拿到ldd 为2.5的机器上去运行加载，然后就挂掉了。解决方法就是使用ldd 2.5的机器编译。</p>
-<p>JNI的问题一般出自OS不兼容，gcc版本，glibc版本（libc.so.6）,ldd版本(  <span class="exturl" data-url="aHR0cDovL2xkLXgueHguc28=">ld-x.xx.so<i class="fa fa-external-link-alt"></i></span>  )不一致。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/08/25/2013-08-25-zhi-qing-chun/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/08/25/2013-08-25-zhi-qing-chun/" class="post-title-link" itemprop="url">致青春</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-08-25 02:10:00" itemprop="dateCreated datePublished" datetime="2013-08-25T02:10:00+08:00">2013-08-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 11:25:46" itemprop="dateModified" datetime="2023-10-06T11:25:46+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/movie/" itemprop="url" rel="index"><span itemprop="name">movie</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>243</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>    昨日和老婆大人一起看了致青春这部电影。这个电影总体感觉挺不错的。而我个人的感觉是电影里郑微和老婆大人有几分相似。要说哪几分，应该是暴力的那几分。嗯…</p>
-<p>    昔日的同学也各有成绩。每个人或许都少了些过去的狂妄和稚嫩。但总有些值得记忆的往事。这或许就是导演希望告诉我们的。但是无论如何，青春不在，如何重来？所以感情的重新开始…就只能从青春的记忆和自己的臆想里继续了。</p>
-<p>    老婆大人说：如果不是赵薇导演的，这部影片应该是没有人去看的。而我认为：如果不是老婆大人打开这个电影，我是绝对不会看的。嗯，就是这样…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/08/20/10098769/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/08/20/10098769/" class="post-title-link" itemprop="url">Mvn Proxy</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-08-20 10:39:00" itemprop="dateCreated datePublished" datetime="2013-08-20T10:39:00+08:00">2013-08-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:48" itemprop="dateModified" datetime="2023-10-05T12:34:48+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>457</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>很多时候，Mvn中的repository会被墙掉。最简单的做法就是对mvn加入proxy.具体做法是：</p>
-<pre><code> &lt;proxy&gt;
-      &lt;active&gt;true&lt;/active&gt;
-      &lt;protocol&gt;http&lt;/protocol&gt;
-      &lt;host&gt;proxy.xxx.com&lt;/host&gt;
-      &lt;port&gt;8080&lt;/port&gt;
-      &lt;username&gt;yourname&lt;/username&gt;
-      &lt;password&gt;yourpassword&lt;/password&gt;
-      &lt;nonProxyHosts&gt;*.yourhost.com | chillyc.info &lt;/nonProxyHosts&gt;
-    &lt;/proxy&gt;
-</code></pre>
-<p>这样可以去掉mvn install中，request retry, request fail的问题。印象中<br />
-<span class="exturl" data-url="aHR0cDovL2RzdG92YWxsLm9yZy9tYXZlbjIvJUU4JUJGJTk5JUU0JUI4JUFBJUU1JUJBJTk0JUU4JUFGJUE1JUU2JTk4JUFGJUU4JUEyJUFCJUU1JUEyJTk5JUU2JThFJTg5JUU0JUJBJTg2">http://dstovall.org/maven2/这个应该是被墙掉了<i class="fa fa-external-link-alt"></i></span>.</p>
+          <h3 id="有道面试"><a class="markdownIt-Anchor" href="#有道面试"></a> 有道面试</h3>
+<h3 id="觅食"><a class="markdownIt-Anchor" href="#觅食"></a> 觅食</h3>
+<p>如同《饥荒》，觅食是最大的问题，解决了之后，才能解决更大的问题。顺便说，今天又没有吃上肉包，pd又捡回一条命。生怕像昨天一样，又没有午餐，所以早晨我偷偷藏了<br />
+一个鸡蛋带出食堂。</p>
+<h3 id="面试"><a class="markdownIt-Anchor" href="#面试"></a> 面试</h3>
+<p>今天考察的是什么，貌似是树,dp 以及优先队列。发现第一天用过一次的题目，第二天就不能继续用了。链表排序，K逆转啥的都不能出了。也可能是太简单导致的。大家的<br />
+学习能力都很强。真心赞。你们能把这点学习能力用到平时，我觉得也不会像现在这样答题如此困难。另外面了singleston，今天仍然没有人没写对。我觉得…杭<br />
+州的小朋友都没有好好的复习。c++和java的各种基本知识都没有怎么复习呀。</p>
+<p>想想就应该那自己当年的水平和这群家伙做判断。强的就过，弱的就拒。这样大概就不会迷茫了。</p>
+<p>今天吐槽都懒得吐了。总有面试者对问题进行重新诠释，设计题，总是在问我：是想这样设计？你是希望有这个东西？眼神里充满要一个确定答案的渴望。为什么非要面试官对该<br />
+设计中存在的问题回答是否。自己不应该处理一下这两种情况给面试官听一下，以显示自己思考全面吗？</p>
+<p>就先这样结束吧。</p>
+<p>在这样面下去，面试题都不知道该出什么了。</p>
+<p>今天懒得黑PM了。准备睡觉了。。。</p>
 
       
     </div>
@@ -2289,7 +1444,7 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

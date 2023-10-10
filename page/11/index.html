@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/03/02/2011-03-02-bigdata/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/27/8619554/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/03/02/2011-03-02-bigdata/" class="post-title-link" itemprop="url">笔试面试题集——大数据量处理</a>
+          <a href="/2013/02/27/8619554/" class="post-title-link" itemprop="url">笔试面试题 —— 天平称重与二进制</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,454 +243,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2011-03-02 00:00:00" itemprop="dateCreated datePublished" datetime="2011-03-02T00:00:00+08:00">2011-03-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:09:15" itemprop="dateModified" datetime="2023-10-05T23:09:15+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>6.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="big data process solution" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="big data process" />
-<meta name="views" content="294" />
-<meta name="_wp_old_slug" content="bigdat" />
-<div id="blog_article">
-<p>转自：<span class="exturl" data-url="aHR0cDovL2kueW9oby5jbi80NzMyNjAvbG9ndmlldy8xODE2NzMwLmh0bWw=">http://i.yoho.cn/473260/logview/1816730.html<i class="fa fa-external-link-alt"></i></span></p>
-<p>大数据量的问题是很多面试笔试中经常出现的问题，比如baidu google 腾讯 这样的一些涉及到海量数据的公司经常会问到。</p>
-<p>下面的方法是我对海量数据的处理方法进行了一个一般性的总结，当然这些方法可能并不能完全覆盖所有的问题，但是这样的一些方法也基本可以处理绝大多数遇到的问题。下面的一些问题基本直接来源于公司的面试笔试题目，方法不一定最优，如果你有更好的处理方法，欢迎与我讨论。</p>
-<p>1.Bloom filter</p>
-<p>适用范围：可以用来实现数据字典，进行数据的判重，或者集合求交集</p>
-<p>基本原理及要点：<br />
-对 于原理来说很简单，位数组+k个独立hash函数。将hash函数对应的值的位数组置1，查找时如果发现所有hash函数对应位都是1说明存在，很明显这 个过程并不保证查找的结果是100%正确的。同时也不支持删除一个已经插入的关键字，因为该关键字对应的位会牵动到其他的关键字。所以一个简单的改进就是  counting Bloom filter，用一个counter数组代替位数组，就可以支持删除了。</p>
-<p>还有一个比较重要的问题，如 何根据输入元素个数n，确定位数组m的大小及hash函数个数。当hash函数个数k=(ln2)<em>(m/n)时错误率最小。在错误率不大于E的情况 下，m至少要等于n</em>lg(1/E)才能表示任意n个元素的集合。但m还应该更大些，因为还要保证bit数组里至少一半为0，则m应 该&gt;=nlg(1/E)*lge 大概就是nlg(1/E)1.44倍(lg表示以2为底的对数)。</p>
-<p>举个例子我们假设错误率为0.01，则此时m应大概是n的13倍。这样k大概是8个。</p>
-<p>注意这里m与n的单位不同，m是bit为单位，而n则是以元素个数为单位(准确的说是不同元素的个数)。通常单个元素的长度都是有很多bit的。所以使用bloom filter内存上通常都是节省的。</p>
-<p>扩展：<br />
-Bloom  filter将集合中的元素映射到位数组中，用k（k为哈希函数个数）个映射位是否全1表示元素在不在这个集合中。Counting bloom  filter（CBF）将位数组中的每一位扩展为一个counter，从而支持了元素的删除操作。Spectral Bloom  Filter（SBF）将其与集合元素的出现次数关联。SBF采用counter中的最小值来近似表示元素的出现频率。</p>
-<p>问题实例：给你A,B两个文件，各存放50亿条URL，每条URL占用64字节，内存限制是4G，让你找出A,B文件共同的URL。如果是三个乃至n个文件呢？</p>
-<p>根 据这个问题我们来计算下内存的占用，4G=2^32大概是40亿*8大概是340亿，n=50亿，如果按出错率0.01算需要的大概是650亿个bit。 现在可用的是340亿，相差并不多，这样可能会使出错率上升些。另外如果这些urlip是一一对应的，就可以转换成ip，则大大简单了。</p>
-<p>2.Hashing</p>
-<p>适用范围：快速查找，删除的基本数据结构，通常需要总数据量可以放入内存</p>
-<p>基本原理及要点：<br />
-hash函数选择，针对字符串，整数，排列，具体相应的hash方法。<br />
-碰撞处理，一种是open hashing，也称为拉链法；另一种就是closed hashing，也称开地址法，opened addressing。</p>
-<p>扩展：<br />
-d-left  hashing中的d是多个的意思，我们先简化这个问题，看一看2-left hashing。2-left  hashing指的是将一个哈希表分成长度相等的两半，分别叫做T1和T2，给T1和T2分别配备一个哈希函数，h1和h2。在存储一个新的key时，同 时用两个哈希函数进行计算，得出两个地址h1[key]和h2[key]。这时需要检查T1中的h1[key]位置和T2中的h2[key]位置，哪一个 位置已经存储的（有碰撞的）key比较多，然后将新key存储在负载少的位置。如果两边一样多，比如两个位置都为空或者都存储了一个key，就把新key  存储在左边的T1子表中，2-left也由此而来。在查找一个key时，必须进行两次hash，同时查找两个位置。</p>
-<p>问题实例：<br />
-1).海量日志数据，提取出某日访问百度次数最多的那个IP。</p>
-<p>IP的数目还是有限的，最多2^32个，所以可以考虑使用hash将ip直接存入内存，然后进行统计。</p>
-<p>3.bit-map</p>
-<p>适用范围：可进行数据的快速查找，判重，删除，一般来说数据范围是int的10倍以下</p>
-<p>基本原理及要点：使用bit数组来表示某些元素是否存在，比如8位电话号码</p>
-<p>扩展：bloom filter可以看做是对bit-map的扩展</p>
-<p>问题实例：</p>
-<p>1)已知某个文件内包含一些电话号码，每个号码为8位数字，统计不同号码的个数。</p>
-<p>8位最多99 999 999，大概需要99m个bit，大概10几m字节的内存即可。</p>
-<p>2)2.5亿个整数中找出不重复的整数的个数，内存空间不足以容纳这2.5亿个整数。</p>
-<p>将bit-map扩展一下，用2bit表示一个数即可，0表示未出现，1表示出现一次，2表示出现2次及以上。或者我们不用2bit来进行表示，我们用两个bit-map即可模拟实现这个2bit-map。</p>
-<p>4.堆</p>
-<p>适用范围：海量数据前n大，并且n比较小，堆可以放入内存</p>
-<p>基 本原理及要点：最大堆求前n小，最小堆求前n大。方法，比如求前n小，我们比较当前元素与最大堆里的最大元素，如果它小于最大元素，则应该替换那个最大元 素。这样最后得到的n个元素就是最小的n个。适合大数据量，求前n小，n的大小比较小的情况，这样可以扫描一遍即可得到所有的前n元素，效率很高。</p>
-<p>扩展：双堆，一个最大堆与一个最小堆结合，可以用来维护中位数。</p>
-<p>问题实例：<br />
-1)100w个数中找最大的前100个数。</p>
-<p>用一个100个元素大小的最小堆即可。</p>
-<p>5.双层桶划分</p>
-<p>适用范围：第k大，中位数，不重复或重复的数字</p>
-<p>基本原理及要点：因为元素范围很大，不能利用直接寻址表，所以通过多次划分，逐步确定范围，然后最后在一个可以接受的范围内进行。可以通过多次缩小，双层只是一个例子。</p>
-<p>扩展：</p>
-<p>问题实例：<br />
-1).2.5亿个整数中找出不重复的整数的个数，内存空间不足以容纳这2.5亿个整数。</p>
-<p>有点像鸽巢原理，整数个数为2<sup>32,也就是，我们可以将这2</sup>32个数，划分为2^8个区域(比如用单个文件代表一个区域)，然后将数据分离到不同的区域，然后不同的区域在利用bitmap就可以直接解决了。也就是说只要有足够的磁盘空间，就可以很方便的解决。</p>
-<p>2).5亿个int找它们的中位数。</p>
-<p>这个例子比上面那个更明显。首先我们将int划分为2^16个区域，然后读取数据统计落到各个区域里的数的个数，之后我们根据统计结果就可以判断中位数落到那个区域，同时知道这个区域中的第几大数刚好是中位数。然后第二次扫描我们只统计落在这个区域中的那些数就可以了。</p>
-<p>实 际上，如果不是int是int64，我们可以经过3次这样的划分即可降低到可以接受的程度。即可以先将int64分成2^24个区域，然后确定区域的第几 大数，在将该区域分成2<sup>20个子区域，然后确定是子区域的第几大数，然后子区域里的数的个数只有2</sup>20，就可以直接利用direct addr  table进行统计了。</p>
-<p>6.数据库索引</p>
-<p>适用范围：大数据量的增删改查</p>
-<p>基本原理及要点：利用数据的设计实现方法，对海量数据的增删改查进行处理。<br />
-扩展：<br />
-问题实例：</p>
-<p>7.倒排索引(Inverted index)</p>
-<p>适用范围：搜索引擎，关键字查询</p>
-<p>基本原理及要点：为何叫倒排索引？一种索引方法，被用来存储在全文搜索下某个单词在一个文档或者一组文档中的存储位置的映射。</p>
-<p>以英文为例，下面是要被索引的文本：<br />
-T0 = “it is what it is”<br />
-T1 = “what is it”<br />
-T2 = “it is a banana”<br />
-我们就能得到下面的反向文件索引：<br />
-“a”:      {2}<br />
-“banana”: {2}<br />
-“is”:     {0, 1, 2}<br />
-“it”:     {0, 1, 2}<br />
-“what”:   {0, 1}<br />
-检索的条件&quot;what&quot;, “is” 和 “it” 将对应集合的交集。</p>
-<p>正 向索引开发出来用来存储每个文档的单词的列表。正向索引的查询往往满足每个文档有序频繁的全文查询和每个单词在校验文档中的验证这样的查询。在正向索引 中，文档占据了中心的位置，每个文档指向了一个它所包含的索引项的序列。也就是说文档指向了它包含的那些单词，而反向索引则是单词指向了包含它的文档，很 容易看到这个反向的关系。</p>
-<p>扩展：</p>
-<p>问题实例：文档检索系统，查询那些文件包含了某单词，比如常见的学术论文的关键字搜索。</p>
-<p>8.外排序</p>
-<p>适用范围：大数据的排序，去重</p>
-<p>基本原理及要点：外排序的归并方法，置换选择 败者树原理，最优归并树</p>
-<p>扩展：</p>
-<p>问题实例：<br />
-1).有一个1G大小的一个文件，里面每一行是一个词，词的大小不超过16个字节，内存限制大小是1M。返回频数最高的100个词。</p>
-<p>这个数据具有很明显的特点，词的大小为16个字节，但是内存只有1m做hash有些不够，所以可以用来排序。内存可以当输入缓冲区使用。</p>
-<p>9.trie树</p>
-<p>适用范围：数据量大，重复多，但是数据种类小可以放入内存</p>
-<p>基本原理及要点：实现方式，节点孩子的表示方式</p>
-<p>扩展：压缩实现。</p>
-<p>问题实例：<br />
-1).有10个文件，每个文件1G， 每个文件的每一行都存放的是用户的query，每个文件的query都可能重复。要你按照query的频度排序 。</p>
-<p>2).1000万字符串，其中有些是相同的(重复),需要把重复的全部去掉，保留没有重复的字符串。请问怎么设计和实现？</p>
-<p>3).寻找热门查询：查询串的重复度比较高，虽然总数是1千万，但如果除去重复后，不超过3百万个，每个不超过255字节。</p>
-<p>10.分布式处理 mapreduce</p>
-<p>适用范围：数据量大，但是数据种类小可以放入内存</p>
-<p>基本原理及要点：将数据交给不同的机器去处理，数据划分，结果归约。</p>
-<p>扩展：</p>
-<p>问题实例：</p>
-<p>1).The canonical example application of MapReduce is a process to count the appearances of</p>
-<p>each different word in a set of documents:<br />
-void map(String name, String document):<br />
-// name: document name<br />
-// document: document contents<br />
-for each word w in document:<br />
-EmitIntermediate(w, 1);</p>
-<p>void reduce(String word, Iterator partialCounts):<br />
-// key: a word<br />
-// values: a list of aggregated partial counts<br />
-int result = 0;<br />
-for each v in partialCounts:<br />
-result += ParseInt(v);<br />
-Emit(result);<br />
-Here, each document is split in words, and each word is counted initially with a “1” value by</p>
-<p>the Map function, using the word as the result key. The framework puts together all the pairs</p>
-<p>with the same key and feeds them to the same call to Reduce, thus this function just needs to</p>
-<p>sum all of its input values to find the total appearances of that word.</p>
-<p>2).海量数据分布在100台电脑中，想个办法高效统计出这批数据的TOP10。</p>
-<p>3).一共有N个机器，每个机器上有N个数。每个机器最多存O(N)个数并对它们操作。如何找到N^2个数的中数(median)？</p>
-<p>经典问题分析</p>
-<p>上千万or亿数据（有重复），统计其中出现次数最多的前N个数据,分两种情况：可一次读入内存，不可一次读入。</p>
-<p>可用思路：trie树+堆，数据库索引，划分子集分别统计，hash，分布式计算，近似统计，外排序</p>
-<p>所 谓的是否能一次读入内存，实际上应该指去除重复后的数据量。如果去重后数据可以放入内存，我们可以为数据建立字典，比如通过  map，hashmap，trie，然后直接进行统计即可。当然在更新每条数据的出现次数的时候，我们可以利用一个堆来维护出现次数最多的前N个数据，当 然这样导致维护次数增加，不如完全统计后在求前N大效率高。</p>
-<p>如果数据无法放入内存。一方面我们可以考虑上面的字典方法能否被改进以适应这种情形，可以做的改变就是将字典存放到硬盘上，而不是内存，这可以参考数据库的存储方法。</p>
-<p>当 然还有更好的方法，就是可以采用分布式计算，基本上就是map-reduce过程，首先可以根据数据值或者把数据hash(md5)后的值，将数据按照范 围划分到不同的机子，最好可以让数据划分后可以一次读入内存，这样不同的机子负责处理各种的数值范围，实际上就是map。得到结果后，各个机子只需拿出各 自的出现次数最多的前N个数据，然后汇总，选出所有的数据中出现次数最多的前N个数据，这实际上就是reduce过程。</p>
-<p>实际上可能想直 接将数据均分到不同的机子上进行处理，这样是无法得到正确的解的。因为一个数据可能被均分到不同的机子上，而另一个则可能完全聚集到一个机子上，同时还可 能存在具有相同数目的数据。比如我们要找出现次数最多的前100个，我们将1000万的数据分布到10台机器上，找到每台出现次数最多的前  100个，归并之后这样不能保证找到真正的第100个，因为比如出现次数最多的第100个可能有1万个，但是它被分到了10台机子，这样在每台上只有1千 个，假设这些机子排名在1000个之前的那些都是单独分布在一台机子上的，比如有1001个，这样本来具有1万个的这个就会被淘汰，即使我们让每台机子选 出出现次数最多的1000个再归并，仍然会出错，因为可能存在大量个数为1001个的发生聚集。因此不能将数据随便均分到不同机子上，而是要根据hash  后的值将它们映射到不同的机子上处理，让不同的机器处理一个数值范围。</p>
-<p>而外排序的方法会消耗大量的IO，效率不会很高。而上面的分布式方法，也可以用于单机版本，也就是将总的数据根据值的范围，划分成多个不同的子文件，然后逐个处理。处理完毕之后再对这些单词的及其出现频率进行一个归并。实际上就可以利用一个外排序的归并过程。</p>
-<p>另外还可以考虑近似计算，也就是我们可以通过结合自然语言属性，只将那些真正实际中出现最多的那些词作为一个字典，使得这个规模可以放入内存。</p>
-<p>转载请注明出处：<span class="exturl" data-url="aHR0cDovL2Jicy54anR1LmVkdS5jbi8=">http://bbs.xjtu.edu.cn<i class="fa fa-external-link-alt"></i></span><br />
-作者phylips@bmy</p>
-<p>参考文献：<br />
-<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhb21lbmcvYXJjaGl2ZS8yMDA3LzAzLzA4LzE1MjM5NDAuYXNweA==">http://blog.csdn.net/jiaomeng/archive/2007/03/08/1523940.aspx<i class="fa fa-external-link-alt"></i></span> d-Left Hashing<br />
-<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhb21lbmcvYXJjaGl2ZS8yMDA3LzAxLzI3LzE0OTU1MDAuYXNweA==">http://blog.csdn.net/jiaomeng/archive/2007/01/27/1495500.aspx<i class="fa fa-external-link-alt"></i></span><br />
-<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9CbG9vbV9maWx0ZXI=">http://en.wikipedia.org/wiki/Bloom_filter<i class="fa fa-external-link-alt"></i></span><br />
-<span class="exturl" data-url="aHR0cDovL2hpLmJhaWR1LmNvbS94ZHpoYW5nX2NoaW5hL2Jsb2cvaXRlbS8yODQ3Nzc3ZTgzZmIwMjAyMjkzODhhMTUuaHRtbA==">http://hi.baidu.com/xdzhang_china/blog/item/2847777e83fb020229388a15.html<i class="fa fa-external-link-alt"></i></span> 应用Bloom Filter的几个小技巧<br />
-<span class="exturl" data-url="aHR0cDovL3poLndpa2lwZWRpYS5vcmcvd2lraS8lRTUlODAlOTIlRTYlOEUlOTIlRTclQjQlQTIlRTUlQkMlOTU=">http://zh.wikipedia.org/wiki/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95<i class="fa fa-external-link-alt"></i></span></p>
-</div>
-<table cellspacing="0" cellpadding="0">
-<tbody></tbody>
-</table>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/22/6200191/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/02/22/6200191/" class="post-title-link" itemprop="url">如何登陆自己的Blog</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2011-02-22 15:38:00" itemprop="dateCreated datePublished" datetime="2011-02-22T15:38:00+08:00">2011-02-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 01:34:55" itemprop="dateModified" datetime="2023-10-06T01:34:55+08:00">2023-10-06</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>20</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="http://hi.csdn.net/attachment/201102/22/0_1298360191We9e.gif" alt="" /></p>
-<p><img src="http://hi.csdn.net/attachment/201102/22/0_12983601942sy0.gif" alt="" /></p>
-<p><img src="http://hi.csdn.net/attachment/201102/22/0_129836018804Tf.gif" alt="" /></p>
-<p><img src="http://hi.csdn.net/attachment/201102/22/0_1298360180zNam.gif" alt="" /></p>
-<p>然后再浏览器中输入blog地址就可以了…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/22/2011-02-22-dian-ying-ji/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/02/22/2011-02-22-dian-ying-ji/" class="post-title-link" itemprop="url">电影记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2011-02-22 00:00:00" itemprop="dateCreated datePublished" datetime="2011-02-22T00:00:00+08:00">2011-02-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:08:54" itemprop="dateModified" datetime="2023-10-05T23:08:54+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/movie/" itemprop="url" rel="index"><span itemprop="name">movie</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="集合各种影评，色遇，最强喜事，将爱情进行到底，平凡与浮华，怎样才算是成功。" />
-<meta name="_su_keywords" content="影评,电影,喜剧" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="电影,影评,赏析,让子弹飞,最强喜事,非诚勿扰,封杀,三傻大闹宝莱坞,大笑江湖" />
-<meta name="views" content="341" />
-近期还是看了蛮多电影的..从小沈阳的大笑江湖再到姜文的让子弹飞，再到阔别十年的将爱，再到刚刚看的三傻大闹宝莱坞。电影是看的很多，有很多电影却不知道到底要讲什么。简简单单的惩恶扬善永远是国产电影的主题。但是花样不是那么多，主题情节还是老套，也不知道是否应该变变样子。
-<p>不过让子弹飞的情节还是蛮丰富的，各种人物的勾心斗角小心算计还是演的蛮有意思的。影片和配乐挺有霸气，但是故事中的深层含义还是不便分析，当然也可能根本没有啥深层含义。</p>
-<p>小沈阳和赵本山的大笑江湖足足让我们睡了很长时间。那叫一个困呀…本来就是喜剧片拍得跟电视剧似地，一直枯燥的对话，能不让人昏昏欲睡吗？(值得一提的是，我很喜欢大笑江湖的主题歌，朗朗上口。)喜剧如果从到到尾一直喜，观众未免要喜得疲劳。最强喜事一直喜庆中…不过亮点在于全是大明星，依菲宝的话说就是比较养眼…喜剧嘛就要拍的像武林外传、致命伴旅、三傻、喜羊羊一样，不要全是喜事，酸甜苦辣才是有喜感的剧情。</p>
-<p>再说说将爱，那拍得可是有功底了。每三秒一个广告，国产的感冒冲剂都流行到法国了…总之拍电影就拍电影，不是拍广告剧。其主要原因还是现在的国人想钱想疯了。不过现在社会衡量的某人成功的标准大概也就只有钱了。要不怎么说钱是一切商品的等价物。不过将爱中第二个场景中的XX贩卖机真的存在吗？将爱情进行到底是一部很有趣的影片，影片反映了当代离婚的现状。它真的拍得不如葛大爷的非2好看。非2虽不真实但也说的是实话。将爱却充满了小资的浮华和故作的苍凉。</p>
-<p>最好看的还是三傻，平凡中说事，事却不平凡。简易的剧情，却无所谓好人坏人，无所谓善人恶人。所谓大善，除了佛祖我还不知道有谁…所谓大恶，除了撒旦，我也不知道有谁…佛曰，无不可度之人。大抵也是这个意思。</p>
-<p>不过三傻中提到教育制度的改革，我想改革之后，也不会有很多人上学了吧。那又怎么论成败呢？远古的时候成败是打架打出来的，古代成败是考举人考出来的，近代是挣钱挣出来的。不过也挺好，至少不用再打架了。</p>
-<p>近期我的blog被伟大的东西封了。不知道为什么，可能是因为里面挂了twitter的外链，也可能是写了穿越的方法。不过因为我的blog不是很出名的缘故，所以伟大的不会使用专门封杀IP的方式，它只是采用了DNS不解析的重置服务。所以改改hosts还是可以上的。不会的人可以参考 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAxMS8wMi8yMi82MjAwMTkxLmFzcHg=">这里<i class="fa fa-external-link-alt"></i></span>。“一切顺利，追求卓越”代表了三傻的积极人生态度——苦尽总有甘来时。</p>
-<p>祝大家一切顺利。祝大家能在自己喜欢的工作中追求卓越。当然如果不喜欢任何的工作的…请<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x">猛击这里<i class="fa fa-external-link-alt"></i></span>!</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/18/6194163/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/02/18/6194163/" class="post-title-link" itemprop="url">路由和交换机</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2011-02-18 19:56:00" itemprop="dateCreated datePublished" datetime="2011-02-18T19:56:00+08:00">2011-02-18</time>
+      <time title="Created: 2013-02-27 22:38:00" itemprop="dateCreated datePublished" datetime="2013-02-27T22:38:00+08:00">2013-02-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -707,7 +260,7 @@ Here, each document is split in words, and each word is counted initially with a
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>381</span>
+      <span>796</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -725,1542 +278,392 @@ Here, each document is split in words, and each word is counted initially with a
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>我在内网，要自己组网。</p>
-<p>自己组网并且要dhcp服务。那咋米办呢？就借了路由当dhcp.首先将路由的wan口接到内网中，然后将交换机的1口接入到路由的lan口中。然后想接多少机器就都<br />
-可以了。另外并没有使用啥直连线，全部都是双绞线…</p>
-<p>另外接入内网的路由将lan端的ip设好(例如192.168.2.1)，再将dhcp打开可以分配(192.168.2.2~192.168.2.255这个网段即<br />
-使和内网冲突也没有关系，因为路由之下的机器外网一般不可见。)，然后将路由的wan端ip和mac地址设置为自己的机器地址就ok了。这样路由之下的PC就可以通过<br />
-路由连外网了。</p>
-<p>如果想让外网的连到路由之下的机器，需要将路由中的某项服务打开(输入<span class="exturl" data-url="aHR0cDovL3huLS1jZXM2YTkwOG80NHY=">http://路由地址<i class="fa fa-external-link-alt"></i></span>，如果开始没有这是路由地址，一般是<span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguMA==">http://192.168.0<i class="fa fa-external-link-alt"></i></span>.<br />
-1   D-Link的是这样)，然后在UI上找找就可以找到。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/18/6193614/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/02/18/6193614/" class="post-title-link" itemprop="url">虚拟机Nat连接问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2011-02-18 16:13:00" itemprop="dateCreated datePublished" datetime="2011-02-18T16:13:00+08:00">2011-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>777</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天花了两个小时解决了Nat连接问题。（环境：vmware workstation 7.0，外部os是XP,虚拟机OS也是XP.<br />
-另外防火墙和安全卫士360将vmware.exe设置为例外，内部网络为DHCP。所以我的机器一旦重启ip地址一般会变化。虚拟机的网络设置为NAT）</p>
-<p>是用的vmware workstation 7.0,然后虚拟机里面的os是xp.之后xp就怎么都不可以访问外网。</p>
-<p>首先检查了下vmware nat服务是否已经启动了。然后虚拟机配置中Network Adapter是否是NAT模式。之后是用ipconfig<br />
-/all看看外面的xp是否有VMnet8 这个接口。这时发现VMnet8这个接口存在，就是它的ip实在是太诡异了：<span class="exturl" data-url="aHR0cDovLzE2Mi5YWFguWFhYLlhYWA==">162.XXX.XXX.XXX<i class="fa fa-external-link-alt"></i></span>,子网掩码是<br />
-255.255.0.0.另外看看虚拟机中的ip地址，<span class="exturl" data-url="aHR0cDovL3huLS0xNjIta2Q5ZHEyMGlzY2F3MTdsdnNlLlhYWC5YWFguWFhY">显示的也是162.XXX.XXX.XXX<i class="fa fa-external-link-alt"></i></span>,也有子网掩码，但是没有DNS和网关，并且虚拟机中的网络连接显示<br />
-受限连接。于是顺手把虚拟机中的ip地址从自动获取改为固定的ip,并且将网关ip写为外面os的VMnet8中的ip地址。这时网络连接不再受限，并且可以由虚拟机<br />
-ping通外部os的VMnet8 ip地址。但是依旧不能出外网。</p>
-<p>再后来索性看到vmware的工具栏菜单的编辑选项卡中有编辑虚拟网络。然后看到其中的NAT网络。这个网络的子网是192.168.128.0。外部os<br />
-VMnet8和虚拟os ip的地址根本就不在这个范围内。难怪有问题。所以解决方案为：</p>
-<p>在vmware中编辑-&gt;编辑虚拟网络-&gt;选中 VMnet8在下面的subnet IP 中将192.168.128.0改为192.168.127.0（这里只要<br />
-和其他的网络不冲突即可）,然后Apply.可以马上看到外部OS的VMnet8在连接中。之后将虚拟机中的网络连接重启，即可。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/01/17/6147369/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/01/17/6147369/" class="post-title-link" itemprop="url">云计算的缺陷</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2011-01-17 17:04:00" itemprop="dateCreated datePublished" datetime="2011-01-17T17:04:00+08:00">2011-01-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这鬼东西让我很头痛。我知道云计算是非常重要的，也被推上了各种公司政府的计划。但是我总觉得云这东东和熟知的系统比较起来…貌似还是差了一截。当然或许因为它尚处<br />
-于发展的初级阶段。关于它的缺陷总结起来有那么几句话：</p>
-<p>1.它充分的利用了硬件的资源，它也内耗了相当一部分硬件资源。当我看到某某机房中每个网站占用一个服务器的时候，觉得云计算是非常非常有必要的东西。其实那些服务器<br />
-很费电而且服务器中的网站从我开始用互联网到今天，从来没有登录过。那些网站是知名的…吗？当我用自己的机器在linux下全虚拟化出一个xp的时候。我顿时觉<br />
-得虚拟化就是一坨…不,是一坨坨…机器是不能持久超负荷运转的；满负荷机器也是不能搞虚拟化的；另外廉价的服务器对我来说还是挺贵的。</p>
-<p>2.GFS的确是绕过了虚拟化技术。hash,排序加二分。很好很强大。只不过BigTable + mapReduce +<br />
-GFS有时还是不如mysql灵活。怎么说mysql, sqlite也支持个事务…想要创建个事务需要自己添加用户锁的代码。如何想加入行级锁或者列族级锁…<br />
-.可以考虑修改源码…再说安装hadoop和安装mysql一样灵活吗?</p>
-<p>3.锁还是不锁，这是分布式头痛的问题。我也很头痛。锁吧，效率低，不锁吧，check一致性。于是折中，只加写锁。写读和写写冲突解决了。读写冲突还继续残留着…<br />
-于是保持写的势头，不在意读的先后。反正程序不嫌烦，多读几次也没关系。</p>
-<p>4.租房真的很划算吗？租机器真的很节省吗？我觉得它只适用于短期的大项目以及长期的小项目。Facebook目前是租了部分Amazon,不过如果Amazon的价<br />
-格变动了,每年环比上涨一下下…你懂吗？…</p>
-<p>5.一坨怎么搅拌都还是一坨…或者是一坨坨…MIPS（million instructions per second）小的机器，咋米都难虚拟出mips<br />
-大的机器。(你想让每个服务器都自动超频吗？…这貌似可以成为破坏云的好方法…)所以个人认为：廉价的机器搭云的确需要像Google那样找到理想的大规模并<br />
-行分布式计算模型mapReduce.否则使用虚拟化方法,性能只降不升。mapreduce模型是分布式中常用的hash+summary,效果很好,就是针对特殊<br />
-可优化计算时性能较差。</p>
-<p>关于未来：</p>
-<p>我觉得云还是很有前途的。否则我研究它干啥?但是云应该发展成为异质网络，另外虚拟化技术还要再发展发展。另外编程语言还要再进步些。另外就说这么多了…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/12/24/2010-12-24-own-timer-replace-crontab/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/12/24/2010-12-24-own-timer-replace-crontab/" class="post-title-link" itemprop="url">Own Timer Replace Crontab</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-12-24 00:00:00" itemprop="dateCreated datePublished" datetime="2010-12-24T00:00:00+08:00">2010-12-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:07" itemprop="dateModified" datetime="2023-10-06T22:54:07+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="crontab can not execute some program.
-Its environment setting is hard to compare with that of system " />
-<meta name="_su_keywords" content="crontab,execute,environment,timer,code,setting,profile" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="own timer replace crontab" />
-<meta name="views" content="460" />
-Sometime crontab in Linux or Unix can not run some program. Because the environment of crontab is not as same as that of system. If you want to know the difference between those two environments settings. look up /etc/cron.d/anacron file and ~/.profile and ~/.bashrc and xxxx. I can not remember all of them. /etc/cron.d/anacron file is just for crontab. ~/.profile and ~/.bashrc is for system. If you want to know more, search "linux environment file" in Google.
-<p>I think to find all difference between two environment is waste time obviously. Another method is write own timer codes. So Here is my solution:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">#include &amp;lt;iostream&amp;gt;</span><br><span class="line">#include &amp;lt;string&amp;gt;</span><br><span class="line">#include &amp;lt;stdlib.h&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line">/**</span><br><span class="line"> * @author chico chen chillycreator #@@&amp;amp; gmail.com</span><br><span class="line"> */</span><br><span class="line">void usage()&#123;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;timer&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;input your time point:[minute] [hour] [innerday] [innerweek]&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;input your program name:[your program]&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;all of input should be more than zero!&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;you should run this program earlier than you wanted.&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;or else your program will run at next time point.&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line"></span><br><span class="line">	// user input</span><br><span class="line">	int min, hour, howday, howweek;</span><br><span class="line">	string program;</span><br><span class="line">	cout&amp;lt;&amp;lt; &quot;input [min] [hour] [innerdays] [innerweeks]&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cin &amp;gt;&amp;gt; min &amp;gt;&amp;gt; hour &amp;gt;&amp;gt; howday &amp;gt;&amp;gt; howweek;</span><br><span class="line">	cout &amp;lt;&amp;lt;&quot;input your program&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	cin &amp;gt;&amp;gt; program;</span><br><span class="line">	if (program.size() &amp;lt;= 0 || min &amp;lt; 0 || hour &amp;lt; 0 || howday &amp;lt; 0 || howweek &amp;lt; 0)&#123;</span><br><span class="line">		usage();</span><br><span class="line">		return 1;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;your timer will run program at &quot;&amp;lt;&amp;lt;hour&amp;lt;&amp;lt;&quot;:&quot;&amp;lt;&amp;lt;min&amp;lt;&amp;lt;endl;</span><br><span class="line">	cout &amp;lt;&amp;lt; &quot;your program is &quot;&amp;lt;&amp;lt;program&amp;lt;&amp;lt;endl;</span><br><span class="line">	if (0 == howday || 1 == howday)&#123;</span><br><span class="line">		howday = 1;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;run this program in every day&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;run this program at &quot;&amp;lt;&amp;lt;howday &amp;lt;&amp;lt;&quot; days intervals.&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	if (0 == howweek)&#123;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;run this program in every week&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;run this program at &quot;&amp;lt;&amp;lt;howweek &amp;lt;&amp;lt;&quot; weeks intervals.&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	// set sleep time and loop time</span><br><span class="line">	int looptime = (howday-1)*3600*24 + howweek * 7 * 3600 * 24;</span><br><span class="line">	int sleeptime = 0;</span><br><span class="line">	bool bFirst = true;</span><br><span class="line">	while(true)&#123;</span><br><span class="line">		time_t now;</span><br><span class="line">		time(&amp;amp;now);</span><br><span class="line">		struct tm * timeinfo = localtime(&amp;amp;now);</span><br><span class="line">		timeinfo-&amp;gt;tm_hour = hour;</span><br><span class="line">		timeinfo-&amp;gt;tm_min = min;</span><br><span class="line">		time_t futuretime = mktime(timeinfo);</span><br><span class="line">		sleeptime = futuretime - now;</span><br><span class="line">		sleeptime = sleeptime &amp;gt;= 0 ? sleeptime : 24*3600+sleeptime;</span><br><span class="line">		if (!bFirst)&#123;</span><br><span class="line">			sleeptime += looptime;</span><br><span class="line">		&#125;</span><br><span class="line">		bFirst = false;</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;wait time:&quot;&amp;lt;&amp;lt;sleeptime&amp;lt;&amp;lt;endl;</span><br><span class="line">		sleep(sleeptime);</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;start to run:&quot;&amp;lt;&amp;lt;program&amp;lt;&amp;lt;endl;</span><br><span class="line">		system(program.c_str());</span><br><span class="line">		cout &amp;lt;&amp;lt; &quot;end program...&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	// loop end</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Write your own code will bring new bugs in your solution. Another drawback is spending your own time and this timer is not in common. However, you can control it!</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/12/06/2010-12-06-jobs/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/12/06/2010-12-06-jobs/" class="post-title-link" itemprop="url">IT Jobs</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-12-06 00:00:00" itemprop="dateCreated datePublished" datetime="2010-12-06T00:00:00+08:00">2010-12-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:08:03" itemprop="dateModified" datetime="2023-10-05T23:08:03+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="找工作的一些经验教训和总结" />
-<meta name="_su_keywords" content="经验,教训,总结,IT" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="找工作，IT job,IT工作" />
-<meta name="views" content="475" />
-工作是定下来了。与之前本科的工作相比，没有什么值得骄傲的。只不过薪水多了一些。不过公司不大，还在成长阶段。福利待遇算是可以。户口问题是要拼人品的。大概就这些。
-<p>找工作面试笔试还是很重要的。我往往死在笔试那一环，所以以后的面试自然都没有机会。或者往往笔试成绩不佳，当了别人的备胎，等别人推掉了那个offer，自己才能有点机会。所以工作还是早点找或者晚点找。中间时段和别人抢着找，实在吃力不讨好。主要因为在普通大学读书的小朋友们有更多的时间复习，而自己却还必须在实验室干活。幸好在研究生之前有过大公司的实习经历。否则简历关就会被筛掉。在科苑读研有不用交学费的好处，不过读书阶段不能实习而且需要在实验室干活是一个弊端。不过对于找个稳定工作的人来说，留在科苑也是不错的选择。今天还碰到一位刚拿到实验室offer的小朋友，他还在问这里有没有饭补。</p>
-<p>首先呢，要比别人更早的去面试笔试。我的两个offer就是在8月时搞定的。当别人还在看书复习时，offer已经到手。这个时候不要吝惜各种内推的途径以及各个bbs中的工作帖。另外值得注意的一点是：一旦被内推，一定不要参加它的大规模笔试。否则内推就没有用了。</p>
-<p>得到offer最重要是看户口，钱什么的都是浮云。因为物价在上涨，通货在膨胀。当然有些hr说的户口，也是很不靠谱的。这个要自己衡量一下。</p>
-<p>如果不幸的沦落到需要参加大规模笔试。那就几个人一起准备一下吧。一个人准备是很难搞定所有可能的问题的。不过笔试题大题小题变化不大。大题：无非是链表，排序，动态规划。小题：操作系统，数据库，语言编译加运行。反正变着花样，这个公司的题明年会在另一个公司的题中出现。背诵默写一下总会过笔试的。即使你以前没有写过代码。葵花宝典（程序员面试宝典）等秘笈一定一定要看的…要做好自宫的准备…当然看到最后一页会发现自宫是没有必要的…</p>
-<p>面试大都问问项目经历，哪个项目重要，你的贡献，你的优缺点。然后现场技术题。不幸的是我11月初才掌握技术题通用写法，并传授给了我家mm。</p>
-<p>offer没有拿很多，有一部分是我说已经有XX offer后，他们觉得自己给不了那么多，索性把我拒掉了。偶太诚实了。</p>
-<p>一两个小时的面试，很难面出一个人啥品质。谦虚的人可能被认为自卑，技术大牛被认为傲慢。反正啥情况都会出现。往往在于你能不能让面官看中…这和相亲以及闪婚差不多。当然首先要从hr那里打听：面你的是谁以及性别问题。例如mm面mm,那就不能打扮的太pp,否则面官会有很大压力。依此类推…当然这些都是从我mm的面经中总结出来的。</p>
-<p>IT工作的大类一般分三种：项目经理(产品经理)，开发(研发)，测试。当然还有研究员等等。我只面过开发研发，其他一概忽略。主要因为在这个浮躁的大环境下，核心技术的开发是有必要的。测试的氛围不行裁员严重，另外待遇也低。</p>
-<p>另外语言相对来说较为重要，虽然行业中有传言：只要懂编程，不用太在意语言。但其实招聘的时候这方面是相当看重的。例如招网站或者做J2EE项目的就不会看中c程序员。而操作系统，数据库，算法开发的招聘鄙视java程序员。所以还是不要轻信传言了。大公司的招聘只看潜力不看重编程能力的年代一去不复返了.</p>
-<p>另外发现一个很有趣的现象：就是公司培训。我惊讶于某些逃课的小朋友会看重这个事情。</p>
-<p>当然工作最重要的是钱多、清闲、离家近。找工作就像买机器一样，挑个性价比最高的。只不过这个机器也会挑人罢了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/12/01/6047036/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/12/01/6047036/" class="post-title-link" itemprop="url">统计</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-12-01 10:12:00" itemprop="dateCreated datePublished" datetime="2010-12-01T10:12:00+08:00">2010-12-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/11/13/6007217/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/11/13/6007217/" class="post-title-link" itemprop="url">Http 错误码</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-11-13 18:09:00" itemprop="dateCreated datePublished" datetime="2010-11-13T18:09:00+08:00">2010-11-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="所有-http-状态代码及其定义-代码-指示2xx-成功200-正常请求已完成-201-正常紧接-post-命令-202-正常已接受用于处理但处理尚未完成-203-正常部分信息-返回的信息只是一部分-204-正常无响应-已接收请求但不存在要回送的信息-3xx-重定向301-已移动-请求的数据具有新的位置且更改是永久的-302-已找到-请求的数据临时具有不同-uri-303-请参阅其它-可在另一-uri-下找到对请求的响应且应使用-get-方法检索此响应-304-未修改-未按预期修改文档-305-使用代理-必须通过位置字段中提供的代理来访问请求的资源-306-未使用-不再使用保留此代码以便将来使用-4xx-客户机中出现的错误400-错误请求-请求中有语法问题或不能满足请求-401-未授权-未授权客户机访问数据-402-需要付款-表示计费系统已有效-403-禁止-即使有授权也不需要访问-404-找不到-服务器找不到给定的资源文档不存在-407-代理认证请求-客户机首先必须使用代理认证自身-415-介质类型不受支持-服务器拒绝服务请求因为不支持请求实体的格式-5xx-服务器中出现的错误500-内部错误-因为意外情况服务器不能完成请求-501-未执行-服务器不支持请求的工具-502-错误网关-服务器接收到来自上游服务器的无效响应-503-无法获得服务-由于临时过载或维护服务器无法处理请求-"><a class="markdownIt-Anchor" href="#所有-http-状态代码及其定义-代码-指示2xx-成功200-正常请求已完成-201-正常紧接-post-命令-202-正常已接受用于处理但处理尚未完成-203-正常部分信息-返回的信息只是一部分-204-正常无响应-已接收请求但不存在要回送的信息-3xx-重定向301-已移动-请求的数据具有新的位置且更改是永久的-302-已找到-请求的数据临时具有不同-uri-303-请参阅其它-可在另一-uri-下找到对请求的响应且应使用-get-方法检索此响应-304-未修改-未按预期修改文档-305-使用代理-必须通过位置字段中提供的代理来访问请求的资源-306-未使用-不再使用保留此代码以便将来使用-4xx-客户机中出现的错误400-错误请求-请求中有语法问题或不能满足请求-401-未授权-未授权客户机访问数据-402-需要付款-表示计费系统已有效-403-禁止-即使有授权也不需要访问-404-找不到-服务器找不到给定的资源文档不存在-407-代理认证请求-客户机首先必须使用代理认证自身-415-介质类型不受支持-服务器拒绝服务请求因为不支持请求实体的格式-5xx-服务器中出现的错误500-内部错误-因为意外情况服务器不能完成请求-501-未执行-服务器不支持请求的工具-502-错误网关-服务器接收到来自上游服务器的无效响应-503-无法获得服务-由于临时过载或维护服务器无法处理请求-"></a> 所有 HTTP 状态代码及其定义。<br />
-代码  指示<br />
-2xx  成功<br />
-200  正常；请求已完成。<br />
-201  正常；紧接 POST 命令。<br />
-202  正常；已接受用于处理，但处理尚未完成。<br />
-203  正常；部分信息 — 返回的信息只是一部分。<br />
-204  正常；无响应 — 已接收请求，但不存在要回送的信息。<br />
-3xx  重定向<br />
-301  已移动 — 请求的数据具有新的位置且更改是永久的。<br />
-302  已找到 — 请求的数据临时具有不同 URI。<br />
-303  请参阅其它 — 可在另一 URI 下找到对请求的响应，且应使用 GET 方法检索此响应。<br />
-304  未修改 — 未按预期修改文档。<br />
-305  使用代理 — 必须通过位置字段中提供的代理来访问请求的资源。<br />
-306  未使用 — 不再使用；保留此代码以便将来使用。<br />
-4xx  客户机中出现的错误<br />
-400  错误请求 — 请求中有语法问题，或不能满足请求。<br />
-401  未授权 — 未授权客户机访问数据。<br />
-402  需要付款 — 表示计费系统已有效。<br />
-403  禁止 — 即使有授权也不需要访问。<br />
-404  找不到 — 服务器找不到给定的资源；文档不存在。<br />
-407  代理认证请求 — 客户机首先必须使用代理认证自身。<br />
-415  介质类型不受支持 — 服务器拒绝服务请求，因为不支持请求实体的格式。<br />
-5xx  服务器中出现的错误<br />
-500  内部错误 — 因为意外情况，服务器不能完成请求。<br />
-501  未执行 — 服务器不支持请求的工具。<br />
-502  错误网关 — 服务器接收到来自上游服务器的无效响应。<br />
-503  无法获得服务 — 由于临时过载或维护，服务器无法处理请求。<br />
------------------------------------------------------------------------------</h2>
-<p>HTTP 400 - 请求无效<br />
-HTTP 401.1 - 未授权：登录失败<br />
-HTTP 401.2 - 未授权：服务器配置问题导致登录失败<br />
-HTTP 401.3 - ACL 禁止访问资源<br />
-HTTP 401.4 - 未授权：授权被筛选器拒绝<br />
-HTTP 401.5 - 未授权：ISAPI 或 CGI 授权失败<br />
-HTTP 403 - 禁止访问<br />
-HTTP 403 - 对 Internet 服务管理器 (HTML) 的访问仅限于 Localhost<br />
-HTTP 403.1 禁止访问：禁止可执行访问<br />
-HTTP 403.2 - 禁止访问：禁止读访问<br />
-HTTP 403.3 - 禁止访问：禁止写访问<br />
-HTTP 403.4 - 禁止访问：要求 SSL<br />
-HTTP 403.5 - 禁止访问：要求 SSL 128<br />
-HTTP 403.6 - 禁止访问：IP 地址被拒绝<br />
-HTTP 403.7 - 禁止访问：要求客户证书<br />
-HTTP 403.8 - 禁止访问：禁止站点访问<br />
-HTTP 403.9 - 禁止访问：连接的用户过多<br />
-HTTP 403.10 - 禁止访问：配置无效<br />
-HTTP 403.11 - 禁止访问：密码更改<br />
-HTTP 403.12 - 禁止访问：映射器拒绝访问<br />
-HTTP 403.13 - 禁止访问：客户证书已被吊销<br />
-HTTP 403.15 - 禁止访问：客户访问许可过多<br />
-HTTP 403.16 - 禁止访问：客户证书不可信或者无效<br />
-HTTP 403.17 - 禁止访问：客户证书已经到期或者尚未生效<br />
-HTTP 404.1 - 无法找到 Web 站点<br />
-HTTP 404 - 无法找到文件<br />
-HTTP 405 - 资源被禁止<br />
-HTTP 406 - 无法接受<br />
-HTTP 407 - 要求代理身份验证<br />
-HTTP 410 - 永远不可用<br />
-HTTP 412 - 先决条件失败<br />
-HTTP 414 - 请求 - URI 太长<br />
-HTTP 500 - 内部服务器错误<br />
-HTTP 500.100 - 内部服务器错误 - ASP 错误<br />
-HTTP 500-11 服务器关闭<br />
-HTTP 500-12 应用程序重新启动<br />
-HTTP 500-13 - 服务器太忙<br />
-HTTP 500-14 - 应用程序无效<br />
-HTTP 500-15 - 不允许请求 global.asa<br />
-Error 501 - 未实现<br />
-HTTP 502 - 网关错误</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/11/09/5998348/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/11/09/5998348/" class="post-title-link" itemprop="url">windows开发各种细节.....</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-11-09 20:29:00" itemprop="dateCreated datePublished" datetime="2010-11-09T20:29:00+08:00">2010-11-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>我发现windows自己的API一般不能做到与windows自己的历史兼容。很神奇…</p>
-<p>下面几个函数都前后不兼容.</p>
-<p>例如GetFileTime这个函数。本来是得到文件的读写时间。但是因为windows自己很有趣，自己的的读写时间其实并不是用户真正的读写时间。当然可能人家考<br />
-虑了效率等其他的问题。下面一段是摘抄自MSDN中的介绍:</p>
-<p>Not all file systems can record creation and last access times and not all<br />
-file systems record them in the same manner. For example, on FAT, create time<br />
-has a resolution of 10 milliseconds, write time has a resolution of 2 seconds,<br />
-and access time has a resolution of 1 day (really, the access date).<br />
-Therefore, the GetFileTime function may not return the same file time<br />
-information set using SetFileTime. NTFS delays updates to the last access time<br />
-for a file by up to one hour after the last access.</p>
-<p>不是所有的文件系统都能记录创建时间和最后的访问时间。也不是所有的文件系统都以相同的方式记录他们。比如在FAT上，创建时间误差是10微秒，写时间的误差2秒，访<br />
-问时间的误差是1天！(…我觉得hacker可以在这个一天上做些手脚…)因此，就是你使用SetFileTime这个函数，GetFileTime也不可能会<br />
-返回相同的时间…NTFS会延迟一小时更新最后的访问时间…</p>
-<p>真是无语呀…</p>
-<p>FindNextFile这个函数有些小问题，就是不能以字母序返回文件…在FAT和在NTFS系统上的表现不一样…大概的原因在于那个文件描述表中存放顺序<br />
-是不一样的.FAT是使用的时间顺序存放，而NTFS是使用的按字母序存放。这个FindNextFile根本没有做啥事情，直接读出来…这个API就是仅仅追求效<br />
-率…顺便一提…它其实应该再开发一个API叫做FindSortedNextFile…这样更好些…不过我想它也不能做…解决途径…上层排个序先。</p>
-<p>The order in which this function returns the file names is dependent on the<br />
-file system type. With the NTFS file system and CDFS file systems, the names<br />
-are returned in alphabetical order. With FAT file systems, the names are<br />
-returned in the order the files were written to the disk, which may or may not<br />
-be in alphabetical order.</p>
-<h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/11/09/5998223/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/11/09/5998223/" class="post-title-link" itemprop="url">最近</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-11-09 19:29:00" itemprop="dateCreated datePublished" datetime="2010-11-09T19:29:00+08:00">2010-11-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>75</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近比较繁忙…找工作ing…所以blog就少更新。毕竟笔试题面试题不方便透露,另外一个原因就是问的太杂也记不住…所以等offer确定下来，再写总结<br />
-吧…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/10/15/5944297/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/10/15/5944297/" class="post-title-link" itemprop="url">NDBC2011会议总结~(1)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-10-15 22:44:00" itemprop="dateCreated datePublished" datetime="2010-10-15T22:44:00+08:00">2010-10-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>第一天是研究生论文指导…主要是论文中的数据最好尽量的使用真实数据…但是可以从真实数据中抽取或者sample出对自己算法有利的数据。但是算法必须解决为什<br />
-么在这种数据集上就好，以及算法的局限性在什么地方。而不是提出一个算法和XX算法再比较一下就ok了…</p>
-<p>第二天是大会开会…顺利的挤到前几排，照了一张露脸相.</p>
-<p>有一个是讲LRU的算法改进的。传说改进算法是LIRS.LRU主要的缺陷在于使对于普遍的pattern而不是对于特殊的pattern适用。对于高频率访问数据和<br />
-低频率访问数据并没有很好的区分度，很有可能因为低频率的数据使得中高频的数据被替换出缓存，从而导致缺页。</p>
-<p>有一个是讲隐私保护的。主要的观点是将共有数据和想保护的数据直接的关联关系去掉。</p>
-<p>下午EMC出了一个vplex的东东，这是一个存储平台。当然这东西早就出来了…其实是啥米呢？其实就是pool</p>
-<p>1.然后去看demo,发现数据挖掘的东东还是不少的。可惜我的研究方向不是数据挖掘.要不还可以探讨的更加detail一些。不过大概很多也就是求sim(i,j)<br />
-只是运用了各种图方法或者规则模型，或者统计模型,或者随时间的统计模型…再有新意的…还是没怎么看到。</p>
-<p>2.看了下太极数据库(taiji DB)自从云计算大会时听说后，对这个东东很有期待…后来发现是对Hbase和Cassandra做了层sql解析，然后数据通<br />
-过sql或者函数调用放入到两个类型的数据库中。Cassandra是一个支持Available 和Partition的东东，<br />
-Hbase是支持最终Consistence 和 Partition的东东。另外Hbase的读很快，但是写不是很支持。Cassandra对于写操作的支持灰常好<br />
-~Hbase有锁机制而Cassandra没有，Hbase在Hadoop之上，所以文件系统的管理对于Hbase来说几乎是透明的，Cassandra是自己管理自<br />
-己的。Hbase是有主从结构的东东，而Cassandra是p2p的。其实这两个东西统一起来是相当困难的。当然在数据不需要恢复，不需要读取最新的数据时，这一切<br />
-看起来很完美…但是一旦有异常发生…这东东就game over 了。因为这两个东东是不同的文件底层控制，也就是Hadoop根本就不知道Cassandra的<br />
-情况。另外当数据更新时，网络产生分割，然后再由其他的客户端进行读取时，这整个系统的状态就不一致了。还有一点值得一提的是，Cassandra和Hbase都存在<br />
-在一台机器中，本来就对原有的写效率和读效率造成损害。所以…现在的表面融合还能不能做成核心融合，还是很难说，即使做出来了，可能也要失去Hbase和Cass<br />
-andra本来的特性。一切就又恢复到database的本来样貌…</p>
-<p>3.代理对象数据库。这个demo中的数据存储模式的确在一定程度上解决了数据冗余问题，但是它有带来了极端的效率问题。怎么解释代理对象数据库呢？首先这东东和对象<br />
-数据库有什么不同呢？对象数据库就是A表继承B表，那么A既有B中的所有属性，虽然这些属性可以控制是否可见，是否可以更改插入删除等。但是A中必须为这些所有属性消<br />
-耗存储代价。当然这里要假设A表是按行存储。现在代理对象数据库解决的问题就是这个存储代价浪费。也就是A表中不再存储物理数据，而是引用B中的数据。将这个继承关系<br />
-转换成了逻辑关系。但是这东东并没有解决菱形继承问题。另外我还不小心发现一个很严重的问题：假如对象继承层数增多，那么如果当B中某字段非空，但是此字段又非A中字<br />
-段，那么要先要插入B表中一行，然后再插入到A表中一行。继承层数越多，那么需要插入的父表也就越多…时间消耗严重！！~~</p>
-<p>总之，此次数据库发展方向正在向大内存占有率，混合数据库架构方向发展。当然用column based代替row based的数据库也有展现。从通用数据库向特定<br />
-领域数据库转变。这样带来的好处在于这样的数据库操作更加方便，解决特定领域问题时效率会提高。但是这样的缺陷也很明显：不通用，开发维护代价高。所以应该有这样的公<br />
-式：C  develop  +C  maintain  &lt; V  dba  +V  efficient  当然这里需要假设所有的硬件和软件环境是一致的。</p>
-<p>云计算中强调auto tuning.但为什么数据库中不能auto<br />
-tuning?另外云计算中调试不方便，许多过程不能repro.这个问题给云中的软件开发带来一些麻烦事。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/10/11/5932571/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/10/11/5932571/" class="post-title-link" itemprop="url">Linux Uniq使用命令</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-10-11 09:12:00" itemprop="dateCreated datePublished" datetime="2010-10-11T09:12:00+08:00">2010-10-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>转自：<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtdGlwLXByb21wdC9sLXRpcHRleDYv">http://www.ibm.com/developerworks/cn/linux/l-tip-prompt/l-tiptex6/<i class="fa fa-external-link-alt"></i></span><br />
-重复行通常不会造成问题，但是有时候它们的确会引起问题。此时，不必花上一个下午的时间来为它们编制过滤器，uniq<br />
-命令便是唾手可得的好工具。了解一下它是如何节省您的时间和精力的。</p>
-</blockquote>
-<p>进行排序之后，您会发现有些行是重复的。有时候该重复信息是不需要的，可以将它除去以节省磁盘空间。不必对文本行进行排序，但是您应当记住 <code>uniq</code><br />
-在读取行时会对它们进行比较并将只除去两个或更多的连续行。下面的示例说明了它实际上是如何工作的：</p>
-<p>** 清单 1. 用 uniq 除去重复行 **</p>
-<p>$ cat happybirthday.txt Happy Birthday to You! Happy Birthday to You! Happy<br />
-Birthday Dear Tux! Happy Birthday to You! $ sort happybirthday.txt Happy<br />
-Birthday Dear Tux! Happy Birthday to You! Happy Birthday to You! Happy<br />
-Birthday to You! $ sort happybirthday.txt | uniq Happy Birthday Dear Tux!<br />
-Happy Birthday to You!</p>
-<p>警告：请不要使用 <code>uniq</code> 或任何其它工具从包含财务或其它重要数据的文件中除去重复行。在这种情况下，重复行几乎总是表示同一金额的另一个交易，将它除去<br />
-会给会计部造成许多困难。千万别这么干！</p>
-<p><img src="http://www.ibm.com/i/c.gif" alt="" /></p>
-<p>** 有关 uniq 的更多信息 **<br />
-本系列文章介绍了文本实用程序，它对在手册页和信息页找到的信息作了补充。如果您打开新的终端窗口并输入 <code>man uniq</code> 或 <code>info uniq</code><br />
-，或者打开新的浏览器窗口并查看 <a target="_blank" rel="noopener" href="http://www.gnu.org/manual/textutils-2.0/html_chapter/textutils_7.html#SEC24"> 位于 gnu.org 的 uniq 手册页<br />
-</a><br />
-，那么就可以了解更多的相关信息。</p>
-<p>如果您希望您的工作轻松点，比如只显示唯一的或重复的行，那么该怎么办呢？您可以用 <code>-u</code> （唯一）和 <code>-d</code> （重复）选项来做到这一点，例如：</p>
-<p>** 清单 2. 使用 -u 和 -d 选项 **</p>
-<p>$ sort happybirthday.txt | uniq -u Happy Birthday Dear Tux! $ sort<br />
-happybirthday.txt | uniq -d Happy Birthday to You!</p>
-<p>您还可以用 <code>-c</code> 选项从 <code>uniq</code> 中获取一些统计信息：</p>
-<p>** 清单 3. 使用 -c 选项 **</p>
-<p>$ sort happybirthday.txt | uniq -uc 1 Happy Birthday Dear Tux! $ sort<br />
-happybirthday.txt | uniq -dc 3 Happy Birthday to You!</p>
-<p>就算 <code>uniq</code> 对完整的行进行比较，它仍然会很有用，但是那并非该命令的全部功能。特别方便的是：使用 <code>-f</code><br />
-选项，后面跟着要跳过的字段数，它能够跳过给定数目的字段。当您查看系统日志时这非常有用。通常，某些项要被复制许多次，这使得查看日志很难。使用简单的 <code>uniq</code> 无法完成任务，因为每一项都以不同的时间戳记开头。但是如果您告诉它跳过所有的时间字段，您的日志一下子就会变得更加便于管理。试一试 <code>uniq -f 3 /var/log/messages</code> ，亲眼看看。</p>
-<p>还有另一个选项 <code>-s</code> ，它的功能就像 <code>-f</code> 一样，但是跳过给定数目的字符。您可以一起使用 <code>-f</code> 和 <code>-s</code> 。 <code>uniq</code> 先跳过字段，再跳过字符。如果您只想使用一些预先设置的字符进行比较，那么该怎么办呢？试试看 <code>-w</code> 选项。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/10/11/2010-10-11-create-class-size-0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/10/11/2010-10-11-create-class-size-0/" class="post-title-link" itemprop="url">How to Create a Class , Which Size Is 0?</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-10-11 00:00:00" itemprop="dateCreated datePublished" datetime="2010-10-11T00:00:00+08:00">2010-10-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:07:50" itemprop="dateModified" datetime="2023-10-05T23:07:50+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>271</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="views" content="611" />
-<meta name="_wp_old_slug" content="apply-class-size-0" />
-how to create a class , which size is 0?
-<p>If you create a class with array [0], you have done it.😄</p>
-<p>Only in gcc compiler…in visual c++6.0, it is still 1.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;iostream&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line">class A</span><br><span class="line">&#123;</span><br><span class="line">	char a[0];</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	cout &amp;lt;&amp;lt; sizeof(A);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/10/09/5929554/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/10/09/5929554/" class="post-title-link" itemprop="url">Linux Crontab and at 命令</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-10-09 14:32:00" itemprop="dateCreated datePublished" datetime="2010-10-09T14:32:00+08:00">2010-10-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>5.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="引用地址-httpfreeyes81netyes81view-1179html"><a class="markdownIt-Anchor" href="#引用地址-httpfreeyes81netyes81view-1179html"></a> 引用地址： [ <span class="exturl" data-url="aHR0cDovL2ZyZWUueWVzODEubmV0L3llczgxL3ZpZXctMTE3OS5odG1s">http://free.yes81.net/yes81/view-1179.html<i class="fa fa-external-link-alt"></i></span></h3>
-<p>](<span class="exturl" data-url="aHR0cDovL2ZyZWUueWVzODEubmV0L3llczgxL3ZpZXctMTE3OS5odG1s">http://free.yes81.net/yes81/view-1179.html<i class="fa fa-external-link-alt"></i></span>)</p>
-<h3 id="crontab-命令"><a class="markdownIt-Anchor" href="#crontab-命令"></a> crontab  命令</h3>
-<p>功能是在一定的时间间隔调度一些命令的执行。在  /etc  目录下有一个  crontab<br />
-文件，这里存放有系统运行的一些调度程序。每个用户可以建立自己的调度  crontab  。<br />
-crontab  命令有三种形式的命令行结构：<br />
-crontab [-u user] [file]<br />
-crontab [-u user] [-e|-l|-r]<br />
-crontab -l -u [-e|-l|-r]<br />
-第一个命令行中，  file  是命令文件的名字。如果在命令行中指定了这个文件，那么执行  crontab  命令，则将这个文件拷贝到  crontabs<br />
-目录下；如果在命令行中没有制定这个文件，  crontab  命令将接受标准输入（键盘）上键入的命令，并将他们也存放在  crontab  目录下。<br />
-命令行中  -r  选项的作用是从  /usr/spool/cron/crontabs  目录下删除用户定义的文件  crontab  ；<br />
-命令行中  -l  选项的作用是显示用户  crontab  文件的内容。<br />
-使用命令  crontab -u user -e  命令编辑用户  user  的  cron©  作业。用户通过编辑文件来增加或修改任何作业请求。<br />
-执行命令  crontab -u user -r  即可删除当前用户的所有的  cron  作业。<br />
-作业与它们预定的时间储存在文件  /usr/spool/cron/crontabs/username  里。  username<br />
-使用户名，在相应的文件中存放着该用户所要运行的命令。命令执行的结果，无论是标准输出还是错误输出，都将以邮件形式发给用户。文件里的每一个请求必须包含以<br />
-spaces  和  tabs  分割的六个域。前五个字段可以取整数值，指定何时开始工作，第六个域是字符串，称为命令字段，其中包括了  crontab<br />
-调度执行的命令。<br />
-第一道第五个字段的整数取值范围及意义是：<br />
-0  ～  59  表示分<br />
-1  ～  23  表示小时<br />
-1  ～  31  表示日<br />
-1  ～  12  表示月份<br />
-0  ～  6  表示星期（其中  0  表示星期日）<br />
-/usr/lib/cron/cron.allow  表示谁能使用  crontab<br />
-命令。如果它是一个空文件表明没有一个用户能安排作业。如果这个文件不存在，而有另外一个文件  /usr/lib/cron/cron.deny,<br />
-则只有不包括在这个文件中的用户才可以使用  crontab  命令。如果它是一个空文件表明任何用户都可安排作业。两个文件同时存在时  cron.allow<br />
-优先，如果都不存在，只有超级用户可以安排作业。<br />
-任务调度的  crond  常驻命令<br />
-crond  是  linux  用来定期执行程序的命令。当安装完成操作系统之后，默认便会启动此任务调度命令。  crond<br />
-命令每分锺会定期检查是否有要执行的工作，如果有要执行的工作便会自动执行该工作。而  linux  任务调度的工作主要分为以下两类：<br />
-1  、系统执行的工作：系统周期性所要执行的工作，如备份系统数据、清理缓存<br />
-2  、个人执行的工作：某个用户定期要做的工作，例如每隔  10  分钟检查邮件服务器是否有新信，这些工作可由每个用户自行设置。<br />
-一、任务调度设置文件的写法<br />
-其格式如下：<br />
-Minute Hour Day Month Dayofweek command<br />
-分钟  小时  天  月  天每星期  命令<br />
-每个字段代表的含义如下：<br />
-Minute  每个小时的第几分钟执行该任务<br />
-Hour  每天的第几个小时执行该任务<br />
-Day  每月的第几天执行该任务<br />
-Month  每年的第几个月执行该任务<br />
-DayOfWeek  每周的第几天执行该任务<br />
-Command  指定要执行的程序<br />
-在这些字段里，除了“  Command  ”是每次都必须指定的字段以外，其它字段皆为可选字段，可视需要决定。对于不指定的字段，要用“  *<br />
-”来填补其位置。<br />
-举例如下：<br />
-1  、指定每小时的第  5  分钟执行一次  ls  命令<br />
-5 * * * * ls<br />
-2  、指定每天的  5:30  执行  ls  命令<br />
-30 5 * * * ls<br />
-3  、指定每月  8  号的  7  ：  30  分执行  ls  命令<br />
-30 7 8 * * ls<br />
-4  、指定每年的  6  月  8  日  5  ：  30  执行  ls  命令<br />
-30 5 8 6 * ls<br />
-5  、指定每星期日的  6:30  执行  ls  命令<br />
-30 6 * * 0 ls<br />
-注：  0  表示星期天，  1  表示星期  1  ，以此类推，也可以用英文来表示，  sun  表示星期天，  mon  表示星期一等。<br />
-6  、每月  10  号及  20  号的  3  ：  30  执行  ls  命令<br />
-30 3 10,20 * * ls<br />
-注：“，”用来连接多个不连续的时段<br />
-7  、每天  8-11  点的第  25  分钟执行  ls  命令<br />
-25 8-11 * * * ls<br />
-注：“  -  ”用来连接连续的时段<br />
-8  、每  15  分钟执行一次  ls  命令<br />
-*/15 * * * * ls<br />
-即每个小时的第  0 15 30 45 60  分钟执行  ls  命令<br />
-9  、每个月中，每隔  10  天  6:30  执行一次  ls  命令<br />
-30 6 */10 * * ls<br />
-即每月的  1  、  11  、  21  、  31  日是的  6  ：  30  执行一次  ls  命令。<br />
-10  、每天  7  ：  50  以  root  身份执行  /etc/cron.daily  目录中的所有可执行文件<br />
-50 7 * * * root run-parts /etc/cron.daily<br />
-注：  run-parts  参数表示，执行后面目录中的所有可执行文件。<br />
-二、新增调度任务<br />
-新增调度任务可用两种方法：<br />
-1  、在命令行输入  : crontab -e  然后添加相应的任务，  wq  存盘退出。<br />
-2  、直接编辑  /etc/crontab  文件，即  vi /etc/crontab  ，添加相应的任务。<br />
-三、查看调度任务<br />
-crontab -l //  列出当前的所有调度任务<br />
-crontab -l -u jp    //  列出用户  jp  的所有调度任务<br />
-四、删除任务调度工作<br />
-crontab -r //  删除所有任务调度工作<br />
-五、任务调度执行结果的转向<br />
-例  1  ：每天  5  ：  30  执行  ls  命令，并把结果输出到  /jp/test  文件中<br />
-30 5 * * * ls &gt;/jp/test 2&gt;&amp;1<br />
-注：  2&gt;&amp;1  表示执行结果及错误信息。<br />
-编辑  /etc/crontab  文件配置  cron<br />
-cron  服务每分钟不仅要读一次  /var/spool/cron  内的所有文件，还需要读一次  /etc/crontab,<br />
-因此我们配置这个文件也能运用  cron  服务做一些事情。用  crontab  配置是针对某个用户的，而编辑  /etc/crontab<br />
-是针对系统的任务。此文件的文件格式是  :<br />
-SHELL=/bin/bash<br />
-PATH=/sbin:/bin:/usr/sbin:/usr/bin<br />
-MAILTO=root //  如果出现错误，或者有数据输出，数据作为邮件发给这个帐号<br />
-HOME=/ //  使用者运行的路径  ,  这里是根目录</p>
-<h1 id="run-parts"><a class="markdownIt-Anchor" href="#run-parts"></a> run-parts</h1>
-<p>01 * * * * root run-parts /etc/cron.hourly //  每小时执行  /etc/cron.hourly  内的脚本<br />
-02 4 * * * root run-parts /etc/cron.daily //  每天执行  /etc/cron.daily  内的脚本<br />
-22 4 * * 0 root run-parts /etc/cron.weekly //  每星期执行  /etc/cron.weekly  内的脚本<br />
-42 4 1 * * root run-parts /etc/cron.monthly //  每月去执行  /etc/cron.monthly  内的脚本<br />
-大家注意  “run-parts”  这个参数了，如果去掉这个参数的话，后面就可以写要运行的某个脚本名，而不是文件夹名了</p>
-<p>以下转自鸟哥私房菜</p>
-<p><span class="exturl" data-url="aHR0cDovL2xpbnV4LnZiaXJkLm9yZy9saW51eF9iYXNpYy8wNDMwY3Jvbi5waHAjYXQ=">http://linux.vbird.org/linux_basic/0430cron.php#at<i class="fa fa-external-link-alt"></i></span><br />
-單一工作排程的進行就使用 at 這個指令囉！這個指令的運作非常簡單！將 at 加上一個時間即可！基本的語法如下：</p>
-<pre><code>[root@www ~]# at [-mldv] TIME
-
-[root@www ~]# at -c 工作號碼
-
-選項與參數：
--m  ：當 at 的工作完成後，即使沒有輸出訊息，亦以 email 通知使用者該工作已完成。
--l  ：at -l 相當於 atq，列出目前系統上面的所有該使用者的 at 排程；
--d  ：at -d 相當於 atrm ，可以取消一個在 at 排程中的工作；
--v  ：可以使用較明顯的時間格式列出 at 排程中的工作列表；
--c  ：可以列出後面接的該項工作的實際指令內容。
-
-TIME：時間格式，這裡可以定義出『什麼時候要進行 at 這項工作』的時間，格式有：
-  HH:MM				ex&gt; 04:00
-	在今日的 HH:MM 時刻進行，若該時刻已超過，則明天的 HH:MM 進行此工作。
-  HH:MM YYYY-MM-DD		ex&gt; 04:00 2009-03-17
-	強制規定在某年某月的某一天的特殊時刻進行該工作！
-  HH:MM[am|pm] [Month] [Date]	ex&gt; 04pm March 17
-	也是一樣，強制在某年某月某日的某時刻進行！
-  HH:MM[am|pm] + number [minutes|hours|days|weeks]
-	ex&gt; now + 5 minutes	ex&gt; 04pm + 3 days
-	就是說，在某個時間點『再加幾個時間後』才進行。
+          <p>有人曾问 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前卒 <i class="fa fa-external-link-alt"></i></span> 一道题：至少需要多少个砝码，才能称出1~50g物体？</p>
+<p>这道题有两个变种：</p>
+<p>1.至少需要多少砝码(左物右码)，才能称出1~50g物体？</p>
+<p>2.至少需要多少砝码(砝码可以放在任意一边)，才能称出1~50g物体？</p>
+<p>第一问可以变为: 至少多少个数字相加，可以表示1~50之间的任意数。又可以演变为：如何快速的从一堆苹果中取出你想要的个数？</p>
+<p>第一问对于每个数字其实就是两种状态，加、不加。也就是1,0. 对应的公式就是,对于任意数x</p>
+<pre><code>x = 1*a0 + 2*a1 + 4*a2...+2^k*ak   (a0...ak 可取0或者1)
 </code></pre>
-<p>老實說，這個 at 指令的下達最重要的地方在於『時間』的指定了！鳥哥喜歡使用『 now + … 』<br />
-的方式來定義現在過多少時間再進行工作，但有時也需要定義特定的時間點來進行！底下的範例先看看囉！</p>
-<pre><code>範例一：再過五分鐘後，將 /root/.bashrc 寄給 root 自己
+<p>也就是计算机界常见的2进制表示法。当全部ai都取1时，那么1+2+4…+2^k = 2^(k+1) - 1 &gt;= x, 将x=50带入，k+1即为所求。</p>
+<p>所以第一问的答案就是 log(50+1)  取上整</p>
+<p><span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前 卒 <i class="fa fa-external-link-alt"></i></span> 这样解决了第一问，那么第二问应该就是第一问的变种。</p>
+<p>因为砝码可以放左边、右边、不放。那么就有三种状态(-1,1,0). 这就是如何用三种状态来标示一个数。那么</p>
+<pre><code>x = 1*a0 + 3*a1 + 9*a2 + ... + 3^k*ak 其中ai可以取-1,0,1
+</code></pre>
+<p>当全部ai都取1时，那么1+3+9…+3^k = (3^(k+1) - 1)/2 &gt;=x, 把x=50带入，那么k+1即为所求</p>
+<p>所以第二问的答案是 log3(x*2+1) 取上整 为 5</p>
+<p><span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐 前 卒 <i class="fa fa-external-link-alt"></i></span> 又想起快速幂级运算</p>
+<p>a^k 如果一次乘个a,那么需要乘k次。如果使用二分法 那么 只需要乘log(k)取上整次就可以做完。</p>
+<p>a^0</p>
+<p>a^1</p>
+<p>a^2</p>
+<p>a^3</p>
+<p>a^4</p>
+<p>a^5</p>
+<p>1</p>
+<p>a^1</p>
+<p>a^2</p>
+<p>a1*a^2</p>
+<p>1*a^4</p>
+<p>a^1 * a^4</p>
+<p>这样表示就会发现其实a^k 其实就是把k表示为2进制的形式。</p>
+<p>5 就是 101   就是 a^1 * a^4</p>
+<p>下面写就比较好写程序了。</p>
+<pre><code>total=1; // total就是所求，k就是幂，a就是底数
+while(k) &#123;
+     if (k&amp;1) total*=a;
+     a*=a;
+     k&gt;&gt;=1;
+&#125;
+</code></pre>
 
-[root@www ~]# at now + 5 minutes
-  &lt;==記得單位要加 s 喔！
+      
+    </div>
 
-at&gt; /bin/mail root -s &quot;testing at job&quot; &lt; /root/.bashrc
+    
+    
+    
 
-at&gt; &lt;EOT&gt;   &lt;==這裡輸入 [ctrl] + d 就會出現 &lt;EOF&gt; 的字樣！代表結束！
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
 
-job 4 at 2009-03-14 15:38
-# 上面這行資訊在說明，第 4 個 at 工作將在 2009/03/14 的 15:38 進行！
-# 而執行 at 會進入所謂的 at shell 環境，讓你下達多重指令等待運作！
-範例二：將上述的第 4 項工作內容列出來查閱
 
-[root@www ~]# at -c 4
 
-#!/bin/sh               &lt;==就是透過 bash shell 的啦！
 
-# atrun uid=0 gid=0
-# mail     root 0
-umask 22
-....(中間省略許多的環境變數項目)....
+    
 
-cd /root || &#123;           &lt;==可以看出，會到下達 at 時的工作目錄去執行指令
 
-         echo 'Execution directory inaccessible' &gt;&amp;2
-         exit 1
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/27/8619221/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/02/27/8619221/" class="post-title-link" itemprop="url">新版有道云笔记3.1版本客户端无法登陆 解决方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-02-27 20:34:00" itemprop="dateCreated datePublished" datetime="2013-02-27T20:34:00+08:00">2013-02-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>399</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>因为新版的采用的HTTPS的方式。更加安全。但是国内的一些DNS运营商，似乎对HTTPS的方法做了特殊处理。</p>
+<p>这里要再感谢Google的8.8.8.8 DNS.</p>
+<p>如果自家网络实在链接不上 <span class="exturl" data-url="aHR0cHM6Ly9ub3RlLnlvdWRhby5jb20="> https://note.youdao.com <i class="fa fa-external-link-alt"></i></span> ,<br />
+那么配置一下自己的DNS，改为8.8.8.8,而不要使用的默认的。就可以链接成功。</p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5oYTk3LmNvbS9jYXRlZ29yeS9taWNyb3NvZnQvd2luZG93cw=="> windows <i class="fa fa-external-link-alt"></i></span> 下设置：</p>
+<p>对于宽带拨号用户，在“设置”-“网络连接”中找到宽带上网的连接，打开网络连接属性，选择Interner协议（ <a target="_blank" rel="noopener" href="http://www.ha97.com/tag/tcpip"> TCP/IP<br />
+</a> ）（win7与vista的用户请选择TCP/ <a target="_blank" rel="noopener" href="http://www.ha97.com/tag/ipv4"> IPv4<br />
+</a><br />
+协议）的属性页里，不要选择自动获取DNS，而要选择“使用下面的DNS服务器地址”，首选DNS服务器和备用DNS服务器分别设置为<br />
+8.8.8.8和8.8.4.4，完成后断开网络重新连接上网即可。如图所示：</p>
+<p><img src="http://img.my.csdn.net/uploads/201302/27/1361968715_2302.jpg" alt="" /><br />
+<img src="http://img.my.csdn.net/uploads/201302/27/1361968724_6622.jpg" alt="" /><br />
+然后就可以访问了…</p>
+<p>如果还不行记得清理一下DNS缓存： 命令如下</p>
+<p>ipconfig /flushdns</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/25/8610479/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/02/25/8610479/" class="post-title-link" itemprop="url">服务兼容/数据迁移</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-02-25 18:20:00" itemprop="dateCreated datePublished" datetime="2013-02-25T18:20:00+08:00">2013-02-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>391</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近在整理登陆模块的数据兼容和服务兼容。有几点值得注意的地方：</p>
+<p>1. 数据库表格式不一致。这需要格式转换非常令人头痛。</p>
+<p>2. 旧服务不下线，新服务上线后，新的验证机制旧的server不兼容。新验证与旧的验证难以分离。web端和其他各端使用的验证方式不一致，或者说发布/更新速<br />
+度不一致。</p>
+<p>3. 新的cookie会通过某些途径进入到web端。我x</p>
+<p>4. 新的服务在某些情况下，需要依赖旧的服务。</p>
+<p>这真是令人头痛的一件事。</p>
+<p>解决方法：</p>
+<p>1. 新服务在旧服务之前做验证，或者在认证串中加入版本信息。</p>
+<p>2. 新server引入旧服务的所有表，但是只读。不能通过引入表解决的。在旧的server上加http等接口同时限制ip.新server访问这些接口。</p>
+<p>3. nginx 将旧接口映射到新接口。</p>
+<p>另外需要开始时，设计好错误码，错误码一旦冲突，并且各个客户端使用了，这就不好办了。另外各个客户端也需要对新旧认证做兼容处理。悲催呀.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/20/8595821/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/02/20/8595821/" class="post-title-link" itemprop="url">Java中的interrupt和stop方法——java中线程停止的方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-02-20 19:55:00" itemprop="dateCreated datePublished" datetime="2013-02-20T19:55:00+08:00">2013-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>简单的看interrupt其实是设置了一个变量。除非有wait(), join(),<br />
+sleep()等方法，否则调用interrupt()方法，是没有什么效果的。</p>
+<p>stop()确实是终止一个线程的方法。并且终止后，的确回收了部分资源。这里要看资源是什么，如果是socket, 和IO流等，这里需要自己去close().如<br />
+果你觉得自己每次在调用的地方写麻烦，那就在线程的finalize()方法里定义如果回收IO流/Socket流/数据库连接等。</p>
+<p>另外如果希望在一个线程中杀掉另外一个线程，还是推荐使用stop()方法，虽然java文档中说这个方法很不安全，并且以后在更高级的版本中不再提供该方法。</p>
+<p>终止一个线程的方法， <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前卒 <i class="fa fa-external-link-alt"></i></span> 觉得有如下几种：</p>
+<p>1. 设置volatile变量或者普通一个全局变量。volatile的好处是保证了不会被java<br />
+compiler优化，也就是不会调整语句的执行顺序。例如：</p>
+<pre><code>if (a == null) &#123;
+    synchronized(a) &#123;
+           if (a == null) &#123;
+                       a = new instance();
+           &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>上面的语句很有可能被编译器优化为</p>
+<pre><code>if (a == null) &#123;
+    synchronized(a) &#123;
+           a = new instance();
+           if (a == null) &#123;
+                       
+           &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>这个在java 1.6以上版本反正是支持volatile关键字的。</p>
+<p>一般这样终止线程</p>
+<pre><code>while(value) &#123;
+        // do something
 &#125;
 
-/bin/mail root -s &quot;testing at job&quot; &lt; /root/.bashrc
-# 你可以看到指令執行的目錄 (/root)，還有多個環境變數與實際的指令內容啦！
-範例三：由於機房預計於 2009/03/18 停電，我想要在 2009/03/17 23:00 關機？
-
-[root@www ~]# at 23:00 2009-03-17
-
-at&gt; /bin/sync
-
-at&gt; /bin/sync
-
-at&gt; /sbin/shutdown -h now
-
-at&gt; &lt;EOT&gt;
-job 5 at 2009-03-17 23:00
-# 您瞧瞧！ at 還可以在一個工作內輸入多個指令呢！不錯吧！
+// 另外一个线程，会修改value这个bool变量。
 </code></pre>
-<p>事實上，當我們使用 at 時會進入一個 at shell 的環境來讓使用者下達工作指令，此時，  建議你最好使用絕對路徑來下達你的指令，比較不會有問題喔<br />
-！由於指令的下達與 PATH 變數有關， 同時與當時的工作目錄也有關連 (如果有牽涉到檔案的話)，因此使用絕對路徑來下達指令，會是比較一勞永逸的方法。<br />
-為什麼呢？舉例來說，你在 /tmp 下達『 at now 』然後輸入『 mail root -s “test” &lt; .bashrc 』， 問一下，那個<br />
-.bashrc 的檔案會是在哪裡？答案是『 /tmp/.bashrc 』！因為  at 在運作時，會跑到當時下達 at 指令的那個工作目錄  的緣故啊！</p>
-<p>有些朋友會希望『我要在某某時刻，在我的終端機顯示出 Hello 的字樣』，然後就在 at 裡面下達這樣的資訊『 echo “Hello”<br />
-』。等到時間到了，卻發現沒有任何訊息在螢幕上顯示，這是啥原因啊？  這是因為 at 的執行與終端機環境無關，而所有 standard<br />
-output/standard error output 都會傳送到執行者的 mailbox 去  啦！所以在終端機當然看不到任何資訊。那怎辦？沒關係，<br />
-可以透過終端機的裝置來處理！假如你在 tty1 登入，則可以使用『 echo “Hello” &gt; /dev/tty1 』來取代。</p>
-<p>** Tips: **<br />
-要注意的是，如果在 at shell 內的指令並沒有任何的訊息輸出，那麼 at 預設不會發 email 給執行者的。 如果你想要讓 at 無論如何都發一封<br />
-email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 』來下達指令喔！ at 就會傳送一個訊息給執行者，而不論該指令執行有無訊息輸出了！</p>
-<p>at 有另外一個很棒的優點，那就是『背景執行』的功能了！什麼是背景執行啊？很難瞭解嗎？其實與 bash 的 nohup ( <a target="_blank" rel="noopener" href="http://linux.vbird.org/linux_basic/0440processcontrol.php#nohup"> 第十七章<br />
-</a> ) 類似啦！<br />
-鳥哥提我自己的幾個例子來給您聽聽，您就瞭了！</p>
-<ul>
-<li>
-<p>離線繼續工作的任務  ：鳥哥初次接觸 Unix 為的是要跑空氣品質模式， 那是一種大型的程式，這個程式在當時的硬體底下跑，一個案例要跑 3 天！由於鳥哥也要進行其他研究工作，因此常常使用 Windows 98 來連線到 Unix 工作站跑那個 3 天的案例！結果你也該知道， Windows 98 連開三天而不當機的機率是很低的～@_@～ 而當機時，所有在 Windows 上的連線都會中斷！包括鳥哥在跑的那個程式也中斷了～嗚嗚～明明再三個鐘頭就跑完的程式， 由於當機害我又得跑 3 天！</p>
-</li>
-<li>
-<p>另一個常用的時刻則是例如上面的範例三，由於某個突發狀況導致你必須要進行某項工作時，這個 at 就很好用啦！</p>
-</li>
-</ul>
-<p>由於 at 工作排程的使用上，系統會將該項 at 工作獨立出你的 bash 環境中， 直接交給系統的 atd 程式來接管，因此，當你下達了 at<br />
-的工作之後就可以立刻離線了， 剩下的工作就完全交給 Linux 管理即可  ！所以囉，如果有長時間的網路工作時，嘿嘿！ 使用 at<br />
-可以讓你免除網路斷線後的困擾喔！ <sup>_</sup></p>
+<p>2. 使用wait(), join(), sleep()等方法：</p>
+<pre><code>public void run() &#123;
+  try &#123;
+    while(true) &#123;
+                // do something
+               wait();
+    &#125;
+  &#125; catch(Exception e)&#123;&#125;
+&#125;
+</code></pre>
+<p>外面拿到这个线程的reference就可以执行 thread.interrupt(); 这样线程就终止了。</p>
+<p>3.  直接执行thread.stop() 方法。</p>
+<p>如果// do something这个执行语句中有一个未知的方法，这个方法执行的时间较长以及消耗内存较大。那么如果监控到内存消耗超过一定值，就应该把这个线程<br />
+kill掉。那么上面两种方法是无论如何都做不到的。只能只用stop()方法。但stop()方法的劣势也在java doc中有详尽的说明。 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1"> 帐 前卒<br />
+</a> 这里就不多说了。</p>
 
       
     </div>
@@ -2287,7 +690,7 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/09/20/5897786/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/20/8595796/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -2305,7 +708,7 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/09/20/5897786/" class="post-title-link" itemprop="url">老姐婚礼</a>
+          <a href="/2013/02/20/8595796/" class="post-title-link" itemprop="url">Resin 4.0.8  升级到 Resin 4.0.14</a>
         </h2>
 
         <div class="post-meta-container">
@@ -2316,14 +719,14 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-09-20 18:57:00" itemprop="dateCreated datePublished" datetime="2010-09-20T18:57:00+08:00">2010-09-20</time>
+      <time title="Created: 2013-02-20 19:35:00" itemprop="dateCreated datePublished" datetime="2013-02-20T19:35:00+08:00">2013-02-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
     </span>
 
   
@@ -2333,7 +736,7 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>263</span>
+      <span>193</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -2351,12 +754,12 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>老姐在东北完成婚礼…然后准备在家乡摆个婚宴。</p>
-<p>因为老姐的缘故，有幸逛了下喀左。北方的小镇，风还是蛮舒服的。因为工业不发达，所以很适合人类居住。小镇很好，大概走路也就是30分钟就可以贯穿整个小镇。这个时间<br />
-只够我从软件所走到计算所。</p>
-<p>婚礼蛮成功的，特别是老姐和姐夫自己做的flash，效果很不错。当然婚礼中还有几处细节不尽人意。1，烟花不那么容易点着。2，荧光水没有将心形容器灌满。彩排了多<br />
-次，紧张还是在所难免。不过氛围很好，很煽情:)值得一提的是，老姐那天灰常漂亮~</p>
-<p>整个旅程唯一不足的是，叔每次都喝多，而且还打呼噜…我实在难以入睡。</p>
+          <p>之前发现4.0.8中可能存在milti-part的数据无法传递到service中。后来就迁移了。</p>
+<p>另外发现有时resin中webapp目录中有些文件会自动重建。即使删除了各种cache和数据，只要resin重启，必然，那个目录中的文件就出现了。</p>
+<p>解决这种情况的方式：</p>
+<p>1. 杀掉resin进程，删除掉xxx.war 和xxx那个文件夹。</p>
+<p>2. 将新的xxx.war放入到resin中</p>
+<p>3. 重启resin</p>
 
       
     </div>
@@ -2383,7 +786,7 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/09/07/5868606/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/20/8595791/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -2401,7 +804,7 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/09/07/5868606/" class="post-title-link" itemprop="url">MFC CString Wstring Char Wchar _T 关系及转换</a>
+          <a href="/2013/02/20/8595791/" class="post-title-link" itemprop="url">Unable to Resolve Host : No Address Associated With Hostname</a>
         </h2>
 
         <div class="post-meta-container">
@@ -2412,14 +815,14 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-09-07 15:07:00" itemprop="dateCreated datePublished" datetime="2010-09-07T15:07:00+08:00">2010-09-07</time>
+      <time title="Created: 2013-02-20 19:28:00" itemprop="dateCreated datePublished" datetime="2013-02-20T19:28:00+08:00">2013-02-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
     </span>
 
   
@@ -2429,14 +832,14 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.1k</span>
+      <span>334</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>1 mins.</span>
     </span>
 </div>
 
@@ -2447,41 +850,17 @@ email 告知你是否執行了指令，那麼可以使用『 at -m 時間格式 
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>最近做了下宽字符，窄字符的实验。发现了一系列的有趣东东。我发现我过去一直使用Ascii编码。现在发现unicode还是灰常有用的。</p>
-<p>首先std::string std::wstring 和CString 这几个东东最好不要用于DLL的接口之中，不管是返回值还是传入的参数。当然编译时是不会<br />
-出错的，但是链接可能会有各种奇异的问题，比如不能识别CString等等。所以建议DLL接口还是使用LPCTSTR LPCSTR<br />
-LPCWSTR以及我们经常使用的char*. 反正是DLL接口中的类型越基础也好。当然你可以尝试使用复合类型。</p>
-<p>这里的的LPCTSTR 就是const TCHAR <em>, LPCSTR 就是const char</em> , LPCWSTR就是 const<br />
-wchar_t*。LP就是指针的意思，C就是const,T就是TCHAR, W就是wchar_t, 然后大家都有STR的后缀。关于TCHAR,char,<br />
-以及wchar_t之间的关系，其实看你是否定义了_UNICODE宏，想要定义的话需要在编译的时候添加编译参数-<br />
-D_UNICODE即可。如果定义了这个宏，那么wchar_t就是TCHAR, 否则 TCHAR就是<br />
-char,其实这里就是为了灵活性。对于vs系列，想要识别unicode编码，需要在字符或者字符串前添加L,例如：</p>
-<p>wchar_t a = L’a’; wchar_t *b = L&quot;abc&quot;;</p>
-<p>关于_T()的使用，或许就明了了，_T(“ab”) 就是L&quot;ab&quot; , _T(‘c’) 就是 L’c’, _T(x)的宏定义就是 L ## x，其意思就是将<br />
-L和x像字符串一样连接在一起。关于宏定义的各种用法，感兴趣的可以search.当然为了灵活性，这里也是使用了_T也有两个定义这个也与是否定义了_UNICOD<br />
-E宏有关系。</p>
-<p>所谓窄字符其实就是ascii字符，这个东东只有1个字节。而宽字符有2个字节。这就是宽字和窄字的不同了。当然这里还有WORD和DWORD,这里的WORD其实就<br />
-是unsigned short,就是2个字节和wchar_t一样。而DWORD就是unsigned<br />
-long也就是4字节。根据特殊的应用，有不同的效果。不过说到底还是各种基础类型转来转去的。</p>
-<p>关于各种类型的互相转换其实不是很简单，不过大都可以通过CString来转换。各种窄字符可以直接放入到CString构造函数中，它将自动的为所有的字符添加L.<br />
-让其成为unicode. 例如</p>
-<p>const char * a = “abc”; CString s(a);</p>
-<p>其实CString可以强制转换为LPCTSTR,如果想强制转换为其他的类型，最好考虑下是否有后遗症。但是强转为LPCTSTR是没有问题的。另外std::ws<br />
-tring本身是有wchar_t的数组构成的。而std::string本身是有char数组构成的。对于这些类型只需要调用<br />
-c_str()就可以转变为const wchar_t* 或者 const char*.另外因为string,wstring, CString这几个东东都有引<br />
-用计数的机制，所以在多线程编程中，尽量不要使用。另外对于CString而言，这个东西可以强制不使用引用计数机制，只需要调用lockBuffer即可。另外CS<br />
-tring转char* 如果是在Atl编程的情况下可以使用T2A（）这个函数，对于其他可以调用WideCharToMultiByte（）这个函数：</p>
-<p>WideCharToMultiByte( __in UINT CodePage, __in DWORD dwFlags, __in_opt LPCWSTR<br />
-lpWideCharStr, __in int cchWideChar, __out_bcount_opt(cbMultiByte) LPSTR<br />
-lpMultiByteStr, __in int cbMultiByte, __in_opt LPCSTR lpDefaultChar, __out_opt<br />
-LPBOOL lpUsedDefaultChar);</p>
-<p>这个东东有8个参数，不过一般你如果使用TCHAR* 转 char* 只需要使用其中的若干个。一般使用：WideCharToMultiByte(CP_ACP,<br />
-0, lpw, -1, lpa, nChars, NULL, NULL); lpw是你传入的TCHAR* or wchar_t, lpa是你最终的转换数组，<br />
-当然这个东东开始的内容需要自己分配，当然如果nChars这个是0的话，其实这个函数只是数了下宽字符的个数，然后将这个个数当做返回值返回，如果nChars这个<br />
-不为零，那么就是要填充的大小了，并且这个函数真正做了将宽字符转换成bytes的工作。CP_ACP这个是ascii页表。后两个产生对于未知的编码很有用，最后一<br />
-个你可以传入一个bool型的指针，如果所有的宽字符没有对应的多个窄字符,那么就会被倒数第二个参数替代，如果第二参数是NULL,那么就会使用?替代。当然此时这<br />
-个bool型指针的值就会变为true.</p>
-<p>这样就可以各种类型的转换了。首先所有的类型转换为CString, 然后再用CString转为各种类型。</p>
+          <p>一般形如：Unable to resolve host “<span class="exturl" data-url="aHR0cDovL3d3dy54eHh4LmNvbQ==">www.xxxx.com<i class="fa fa-external-link-alt"></i></span>” : No address associated with<br />
+hostname</p>
+<p>碰到这个问题是在android系统中。</p>
+<p>检测如下几点：</p>
+<p>1. 浏览器使用了proxy,但是你的app没有。设置</p>
+<pre><code>System.setProperty(&quot;http.proxyHost&quot;, &quot;my.proxyhost.com&quot;);
+System.setProperty(&quot;http.proxyPort&quot;, &quot;1234&quot;);
+</code></pre>
+<p>2. 浏览器可以访问网络，但是app不行？</p>
+<p>3. 是不是SSL的原因。</p>
+<p>自己的遇到这个问题，最终发现是app的网络设置有问题，改正后，就可以连接网络了。</p>
 
       
     </div>
@@ -2508,7 +887,7 @@ LPBOOL lpUsedDefaultChar);</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/09/03/2010-09-03-postgresql-function-define/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/20/8595773/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -2526,7 +905,7 @@ LPBOOL lpUsedDefaultChar);</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/09/03/2010-09-03-postgresql-function-define/" class="post-title-link" itemprop="url">Postgresql Function Define</a>
+          <a href="/2013/02/20/8595773/" class="post-title-link" itemprop="url">Ant Resolve时碰到如下错误a Module Is Not Authorized to Depend on Itself</a>
         </h2>
 
         <div class="post-meta-container">
@@ -2537,14 +916,116 @@ LPBOOL lpUsedDefaultChar);</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2010-09-03T00:00:00+08:00">2010-09-03</time>
+      <time title="Created: 2013-02-20 19:23:00" itemprop="dateCreated datePublished" datetime="2013-02-20T19:23:00+08:00">2013-02-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:06" itemprop="dateModified" datetime="2023-10-06T22:54:06+08:00">2023-10-06</time>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>323</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <pre><code>a module is not authorized to depend on itself
+</code></pre>
+<p>这个错误产生的原因是 ivy.xml中依赖的一个项目就是自身。</p>
+<p>例如，这个项目叫abc, ivy.xml中写</p>
+<dependency org="toolbox" name="abc" rev="1.0.+" conf="dev->web"/>  
+这样就会产生问题，把这个项目改为abc1, 依赖还是abc就可以了。
+<p>另外publish 时注意</p>
+<pre><code>&lt;configurations&gt;
+        &lt;conf name=&quot;dev&quot; visibility=&quot;private&quot; description=&quot;develop demo.&quot;/&gt;
+&lt;/configurations&gt;
+</code></pre>
+<p>中的visibility属性。这样发布出去的话，其他项目是无法依赖 dev 这个model的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/01/08/2013-01-08-long-weibochang-wei-bo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/01/08/2013-01-08-long-weibochang-wei-bo/" class="post-title-link" itemprop="url">Long Weibo长微博</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-01-08 21:15:00" itemprop="dateCreated datePublished" datetime="2013-01-08T21:15:00+08:00">2013-01-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:54:15" itemprop="dateModified" datetime="2023-10-06T22:54:15+08:00">2023-10-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -2552,7 +1033,7 @@ LPBOOL lpUsedDefaultChar);</p>
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+          <a href="/categories/prose/" itemprop="url" rel="index"><span itemprop="name">prose</span></a>
         </span>
     </span>
 
@@ -2563,14 +1044,14 @@ LPBOOL lpUsedDefaultChar);</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.6k</span>
+      <span>707</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>1 mins.</span>
     </span>
 </div>
 
@@ -2581,36 +1062,27 @@ LPBOOL lpUsedDefaultChar);</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="views" content="1573" />
-In Postgresql, If you want to do something like "select Hello(a) from A;". You should define your own function Hello().
-<p>First, go to postgresql root directory and go into contrib file folder. Create your own directory, and add hello.h , hello.c, Makefile, <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">hello.sql.in<i class="fa fa-external-link-alt"></i></span> and uninstall_Hello.sql.in</p>
-<p>Makefile is like the following:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">MODULE_big  = Hello // this is module name</span><br><span class="line">OBJS = Hello.o // those will be create by execute &quot;make&quot;</span><br><span class="line"></span><br><span class="line">DATA_built = hello.sql // install your function using this sql file</span><br><span class="line">DATA = uninstall_Hello.sql</span><br><span class="line">SHLIB_LINK = $(BE_DLLLIBS)</span><br><span class="line"></span><br><span class="line">ifdef USE_PGXS // this is a build infrastructure of extentions in postgreSQL</span><br><span class="line">PGXS = $(shell pg_config --pgxs)</span><br><span class="line">include $(PGXS)</span><br><span class="line">else</span><br><span class="line">subdir = contrib/Hello // here is your code files</span><br><span class="line">top_builddir = ../..</span><br><span class="line">include $(top_builddir)/src/Makefile.global</span><br><span class="line">include $(top_srcdir)/contrib/contrib-global.mk</span><br><span class="line">endif</span><br><span class="line"></span><br><span class="line">// the following code fragment is copying content of *.sql.in into *.sql</span><br><span class="line">%.sql: %.source</span><br><span class="line">	rm -f $@; \</span><br><span class="line">	C=`pwd`; \</span><br><span class="line">	sed -e &quot;s:_OBJWD_:$$C:g&quot; &amp;lt; $&amp;lt; &amp;gt; $@</span><br></pre></td></tr></table></figure>
-<p>Attention!!! In Makefile those command should be with no blank at end.<br />
-Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">hello.sql.in<i class="fa fa-external-link-alt"></i></span>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">SET search_path = public; --you should add this code first.</span><br><span class="line">--functions</span><br><span class="line">--take care of those functions, if those functions are used for data input and out, their args or return type must be cstring or varchar</span><br><span class="line"></span><br><span class="line">-- arg type is cstring</span><br><span class="line">CREATE OR REPLACE FUNCTION hello_in(cstring)</span><br><span class="line">   RETURNS HelloS</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br><span class="line">-- return type is cstring</span><br><span class="line">CREATE OR REPLACE FUNCTION hello_out(HelloS)</span><br><span class="line">   RETURNS cstring</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br><span class="line"></span><br><span class="line">--data type</span><br><span class="line">CREATE TYPE HelloS (</span><br><span class="line">   internallength = 52,</span><br><span class="line">   input = hello_in,</span><br><span class="line">   output = hello_out,</span><br><span class="line">   alignment = double</span><br><span class="line">);</span><br><span class="line">--size is 52 bytes and alignment is 8 bytes.</span><br><span class="line">--if you don&#x27;t know its real size, use internallength = VARIABLE</span><br><span class="line">--if you want use binary array as its input and out, you should use receive=XXX_function, and send = XXX_function</span><br><span class="line"></span><br><span class="line">--outer function</span><br><span class="line">--this function can use kinds of types</span><br><span class="line">CREATE OR REPLACE FUNCTION Hello(HelloS)</span><br><span class="line">   RETURNS cstring</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br></pre></td></tr></table></figure>
-<p>Here is the uninstall_Hello.sql.in:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SET search_path = public;</span><br><span class="line"></span><br><span class="line">DROP FUNCTION hello_in(cstring);</span><br><span class="line">DROP FUNCTION hello_out(HelloS);</span><br><span class="line">DROP TYPE HelloS;</span><br><span class="line">DROP FUNCTION Hello(HelloS);</span><br></pre></td></tr></table></figure>
-<p>In hello.h</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#ifndef HELLO_H</span><br><span class="line">#define HELLO_H</span><br><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include&amp;lt;stdlib.h&amp;gt;</span><br><span class="line"></span><br><span class="line">#include &quot;postgres.h&quot;</span><br><span class="line">#include &quot;fmgr.h&quot;</span><br><span class="line">#include &quot;funcapi.h&quot;</span><br><span class="line">// you should take care of the order of those head files!!!</span><br><span class="line"></span><br><span class="line">typedef struct&#123;</span><br><span class="line">	char content[52];</span><br><span class="line">&#125;HelloS;</span><br><span class="line"></span><br><span class="line">Datum		hello_in(PG_FUNCTION_ARGS);</span><br><span class="line">Datum		hello_out(PG_FUNCTION_ARGS);</span><br><span class="line">Datum               Hello(PG_FUNCTION_ARGS);</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-<p>hello.c</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#include “hello.h”</span><br><span class="line"></span><br><span class="line">#ifndef MOD_FOR_PG</span><br><span class="line">PG_MODULE_MAGIC;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">PG_FUNCTION_INFO_V1(hello_in);</span><br><span class="line">Datum</span><br><span class="line">hello_in(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">	// get args[0]</span><br><span class="line">	char * str = PG_GETARG_CSTRING(0);</span><br><span class="line">    HelloS * hs = palloc(sizeof(HelloS));</span><br><span class="line">    if(NULL != str)&#123;</span><br><span class="line">        strcpy(hs-&amp;gt;content,str);</span><br><span class="line">        PG_RETURN_POINTER(hs)</span><br><span class="line">    &#125;</span><br><span class="line">    PG_RETURN_NULL();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PG_FUNCTION_INFO_V1(hello_out);</span><br><span class="line">Datum</span><br><span class="line">hello_out(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">	// get args[0]</span><br><span class="line">    Hello * hs = PG_GETARG_POINTER(0);</span><br><span class="line"></span><br><span class="line">    if(NULL != hs)&#123;</span><br><span class="line">        char * content = palloc(sizeof(HelloS));</span><br><span class="line">        strcpy(content,hs-&amp;gt;content);</span><br><span class="line">        PG_RETURN_CSTRING(content);</span><br><span class="line">    &#125;</span><br><span class="line">    PG_RETURN_CSTRING(&quot;&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PG_FUNCTION_INFO_V1(Hello);</span><br><span class="line">Datum</span><br><span class="line">Hello(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">   HelloS* hs = PG_GETARG_POINTER(0);</span><br><span class="line"> if(NULL != hs)&#123;</span><br><span class="line">    char * res = palloc(sizeof(HelloS));</span><br><span class="line">    sprintf(res,&quot;hello %s&quot;,hs-&amp;gt;content);</span><br><span class="line">    PG_RETURN_CSTRING(res);</span><br><span class="line"> &#125;</span><br><span class="line"> PG_RETURN_CSTRING(&quot;hello nobody&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Then cd your folder contrib/Hello, make, and make install</p>
-<p>Then start psql to execute :</p>
-<p>create table A(a HelloS);</p>
-<p>insert into A values(‘cc’);</p>
-<p>insert into A values(‘ff’);</p>
-<p>select Hello(a) from A;</p>
-<p>result:</p>
-<p>Hello cc</p>
-<p>Hello ff</p>
-<p>select * from A;</p>
-<p>result:</p>
-<p>cc</p>
-<p>ff</p>
+          <p>今天有人提议在贵公司举行的“黑客马拉松”中搞一个项目&quot;长微博生成工具&quot;。开始假设都挺好的，说只需要一个文本，就能重用以前的服务，然后做一个这样工具出来。开始大家真心觉得不错。好做又能功能复用。就在大家热情高涨的时候，我说：“这样的工具已经有了。”</p>
+<p>长微博源自于一般微博只有140字，如果希望字数更多，那么就要将这样的文字转换为图片，然后以图片的形式发布出去。这样看到这条微博的人就能看到更多的信息。其实将文字转图片不难，但是将html转图片，就需要考虑展示了。java的能做，c++的也能做到，大家可以调研一下。长微博的站点现在有：</p>
+<ol>
+<li>
+<p><a href="www.changweibo.com">长微博，站点名就叫这个</a>  这个网站支持富文本编辑，并且支持图片和表格插入。该网站开始的编辑区就是和微博最终图片展示的大小相同，所以不必担心超宽度。</p>
+</li>
+<li>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy50YWljaGFuZ2xlLmNvbS8=">太长了<i class="fa fa-external-link-alt"></i></span> 这个网站比前一个简陋了很多，只是支持简单的图片插入(头/尾)， 不过支持自己的logo和版权。相比第一个这点好很多。但是实在是太简陋了。</p>
+</li>
+<li>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5jd2Jnai5jb20v">长微博@工具<i class="fa fa-external-link-alt"></i></span> 这个网站比前一个还简陋.就不多说了。大概是这两个网站都没有时间做富文本编辑器。</p>
+</li>
+<li>
+<p><span class="exturl" data-url="aHR0cDovL2NvbnRyb2wuYmxvZy5zaW5hLmNvbS5jbi9hZG1pbi9hcnRpY2xlL2NoYW5nV2VpQm8ucGhw">新浪原生的长微博工具<i class="fa fa-external-link-alt"></i></span>  这个是支持富文本了，但是这个东西是和新浪博客合在一起使用的。如果不是新浪微博上自己的文字，是不能被发布的。基本无用。</p>
+</li>
+<li>
+<p><span class="exturl" data-url="aHR0cDovL25vdGUueW91ZGFvLmNvbQ==">有道云笔记长微博工具<i class="fa fa-external-link-alt"></i></span> 使用方式在PC端中分享微博就可以了。老王卖瓜，我这里就不夸了。说说现在的缺点，对于某些富文本的内容展示的效果还不是太理想。另外字体还是不太好看。正在持续改进中…欢迎使用</p>
+</li>
+</ol>
+<p>话说贵公司发的明信片太多的广告。有人问祝福语应该写在哪里？上面全都是贵公司各个产品做得广告。我说：“那你就写4个字：欢迎使用。”</p>
+<p>老婆终于学会她年会的舞蹈了，太有喜感了。</p>
 
       
     </div>
@@ -2637,7 +1109,7 @@ Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">h
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/09/02/2010-09-02-error-lnk2019/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/01/06/2013-01-06-2013-dot-01-dot-07jin-ri-jian-wen/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -2655,7 +1127,7 @@ Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">h
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/09/02/2010-09-02-error-lnk2019/" class="post-title-link" itemprop="url">Error LNK2019 Unresolved External Symbol </a>
+          <a href="/2013/01/06/2013-01-06-2013-dot-01-dot-07jin-ri-jian-wen/" class="post-title-link" itemprop="url">2013.01.07今日见闻，奖金，年终奖，感谢贵公司</a>
         </h2>
 
         <div class="post-meta-container">
@@ -2666,14 +1138,14 @@ Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">h
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-09-02 00:00:00" itemprop="dateCreated datePublished" datetime="2010-09-02T00:00:00+08:00">2010-09-02</time>
+      <time title="Created: 2013-01-06 22:16:00" itemprop="dateCreated datePublished" datetime="2013-01-06T22:16:00+08:00">2013-01-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 13:08:06" itemprop="dateModified" datetime="2023-10-07T13:08:06+08:00">2023-10-07</time>
+      <time title="Modified: 2023-10-06 22:54:14" itemprop="dateModified" datetime="2023-10-06T22:54:14+08:00">2023-10-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -2681,11 +1153,7 @@ Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">h
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/program/" itemprop="url" rel="index"><span itemprop="name">program</span></a>
+          <a href="/categories/prose/" itemprop="url" rel="index"><span itemprop="name">prose</span></a>
         </span>
     </span>
 
@@ -2696,14 +1164,14 @@ Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">h
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2k</span>
+      <span>474</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>1 mins.</span>
     </span>
 </div>
 
@@ -2714,17 +1182,108 @@ Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">h
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_keywords" content="LNK2019" />
-<meta name="views" content="2408" />
-Today I have found this problem :
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">error LNK2019: unresolved external symbol __imp__gethostname@8 referenced in function _wmain</span><br><span class="line">and fatal error LNK1120: 1 unresolved externals </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>code fragment is :</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;WinSock2.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> _tmain(<span class="type">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> len = <span class="number">256</span>;</span><br><span class="line">	<span class="type">char</span> buffer[len];</span><br><span class="line">	<span class="type">int</span> a = <span class="built_in">gethostname</span>(buffer,len);</span><br><span class="line">	cout &amp;lt;&amp;lt;ａ&amp;lt;&amp;lt;endl; <span class="comment">// a will be -1</span></span><br><span class="line">	cout &amp;lt;&amp;lt; buffer&amp;lt;&amp;lt;endl; <span class="comment">// buffer will be filled with unreadable code.</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3><strong>What's wrong? </strong></h3>
-If you don't add <span style="color: #000080;">#include &lt;WinSock2.h&gt;</span>, the compiler will report :  <span style="color: #800000;">error C3861: 'gethostname': identifier not found </span>. But after you adding this header, it will report above error again.  First, you should add the header &lt;afxext.h&gt; into stdafx.h, then compile the code again. Code will be compiled without any error. Then run this code fragment, and the result is not my expected. a is -1, and the buffer is filled with messy code. If you use WSAGetLastError() function to see it error code, the error code will be WSANOTINITIALISED. Yes, I have not initialized. So we should call WSAStartup() first and then gethostname. And WSAStartup() will check DLL version. And after having gotten hostname, don't forget to call WSACleanup(). Here is the whole code:
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"><span class="comment">//#include &amp;lt;winsock.h&amp;gt;</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;WinSock2.h&gt;</span> <span class="comment">// use winsock2.h is ok</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> _tmain(<span class="type">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> len = <span class="number">256</span>;</span><br><span class="line">	<span class="type">char</span> buffer[len];</span><br><span class="line">	WORD wVersionRequested;</span><br><span class="line">	WSADATA wsaData;</span><br><span class="line">	wVersionRequested = <span class="built_in">MAKEWORD</span>(<span class="number">2</span>,<span class="number">2</span>); <span class="comment">//version 2.2 </span></span><br><span class="line">	<span class="type">int</span> err = <span class="built_in">WSAStartup</span>(wVersionRequested,&amp;amp;wsaData);</span><br><span class="line">	<span class="keyword">if</span> (<span class="number">0</span> != err) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="built_in">LOBYTE</span>( wsaData.wVersion ) != <span class="number">2</span> ||</span><br><span class="line">        <span class="built_in">HIBYTE</span>( wsaData.wVersion ) != <span class="number">2</span> ) &#123;</span><br><span class="line">               <span class="comment">// only support version 2.2 of Windows Sockets </span></span><br><span class="line">			<span class="built_in">WSACleanup</span>();</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// get hostname</span></span><br><span class="line">	<span class="type">int</span> a = <span class="built_in">gethostname</span>(buffer,len);</span><br><span class="line">	<span class="comment">/* if there is an error. use WSAGetLastError to find it.</span></span><br><span class="line"><span class="comment">	int errcode = WSAGetLastError();</span></span><br><span class="line"><span class="comment">	switch(errcode)&#123;</span></span><br><span class="line"><span class="comment">	 ....</span></span><br><span class="line"><span class="comment">	&#125;*/</span></span><br><span class="line">	cout &lt;&lt; buffer &lt;&lt; endl;</span><br><span class="line">	<span class="built_in">WSACleanup</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+          <p>today, 今天发了双薪，本来那一个月的薪水是应该在奖金中一起发的。按照过去的发钱方法交税是比较少的，还能给自己留点余额。今年可好了，一半的工资都被做为税收了…感谢国家，感谢党，感谢贵公司。</p>
+<p>据说年终奖4万元以上的话，这样发双薪划算。想来贵公司这么的人性化。老婆说没发这么多年终奖的话，就不让我回家…所以我准备从现在开始筹钱。</p>
+<p>今天贵公司发的二手笔记本电源灯一直闪红色，插电源充电也没有用。解决方法不是换电源、不是换主板、不是换另外一个二手电脑，而是用贴纸把灯贴住。感谢贵公司，我又学会了节省。</p>
+<p>今天打开了久违的虚拟机，写了blog. 很长时间没有用，都不知道怎么写octopress的blog了。</p>
+<p>老婆大人边在旁边跳舞，边在旁边讥讽我拿了双薪…我问她为什么跳舞不动手，她说还没有学会手的动作…</p>
+<p>今天重构了一下RSA,AES模块，发现和c++通信的RSA模块还是不行，这该死的RSA算法,写的非常的通用，就是多个语言之间通常都不用。嗯，&quot;通用&quot;新解。</p>
+<p>另外今天发布blog一直不成功，后来发现需要先验证git.com的邮箱…竟然有这样的事情.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/12/13/8290371/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2012/12/13/8290371/" class="post-title-link" itemprop="url">Nginx 转发会去掉带有下划线(_)的Header Name</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2012-12-13 13:36:00" itemprop="dateCreated datePublished" datetime="2012-12-13T13:36:00+08:00">2012-12-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>168</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>nginx对header name的字符做了限制，默认 underscores_in_headers 为off，表示如果header<br />
+name中包含下划线，则忽略掉。<br />
+处理办法：</p>
+<p>1：配置中http部分 增加underscores_in_headers on; 配置<br />
+2：用减号-替代下划线符号_，避免这种变态问题。nginx默认忽略掉下划线可能有些原因。</p>
 
       
     </div>
@@ -2744,7 +1303,7 @@ If you don't add <span style="color: #000080;">#include &lt;WinSock2.h&gt;</span
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/12/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/12/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
