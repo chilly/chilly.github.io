@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":20,"unescape":false,"preload":false}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/config.min.js"></script>
+
+    <meta name="description" content="##最初的算法 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cpu优先级调度算法和时间片算法模拟程序">
+<meta property="og:url" content="http://chillyc.info/2006/07/26/schedule-algroithm/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="##最初的算法 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2006-07-26T01:14:00.000Z">
+<meta property="article:modified_time" content="2023-10-09T01:03:07.373Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="algorithm">
+<meta property="article:tag" content="schedule">
+<meta property="article:tag" content="调度">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2006/07/26/schedule-algroithm/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2006/07/26/schedule-algroithm/","path":"2006/07/26/schedule-algroithm/","title":"Cpu优先级调度算法和时间片算法模拟程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Cpu优先级调度算法和时间片算法模拟程序 | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/rss2.xml" title="帐前卒专栏" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.<br/>代码，软件架构，博客和小说</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-feeds"><a href="/rss2.xml" rel="section"><i class="fa fa-feed fa-fw"></i>feeds</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/07/26/schedule-algroithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Cpu优先级调度算法和时间片算法模拟程序 | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cpu优先级调度算法和时间片算法模拟程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2006-07-26 09:14:00" itemprop="dateCreated datePublished" datetime="2006-07-26T09:14:00+08:00">2006-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-09 09:03:07" itemprop="dateModified" datetime="2023-10-09T09:03:07+08:00">2023-10-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>##最初的算法</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//System Shedule Algorithm  </span></span><br><span class="line"><span class="comment">//include the Priority First Algorithm and the Time Slice Algorithm  </span></span><br><span class="line"><span class="comment">//Version 2.0  </span></span><br><span class="line"><span class="comment">//author:chillyCreator</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iomanip&gt;</span>  </span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">process</span>  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">string name;<span class="comment">//the name of process  </span></span><br><span class="line"><span class="type">int</span> pri;<span class="comment">//the priority,the bigger is the higher. the number is from 0 to 99  </span></span><br><span class="line"><span class="type">int</span> round;<span class="comment">// the time slice.  </span></span><br><span class="line"><span class="type">int</span> cpuTime;<span class="comment">//the process used by cpu  </span></span><br><span class="line"><span class="type">int</span> needTime;<span class="comment">//the time need to finish the process  </span></span><br><span class="line"><span class="type">int</span> state;<span class="comment">// 1 is ready, 0 is Run, -1 is Finish  </span></span><br><span class="line">process* next;<span class="comment">//to the next  </span></span><br><span class="line"><span class="keyword">public</span> :  </span><br><span class="line"><span class="comment">//constructor  </span></span><br><span class="line"><span class="built_in">process</span>(string Name,<span class="type">int</span> Pri,<span class="type">int</span> NeedTime,<span class="type">int</span> roundTime = <span class="number">10</span>,<span class="type">int</span> State = <span class="number">1</span>,<span class="type">int</span></span><br><span class="line">CpuTime=<span class="number">0</span>,process * Next = <span class="literal">NULL</span>)  </span><br><span class="line">&#123;  </span><br><span class="line">name  = Name;  </span><br><span class="line">pri = Pri;  </span><br><span class="line">round = roundTime;  </span><br><span class="line">cpuTime = CpuTime;  </span><br><span class="line">needTime = NeedTime;  </span><br><span class="line">state = State;  </span><br><span class="line">next = Next;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//gettors and settors  </span></span><br><span class="line"><span class="function">string <span class="title">getName</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">return</span> name;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getPri</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">return</span> pri;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getNeedTime</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">return</span> needTime;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getCpuTime</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">return</span> cpuTime;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getState</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">return</span> state;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function">process* <span class="title">getNext</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">return</span> next;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setState</span><span class="params">(<span class="type">int</span> State)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">state = State;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setCpuTime</span><span class="params">(<span class="type">int</span> Time)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">cpuTime += Time;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setNeedTime</span><span class="params">(<span class="type">int</span> Time)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">needTime -= Time;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setPri</span><span class="params">(<span class="type">int</span> Pri)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">pri -= Pri;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setNextProcess</span><span class="params">(process* Next)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">next = Next;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="comment">//for print  </span></span><br><span class="line">cout &lt;&lt;<span class="built_in">setw</span>(<span class="number">14</span>)&lt;&lt;name &lt;&lt; <span class="built_in">setw</span>(<span class="number">2</span>)&lt;&lt;state&lt;&lt;<span class="built_in">setw</span>(<span class="number">7</span>)&lt;&lt;needTime  </span><br><span class="line">&lt;&lt;<span class="built_in">setw</span>(<span class="number">10</span>)&lt;&lt;pri&lt;&lt;<span class="built_in">setw</span>(<span class="number">5</span>)&lt;&lt;cpuTime&lt;&lt;endl;  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//this is nonpreempt system  </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">System</span>  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">process* head;  </span><br><span class="line">process* tail;  </span><br><span class="line"><span class="type">int</span> length;  </span><br><span class="line"><span class="comment">//auto test  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test1</span><span class="params">(<span class="type">int</span> n)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">head = <span class="keyword">new</span> <span class="built_in">process</span>(<span class="string">&quot;Head&quot;</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">0</span>);  </span><br><span class="line">length = <span class="number">0</span>;  </span><br><span class="line">process* temp = head;  </span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">&#123;  </span><br><span class="line">temp-&gt;<span class="built_in">setNextProcess</span>(<span class="keyword">new</span> <span class="built_in">process</span>(<span class="string">&quot;NameIsForTest &quot;</span>+i,<span class="number">20</span>-i,<span class="number">30</span>+i));  </span><br><span class="line">length++;  </span><br><span class="line">temp = temp-&gt;<span class="built_in">getNext</span>();  </span><br><span class="line">&#125;  </span><br><span class="line">tail = temp;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//user test  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test2</span><span class="params">(<span class="type">int</span> n)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">head = <span class="keyword">new</span> <span class="built_in">process</span>(<span class="string">&quot;Head&quot;</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">0</span>);  </span><br><span class="line">length = <span class="number">0</span>;  </span><br><span class="line">process* temp = head;  </span><br><span class="line">string name;  </span><br><span class="line"><span class="type">int</span> priority,needtime;  </span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">&#123;  </span><br><span class="line">cin&gt;&gt;name&gt;&gt;priority&gt;&gt;needtime;  </span><br><span class="line">temp-&gt;<span class="built_in">setNextProcess</span>(<span class="keyword">new</span> <span class="built_in">process</span>(name,priority,needtime));  </span><br><span class="line">length++;  </span><br><span class="line">temp = temp-&gt;<span class="built_in">getNext</span>();  </span><br><span class="line">&#125;  </span><br><span class="line">tail = temp;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line"><span class="comment">//testN is for the various of tests. 1 is using the default test. 2 is using</span></span><br><span class="line">the User test.  </span><br><span class="line"><span class="built_in">System</span>(<span class="type">int</span> testN,<span class="type">int</span> num)  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="comment">//num is the number of processes  </span></span><br><span class="line"><span class="keyword">if</span>(testN == <span class="number">1</span>)  </span><br><span class="line"><span class="built_in">test1</span>(num);  </span><br><span class="line"><span class="keyword">else</span>  </span><br><span class="line"><span class="built_in">test2</span>(num);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//delete a process  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">deleteProcess</span><span class="params">(process* a)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">process* temp = tail;  </span><br><span class="line"><span class="built_in">toQueueEnd</span>(a);  </span><br><span class="line"><span class="keyword">delete</span> a;  </span><br><span class="line">tail = temp;  </span><br><span class="line">tail-&gt;<span class="built_in">setNextProcess</span>(<span class="literal">NULL</span>);  </span><br><span class="line">length--;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">toQueueEnd</span><span class="params">(process* a)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">if</span>(a-&gt;<span class="built_in">getNext</span>()==<span class="literal">NULL</span>)  </span><br><span class="line"><span class="keyword">return</span>;  </span><br><span class="line">process* temp = <span class="built_in">findP</span>(a);  </span><br><span class="line">temp-&gt;<span class="built_in">setNextProcess</span>(a-&gt;<span class="built_in">getNext</span>());  </span><br><span class="line">tail-&gt;<span class="built_in">setNextProcess</span>(a);  </span><br><span class="line">tail = a;  </span><br><span class="line">tail-&gt;<span class="built_in">setNextProcess</span>(<span class="literal">NULL</span>);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//put the process to the end of the queue  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">toQueueHead</span><span class="params">(process* a)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">if</span>(head-&gt;<span class="built_in">getNext</span>()==a)  </span><br><span class="line"><span class="keyword">return</span>;  </span><br><span class="line">process* temp = <span class="built_in">findP</span>(a);  </span><br><span class="line">temp-&gt;<span class="built_in">setNextProcess</span>(a-&gt;<span class="built_in">getNext</span>());</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(a==tail)  </span><br><span class="line">tail = temp;  </span><br><span class="line">a-&gt;<span class="built_in">setNextProcess</span>(head-&gt;<span class="built_in">getNext</span>());  </span><br><span class="line">head-&gt;<span class="built_in">setNextProcess</span>(a);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//find parent  </span></span><br><span class="line"><span class="function">process* <span class="title">findP</span><span class="params">(process* a)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">process* temp = head;  </span><br><span class="line"><span class="keyword">while</span>(temp-&gt;<span class="built_in">getNext</span>() != a)  </span><br><span class="line">temp = temp-&gt;<span class="built_in">getNext</span>();  </span><br><span class="line"><span class="keyword">return</span> temp;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//when the process is sheduled into the CPU  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">(process* pro,<span class="type">int</span> RunTime,<span class="type">int</span> dePriority)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">if</span>(pro-&gt;<span class="built_in">getState</span>()==<span class="number">1</span>)  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="keyword">if</span>(RunTime &lt; pro-&gt;<span class="built_in">getNeedTime</span>())  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="built_in">toQueueHead</span>(pro);  </span><br><span class="line">pro-&gt;<span class="built_in">setCpuTime</span>(RunTime);  </span><br><span class="line">pro-&gt;<span class="built_in">setNeedTime</span>(RunTime);  </span><br><span class="line">pro-&gt;<span class="built_in">setPri</span>(dePriority);  </span><br><span class="line"><span class="built_in">toQueueEnd</span>(pro);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">else</span>  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="built_in">toQueueHead</span>(pro);  </span><br><span class="line">pro-&gt;<span class="built_in">setCpuTime</span>(pro-&gt;<span class="built_in">getNeedTime</span>());  </span><br><span class="line">pro-&gt;<span class="built_in">setNeedTime</span>(pro-&gt;<span class="built_in">getNeedTime</span>());  </span><br><span class="line">pro-&gt;<span class="built_in">setState</span>(<span class="number">-1</span>);  </span><br><span class="line">cout &lt;&lt; endl&lt;&lt;pro-&gt;<span class="built_in">getName</span>()&lt;&lt;<span class="string">&quot; finally use the cpu time is</span></span><br><span class="line"><span class="string">&quot;</span>&lt;&lt;pro-&gt;<span class="built_in">getCpuTime</span>()&lt;&lt;endl;  </span><br><span class="line"><span class="built_in">deleteProcess</span>(pro);  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printAll</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="comment">//All of the process are printed  </span></span><br><span class="line">cout &lt;&lt; <span class="built_in">setw</span>(<span class="number">14</span>)&lt;&lt;<span class="string">&quot;name &quot;</span> &lt;&lt; <span class="built_in">setw</span>(<span class="number">2</span>)&lt;&lt;<span class="string">&quot;state  &quot;</span>&lt;&lt;<span class="built_in">setw</span>(<span class="number">5</span>)&lt;&lt;<span class="string">&quot;needTime &quot;</span>  </span><br><span class="line">&lt;&lt;<span class="built_in">setw</span>(<span class="number">3</span>)&lt;&lt;<span class="string">&quot;pri &quot;</span>&lt;&lt;<span class="built_in">setw</span>(<span class="number">5</span>)&lt;&lt;<span class="string">&quot;cpuTime  &quot;</span>&lt;&lt;endl;  </span><br><span class="line"><span class="keyword">for</span>(process* temp = head-&gt;<span class="built_in">getNext</span>();temp!=<span class="literal">NULL</span>;temp= temp-&gt;<span class="built_in">getNext</span>())  </span><br><span class="line">&#123;  </span><br><span class="line">temp-&gt;<span class="built_in">print</span>();  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//find the Highest priority  </span></span><br><span class="line"><span class="function">process* <span class="title">findHighest</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">if</span>(head-&gt;<span class="built_in">getNext</span>()==<span class="literal">NULL</span>)  </span><br><span class="line"><span class="keyword">return</span> <span class="literal">NULL</span>;  </span><br><span class="line">process* temp = head-&gt;<span class="built_in">getNext</span>();  </span><br><span class="line">process* first = <span class="literal">NULL</span>;  </span><br><span class="line"><span class="type">int</span> i=<span class="number">-1</span>;  </span><br><span class="line"><span class="keyword">for</span>(;temp!=<span class="literal">NULL</span>;temp=temp-&gt;<span class="built_in">getNext</span>())  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="keyword">if</span>(i &lt; temp-&gt;<span class="built_in">getPri</span>())  </span><br><span class="line">&#123;  </span><br><span class="line">i = temp-&gt;<span class="built_in">getPri</span>();  </span><br><span class="line">first = temp;  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">return</span> first;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// the priority First Algorithm  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">FP</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="keyword">while</span>(length &gt; <span class="number">0</span>)  </span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">process* fir = <span class="built_in">findHighest</span>();  </span><br><span class="line"><span class="keyword">if</span>(fir != <span class="literal">NULL</span>)  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="built_in">printAll</span>();  </span><br><span class="line"><span class="built_in">use</span>(fir,<span class="number">10</span>,<span class="number">2</span>);  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//the Time slice Algorithm  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">TS</span><span class="params">(<span class="type">int</span> RunTime)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">while</span>(length&gt;<span class="number">0</span>)  </span><br><span class="line">&#123;  </span><br><span class="line">process* temp = head-&gt;<span class="built_in">getNext</span>();  </span><br><span class="line"><span class="built_in">printAll</span>();  </span><br><span class="line"><span class="keyword">if</span>(temp != <span class="literal">NULL</span>)  </span><br><span class="line"><span class="built_in">use</span>(temp,RunTime,<span class="number">0</span>);  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">//test  </span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="function">System <span class="title">a</span><span class="params">(<span class="number">1</span>,<span class="number">4</span>)</span></span>;  </span><br><span class="line">a.<span class="built_in">FP</span>();  </span><br><span class="line">cout&lt;&lt;endl&lt;&lt;endl&lt;&lt;endl;  </span><br><span class="line"><span class="function">System <span class="title">b</span><span class="params">(<span class="number">1</span>,<span class="number">4</span>)</span></span>;  </span><br><span class="line">b.<span class="built_in">TS</span>(<span class="number">10</span>);  </span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>今天终于把上面的代码调试成功了！</p>
+<p>不过感觉还不够好。如果队列能写成一个单独的类就好了。</p>
+<p>而且今天编写队列的删除，进程移至队尾和队首的算法时，思路没有整理好。故白白浪费了太多时间。</p>
+<p>对于移至队尾的操作应该记住要把最后一个节点的next指针赋为null.</p>
+<p>移至队首的操作也要注意队尾的变化。</p>
+<p>对于队列某个元素的删除操作,可以先将元素置尾再删除。或者查找指向它的前一个元素，再通过基本的操作进行删除。</p>
+<p>这段程序代码使用的是链表队列。所以考虑的事件较多。如果使用数组的话会省些时间。</p>
+<p>此外process 类的gettors and settors太多。简单的可以将私有的变量成员变为共有的。不过安全性不高。这个类中有些变量并没有什么作用，只不过为以后方便模拟。</p>
+<p>##继续优化cpu调度算法</p>
+<p>如果在system类中加一个这样函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//find the process which is not used.  </span></span><br><span class="line"><span class="comment">//the process will be older with the Time.  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">findOld</span><span class="params">(<span class="type">int</span> RunT)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="type">const</span> <span class="type">int</span> increasePri = <span class="number">-2</span>;  </span><br><span class="line"><span class="type">static</span> <span class="type">int</span> time=<span class="number">1</span>;  </span><br><span class="line">process* temp = head-&gt;<span class="built_in">getNext</span>();  </span><br><span class="line"><span class="keyword">while</span>(temp!=<span class="literal">NULL</span>)  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="keyword">if</span>((temp-&gt;<span class="built_in">getCpuTime</span>() - time*RunT) &lt; <span class="number">0</span>)  </span><br><span class="line">temp-&gt;<span class="built_in">setPri</span>(increasePri);  </span><br><span class="line">temp = temp-&gt;<span class="built_in">getNext</span>();  </span><br><span class="line">&#125;  </span><br><span class="line">time++;  </span><br><span class="line">cout &lt;&lt;time;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">而<span class="type">void</span> FT（）算法中这样调用：</span><br><span class="line"></span><br><span class="line"><span class="comment">// the priority First Algorithm  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">FP</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="type">int</span> TimeSlice = <span class="number">10</span>;  </span><br><span class="line"><span class="type">int</span> oldTimer=<span class="number">0</span>;  </span><br><span class="line"><span class="keyword">while</span>(length &gt; <span class="number">0</span>)  </span><br><span class="line">&#123;  </span><br><span class="line">  </span><br><span class="line">process* fir = <span class="built_in">findHighest</span>();  </span><br><span class="line"><span class="keyword">if</span>(oldTimer%<span class="number">4</span>==<span class="number">1</span>)  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="built_in">findOld</span>(TimeSlice);  </span><br><span class="line"><span class="comment">//  cout &lt;&lt; oldTimer;  </span></span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">if</span>(fir != <span class="literal">NULL</span>)  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="built_in">printAll</span>();  </span><br><span class="line"><span class="built_in">use</span>(fir,<span class="number">10</span>,<span class="number">2</span>);  </span><br><span class="line">&#125;  </span><br><span class="line">oldTimer++;  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样改动后就可以让进程随时间的增加而优先级提高。当一个进程在队列中很长一段时间后，进程就会出现老化情况。为了防止老化（就是很难再得到利用）的发生，过一段时间后就会检测进程。当发现长时间没有用到的进程时，优先级会升高。</p>
+<p>不过<code>void findOld(int RunT)</code>并不严谨。可能会出现所以进程都提高优先级的情况。所以还要进行优化。</p>
+<p>另外在上一次的代码中有可能会出现进程优先级为负数的情况。可以这样修改类process</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setPri</span><span class="params">(<span class="type">int</span> Pri)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">if</span>(pri-Pri&lt;<span class="number">0</span>)  </span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">    <span class="keyword">if</span>(pri-Pri&gt;<span class="number">100</span>)  </span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">    pri -= Pri;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+              <a href="/tags/schedule/" rel="tag"># schedule</a>
+              <a href="/tags/%E8%B0%83%E5%BA%A6/" rel="tag"># 调度</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2006/07/25/learn-js-4/" rel="prev" title="4.javascript--第二天源代码">
+                  <i class="fa fa-angle-left"></i> 4.javascript--第二天源代码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2006/07/26/learn-java-float/" rel="next" title="Java手记---算术符号">
+                  Java手记---算术符号 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Word count total: </span>
+    <span title="Word count total">1.6m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">24:10</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/next-boot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/bookmark.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/search/local-search.min.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/comments/utterances.min.js"></script>
+
+</body>
+</html>

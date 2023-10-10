@@ -172,12 +172,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">739</span>
+        <span class="site-state-item-count">750</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/04/26/2012-04-26-sina-oauth2/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/19/2010-04-19-quicksort-in-linux-or-unix/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/04/26/2012-04-26-sina-oauth2/" class="post-title-link" itemprop="url">新浪Oauth认证又改出bug...mismatch Url</a>
+          <a href="/2010/04/19/2010-04-19-quicksort-in-linux-or-unix/" class="post-title-link" itemprop="url">Quicksort in Linux or Unix</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,14 +243,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-04-26 22:18:00" itemprop="dateCreated datePublished" datetime="2012-04-26T22:18:00+08:00">2012-04-26</time>
+      <time title="Created: 2010-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-19T00:00:00+08:00">2010-04-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:17:46" itemprop="dateModified" datetime="2023-10-05T23:17:46+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-06 22:54:00" itemprop="dateModified" datetime="2023-10-06T22:54:00+08:00">2023-10-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -258,7 +258,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
         </span>
     </span>
 
@@ -269,987 +269,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>879</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>万恶的新浪呀～～～今天本来事情多，结果新浪Oauth2.0接口突然有变化。导致新浪用户无法使用有道云笔记登录，登录就会有mismatch url error。于是今天做hot fix. 一时找不出问题时，客户端登录不上去，但是web可以正常使用。然后经大师兄点拨，对比了一下两个访问新浪的url,终于发现了不同。原因在于某个新浪小白程序猿写程序出了bug。我的callback地址是四级域名（<span class="exturl" data-url="aHR0cDovL3h4Lnh4LnlvdWRhby5jb20=">xx.xx.youdao.com<i class="fa fa-external-link-alt"></i></span>）而新浪现在的接口即使绑定了域名，还是只支持三级域名(<span class="exturl" data-url="aHR0cDovL3h4LnlvdWRhby5jb20=">xx.youdao.com<i class="fa fa-external-link-alt"></i></span>). 以前新浪的小白程序猿还写出来仅接受一个url参数的神奇程序，当然出现这个情况也在意料之中。我时常在想写新浪微博和写新浪微博openAPI的一定不是同一批人。最主要的是新浪更新或者新浪自己挂掉从来不通知开发者。这让人相当费解。只有不要传播谣言啥的专门给开发者发信…他们真有趣。</p>
-<p>知道了原因，首先做hot fix.让新浪那边改，那难比登天呀。做第三方这事情还是QQ做得好些。Hot fix比较恶心，不推荐大家学习。虽然只改了一句code，但是是硬编码。Hot Fix之后，所有的客户端就能正常登录了。但是有道云笔记的页面会最终说…其实你没有认证成功的…但是客户端的确是活着好好的。这是为啥…上了趟厕所，灵感来了。有道server完成了跳转，但是因为cookie的domain和callback的域名不一致。所以那个最终页面看到没有带来cookie呀，那肯定登录失败了。但是cookie被client端很好接收。所以也就可以完成登录和获取数据。这就是为啥登录失败了，但是客户端还活着好好的。</p>
-<p>然后继续做Hot FIX.后来发现自己编来编去，还是太丑陋。直接叫运维做了一个跳转…然后客户端就活得好好的了。也不会出现登录失败页了。</p>
-<p>今天大事小事都赶到一起了。做了一个TTT，本以为写得概括大家就都能听懂，结果大家都听得很朦胧。以后写ppt还是要写细致一些，还要写挑战和为什么要做这件事。嗯嗯，下次会更好…这又让我想到写论文…话说敏姐的致谢中大部分都是在赞美导师…这一定是怕不让毕业…</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/03/21/2012-03-21-svn-diff/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/03/21/2012-03-21-svn-diff/" class="post-title-link" itemprop="url">Svn Diff</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-03-21 21:21:00" itemprop="dateCreated datePublished" datetime="2012-03-21T21:21:00+08:00">2012-03-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 11:47:34" itemprop="dateModified" datetime="2023-10-07T11:47:34+08:00">2023-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>724</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近碰到了<code>svn merge</code>之后，再使用<code>svn diff</code>产生出来的patch中缺少某些文件的信息。后来发现了原因。使用<code>svn st</code>查看那些文件信息，类似于:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A       src/aa.c</span><br><span class="line">A   +   src/bb.c</span><br><span class="line">M       src/cc.c</span><br></pre></td></tr></table></figure>
-<p>这样输出的patch中，aa.c是信息是都有的。cc.c也是有的。但是bb.c的信息不存在。主要是存在那个<code>+</code>. <code>+</code>的意思是这些文件存在于提交历史中，所以该文件不能再次被diff.但是为什么会存在于提交历史中，这个我就不知道了。<br />
-下面是教你如何去掉<code>+</code>.<br />
-使用下面的脚本会方便的去掉各个文件的<code>+</code>,对于目录的<code>+</code>是不能去掉的.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">plus_file=`svn st | grep <span class="string">&quot;^A&quot;</span> | grep <span class="string">&quot;+&quot;</span> | <span class="built_in">cut</span> -d<span class="string">&quot; &quot;</span> -f6`</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$plus_file</span>; <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">if</span> [ -d <span class="variable">$i</span> ]; <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;skip <span class="variable">$i</span>&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">cp</span> <span class="variable">$&#123;i&#125;</span> <span class="variable">$&#123;i&#125;</span>.back;</span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$i</span>;</span><br><span class="line">                svn revert <span class="variable">$i</span>;</span><br><span class="line">                <span class="built_in">mv</span> <span class="variable">$&#123;i&#125;</span>.back <span class="variable">$&#123;i&#125;</span>;</span><br><span class="line">                svn add <span class="variable">$i</span>;</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">上面脚本的工作原理是:</span><br><span class="line"><span class="built_in">cp</span> src/bb.c src/bb.c.back</span><br><span class="line">svn revert src/bb.c</span><br><span class="line"><span class="built_in">mv</span> src/bb.c.back src/bb.c</span><br><span class="line">svn add src/bb.c</span><br></pre></td></tr></table></figure>
-<p>这样所有的<code>A +</code>状态就变为了<code>A</code>。这样再使用<code>svn diff</code>就可以得到完整的diff信息。如果有想法还可以处理一下文件夹。不过review code时，文件夹的意义并不大，所以就没有处理。这里顺便感谢下巧大牛。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/23/2012-02-23-you-dao-yun-bi-ji-1-dot-5zheng-shi-ban-shang-xian/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/02/23/2012-02-23-you-dao-yun-bi-ji-1-dot-5zheng-shi-ban-shang-xian/" class="post-title-link" itemprop="url">有道云笔记1.5正式版上线</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-02-23 02:08:00" itemprop="dateCreated datePublished" datetime="2012-02-23T02:08:00+08:00">2012-02-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:17:38" itemprop="dateModified" datetime="2023-10-05T23:17:38+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>463</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天晚上…或者说今天早上。反正是跨天的.有道云笔记1.5版本正式上线。开始时数据转换花了很长时间。后面基本没有出现什么大问题，主要是id不统一。整到两点钟才算正式搞好。明天早上就不准备去上班了.困…还是把这篇blog写完吧。</p>
-<p>####问题：</p>
-<ol>
-<li>其实测试环境下，还是不能测试出所有到问题。因为和线上的配置不一样。</li>
-<li>其实组内改动什么设计问题，可能牵扯到几个人，但是做设计或者真正写代码的时候，其实不知道牵扯到谁。</li>
-<li>web页面的文字链.其实没有提前做好。不知道为什么UI总是在临上线的时候才有。</li>
-<li>技术先导的project,再让PM来设计.真的是比较痛苦。</li>
-</ol>
-<p>####新的功能：</p>
-<ol>
-<li>客户端新浪微博帐号登录。其实根据现在的涉及还是有些bug的。比如打开两个授权页面，第一个页面其实已经不能再用来登录了。但是用户输入用户名密码还是会授权成功。至于为什么…我不告诉你～</li>
-<li>锁屏…离线登录态…还有啥就不知道了。</li>
-<li>server端的设计有改动。</li>
-<li>。。。。。</li>
-</ol>
-<p>####好了…该去睡觉了。<br />
-另外今天上线的是有道云笔记1.5正式版…比官方稿件快7-8个小时…<br />
-另外地址是<span class="exturl" data-url="aHR0cDovL25vdGUueW91ZGFvLmNvbQ==">有道云笔记1.5<i class="fa fa-external-link-alt"></i></span></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/21/2012-02-21-windows-c-plus-plus-cheng-xu-qian-yi-dao-linux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/02/21/2012-02-21-windows-c-plus-plus-cheng-xu-qian-yi-dao-linux/" class="post-title-link" itemprop="url">Windows C++程序迁移到linux</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-02-21 20:16:00" itemprop="dateCreated datePublished" datetime="2012-02-21T20:16:00+08:00">2012-02-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 11:47:24" itemprop="dateModified" datetime="2023-10-07T11:47:24+08:00">2023-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>844</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天把程序从windows上迁移到了linux上。主要遇到到问题是: makeFile, lib库, compile error, 编码 encoding.<br />
-####make file<br />
-这里其实可以使用eclipse中到cdt插件，然后就可以从eclipse中写c++。挺方便的，同时也解决了make file的问题。因为创建一个c++ 或者 c project，eclipse会自动创建一系列的makefile文件。所以让make file步骤简单无比。<br />
-####lib库和include库<br />
-这里真的要注意/usr/include和/usr/lib中是否有你想要到文件。当然如果你是纯c<ins>代码，可以尝试下只使用/usr/include/c</ins>. 当如除了-L libpath, 还有-llibname, 这里的libname其实是libXXXX.so中的XXXX. 不过如果不会写，这里还是会费些劲。还有include路径要使用<code>-I</code>,每一个路径前都要有一个<code>-I</code>. 另外还要在eclipse run configurate中的environment中填入LD_LIBRARY_PATH,这个是你要调用的lib库（这个lib库如果不在/usr/lib中，那么就要手工将路径填入到LD_LIBRARY_PATH变量里）。并且在.bashrc中写：</p>
-<pre class="highlight"><code class="bash">LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:your_lib_path
-</code></pre>
-<p>####编码<br />
-因为windows上最常用到中文编码是GBK,而文件编码最常用到是utf-16el.这里最有可能会出错。在eclipse中或者gcc直接编译，都最好转换为UTF-8编码。文件也需要是UTF-8的编码。否则就会报&quot;程序有游离的XXX, 忽略空字符&quot;等诡异的错误。<a href="http://chillyc.info/blog/2012/02/20/jie-jue-cheng-xu-zhong-you-you-chi-de-slash-xxx-hu-lue-kong-zi-fu/">详见解决方法</a><br />
-####compile error<br />
-这个可能就多种多样了。不过有c/c++基础的，应该大部分都可以搞定了。</p>
-<p>如果使用eclipse, 直接build project就可以编译成功。然后找到main函数run就可以了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/21/2012-02-21-octopress-error/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/02/21/2012-02-21-octopress-error/" class="post-title-link" itemprop="url">Octopress Error, Rake Generate</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-02-21 20:00:00" itemprop="dateCreated datePublished" datetime="2012-02-21T20:00:00+08:00">2012-02-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:17:26" itemprop="dateModified" datetime="2023-10-05T23:17:26+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>332</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Today, I met the following problem. I wrote an article, and use <code>rake generate</code> to generate the site. Then the console reports:</p>
-<blockquote><p>/home/chico/.rvm/rubies/ruby-1.9.2-p290/lib/ruby/1.9.1/psych.rb:148:in `parse’: couldn’t parse YAML at line 3 column 17 (Psych::SyntaxError)</p>
-</blockquote>
-<p>why?<br />
-Then I found the reason:</p>
-<blockquote><p>“\” should not be written in title of your article. If you really want to write it, use “\\”</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/20/2012-02-20-jie-jue-cheng-xu-zhong-you-you-chi-de-slash-xxx-hu-lue-kong-zi-fu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/02/20/2012-02-20-jie-jue-cheng-xu-zhong-you-you-chi-de-slash-xxx-hu-lue-kong-zi-fu/" class="post-title-link" itemprop="url">程序中有游离的\X,忽略空字符</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-02-20 13:32:00" itemprop="dateCreated datePublished" datetime="2012-02-20T13:32:00+08:00">2012-02-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 12:54:04" itemprop="dateModified" datetime="2023-10-07T12:54:04+08:00">2023-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>349</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天解决了linux 环境中编译c++或者c文件时产生的错误。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">程序中有游离的&quot;\xxx&quot;</span><br><span class="line">忽略空字符</span><br></pre></td></tr></table></figure>
-<p>以上两个错误，产生的原因和字符编码有关系。一般是文件从windows转移到linux下，然后使用c或者cc或者g++编译。产生了一系列的报警和错误信息。<br />
-解决方法如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 使用vi打开报错的文件</span><br><span class="line">2. 查看其文件编码. 也就是用vi 查看encoding变量。&quot;:set fileencoding?&quot; </span><br><span class="line">3. 如果编码不是utf-8则转换为utf-8. 使用&quot;:set fileencoding=utf-8&quot;</span><br><span class="line">4. 保存文件</span><br></pre></td></tr></table></figure>
-<p>当然产生这种错误的原因还有可能是由于在代码里输入了全角字符引起的。如果上面的方法不对，还需要再进一步排查<code>cat -A filename</code>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/13/2012-02-13-xrange-and-range-in-python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/02/13/2012-02-13-xrange-and-range-in-python/" class="post-title-link" itemprop="url">Xrange and Range in Python</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-02-13 20:14:00" itemprop="dateCreated datePublished" datetime="2012-02-13T20:14:00+08:00">2012-02-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:17:18" itemprop="dateModified" datetime="2023-10-05T23:17:18+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>347</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="简单来说"><a class="markdownIt-Anchor" href="#简单来说"></a> 简单来说</h4>
-<p>python range会生成一个list对象，然后返回list中的内容，而xrange不会生成list对象。所以xrange相对与range来说更省空间，并且速度较快。</p>
-<p>在英文中的官方解释是：</p>
-<blockquote><p>class xrange(object)<br />
-|  xrange([start,] stop[, step]) -&gt; xrange object<br />
-|<br />
-|  Like range(), but instead of returning a list, returns an object that<br />
-|  generates the numbers in the range on demand.  For looping, this is<br />
-|  slightly faster than range() and more memory efficient.</p>
-</blockquote>
-<p>ok. Do you understand?</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/11/2012-02-11-build-website-in-ubuntu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/02/11/2012-02-11-build-website-in-ubuntu/" class="post-title-link" itemprop="url">Build Website in Ubuntu</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-02-11 14:31:00" itemprop="dateCreated datePublished" datetime="2012-02-11T14:31:00+08:00">2012-02-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:17:14" itemprop="dateModified" datetime="2023-10-05T23:17:14+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>810</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>This article will tell you how to build a website in ubuntu system. First you should install apache and php. These two tools can help you to build a small website, like “hello world” websit:D</p>
-<blockquote><p>// run the following commands<br />
-sudo apt-get install apache2 php5 libapache2-mod-php5<br />
-/etc/init.d/apache2 restart</p>
-</blockquote>
-<h4 id="important-path"><a class="markdownIt-Anchor" href="#important-path"></a> important path</h4>
-<p>Then you should remember the following paths:</p>
-<blockquote><ul>
-<li>/etc/init.d/apache2</li>
-<li>/var/www</li>
-<li>/etc/apache2/apache2.conf</li>
-<li>/etc/apache2/conf.d</li>
-<li>/etc/apache2/sites-enabled</li>
-</ul>
-</blockquote>
-<p>Apache’s default document root is /var/www on Ubuntu, and the configuration file is /etc/apache2/apache2.conf. Additional configurations are stored in subdirectories of the /etc/apache2 directory such as /etc/apache2/mods-enabled (for Apache modules), /etc/apache2/sites-enabled (for virtual hosts), and /etc/apache2/conf.d</p>
-<h4 id="test-your-php"><a class="markdownIt-Anchor" href="#test-your-php"></a> Test your php</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /var/www/hello.php</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">phpinfo();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>Then call this file in browser (<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdC9oZWxsby5waHA=">http://localhost/hello.php<i class="fa fa-external-link-alt"></i></span>)<br />
-DONE:D</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/06/2012-02-06-machine-learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/02/06/2012-02-06-machine-learning/" class="post-title-link" itemprop="url">Machine Learning</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-02-06 14:06:00" itemprop="dateCreated datePublished" datetime="2012-02-06T14:06:00+08:00">2012-02-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:17:01" itemprop="dateModified" datetime="2023-10-05T23:17:01+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>78</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>概率，贝叶斯，熵，条件熵。互信息<code>I(X,Y)=H(Y)-H(Y|X)</code>，两个变量之间的依赖度。<br />
-今天接触了一个新的概念：学习的本质是压缩。化为经典就是<code>大道至简</code>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/01/2012-02-01-jstack-jmap-resin/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/02/01/2012-02-01-jstack-jmap-resin/" class="post-title-link" itemprop="url">Jstack Jmap Resin</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-02-01 20:41:00" itemprop="dateCreated datePublished" datetime="2012-02-01T20:41:00+08:00">2012-02-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:16:57" itemprop="dateModified" datetime="2023-10-05T23:16:57+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.1k</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1267,22 +287,1388 @@ DONE:D</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Today, I use <code>jstack</code>, <code>jmap</code>, and <code>resin</code> to look up why my server is deading in stress test. And I also find printing information into log is useful. You can print log in entrance of function and exit of function.<br />
-jstack is a tool which is looked up stack of system, specailly in threads. It is mainly for looking up dead lock and some functions which are executed too slowly.<br />
-jmap is a tool which is looked up current memory of system or some memery jvm can not delete immediately.<br />
-You can use jstack like this:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack -l [pid]</span><br></pre></td></tr></table></figure>
-<p>If you know pid of the process, you can see what’s the situation of stacks in process. If you want to see the detail, looking at those stacks.<br />
-jmap is used like this:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -heap [pid]</span><br></pre></td></tr></table></figure>
-<p>Today, Big niu Qiao tells me about JVM GC policy.<br />
-There are New Generation, Old Generate and Perm Generation in JVM. You can find them in jmap command. And New Generation are new objects. And Old Generation are old objects which are still be refered. Eden Space stores new generate objects. And From Space stores still alive objects after gc once. To space stores objects which are not refered and in From space before gc once. If an objects is in From Space many times, it will be moved to Old Generation by JVM. Perm Generation are static objects and Classes.<br />
-By the way, if your application runs in resin, you should look up those logs of resin, for example, jvm-default.log. The log file contains GC log information. If GC throws overMemory exception, you should modify your configuration of resin (resin.xml in resin4.0+). Modify or add:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;jvm-arg&gt;-Xmx1024&lt;/jvm-arg&gt;</span><br></pre></td></tr></table></figure>
-<p>This means set JVM heap space to 1G.</p>
+          <meta name="views" content="1142" />
+<meta name="_edit_last" content="1" />
+qsort is quicksort function in linux or Unix. The function prototype is
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void qsort(const void* array, const int number, const size_t sizeof_element,int (*cmp_fun)(const void*,const void*));</span><br></pre></td></tr></table></figure>
+<p>maybe I write too many const here:) I will write some examples to sort numbers below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdlib.h&amp;gt;</span><br><span class="line">// in c++ use cstdlib</span><br><span class="line">int cmp(const void * a, const void * b)&#123;</span><br><span class="line">	const int *tmp_a = (const int*)a;</span><br><span class="line">	const int *tmp_b = (const int *)b;</span><br><span class="line">	return *tmp_a-*tmp_b; // this is ASCE</span><br><span class="line">&#125; // this is function for comparing two Int type</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">	int array[100],i,flag = 0;</span><br><span class="line">	for(i =0; i &amp;lt;100; i++)&#123;</span><br><span class="line">		scanf(&quot;%d&quot;,&amp;amp;array[i]);	</span><br><span class="line">	&#125;</span><br><span class="line">	qsort(array,100, sizeof(array[0]), cmp);</span><br><span class="line">	// here you can use sizeof(int) instead</span><br><span class="line">	for(i = 0; i &amp;lt; 100; i++)&#123;</span><br><span class="line">		if(!flag)&#123;</span><br><span class="line">			printf(&quot;%d&quot;, array[i]);</span><br><span class="line">			flag = 1;</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			printf(&quot; %d&quot;, array[i]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	printf(&quot;\n&quot;);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>qsort function will change the content of array. If you want use complex object in qsort. You should just convert const void* to object*. If you will use point in array, you should compare with objects use **tmp_a-**tmp_b. If you want to compare double or float type, you should have a look at my another article: <a title="Permanent Link: compare double numbers in c/c++ language" rel="bookmark" href="../archives/172">compare  double numbers in c/c++ language.</a></p>
+<p>If you want a stable compare function, you can use qsort also. First you should construct a class or struct, then and index or other information into struct. And compare when two values are equal.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int cmp(const void * a, const void * b)&#123;</span><br><span class="line">	const Object *tmp_a = (const Object*)a;</span><br><span class="line">	const Object *tmp_b = (const Object *)b;</span><br><span class="line">	if(tmp_a-&amp;gt;value == tmp_b-&amp;gt;value)&#123;</span><br><span class="line">		if(tmp_a-&amp;gt;index &amp;lt; tmp_b-&amp;gt;index)&#123;</span><br><span class="line">			return -1;</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			return 1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return tmp_a-&amp;gt;value-tmp_b-&amp;gt;value; // this is ASCE</span><br><span class="line">&#125; // this is function for comparing two Int type</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/18/5500515/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/18/5500515/" class="post-title-link" itemprop="url">云计算——关于搜狗的云输入法中的缺陷</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-18 23:35:00" itemprop="dateCreated datePublished" datetime="2010-04-18T23:35:00+08:00">2010-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>459</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这个云输入法的创意是相当不错的，也不用重新开发适应于各种操作系统的应用程序(客户端)。节约了相当的成本。不过既然是其称为云输入法，相距于真正的云输入法还有一<br />
+段路要走：</p>
+<p>1.  云强调的个性化定制  ，暂时还未能满足。因为好像我想调些参数都不行。</p>
+<p>2.  云强调满足  用户的  短时高强度作业  ，暂时还未能满足。因为再我快速输入时，有时竟然要等许久，还有时是显示空白。</p>
+<p>3.这个是纯技术问题，在某网页中新生成的<div>或者<iframe>中搜狗云输入法失效。例如在csdn的blog中插入图片显示的小页面，就会不能再使用搜狗<br />
+输入法.  这个问题我也不知道如何解决  ，毕竟对页面编程也不是很熟悉。</p>
+<p>搜狗的云输入法，其实是一段javascript脚本，然后call一个webservice.只不过这段脚本中没有太多用户信息。所以也就没有啥个性化。以上两个问<br />
+题，第一个问题是相对好解决的功能问题。第二个问题就不怎么好解决了。大量配置服务器其实只不过能缓解暂时之需。真正的短时服务，其实应该保留用户的状态信息和访问连<br />
+接，如果有必要还可以分析用户的行为特征。这方面值得研究的地方还有许多。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/16/2010-04-16-use-doxygen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/16/2010-04-16-use-doxygen/" class="post-title-link" itemprop="url">Use Doxygen</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-16 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-16T00:00:00+08:00">2010-04-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:59" itemprop="dateModified" datetime="2023-10-06T22:53:59+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="views" content="677" />
+<meta name="_edit_last" content="1" />
+<span><span style="font-family: Verdana,Arial,Helvetica;"><a id="step2">doxygen is  a tool to generate documents. So you don't worry about writing mountainous documents of codes.  It can generate pdf, html, latex and also doc. But it will abstract the comment and keyword to generate documents. If your comments is not suitable for doxygen, it  will generate into documents.  First , get doxygen tool from Internet or use "<strong>sudo apt-get install doxygen</strong>" from ubuntu. Then cd to your project root, and type: "<strong>doxygen -g</strong>" to the configure file of generating document. Open New "Doxyfile" with vim or gedit. There are some labels in this configure file. label format is:
+</a></span></span>
+<h1 id="all-text-after-a-hash-is-considered-a-comment-and-will-be-ignored"><a class="markdownIt-Anchor" href="#all-text-after-a-hash-is-considered-a-comment-and-will-be-ignored"></a> All text after a hash (#) is considered a comment and will be ignored</h1>
+<h1 id="the-format-is"><a class="markdownIt-Anchor" href="#the-format-is"></a> The format is:</h1>
+<p>#       <strong>TAG = value [value, …]</strong></p>
+<h1 id="for-lists-items-can-also-be-appended-using"><a class="markdownIt-Anchor" href="#for-lists-items-can-also-be-appended-using"></a> For lists items can also be appended using:</h1>
+<p>#       <strong>TAG += value [value, …]</strong></p>
+<h1 id="values-that-contain-spaces-should-be-placed-between-quotes"><a class="markdownIt-Anchor" href="#values-that-contain-spaces-should-be-placed-between-quotes"></a> Values that contain spaces should be placed between quotes (&quot; &quot;)</h1>
+<p>There are some useful label for cpp or c project.</p>
+<h1 id="this-label-will-let-you-to-use-or-comments-to-generate-documents"><a class="markdownIt-Anchor" href="#this-label-will-let-you-to-use-or-comments-to-generate-documents"></a> this label will let you to use /// or //! comments to generate documents.</h1>
+<p><strong>MULTILINE_CPP_IS_BRIEF = YES</strong></p>
+<h1 id="whats-the-size-of-tab-in-your-code-documents"><a class="markdownIt-Anchor" href="#whats-the-size-of-tab-in-your-code-documents"></a> what’s the size of tab in your code documents?</h1>
+<p><strong>TAB_SIZE               = 4</strong></p>
+<h1 id="whats-the-name-of-project"><a class="markdownIt-Anchor" href="#whats-the-name-of-project"></a> what’s the name of project?</h1>
+<p><strong>PROJECT_NAME           = CNODE</strong></p>
+<h1 id="if-you-use-chinese-or-some-other-non-english-language"><a class="markdownIt-Anchor" href="#if-you-use-chinese-or-some-other-non-english-language"></a> If you use chinese or some other non-English language…</h1>
+<p><strong>DOXYFILE_ENCODING      = UTF-8</strong></p>
+<h1 id="which-patter-you-want-to-generate-documents-if-you-left-blank-doxygen-will-parse-to-kinds-of-files-but-here-i-just-use-two-kinds-files"><a class="markdownIt-Anchor" href="#which-patter-you-want-to-generate-documents-if-you-left-blank-doxygen-will-parse-to-kinds-of-files-but-here-i-just-use-two-kinds-files"></a> which patter you want to generate documents? If you left blank, doxygen will parse to kinds of files. But here, I just use two kinds files.</h1>
+<p><strong>FILE_PATTERNS          = *.h<br />
+FILE_PATTERNS          += *.c</strong></p>
+<h1 id="will-you-want-recursive-the-code-paths"><a class="markdownIt-Anchor" href="#will-you-want-recursive-the-code-paths"></a> will you want recursive the code paths?</h1>
+<p><strong>RECURSIVE              = YES</strong></p>
+<p>Save “Doxyfile” and run command: “<strong>doxygen</strong>”<strong><br />
+</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/15/2010-04-15-compare-double-numbers-in-cc-language/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/15/2010-04-15-compare-double-numbers-in-cc-language/" class="post-title-link" itemprop="url">Compare Double Numbers in C/c++ Language</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-15 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-15T00:00:00+08:00">2010-04-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:58" itemprop="dateModified" datetime="2023-10-06T22:53:58+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>461</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="views" content="1686" />
+<meta name="_edit_last" content="1" />
+double type is a strange type. And all in this type is not precision. If you want to compare two double numbers a and b are equal or not using: fabs(a-b) &lt; threshold. And threshold may be 0.000001 or even smaller. If you want to compare two numbers a and b are equal or not correcting to 2 decimal place. you can use fabs(a-b) &lt; 0.002, but you should not use fabs(a-b)&lt;0.01. if a is 99.99, it will store in computer as 99.9899999, and 99.98 may be 99.97999999 or 99.98000000, so fabs(a-b) will be 0.009999, this number will be equal to 0.01. So be careful.
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/14/2010-04-14-gcc-error/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/14/2010-04-14-gcc-error/" class="post-title-link" itemprop="url">Gcc Error</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-14 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-14T00:00:00+08:00">2010-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:57" itemprop="dateModified" datetime="2023-10-06T22:53:57+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>852</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="890" />
+if you use const variable to define an array out of main, like that:
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line"></span><br><span class="line">const int MAX= 100010;</span><br><span class="line">char s[MAX];</span><br><span class="line">int main()&#123;</span><br><span class="line"></span><br><span class="line">    while(fgets(s,MAX,stdin) != NULL)&#123;</span><br><span class="line">        puts(s);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>gcc will report : Error: variably modified ‘s’ at file scope. But if you use #define, it will be ok. like that:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line"></span><br><span class="line">#define MAX 100010</span><br><span class="line">char s[MAX];</span><br><span class="line">int main()&#123;</span><br><span class="line"></span><br><span class="line">    while(fgets(s,MAX,stdin) != NULL)&#123;</span><br><span class="line">        puts(s);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If you do not want to use #define macro, and you will use a small array, you can use a const variable to define the array size, like that:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line"></span><br><span class="line">//#define MAX 100010</span><br><span class="line">//char s[MAX];</span><br><span class="line">int main()&#123;</span><br><span class="line">    const int MAX= 30;</span><br><span class="line">    char s[MAX];</span><br><span class="line">    while(fgets(s,MAX,stdin) != NULL)&#123;</span><br><span class="line">        puts(s);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>But if you will allocate a big array in main function, gcc will report a warning ⚠️ overflow in implicit constant conversion</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/12/2010-04-12-ascii/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/12/2010-04-12-ascii/" class="post-title-link" itemprop="url">Ascii Table and Ascii Conversion Tool</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-12 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-12T00:00:00+08:00">2010-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:54" itemprop="dateModified" datetime="2023-10-06T22:53:54+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="1256" />
+<meta name="_oembed_1182a4049c943374b18ea1ce87e40b3c" content="" />
+<meta name="_oembed_979ac7989e73a0be6ed3dcf372aa92ad" content="" />
+<meta name="_oembed_fcf398842b787ae9fd78decf2181807e" content="" />
+<meta name="_oembed_923c502f893a81beba9034f3ab2af40d" content="" />
+<a href="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/asciifull.gif"><img class="aligncenter size-full wp-image-156" title="asciifull" src="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/asciifull.gif" alt="" width="715" height="488"></a>
+<p>My signature:</p>
+<p><a href="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/chillyc.png"><img class="aligncenter size-medium wp-image-166" title="chillyc" src="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/chillyc-300x240.png" alt="" width="300" height="240"></a></p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9XaWtpcGVkaWE6QVNDSUlfYXJ0X2NvbnZlcnNpb25fdG9vbA==">http://en.wikipedia.org/wiki/Wikipedia:ASCII_art_conversion_tool<i class="fa fa-external-link-alt"></i></span></p>
+<p>there is a good tool for converting bitmap to ascii.</p>
+<p>[codesyntax lang=“c” tab_width=“2”]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"></span><br><span class="line">ascii art conversion utility</span><br><span class="line">Copyright 2001 Damian Yerrick</span><br><span class="line"></span><br><span class="line">Permission is hereby granted, free of charge, to any person obtaining</span><br><span class="line">a copy of this software and associated documentation files (the</span><br><span class="line">&quot;Software&quot;), to deal in the Software without restriction, including</span><br><span class="line"></span><br><span class="line">without limitation the rights to use, copy, modify, merge, publish,</span><br><span class="line">distribute, sublicense, and/or sell copies of the Software, and to</span><br><span class="line">permit persons to whom the Software is furnished to do so, subject to</span><br><span class="line">the following conditions:</span><br><span class="line"></span><br><span class="line">The above copyright notice and this permission notice shall be</span><br><span class="line">included in all copies or substantial portions of the Software.</span><br><span class="line"></span><br><span class="line">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,</span><br><span class="line">EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES</span><br><span class="line">OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span><br><span class="line">NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS</span><br><span class="line">BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN</span><br><span class="line">AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF</span><br><span class="line">OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS</span><br><span class="line">IN THE SOFTWARE.</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line">/*</span><br><span class="line"></span><br><span class="line">ascii.c converts a bitmap (in .bmp or .pcx format) to ASCII art.</span><br><span class="line">It treats the least significant bitplane as a monochrome image,</span><br><span class="line">making 0 dark and 1 light.  Each character sent to stdout represents</span><br><span class="line">a 2x2 cell in the bitmap.</span><br><span class="line"></span><br><span class="line">It uses the Allegro library to read the bitmap.  Allegro is a</span><br><span class="line">multimedia library that has been ported to POSIX+X11, DOS, Windows,</span><br><span class="line">BeOS, and Mac OS.  There are library extensions that allow Allegro</span><br><span class="line">to handle other file formats such as PNG.</span><br><span class="line">  http://alleg.sourceforge.net/allegro/</span><br><span class="line"></span><br><span class="line">Because of the simple design of the program, it is also extremely</span><br><span class="line">easy to port to other imaging APIs.</span><br><span class="line"></span><br><span class="line">Compilation on DOS:</span><br><span class="line">  gcc -Wall -O ascii.c -lalleg -o ascii.exe</span><br><span class="line">Compilation on Linux:</span><br><span class="line">  gcc -Wall -O ascii.c `allegro-config --libs` -o ascii</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">#include &amp;lt;allegro.h&amp;gt;</span><br><span class="line">#include &amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include &amp;lt;stdlib.h&amp;gt;</span><br><span class="line"></span><br><span class="line">/* the following characters&#x27; glyphs represent 2x2 pixel tiles */</span><br><span class="line">const char tiles[16] = &#123;</span><br><span class="line">  &#x27;M&#x27;, &#x27;P&#x27;, &#x27;V&#x27;, &#x27;&quot;&#x27;,</span><br><span class="line">  &#x27;b&#x27;, &#x27;)&#x27;, &#x27;\\&#x27;,&#x27;\&#x27;&#x27;,</span><br><span class="line">  &#x27;d&#x27;, &#x27;/&#x27;, &#x27;(&#x27;, &#x27;`&#x27;,</span><br><span class="line">  &#x27;a&#x27;, &#x27;.&#x27;, &#x27;,&#x27;, &#x27; &#x27;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">  BITMAP *bmp;</span><br><span class="line">  int y;</span><br><span class="line"></span><br><span class="line">  install_allegro(SYSTEM_NONE, &amp;amp;errno, atexit);</span><br><span class="line"></span><br><span class="line">  if(argc != 2)</span><br><span class="line">  &#123;</span><br><span class="line">    allegro_message(&quot;usage: ascii foo.bmp\n&quot;);</span><br><span class="line">    return EXIT_FAILURE;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /* if you&#x27;ve installed Allegro library extensions for</span><br><span class="line">     other bitmap formats, register their functions here */</span><br><span class="line"></span><br><span class="line">  bmp = load_bitmap(argv[1], NULL);</span><br><span class="line">  if(bmp == NULL)</span><br><span class="line">  &#123;</span><br><span class="line">    allegro_exit();</span><br><span class="line"></span><br><span class="line">    fprintf(stderr, &quot;ascii Error: could not load bitmap `%s&#x27;\n&quot;, argv[1]);</span><br><span class="line">    return EXIT_FAILURE;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for(y = 0; y &amp;lt; bmp-&amp;gt;h; y += 2)</span><br><span class="line">  &#123;</span><br><span class="line">    int x;</span><br><span class="line">    for(x = 0; x &amp;lt; bmp-&amp;gt;w; x += 2)</span><br><span class="line">    &#123;</span><br><span class="line">      int c = 0;</span><br><span class="line">      if(getpixel(bmp, x,   y  ) &amp;amp; 1)</span><br><span class="line">        c |= 8;</span><br><span class="line">      if(getpixel(bmp, x+1, y  ) &amp;amp; 1)</span><br><span class="line">        c |= 4;</span><br><span class="line">      if(getpixel(bmp, x,   y+1) &amp;amp; 1)</span><br><span class="line">        c |= 2;</span><br><span class="line">      if(getpixel(bmp, x+1, y+1) &amp;amp; 1)</span><br><span class="line">        c |= 1;</span><br><span class="line">      putchar(tiles[c]);</span><br><span class="line">    &#125;</span><br><span class="line">    putchar(&#x27;\n&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  destroy_bitmap(bmp);</span><br><span class="line"></span><br><span class="line">  return EXIT_SUCCESS;</span><br><span class="line">&#125; END_OF_MAIN();</span><br></pre></td></tr></table></figure>
+<p>The ASCII art is the art of using characters to create a “picture”. like:</p>
+<p><a href="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/Redwingblackbird1.jpg"><img class="aligncenter size-full wp-image-159" title="Redwingblackbird" src="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/Redwingblackbird1.jpg" alt="" width="250" height="212"></a>the ASCII is:</p>
+<p><a href="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/Screenshot.png"><img class="aligncenter size-medium wp-image-164" title="Screenshot" src="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/Screenshot-300x240.png" alt="" width="300" height="240"></a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/12/2010-04-12-the-scale-of-types/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/12/2010-04-12-the-scale-of-types/" class="post-title-link" itemprop="url">The Scale of Types</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-12 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-12T00:00:00+08:00">2010-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 13:31:49" itemprop="dateModified" datetime="2023-10-07T13:31:49+08:00">2023-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>617</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>The scale of type int is<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><msup><mn>2</mn><mn>31</mn></msup><mo separator="true">,</mo><msup><mn>2</mn><mn>31</mn></msup><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2^{31},2^{31}-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>, and it is a little more than<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>2</mn><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo separator="true">,</mo><mn>2</mn><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2*10^{9},2*10^{9}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span>. and the scale of long long type is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><msup><mn>2</mn><mn>63</mn></msup><mo separator="true">,</mo><msup><mn>2</mn><mn>63</mn></msup><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2^{63},2^{63}-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>, and it is a little less than <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><msup><mn>0</mn><mn>19</mn></msup><mo separator="true">,</mo><mn>1</mn><msup><mn>0</mn><mn>19</mn></msup><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-10^{19},10^{19}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></p>
+<p>int i = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>6</mn></msup><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">10^{6}* 10^{6}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>; // this is wrong!!!</p>
+<p>long long j = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup></mrow><annotation encoding="application/x-tex">10^{9}* 10^{9}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></span> ; // this is correct!</p>
+<p>printf(“%d”,i);</p>
+<p>printf(“%lld”,j);</p>
+<p>int some platform or some compiler, long type is equal to int type. They are 32 bits. But long long type is 64 bits in linux.</p>
+<p>use #define to declare a const, like this( if the number is too big):</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> BIG (9000000000000000000)ULL <span class="comment">// this is unsigned long long</span></span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/11/5471956/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/11/5471956/" class="post-title-link" itemprop="url">Svn 常用命令</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-11 08:46:00" itemprop="dateCreated datePublished" datetime="2010-04-11T08:46:00+08:00">2010-04-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>** 1、 ** 将文 件checkout到本地目录</p>
+<p>** svn  checkout ** path（path是服务器上的目录）<br />
+例如：  svn  checkout  svn  😕/  192.168  .  1.1  /pro/domain<br />
+简写：  svn  co</p>
+<p>** 2、 ** 往版 本库中添加新的文件</p>
+<p>** svn  ** ** add ** file<br />
+例如：  svn  add test.php(添加test.php)<br />
+svn  add *.php(添加当前目录下所有的php文件)</p>
+<p>** 3、 ** 将改 动的文件提交到版本库</p>
+<p>** svn  commit ** -m “LogMessage“  [  -N  ]  [  --no-unlock  ]  PATH <img src="http://www.blogjava.net/Images/dot.gif" alt="" /> (如果选择了保持锁，就使用–no-unlock开关)<br />
+例 如：  svn  commit -m “add test file for my test“ test.php<br />
+简写：  svn  ci</p>
+<p>** 4、 ** 加锁 /解锁</p>
+<p>** svn  lock ** -m “LockMessage“  [  --force  ]  PATH <img src="http://www.blogjava.net/Images/dot.gif" alt="" /><br />
+例如：  svn  lock -m “lock test file“ test.php<br />
+** svn  unlock ** PATH</p>
+<p>** 5、 ** 更新 到某个版本</p>
+<p>** svn  update -r ** m path<br />
+例如：<br />
+svn  update如果后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本。<br />
+svn  update -r 200 test.php(将版本库中的文件test.php还原到版本200)<br />
+svn  update test.php(更新，于版本库同步。如果在提交的时候提示过期的话，是因为 ** 冲突，需要先update，修改文件 ** ，<br />
+然后清除 ** svn  resolved ** ，最后再提交 commit)<br />
+简写：  svn  up</p>
+<p>** 6、 ** 查看 文件或者目录状态</p>
+<p>1） ** svn  status ** path <img src="http://www.blogjava.net/Images/dot.gif" alt="" /><br />
+（目录下的文件和子目录的状态，正常状态不显示）<br />
+【?： 不在  svn  的控制中；M：内容被修改；C：发生冲突；A：预定加入到版本库；K：被锁 定】<br />
+2） ** svn  status -v ** path <img src="http://www.blogjava.net/Images/dot.gif" alt="" /><br />
+(显示文件和子目录状 态)<br />
+第一列保持相同，第二列显示工作版本号，第三和第四列显示最后一次修改的版本号和修改人。<br />
+注：  svn  status、  svn  diff和  svn  revert这三条命令在没有网络的情况下也可以执行的，原因是  svn  在本地的.<br />
+svn  中保留了 本地版本的原始拷贝。<br />
+简写：  svn  st</p>
+<p>** 7、 ** 删除 文件</p>
+<p>** svn  delete ** path -m “delete test fle“<br />
+例 如：  svn  delete  svn  😕/192.168.1.1/pro/domain/test.php -m “delete test<br />
+file”<br />
+或者直接  svn  delete test.php 然后再  svn  ci -m ‘delete test file‘，推荐使用这种<br />
+简写：  svn  (del, remove, rm)</p>
+<p>** 8、 ** 查看 日志</p>
+<p>** svn  log ** path<br />
+例如：  svn  log test.php 显示这个文件的所有修改记录，及其版本号的变化</p>
+<p>** 9、 ** 查看 文件详细信息</p>
+<p>** svn  info ** path<br />
+例如：  svn  info test.php</p>
+<p>** 10、 ** 比 较差异</p>
+<p>** svn  diff ** path(将修改的文件与基础版本比较)<br />
+例如：  svn  diff test.php<br />
+** svn  diff ** -r m:n path(对版本m和版本n比较差异)<br />
+例 如：  svn  diff -r 200:201 test.php<br />
+简写：  svn  di</p>
+<p>** 11、 ** 将 两个版本之间的差异合并到当前文件</p>
+<p>** svn  merge -r ** m:n path<br />
+例如：  svn  merge -r 200:205 test.php（将版本200与205之间的差异合并到当前文件，但是一般都会产生冲突，需要处理一下）</p>
+<p>** 12、 ** SVN  帮助</p>
+<p>** svn  help<br />
+svn  help ci **</p>
+<p>——————————————————————————</p>
+<p>以上是常用命令，下面写几个不经常用的</p>
+<p>——————————————————————————</p>
+<p>** 13、 ** 版 本库下的文件和目录列表</p>
+<p>** svn  list ** path<br />
+显示path目录下的所有属于版本库的文件和 目录<br />
+简写：  svn  ls</p>
+<p>** 14、 ** 创 建纳入版本控制下的新目录</p>
+<p>** svn  mkdir ** : 创建纳入版本控制下的新目录。<br />
+用法: 1、mkdir PATH…<br />
+2、mkdir URL…<br />
+创建版本控制的目录。<br />
+1、每一个以工作副本 PATH 指定的目录，都会创建在本地端，并且加入新增<br />
+调度，以待下一次的提交。<br />
+2、每个以URL指定的目录，都会透过立即提交于仓库中创建。<br />
+在 这两个情况下，所有的中间目录都必须事先存在。</p>
+<p>** 15、 ** 恢 复本地修改</p>
+<p>** svn  revert ** : 恢复原始未改变的工作副本文件 (恢复大部份的本地修改)。revert:<br />
+用法: revert PATH…<br />
+注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复<br />
+被删除的目录</p>
+<p>** 16、 ** 代 码库URL变更</p>
+<p>** svn  switch (sw): ** 更新工作副本至不同的URL。<br />
+用法: 1、switch URL [PATH]<br />
+2、switch –relocate FROM TO [PATH…]</p>
+<p>1、更新你的工作副本，映射到一个新的URL，其行为跟“  svn  update”很像，也会将<br />
+服务器上文件与本地文件合并。这是将工作副本对应到同一仓库中某个分支或者标记的<br />
+方法。<br />
+2、改写工 作副本的URL元数据，以反映单纯的URL上的改变。当仓库的根URL变动<br />
+(比如方案名或是主机名称变动)，但是工作副本仍旧对映到同一仓库的同 一目录时使用<br />
+这个命令更新工作副本与仓库的对应关系。</p>
+<p>** 17、 ** 解 决冲突</p>
+<p>** svn  resolved: ** 移除工作副本的目录或文件的“冲突”状态。<br />
+用 法: resolved PATH…<br />
+注意: 本子命令不会依语法来解决冲突或是移除冲突标记；它只是移除冲突的<br />
+相关文件，然后让 PATH 可以再次提交。</p>
+<p>** 18、 ** 输 出指定文件或URL的内容。</p>
+<p>** svn  ** ** cat ** 目标[@版本]…如果指定了版本，将从指定的版本开始查找。<br />
+svn  cat -r PREV filename &gt; filename (PREV 是上一版本,也可以写具体版本号,这样输出结果是可以提交的)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/10/5471004/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/10/5471004/" class="post-title-link" itemprop="url">《禁闭岛》 赏析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-10 18:36:00" itemprop="dateCreated datePublished" datetime="2010-04-10T18:36:00+08:00">2010-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><img src="http://hi.csdn.net/attachment/201004/10/0_1270901112ZV7A.gif" alt="禁闭岛" /></p>
+<ul>
+<li>** 国家/地区： ** <span class="exturl" data-url="aHR0cDovL3d3dy5tdGltZS5jb20vbW92aWUvc2VjdGlvbi9hcmVhL1VTQS8="> 美国 <i class="fa fa-external-link-alt"></i></span></li>
+<li>** 类型： ** <span class="exturl" data-url="aHR0cDovL3d3dy5tdGltZS5jb20vbW92aWUvc2VjdGlvbi9nZW5yZS9UaHJpbGxlci8="> 惊悚 <i class="fa fa-external-link-alt"></i></span> / <span class="exturl" data-url="aHR0cDovL3d3dy5tdGltZS5jb20vbW92aWUvc2VjdGlvbi9nZW5yZS9EcmFtYS8="> 剧情 <i class="fa fa-external-link-alt"></i></span> / <span class="exturl" data-url="aHR0cDovL3d3dy5tdGltZS5jb20vbW92aWUvc2VjdGlvbi9nZW5yZS9NeXN0ZXJ5Lw=="> 悬疑 <i class="fa fa-external-link-alt"></i></span></li>
+<li>** 片长： ** 138 min</li>
+<li>** 分级： ** <span class="exturl" data-url="aHR0cDovL3d3dy5tdGltZS5jb20vbW92aWUvc2VjdGlvbi9jZXJ0aWZpY2F0aW9uL1VTQSVkMCVhZVIv"> USA:R <i class="fa fa-external-link-alt"></i></span></li>
+<li>** 对白语言： ** <span class="exturl" data-url="aHR0cDovL3d3dy5tdGltZS5jb20vbW92aWUvc2VjdGlvbi9sYW5ndWFnZS9FbmdsaXNoLw=="> 英语 <i class="fa fa-external-link-alt"></i></span></li>
+<li>** 发行公司： ** <span class="exturl" data-url="aHR0cDovL3d3dy5tdGltZS5jb20vbW92aWUvY29tcGFueS8xMzIv"> 派拉蒙影业公司 <i class="fa fa-external-link-alt"></i></span></li>
+<li>** 官方网站： ** <span class="exturl" data-url="aHR0cDovL3d3dy5zaHV0dGVyaXNsYW5kLmNvbS8="> Paramount Pictures [us] <i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>live as a monster, or die as a good man.(像怪物一样活着，还是像好人一样死去？)这句话是主角最后的一句话。让我想起了<br />
+《飞跃疯人院》，感觉情节其实很相似。首先，没有人能评判谁是精神病人，也没有人知道他们两者到底有何区别。想起曾有精神病院司机把一群正常人带入精神病院的有趣笑话<br />
+，传说某个智商极高的人在21天后才被推断出没有精神病。</p>
+<p>对于这个影片，其实怎么看都是对的。也就是说可以看成是真正的执法官调查阿什精神病院的故事。也可以看成一个疯子虚构出自己的办案经历。这让我想起《罗生门》中的情节<br />
+。罗生门中其实就是一个武士杀死了另外一个武士。结果经历过此事的所有人的描述各不相同。也就印证了人脑其实是反映当时经历的工具，并且这个工具并不像摄像机那样精确<br />
+。罗生门只不过让这种不精确扩大化已而。看完罗生门之后，人整个就迷糊了。里面没有任何情节不合乎逻辑，每个人都是正常人并且回忆着非常有逻辑的事情。不过我看完《禁<br />
+闭岛》之后，更加倾向于前者。虽然我也不知道影片的结尾主角为何可以说出自己的准确杀人经历。但是有几点各自矛盾：1.主角是岛上最危险的犯人。为何没有脚镣？2.主<br />
+角为何可以和护工穿同样的白衣？3.主角为何可以和主治医生睡在一间房里？4.主角为何能大摇大摆的走到C病房。并且警卫不认识他，另外警卫也不认识查理(后自称为西<br />
+恩医生的人)？5.主角可以和典狱长去兜风。6.如果主角的配枪开始就是假的，警卫为何要解除他的配枪？8.主角能逛到任何角落。9.灯塔里不觉得太空旷了吗？如此空<br />
+的地方为何有配枪守卫(虽然枪中没有子弹)和铁网？10.审问精神病人时为何那人写下&quot;Run&quot;？那么最后一句话：live as a monster, or<br />
+die as a good man.便可以理解为：与其让他们把自己当做试验品成为怪物，还不如在正常理智情况下死去，或者死去之前再也不会伤害谁(也就是切除大脑<br />
+额叶)。另外作为“僵尸”的他，也可以回归到大陆，而无需在禁闭岛中。所以也是所谓的&quot;逃离&quot;。</p>
+<p>另外也可以做第二种解释：1.影片主角杰克在第一次看到自己妻子的时候，先是妻子背部烧焦，后是腹部流血。为何流血，不正是暗示被枪杀吗？那么情节其实是主角先枪杀自<br />
+己的妻子，然后再将其烧死。并且不承认自己杀人。2.为何偏头痛，并且老是能看到已故的妻子？3.额头为何有伤疤，是大脑做过手术的证据吗？4.为何有主角的入籍档案<br />
+(类似关押犯人的档案)？5.为何有那三个孩子的照片？并且为啥认定他有三个孩子而不是一个？6.瑞秋、老鼠、山洞、火堆、审讯，所有的一切都是自己虚构出来的。并且<br />
+按照自己的逻辑演绎。一切的一切都是虚构。最终主角接受了现实并且选择了自己的逃离方式。live as a monster, or die as a good<br />
+man.就可以解释为自己是杀妻杀人的精神病凶手(monster)度过余生，或者以死赎罪死得其所（至少切除额叶便失去了自我意思）。选择后者，至少自己(自我意思<br />
+)已经逃离了禁闭岛。此句也可解释为是像众人眼中的疯子，还是应该如同尸死走肉(切除额叶的人只有生存的本能，也不会再去伤害别人)？</p>
+<p>不过不管怎么说，影片的导演的确是不希望我们看得明白。至少导演在两种解释中都自圆其说同时也都漏洞百出，另外导演也不断的从现实、梦境、真实、谎言中切换。让观者不<br />
+知谁真谁假，孰是孰非。</p>
+<p>不过导演貌似是想将下面的想法告诉观者：</p>
+<p>1.请大家思考切除大脑额叶是对还是错？live as a monster, or die as a good man？</p>
+<p>2.请大家思考训练将参加战争的人是对是错。live as a monster, or die as a good man？</p>
+<p>3.请大家思考战争中杀人是对是错？live as a monster, or die as a good man？</p>
+<p>4.请大家思考以暴制暴是对是错？live as a monster, or die as a good man？</p>
+<p>5.请大家思考以死谢罪，还是以生赎罪？live as a monster, or die as a good man？</p>
+<p>不过观后感千人千面，各有不同，如同《罗生门》。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/10/5469810/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/10/5469810/" class="post-title-link" itemprop="url">Svn Install Svn安装配置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-10 10:58:00" itemprop="dateCreated datePublished" datetime="2010-04-10T10:58:00+08:00">2010-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>因为使用的是ubuntu, 安装相当简单，去软件管理器中输入svn就可以。或者使用</p>
+<p>$ sudo apt-get install subversion</p>
+<p>其实也没有怎么按照svn的安装流程走，那样的话需要添加新的用户,用户组。安全系数高一些。下面是自己的流程：</p>
+<p>首先建一个svn目录,mkdir /home/cc/svn</p>
+<p>在此目录下创建你自己的代码目录:</p>
+<p>cd /home/cc/svn svnadmin create trunk //然后启动svn svnserve -d<br />
+–root=/home/cc/svn</p>
+<p>如果想在trunk之下创建其他目录，可以直接使用mkdir director的方法。之后去其他机器使用svnclient.也可以使用刚才的apt-get<br />
+install subversion的方式。</p>
+<p>svnserve.conf:12: Option<br />
+expected，产生的原因是没有顶格写。例如在/home/cc/svn/trunk/conf/svnserve.conf中：</p>
+<p>[general] anon-access = none ### 这里auth-access的写法是错误的。 auth-access = write ###<br />
+这样写才是正确的 auth-access = write</p>
+<p>svn  :  No  access  allowed  to  this  repository</p>
+<p>首先要把  svnserve.conf中的password-db = passwd注释去掉。然后在passwd文件中添加:</p>
+<p>[users] cc = 123</p>
+<p>在authz中添加:</p>
+<p>[groups] ### 这里是建立一个组 user = cc,aa,bb,dd ###<br />
+这里repository:后添加的是相对路径，例如我的路径/home/cc/svn/trunk在这里就是/trunk [repository:/trunk]</p>
+<h3 id="这里user是某一个组的权限-user-rw-这是所有用户的权限-r"><a class="markdownIt-Anchor" href="#这里user是某一个组的权限-user-rw-这是所有用户的权限-r"></a> 这里@user是某一个组的权限 @user = rw ### 这是所有用户的权限 * = r</h3>
+<p>以后使用svn需要输入–username=cc --password=123</p>
+<p>Authorization failed</p>
+<p>这里是因为在authz中的路径可能设置有问题(repository:之后的那个路径，那里面的路径全部都是相对路径)，或者是命令没有顶格写。passwd,<br />
+authz, svnserve.conf中的所有命令必须是顶格写的。</p>
+<p>下面是远程机器使用svn导入项目：</p>
+<p>svn import  [本地目录] svn://[ip]/trunk -m &quot;import project&quot;即可.例如我的是 svn import<br />
+~/code/cnode svn://192.168.1.22/trunk -m “import”  --username=cc<br />
+–password=123</p>
+<p>这里要注意的是svn会将本地目录之下的所有东西都按照相同的组织方式放入到trunk.所有最好导入工程根目录。</p>
+<p>贴一下写好的配置文件,这里我的trunk是pddms: authz</p>
+<h3 id="this-file-is-an-example-authorization-file-for-svnserve-its-format-is"><a class="markdownIt-Anchor" href="#this-file-is-an-example-authorization-file-for-svnserve-its-format-is"></a> This file is an example authorization file for svnserve. ### Its format is</h3>
+<p>identical to that of mod_authz_svn authorization ### files. ### As shown below<br />
+each section defines authorizations for the path and ### (optional) repository<br />
+specified by the section name. ### The authorizations follow. An authorization<br />
+line can refer to: ### - a single user, ### - a group of users defined in a<br />
+special [groups] section, ### - an alias defined in a special [aliases]<br />
+section, ### - all authenticated users, using the ‘$authenticated’ token, ###</p>
+<ul>
+<li>only anonymous users, using the ‘$anonymous’ token, ### - anyone, using the<br />
+‘*’ wildcard. ### ### A match can be inverted by prefixing the rule with ‘~’.<br />
+Rules can ### grant read (‘r’) access, read-write (‘rw’) access, or no access</li>
+</ul>
+<h3 id="aliases-joe-cxzstdessertlsnake-cityosnake-oil"><a class="markdownIt-Anchor" href="#aliases-joe-cxzstdessertlsnake-cityosnake-oil"></a> (‘’). [aliases] # joe = /C=XZ/ST=Dessert/L=Snake City/O=Snake Oil,</h3>
+<p>Ltd./OU=Research Institute/CN=Joe Average [groups] harry_and_sally =<br />
+cc,aa,bb,dd # harry_sally_and_joe = harry,sally,&amp;joe [/] cc = rw # &amp;joe = r #</p>
+<ul>
+<li>= [repository:/pddms] @harry_and_sally = rw * = r</li>
+</ul>
+<p>passwd:</p>
+<h3 id="this-file-is-an-example-password-file-for-svnserve-its-format-is"><a class="markdownIt-Anchor" href="#this-file-is-an-example-password-file-for-svnserve-its-format-is"></a> This file is an example password file for svnserve. ### Its format is</h3>
+<p>similar to that of svnserve.conf. As shown in the ### example below it<br />
+contains one section labelled [users]. ### The name and password for each user<br />
+follow, one account per line. [users] cc = 123 aa = 123 # harry = harryssecret</p>
+<h1 id="sally-sallyssecret"><a class="markdownIt-Anchor" href="#sally-sallyssecret"></a> sally = sallyssecret</h1>
+<p>svnserve.conf</p>
+<h3 id="this-file-controls-the-configuration-of-the-svnserve-daemon-if-you"><a class="markdownIt-Anchor" href="#this-file-controls-the-configuration-of-the-svnserve-daemon-if-you"></a> This file controls the configuration of the svnserve daemon, if you</h3>
+<p>use it to allow access to this repository. (If you only allow ### access<br />
+through http: and/or file: URLs, then this file is ### irrelevant.) ### Visit<br />
+<span class="exturl" data-url="aHR0cDovL3N1YnZlcnNpb24udGlncmlzLm9yZy8=">http://subversion.tigris.org/<i class="fa fa-external-link-alt"></i></span> for more information. [general] ### These<br />
+options control access to the repository for unauthenticated ### and<br />
+authenticated users. Valid values are “write”, “read”, ### and “none”. The<br />
+sample settings below are the defaults. anon-access = none auth-access = write</p>
+<h3 id="the-password-db-option-controls-the-location-of-the-password-database"><a class="markdownIt-Anchor" href="#the-password-db-option-controls-the-location-of-the-password-database"></a> The password-db option controls the location of the password ### database</h3>
+<p>file. Unless you specify a path starting with a /, ### the file’s location is<br />
+relative to the directory containing ### this configuration file. ### If SASL<br />
+is enabled (see below), this file will NOT be used. ### Uncomment the line<br />
+below to use the default password file. password-db = passwd ### The authz-db<br />
+option controls the location of the authorization ### rules for path-based<br />
+access control. Unless you specify a path ### starting with a /, the file’s<br />
+location is relative to the the ### directory containing this file. If you<br />
+don’t specify an ### authz-db, no path-based access control is done. ###<br />
+Uncomment the line below to use the default authorization file. authz-db =<br />
+authz ### This option specifies the authentication realm of the repository.</p>
+<h3 id="if-two-repositories-have-the-same-authentication-realm-they-should"><a class="markdownIt-Anchor" href="#if-two-repositories-have-the-same-authentication-realm-they-should"></a> If two repositories have the same authentication realm, they should</h3>
+<p>have the same password database, and vice versa. The default realm ### is<br />
+repository’s uuid. realm = pddms_a [sasl] ### This option specifies whether<br />
+you want to use the Cyrus SASL ### library for authentication. Default is<br />
+false. ### This section will be ignored if svnserve is not built with Cyrus</p>
+<h3 id="sasl-support-to-check-run-svnserve-version-and-look-for-a-line"><a class="markdownIt-Anchor" href="#sasl-support-to-check-run-svnserve-version-and-look-for-a-line"></a> SASL support; to check, run ‘svnserve --version’ and look for a line</h3>
+<p>reading ‘Cyrus SASL authentication is available.’ # use-sasl = true ### These<br />
+options specify the desired strength of the security layer ### that you want<br />
+SASL to provide. 0 means no encryption, 1 means ### integrity-checking only,<br />
+values larger than 1 are correlated ### to the effective key length for<br />
+encryption (e.g. 128 means 128-bit ### encryption). The values below are the<br />
+defaults. # min-encryption = 0 # max-encryption = 256</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/09/2010-04-09-some-bugs-in-programing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/09/2010-04-09-some-bugs-in-programing/" class="post-title-link" itemprop="url">Some Bugs in Programing</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-09 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-09T00:00:00+08:00">2010-04-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:52" itemprop="dateModified" datetime="2023-10-06T22:53:52+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="459" />
+when you use double type to count, it will be dangerous. see like that
+<p>[codesyntax lang=“c” tab_width=“2”]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">  double i;</span><br><span class="line">  for(i=0; i != 5; i++)&#123;</span><br><span class="line">    printf(&quot;%lf &quot;,i);</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>it will never stop, because the condition of i != 5 will never satisfied. If you want to count, using int type. When you compare two double type number, you should use fabs(a-b) &lt; 0.001, 0.001 is threshold. Sometimes, double is not precision. macro is a great tool, but it is also dangerous. I often forget the language of define. The correct language is :</p>
+<p>#define</p>
+<p>#if defined</p>
+<p>#if !defined</p>
+<p>#ifndef</p>
+<p>#ifdef</p>
+<p>#endif</p>
+<p>compile .c file with math lib in linux. It will be like that: cc test.c -o test <span style="color: rgb(255, 102, 0);">-lm</span></p>
+<p>stdio redirect to file use freopen() function. like that:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">// don&#x27;t write freopen here, it will be some compile error.</span><br><span class="line">//freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);</span><br><span class="line">//freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);</span><br><span class="line">int main()&#123;</span><br><span class="line">	int n,i;</span><br><span class="line">	#if defined REDIRECT</span><br><span class="line">	freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);</span><br><span class="line">	#endif</span><br><span class="line">	scanf(&quot;%d&quot;,&amp;amp;n);</span><br><span class="line">	for(i = 0; i &amp;lt; n; i++)&#123;</span><br><span class="line">		printf(&quot;%d &quot;,i);</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>if you want redirect to file, use the code and compile it with -D REDIRECT. cc test.c -o test -D REDIRECT</p>
+<p>If you want to use struct FILE to do the same thing:</p>
+<p>[codesyntax lang=“c” tab_width=“2”]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include&amp;lt;math.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">  FILE * fin, *fout;</span><br><span class="line">  fin = fopen(&quot;z.in&quot;,&quot;rb&quot;);</span><br><span class="line">  fout = fopen(&quot;z.out&quot;,&quot;wb&quot;);</span><br><span class="line">  int n;</span><br><span class="line">  #ifdef REDIRECT</span><br><span class="line">  #define fin stdin</span><br><span class="line">  #define fout stdout</span><br><span class="line">  #endif</span><br><span class="line"></span><br><span class="line">  fscanf(fin,&quot;%d&quot;,&amp;amp;n);</span><br><span class="line">  fprintf(fout,&quot;%d,%lf&quot;,n,sqrt(n));</span><br><span class="line">  fclose(fin);</span><br><span class="line">  fclose(fout);</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>try cc t3.c -o t3 -lm -D REDIRECT and cc t3.c -o t3 -lm</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/05/2010-04-05-software-architecture-singleton/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/05/2010-04-05-software-architecture-singleton/" class="post-title-link" itemprop="url">Software Architecture--Singleton</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-05T00:00:00+08:00">2010-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:00:55" itemprop="dateModified" datetime="2023-10-05T23:00:55+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="530" />
+Singleton is a pattern in Software Architecture. It is used to create a instance and there will be only one instance in system at any time. If you want to write this pattern in a file, it will be like that:
+<p>[codesyntax lang=“cpp” tab_width=“2”]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">#include &amp;lt;iostream&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line">/* ==========================</span><br><span class="line"> * Program name:</span><br><span class="line"> * Author: chico chen</span><br><span class="line"> * Email:  chillycreator @t gmail.com</span><br><span class="line"> * Purpose: this class is testing singleton pattern in</span><br><span class="line"> *          Software Architecture.</span><br><span class="line"> * ========================== */</span><br><span class="line"></span><br><span class="line">class Singleton &#123;</span><br><span class="line">	private:</span><br><span class="line">	static Singleton* _instance;</span><br><span class="line">	Singleton()&#123;&#125;</span><br><span class="line">	public:</span><br><span class="line">		static Singleton* Instance();</span><br><span class="line">&#125;;</span><br><span class="line">Singleton* Singleton::_instance = NULL;</span><br><span class="line">Singleton* Singleton::Instance() &#123;</span><br><span class="line">    if (_instance == NULL) &#123;</span><br><span class="line">        _instance = new Singleton();</span><br><span class="line">        cout &amp;lt;&amp;lt;&quot;new Singleton&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    return _instance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    cout &amp;lt;&amp;lt; &quot;Hello world!&quot; &amp;lt;&amp;lt; endl;</span><br><span class="line">    Singleton *s1 = Singleton::Instance();</span><br><span class="line">    Singleton *s2 = Singleton::Instance();</span><br><span class="line">    Singleton *s3 = Singleton::Instance();</span><br><span class="line">    Singleton *s4 = Singleton::Instance();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If you want write this pattern into different files, it will has Singleton.h Singleton.cpp and other files like that:</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2012/02/01/2012-02-01-jstack-jmap-resin/#more" rel="contents">
+              <a class="btn" href="/2010/04/05/2010-04-05-software-architecture-singleton/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1305,8 +1691,944 @@ By the way, if your application runs in resin, you should look up those logs of 
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/02/5446330/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/02/5446330/" class="post-title-link" itemprop="url">Ubuntu 9.10 与Python 3 IDLE, Kscope等冲突</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-02 22:18:00" itemprop="dateCreated datePublished" datetime="2010-04-02T22:18:00+08:00">2010-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>455</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我至今不知道为啥出现的这种情况。不过很有可能是弹出提示后出现的卡机现象。首先下载一个python IDLE 3或者2.6什么的，然后打开，写入最简单的一行p<br />
+rint(“hello”),当输入完&quot;)&quot;之后，就完全不能动了，输入回车，点击鼠标均无效果。不过使用Alt+tab切换一下窗口就可以了。不知道这是否是一项不<br />
+错的专利，灰常强大！可以有效减少amp.其实我就想要一个可以编辑，然后按下F5或者啥能运行的ide就可以了。结果这都不支持… sigh~Eric4貌似界面<br />
+更加华丽，就是不知为何老是错，不知道是否是python版本不兼容的问题…最后只得选用PIDA,短小精悍，这个编python就夠用了。不用emacs的原因<br />
+是操作太诡异还不如 vi。最近编c++代码使用codeblocks,感觉这个IDE做得不错，虽然比不上vs2010…另外开头提到的那个卡机现象在k<br />
+scope中也会出现。不过这里仅限于ubuntu,它們在centos倒是活得挺好。有人遇到并解决的，请回复…不胜感激，临blog涕零。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/02/5446286/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/02/5446286/" class="post-title-link" itemprop="url">Linux Pthread_join使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-02 22:01:00" itemprop="dateCreated datePublished" datetime="2010-04-02T22:01:00+08:00">2010-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这个函数没有什么好说的。其实就两个参数，第一个是线程变量，第二个是线程返回值。其函数原型为:</p>
+<p>int pthread_join(pthread_t thread,void** result);</p>
+<p>不过查阅许多网上资料，依旧没有使用result这个形参的。一般的使用为pthread_join(thread,NULL);于是自己在想那个NULL能做啥米用<br />
+。于是写下下面的代码：</p>
+<p>#include &lt;stdio.h&gt; #include &lt;pthread.h&gt; int count =0; // 初始化mutex变量。<br />
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; void * print_count(int);<br />
+int main() { const int num = 10; pthread_t threads[num]; int i=0; for(i=0; i&lt;<br />
+num; i++){ //第一个参数是pthread_t变量，第二个是pthread_t变量的属性<br />
+//第三个是pthread_t需要执行的函数，其函数原型为 // void* (<em>startfun)(void</em>) //<br />
+所以传入的是一个返回void<em>的函数(这里当然可以转换) // 并且接受的是void</em>的参数，所以需要把i转换为void *<br />
+pthread_create(&amp;threads[i],NULL,print_count,(void*)i); } void* result = NULL;<br />
+for(i=0; i &lt; num; i++){ // 这里就是同步得到结果。打印的是线程执行的状态，0为成功。非0失败 printf(“end<br />
+%d;/n”,pthread_join(threads[i],&amp;result)); if(result == NULL){<br />
+printf(“NULL/n”); } else{ // 这里打印的是pthread_t执行完print_count后返回的结果。<br />
+printf(“%x/n”,result); } } return 0; }<br />
+//这里返回的类型是void*，因为pthread_create中的函数指针为void* //这里的参数int<br />
+i,可有可无，如果没有pthread_create中就使用NULL作为参数。 void * print_count(int i){ // 设置mutex锁<br />
+pthread_mutex_lock(&amp;mutex); printf(“thread: %d—&gt; count %d/n”,i,count);<br />
+count++; sleep(2); printf(“thread: %d—&gt; count %d/n”,i,count); // 释放锁<br />
+pthread_mutex_unlock(&amp;mutex); //这里是返回值, void * result就可以被赋值了…否则为result = NULL<br />
+return (void*)count; }</p>
+<p>另外值得注意的是pthread_join()中第二个参数不要乱传。如果非NULL,可能造成segment failure.</p>
+<p>另外这里如果使用c<ins>进行编译可能会有void*<br />
+(<em>)(int)不能转换为void</em>(<em>)(void</em>)的问题。这是因为c</ins>编译器要求太严格了。只好改动函数签名为void *<br />
+print_count(void *);之后再进行转换。现在终于知道为啥这么多人都喜欢在linux下使用c了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/02/5445250/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/02/5445250/" class="post-title-link" itemprop="url">广义表的定义</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-02 16:07:00" itemprop="dateCreated datePublished" datetime="2010-04-02T16:07:00+08:00">2010-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转自 <a target="_blank" rel="noopener" href="http://blog.csdn.net/lpioneer/archive/2008/01/16/2046940.aspx"> http://blog.csdn.net/lpioneer/archive/2008/01/16/2046940.aspx<br />
+</a></p>
+<p>广义表(Lists，又称列表)是线性表的推广。即广义表中放松对表元素的原子限制，容许它们具有其自身结构。</p>
+<p>** 1、广义表定义 **<br />
+广义表是n(n≥0)个元素a1，a2，…，ai，…，an的有限序列。<br />
+其中：<br />
+①ai–或者是原子或者是一个广义表。<br />
+②广义表通常记作：<br />
+Ls=( a1，a2，…，ai，…，an)。<br />
+③Ls是广义表的名字，n为它的长度。<br />
+④若ai是广义表，则称它为Ls的子表。<br />
+注意：<br />
+①广义表通常用圆括号括起来，用逗号分隔其中的元素。<br />
+②为了区分原子和广义表，书写时用大写字母表示广义表，用小写字母表示原子。<br />
+③若广义表Ls非空(n≥1)，则al是LS的表头，其余元素组成的表(a1，a2，…，an)称为Ls的表尾。<br />
+④广义表是递归定义的</p>
+<p>** 2、广义表表示 **<br />
+（1）广义表常用表示<br />
+① E=()<br />
+E是一个空表，其长度为0。<br />
+② L=(a，b)<br />
+L是长度为2的广义表，它的两个元素都是原子，因此它是一个线性表<br />
+③ A=(x，L)=(x，(a，b))<br />
+A是长度为2的广义表，第一个元素是原子x，第二个元素是子表L。<br />
+④ B=(A，y)=((x，(a，b))，y)<br />
+B是长度为2的广义表，第一个元素是子表A，第二个元素是原子y。<br />
+⑤ C=(A，B)=((x，(a，b))，((x，(a，b))，y))<br />
+C的长度为2，两个元素都是子表。<br />
+⑥ D=(a，D)=(a，(a，(a，(…))))<br />
+D的长度为2，第一个元素是原子，第二个元素是D自身，展开后它是一个无限的广义表。</p>
+<p>（2）广义表的深度<br />
+一个表的&quot;深度&quot;是指表展开后所含括号的层数。<br />
+【例】表L、A、B、C的深度为分别为1、2、3、4，表D的深度为∞。</p>
+<p>（3）带名字的广义表表示<br />
+如果规定任何表都是有名字的，为了既表明每个表的名字，又说明它的组成，则可以在每个表的前面冠以该表的名字，于是上例中的各表又可以写成：<br />
+①E()<br />
+②L(a，b)<br />
+③A(x，L(a，b))<br />
+④B(A(x，L(a，b))，y)<br />
+⑤C(A(x，l(a，b))，B(A(x，L(a，b))，y))<br />
+⑥D(a，D(a，D(…)))</p>
+<p>（4）广义表的图形表示<br />
+（a）广义表的图形表示：<br />
+①图中的分支结点对应广义表<br />
+②非分支结点一般是原子<br />
+③但空表对应的也是非分支结点。<br />
+【例】下图给出了几个广义表的图形表示。<br />
+![](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2xwaW9uZWVyLyU3QkNBNjhCNEU0LUQ3NkItNDU=">http://p.blog.csdn.net/images/p_blog_csdn_net/lpioneer/{CA68B4E4-D76B-45<i class="fa fa-external-link-alt"></i></span><br />
+21-9E58-0533AA5C011A%7D.bmp)<br />
+（b）广义表的图形形状划分：<br />
+①与树对应的广义表称为纯表，它限制了表中成分的共享和递归<br />
+②允许结点共享的表称再入表<br />
+【例】上图(d),子表A是共享结点，它既是C的一个元素，又是子表B的元素；<br />
+③允许递归的表称为递归表<br />
+【例】上图(e)，表D是其自身的子表。</p>
+<p>（5）递归表、再入表、纯表、线性表之间的关系满足：<br />
+<img src="http://hi.csdn.net/attachment/201004/2/1050_1270195893kM9N.gif" alt="wu" /><br />
+广义表不仅是线性表的推广，也是树的推广。</p>
+<p>** 3、广义表运算<br />
+** 由于广义表是对线性表和树的推广，并且具有共享和递归特性的广义表可以和有向图(见第7章)建立对应，因此广义表的大部分运算与这些数据结构上的运算类似。<br />
+在此，只讨论广义表的两个特殊的基本运算：取表头head(Ls)和取表尾tail(Ls)。<br />
+根据表头、表尾的定义可知：任何一个非空广义表的表头是表中第一个元素，它可以是原子，也可以是子表，而其表尾必定是子表。<br />
+【例】<br />
+head(L)=a， tail(L)=(b)<br />
+head(B)=A， tail(B)=(y)<br />
+由于tail(L)是非空表，可继续分解得到：<br />
+head(tail(L))=b， tail(tail(L))=()<br />
+对非空表A和(y)，也可继续分解。<br />
+注意:<br />
+广义表()和(())不同。前者是长度为0的空表，对其不能做求表头和表尾的运算；而后者是长度为l的非空表(只不过该表中惟一的一个元素是空表)，对其可进行分解，<br />
+得到的表头和表尾均是空表()。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/30/2010-03-30-how-to-get-through-firewall-great/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/30/2010-03-30-how-to-get-through-firewall-great/" class="post-title-link" itemprop="url">How to Get Through Firewall (Great)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-30 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-30T00:00:00+08:00">2010-03-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:00:35" itemprop="dateModified" datetime="2023-10-05T23:00:35+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>795</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="631" />
+This is graph for getting through firewall.  This is another method for climbing over the wall.
+<p>Phase1. setup the connection between client and server by three-way handshake. when server send ACK and seq to the client. Client should let the wall know this connection is over. So client send FIN and seq to server. The wall get it, and consider the connection from client is over. Because the wall is not based on status. Then server get it, and find the seq of  package is wrong. And server send the RESET package to client. The wall get the package and consider the connection from server is over. Client receive and ignore the RESET package, and then it send the ACK and seq+1 to server.  The connection between client and server is established. However, the connection between client and server is over from viewpiont of the wall. The wall will not exam contents of the connection. So we can get though the wall!</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2010/03/30/2010-03-30-how-to-get-through-firewall-great/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/26/5421050/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/26/5421050/" class="post-title-link" itemprop="url">mysql中使用InnoDB还是MyISAM ?</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-26 21:27:00" itemprop="dateCreated datePublished" datetime="2010-03-26T21:27:00+08:00">2010-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>自己经常使用sqlserver,不怎么使用mysql.所以也对mysql不咋米了解。这里转两个帖子关于mysql中的InnoDB和MyIsAM的介绍，个人觉<br />
+得还是不错的。</p>
+<p>转载自 <span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS8="> http://database.51cto.com <i class="fa fa-external-link-alt"></i></span> 2009-05-19 09:58<br />
+邵宗文  IT168</p>
+<p>链接：<span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS9hcnQvMjAwOTA1LzEyMjM4Mi5odG0=">http://database.51cto.com/art/200905/122382.htm<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="浅谈mysql存储引擎选择-innodb还是myisam"><a class="markdownIt-Anchor" href="#浅谈mysql存储引擎选择-innodb还是myisam"></a> 浅谈MySQL存储引擎选择 InnoDB还是MyISAM</h3>
+<p>MyISAM<br />
+是MySQL中默认的存储引擎，一般来说不是有太多人关心这个东西。决定使用什么样的存储引擎是一个很tricky的事情，但是还是值我们去研究一下，这<br />
+里的文章只考虑 MyISAM 和InnoDB这两个，因为这两个是最常见的。</p>
+<p>下面先让我们回答一些问题：<br />
+◆你的数据库有外键吗？<br />
+◆你需要事务支持吗？<br />
+◆你需要全文索引吗？<br />
+◆你经常使用 什么样的查询模式？<br />
+◆你的数据有多大？</p>
+<p>思考上面这些问题可以让你找到合适的方向，但那并不是绝对的。如果你需要事务处理或是外键，那么InnoDB 可能是比较好的方式。如果你需要全文索引，那么通常来说<br />
+MyISAM是好的选择，因为这是系统内建的，然而，我们其实并不会经常地去测试两百万行记录。所以，就算是慢一点，我们可以通过使用Sphinx从<br />
+InnoDB中获得全文索引。</p>
+<p>数据的大小，是一个影响你选择什么样存储引擎的重要因素，大尺寸的数据集趋向于选择InnoDB方式，因为其支持事务处理和故障恢复。数据库的在小<br />
+决定了故障恢复的时间长短，InnoDB可以利用事务日志进行数据恢复，这会比较快。而MyISAM可能会需要几个小时甚至几天来干这些事，InnoDB<br />
+只需要几分钟。</p>
+<p>您操作数据库表的习惯可能也会是一个对性能影响很大的因素。比如： COUNT() 在 MyISAM 表中会非常快，而在InnoDB<br />
+表下可能会很痛苦。而主键查询则在InnoDB下会相当相当的快，但需要小心的是如果我们的主键太长了也会导致性能问题。大批的inserts<br />
+语句在MyISAM下会快一些，但是updates 在InnoDB 下会更快一些——尤其在并发量大的时候。</p>
+<p>所以，到底你检使用哪一个呢？根据经验来看，如果是一些小型的应用或项目，那么MyISAM 也许会更适合。当然，在大型的环境下使用MyISAM<br />
+也会有很大成功的时候，但却不总是这样的。如果你正在计划使用一个超大数据量的项目，而且需要事务处理或外键支持，那么你真的应该直接使用InnoDB方<br />
+式。但需要记住InnoDB 的表需要更多的内存和存储，转换100GB 的MyISAM 表到InnoDB 表可能会让你有非常坏的体验。</p>
+<p>转载自 <span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS8="> http://database.51cto.com <i class="fa fa-external-link-alt"></i></span> 2009-05-19 09:58<br />
+邵宗文  IT168</p>
+<p>链接：<span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS9hcnQvMjAwOTA1LzEyNDM3MC5odG0=">http://database.51cto.com/art/200905/124370.htm<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="innodb还是myisam-再谈mysql存储引擎的选择"><a class="markdownIt-Anchor" href="#innodb还是myisam-再谈mysql存储引擎的选择"></a> InnoDB还是MyISAM 再谈MySQL存储引擎的选择</h3>
+<p>两种类型最主要的差别就是Innodb 支持事务处理与外键和行级锁.而MyISAM不支持.所以MyISAM往往就容易被人认为只适合在小项目中使用。</p>
+<p>我作为使用MySQL的用户角度出发，Innodb和MyISAM都是比较喜欢的，但是从我目前运维的数据库平台要达到需求：99.9%的稳定性，<br />
+方便的扩展性和高可用性来说的话，MyISAM绝对是我的首选。</p>
+<p>原因如下：</p>
+<p>1、首先我目前平台上承载的大部分项目是读多写少的项目，而MyISAM的读性能是比Innodb强不少的。</p>
+<p>2、MyISAM的索引和数据是分开的，并且索引是有压缩的，内存使用率就对应提高了不少。能加载更多索引，而Innodb是索引和数据是紧密捆绑<br />
+的，没有使用压缩从而会造成Innodb比MyISAM体积庞大不小。</p>
+<p>3、从平台角度来说，经常隔1，2个月就会发生应用开发人员不小心update一个表where写的范围不对，导致这个表没法正常用了，这个时候<br />
+MyISAM的优越性就体现出来了，随便从当天拷贝的压缩包取出对应表的文件，随便放到一个数据库目录下，然后dump成sql再导回到主库，并把对应的<br />
+binlog补上。如果是Innodb，恐怕不可能有这么快速度，别和我说让Innodb定期用导出xxx.sql机制备份，因为我平台上最小的一个数据<br />
+库实例的数据量基本都是几十G大小。</p>
+<p>4、从我接触的应用逻辑来说，select count(*) 和order by<br />
+是最频繁的，大概能占了整个sql总语句的60%以上的操作，而这种操作Innodb其实也是会锁表的，很多人以为Innodb是行级锁，那个只是<br />
+where对它主键是有效，非主键的都会锁全表的。</p>
+<p>5、还有就是经常有很多应用部门需要我给他们定期某些表的数据，MyISAM的话很方便，只要发给他们对应那表的frm.MYD,MYI的文件，让<br />
+他们自己在对应版本的数据库启动就行，而Innodb就需要导出xxx.sql了，因为光给别人文件，受字典数据文件的影响，对方是无法使用的。</p>
+<p>6、如果和MyISAM比insert写操作的话，Innodb还达不到MyISAM的写性能，如果是针对基于索引的update操作，虽然<br />
+MyISAM可能会逊色Innodb,但是那么高并发的写，从库能否追的上也是一个问题，还不如通过多实例分库分表架构来解决。</p>
+<p>7、如果是用MyISAM的话，merge引擎可以大大加快应用部门的开发速度，他们只要对这个merge表做一些select<br />
+count(*)操作，非常适合大项目总量约几亿的rows某一类型(如日志，调查统计)的业务表。</p>
+<p>当然Innodb也不是绝对不用，用事务的项目如模拟炒股项目，我就是用Innodb的，活跃用户20多万时候，也是很轻松应付了，因此我个人也是<br />
+很喜欢Innodb的，只是如果从数据库平台应用出发，我还是会首选MyISAM。</p>
+<p>另外，可能有人会说你MyISAM无法抗太多写操作，但是我可以通过架构来弥补，说个我现有用的数据库平台容量：主从数据总量在几百T以上，每天十 多亿<br />
+pv的动态页面，还有几个大项目是通过数据接口方式调用未算进pv总数，(其中包括一个大项目因为初期memcached没部署,导致单台数据库每天处理<br />
+9千万的查询)。而我的整体数据库服务器平均负载都在0.5-1左右。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/24/5412585/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/24/5412585/" class="post-title-link" itemprop="url">Bzr</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-24 16:33:00" itemprop="dateCreated datePublished" datetime="2010-03-24T16:33:00+08:00">2010-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>543</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>首先使用sudo ssh-keygen -t rsa 生成key，key分公私钥，公钥是,然后使用launchpad登录,然后出现</p>
+<p>Warning: Permanently added ‘<span class="exturl" data-url="aHR0cDovL2JhemFhci5sYXVuY2hwYWQubmV0">bazaar.launchpad.net<i class="fa fa-external-link-alt"></i></span>,91.189.90.11’ (RSA) to the<br />
+list of known hosts.<br />
+Permission denied (publickey).<br />
+bzr: ERROR: Connection closed: Unexpected end of message. Please check<br />
+connectivity and permissions, and report a bug if problems persist.</p>
+<p>这样之后使用ssh-agent bash清洗一下。然后再使用ssh-add<br />
+key.这里key是私钥。这里添加的话是普通权限的user的key.当然如果你真想添加，然么就要改下key的访问权限。</p>
+<p>如果使用sudo ssh-agent bash,之后就变为root用户。添加一致。</p>
+<p>之后再使用 sudo bzr launchpad-login [username]   这里的 username是在launchpad.org中注册的。<br />
+然后再sudo bzr lp:XXX dir, lp:XXX是分支名，dir是将分支存放在某个目录下。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/23/2010-03-23-listening-songs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/23/2010-03-23-listening-songs/" class="post-title-link" itemprop="url">Listening Songs~</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-23T00:00:00+08:00">2010-03-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:51" itemprop="dateModified" datetime="2023-10-06T22:53:51+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/prose/" itemprop="url" rel="index"><span itemprop="name">prose</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>32</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="636" />
+use douban: <span class="exturl" data-url="aHR0cDovL2RvdWJhbi5mbS9yYWRpbw==">http://douban.fm/radio<i class="fa fa-external-link-alt"></i></span>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/23/2010-03-23-ubuntu-10-04-belta-released/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/23/2010-03-23-ubuntu-10-04-belta-released/" class="post-title-link" itemprop="url">Ubuntu 10.04 Beta Released</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-23T00:00:00+08:00">2010-03-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 22:59:47" itemprop="dateModified" datetime="2023-10-05T22:59:47+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>66</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="1242" />
+download:
+<span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQvdWJ1bnR1LTEwLjA0LWJldGExLWRlc2t0b3AtaTM4Ni5pc28=">desktop(32 bit)<i class="fa fa-external-link-alt"></i></span>
+<p><span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQvdWJ1bnR1LTEwLjA0LWJldGExLXNlcnZlci1pMzg2Lmlzbw==">server(32 bit)<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQv">Ubuntu 10.04 LTS (Lucid Lynx) Beta 1<i class="fa fa-external-link-alt"></i></span></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/13/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/15/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/13/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/15/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1336,7 +2658,7 @@ By the way, if your application runs in resin, you should look up those logs of 
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">23:58</span>
+    <span title="Reading time total">24:10</span>
   </span>
 </div>
 
@@ -1376,7 +2698,7 @@ By the way, if your application runs in resin, you should look up those logs of 
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
 
 
 <script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>

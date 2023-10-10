@@ -172,12 +172,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">739</span>
+        <span class="site-state-item-count">750</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2016/03/28/50995490/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/10/14/40088123/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/03/28/50995490/" class="post-title-link" itemprop="url">Fastjson 定制化解析</a>
+          <a href="/2014/10/14/40088123/" class="post-title-link" itemprop="url">有道面试 第一天 —— 杭州小记 三</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,7 +243,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2016-03-28 10:28:00" itemprop="dateCreated datePublished" datetime="2016-03-28T10:28:00+08:00">2016-03-28</time>
+      <time title="Created: 2014-10-14 22:59:00" itemprop="dateCreated datePublished" datetime="2014-10-14T22:59:00+08:00">2014-10-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -260,324 +260,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近写了一个简单的定制解析。</p>
-<p>fastjson 解析 Map key value时有bug.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public static class KVPair&lt;K,V&gt; &#123;</span><br><span class="line">        private K key;</span><br><span class="line">        private V value;</span><br><span class="line">        public KVPair()&#123;&#125;</span><br><span class="line">        public KVPair(K key, V value)&#123;</span><br><span class="line">            this.key = key;</span><br><span class="line">            this.value = value;</span><br><span class="line">        &#125;</span><br><span class="line">        public K getKey() &#123;</span><br><span class="line">            return key;</span><br><span class="line">        &#125;</span><br><span class="line">        public void setKey(K key) &#123;</span><br><span class="line">            this.key = key;</span><br><span class="line">        &#125;</span><br><span class="line">        public V getValue() &#123;</span><br><span class="line"></span><br><span class="line">            return value;</span><br><span class="line">        &#125;</span><br><span class="line">        public void setValue(V value) &#123;</span><br><span class="line">            this.value = value;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>这是一个简单的 KeyValue 类。这个类被fastjson解析出来的结果是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        KVPair&lt;String, String&gt; kv = new KVPair&lt;String, String&gt;(&quot;aaa&quot;, &quot;bbb&quot;);</span><br><span class="line">        System.out.println(JSON.toJSONString(kv));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">输出结果为：</span><br><span class="line">&#123;&quot;key&quot;:&quot;aaa&quot;,&quot;value&quot;:&quot;bbb&quot;&#125;</span><br></pre></td></tr></table></figure>
-<p>在fastjson 1.1.23 版本时， 只要改动一下 setValue() 这个方法，就可以得到这样的解析结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">改动后的 setValue(V value) 方法为：</span><br><span class="line"></span><br><span class="line">public V setValue(V value) &#123;</span><br><span class="line">      this.value = value;</span><br><span class="line">      return this.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">输出结果为：</span><br><span class="line">&#123;&quot;aaa&quot;:&quot;bbb&quot;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>这明显是 fastjson的bug。所以在1.1.46版本，已经不存在这个问题了。不管如何变化 setValue()函数，最后的输出结果仍然为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">输出结果：</span><br><span class="line">&#123;&quot;key&quot;:&quot;aaa&quot;,&quot;value&quot;:&quot;bbb&quot;&#125;</span><br></pre></td></tr></table></figure>
-<p>现在问题来了。我更希望解析为下面的这种。 ```</p>
-<pre><code>&#123;&quot;aaa&quot;:&quot;bbb&quot;&#125;
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这样占用的资源更少，并且也很清楚的表达了意思。这怎么写？fastjson提供的specialConfig 来提供特殊的序列化配置。  </span><br><span class="line">首先我们先对这个class创建一个特殊的序列化方法：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>public static final SerializeConfig JSON_WRITE_CONFIG = new SerializeConfig();
-    static &#123;
-        JSON_WRITE_CONFIG.put(KVPair.class, new KVPairSerailzer());
-    &#125;
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">然后我们来构造这个特殊的序列化类：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>public class KVPairSerailzer implements ObjectSerializer&#123;
-
-    @SuppressWarnings(&quot;rawtypes&quot;)
-    @Override
-    public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType) throws IOException &#123;
-        
-        SerializeWriter out = serializer.getWriter();
-        if (object ==null) &#123;
-            return ;
-        &#125;
-        KVPair pair = (KVPair)object; 
-        out.write(&quot;&#123;&quot;);
-        write(out,pair.getKey());
-        out.write(&quot;:&quot;);
-        write(out,pair.getValue());
-        out.write(&quot;&#125;&quot;);
-    &#125;
-    
-    public void write(SerializeWriter out, Object value) &#123;
-        if (value == null) &#123;
-            return;
-        &#125; else if (value instanceof Integer) &#123;
-            out.writeInt((Integer)value);
-        &#125; else if (value instanceof Long) &#123;
-            out.writeLong((Long)value);
-        &#125; else if (value instanceof String) &#123;
-            out.write(&quot;\&quot;&quot;);
-            out.write((String)value);
-            out.write(&quot;\&quot;&quot;);
-        &#125; else if (value instanceof Double) &#123;
-            out.write(Double.toString((Double)value));
-        &#125; else if (value instanceof Float) &#123;
-            out.write(Float.toString((Float)value));
-        &#125; else &#123;
-            throw new RuntimeException(&quot;not support value:&quot;+value);
-        &#125;
-    &#125;
-
-&#125;
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">fastjson的逻辑是： 开始要传入一个序列化配置。这个序列化配置中有针对各个类如何进行序列化的子类(也就是映射关系)。如果我们将JSON_WRITE_C</span><br><span class="line">ONFIG传入到序列化过程中，那么针对 KVPair.class这个类，就可以使用KVPairSerialzer()进行序列化。KVPairSerialze</span><br><span class="line">r在这个类需要继承ObjectSerializer, 重要的是重构这个方法：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType)
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里只要获取  serializer  .getWriter()，然后将序列化后的字符串写入到writer中就结束了。SerializerWriter</span><br><span class="line">其实就是一个可变长char数组,细节没有什么好讲的。</span><br><span class="line"></span><br><span class="line">另外 1.1.46 之前的版本如果不希望将某些field不放在序列化后的json中，需要加入一个</span><br><span class="line">实现了PropertyPreFilter的类才行。例如下面这个类：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>public class FieldJsonIgnoreFilter implements PropertyPreFilter  &#123;
-    private Set&lt;String&gt; excludes;
-
-    @Override
-    public boolean apply(JSONSerializer serializer, Object object, String name) &#123;
-        if(object instanceof ComputerCluster) &#123;
-            return !excludes.contains(name);
-        &#125;
-        return true;
-    &#125;
-    public FieldJsonIgnoreFilter() &#123;
-        this.excludes = Sets.newHashSet();
-        
-    &#125;
-    public void add(String excludeFieldName) &#123;
-        excludes.add(excludeFieldName);
-    &#125;
-    
-    public static final FieldJsonIgnoreFilter FIELD_JSON_IGNORE_FILTER = new FieldJsonIgnoreFilter();
-    static &#123;
-        FIELD_JSON_IGNORE_FILTER.add(&quot;aaa&quot;);  // 如果fieldName 为 aaa 则不进行序列化。
-        FIELD_JSON_IGNORE_FILTER.add(&quot;bbb&quot;);
-        FIELD_JSON_IGNORE_FILTER.add(&quot;ccc&quot;);
-        
-    &#125;
-&#125;
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1.1.46版本之后只需要在在field上面加入Annotation.就可以实现上面的效果。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>@JSONField(serialize=false)
-private String aaa;
-</code></pre>
-<pre class="highlight"><code class="">
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2016/01/26/50589867/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/01/26/50589867/" class="post-title-link" itemprop="url">充满BUG的世界观——再遇Java内存泄露</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2016-01-26 22:29:00" itemprop="dateCreated datePublished" datetime="2016-01-26T22:29:00+08:00">2016-01-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>发现内存泄露除了仔细看代码的确没有太好的方法。首先看gc log, 确定是内存泄露，而不是内存不够。内存泄露的特点就是以每次Full<br />
-GC后使用的最低内存为起点，拟合一条线。如果这条线是随时间递增的一条曲线，那么很大程度上代表着内存泄露。</p>
-<p>然后使用 jmap -histo [pid] 来查看你的所有对象所占内存的比例。你可能很不幸的发现[B 这个byte数组对象占用了绝大多数。这的确没有更好的<br />
-方法了。只能一点点的看代码。检查一下有没有写成循环的地方。检查一下有没有申请的内存没有释放。检查一下全局变量或者单例中的map啥的。最后，你大概只能以怀疑一<br />
-切的态度检查所有的代码。</p>
-<p>ok. 下面以八卦的方式讲讲我这次遇到的内存泄露（memory leak).</p>
-<p>这几天一直在写一个入库组件。这个组件的目的就是解析传输过来的数据，并写入到数据库中。嗯。听起来很简单。但是解析格式比较复杂，而且还要使用某种特定的计算公式进<br />
-行去重处理。另外解析的数据需要以上千条记录的形式输入到数据库中。嗯，为什么会这样设计呢？因为历史遗留问题。。。嗯历史遗留问题这几个字非常管用。不管放在什么语<br />
-境中，反正觉得困难就可以说历史遗留问题。其实是为了小步快跑，慢慢申请时间。上头大概不会有人希望你这模块做大半年还没有做来。希望你这么做的，大概都是你的死敌。</p>
-<p>好吧上面就历史背景。在这个背景下。我这边入库组件，写了一个分布式的，多线程解析，多线程批量入库的代码。本来觉得这种设计挺好。但是因为gap lock,<br />
-多线程和分布式的问题，批量写总是在不知不觉中造成死锁。为了代码的精简，为了不引入更多的问题，索性将批量写改为了单条写。</p>
-<p>好了，这下memory leak问题来了。难道是因为之前都死锁了，所以memory leak 就没有暴露出来？ 有可能哦~</p>
-<p>先看一下gc log。为啥是memory leak。看一下下图。其中蓝线的是内存使用情况。蓝线的最低点是每次Full GC<br />
-带来的内存大量释放。GC的最低点你可以看到是不断增加的。所以很大的可能是内存泄露。</p>
-<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwMTI2MjE0NjQ4OTUzP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20160126214648953?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
-cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravit<br />
-y/Center)<br />
-为什么说很大可能是内存泄露呢？不同的程序有不同的内存使用模式。比如说我的程序中有一个大map.<br />
-这个map会不断的填充数据。但是数据集是有限的。但是这个map在最终填充完毕前，内存的使用量会不断的增长。如果内存不够了，仍然会有outofmemory 错<br />
-误,并且那个gc的图和我给的gc图会很像。这不代表这内存泄露，这只能说内存不够用。但是这需要先证明数据集是有限的，并且系统空闲内存可以完全放入这个数据集。否<br />
-则你只能采取其他方法来防范内存不够用的情况。</p>
-<p>好吧。我看到这个图。感觉是内存泄露。为啥？因为我的数据集有限，并且粗略算了一下也不大。即使有缓存计算的策略存在，这些空间仍然不会造成outofMemory的<br />
-现象。那到底是什么原因？先使用一下jmap -histo [pid]. 看了一下比例。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> num     #instances         #bytes  class name</span><br><span class="line">----------------------------------------------</span><br><span class="line">   1:      21571308     1163654064  [B</span><br><span class="line">   2:       1770275      125384008  [I</span><br><span class="line">   3:       1715985      120562976  [[B</span><br><span class="line">   4:       1715382      120535928  [Ljava.io.InputStream;</span><br><span class="line">   5:       3430930      109789592  [Z</span><br><span class="line">   6:       1715198       68607920  com.mysql.jdbc.PreparedStatement$BatchParams</span><br><span class="line">   7:        621372       44778960  [C</span><br><span class="line">   8:         59015       11608344  [Ljava.lang.Object;</span><br><span class="line">   9:        469551       11269224  java.lang.String</span><br><span class="line">  10:        335730        8057520  org.dom4j.tree.DefaultAttribute</span><br><span class="line">  11:         76733        2455456  org.dom4j.tree.DefaultElement</span><br><span class="line">  12:         49621        2376880  [Ljava.lang.String;</span><br><span class="line">  13:         47685        1525920  java.util.HashMap$Node</span><br><span class="line">  14:         41482        1327424  com.paratera.importdata.CacheKeys</span><br><span class="line">  15:         46753        1122072  java.lang.StringBuilder</span><br><span class="line">  16:         44715        1073160  java.util.ArrayList</span><br><span class="line">  17:         32577        1042464  java.util.concurrent.ConcurrentHashMap$Node</span><br><span class="line">  18:         40990         983760  java.lang.Long</span><br><span class="line">  19:         13911         667728  java.nio.HeapCharBuffer</span><br><span class="line">  20:         13832         663936  java.nio.HeapByteBuffer</span><br><span class="line">  21:         24729         593496  java.lang.StringBuffer</span><br><span class="line">  22:         13476         539040  [Ljava.util.Formatter$Flags;</span><br></pre></td></tr></table></figure>
-<p>哦哦哦~排名第一的是byte[] , 我X. 其实根本查不出来是什么原因。除非你的代码里，很多 new byte[]. 否则使用byte[]<br />
-基本是你的调用的各种组件里的byte[]. 好吧。现在的怀疑的对象扩展到了自己的全部组件。。</p>
-<p>前五名都看不出任何问题。直到第六名。</p>
-<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwMTI3MTExODAwMjE0P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20160127111800214?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
-cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravit<br />
-y/Center)<br />
-就是这货。这货的变量里 byte[] byte[][] , int[] ， InputStream[]<br />
-排名前几的都有！！！不用说了。一定是这货。这货就是mysql jdbc执行 addBatch() 放入的。然后我细细看了一下代码。发现<br />
-executeBatch() 调用才会清理了 addBatch()中的 BatchParam,<br />
-如果只是调用了execute()方法，则写入数据库时不会清理BatchParam.<br />
-所以还是之前将批量入库转换为单条数据入库导致的。只将executeBatch()改为了execute()，<br />
-虽然功能上立马变成了单条数据入库。但实际上却直接引入了内存泄露问题。</p>
-<p>当然因为代码封装/函数化的问题， addBatch() 和 executeBatch()<br />
-被放入到了不同的函数中。。。。所以再次自己挖坑自己埋。自己掉坑里，一定是自己之前坑挖的不对。最后的解决方法也很简单。将addBatch()去掉就立马好了。</p>
-<p>好了。。。。写的多了。。。天晚了。。。洗洗睡去了。。。</p>
-<p>** 哦对了。打条公司信息，有想加入【并行科技】java团队的发简历到hr@paratera.com（请注明来源，方便过hr关）.  公司只做高大上的超算/高性能计算的 toB  toG 业务，不做 toC业务。待遇不是问题。问题是你到底值不值你要的待遇。。。 **</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/12/22/50378249/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/12/22/50378249/" class="post-title-link" itemprop="url">吐槽下——火星救援</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-12-22 10:38:00" itemprop="dateCreated datePublished" datetime="2015-12-22T10:38:00+08:00">2015-12-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
+      <span>885</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -595,40 +278,25 @@ executeBatch() 调用才会清理了 addBatch()中的 BatchParam,<br />
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>下面是火星救援的影评：</p>
-<p>这是一部在火星的衣食住行手册。旨在讲述各种设备如何的不靠谱以及如何使用人类智慧驾驭这些不靠谱的设备。</p>
-<p>这个影片和各种好莱坞大片一样。故事的叙述方式也一模一样。</p>
-<p>图片太耗资源了。。省略了。</p>
-<p>故事是这样叙述的：</p>
-<p>1. 我们制造一个问题（来点暴风/吹飞一个人）</p>
-<p>2. 解决这个问题（全队撤离）</p>
-<p>3. 解决这个问题产生一个结果（这个被吹飞的人没死，还健康的活在火星上）</p>
-<p>4. 这个结果又产生了问题（这个人怎么活在火星上，怎么营救）</p>
-<p>5. 怎样解决这个问题（水，氧气，食物，温度，电力，通信，交通）</p>
-<p>6. 问题都解决了。来让我们制造新的问题。（新的远航火箭报废，食物循环报废）</p>
-<p>7. 解决新的问题。（中国太阳神，弹弓效应缩短时间，启用已经在火星上的战神4火箭）</p>
-<p>8. 推向高潮，如何推？快速制造问题，快速解决问题。（火箭超重=&gt;敞蓬车，距离太远=&gt; 空气喷射）</p>
-<p>9. 再加点猛料(上天后陷入昏迷；航天器爆破；破手套空气喷射手忙脚乱；最后营救时，不管速度多慢死活不能一次抓住）</p>
-<p>10. 结局</p>
-<p>故事这种叙述方式就是</p>
-<p>问题=&gt; 解决问题=&gt; 后果（坏） 则继续解决问题；后果（好）则制造点新的问题。一步步推进，直到结局。不过高潮时一定要快速的制造和解决问题。</p>
-<p>下面到了影片的吐槽时间：</p>
-<p>你们知道吗？使用超级计算机不用一直连着网线，作业提交后就不用再管，直到算出结果后看两眼。而且像他这种权限的根本不能进入到超级计算机的机房中。对了，公司最近做<br />
-了一款应用ParaAlarm，可以在手机上跟踪提交到超算系统中的作业状态。下载二维码在这里：</p>
-<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUxMjIyMTAzNTExMzMxP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20151222103511331?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
-cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravit<br />
-y/Center)<br />
-你们知道吗？这种发射火箭的大项目都不用测试。这就是找死。做软件的都知道。</p>
-<p>你们知道吗？全队成员都飞回去了，怎么还留给你几百吨的氢气呢？</p>
-<p>你们知道吗？如果气压都能把气仓炸飞，那怎么可能用塑料布就可以密封了？早知道这样，都用塑料带布搭建基地就可以了呀。</p>
-<p>你们知道吗？中国的火箭根本不会叫太阳神号。因为太阳神是西方崇拜的神。中国从来不崇拜太阳。有的就只有金乌这种鸟，并且还要让后羿射下来几个。所以火箭绝对不会叫太<br />
-阳神，那一定会被射下来的。而且我觉得可能是在哪个国家上映就在哪个国家播使用那个国家的火箭。比如在印度播出的话，那些片段就会变成印度的太阳神火箭。</p>
-<p>不过那个宇航员不管是胖变瘦还是瘦变胖，还是很令人佩服的(LP说使用的是替身…恕我眼瞎)。在开始没有多久，土豆发芽的一幕还是挺不错。最后营救时两个宇航员死<br />
-活抓不住还是很令人揪心的。</p>
-<p>另外电影要下架了。最后再贴张海报吧。</p>
-<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTUxMjIyMTAzNTQ4NzQzP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20151222103548743?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
-cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravit<br />
-y/Center)</p>
+          <h3 id="有道面试"><a class="markdownIt-Anchor" href="#有道面试"></a> 有道面试</h3>
+<h3 id="觅食"><a class="markdownIt-Anchor" href="#觅食"></a> 觅食</h3>
+<p>觅食是非常重要的活动，每天都必不可少。除了觅食，还有睡觉。当然对于某些人吃屎拉翔也是非常重要的。</p>
+<h3 id="面试"><a class="markdownIt-Anchor" href="#面试"></a> 面试</h3>
+<p>一顿吃后，为了皮带不勒死我，我少吃了一点。pd因为早上没有肉包，也捡回了一条命。我和小伙伴们怀着忐忑不安又愉悦的心情一起走进了面试厅。准备面试。要想先拉屎，<br />
+首先得有纸。于是Hr给我们找了一叠白纸。这纸有点粗糙，擦起来很不顺手的样子。另外没有纸篓，擦完的纸都不知道丢哪里。我和pd一起找着纸篓。嗯还是没有找到。</p>
+<p>上午3面，下午5面。累得跟pd似的。也没有啥休息时间。因为中午有人答题较慢，结果中饭都没有赶上。。。慌忙之下，猛摇售货机，吐出两个蛋。匆匆吃下填了肚子。</p>
+<p>面试完毕，总结出来：1，笔试完之后，大家就开心的玩了，也不想一下笔试题都有什么问题。2，总是在问，这个思路对不对呀，那个解法是否正确。你们就没有点自己的主见<br />
+吗？ 听到这种问法，真想直接干掉。二面的面试官小伙伴放心，这样的同学，我在一面已经干掉多个了。<br />
+另外我已经成功拒掉多个mm，请叫我mm杀手。面了这么多mm，感觉还是第一个mm思路清晰。我准备从拒掉的名单中再捞回来丢给二面。真不行就转PM岗吧。做研发的都<br />
+认为做PM是莫大的侮辱，其实PM挺好的。在脑子里转一下，也不管是真转了还是假转了，反正需求就改完了。你研发用脑子转一下，不用动手代码就改完了试试？</p>
+<p>中午都没有补一觉。下午我比面试者都困。真想出一道30分钟做不出来的题，我先睡一下，再让面试者叫醒我。</p>
+<p>下午hr叫来外卖，抽空还补吃了一下。感觉筷子的质量还是有问题。嗯，说话总是抓不住重点。</p>
+<p>那天面了啥题呢？删除排序二叉树结点，深度优先遍历，优先队列，没有一个面试者答出拓扑排序让我很失望。Dij最短路，还有那啥…忘记了。反正题太多了，自己<br />
+都记不得了。</p>
+<h3 id="晚上"><a class="markdownIt-Anchor" href="#晚上"></a> 晚上</h3>
+<p>实在困得不行。先睡了两个小时。也不知道为什么，面试的时候电话这么多。晚上了吧，就没有人给我打电话了。pd摇着陌陌就上床了。不好，他戴上眼罩了。嗯，我又得准备<br />
+开水了。<br />
+blog 总是晚了一天…加工改造越来越没有时间了…这就是南派三叔写的：快没有时间了。嗯，其实真的快没有时间写blog了。大概是这个意思。</p>
 
       
     </div>
@@ -655,7 +323,7 @@ y/Center)</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/11/01/49556925/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/10/13/40052255/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -673,7 +341,7 @@ y/Center)</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/11/01/49556925/" class="post-title-link" itemprop="url">网易有道离职记</a>
+          <a href="/2014/10/13/40052255/" class="post-title-link" itemprop="url">改有道笔试题 —— 杭州小记 二</a>
         </h2>
 
         <div class="post-meta-container">
@@ -684,7 +352,7 @@ y/Center)</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2015-11-01 11:44:00" itemprop="dateCreated datePublished" datetime="2015-11-01T11:44:00+08:00">2015-11-01</time>
+      <time title="Created: 2014-10-13 22:11:00" itemprop="dateCreated datePublished" datetime="2014-10-13T22:11:00+08:00">2014-10-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -701,601 +369,7 @@ y/Center)</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>从网易有道离职一段时间了。LP和tt都说最好不要写前公司的总结，写好写坏总有人来找茬。但是我想这毕竟是个人的观点和看法，代表着自己这些年的观点。自己应该总结<br />
-一下，与他人无关。可能再过多少年回顾一下，也会觉得荒谬无比。</p>
-<p>网易有道之前是一家不错的公司。但是近几年不知道是产品不给力还是管理层的问题。整个公司的状态越来越不好。员工很难撑过3年。这里并不是黑网易有道。网易有道里的人<br />
-都很不错。只不过很多人从网易有道出来后，才有了更大的成就。嗯…这是为什么呢?</p>
-<p>之前一直在有道云笔记组做server端码农。做了许多没人用的功能，然后做的心累了，然后就离开了。可能笔记的老大最近也做累了，也离开了。大概大家都累了吧，笔记<br />
-团队的核心成员换了一茬又一茬。之前cloudstorage的初创成员一个都不在了。细细想想可能是产品一直无法盈利。做一款有用但是无法盈利的产品对公司长远发展<br />
-可能有好处。但是对员工的近期发展实在没有啥优势。因为人员不能扩张，老员工难以升职加薪。不过后来也和盈利团队的成员聊了聊。结果发现盈利团队的成员也各有各的不满<br />
-。嗯…这到底是为什么呢？</p>
-<p>嗯。以上答案只有还在网易有道的管理层自己摸索了。</p>
-<p>有道云笔记一直在做竞争对手evernote的功能。一直在按照符合国情的方式抄袭，并不考虑颠覆的事情。只有后来做协同办公才算和evernote走上了不同的路。<br />
-虽然原型还是slack，tower, QQ等，但在这些原型上已有些突破。可是不知道为什么后来没有坚持此策略，又回到了笔记上来，又准备加一些华而不实的功能。我<br />
-自己认为做软件需要将一款软件细致打磨，做到极致，或者颠覆创新开创新纪元。但是不停的堆功能是怎么回事？</p>
-<p>说到堆功能，在这里再黑黑PM。还是少招吧。堆功能大概是PM的本职工作。在我的圈子里从没有PM每天想着优化功能，减少功能。一个PM想需求的速度肯定是一个程序员<br />
-编写代码的数倍。要么降低创造需求的速度，要么扩招程序员。管理者需要自己权衡。PM的需求来源，我知道的有几个：</p>
-<ul>
-<li>
-<p>用户评价反馈（一般以负面反馈为准）一般可以推动程序优化</p>
-</li>
-<li>
-<p>用户调研</p>
-</li>
-<li>
-<p>业界行业标杆（evernote )</p>
-</li>
-<li>
-<p>用户数据统计分析 （特征分析）+PM主观臆想</p>
-</li>
-<li>
-<p>boss的直接拍板</p>
-</li>
-<li>
-<p>对外资源置换 （合作方需求）</p>
-</li>
-<li>
-<p>推广活动<br />
-所以说需求来源真是太多了。PM需要有整个需求进程的把控吗？哦…圈内的PM经常连功能什么时候上线的都不知道。认真的PM真是圈内稀缺，虎头蛇尾的PM多见。<br />
-吐槽完毕。下面是知识点：</p>
-</li>
-<li>
-<p>在网易有道认识了许多人，交到许多朋友。膜拜了许多精英。知识面，视野比入职时开阔许多。</p>
-</li>
-<li>
-<p>有时间多多搜索，少请教。没时间多多请教，少搜索。</p>
-</li>
-<li>
-<p>公司组件的存活周期可能比开源项目还要短。公司一定要有组件维护组才行。</p>
-</li>
-<li>
-<p>一定要code review, 一定要有良好的编码风格。一定要保持代码的整洁。</p>
-</li>
-<li>
-<p>一定要print和用户相关的log。特别是做互联网应用的</p>
-</li>
-<li>
-<p>一定要尽早测试，测试的testcase的范围是上次上线的功能和这次上线的功能。</p>
-</li>
-<li>
-<p>一定要开发白天可以上线的server程序。发布尽量工作时间做。</p>
-</li>
-<li>
-<p>服务代码要精简，需要大量共用组件，每个功能的开发最好不要牵扯到其他项目的开发。保持船小好调头。</p>
-</li>
-<li>
-<p>有条件做压测，没有条件就线上压测吧。</p>
-</li>
-<li>
-<p>要有人对需求约束负责。很多约束条件在开发初期就要定下来。千万不要说可以放无限多的内容，无字数限制，无大小限制，可以承载无限大的压力这样的话。</p>
-</li>
-<li>
-<p>公司如果在走下坡路，走法有断崖式和缓坡式。各有利弊请自主选择。但不要每次开会只说好事不说坏事。</p>
-</li>
-<li>
-<p>贵司每半年的考核非常烂，我非常抵制。考核应尽量简单。另外不管怎么考核，这些考核永远是主观的。升职加薪本来就是看个人能力，而这事主管心里是清楚的。</p>
-</li>
-<li>
-<p>不要简单堆砌功能。功能在精不在多。请回顾一下庞大的功能，其中80%的功能都应该被砍掉。</p>
-</li>
-<li>
-<p>应从公司的技术层面进行战略部署，而不是每个项目和产品各自为战。</p>
-</li>
-<li>
-<p>公司在开发者机器上的配置上不要抠门，机器速度/网速是保持开发者良好心态的关键。</p>
-</li>
-<li>
-<p>公司需要尽量配置可以翻墙的网络。</p>
-</li>
-<li>
-<p>公司对研发成员不要实行打卡制。</p>
-</li>
-<li>
-<p>公司对员工应不时发些福利。不患寡而患不均。<br />
-看了一下访问量。。。发现大家的确喜欢看八卦～~ 看客们有感想写在下面的评论里吗？</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/28/44654639/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/03/28/44654639/" class="post-title-link" itemprop="url">JS 实现UML序列图 （二）-- Csdn MarkDown 第七篇 技术篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-03-28 21:10:00" itemprop="dateCreated datePublished" datetime="2015-03-28T21:10:00+08:00">2015-03-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>上一篇大概说了一下JS是怎么画UML 图形的。<br />
-这一篇简单介绍一下这个JS 解析 UML语法是怎么实现的。<br />
-<a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf"> https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf<br />
-</a><br />
-这个是Markdown UML语言的语法结构。摘抄了部分：<br />
-这一部分是将词和词组成语句。而语句和语句就组成篇章。</p>
-<pre><code>document ::= statement*
-statement ::=
-( 'title' ':' message
-| 'participant' actor
-| 'note' ('left of' | 'right of' | 'over') actor ':' message
-| actor ( '-' | '--' ) ( '&gt;' | '&gt;&gt;' )? actor ':' message
-)
-</code></pre>
-<p>这里的意思是 UML是由 statement（语句）构成的。<br />
-statement有下面几种表示方法：<br />
-1. ‘title’ ‘:’ message 这里带上”的都是token,在编译原理中，token标识不能再被解释的词。<br />
-2. ‘participant’ actor<br />
-3. ‘note’ (‘left of’ | ‘right of’ | ‘over’) actor ‘:’ message<br />
-表示note与Actor之间的关系<br />
-4. actor ( ‘-’ | ‘–’ ) ( ‘&gt;’ | ‘&gt;&gt;’ )? actor ‘:’ message 标识actor之间的关系。</p>
-<p>下面的词法分析会将字符转换为UML中有含义的字。类似字符组成词。用正则式将字母变成有含义的词。</p>
-<pre><code>/** js sequence diagrams
- *  http://bramp.github.io/js-sequence-diagrams/
- *  (c) 2012-2013 Andrew Brampton (bramp.net)
- *  Simplified BSD license.
- */
-%lex
-
-%options case-insensitive
-
-%&#123;
-    // Pre-lexer code can go here
-%&#125;
-
-%%
-
-[\n]+             return 'NL';
-\s+               /* skip whitespace */
-\#[^\n]*          /* skip comments */
-&quot;participant&quot;     return 'participant';
-&quot;left of&quot;         return 'left_of';
-&quot;right of&quot;        return 'right_of';
-&quot;over&quot;            return 'over';
-&quot;note&quot;            return 'note';
-&quot;title&quot;           return 'title';
-&quot;,&quot;               return ',';
-[^\-&gt;:\n,]+       return 'ACTOR';
-&quot;--&quot;              return 'DOTLINE';
-&quot;-&quot;               return 'LINE';
-&quot;&gt;&gt;&quot;              return 'OPENARROW';
-&quot;&gt;&quot;               return 'ARROW';
-:[^#\n]+          return 'MESSAGE';
-&lt;&lt;EOF&gt;&gt;           return 'EOF';
-.                 return 'INVALID';
-
-/lex
-
-%start start
-
-%% /* language grammar */
-
-start
-    : document 'EOF' &#123; return yy; &#125;
-    ;
-
-document
-    : /* empty */
-    | document line
-    ;
-
-line
-    : statement &#123; &#125;
-    | 'NL'
-    ;
-
-statement
-    : 'participant' actor  &#123; $2; &#125;
-    | signal               &#123; yy.addSignal($1); &#125;
-    | note_statement       &#123; yy.addSignal($1); &#125;
-    | 'title' message      &#123; yy.setTitle($2);  &#125;
-    ;
-
-note_statement
-    : 'note' placement actor message   &#123; $$ = new Diagram.Note($3, $2, $4); &#125;
-	| 'note' 'over' actor_pair message &#123; $$ = new Diagram.Note($3, Diagram.PLACEMENT.OVER, $4); &#125;
-    ;
-
-actor_pair
-    : actor             &#123; $$ = $1; &#125;
-	| actor ',' actor   &#123; $$ = [$1, $3]; &#125;
-    ;
-
-placement
-    : 'left_of'   &#123; $$ = Diagram.PLACEMENT.LEFTOF; &#125;
-	| 'right_of'  &#123; $$ = Diagram.PLACEMENT.RIGHTOF; &#125;
-    ;
-
-signal
-    : actor signaltype actor message
-    &#123; $$ = new Diagram.Signal($1, $2, $3, $4); &#125;
-    ;
-
-actor
-    : ACTOR &#123; $$ = yy.getActor($1); &#125;
-    ;
-
-signaltype
-    : linetype arrowtype  &#123; $$ = $1 | ($2 &lt;&lt; 2); &#125;
-	| linetype            &#123; $$ = $1; &#125;
-    ;
-
-linetype
-    : LINE      &#123; $$ = Diagram.LINETYPE.SOLID; &#125;
-	| DOTLINE   &#123; $$ = Diagram.LINETYPE.DOTTED; &#125;
-    ;
-
-arrowtype
-    : ARROW     &#123; $$ = Diagram.ARROWTYPE.FILLED; &#125;
-	| OPENARROW &#123; $$ = Diagram.ARROWTYPE.OPEN; &#125;
-    ;
-
-message
-    : MESSAGE &#123; $$ = $1.substring(1).trim().replace(/\\n/gm, &quot;\n&quot;); &#125;
-    ;
-%%
-</code></pre>
-<p>例如下面这一句：</p>
-<pre><code>[^\-&gt;:\n,]+       return 'ACTOR';
-</code></pre>
-<p>就是将不是“-&gt;:\n,” 这些字符的多个字组成词，这个词叫做ACTOR.</p>
-<p>一般来说终结符也就是类似’note’ 这样的字符需要先被定义。否则 ‘note’这样的字符集合就变成了markdown UML的ACTOR.</p>
-<p>而下面的是将ACTOR词转成对象actor。</p>
-<pre><code>actor
-    : ACTOR &#123; $$ = yy.getActor($1); &#125;
-    ;
-    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A-&gt;B: 一句话证明你很寂寞。</span><br><span class="line">Note left of A: thinking</span><br><span class="line">B-&gt;B: counting</span><br><span class="line">B&gt;&gt;A: 这句话有一共六十九笔</span><br><span class="line">Note right of X: SB</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>Created with Raphaël 2.1.2  寂寞是什么  A  A  C  C  S  S  B  B  一句话证明你很寂寞。<br />
-thinking  counting  这句话有一共六十九笔  SB</p>
-<p>好吧上面就是UML的grammar. 其实用什么语言都可以写出来。不局限于JS. 具体grammar这块使用的是jison和ebnf.<br />
-有闲空的人可以看一下JS调用jison来做js parser以及EBNF表达式。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/17/44357935/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/03/17/44357935/" class="post-title-link" itemprop="url">实现UML 序列图 -- Csdn MarkDown  第六篇 技术篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-03-17 23:06:00" itemprop="dateCreated datePublished" datetime="2015-03-17T23:06:00+08:00">2015-03-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这一篇开始讨论代码层面的问题。主要是markdown的功能的设计实现。</p>
-<p>这一篇先从markdown外围的代码开始讲起：<br />
-UML序列图是从 <a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams"> https://github.com/bramp/js-sequence-diagrams<br />
-</a> copy得到的。</p>
-<p>当如这个UML代码还用到了两个JS,功能库和画图.</p>
-<pre><code>&lt;script src=&quot;underscore-min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;raphael-min.js&quot;&gt;&lt;/script&gt;
-</code></pre>
-<p>首先讲讲这个JS最核心的类：<br />
-[ <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYy9zZXF1ZW5jZS0=">https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-<i class="fa fa-external-link-alt"></i></span><br />
-diagram.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYw==">https://github.com/bramp/js-sequence-diagrams/blob/master/src<i class="fa fa-external-link-alt"></i></span><br />
-/sequence-diagram.js)</p>
-<p>首先这个类分为其实使用两种风格的。一种就是现在CSDN采用的风格，叫做simple. 另外一种是手绘风格，叫做hand。定义如下：</p>
-<pre><code>var themes = &#123;
-simple : RaphaelTheme,
-hand : HandRaphaelTheme
-&#125;;
-Diagram.prototype.drawSVG = function (container, options) &#123;
-var default_options = &#123;
-theme: 'hand'
-&#125;;
-options = _.defaults(options || &#123;&#125;, default_options);
-if (!(options.theme in themes))
-throw new Error(&quot;Unsupported theme: &quot; + options.theme);
-var drawing = new themes[options.theme](this);
-drawing.draw(container);
-&#125;; // end of drawSVG
-</code></pre>
-<p>drawSVG是最外层JS要画图调用的方法。例如：</p>
-<pre><code>&lt;div id=&quot;diagram&quot;&gt;Diagram will be placed here&lt;/div&gt;
-&lt;script src=&quot;sequence-diagram-min.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt; 
-  var diagram = Diagram.parse(&quot;A-&gt;B: Does something&quot;);
-  diagram.drawSVG('diagram');
-&lt;/script&gt;
-</code></pre>
-<p>下面就可以画出图形。所以drawSVG是核心入口。</p>
-<p>drawSVG的实现过程中，最重要的一句：</p>
-<pre><code>drawing.draw(container);
-</code></pre>
-<p>这一句调用的draw function定义如下：</p>
-<pre><code>    draw : function(container) &#123;
-        var diagram = this.diagram;
-        this.init_paper(container);
-        this.init_font();
-        this.layout();
-        var title_height = this._title ? this._title.height : 0;
-        this._paper.setStart();
-        this._paper.setSize(diagram.width, diagram.height);
-        var y = DIAGRAM_MARGIN + title_height;
-        this.draw_title();
-        this.draw_actors(y);
-        this.draw_signals(y + this._actors_height);
-        this._paper.setFinish();
-&#125;,
-</code></pre>
-<p>这几句看起来平淡无奇，就是初始化背景，初始化字体，初始化各种，然后画标题，画角色（也就是序列图中的实体），画调用箭头。</p>
-<p>这里面看似简单，但是最为繁琐的就是:</p>
-<pre><code>this.layout();
-</code></pre>
-<p>布局：要遍历所有的要画到画布上的东西，要提前预知，各个东西的长宽，然后根据长宽，各个东西相距的距离，算出画布的尺寸。这段JS并没有做到固定长宽后，各个东西等<br />
-比缩放。</p>
-<p>这个做完之后，开始画角色（也就是实体）</p>
-<p>Created with Raphaël 2.1.2  A  A  这就是角色A  包括上下两个方块和中间的竖线</p>
-<p>再然后，两个角色之间是有间距的。例如：</p>
-<p>Created with Raphaël 2.1.2  距离是什么？  A  A  B  B  我们两个角色之间的间距  包括上下两个方块和中间的竖线</p>
-<p>间距的计算并不是很容易，首先确定每个角色的基本的高和宽，然后根据将信号signal计算在内（signal 包括两种，一种是 箭头关系，另外一种是 注释框）所<br />
-以大家可以看到注释框和箭头也是有从上到下的顺序的。signal的宽度和字的个数以及宽度均有关系(这里计算较为复杂，此处略去太多字…有兴趣的看源码)。</p>
-<p>然后顺序遍历，依次确定A,B,C…各个角色所在的绝对坐标。</p>
-<p>每一个signal都是有高度的，将所有的signal 高度加和，就得到了下端角色方框的坐标。然后连线就大功告成。</p>
-<p>看源码发现了许多没有的功能…</p>
-<p>例如 UML中增加title<br />
-以及UML中注释框除了Right, Left, 还有Over, 对于Over还可以置于多个角色之上。</p>
-<p>title 和 Over</p>
-<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">title: 距离是什么？</span><br><span class="line"></span><br><span class="line">A-&gt;B: 我们两个角色之间的间距</span><br><span class="line">Note Over A,B: 包括上下两个方块和中间的竖线</span><br><span class="line">Note Over A: I&#x27;m A</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>表现：</p>
-<p>Created with Raphaël 2.1.2  距离是什么？  A  A  B  B  我们两个角色之间的间距  包括上下两个方块和中间的竖线<br />
-I’m A</p>
-<p>[ <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYy9qcXVlcnkt">https://github.com/bramp/js-sequence-diagrams/blob/master/src/jquery-<i class="fa fa-external-link-alt"></i></span><br />
-plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYw==">https://github.com/bramp/js-sequence-diagrams/blob/master/src<i class="fa fa-external-link-alt"></i></span><br />
-/jquery-plugin.js)</p>
-<p><img src="http://img.blog.csdn.net/20150317225017889" alt="这里写图片描述" /></p>
-<p>这个类中，如果没有定义option属性，那么就只能用simple的形式了。感觉CSDN的dev好像没有定义这个option. 我这边也无能为力。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/diagram.js%5D"> [ https://github.com/bramp/js-sequence-diagrams/blob/master/src/diagram.js]<br />
-</a><br />
-这个类没有什么好讲的，就是通过parser构造出来的实体类。</p>
-<p>剩下的两个gammar JS. 这种词法解析的放到后面一篇再说. 网络实在不好，啥都timeout, 另外也该睡觉了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/16/44313917/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/03/16/44313917/" class="post-title-link" itemprop="url">CSDN Markdown 编辑器 第五篇 UML</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-03-16 21:40:00" itemprop="dateCreated datePublished" datetime="2015-03-16T21:40:00+08:00">2015-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>756</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1313,32 +387,35 @@ plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzL
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>这里大概就只能生成两种类型的图：</p>
-<ul>
-<li>序列图</li>
-<li>流程图</li>
-</ul>
-<h1 id="序列图"><a class="markdownIt-Anchor" href="#序列图"></a> 序列图</h1>
-<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A-&gt;B: 一句话证明你很寂寞。</span><br><span class="line">Note right of B: thinking</span><br><span class="line">B-&gt;B: counting</span><br><span class="line">B--&gt;A: 这句话有一共六十九笔</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>Created with Raphaël 2.1.2  A  A  B  B  一句话证明你很寂寞。  thinking  counting<br />
-这句话有一共六十九笔</p>
-<p>序列图很简单， 左边 A-&gt;B就能生成两个对象.按照从上至下的顺序，将序列依次画出。 –&gt;是虚线， -&gt;是实线。 Note Right of 【名称】<br />
-是注释框。</p>
-<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A-&gt;B: 一句话证明你很寂寞。</span><br><span class="line">Note left of A: thinking</span><br><span class="line">B-&gt;B: counting</span><br><span class="line">B--&gt;A: 这句话有一共六十九笔</span><br><span class="line">Note right of X: SB</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>Created with Raphaël 2.1.2  A  A  B  B  X  X  一句话证明你很寂寞。  thinking  counting<br />
-这句话有一共六十九笔  SB</p>
-<p>如果Note中的对象名没有出现过，就会自建一个。另外还可以使用Note left of。</p>
-<p>这个js是使用的 <a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams"> https://github.com/bramp/js-sequence-diagrams<br />
-</a></p>
-<h1 id="流程图"><a class="markdownIt-Anchor" href="#流程图"></a> 流程图</h1>
-<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 开始吃饭</span><br><span class="line">e=&gt;end: 结束吃饭</span><br><span class="line">op=&gt;operation: 埋头苦吃</span><br><span class="line">cond=&gt;condition: 已经吃饱了？</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>Created with Raphaël 2.1.2  开始吃饭  埋头苦吃  已经吃饱了？  结束吃饭  yes  no</p>
-<p>流程图的代码： <a target="_blank" rel="noopener" href="https://github.com/adrai/flowchart.js"> https://github.com/adrai/flowchart.js<br />
-</a></p>
-<p>看了一下代码，准备下一篇讲一讲 UML 序列图和流程的实现。</p>
+          <h3 id="改有道笔试题"><a class="markdownIt-Anchor" href="#改有道笔试题"></a> 改有道笔试题</h3>
+<h3 id="觅食"><a class="markdownIt-Anchor" href="#觅食"></a> 觅食</h3>
+<p>感觉一天除了吃也就只是吃了。清晨洗漱完毕，继续开始吃。Pd抱怨今天食堂没有肉包。不过鸡蛋可以拿多个，这个很人性化。今天的腐乳多加了几块，我又手贱的拿了一块吃<br />
+。吃完回窝，开始改昨天小朋友们做的笔试题。参加笔试的人真多。</p>
+<h3 id="改卷"><a class="markdownIt-Anchor" href="#改卷"></a> 改卷</h3>
+<p>首先先扫了一眼笔试题。然后我就开启了吐槽模式。这是谁出的试题，不让笔试者舒服不说，也不让改卷者舒服。编程题第一题这么基础。编程第二题如此变态。所以总结起来就<br />
+是第一题太基础懒得做，第二题太麻烦不愿做，第三题太难不会做。第二题这么多判断条件，又是x1,x2，改卷看的眼睛都花了。看到有些笔试者三道大题都没有写。笔试者<br />
+果然很鄙视的样子。嗯，我也很鄙视。让我再次笔试，估计也空三道。</p>
+<p>看完试题，看正确答案，发现两个答案有问题…出题需严谨，首先要学语文。自从进入了挑刺模式后，发现试题都是稀烂的。下次应该给笔试者一张白纸，然后要求笔<br />
+试者写出至今见过的一段最诡异最优雅的算法代码。然后改卷者依据心情给分。</p>
+<p>吐槽吐出东西太多，然后就饿了。又准备觅食。每天三食方省吾身。看着试卷，才改了4份。还有50多份。饥饿的心情瞬间陡增，和pd楼下觅食去了。</p>
+<h3 id="午餐"><a class="markdownIt-Anchor" href="#午餐"></a> 午餐</h3>
+<p>纳尼，这不是午餐，这是昨晚剩菜。应该叫晚剩午热餐。看着这菜，心中千万问候语在奔腾。看着食堂的广告，还是很平静的吃完了午餐。食堂开始运营至今已经n年了，善始者<br />
+实繁，克终者盖寡。耳边响起阴魂不散的声音…我用词永远都是那么恰当。嗯！</p>
+<h3 id="再改卷"><a class="markdownIt-Anchor" href="#再改卷"></a> 再改卷</h3>
+<p>或许吃饱喝足，又回到了桌前改卷。卷子上的答案总是那么喜人。做完研发的试卷，pd又让我看了一下PM的试卷。第一题抄题目都没有抄全，明明是 5, ( ),<br />
+39, 60, 105，好不好。结果漏掉了5. 我说那我给答案30， 你也不能算我错呀！</p>
+<p>好了，下午pd开启了吐槽模式。说明明试卷上是 “脉脉”， 为啥都答“陌陌” ？ 为啥还有在答题的时候，有鄙视者纠正这题出错了，就应该是“陌陌”。杭州的同学们<br />
+，你们是多么喜欢用陌陌。虽然pd用陌陌能摇出租车，也不代表你们答陌陌也给分呀。陌陌不是万能的，离开了陌陌，我不知道你们是不是万万不能。下次出题，应该出一题“<br />
+写出你有多了解陌陌，并留下陌陌号”。</p>
+<p>然后就是估算题。竟然发现有两个笔试者用电饭煲估算家庭数的小朋友。一男一女，嗯，你们要不是情侣的话，可以介绍你们认识。牵线搭桥，红娘月老。</p>
+<h3 id="睡觉"><a class="markdownIt-Anchor" href="#睡觉"></a> 睡觉</h3>
+<p>自从养成了习惯，改卷也改了一半，困意起。于是去床上躺着了。睡了半个小时。</p>
+<h3 id="继续改卷"><a class="markdownIt-Anchor" href="#继续改卷"></a> 继续改卷</h3>
+<p>已经无力吐槽了。吐太多了。杭州的小朋友都不好好看书的吗？出的题目多基础呀…算了，反正我也不好好看书。</p>
+<h3 id="继续觅食"><a class="markdownIt-Anchor" href="#继续觅食"></a> 继续觅食</h3>
+<p>pd去了新白鹿餐厅，吃回来比猪还大上一圈。不错，能卖好价钱。我去了食堂，继续吃腐乳。</p>
+<h3 id="再次改卷"><a class="markdownIt-Anchor" href="#再次改卷"></a> 再次改卷</h3>
+<p>晚上回来很困，通过率明显高了些。pd说应该是我烦了。我觉得应该是我困了。改完试卷，又烧上一壶热水，开始睡觉了。晚上被鼾声吵醒的时候，热水应该就烧好了。</p>
 
       
     </div>
@@ -1365,7 +442,7 @@ plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzL
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/14/44265795/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/10/12/40024189/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1383,7 +460,7 @@ plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzL
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/03/14/44265795/" class="post-title-link" itemprop="url">CSDN Markdown 编辑器 第四篇 LaTex语法</a>
+          <a href="/2014/10/12/40024189/" class="post-title-link" itemprop="url">杭州小记 一</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1394,7 +471,7 @@ plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzL
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2015-03-14 23:31:00" itemprop="dateCreated datePublished" datetime="2015-03-14T23:31:00+08:00">2015-03-14</time>
+      <time title="Created: 2014-10-12 22:58:00" itemprop="dateCreated datePublished" datetime="2014-10-12T22:58:00+08:00">2014-10-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1402,6 +479,230 @@ plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzL
       </span>
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>856</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="行程"><a class="markdownIt-Anchor" href="#行程"></a> 行程</h3>
+<p>早上坐动车历经K个小时到达杭州。下动车买杭州地铁票，票价5元到滨和路，C口出。pd用陌陌摇到了出租车。天公作美，下起了大雨。上车走起，没几分钟就到了NETE<br />
+ASE公司楼下，然后看到大家都鱼贯似的从公司出来觅食。Pd带领我们进入公寓，六层check in.<br />
+六层阿姨询问完各种事情之后，就发给了我们钥匙。钥匙很厚重，但是看起来也不防盗。pd说不用钥匙开门也就是分分钟就搞定的事。</p>
+<h3 id="觅食"><a class="markdownIt-Anchor" href="#觅食"></a> 觅食</h3>
+<p>check in 之后。放下行李和包裹。因为pd不用钥匙分分钟开门的缘故，大家都带上了贵重物品出发觅食去了。网易的食堂在工作日是17：00-19：00。我们<br />
+赶得正是时候，再晚几分钟就得去网易楼下的水池捞鱼吃了。第一次食堂饭菜给我的感觉很新鲜，感觉很高大上。有自己的食堂感觉真好。竟然还有免费的汤喝。另外还有腐乳，<br />
+嗯，还剩下最后一块，我四下看着没有人动，我就把它捞走了。吃饱喝足之后，继续回宿舍休息。</p>
+<h3 id="继续吃"><a class="markdownIt-Anchor" href="#继续吃"></a> 继续吃</h3>
+<p>洗漱完毕，百无聊赖。玩着饥荒游戏。pd问我是什么游戏。我说这就是饿了就吃，困了就睡的一款游戏。说着说着肚子就饿了。听说公司还有夜宵，然后就俩人一起下去继续觅<br />
+食。到了食堂发现没有开饭。工作日夜宵时间：23:00-01:00, 节假日： 23:30-00:30。这明明是工作日的夜宵，难道因为第二天休假，过了工作时间<br />
+就变成了节假日夜宵了？一边回住处一边抱怨厨师们太偷懒。在宿舍又呆了半个小时，继续出来找吃的。这次终于有夜宵了。一看…竟然是晚上没有吃完的菜。嗯，夜里继续<br />
+吃。宵夜宵夜，早上没吃完的，拿到夜里继续吃。不过烤出来的面包不错。我想如果今天晚上夜宵还没有吃完，会不会第二天继续吃。果真，我猜中了答案：第二天继续吃。直到<br />
+吃完才上新菜。</p>
+<h3 id="睡了吧"><a class="markdownIt-Anchor" href="#睡了吧"></a> 睡了吧</h3>
+<p>再次吃饱喝足。可能因为晚上吃了最后一块腐乳。肚子受不了，蹲厕所。嗯，下次还是抢新鲜的吃。pd老人家了，睡去了。睡得鼾声打的我戴耳塞都没管用。后来我烧了壶热水<br />
+倒在了他头上，瞬间就没有鼾声了，这一招真管用。嗯，这一夜睡得真好。</p>
+<p>明天继续写今天改笔试题的事情吧。</p>
+<p>嗯，再多说一句：pd还活着，大家不用担心。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/09/23/39506025/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/09/23/39506025/" class="post-title-link" itemprop="url">有道校招面试建议</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-09-23 23:50:00" itemprop="dateCreated datePublished" datetime="2014-09-23T23:50:00+08:00">2014-09-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>787</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>想想从之前面试有道，到现在代表有道面试其他人。也是算是成长。</p>
+<p>我面了许多人，只拒掉了一个。还有一个缓过。后来想想把缓过的也放行了。拒人让lead那边拒吧。</p>
+<p>我个人放行通过的四大原则：</p>
+<p>1. 算法ok</p>
+<p>2. 写过代码</p>
+<p>3. 反应灵活，思维缜密</p>
+<p>4. 见多识广</p>
+<p>当然这是针对二面。对于一面还是较为心狠手辣…通过率较低。</p>
+<p>如果一道算法题不会做，一般我会再加问几道，真心不想拒人。然后工程题，嗯，从这次面试的经历看，大家都没怎么做过正规的项目。也不好拒。唉…让lead拒<br />
+吧。<br />
+给来面试者的建议：<br />
+1. 如果问啥啥都不知道，但是算法还算好，我一般会交给下一面拒掉。因为可能我知道的知识和面试者知道的知识有所不同，让下一面再试试底。另外如果简历上的写的x<br />
+xx算法都不知道原理、复杂度以及适用范围，我觉得还是不要写了，只能减分。</p>
+<p>2. 另外会c又会一点皮毛c<ins>的，就不要说自己会面向对象编程了，因为怎么看都是像面向过程的。简历上最好就只写c吧。另外c</ins>有很多奥妙的语法和注意事项，<br />
+光靠看书和记忆是不行的。</p>
+<p>3. 来面试的就不要自带笔纸了，除非你想拿走自己的答案改进。如果面的好，会被理解为改进。面的不好，就被认为是偷题了。</p>
+<p>4. 某些同学见风使舵的本领还是非常厉害的。但是我真心不是为自己招兵的…其实我也只是个兵。<br />
+给有道这边的建议：</p>
+<p>1. 面试的地方真憋屈。办公的地方不收拾一下，然后去面试，实在是脏乱差，我都想吐槽。不，是想吐。</p>
+<p>2. 面试题大家都是临时才知道，准备的非常不充分。</p>
+<p>3. 面试题其实就放在打印机上…我不知道是否有不自觉的小朋友拿走了。</p>
+<p>4. 大家都在不知道简历的情况下面试。除了每面有一道统一题，基本上面不出所以然。当然也不知道他们简历上的写的这模型，那算法，这框架，那应用是个啥。嗯，还是<br />
+交给后面的人拒掉吧。</p>
+<p>5. 吃上可口的饭的运气只有1/3. 我真心想都试吃一下，后来还是忍了。</p>
+<p>嗯嗯，LP大人说很久都没有写blog了…嗯，补一篇吧。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/06/05/game-4096/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/06/05/game-4096/" class="post-title-link" itemprop="url">4096！——化简的2048游戏</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-06-05 08:53:00" itemprop="dateCreated datePublished" datetime="2014-06-05T08:53:00+08:00">2014-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-08 13:49:08" itemprop="dateModified" datetime="2023-10-08T13:49:08+08:00">2023-10-08</time>
     </span>
 
   
@@ -1429,125 +730,64 @@ plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzL
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Latex是为了写数学公式的。嗯…但实际这种语言的作用是为了排版的。数学公式只是他的附加属性。</p>
-<p>但是markdown引入这个完全是为了写公式。其他的Latex语法不支持。</p>
-<p>CSDN markdown语法支持的latex，分为两类<br />
-- 行内公式：</p>
-<pre><code>$\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$
-</code></pre>
-<p>这是行内公式：  Γ  (  n  )  =  (  n  −  1  )  !  ∀  n  ∈  N</p>
-<ul>
-<li>块级公式：<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>±</mo><msqrt><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></mrow></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a} 
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.276389em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.590389em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal">a</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">±</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.913389em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.740108em;"><span style="top:-2.9890000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">4</span><span class="mord mathnormal">a</span><span class="mord mathnormal">c</span></span></span><span style="top:-2.873389em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
-c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
-c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
-c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
-s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
-c69,-144,104.5,-217.7,106.5,-221
-l0 -0
-c5.3,-9.3,12,-14,20,-14
-H400000v40H845.2724
-s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
-c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
-M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.12661100000000003em;"><span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-</li>
-</ul>
-<p>这个是块级的。本身带着缩进。<br />
-x  =  −  b  ±  b  2  −  4  a  c  −  −  −  −  −  −  −  √  2  a</p>
-<p>LaTex符号等：</p>
-<pre><code>常用希腊字符 $\eta$ , $\mu$ ,$\epsilon$, $\pi$, $\alpha$, $\beta$, $\gamma$, $\lambda$, 
-
-空集: $\phi$, $\varphi$, $\Phi$,
-
-密度量: $\rho$, $\theta$, $\zeta$, $\delta$, 
-
-大写的$\Delta$,$\Theta$,  
-
-以及常用的：$\Omega$, $\Sigma$,$\sigma$
-</code></pre>
-<p>常用希腊字符  η  ,  μ  ,  ϵ  ,  π  ,  α  ,  β  ,  γ  ,  λ  ,</p>
-<p>空集:  ϕ  ,  φ  ,  Φ  ,</p>
-<p>密度量:  ρ  ,  θ  ,  ζ  ,  δ  ,</p>
-<p>大写的  Δ  ,  Θ  ,</p>
-<p>以及常用的：  Ω  ,  Σ  ,  σ</p>
-<pre><code>常用符号 
-+ - * / = &lt; &gt; 
-$\div$,$\le$ , $\ge$, $\approx$, $\equiv$, $\sim$, 
-
-$\simeq$, $\ll$, $\gg$, $\in$, $\subset$, $\subseteq$, 
-
-$\Join $, $\propto$, $\notin$, $\neq$, $\oplus$, $\times$, 
-
-$\cup$, $\cap$, $\vee$, $\land$, $\sum$, $\prod$
-
-$\bigcup$, $\bigcap$, $\int$, $\oint$, $\Leftarrow$, $\Rightarrow$
-
-$\iff$, $\lgroup$, $\rgroup$, $\infty$, $\angle$,$\nabla$
-
-$\forall$, $\exists$, $\emptyset$, 
-
-有些我也没有用过的运算操作符就没有写。另外对称的也只写了一个。
-</code></pre>
-<p>常用符号:<br />
-+ - * / = &lt; &gt;</p>
-<p>÷  ,  ≤  ,  ≥  ,  ≈  ,  ≡  ,  ∼  ,</p>
-<p>≃  ,  ≪  ,  ≫  ,  ∈  ,  ⊂  ,  ⊆  ,</p>
-<p>⋈  ,  ∝  ,  ∉  ,  ≠  ,  ⊕  ,  ×  ,</p>
-<p>∪  ,  ∩  ,  ∨  ,  ∧  ,  ∑  ,  ∏</p>
-<p>⋃  ,  ⋂  ,  ∫  ,  ∮  ,  ⇐  ,  ⇒</p>
-<p>⟺  ,  ⟮  ,  ⟯  ,  ∞  ,  ∠  ,  ∇</p>
-<p>∀  ,  ∃  ,  ∅  ,</p>
-<pre><code>分数 $\frac&#123;a&#125;&#123;b&#125;$ 
-</code></pre>
-<ul>
-<li>
-<p>分数  a  b<br />
-指数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>b</mi></msup></mrow><annotation encoding="application/x-tex">a^b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span></span></span></span></span></span></span></span></p>
-</li>
-<li>
-<p>指数  a  b<br />
-下标 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>b</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{bc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">b</span><span class="mord mathnormal mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
-</li>
-<li>
-<p>下标  a  b  c<br />
-微分 $\frac{\partial y}{\partial x} $</p>
-</li>
-<li>
-<p>微分  ∂  y  ∂  x<br />
-向量 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>A</mi><mi>B</mi></mrow><mo>⃗</mo></mover></mrow><annotation encoding="application/x-tex">\vec{AB}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9663299999999999em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9663299999999999em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.25233em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2355em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg width='0.471em' height='0.714em' style='width:0.471em' viewBox='0 0 471 714' preserveAspectRatio='xMinYMin'><path d='M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
-3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
-10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
--1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
--7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
-H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
-c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span></span></span></span></p>
-</li>
-<li>
-<p>向量  A  B  →<br />
-加和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>a</mi><mi>i</mi></msub><msub><mi>b</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\sum_{i=1}^n a_ib_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.104002em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
-</li>
-<li>
-<p>加和  ∑  n  i  =  1  a  i  b  i<br />
-积分 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mn>0</mn><mfrac><mi>π</mi><mn>2</mn></mfrac></msubsup><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\int_{0}^{\frac{\pi}{2}}sin(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3978000000000002em;vertical-align:-0.35582em;"></span><span class="mop"><span class="mop op-symbol small-op" style="margin-right:0.19445em;position:relative;top:-0.0005599999999999772em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0419800000000001em;"><span style="top:-2.64418em;margin-left:-0.19445em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span></span></span></span><span style="top:-3.5579em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6915428571428572em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">π</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.35582em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">i</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></p>
-</li>
-<li>
-<p>积分  ∫  π  2  0  s  i  n  (  x  )<br />
-连乘 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∏</mo><mrow><mi>a</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>a</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\prod_{a = 1}^n a_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.104002em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∏</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
-</li>
-<li>
-<p>连乘  ∏  n  a  =  1  a  i<br />
-粗体 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">n</mi></mrow><annotation encoding="application/x-tex">\mathbf{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.44444em;vertical-align:0em;"></span><span class="mord"><span class="mord mathbf">n</span></span></span></span></span></p>
-</li>
-<li>
-<p>粗体  n</p>
-</li>
-</ul>
-<p>我看了一下Latex的这些数学符合…感觉自己的数学知识已经完全交还给体育老师了。你们上面的符号还记得多少？</p>
-<p>如果人类出现了断层。数千年后，后人看这些数学符号。大概和现代人看甲骨文一样。难于识别。</p>
-<p>藐视渣渣的数学学霸…上面那些符号并不是你要看的数学符号。下面的才是：</p>
-<p><img src="http://img.blog.csdn.net/20150314232619110" alt="这里写图片描述" /></p>
-<p><img src="http://img.blog.csdn.net/20150314232758433" alt="这里写图片描述" /></p>
-<p><img src="http://img.blog.csdn.net/20150314232644194" alt="这里写图片描述" /></p>
+          <h2 id="游戏介绍"><a class="markdownIt-Anchor" href="#游戏介绍"></a> 游戏介绍：</h2>
+<p>这个能轻松到达 4096. 所以取名为 4096了。</p>
+<p>github地址是： <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseS80MDk2"> https://github.com/chilly/4096 <i class="fa fa-external-link-alt"></i></span></p>
+<p>如果想直接玩游戏访问 <span class="exturl" data-url="aHR0cDovLzQwOTYuY2hpbGx5Yy5pbmZv"> 4096.chillyc.info <i class="fa fa-external-link-alt"></i></span></p>
+<p>这个4096 是直接copy的2048。 这个游戏需要消耗比较多的脑力。当然费了脑力还要拼拼运气。原因在于生成随机方块的地方90%会生成2，10%会生成4.<br />
+最后一搏的那个方块很有可能会因为2，4生成的问题导致游戏失败。</p>
+<h2 id="为什么要做这个游戏"><a class="markdownIt-Anchor" href="#为什么要做这个游戏"></a> 为什么要做这个游戏</h2>
+<p>这个原因其实是为让LP打到更高的分数。当然还要有些难度，不能移动一个方块瞬间就变成8192。还得让LP不能因为运气不佳挂掉。戴着枷锁跳呀跳。所以直接改了20<br />
+48的源码。</p>
+<h2 id="2048这款游戏怎么做的"><a class="markdownIt-Anchor" href="#2048这款游戏怎么做的"></a> 2048这款游戏怎么做的？</h2>
+<p>其实非常细节的，我也没有仔细的研究。2048这个游戏代码量不大。最主要的两个类是game_manager.js 和 grid.js。游戏的主要流程：</p>
+<ol>
+<li>界面接收到keyboard的请求</li>
+<li>交给game_manager的move函数</li>
+<li>判断游戏是否失败</li>
+<li>merge tile(也就是merge 色块)</li>
+<li>move tile</li>
+<li>最后生成在随机的位置生成随机的 tile(2或者4)</li>
+<li>继续监听keyboard请求</li>
+</ol>
+<h2 id="怎么做4096这款游戏"><a class="markdownIt-Anchor" href="#怎么做4096这款游戏"></a> 怎么做4096这款游戏</h2>
+<p>做这款游戏的重点是要去除霉运，增加好运</p>
+<p>下面做了几点优化点：</p>
+<ol>
+<li>真没有什么可以优化的点时，对4产生的概率增加一下。提高到50%。简单暴力</li>
+<li>生成的2需要在2旁边，生成的4需要在4旁边：如下图：</li>
+</ol>
+<div align=center>
+<p><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/1.jpg" alt="" /></p>
+<p><strong>在2的旁边生成2</strong></p>
+</div>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/2.png" class="" alt="2.png"><br/><strong>在4旁边生成4</strong><br/></div>
+<p>3. 误操作导致最大值移动。在误操作时需要弹个框帮助用户确认。不过为了不要频繁的弹窗，在最大值大于512后才开始提示。这里的算法是判断最大值是否有移动，如<br />
+果移动，是否会移入到四个角。是否是在边界处移动。而非向内部移动。</p>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/3.png" class=""><br/><strong></strong><br/></div>
+<p>4. 随机生成的色块，可以帮助某些值merge.这里比较tricky的地方。如果某个比较大的两个值需要merge,<br />
+但是这两个值差了一个空格。那么就在相应的地方补上2、4，使得这两个比较大的值可以merge。例如下图中的两个32色块：</p>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/4.png" class=""><br/><strong></strong><br/></div>
+<p>这个图中向左移动后，32和32会移动到左边。那么第二行的32的右边出现小方块，那么下一次向右移动，32就有机会和32合并。如下图所示：</p>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/5.png" class=""><br/><strong></strong><br/></div>
+<p>然后继续右移，32可以和32合并了：</p>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/6.png" class=""><br/><strong></strong><br/></div>
+<p>5. 在最空旷的地方生成2/4. 这个比较简单就是找4联通最大的空白所在的点。然后将此点设置为2、4。如下图所示：</p>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/7.png" class=""><br/><strong></strong><br/></div>
+<h2 id="再次优化"><a class="markdownIt-Anchor" href="#再次优化"></a> 再次优化</h2>
+<p>当然，经过这系列优化之后，难度有所降低，但不意味着你不动脑筋可以玩到4096. 另外还有一些值得优化的点。</p>
+<ol>
+<li>例如第5点，在这一点中，需要生成的色块不应该和最大值在一条直线上。</li>
+<li>另外还需要做的优化就是：如果你一直左右移，很有可能有一个状态导致无法再左右移动。那么就需要上下移动。这样的带来的问题就是最大色块一定会脱离原有的边界。这样的移动极有可能导致整个游戏挂掉。所以需要对这一状态进行优化。</li>
+<li>在手机上玩这款游戏，其实灵敏度是个问题，总感觉慢了半拍（性能上还有值得优化的点）</li>
+<li>在某一个状态，最大值一定在边界上，但不是在四个角，那么最好的情况是可以将最大值移入到四个角中。假如一直是左右移动变为的这个状态，最大值和次大值都都在底线上。之后的步骤一定要让最大值所在的色块不能向上移动，而其他的底线色块可以向上移动。这样上移后，底线就只有最大值，然后再次左右移动就可以将最大值放入到边角中。如果这时随机生成色块，很有可能次大值等再也无法移回底线。所以这样的状态也需要优化。</li>
+</ol>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/8.png" class=""><br/><strong></strong><br/></div>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/9.png" class=""><br/><strong></strong><br/></div>
+<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/10.png" class=""><br/><strong></strong><br/></div>
+<h2 id="结束了吗"><a class="markdownIt-Anchor" href="#结束了吗"></a> 结束了吗？</h2>
+<p>这些优化会在以后慢慢放出来。现在游戏中bug有些多。像这种游戏也不知道怎么做自动化测试的。。。。。。慢慢做吧。</p>
+<p>下面是黑PM的时间：PM们，你们能走查到 8192 这个状态吗？ 。。。。。。算了，你们努力走查到1024就可以发布了吧~</p>
 
       
     </div>
@@ -1574,7 +814,7 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/14/44249609/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/05/29/27527493/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1592,7 +832,7 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/03/14/44249609/" class="post-title-link" itemprop="url">CSDN Markdown 编辑器 第三篇 基本语法篇</a>
+          <a href="/2014/05/29/27527493/" class="post-title-link" itemprop="url">发送垃圾邮件的问题</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1603,14 +843,938 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2015-03-14 00:06:00" itemprop="dateCreated datePublished" datetime="2015-03-14T00:06:00+08:00">2015-03-14</time>
+      <time title="Created: 2014-05-29 14:35:00" itemprop="dateCreated datePublished" datetime="2014-05-29T14:35:00+08:00">2014-05-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 01:32:50" itemprop="dateModified" datetime="2023-10-06T01:32:50+08:00">2023-10-06</time>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>329</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>开发有道云笔记发送邮件功能。这是一个非常古老的功能，这也是一个非常没有用处的功能。其实就是为了做一个和竞品一样的功能。这个功能就是将一篇笔记发送成邮件。关于<br />
+这个功能，每次测试时，总有测试人员来问，为什么我发的邮件被扔到了垃圾邮件里？每次回归测试都是如此，无一例外。</p>
+<p>那么为什么会成为垃圾邮件呢？</p>
+<p>1. 内容本身是垃圾，里面的内容写的都不是人话。都是“法3iron的萨芬女生大富豪ASF萨法” 这样的乱敲码。<br />
+2. 垃圾内容发送过多的账号，即使发送正常的内容，也可能会被标记为垃圾</p>
+<p>3. 含有“发票，代开，网店，xx”等特殊字样</p>
+<p>4. 内容只有一张图片的</p>
+<p>5. …<br />
+在这里总结一下。我要说的是：这不是功能的问题，这是因为你们发送的内容本身就是垃圾…</p>
+<p>好吧,明白为啥被当做垃圾邮件的请点赞。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/05/20/25145551/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/05/20/25145551/" class="post-title-link" itemprop="url">OAuth 漏洞预警 (OAuth平台redirect_uri 漏洞)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-05-20 13:20:00" itemprop="dateCreated datePublished" datetime="2014-05-20T13:20:00+08:00">2014-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="1-首看看漏洞的起因"><a class="markdownIt-Anchor" href="#1-首看看漏洞的起因"></a> 1. 首看看漏洞的起因：</h3>
+<p>有兴趣的你可以将下面的url贴到浏览器看看效果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://chillyc.info\.csdn.net  </span><br></pre></td></tr></table></figure>
+<p>或者这个url:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sdfa.com@chillyc.info?blog.csdn.net/</span><br></pre></td></tr></table></figure>
+<p>这些 Url 在不同的浏览器上表现可能不太一致。但是我在 Chrome上，输入第一个url 调整到了chillyc.info的一个404页面。但不管怎么说，大多程序员使用找到 '.‘和’/'来判断domain的方法十分不靠谱。so~~~~为什么呢？写这些Oauth的家伙们都没有看过 <span class="exturl" data-url="aHR0cDovL3Rvb2xzLmlldGYub3JnL2h0bWwvcmZjMzk4NiNzZWN0aW9uLTEuMS4x"> RFC 3986 (UniformResource Identifier (URI): Generic Syntax)<i class="fa fa-external-link-alt"></i></span> .  或者看了一眼发现：我x,这么多英文。然后就跳过了。不过不光中国人实现的有问题， 各种版本浏览器实现的也都有些问题。也有可能大家都觉得不会有这么复杂的uri。</p>
+<h3 id="2-对于oauth平台来说如何修补漏洞"><a class="markdownIt-Anchor" href="#2-对于oauth平台来说如何修补漏洞"></a> 2. 对于Oauth平台来说如何修补漏洞？</h3>
+<p>好吧，下面看了下rfc,简单介绍一下uri的定义：</p>
+<p><img src="http://img.blog.csdn.net/20140507181539093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /></p>
+<p>给大家一个rfc上的正则福利，这个正则是为了匹配上面的uri的定义。</p>
+<p><img src="http://img.blog.csdn.net/20140507181725312?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /></p>
+<p>下面是这个正则对url进行解析：</p>
+<p><img src="http://img.blog.csdn.net/20140507181800171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br />
+好吧。那除了Oauth平台用这个正则来真正找到domain还有什么更简单的方法来预防这个漏洞吗？嗯，其实加盟的第三方一开始只要遵循了Oauth2.0的规范。还是比较容易预防这个漏洞的。</p>
+<h3 id="3-再简单介绍下oauth2授权"><a class="markdownIt-Anchor" href="#3-再简单介绍下oauth2授权"></a> 3. 再简单介绍下Oauth2授权 ：</h3>
+<p>针对Oauth2协议， Oauth2中有几种获取 accessToken的方式(就是response_type 这个域)：</p>
+<p>1. code, 这种是先获取到 code, 然后再用code 来获取accessToken</p>
+<p>2. token, 这种是直接获取到accessToken ,这个比code更加直接。</p>
+<p>而对于token这种方式进行授权的。 就会带来比code方式更加危险的问题。 造成这个问题的原因就是 redirectUrl 这个参数的domain在各大平台上判断的都有问题。 原因也很简单，大家都觉得这东西安全不是那么重要， 都https, 还在意什么安全问题。 另外授权流程那么的复杂，谁在意这鬼东西还能出来什么安全问题。再说即使是有问题，那肯定第三方自己就能修复，完全不需要各大平台修复。各大平台只需要保证你发来正确的信息，给你正确的返回就行了。所以这个漏洞等级很低。</p>
+<p>但是这个漏洞，的确可以将code 或者 accessToken通过这个漏洞发送给恶意第三方。特别是第二种使用token的直接授权方式。除非Oauth平台修改。加盟的第三方应用无法做出有成效的修补。所以我下面只介绍使用第一种授权方式code的修补方案。</p>
+<h3 id="4-加盟第三方如何修补和预防"><a class="markdownIt-Anchor" href="#4-加盟第三方如何修补和预防"></a> 4. 加盟第三方如何修补和预防</h3>
+<p>首先，你这个应用需要是 Server应用（有自己的服务器或者有后台不可见代码）。 JS的app完全预防不了（之前指定Oauth2.0时说各个浏览器都要出份力，但好像也没有见到这对JS app的Oauth2.0有什么改进之处。）只要代码可见，不管明文密文，都一定是能获取到该应用的appKey和appSecret的。所以怎么都能获取到用户真正的accessToken，不管是钓鱼还是伪造。</p>
+<p>不考虑直接客户端获取accessToken的形式。 Oauth说白了就是 Oauth平台和Server之间通信。如下图：</p>
+<p><img src="http://img.blog.csdn.net/20140520124043171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br />
+下面我们考虑浏览器：</p>
+<p><img src="http://img.blog.csdn.net/20140520124154421?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br />
+下面我们考虑一下恶意程序，恶意程序只会出现在两个地方。一个是以脚本的形式出现在浏览器中（见恶意程序1）。另外一个是让信息流强制流向恶意服务器（见恶意程序2）。</p>
+<p><img src="http://img.blog.csdn.net/20140520124713343?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br />
+下面我们分别就两个恶意程序来讨论一下如何修补规避漏洞。</p>
+<ul>
+<li>对于恶意程序1， 这里最简单的做法就是让JS只知道部分信息。例如登录中常用的shadow cookie的方法。JS用于显示用户名或者登录信息的cookie 不是httpOnly的，而真正作为服务器认证凭证的cookie则使用httpOnly cookie。这样恶意的JS无法获取到真正有用的cookie. 详见 <a href="http://chillyc.info/blog/2012/05/11/cookie/"> Cookie的特性 </a> 。</li>
+<li>对于恶意程序2，这里需要在我们的server请求Oauth平台时，首先植入一个认证信息，例如cookie/session等。即使通过url漏洞跳转到恶意程序2, 恶意程序2这时可以获取到Oauth平台发来的code和state. 而浏览器通过cookie的domain属性保证开始植入的认证信息不会发送给恶意程序2.
+<ul>
+<li>
+<p>恶意程序2 通过其他方式和我们的server进行交互时，因没有认证信息，我们的server不会返回给它accessToken。</p>
+</li>
+<li>
+<p>恶意程序2 直接和Oauth平台交互，因为没有appSecret和appKey, 也无法获取到accessToken.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-结论"><a class="markdownIt-Anchor" href="#5-结论"></a> 5. 结论</h3>
+<p>做了以上两步，redirect_uri的漏洞不管怎么样，都只能称为Oauth平台的bug。而你的服务是足够安全的。上面的安全是基于电脑没有中病毒，以及服务自身没有其他的隐患的假设。顺便一提，oauth2中redirect_url漏洞才会造成威胁。Oauth1.0a协议中这种漏洞不会造成威胁。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/05/04/24915991/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/05/04/24915991/" class="post-title-link" itemprop="url">Nokia 5220 XpressMusic 自己刷机</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-05-04 08:55:00" itemprop="dateCreated datePublished" datetime="2014-05-04T08:55:00+08:00">2014-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>看了半天各种论坛，是在不知道从哪里下手，所以自己写一篇自己刷机的新的。凤凰那个软件好像已经挂了，每次打开就是service is not<br />
+authorized. 所以还是使用nokia自己的官方下载平台。见csdn的下载地址:</p>
+<p><a target="_blank" rel="noopener" href="http://download.csdn.net/detail/cctt_1/7286659"> http://download.csdn.net/detail/cctt_1/7286659<br />
+</a></p>
+<p>然后是找要下什么，必须填两个一个是type,一个code.<br />
+这个在什么地方找，靠google/baidu/360都是没有用的。其实就在自己的手机里。将手机拆开，电池板卸下来。见下图：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTQwNTAzMTQxMTMzNTYyP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20140503141133562?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/SouthEast)<br />
+其中两个红圈中的就是type和code.  type (RM-411) code:(0568193)</p>
+<p>这里有type和code.下面就是将type和code填入到系统中search. 然后download.<br />
+那个诺基亚的东西下载速度奇慢，感觉是单线程TCP下载。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTQwNTAzMTQxMjQ0MDYyP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20140503141244062?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/SouthEast)<br />
+然后到下载的地方把package copy到JAF的search路径中（下面会说 这个JAF search路径是什么地方）。下载到哪里了呢？见下图：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTQwNTAzMTQxMzI1MzQzP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20140503141325343?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/SouthEast)<br />
+先安装nokia套件，这个在 <span class="exturl" data-url="aHR0cDovL3d3dy5ub2tpYS5jb20vY24temgvc3VwcG9ydC8="> 官网这里 <i class="fa fa-external-link-alt"></i></span><br />
+找到自己的机型，然后选择安装套件即可。 如果还没有安装JAF, 那么到这里安装：</p>
+<p><a target="_blank" rel="noopener" href="http://download.csdn.net/detail/cctt_1/7286737"> http://download.csdn.net/detail/cctt_1/7286737<br />
+</a><br />
+安装完毕后， 运行见下图：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTQwNTAzMTQxNTM4NTc4P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20140503141538578?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/SouthEast)<br />
+这里按照 1，2，3，4，5，6的执行顺序。另外看准确哪些是打勾的项目。 出现了&quot;Select Phone Model&quot;框。 在框中选择：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTQwNTAzMTQxNzE4MDYyP3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20140503141718062?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/SouthEast)<br />
+你看到上图中 Checking path:  C:\Program Files\Nokia\Phoenix\Products 这个路径了吗？<br />
+这就是JAF的search路径。然后将刚才下载的 RM-411 整个文件夹放入到 C:\Program<br />
+Files\Nokia\Phoenix\Products  这个路径中。然后点击 “Select Phone Model”中的RM-411 然后点击 OK.<br />
+见下图：</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTQwNTAzMTQyMDEwMDE1P3dhdGVybWFyay8yL3RleHQvYUhSMGNEb3ZMMkpzYjI=">http://img.blog.csdn.net/20140503142010015?watermark/2/text/aHR0cDovL2Jsb2<i class="fa fa-external-link-alt"></i></span><br />
+cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/7<br />
+0/gravity/SouthEast)<br />
+这个时候有三个亮灯。然后在你电脑上用UBS连上你的手机，然后点击上图中的Flash,就开始刷机了。 注意点击后圈中的一句话：PRESS POWER ON<br />
+NOW! 这个时候就按手机的开机键。然后就开始刷机了。注意手机电量需要充足。否则刷一般就挂掉了。不过挂掉也不怕，重来来一遍继续刷即可。</p>
+<p>顺便说一句，我已经成功的把5220刷成板砖了。准备去送修了。第一次刷的时候，开机变成了 白屏+ Test mode字样。<br />
+第二次刷的时候就中间写flash的时候写出了 windows 访问内存异常。 第三次，嗯，就再也写不进去了。 flash failed 这样的提示。<br />
+查了一下，大概是说驱动装的都有问题， 需要新机器新环境之类的。<br />
+好吧，给大家一个学习错误的机会~~~ 另外JAF在win7 64位上没有合适的运行环境。总是 wincards.dll有问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/05/01/24835803/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/05/01/24835803/" class="post-title-link" itemprop="url">鲜活的Java 8 --- Java 8 进化之路</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-05-01 17:55:00" itemprop="dateCreated datePublished" datetime="2014-05-01T17:55:00+08:00">2014-05-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近在学习java8的新特性。 首先先来安装java8。 Java8 在 win7下很容易安装，但是官方不支持win XP. windows Xp java8无法安装。如果在xp下安装会报这样的错误：</p>
+<p>无法定位程序输入点 RegDeleteKeyExA 于动态链接库 ADVAPI32.dll</p>
+<p><img src="http://img.blog.csdn.net/20140501170652156?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" /><br />
+如果非要在32位的xp系统，可以先下载java8的jdk的exe文件。然后使用7zip进行解压。再解压tools.zip文件。最后你能得到下面的目录结构：</p>
+<p><img src="http://img.blog.csdn.net/20140501170918828?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" /><br />
+在这个目录下执行如下的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FOR /R %f IN (*.pack) DO <span class="string">&quot;d:\java8\bin\unpack200.exe&quot;</span> -r -v <span class="string">&quot;%f&quot;</span> <span class="string">&quot;%~pf%~nf.jar&quot;</span></span><br></pre></td></tr></table></figure>
+<p>注意d:\java8\bin\unpack200.exe 这个。这个是你的解压路径中的unpack200.exe。上面的命令就是使用解压中的unpack200.exe将整个解压路径中的.pack文件转换为.jar文件. 转换完之后，d:\java8这个路径就已经是JAVA_HOME路径。</p>
+<p>下面就是IDE也能使用java1.8的新特性。下载一个新版本的eclipse。另外如果是eclipse kepler 可以在eclipse market中下载一个java8的插件&quot;Eclipse Java Development Tools Patch with Java 8 support(for Kepler SR2)&quot;。 然后在tab中windows-&gt;Pererfence-&gt;java-&gt;Installed JREs =&gt; “add…”=&gt; Standard VM =&gt; JRE home选择之前的那个解压路径。剩下的内容eclipse会帮你填充。然后一路点击确认就可以了。</p>
+<p><img src="http://img.blog.csdn.net/20140501171333687?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br />
+然后将execute Environments 选中 javaSE-1.8, 然后选中 Java8 ,点击确定。</p>
+<p><img src="http://img.blog.csdn.net/20140501171429140?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br />
+新建立一个工程。然后将Java Compiler选中 1.8的版本。<br />
+<img src="http://img.blog.csdn.net/20140501171543812?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br />
+然后新建一个interface。编写如下代码。如果IDE没有报错。那么eclipse IDE就已经可以使用java8的新特性了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">TestDefault</span> &#123;</span><br><span class="line">    <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">pirnt</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>下面的图里没有编译错误<br />
+<img src="http://img.blog.csdn.net/20140501171730359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" /><br />
+对于java8, 网上说了55条新特性。但详细看来，最有用的也就那么几条。下面罗列一下：</p>
+<ol>
+<li>消除持久代. 再也没有OutOfMemoryError. PermGen Space 这样的错误了。持久代（Interned 字符串，类元数据和类静态变量）合并入Heap Space或者direct buffer. 以后可能更多的会OutOfMemoryError: Heap space.</li>
+<li>Annotation更加强大。可以在函数参数中加入@notnull 这样的标记，来判断参数是否为null. 另外还有可以用来消除public,private 这些关键字。</li>
+<li>加密方面，AES使用了CPU指令，可以更快加解密。用SHA-224代替SHA-1.支持了64位windows的PKCS#11，加解密AES,RSA支持更多的PKCS。</li>
+<li>加入JS 引擎。 可以运行js脚本。这对node.js, webview的使用意义更大</li>
+<li>Http URL, 支持Http GET, POST 操作，这个是要在未来代替HttpClient吗？</li>
+<li>使用平衡树处理HashMap中的冲突，对于频繁的冲突会将List替换成平衡树。这样做会提高HashMap的插入速度。</li>
+<li>Base64终于可以名正言顺的使用。java.util.Base64.Encoder 和java.util.Base64.Decoder.而不要使用过去的sun.misc.BASE64Encoder等。</li>
+<li>并发的支持。增加适用于频繁更新但非频繁读取的原子变量。ConcurrentHashMap更新，Fork-Join框架更新。Arrays.sort有了并发的sort =&gt; Arrays.parallelSort,可以很好的利用多核的资源。据说性能在数据均衡的情况下最少提升了30%。</li>
+<li>lamda表达式引入,接口中的default function以及stream</li>
+</ol>
+<p>对于以上几点主要说说第8和第9点。对于第8点做了个小实验验证了一下并发情况下的排序性能提升：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestJava8</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span><span class="number">10000000</span>;</span><br><span class="line">        <span class="type">int</span>[] k = <span class="keyword">new</span> <span class="title class_">int</span>[count];</span><br><span class="line">        <span class="type">Random</span> <span class="variable">r</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j= <span class="number">0</span>; j &lt; <span class="number">5</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;i&lt;count; i++) &#123;</span><br><span class="line">                k[i] = r.nextInt();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> [] g = Arrays.copyOf(k, k.length);</span><br><span class="line">            <span class="type">int</span> [] t = Arrays.copyOf(k, k.length);</span><br><span class="line">            <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">            Arrays.parallelSort(g);</span><br><span class="line">            </span><br><span class="line">            System.out.println(System.currentTimeMillis() - start+<span class="string">&quot;:parallel:&quot;</span>);</span><br><span class="line">            </span><br><span class="line">            start = System.currentTimeMillis();</span><br><span class="line">            Arrays.sort(t);</span><br><span class="line">            System.out.println(System.currentTimeMillis() - start+<span class="string">&quot;:serial:&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在公司里的伪双核的机器上跑。反复几次，当如也有可能期间夹杂了gc()的影响。结果基本是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1398</span>:parallel:</span><br><span class="line"><span class="number">1373</span>:serial:</span><br><span class="line"><span class="number">1224</span>:parallel:</span><br><span class="line"><span class="number">1287</span>:serial:</span><br><span class="line"><span class="number">1261</span>:parallel:</span><br><span class="line"><span class="number">1274</span>:serial:</span><br><span class="line"><span class="number">1304</span>:parallel:</span><br><span class="line"><span class="number">1314</span>:serial:</span><br><span class="line"><span class="number">1234</span>:parallel:</span><br><span class="line"><span class="number">1480</span>:serial:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>从结果上看，基本上并发还是需要使用在数据量较大的情况下。但是如果数据量大是否能使用内存排序还是个问题。对于parallelSort，Java8还是使用的Fork-Join的模式。对于小数据量效果并不佳，因为开启线程还是要费些时间的。我个人认为java8 对于Arrays.sort()这个接口，还是默默的做并发/非并发判断比较好。毕竟多核都对java程序员隐藏的话，并发sort()啥的最好也能对java程序员隐藏。否则又要在上面包一层先判断一下数据量大小，然后再执行sort() or parallelSort().  另外官方所说的数据均衡的情况下最少提升了30%。这个意思是说官方的测试在比较均衡的数据集跑出来的，但是一般在生产环境中的数据集是不均衡的。</p>
+<p>java8 最大的亮点就是lamda表达式。可以使用java进行函数式编程。这样的好处是什么呢？</p>
+<ol>
+<li>如果lamda表达式只对变量进行只读操作，那一定是threadSafe. 非只读的情况需要特殊判读是否是threadSafe.</li>
+<li>如果是threadSafe 一定可以并发执行</li>
+<li>从参数推出结果，是针对API接口编程。（这点有些虚）</li>
+<li>返回的结果也可以是函数</li>
+</ol>
+<p>一段代码这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 求一个List中的最大值	</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		List&lt;Integer&gt; k = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">		k.add(<span class="number">1</span>);</span><br><span class="line">		k.add(<span class="number">2</span>);</span><br><span class="line">		k.add(<span class="number">3</span>);</span><br><span class="line">		k.add(<span class="number">8</span>);</span><br><span class="line">		k.add(<span class="number">11</span>);</span><br><span class="line">		k.add(<span class="number">20</span>);</span><br><span class="line">		k.add(<span class="number">50</span>);</span><br><span class="line">		<span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j : k) &#123;</span><br><span class="line">			<span class="keyword">if</span> (max &lt; j) &#123;</span><br><span class="line">				max = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(max);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假如这段代码中查找最大值成了性能瓶颈，那么需要将这段代码改为并发操作。想想就不容易。那现在使用lamda表达式这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 求一个链表中的最大值</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		</span><br><span class="line">		List&lt;Integer&gt; k = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">		k.add(<span class="number">1</span>);</span><br><span class="line">		k.add(<span class="number">2</span>);</span><br><span class="line">		k.add(<span class="number">3</span>);</span><br><span class="line">		k.add(<span class="number">8</span>);</span><br><span class="line">		k.add(<span class="number">11</span>);</span><br><span class="line">		k.add(<span class="number">20</span>);</span><br><span class="line">		k.add(<span class="number">50</span>);</span><br><span class="line">		Optional&lt;Integer&gt; max = k.stream().max((a,b) -&gt; &#123;<span class="keyword">return</span> a-b;&#125;);</span><br><span class="line">		System.out.println(max);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>想变成并发操作这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 求一个链表中的最大值</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		</span><br><span class="line">		List&lt;Integer&gt; k = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">		k.add(<span class="number">1</span>);</span><br><span class="line">		k.add(<span class="number">2</span>);</span><br><span class="line">		k.add(<span class="number">3</span>);</span><br><span class="line">		k.add(<span class="number">8</span>);</span><br><span class="line">		k.add(<span class="number">11</span>);</span><br><span class="line">		k.add(<span class="number">20</span>);</span><br><span class="line">		k.add(<span class="number">50</span>);</span><br><span class="line">		Optional&lt;Integer&gt; max = k.parallelStream().max((a,b) -&gt; &#123;<span class="keyword">return</span> a-b;&#125;);</span><br><span class="line">		System.out.println(max);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很简单吧。就是将k.stream() 改成 k.parallelStream()  而这个之所以简单是基于这样几点。</p>
+<ol>
+<li>
+<p>编写ThreadSafe的函数或者lamda表达式, 本身就很容易变为多线程操作。</p>
+</li>
+<li>
+<p>Stream方式处理数据。</p>
+</li>
+<li>
+<p>传入的参数数据只关系上一步的结果，而不关系其他数据在本步所做操作产生的中间数据。</p>
+</li>
+<li>
+<p>Fork-Join提供了很好的多线程框架</p>
+</li>
+</ol>
+<p>这里八卦一下Java8 为什么做了除了lamda表达式之外的一些事情。</p>
+<ol>
+<li>interface中的default function接口。 原因是lamda表达式是为了并发做的。那么并发包concurrent中已经有了很多接口，希望和过去的版本兼容，减少迁移的工作量。如果interface中新增了接口，那么使用jdk8以前的代码就会有编译错误。要解决这个编译错误，要么抽象出一个abstract class实现接口，并加入缺省的实现。要么在以前的所有的实现中都加入这个接口。所以听听就觉得这次迁移是个大的工作量。那default function就诞生了。为了不写abstract class， 并且使用jdk5,jdk6,jdk7的代码可以方便迁移到jdk8中。default function 这样使用：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestF</span> &#123;</span><br><span class="line">	<span class="keyword">public</span>  <span class="keyword">interface</span> <span class="title class_">TestDefault</span> &#123;</span><br><span class="line">		<span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">()</span>&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;ew2we&quot;</span>);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		<span class="comment">// 写个匿名类</span></span><br><span class="line">		<span class="keyword">new</span> <span class="title class_">TestDefault</span>()&#123;&#125;.print();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>另外值得注意的一点就是:如果有两个interface实现了同名的default function. 那编译会报错。</p>
+<ol>
+<li>SAM (single abstract method) 也就是这个Annotation @FunctionalInterface.如果带上这个Annotation，那么这个接口仅且只有一个未实现的方法。当然可以有多个已经实现的default方法。这个是为了lamda表达式做的。lamda表达式是形如： (param list)-&gt; {code statements;},基本上可以看作是一个函数。所以要求仅且只有一个函数方法没有实现就是为了代码好看。@FunctionalInterface 写法如下：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DefaultInterface</span> &#123;</span><br><span class="line">    <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">zzz</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;zzz&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">z</span><span class="params">()</span>; <span class="comment">// 只有一个未实现的函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Stream 是为了更好的使用Fork-Join框架。Stream就是pipeline. 对于只关心输入和输出的API来说。编写Stream方式的代码非常容易实现并发。其实就是把一组相似的数据丢到一个池中，然后线程池针对这些数据开始做事情。在执行完毕之前，需要join所有的线程，将最终结果放入到最终返回的池中并返回。而流式的操作最简单的就是调用方便。可以理解为以前所说的链式调用。但是对于这种编写代码的Style，还是尽量将每次调用写在不同的行中，这样会方便调试。下面是Stream的例子：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		</span><br><span class="line">		List&lt;Integer&gt; k = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">		k.add(<span class="number">1</span>);</span><br><span class="line">		k.add(<span class="number">2</span>);</span><br><span class="line">		k.add(<span class="number">3</span>);</span><br><span class="line">		k.add(<span class="number">8</span>);</span><br><span class="line">		k.add(<span class="number">11</span>);</span><br><span class="line">		k.add(<span class="number">20</span>);</span><br><span class="line">		k.add(<span class="number">50</span>);</span><br><span class="line">                <span class="comment">// 找到list中大于2的三个数，不要求顺序，最后打印出来</span></span><br><span class="line">		k.parallelStream().filter((a)-&gt;&#123;<span class="keyword">return</span> a&gt;<span class="number">2</span>;&#125;).unordered().limit(<span class="number">3</span>).forEach((a) -&gt; &#123;System.out.println(a);&#125;);</span><br><span class="line">                <span class="comment">// 获取大于1的list元素中的最大值。如果list中的元素都不大于1，那么返回Optional.empty</span></span><br><span class="line">		Optional&lt;Integer&gt; max = k.parallelStream().filter((a)-&gt;&#123;<span class="keyword">return</span> a&gt;<span class="number">1</span>;&#125;).max((a,b) -&gt; &#123;<span class="keyword">return</span> a-b;&#125;);</span><br><span class="line">		System.out.println(max);</span><br><span class="line">		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里简单介绍一下lamda表达式中语法。 这个lamda表达式就是实现了一个抽象方法。所以需要注意那个抽象方法到底是不是void返回，这关系到你的表达式中是否有return.lamda的语法是前面是参数列表，0个参数或者多于一个参数时必须使用圆括号括起。如果只有一个参数，那么可以省略圆括号。然后是一个箭头-&gt;。再后面是函数体。函数体需要使用花括号括起，如果只有一条语句，可以省略花括号。下面的lamda表达式都是对的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a -&gt; <span class="keyword">return</span> a+<span class="number">1</span>;</span><br><span class="line">(a) -&gt; <span class="keyword">return</span> a+<span class="number">1</span>;</span><br><span class="line">(a) -&gt; &#123;<span class="keyword">return</span> a+<span class="number">1</span>;&#125;</span><br><span class="line">(a,b) -&gt; &#123;<span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> a+b; <span class="keyword">return</span> c&gt;&gt;<span class="number">1</span>;&#125;</span><br><span class="line">()-&gt;System.out.println(<span class="string">&quot;empty&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>另外注意一下final 变量和this指针。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Optional;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestLamba</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Score</span> &#123;</span><br><span class="line">		<span class="type">int</span> score;</span><br><span class="line">		<span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">findLarger</span><span class="params">(List&lt;Integer&gt; scores)</span> &#123;</span><br><span class="line">			List&lt;Integer&gt; tmp = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">			<span class="comment">//注意这里的this是 Score Object的this</span></span><br><span class="line">			scores.stream().filter((a) -&gt; &#123;<span class="keyword">return</span> a &gt; <span class="built_in">this</span>.score;&#125;).forEach((a)-&gt;&#123;tmp.add(a);&#125;);</span><br><span class="line">			<span class="keyword">return</span> tmp;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title function_">findLarger</span><span class="params">(List&lt;Integer&gt; scores, Score myScore)</span> &#123;</span><br><span class="line">			List&lt;Integer&gt; tmp = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">			<span class="comment">//myScore = new Score();   compile wrong</span></span><br><span class="line">			<span class="comment">//这里的myScore在语义上是final的, 但是myScore中的域可以变化</span></span><br><span class="line">			<span class="comment">//myScore.score = 3; 这个是正确的，放在lamda表达式中也正确。</span></span><br><span class="line">			<span class="comment">//所以对于myScore而言lamda表达式并不是threadSafe</span></span><br><span class="line">			scores.stream().filter((a) -&gt; &#123;<span class="keyword">return</span> a &gt; myScore.score;&#125;).forEach((a)-&gt;&#123;tmp.add(a);&#125;);</span><br><span class="line">			<span class="keyword">return</span> tmp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		Arrays.asList().forEach((a)-&gt;System.out.println(<span class="string">&quot;I&#x27;m &quot;</span>+a));</span><br><span class="line">		List&lt;Integer&gt; k = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">		k.add(<span class="number">1</span>);</span><br><span class="line">		k.add(<span class="number">2</span>);</span><br><span class="line">		k.add(<span class="number">3</span>);</span><br><span class="line">		k.add(<span class="number">8</span>);</span><br><span class="line">		k.add(<span class="number">11</span>);</span><br><span class="line">		k.add(<span class="number">20</span>);</span><br><span class="line">		k.add(<span class="number">50</span>);</span><br><span class="line">		<span class="type">Score</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Score</span>();</span><br><span class="line">		s.score = <span class="number">11</span>;</span><br><span class="line">		s.findLarger(k).forEach(a-&gt;&#123;System.out.println(a);&#125;);</span><br><span class="line">		System.out.println(<span class="string">&quot;dsdsd&quot;</span>);</span><br><span class="line">		Score.findLarger(k, s).forEach(a-&gt;&#123;System.out.println(a);&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参数里面没有final变量，java8在语法上并不要求外部引用参数是final，但是语义上还是final的，这个类似匿名内部类。另外this指针一定是外层类的指针。lamda表达式是没有this的。现在java的jdk已经可能非常容易的使用多核资源。所以非常期待java以后的jdk能够利用多机器的资源例如现在的map/reduce.这样写程序就越来越简单了。看起来就是这样一个趋势~~~继续进化吧~</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/04/02/22800767/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/04/02/22800767/" class="post-title-link" itemprop="url">Mac版 有道云笔记登陆出现问题  （使用用户名密码方式登陆）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-04-02 15:14:00" itemprop="dateCreated datePublished" datetime="2014-04-02T15:14:00+08:00">2014-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>有很多人反馈这样一个问题： 有道云笔记 Mac版 输入用户名密码登陆不上去。</p>
+<p>这个问题的原因可能是这样的：你们公司的网络封掉了 <span class="exturl" data-url="aHR0cDovL25vdGUueW91ZGFvLmNvbQ==">note.youdao.com<i class="fa fa-external-link-alt"></i></span> 443 端口。所以先试试 telnet <span class="exturl" data-url="aHR0cDovL25vdGUueW91ZGFvLmNvbQ==">note.youdao.com<i class="fa fa-external-link-alt"></i></span><br />
+443 看看是否能正常通信。如果提示连接不上，那就果断的找找你们公司的IT部门吧。</p>
+<p>抓包如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">14:39:00.587381 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,nop,wscale 4,nop,nop,TS val 1067401063 ecr 0,sackOK,eol], length 0</span><br><span class="line">14:39:01.690971 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,nop,wscale 4,nop,nop,TS val 1067402161 ecr 0,sackOK,eol], length 0</span><br><span class="line">14:39:02.793906 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,nop,wscale 4,nop,nop,TS val 1067403258 ecr 0,sackOK,eol], length 0</span><br><span class="line">14:39:03.896801 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,nop,wscale 4,nop,nop,TS val 1067404357 ecr 0,sackOK,eol], length 0</span><br><span class="line">14:39:04.901675 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,nop,wscale 4,nop,nop,TS val 1067405357 ecr 0,sackOK,eol], length 0</span><br><span class="line">14:39:05.906948 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,nop,wscale 4,nop,nop,TS val 1067406357 ecr 0,sackOK,eol], length 0</span><br><span class="line">14:39:07.916512 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,nop,wscale 4,nop,nop,TS val 1067408357 ecr 0,sackOK,eol], length 0</span><br><span class="line">14:39:12.429264 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,sackOK,eol], length 0</span><br><span class="line">14:39:20.701959 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,sackOK,eol], length 0</span><br><span class="line">14:39:36.845313 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,sackOK,eol], length 0</span><br><span class="line">14:40:08.967998 IP 10.242.48.210.63785 &gt; note.youdao.com.https: Flags [S], seq 128747375, win 65535, options [mss 1460,sackOK,eol], length 0</span><br></pre></td></tr></table></figure>
+<p>发现seq一样，说明第一个包一直在重传。所以是网络问题导致的。<br />
+另外还需要看一下note.youdao.com的域名IP是否正确。这个域名很有可能被小的运营商劫持。正确的IP是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ping note.youdao.com</span><br><span class="line">PING note.youdao.com (123.58.182.252) 56(84) bytes of data.</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/03/19/21556685/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/03/19/21556685/" class="post-title-link" itemprop="url">身是贫民不知贫？！</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-03-19 21:26:00" itemprop="dateCreated datePublished" datetime="2014-03-19T21:26:00+08:00">2014-03-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>337</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>《布满贫民窟的星球》读后感<br />
+根据文中贫民窟的定义： &quot;低成本，生活贫穷的高密度的生活空间。&quot;感觉自己已然置身其中。刚毕业群居的大学生和临时棚户住着的农民工当然也算在其中。看完那本书最大的感觉不是对贫民窟悲惨命运的同情，不是对贫民窟基础设施的叹息。而是恐慌。巨大的恐慌。感觉未来巨大的人间地狱其实距离自己并不遥远。如果不努力，自己随时都可能拉入这巨大地狱的中心。而自己现在做出的努力，只是尽力在这巨大地狱边缘挣扎。所以与其同情别人，不如先同情自己。</p>
+<p>恐慌是必然的。最终的最终是否如同该书所说的如此悲惨？最终的最终是否有有一剂良药？反正该书指出，曾经为改善贫民窟做的努力都是镜花水月。嗯，除了让自己努力跻身精英集团，别无他法。所以，这样看来，这本书本是一本励志书。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/03/19/21553833/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/03/19/21553833/" class="post-title-link" itemprop="url">几周近况——面试经历</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-03-19 20:55:00" itemprop="dateCreated datePublished" datetime="2014-03-19T20:55:00+08:00">2014-03-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>381</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>年后一直在忙活跳槽的事情。要不是家里有大事发生，估计跑出去面试会更勤快些。</p>
+<p>这些公司不知道为什么，距离我住的地方实在是太遥远了。每每从家里出来都要一个多小时才能到这些公司。然后面了一轮后就又要回公司上班。感觉每天都比较折腾。所以面的<br />
+公司不算多。offer也不多。平庸的公司开出的价格与工作年限是成正比的。不过也好，给不起钱的公司就不去好了。不过也学到一招，开始和Hr沟通时就给年限和薪水期<br />
+望，给不起的就省得去面了。</p>
+<p>从面试的经历来看，对自己的工作经验的增长确实有好处。有些公司的面官会让你知道自己哪些东西还没有掌握。有些公司的面官会让你知道使用哪些技术会让自己的项目更加成<br />
+功。我个人认为每次面试都是一次技术交流。当然从开始到最后一直面低级算法的除外。</p>
+<p>面试的这些天忙碌也很充实。每天都要面对一堆自己完全没有考虑的问题，每天都要学习一堆自己从未掌握的知识。想想蛮不错的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/02/12/19119101/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/02/12/19119101/" class="post-title-link" itemprop="url">黑掉Github之我见， 漏洞Vs钓鱼</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-02-12 15:45:00" itemprop="dateCreated datePublished" datetime="2014-02-12T15:45:00+08:00">2014-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>看了酷壳的这篇帖子： <span class="exturl" data-url="aHR0cDovL2Nvb2xzaGVsbC5jbi9hcnRpY2xlcy8xMTAyMS5odG1s"> http://coolshell.cn/articles/11021.html<i class="fa fa-external-link-alt"></i></span> （从黑掉 github 学web安全开发）</p>
+<p>觉得有几点需要学习或者了解：</p>
+<p>1. ff/chrome 都认为 <code>&lt;img src=”///attackersite.com”&gt;</code> 这个是一个绝对路径， 最终会转换为 <code>&lt;img src=”attackersite.com”&gt;</code> ， 但是server的开发可能会用正则匹配，认为这个是一个相对路径。赞呀~~就我个人开发而言，我一般看到 开头是 “/”, 就认为是一个相对路径，当然还会做一个补刀操作就是在 “/” 之前加入自己网站的sheme, 整个域,port， web content path等。 例如 ** ///attackersite.com ** 就会补为：<a href="http://chillyc.info">http://chillyc.info</a> ** ///attackersite.com ** , 然后我估计就跳转到一个404的页面了。大家可以试试。</p>
+<p>2. Referer 漏洞。 这个观念应该加强。 主要原因是，如果有外域的图片或者其他的什么信息，当前的url路径就会变为 reference 送给外域。特别是喜欢在 url中加入特殊认证信息的地方。例如sid啥的。 这里有两点可以规避， 第一是内域使用Https， 对于外域一般使用http,这样隐秘信息就不会通过reference 发送给外域。当然浏览器的某些版本也可能会禁止访问从Https页面发送给http页面的请求。第二个就是在HTML5, 使用<a>, <area> 标签可以加入 noreferer 这个属性，表示点击这个链接不会有Referer header发送。但是酷壳这篇文中使用的是 img 标签， 并且还是个内域的。这就无能为力了。</p>
+<p>3. 对于 Oauth2 协议而言，其实只需要限制域名就可以。有时候限制callback URL 会让API的使用者非常难受。</p>
+<p>4. 看完Oauth2攻击的那篇帖子，其实也就是只针对github中的gist这个东西产生了奇妙的漏洞。token都放在callback url中一起传。一般access token 是有server端获取code之后，使用<code>consumer_secret</code>来获取的。也就是如果没有应用的<code>consumer_secret</code>， 只有access token是没有用的。其实最简易的攻击就是自己做个应用，直接从server端获取<code>access_token</code>.这个比上面那些漏洞更加靠谱。所以做钓鱼应用就好了，嗯嗯，就是这样。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/02/11/19087307/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/02/11/19087307/" class="post-title-link" itemprop="url">十分钟了解MongoDB</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-02-11 21:51:00" itemprop="dateCreated datePublished" datetime="2014-02-11T21:51:00+08:00">2014-02-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
     </span>
 
   
@@ -1638,193 +1802,56 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>这一篇准备抄一下help文档，另外加一些自己的解释。这一篇里不讲UML和LaTEX。 准备抽两个篇专门讲一下。</p>
-<h2 id="1-标题与字号"><a class="markdownIt-Anchor" href="#1-标题与字号"></a> 1. 标题与字号</h2>
-<p>markdown字号太少了，觉得应该再加些。</p>
-<p>在文字写书写不同数量的#可以完成不同的标题，如下：</p>
-<pre><code># 一级标题
-## 二级标题
-### 三级标题
-#### 四级标题
-##### 五级标题
-###### 六级标题
-</code></pre>
-<h1 id="一级标题"><a class="markdownIt-Anchor" href="#一级标题"></a> 一级标题</h1>
-<h2 id="二级标题"><a class="markdownIt-Anchor" href="#二级标题"></a> 二级标题</h2>
-<h3 id="三级标题"><a class="markdownIt-Anchor" href="#三级标题"></a> 三级标题</h3>
-<h4 id="四级标题"><a class="markdownIt-Anchor" href="#四级标题"></a> 四级标题</h4>
-<h5 id="五级标题"><a class="markdownIt-Anchor" href="#五级标题"></a> 五级标题</h5>
-<h6 id="六级标题"><a class="markdownIt-Anchor" href="#六级标题"></a> 六级标题</h6>
-<p>** 这里的需要注意的是 #[空格]标题 一定要有空格 **</p>
-<p>等号及减号也可以进行标题的书写，不过只能书写二级标题，并且需要写在文字的下面，减号及等号的数量不会对标题的字号产生影响，如下：</p>
-<pre><code>二级标题
-=========
-
-二级标题
----------
-</code></pre>
-<h1 id="二级标题-2"><a class="markdownIt-Anchor" href="#二级标题-2"></a> 二级标题</h1>
-<h2 id="二级标题-3"><a class="markdownIt-Anchor" href="#二级标题-3"></a> 二级标题</h2>
-<p>一直觉得这个语法是对诡异的。因为 <code>\-</code> 极可能是无序列表中的第一行。所以这个语法判断时候，还要判断 <code>\-</code><br />
-后面是否有一个空格。感觉文法很不舒服。这是为什么呢？</p>
-<p>解析一下：markdown文法类似</p>
-<p><img src="http://img.blog.csdn.net/20150314000133833" alt="这里写图片描述" /></p>
-<p>从A到B的转移通过字符 <code>\-</code> ,在B状态下markdown认为这个上面的字符都要加粗。如果下一个字符是[空格]，那么markdown认为是一个无序列<br />
-表，将上面一行的所有文字的状态置为不加粗。虽然这个是状态的改变。但是在我们眼里，这是之前文字的状态改变。所以我们觉得这个文法就不舒服。因为我们习惯于向同一个<br />
-方向书写。而不是写着写着回顾另外一个方向。</p>
-<hr />
-<h2 id="2-有序和无序"><a class="markdownIt-Anchor" href="#2-有序和无序"></a> 2. 有序和无序</h2>
-<p>无序列表的使用，在符号“-”后加空格使用。如下：<br />
-另外注意 <code>\-</code> 一定要是开始字符，如果不是那么 <code>\-</code> 之前只能有空格或者tab字符。</p>
-<pre><code>- 无序列表1
-- 无序列表2
-- 无序列表3
-</code></pre>
-<ul>
-<li>无序列表1</li>
-<li>无序列表2</li>
-<li>无序列表3</li>
-</ul>
-<p>如果要控制列表的层级，则需要在符号“-”前使用空格或者tab。如下：</p>
-<pre><code>- 无序列表1
-- 无序列表2
-  - 无序列表2.1
-     - 列表内容
-     - 列表内容
-</code></pre>
+          <p>今天写写 MongoDB的事情。这货是一个document-orientied, 基本上使用的json进行交互的。他把那个形式很像json的东西叫做BJSON. 里面有一些mongoDB自己定义的数据类型。这种数据形式在传输存储很方便。</p>
+<h1 id="首先介绍一下mongodb的数据结构"><a class="markdownIt-Anchor" href="#首先介绍一下mongodb的数据结构"></a> 首先介绍一下MongoDB的数据结构</h1>
 <ul>
 <li>
-<p>无序列表1</p>
+<p>database : 这个和mysql中的database一致。 默认使用的local, 可以自己创建新的。例如 在shell中写 <span class="exturl" data-url="aHR0cDovL2RiLnh4eA==">db.xxx<i class="fa fa-external-link-alt"></i></span> 然后就自动创建了xxx 这个collection</p>
 </li>
 <li>
-<p>无序列表2</p>
-<ul>
+<p>collection: 这个概念和mysql中的table保持一致。</p>
+</li>
 <li>
-<p>无序列表2.1</p>
-<ul>
-<li>列表内容</li>
-<li>列表内容</li>
-</ul>
+<p>document: 这个和mysql里的row或者 record保持一致。</p>
 </li>
 </ul>
-</li>
-</ul>
-<p>有序列表的使用，在数字及符号“.”后加空格几个，如下：</p>
-<pre><code>1. 有序列表1
-2. 有序列表2
-    3.  有序列表2.1
-    4.  有序列表2.2
-        - 这
-        - 无
-            1. 有
-            2. 序
-        - 序
-3. 有序列表3
-</code></pre>
-<ol>
-<li>有序列表1</li>
-<li>有序列表2</li>
-</ol>
-<pre><code>1. 有序列表2.1 
-2. 有序列表2.2   
-
-  * 这 
-  * 无   
-
-    1. 有 
-    2. 序 
-  * 序 
-</code></pre>
-<ol start="3">
-<li>有序列表3</li>
-</ol>
-<p>有序列表如果要区分层级，也可以在数字前加空格或者tab。</p>
-<hr />
-<h2 id="3-引用"><a class="markdownIt-Anchor" href="#3-引用"></a> 3. 引用</h2>
-<p>引用的格式是使用符号“&gt;”后面书写文字. ”&gt;“之后是否加空格不影响。如下：</p>
-<pre><code>&gt; 我说的都是我说的——帐前卒
-</code></pre>
-<blockquote>
-<p>我说的都是我说的——帐前卒</p>
-</blockquote>
-<hr />
-<h2 id="4-粗体和斜体"><a class="markdownIt-Anchor" href="#4-粗体和斜体"></a> 4. 粗体和斜体</h2>
-<p>粗体和斜体： 一个 <code>*</code> 两个 <code>*</code> 还是三个 <code>*</code> . 注意 <code>**[你的字符]**</code> 中 <code>*</code> 号和你的字符之间没有空格。<br />
-一个 <code>*</code> : <code>*你是斜体*</code> _ 你是斜体 _<br />
-两个 <code>*</code> : <code>**不对，你是粗体**</code> ** 不对，你是粗体 **<br />
-三个 <code>*</code> : <code>***你又粗又斜***</code> ** _ 你又粗又斜 _ **</p>
-<hr />
-<h2 id="5-链接"><a class="markdownIt-Anchor" href="#5-链接"></a> 5. 链接</h2>
-<ul>
-<li>在引用中加链接，第一个中括号添加需要添加的文字，第二个中括号中是引用链接的id，之后在引用中，使用id加链接：如下：<br />
-[link text][id]<br />
-[id]: <span class="exturl" data-url="aHR0cDovL2V4YW1wbGUuY29tLw==">http://example.com/<i class="fa fa-external-link-alt"></i></span> “optional title here”</li>
-</ul>
-<p>上面的文字将展示为：</p>
-<p><span class="exturl" data-url="aHR0cDovL2V4YW1wbGUuY29tLw=="> link text <i class="fa fa-external-link-alt"></i></span></p>
-<ul>
-<li>在文中直接引用链接，直接使用尖括号，把链接加入到尖括号中就可以实现，如下：</li>
-</ul>
-<p><span class="exturl" data-url="aHR0cDovL2V4YW1wbGUuY29tLw=="> http://example.com/ <i class="fa fa-external-link-alt"></i></span> or <span class="exturl" data-url="bWFpbHRvOmFkZHJlc3NAZXhhbXBsZS5jb20="> address@example.com<i class="fa fa-external-link-alt"></i></span></p>
-<p>展示如下：<br />
-<span class="exturl" data-url="aHR0cDovL2V4YW1wbGUuY29tLw=="> http://example.com/ <i class="fa fa-external-link-alt"></i></span> or <span class="exturl" data-url="bWFpbHRvOmFkZHJlc3NAZXhhbXBsZS5jb20="> address@example.com<i class="fa fa-external-link-alt"></i></span></p>
-<ul>
-<li>插入互联网上图片，格式如下：</li>
-</ul>
-<p><code>![这里写图片描述](http://img3.douban.com/mpic/s1108264.jpg)</code></p>
-<p><img src="http://img3.douban.com/mpic/s1108264.jpg" alt="这里写图片描述" /></p>
-<pre><code>或者如下面的写法：
-![这里写图片描述][jane-eyre-douban]
-
-[jane-eyre-douban]: http://img3.douban.com/mpic/s1108264.jpg`
-</code></pre>
-<p><img src="http://img3.douban.com/mpic/s1108264.jpg" alt="这里写图片描述" /></p>
-<hr />
-<h2 id="6-代码块-如果在一个行内需要引用代码只要用反引号引起来就好如下-use-the-printf-function-"><a class="markdownIt-Anchor" href="#6-代码块-如果在一个行内需要引用代码只要用反引号引起来就好如下-use-the-printf-function-"></a> 6. 代码块 - 如果在一个行内需要引用代码，只要用反引号<code>引起来就好，如下： Use the </code>printf()` function. -</h2>
-<p>用TAB键起始的段落，会被认为是代码块，如下： echo “hello world”; - 如果TAB不管用的话，需要使用三个反引号` 例如：<br />
-下面连高亮都做了。</p>
-<pre><code>&lt;php&gt;
-    echo &quot;hello world&quot;;
-&lt;/php&gt;
-</code></pre>
-<hr />
-<h2 id="7-分割线和删除线"><a class="markdownIt-Anchor" href="#7-分割线和删除线"></a> 7. 分割线和删除线</h2>
-<p>可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，同时需要在分隔线的上面空一行。如下：</p>
-<pre><code>---
-****
-___
-展示如下：
-</code></pre>
-<hr />
-<hr />
-<hr />
-<p>删除线的使用，在需要删除的文字前后各使用两个符号“~”，如下</p>
-<pre><code>~~Mistaken text.~~
-</code></pre>
-<p><del> Mistaken text. </del></p>
-<hr />
-<h2 id="8-表格"><a class="markdownIt-Anchor" href="#8-表格"></a> 8. 表格</h2>
-<p>可以使用冒号来定义表格的对齐方式，如下：</p>
-<pre><code>| Tables | Are | Cool |
-| ------------- |:-------------:| -----:|
-| col 3 is | right-aligned | $1600 |
-| col 2 is | centered | $12 |
-| zebra stripes | are neat | $1 |
-| somemissed |
-|||$20|
-</code></pre>
-<p>Tables  Are  Cool</p>
-<p>col 3 is</p>
-<p>right-aligned</p>
-<p>$1600</p>
-<p>col 2 is</p>
-<p>centered</p>
-<p>$12</p>
-<p>zebra stripes</p>
-<p>are neat</p>
-<p>$1</p>
-<p>somemissed</p>
-<p>$20</p>
+<p>这个是MongoDB的三个最主要的结构。</p>
+<p>下面是如何使用。</p>
+<h1 id="下载安装"><a class="markdownIt-Anchor" href="#下载安装"></a> 下载安装</h1>
+<p>首先去 <span class="exturl" data-url="aHR0cDovL3d3dy5tb25nb0RCLm9yZw==">www.mongoDB.org<i class="fa fa-external-link-alt"></i></span> 上下载一个mongoDB的最新版。然后解压到某个目录。然后使用命令行进入到该目录下。</p>
+<p>创建 数据存储文件夹，这里可以直接创建一个 /data/db的文件夹（mkdir -p /data/db）。然后在命令行里执行如下命令启动mongodb server.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongod --dbpath ./data/db</span><br></pre></td></tr></table></figure>
+<p>这样mongoDB就启动了，一般端口为 27017. 你可以使用help来修改Port等。这里就不过多介绍。</p>
+<p>然后重新开一个命令窗口，使用命令进入到该目录下，执行下面语句启动mongoDB client.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongo</span><br></pre></td></tr></table></figure>
+<p>如果使用的都是默认端口，这里就可以正常启动了。如果你修改了mongoDB server的端口，这里需要改成一致的。</p>
+<h1 id="数据库crudcreate-retrieve-update-delete操作"><a class="markdownIt-Anchor" href="#数据库crudcreate-retrieve-update-delete操作"></a> 数据库CRUD(Create, Retrieve, Update, Delete)操作</h1>
+<p>下面就是命令行选择database, 创建collection, 存储document。首先：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db</span><br><span class="line">查看需要现有的database.</span><br><span class="line">show dbs</span><br><span class="line"></span><br><span class="line">使用ooo作为database</span><br><span class="line">use ooo;</span><br><span class="line"></span><br><span class="line">如果这里不写use ooo,那默认就是local.</span><br></pre></td></tr></table></figure>
+<p>然后是数据库的操作了。</p>
+<h2 id="插入"><a class="markdownIt-Anchor" href="#插入"></a> 插入</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;&quot;value&quot;:1,&quot;value2&quot;:[&#x27;a&#x27;,&#x27;b&#x27;]&#125;</span><br><span class="line">var b = &#123;&quot;value&quot;:2&#125;</span><br><span class="line">var c = &#123;&quot;str&quot;:‘aaa’&#125;</span><br><span class="line">插入数据,xxxx是collection</span><br><span class="line">db.xxxx.save(a);</span><br><span class="line">下面也是插入数据</span><br><span class="line">db.xxxx.insert(b);</span><br><span class="line">db.xxxx.insert(c);</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20140211213153265" alt="" /></p>
+<p><img src="http://img.blog.csdn.net/20140211213157453" alt="" /></p>
+<h2 id="查看数据"><a class="markdownIt-Anchor" href="#查看数据"></a> 查看数据</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">获取全部数据</span><br><span class="line">db.xxxx.find()</span><br><span class="line">获取一个数据</span><br><span class="line">db.xxxx.findOne()</span><br><span class="line"></span><br><span class="line">查询特定的记录</span><br><span class="line"></span><br><span class="line">db.xxxx.find(&#123;&quot;value&quot;:1&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20140211213532765" alt="" /></p>
+<p><img src="http://img.blog.csdn.net/20140211213542078" alt="" /></p>
+<h2 id="更新操作"><a class="markdownIt-Anchor" href="#更新操作"></a> 更新操作</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">db.xxxx.update(</span><br><span class="line">   &#123; value: &#123; $lt: 18 &#125; &#125;,</span><br><span class="line">   &#123; $set: &#123; status: &quot;A&quot; &#125; &#125;,</span><br><span class="line">   &#123; multi: true &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">这里 &#123; value: &#123; $lt: 18 &#125; &#125;,是说  value &lt; 18,  &#123; $set: &#123; status: &quot;A&quot; &#125; &#125;,是说要set status 为A, 如果没有那个域，则创建出来。</span><br><span class="line">&#123; multi: true &#125; 则是处理多个。</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20140211213211218" alt="" /></p>
+<p><img src="http://img.blog.csdn.net/20140211213215515" alt="" /></p>
+<h2 id="删除操作"><a class="markdownIt-Anchor" href="#删除操作"></a> 删除操作</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.xxxx.remove(&#123;&quot;value&quot;:1&#125;)</span><br><span class="line">删除value 为1 的document.</span><br></pre></td></tr></table></figure>
+<p>这里看起来非常简单。</p>
+<p><img src="http://img.blog.csdn.net/20140211213238656" alt="" /></p>
+<p><img src="http://img.blog.csdn.net/20140211213243265" alt="" /></p>
+<h1 id="结束语"><a class="markdownIt-Anchor" href="#结束语"></a> 结束语</h1>
+<p>MongoDB的强大之处在于 JSON串里想写什么就可以写什么。相同的collection中document可以完全不相同。（但是为了后期的维护，还是尽量相同。）这是稀疏数据库的一大优势。</p>
+<p>建索引MongoDB有很多种，可以建立unique 索引， TTL 索引（数据会过期失效,默认为此索引）， 多列组合索引，空间索引，全文索引和hash索引。这里的多列索引和mysql的一致。对于全文索引，mongoDB建议不要在生产环境（线上环境）中使用，因为这个建索引很慢，性价比不高。</p>
+<p>对于mongoDB来说，他的索引可以使用{“backgroup”:true}来进行后台异步创建，也可以使用前台索引。但是前台索引会对性能造成极大的影响，所以mongoDB官方文档建议新起一个mongoDB server的实例进行创建。然后使用副本启动的方法将创建好的索引作为副本启动。</p>
+<p>对于mongoDB，安全性做的比较粗略。也是对于操作，对于database等特殊数据需要分配权限。因为没有视图等概念，这些安全性做的比mysql来说粒度大了一些。但是mongoDB支持SSL方式访问，也支持kerberos认证。不过Kerberos认证现在只有微软那边在用，之前K3,K4被破,人心惶惶。现在不知道情况如何。</p>
+<p>今天就先介绍这么多吧。</p>
 
       
     </div>
@@ -1851,7 +1878,7 @@ ___
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/12/44228961/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/02/08/18990301/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1869,7 +1896,7 @@ ___
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/03/12/44228961/" class="post-title-link" itemprop="url">CSDN Markdown 编辑器 第二篇  Markdown简单使用</a>
+          <a href="/2014/02/08/18990301/" class="post-title-link" itemprop="url">个人微博</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1880,14 +1907,14 @@ ___
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2015-03-12 22:57:00" itemprop="dateCreated datePublished" datetime="2015-03-12T22:57:00+08:00">2015-03-12</time>
+      <time title="Created: 2014-02-08 17:32:00" itemprop="dateCreated datePublished" datetime="2014-02-08T17:32:00+08:00">2014-02-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
     </span>
 
   
@@ -1897,7 +1924,7 @@ ___
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>929</span>
+      <span>73</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1915,117 +1942,494 @@ ___
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>第一篇简单介绍了markdown. <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/article/details/44206543"> 第一篇地址<br />
-</a><br />
-第二篇主要会介绍不熟悉markdown语言的人如何使用CSDN新的编辑器。这里主要介绍图形编辑器。已经掌握的人请挪步。</p>
-<p><img src="http://img.blog.csdn.net/20150312220752199" alt="编辑器bar" /></p>
-<ul>
-<li>
-<p>前面几个都非常简单。例如对字体 ** 加粗 ** 和 ** _ 斜体 _ ** 。</p>
-</li>
-<li>
-<p>或者是对 <a href="http://chillyc.info"> 帐前卒专栏 </a> 加个链接。用 <img src="http://img.blog.csdn.net/20150312221433385" alt="连接图标" /></p>
-</li>
-<li>
-<p>再者就是加个图片： <img src="http://img.blog.csdn.net/20150312221338156" alt="图片图标" /></p>
-</li>
-</ul>
-<p><img src="http://img.blog.csdn.net/20150312221243608" alt="数字图片" /></p>
-<p>上图的算式= ？<br />
-呃…好吧，这不是重点。</p>
-<ul>
-<li>
-<p>再用这个图形编辑器写点代码。圈中代码块后，点击： <img src="http://img.blog.csdn.net/20150312231210199" alt="这里写图片描述" /><br />
-// 这个是世界上最好的语言php<br />
-<php><br />
-echo “世界上最好的语言”;<br />
-</php></p>
-</li>
-<li>
-<p>再比如引用名人名言，用这个 <img src="http://img.blog.csdn.net/20150312231435135" alt="这里写图片描述" /></p>
-</li>
-</ul>
-<blockquote>
-<p>啊，我现在在地球上 —— 帐前卒</p>
-</blockquote>
-<ul>
-<li>
-<p>有时候我们需要对很多事物排序。所以用这个： <img src="http://img.blog.csdn.net/20150312231452389" alt="这里写图片描述" /></p>
-<ol>
-<li>吃早餐</li>
-<li>吃橘子</li>
-<li>吃桂圆</li>
-<li>…</li>
-<li>睡觉</li>
-<li>起来继续吃</li>
-<li>…</li>
-</ol>
-</li>
-</ul>
-<p>这样，用排序的方法把自己的生活整理的井井有条。</p>
-<ul>
-<li>
-<p>无序的列表用： <img src="http://img.blog.csdn.net/20150312222409182" alt="无序图标" /> ， 比如吃什么肉其实并不重要，重要的是有肉吃。</p>
-<ul>
-<li>吃粉蒸肉</li>
-<li>吃红烧肉</li>
-<li>吃唐僧肉</li>
-</ul>
-</li>
-</ul>
-<p>我觉得这里这里的无序图标和有序的图标长得差不多。 ** UI还是需要改改吧 ** 。</p>
-<ul>
-<li>这个图标 <img src="http://img.blog.csdn.net/20150312222944075" alt="字体大小" /> 是用来修改字号的。不过这个字号只有 <code>&lt;h1&gt;</code> , <code>&lt;h2&gt;</code> 和正常三种字号可以改。感觉很 ** 鸡肋 ** 呀。</li>
-</ul>
-<h1 id="我是no1"><a class="markdownIt-Anchor" href="#我是no1"></a> 我是No.1</h1>
-<h2 id="我是no2"><a class="markdownIt-Anchor" href="#我是no2"></a> 我是No.2</h2>
-<p>我是No.3</p>
-<hr />
-<hr />
-<p>上面竟然不能出现 ** 华丽的分割线 ** 这几个字. 嗯，CSDN能不能满足一下我的这个需求?</p>
-<ul>
-<li>
-<p><img src="http://img.blog.csdn.net/20150312231655705" alt="这里写图片描述" /> 这个就不细说了。</p>
-</li>
-<li>
-<p><img src="http://img.blog.csdn.net/20150312231836920" alt="这里写图片描述" /> 这个图标不要轻易点。嗯.除非你想发狂。</p>
-</li>
-<li>
-<p><img src="http://img.blog.csdn.net/20150312231748326" alt="这里写图片描述" /> 是保存到线上草稿箱中，类似于save. 你可以在后台草稿箱找到保存的。</p>
-</li>
-</ul>
-<p><img src="http://img.blog.csdn.net/20150312225206154" alt="保存" /></p>
-<ul>
-<li><img src="http://img.blog.csdn.net/20150312231934109" alt="这里写图片描述" /> 生成摘要，点击后长这个样子：</li>
-</ul>
-<p><img src="http://img.blog.csdn.net/20150312225021540" alt="摘要" /></p>
-<ul>
-<li><img src="http://img.blog.csdn.net/20150312231955918" alt="这里写图片描述" /> 点击后长这个样子。没有什么更加详细的描述了。</li>
-</ul>
-<p><img src="http://img.blog.csdn.net/20150312225223869" alt="文章设置" /></p>
-<ul>
-<li>
-<p><img src="http://img.blog.csdn.net/20150312231904987" alt="这里写图片描述" /> 感觉也很 ** 危险 ** 最好还是不要去点击。<br />
-<img src="http://img.blog.csdn.net/20150312225439905" alt="导入" /></p>
-</li>
-<li>
-<p><img src="http://img.blog.csdn.net/20150312231952943" alt="这里写图片描述" /> 这个是将本地的markdown文件 _ .md变成线上可以编辑的。而 <img src="http://img.blog.csdn.net/20150312232004425" alt="这里写图片描述" /> 是将现在线上正在编辑的文字变成 _ .md本地文件或者html 等。</p>
-</li>
-</ul>
-<p><img src="http://img.blog.csdn.net/20150312225914755" alt="这里写图片描述" /></p>
-<p><img src="http://img.blog.csdn.net/20150312225933881" alt="这里写图片描述" /></p>
-<ul>
-<li><img src="http://img.blog.csdn.net/20150312232016110" alt="这里写图片描述" /> 帮助文档就是下面这个样子的。会在右边出现。方便使用。</li>
-</ul>
-<p><img src="http://img.blog.csdn.net/20150312230414472" alt="帮助截图" /></p>
-<h3 id="end"><a class="markdownIt-Anchor" href="#end"></a> ** END **</h3>
-<p>好吧，该睡了。这一篇非常基础，所以感觉废话太多。 ** 下一篇开始介绍markdown的基本语法。 **</p>
-<p>另外用csdn markdown编辑器的时候，发现了一个不错的东西。鼠标移至右下角</p>
-<p><img src="http://img.blog.csdn.net/20150312230757470" alt="这里写图片描述" /></p>
-<p>这里能看到文章标题列表。和本篇文章的字数统计。不错的功能~</p>
-<p>我以为csdn markdown 也支持 <code>&lt;i class=&quot;icon-undo&quot;&gt;</code> 这个内部标签功能呢。因为在后台它是这样显示的：</p>
-<p><img src="http://img.blog.csdn.net/20150312231529247" alt="这里写图片描述" /></p>
-<p>但是发布之后，却无法显示出来这个图标。</p>
+          <p>最近在搞微博，所以有空大家可以关注我的微博。 <a target="_blank" rel="noopener" href="http://weibo.com/logu"> 我的微博 帐前卒http://weibo.com/logu<br />
+</a></p>
+<p>另外也附一下 <a href="http://chillyc.info"> 个人网站：chillyc.info </a> <a target="_blank" rel="noopener" href="http://weibo.com/logu"><br />
+</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/01/16/18366683/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/01/16/18366683/" class="post-title-link" itemprop="url">引爆点 读后感</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-01-16 20:20:00" itemprop="dateCreated datePublished" datetime="2014-01-16T20:20:00+08:00">2014-01-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>660</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近几天看了引爆点这本书。觉得不错，所以谢谢总结。</p>
+<p>1. 引爆点中讲到三种人：内行，推销员，联系员。</p>
+<p>2. 然后是引爆点本身的属性：附着力</p>
+<p>3. 最后是引爆点的环境</p>
+<p>内行：就是砖家，叫兽。整天这也倒腾，那也参与。对某些事情特专，你非常相信他们的话。或者新闻联播非常相信他们的话。</p>
+<p>推销员：就是传播者。就是整天没事唠嗑，在各种群里、微博里、微信朋友圈里整天八卦、爱传图、爱发小道消息。今天10条佛教真理，明天10条人生必看，后天10条xx必读。</p>
+<p>联系员：就是你的大多数非学生时代的朋友，非同事关系的朋友都是他介绍的。一般找他打听个人是没有问题的，他会瞬间把那人的手机名片家庭住址都给你。接触过非常多的人，微信朋友，QQ朋友,人人校友啥的都暴表了。想起我一师兄，人人多个帐号，每个帐号都加满了3000个女同学。</p>
+<p>附着力：这个是引爆点的本质属性。也就是说，如果某件事情，你觉得好玩，好笑，非常有意思，那这件事对你而言就有很强的附着力。例如，酒对于酒鬼；烟对于烟鬼；水对于水鬼。</p>
+<p>最后是环境：这个环境，是一种风气。环境将在特定的时期，特定的地点对特殊的一堆人产生的影响。比如鸭梨山大的社会就喜欢马舞和狐狸叫；破窗环境；涂鸦环境；而在环境中影响出来的人，又会存在内行、推销员、联系人三种人，这三种人又会扩大环境，这样层层扩散，就形成了流行。</p>
+<p>这本书的总结就到这里了。没有啥可以被实践的。感觉自己身边这三种人都有，不过我发微博，对他们来说都没有任何附着力，所以什么时候发都行不成潮流。不知道在我把这书的内容全部遗忘之前能不能使用一次。</p>
+<p>另外，感谢一下二师兄…</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/01/16/18348759/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/01/16/18348759/" class="post-title-link" itemprop="url">java.lang.OutOfMemoryError: Unable to Create New Native Thread</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-01-16 08:57:00" itemprop="dateCreated datePublished" datetime="2014-01-16T08:57:00+08:00">2014-01-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>224</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>昨天，同事发现一个这样的问题：java.lang.OutOfMemoryError: unable to create new native thread。发现heap内存还是充足的情况下，free memory还是充足的情况下，thread分配不了了。这个问题在于线程的数量 = (jvm进程内存 - jvm heap size) / 线程stack size.   所以这里解决的办法就是 增加 jvm进程内存，减少Jvm heap size, 以及减少每个thread的stack size.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/01/14/18260773/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/01/14/18260773/" class="post-title-link" itemprop="url">让我们聊一聊今天上午的八卦</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-01-14 13:32:00" itemprop="dateCreated datePublished" datetime="2014-01-14T13:32:00+08:00">2014-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>407</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天组内有人收到了 “乐云记事”的战书。战书很漂亮。好像里面还有个蛋糕，不过我没有吃到。真希望蛋糕里被下了毒~~~我也不知道我这是抱着怎样的心态在写文章。</p>
+<p>上两个照片：</p>
+<p><img src="http://img.blog.csdn.net/20140114131603031?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /></p>
+<p><img src="http://img.blog.csdn.net/20140114131609390?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /></p>
+<p>组里没有说不能把图贴出来…所以我就贴一下吧。我想乐云记事也是希望大家知道的。否则下个战书干啥？以后要送蛋糕送大点呀！然后组里的人们都开始关注“乐云记事”这个应用了。才发现原来这货很久前就出来了。只是一直没有到达我们的耳朵。好吧，现在宣传一下。</p>
+<p>不过话说回来，我并不是有道云笔记的发言人。所以我也不是应战书的。我只是抱怨一下蛋糕没有吃到。</p>
+<p>另外今天上午看了一下 HDIV这个东西。发现真心不错。下次推荐大家使用一下。</p>
+<p>顺便看了一下360的年终奖，真是有钱人呀。等我去了360…那奖也不一定是我的。现在回想当年在实验室的生活，还是不错的。使用一个词总结一下：不患寡而患不均。</p>
+<p>下午要给大家讲一个ppt， ppt的具体内容我现在还没有理解。嗯，到时候大家一起理解好了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/01/14/18260323/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/01/14/18260323/" class="post-title-link" itemprop="url">Failed to Convert Value of Type 'java.lang.String' to Required Type 'org.springframework.web.multipart...'</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-01-14 12:43:00" itemprop="dateCreated datePublished" datetime="2014-01-14T12:43:00+08:00">2014-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>785</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>昨天遇到一个问题，请求发送之后直接返回了500错误，没有过ErrorController。并且Server这边的log里也没有异常。这真的是好奇怪。</p>
+<p>产生问题的method是这样写的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   @RequestMapping(params = &quot;method=bulkChange&quot;, method = RequestMethod.POST)</span><br><span class="line">    public @ResponseBody</span><br><span class="line">    User changePhoto(</span><br><span class="line">                            @RequestParam(value = DESCRIPTION_NAME, required = false, defaultValue = DESCRIPTION_DEFAULT)</span><br><span class="line">                            String description,</span><br><span class="line">                            @RequestParam(value= PHOTO_NAME, required = false, defaultValue = PHOTO_DEFAULT)</span><br><span class="line">                            MultipartFile photo,</span><br><span class="line"></span><br><span class="line">                            HttpServletRequest request, HttpServletResponse response) throws Exception&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这出问题的地方就在于photo这个参数。如果将这个参数注释掉，一定没有问题。那这里在上传图片时，不会有500错误。但是在上传不含图片的时候，就会有500错误了。这是为啥米？看起来问题应该是required=false时，没有上传参数，直接使用了defaultValue.而我这里的defaultValue是个空字符串就直接挂了。应该使用<code>ValueConstants.DEFAULT_NONE</code>， 或者&quot;\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n&quot; 这个将在Spring框架里作为 null进行处理。</p>
+<p>改好后就解决了之前的问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/30/17674583/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/12/30/17674583/" class="post-title-link" itemprop="url">互联网快速试错的反对意见</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-12-30 09:29:00" itemprop="dateCreated datePublished" datetime="2013-12-30T09:29:00+08:00">2013-12-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我个人不觉得的互联网快速试错是一件称道的事情。甚至我觉得这是一件不光彩的事情。我觉得也没有产品经理看我的blog，所以黑一黑产品经理，也是一件心情愉悦的事情。</p>
+<p>开始推出“快速试错”的产品或者通过“快速试错”成功的产品，必然是互联网为数较少的几个。甚至是互联网初期阶段的几个产品。因为怎么试都是一条好路，提前抢占市场才是重要的。但是互联网发展到现在，再提“快速试错”那就大错特错。因为消磨了时间、金钱、精力、激情，甚至机遇。如果自己觉得这个决定可能错误，那为什么不找一个更容易正确的决定呢？所以当做产品的对你说，我们快点推出产品吧，来个“快速试错”。你就要小心了。开发是生产活动中最为稀缺的资源。每个开发都不希望自己做的功能是绝大部分用户永远用不到的功能。如果产品说“快速试错”，那为什么产品经理们不拍拍脑子里进的水，仔细想想怎么做一个基本正确的产品呢？</p>
+<p>当然，产品经理们的观点是：1. 产品未推出前，不知道用户的评价。2.产品快速出新，刷存在感。3.产品有反馈，可以更好的改进。</p>
+<p>以上三点，貌似是产品经理的盾牌，实际上是薄薄的纸壳。</p>
+<p>1. 功能的开发其实完全可以不做的。只需要能做出来让用户觉得是否好用的原型就行。如果产品的定位用户是码农，就首先先听听码农自己们的意见。（给产品经理说句丧气话，基本上互联网上的新产品都是针对码农的。因为非码农也搜索不到你的产品。）码农自己觉得功能不错，那就放心大胆的做。码农自己都觉得这东西根本不会用，那就劝产品经理们三思。如果做出来的demo，连码农自己都觉得别扭，那还是不要推广了。自己心满意足的做做白日梦就可以了。</p>
+<p>2. 快速出新是好事，但是快速意味着功能少，改动少，测试不全面。带来的问题总之多多，每次用户更新都是要费时间的。举个例子，Adobe的flash更新。每次都更新，也不知道到底更新了什么了。而且bug fix一轮又一轮，感觉每隔几天提醒一次flash更新。当然Adobe的更新大部分是安全问题，所以还是必须更新的。当你的产品没有做到Adobe的用户量时，那就不要学adobe更新速度。</p>
+<p>3. 产品反馈是好事，如果不是烂产品，大家都是带着鼓励加上自己的意见。不过一旦产品选错了路，很难想象用户能纠正，大部分用户都是顺着这条错路给你产品意见的。嗯，你觉得顺着错路做出来的产品再推出时能好用？比如说，手电筒应用。用户提意见：可以做一个应用平台呀，用户量都这么大了。如果手电筒应用做了应用平台，大家又会建议：这个应用平台不能只下应用呀，还要有推荐、有评价、有社交功能。 看客是否觉得这产品该叫豌豆荚了？我个人觉得不要太听用户的意见。虽然用户都是好心。但是嗓门大的那些用户可能并不是你的目标用户。而你的目标用户可能还没有下载你的应用呢。不要认为下载并且评价你的应用的用户就是目标用户。请告诉我，乔布斯是每次听取大家的意见，然后做手机的吗?那他应该做一个防水防尘防摔的山寨nokia呀！而且你看，每次大家都抱怨，iphone不防水不防尘不防摔，为什么他就是不改改呢？人家乔布斯知道真正的目标用户是谁，屌丝手机肯定不是他老人家考虑的范围。</p>
+<p>SO，广大的开发者们，当产品经理对你说，咱们做个cool功能吧；当产品经理对你说，咱们来个“快速试错”吧；当产品经理对你说，用户是这样反馈的；开发者呀，你们眼睛要雪亮雪亮的，让这些产品经理先一边拨弄原型自己玩去。</p>
 
       
     </div>
@@ -2045,7 +2449,7 @@ echo “世界上最好的语言”;<br />
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -2075,7 +2479,7 @@ echo “世界上最好的语言”;<br />
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">23:58</span>
+    <span title="Reading time total">24:10</span>
   </span>
 </div>
 

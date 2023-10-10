@@ -172,12 +172,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">739</span>
+        <span class="site-state-item-count">750</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/20/4703558/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/06/08/1643753/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/20/4703558/" class="post-title-link" itemprop="url">SQL中的各种join</a>
+          <a href="/2007/06/08/1643753/" class="post-title-link" itemprop="url">大学近三年-致谢</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,14 +243,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-10-20 14:40:00" itemprop="dateCreated datePublished" datetime="2009-10-20T14:40:00+08:00">2009-10-20</time>
+      <time title="Created: 2007-06-08 13:19:00" itemprop="dateCreated datePublished" datetime="2007-06-08T13:19:00+08:00">2007-06-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -260,7 +260,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.3k</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -278,73 +278,66 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>SQL中有各种join操作，例如 inner join, outer join, full join, cross join, natural join等。</p>
-<h2 id="-"><a class="markdownIt-Anchor" href="#-"></a> -----------------------------------------------------------------------------</h2>
-<p>inner join内连接 也是最普通的join操作。只有join的两个属性值满足join条件后才能生成新的元组。类似于条件连接。例如select *<br />
-from tableA inner join tableB on tableA.attributeA = tableB.attributeB 等价于<br />
-select * from tableA join tableB on tableA.attributeA = tableB.attributeB也等价于<br />
-select * from tableA, tableB where tableA.attributeA = tableB.attributeB</p>
-<p>tableA</p>
-<p>id attributeA</p>
-<p>1     1</p>
-<p>2     2</p>
-<p>tableB</p>
-<p>id attributeB</p>
-<p>1    2</p>
-<p>3    3</p>
-<p>最终结果</p>
-<p><span class="exturl" data-url="aHR0cDovL3RhYmxlQS5pZA==">tableA.id<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cDovL3RhYmxlQi5pZA==">tableB.id<i class="fa fa-external-link-alt"></i></span> attributeA attributeB</p>
-<p>2             1              2            2</p>
-<h2 id="--2"><a class="markdownIt-Anchor" href="#--2"></a> -----------------------------------------------------------------------------</h2>
-<p>outer join外连接，分为left outer join（简写为left join）和 right outer join*（简写为right join<br />
-）,左右外连接可以保存一边的所有元组值。即使join的两个属性值不满足join的条件，依然能留下一个表的元组，另外一半属性就填充为NULL.例如tableA<br />
-.attributeA = tableB.attributeB为连接条件。可是tableA.attributeA含有X值，但是tableB.attribut<br />
-eB却没有X值。如果直接使用inner join,<br />
-含X值的元组就会被丢弃。如果我们想在结果中保留tableA.attributeA的X类似的元组,拿上面的例子来说如果我想保留tableA中的1<br />
-1元组。那么就是用类似于下面的SQL: select * from tableA left join tableB on tableA.attributeA<br />
-= tableB.attributeB 等价于 select * from tableB right join tableA on<br />
-tableA.attributeA = tableB.attributeB, left join 是保留左边表的元组，right<br />
-join是保留右边表的元组。</p>
-<p>最终结果为：</p>
-<p><span class="exturl" data-url="aHR0cDovL3RhYmxlQS5pZA==">tableA.id<i class="fa fa-external-link-alt"></i></span> attributeA  <span class="exturl" data-url="aHR0cDovL3RhYmxlQi5pZA==">tableB.id<i class="fa fa-external-link-alt"></i></span>  attributeB</p>
-<p>1             1             null            null</p>
-<p>2             2               1               2</p>
-<h2 id="--3"><a class="markdownIt-Anchor" href="#--3"></a> -----------------------------------------------------------------------------</h2>
-<p>full join 全连接（或者为full outer join），left/right join只能保留一边的表元组，full<br />
-join可以保留两边表的元组。select * from tableA full join tableB on tableA.attributeA =<br />
-tableB.attributeB</p>
-<p>最终结果为：</p>
-<p><span class="exturl" data-url="aHR0cDovL3RhYmxlQS5pZA==">tableA.id<i class="fa fa-external-link-alt"></i></span> attributeA  <span class="exturl" data-url="aHR0cDovL3RhYmxlQi5pZA==">tableB.id<i class="fa fa-external-link-alt"></i></span>  attributeB</p>
-<p>1             1             null            null</p>
-<p>2             2               1               2</p>
-<p>null         null            3                3</p>
-<h2 id="--4"><a class="markdownIt-Anchor" href="#--4"></a> -----------------------------------------------------------------------------</h2>
-<p>cross join笛卡尔积，这个就是每一个A中元组和每个B中元组拼接成新的元组。</p>
-<p>最终结果为：</p>
-<p><span class="exturl" data-url="aHR0cDovL3RhYmxlQS5pZA==">tableA.id<i class="fa fa-external-link-alt"></i></span> attributeA  <span class="exturl" data-url="aHR0cDovL3RhYmxlQi5pZA==">tableB.id<i class="fa fa-external-link-alt"></i></span>  attributeB</p>
-<p>1           1                 1            2</p>
-<p>1           1                 3            3</p>
-<p>2           2                 1            2</p>
-<p>2           2                 3            3</p>
-<h2 id="--5"><a class="markdownIt-Anchor" href="#--5"></a> -----------------------------------------------------------------------------</h2>
-<p>natural join自然连接。这个是将两个表的公共属性做连接，同名公共属性只保留一份在最终结果里。例如tableA和tableB中都有id字段，自然连接<br />
-后，结果里只保留一个id字段。例如select * from tableA natural join tableB</p>
-<p>最终结果为：</p>
-<p>id attributeA   attributeB</p>
-<p>1           1            2</p>
-<h2 id="--6"><a class="markdownIt-Anchor" href="#--6"></a> -----------------------------------------------------------------------------</h2>
-<p>半连接。貌似没有半连接对应的SQL关键字。半连接就是保留一张表参与连接的元组。所以我们可以再连接之后加入字段的选择。例如select attributeA<br />
-from tableA join tableB on tableA.attributeA = tableB.attributeB.</p>
-<p>最终结果为：</p>
-<p>id attributeA</p>
-<p>2       2</p>
-<h2 id="--7"><a class="markdownIt-Anchor" href="#--7"></a> -----------------------------------------------------------------------------</h2>
-<p>自连接，这个名字我不记得在哪里见过。不过传说是有的。和其他join操作不一样之处在于自连接要加入distinct关键字，所以SQL类似于select<br />
-distinct attributeA from tableA cross join tableB</p>
-<p>最终结果为：</p>
-<p>attributeA</p>
-<p>1</p>
-<p>2</p>
+          <p>听了龙哥的课，写些致谢----针对大学这些年。</p>
+<p>首先要感谢父母， 养我长大，并供我上学。亲情比什么都重要。这点应该肯定。</p>
+<p>然后感谢大姑，小姑，小叔，爷爷奶奶，亲戚太多。。。不能一一列举了。</p>
+<p>感谢老姐，过去曾经是我的指路人。现在我要走自己的路了。也希望老姐走好。</p>
+<p>感谢视我同亲戚一样的刘爷爷，张叔，蒋老师。</p>
+<p>再后感谢各位老师。</p>
+<p>专业启蒙老师：杨柳，让我知道目标是什么，这点对我的大学生活很重要。</p>
+<p>算法老师：睿哥，记得他的那句名言：程序员就是农民，而你们连农民都不如。懂得什么才叫编程的高手。还有那一顿套餐。</p>
+<p>机组老师：锦哥。现在仍然跟着他做SIT的人脸识别，论文又要他指导了。</p>
+<p>编译原理老师：征征姐。那句：“只要有思想就好。”将记在我心里。</p>
+<p>Java/J2EE老师：老边。没有老边这个伯乐，我根本去不了微软实习。现在还不知道我是不是千里马，继续努力吧。还记得老边那句经典的话：“不要指望一门课能是你<br />
+成为编程的高手，或者软件工程的人才。”</p>
+<p>c++老师：戴戴。同时也是我请来当One编程小组的导师。玩转Oracle数据库的人。</p>
+<p>网络老师：勇哥。除了教授我知识外，听他的课也是种享受。</p>
+<p>邵飞兄。虽然没有正式给我上过课。他帮助我免费呆在了暑假里凉爽的实验室。</p>
+<p>波哥。虽然没有上过他的课，他却无故的请了我一顿饭。因此感谢。</p>
+<p>cmm/需求老师：龙哥。感谢龙哥提醒我要写这篇感谢。</p>
+<p>小宁哥。和他交谈感触颇多。记得他的很多句话。最经典的那句：“Simple is beauty.”已经成为我偷懒的最好借口。</p>
+<p>体系结构老师：海哥。若不是他放行，不会顺利的去小宁那里面试。不过即使他阻止，我还是会去的。呵呵</p>
+<p>感谢菜菜为我做的培训。</p>
+<p>感谢几个助教：柳杨，尹庚，敏哥。特别感谢尹庚，给我讲了中国式的软件开发中要注意的问题。</p>
+<p>还要感谢Tim chen. 幸运地能被他看中，希望自己不让他失望。要好好的努力。</p>
+<p>感谢前任院长对我讲的“软件无处不在”。</p>
+<p>感谢现任院长对我编辑部的支持。</p>
+<p>下面要感谢各位同学和朋友。</p>
+<p>感谢同寝的小可，波波，小刚。一个快乐却几乎见不到人的寝室。</p>
+<p>感谢小李子，疯子对我上自习的支持以及借我电脑用的无奈。</p>
+<p>感谢小李子，疯子合做的数模论文让我简历上有点东西写。</p>
+<p>感谢与ami，红亮合作完成了一个交通网络的1.0版本</p>
+<p>感谢张波～，兴隆，郭军～，刘睿，帅子合作的档案管理系统，一个满分的系统呵呵。</p>
+<p>感谢华仔，菲菲，雪山为体系结构大实验写的文档。感谢小可为此写的Sqladapter层。</p>
+<p>感谢剑哥，波波，ami，小李子，小强共同开发的机房管理系统。因为项目失败，所以感受颇多。</p>
+<p>感谢ami，波波，剑哥，小李子，中华小同学，疯子，武大姐，谢俊小同学，老万对我的信任，加入了我组建的One编程组。</p>
+<p>感谢老万大一的时候教我很多。</p>
+<p>感谢众多认为我编程能力很强的同学。感谢众多相信我的作业是正确的同学。</p>
+<p>感谢编辑部的呵呵、落单、雪花姐、张磊、洪莲、俊芳、点点、竹子、盟盟、之旭、旭博、单清、任巍、陆游、浩宇、蒋斌对我工作的支持。</p>
+<p>感谢孟乐促进了院刊和爱晚的联合，感谢yaya为院刊加的音乐。感谢雪花姐的漂亮封面。感谢童梓等人的投稿。</p>
+<p>感谢继续留着编辑部的下届成员：张磊、洪莲、俊芳、竹子、盟盟、任巍以及继续留任的记者们。</p>
+<p>感谢新加入本部的成员：晓莉，幽兰，梦儒。</p>
+<p>感谢童梓即将对我部的帮助。</p>
+<p>感谢落单、洪莲、张磊、俊芳怀着近乎虔诚的心听我传授本专业的“歪门邪道”。</p>
+<p>感谢落单当了几次小白鼠并成功的证明了耳朵进水用吹风机吹仍然不管用的结论。</p>
+<p>感谢点点在我退出编辑部后仍然叫我老大，仍然把院刊做好后让我过目，同时也感谢补完了我的诗。</p>
+<p>感谢呵呵，张惠，雪花姐对我英文简历的修改。Specially thank hui. Her suggestions are very helpful.</p>
+<p>感谢珺姐对我专业考试的提点，并感谢那几本借给我的书。</p>
+<p>感谢宣传本院刊的韧禾学姐。</p>
+<p>感谢吴月让我创建编辑部。让我以官方的名义有了群自己的部下。</p>
+<p>感谢雅婷让我有了创刊的想法。</p>
+<p>感谢轩哥给我机会加入了学生会，并信任我，让我主讲了BIOS。</p>
+<p>感谢金超等同乡，上车我上去了，可惜他没能上去。</p>
+<p>感谢本校的Google Camper 给我一件T恤，并顺利的听到了开复的报告会，还拿到开复的签名。（虽然我不是开复的fans）</p>
+<p>感谢各位对我表示尊敬和崇拜的学弟学妹们。（不知道有没有。。呵呵）</p>
+<p>感谢相信我能过六级的梦。感谢看我无聊短信的李慧子。</p>
+<p>感谢浩浩给我发的各种笑话。</p>
+<p>感谢同我写英文email的明明。</p>
+<p>感谢鹏程，文萌，really，南哥，尹行同我度过了几个漫长假期。</p>
+<p>感谢彤彤一直坚信我要考研。（虽然我不考。。。。。）</p>
+<p>感谢苍蝇的老远来此请我吃了一顿饭。</p>
+<p>感谢csdn的blog支持。</p>
+<p>感谢路过看此文以增加我点击率的人，同时感谢看完此文并与我留言的仁兄。</p>
 
       
     </div>
@@ -371,7 +364,7 @@ distinct attributeA from tableA cross join tableB</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/16/4680523/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/06/06/1640038/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -389,7 +382,7 @@ distinct attributeA from tableA cross join tableB</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/16/4680523/" class="post-title-link" itemprop="url">Amazon云中的 SimpleDB (SDB)</a>
+          <a href="/2007/06/06/1640038/" class="post-title-link" itemprop="url">上海理想实习笔试</a>
         </h2>
 
         <div class="post-meta-container">
@@ -400,14 +393,14 @@ distinct attributeA from tableA cross join tableB</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-10-16 14:50:00" itemprop="dateCreated datePublished" datetime="2009-10-16T14:50:00+08:00">2009-10-16</time>
+      <time title="Created: 2007-06-06 09:03:00" itemprop="dateCreated datePublished" datetime="2007-06-06T09:03:00+08:00">2007-06-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -417,7 +410,7 @@ distinct attributeA from tableA cross join tableB</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>908</span>
+      <span>199</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -435,26 +428,13 @@ distinct attributeA from tableA cross join tableB</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今日细细看了一下Amazon中用于保存云实例、JOB等状态和中间结果的Simple DB.发现果真非常的Simple.</p>
-<p>下面详细介绍下:</p>
-<p>这个SimpleDB中有四个主要的对象。一是Domain,这个就好像我们的表一样(这只是类比，后面有详细介绍)。二是item这个就像行一样。三是attrib<br />
-ute这个就如同列一样。四是value，这就是每个列中的值，类比就是cell.SimpleDB中每一个attribute中的值可以是是一个，也可以是多个。S<br />
-impleDB可以有多个Domain,每个Domain中有多个items.每个items中可以有许多个attribute，每个item中的attribute<br />
-和其他的item中的attribute可以不相同。这个是啥米？听起来是不是很像google的big table.</p>
-<p>后来看了几行SimpleDB的操作才知道，原来就是一个多重map.唉~</p>
-<p>每个domain就是一个map我叫它map_domain,每一行也是一个map,叫它map_item.那么如同python的map一样。一个map_item<br />
-中可以有多个key,每个key也可以有多个value.如同{key1:value1,key2:[value2,value3,value4]}.map_dom<br />
-ain的组织形式为:{map_name:map_item1,map_name:map_item2},这样组织成的SimpleDB有至少两个功能要求：一，可以<br />
-根据key快速查找到map_item；二可以根据多个key，查找到map_item.</p>
-<p>另外为了支持容错，每个domain必须有多个副本。如果一个副本发生更新，就要将更新在多个副本中传播。所以也可能不能及时看到更新。它自己说是&quot;最终一致&quot;的模型<br />
-。对于domain来说，出了要实现那几个功能之外，还有几个属性:</p>
-<p>1.最后更新的日期和时间</p>
-<p>2。items的个数</p>
-<p>3。attribute-value的个数</p>
-<p>4。不同名attribute的个数</p>
-<p>5。items名字也就是map_item所叫名字的总字节数</p>
-<p>6。所有属性值所占大小</p>
-<p>7。一致的属性名大小(这个还不知道有什么用处)</p>
+          <p>选择题11道，共44分</p>
+<p>填空题8道共56分</p>
+<p>（不清楚他们为什么要这分值，按常理来说某方面突出的也应有被录取可能）</p>
+<p>填空题是3个程序填空（链表逆置，字符串对比，数值比较），可以认为这三个皆为控制流问题。</p>
+<p>选择题范围是继承使用及概念，数据库原理，软件工程方法论。</p>
+<p>其中选择题竟然有重复题1道。题干中有错误的1道。</p>
+<p>感觉这好像不是上海理想专门用来笔试的题。好像是学院自己出的题。。。不过上海理想的推荐可能从这里选出。</p>
 
       
     </div>
@@ -481,7 +461,7 @@ ain的组织形式为:{map_name:map_item1,map_name:map_item2},这样组织成的
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/14/4667604/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/06/05/1639373/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -499,7 +479,7 @@ ain的组织形式为:{map_name:map_item1,map_name:map_item2},这样组织成的
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/14/4667604/" class="post-title-link" itemprop="url">Ssh自动登录方法</a>
+          <a href="/2007/06/05/1639373/" class="post-title-link" itemprop="url">文思实习宣讲会所得</a>
         </h2>
 
         <div class="post-meta-container">
@@ -510,14 +490,14 @@ ain的组织形式为:{map_name:map_item1,map_name:map_item2},这样组织成的
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-10-14 09:32:00" itemprop="dateCreated datePublished" datetime="2009-10-14T09:32:00+08:00">2009-10-14</time>
+      <time title="Created: 2007-06-05 16:35:00" itemprop="dateCreated datePublished" datetime="2007-06-05T16:35:00+08:00">2007-06-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 11:58:43" itemprop="dateModified" datetime="2023-10-07T11:58:43+08:00">2023-10-07</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -527,7 +507,1012 @@ ain的组织形式为:{map_name:map_item1,map_name:map_item2},这样组织成的
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.8k</span>
+      <span>316</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>实习网站：campus. <span class="exturl" data-url="aHR0cDovL3dvcmtzb2Z0LmNvbS5jbg==">worksoft.com.cn<i class="fa fa-external-link-alt"></i></span></p>
+<p>专门从事外包企业,outsourcing其实有两种：信息技术外包和业务流外包</p>
+<p>信息化三次浪潮：1.企业信息化 2互联网 3外包</p>
+<p>一个经理的工作体会：</p>
+<p>1.钱是工作的结果而不是工作的理由</p>
+<p>2.不要高估自己的能力，不要低估自己的能力</p>
+<p>3.改变你能改变的，接受你必须接受的</p>
+<p>4.不接受痛苦，就不会有提高</p>
+<p>5.区别，发生在第3个八小时</p>
+<p>6.那些不能把你击倒的，都将使你变的坚强</p>
+<p>7.将者，智信仁勇严</p>
+<p>8.保持一定的交际圈，保持一定的阅读量</p>
+<p>9.身体就是本钱</p>
+<p>实习生要求的技能：</p>
+<p>1.聪明，快速学习</p>
+<p>2.迅速理解和很好的表达能力</p>
+<p>3.很好的英语或者日语 听说</p>
+<p>4有潜力</p>
+<p>5有激情</p>
+<p>6很好的团队精神</p>
+<p>7有加入worksoft的强烈意愿</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/06/04/1638008/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/06/04/1638008/" class="post-title-link" itemprop="url">文思笔试题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-06-04 18:39:00" itemprop="dateCreated datePublished" datetime="2007-06-04T18:39:00+08:00">2007-06-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>216</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>时间：1.5个小时</p>
+<p>推理题：10个，包括简单的计算</p>
+<p>计算机基础：20个，有程序设计基础，数据结果，面向对象，操作系统的点点滴滴</p>
+<p>编程题两个：一个是找零钱问题：10元换成1，2，5元，有几种换法。一个是字符串比较：输出两个字符串共有的字母。（不能使用库函数）</p>
+<p>英文写作（感觉是要写团队精神方面的文章）</p>
+<p>这此考的比较基础。推理题是考的逻辑推理，没有什么更高深的智力题。</p>
+<p>感觉这次又过了。。不过不好意思占学院的名额，于是写了自己的代号。希望找不到我。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/06/03/1636216/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/06/03/1636216/" class="post-title-link" itemprop="url">C/c++随机数产生相同解决方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-06-03 11:01:00" itemprop="dateCreated datePublished" datetime="2007-06-03T11:01:00+08:00">2007-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>488</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>谨记srand()不要调用两次或两次以上。。</p>
+<p>void main()<br />
+{<br />
+for(int i=0;i&lt;10;i++)<br />
+{<br />
+srand( (unsigned)time( NULL ) );<br />
+cout&lt;&lt;rand()&lt;&lt;endl;<br />
+}<br />
+}</p>
+<p>这样调用的时候，因为CPU高速的关系，调用的srand( (unsigned)time( NULL ) );<br />
+生成的种子数一样。导致rand()产生的随机数也一样。</p>
+<p>改为：</p>
+<p>void main()<br />
+{ srand( (unsigned)time( NULL ) );<br />
+for(int i=0;i&lt;10;i++)<br />
+{<br />
+cout&lt;&lt;rand()&lt;&lt;endl;<br />
+}<br />
+}</p>
+<p>有时候这些错误很隐蔽，在构造函数中做了一个check方法。在check方法中调用init方法，然后在init方法中产生随机数。注意如果srand(<br />
+(unsigned)time( NULL ) );<br />
+被写进了check()或者init()等方法中，一定要保证该方法在构造的时候只被调用一次。最好是把该行代码srand( (unsigned)time(<br />
+NULL ) );写到构造函数中进行初始化种子的操作。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/06/03/1636158/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/06/03/1636158/" class="post-title-link" itemprop="url">怪物史莱克3带来的启示</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-06-03 09:23:00" itemprop="dateCreated datePublished" datetime="2007-06-03T09:23:00+08:00">2007-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>994</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>1. For a long time, I believe them.But After a while,you learn to ignore the<br />
+names people call you,you just trust who you are.<br />
+很长一段时间我都相信他们说的。但是后来，就不再关心别人叫你什么。你只相信自己。<br />
+不管别人叫你什么：怪物也好，败者也罢。不必关心，因为你知道自己是什么或者将来会成为什么，这是一份自信。每个人都应这样，人生才能被很正确的定位与诠释。</p>
+<p>2. The thing that matter the most is what you think of yourself. If there are<br />
+something you really want, or someone you really want to be, the only person<br />
+standing in your way is you.  最重要的事情其实是自己怎样看待自己。如果你想得到什么，或者你想成为什么，真正的挡路者也是自己。<br />
+我们是自己的挡路者，每个人都要挑战自己才能获得应有的成功。坚定自己的目标，当知道自己真正想要什么，并为之努力的时候，世界都将为之震动。</p>
+<p>3. once upon the time,someone decided we were the losers. There are two sides<br />
+in every story, and our side is never been told.<br />
+曾几何时，他们都认为我们是失败者。但每一个故事都有其两面（成功或失败，美好的结局或者是失败的苦果），而我们失败后的事情却从来没有定论。<br />
+失败者们失败后，没有人关心。这个社会也只是注重成功的人士。不过事情没有定棺盖论。失败者不会也不应一生一世的都在失败之中度过。</p>
+<p>![史莱克3/怪物史莱克3/怪物史瑞克3 电影海报](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5tb3ZpZS54dW5sZWkuY29tL2dhbGxlcnkvMzM2LzE3NGU3ZjU3">http://images.movie.xunlei.com/gallery/336/174e7f57<i class="fa fa-external-link-alt"></i></span><br />
+d7eabf84e240134cebec397b.jpg)</p>
+<p>导演 |</p>
+<p><span class="exturl" data-url="aHR0cDovL21vdmllcy54dW5sZWkuY29tL3BlcnNvbi8xMTE1NDg="> Chris (VII) Miller <i class="fa fa-external-link-alt"></i></span> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/141684"> Raman Hui<br />
+</a></p>
+<p>主演 |</p>
+<p><span class="exturl" data-url="aHR0cDovL21vdmllcy54dW5sZWkuY29tL3BlcnNvbi8yMjUwNTI="> Mike Myers (I) <i class="fa fa-external-link-alt"></i></span> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/109864"> 埃迪.墨菲<br />
+</a> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/102818"> 卡梅伦.迪亚兹<br />
+</a> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/125950"> 伊恩.麦克谢<br />
+</a> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/141336"> Maya Rudolph<br />
+</a> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/110802"> Amy Sedaris<br />
+</a> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/111554"> 康拉德.弗农<br />
+</a> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/202663"> John Krasinski<br />
+</a> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/204339"> Justin Timberlake<br />
+</a> , <a target="_blank" rel="noopener" href="http://movies.xunlei.com/person/131286"> Regis Philbin<br />
+</a></p>
+<p>类型 |</p>
+<p><span class="exturl" data-url="aHR0cDovL21vdmllcy54dW5sZWkuY29tL2dlbnJlcy9BbmltYXRpb24="> 动画 <i class="fa fa-external-link-alt"></i></span> <a target="_blank" rel="noopener" href="http://movies.xunlei.com/genres/Comedy"> 喜剧<br />
+</a> <a target="_blank" rel="noopener" href="http://movies.xunlei.com/genres/Family"> 家庭<br />
+</a> <a target="_blank" rel="noopener" href="http://movies.xunlei.com/genres/Fantasy"> 幻想<br />
+</a></p>
+<p>年份 |</p>
+<p><span class="exturl" data-url="aHR0cDovL21vdmllcy54dW5sZWkuY29tL3llYXIvMjAwNw=="> 2007 <i class="fa fa-external-link-alt"></i></span></p>
+<p>地区 |</p>
+<p><span class="exturl" data-url="aHR0cDovL21vdmllcy54dW5sZWkuY29tL2FyZWEvMg=="> 美国 <i class="fa fa-external-link-alt"></i></span></p>
+<p>语言 |</p>
+<p><span class="exturl" data-url="aHR0cDovL21vdmllcy54dW5sZWkuY29tL2xhbmd1YWdlLzA="> 英语 <i class="fa fa-external-link-alt"></i></span></p>
+<p>片长 |</p>
+<p>90分钟</p>
+<p>色彩 |</p>
+<p>彩色</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/06/01/1633846/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/06/01/1633846/" class="post-title-link" itemprop="url">解决C++头文件结构类似嵌套问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-06-01 10:35:00" itemprop="dateCreated datePublished" datetime="2007-06-01T10:35:00+08:00">2007-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>有一个Road类，有一个Intersection类，Road类中要含有两个节点Intersection的信息，<br />
+Intersection要有相邻路的信息列表。</p>
+<p>于是Road.h中这样定义：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+class  Road<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+private  :<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+Intersection  *  from;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+Intersection  *  to;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+public  :<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+…<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }</p>
+<p>Intersection.h中这样定义：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+class  Intersection<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+private  :<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+list  &lt; Road  *&gt; roadNext;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+public  :<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+…<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }</p>
+<p>很可惜这样编译通不过，编译器会报找不到类型错误。</p>
+<p>于是在Intersection类中添加一行代码</p>
+<p>class Road;</p>
+<p>在Road.h中导入Intersection的文件#include&quot;Intersection.h&quot;</p>
+<p>这样编译应该没有问题。（如果函数中没有出现Road类型或者 Intersection类型的话）</p>
+<p>但如果函数中有Road类型或者 Intersection类型又怎么办呢？</p>
+<p>创建Road.cpp和Intersection.cpp文件</p>
+<p>在*.h中只是写函数的声明，在cpp文件中写函数定义，并导入两个.h文件。例如：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &quot;  Road.h  &quot;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &quot;  Intersection.h  &quot;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+void  Intersection::InsertRoad(Road  *  r)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+roadNext.insert(roadNext.begin,r);<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }</p>
+<p>编译。。。通过</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/28/1627894/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/05/28/1627894/" class="post-title-link" itemprop="url">实习生要注意，招聘公司也要注意</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-05-28 10:35:00" itemprop="dateCreated datePublished" datetime="2007-05-28T10:35:00+08:00">2007-05-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>794</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>东华合创昨日来我院招实习生。说好10：00,结果11：00才来。简单介绍了自己的公司。说自己公司什么都做，通过了cmm5级和ISO9000认证。说全国只有3<br />
+家通过了。然后叫我们投简历，并告诉我们下午两点半去面试。下午面试，秩序非常混乱，几乎是谁抢到位置谁就可以面试。没有任何的规章制度。我因为不想耽误时间就抢先面<br />
+试。4个人坐一起，只对其中一个人面试，谈完再面试其他。感觉就象医生问病情，针对简历一问一答。然后走人。</p>
+<p>我感觉这家公司有几点没有做好或者是那两个招聘的人没有做好。</p>
+<p>1.不正式。说话谈吐不正式，与人交流没有什么感情。招聘时迟到（大忌）。我认为这不是过了cmm5级后的表现。虽然cmm5并没有什么招聘人员的约定，但一个公司来<br />
+招聘至少要有像样的过程。</p>
+<p>2.不停的讲自己过了cmm5级。优点是要讲，但是不要不停的讲。宣传的东西带的少，只有两份详细介绍他公司的宣传资料。</p>
+<p>3.招聘流程没有任何规定。我们学生会面试还有相关的流程规定。一个偌大的公司，实习招聘竟然可以抢座面试。</p>
+<p>4.他们宣称什么都做。可看看宣传资料发现还是做web应用，至少他们不做操作系统。这样的话最好还是少说。</p>
+<p>5.面试问题设置。曾这样问一个家伙：一个内蒙的项目，你能不能一个人完成？现在的项目有一个人完成的吗？都能一个人完成，还不又到了手工磨房时代？要软件工程工程何<br />
+用？当然不排出个体软件的行为。但是像这样一个1000多人的公司，一个项目能让一个人去完成吗？如果真的有这种情况，说明这个公司做事情还没有到达第5级优化级。可<br />
+惜，那同学竟然说，经过培训应该可以吧。<br />
+<img src="/Editor/FCKeditor/editor/images/smiley/msn/confused_smile.gif" alt="" /></p>
+<p>面试有很多要注意的地方。前来招聘的人员也要注意一下。否则真的感觉这家公司内部有种种的问题。</p>
+<p>顺便赞一下Tim chen，<br />
+人家虽然也迟到了。但是其他方面注意的很好。说话也很具亲和力。虽然微软没有过cmm，但是明显感觉到员工的差异。过来cmm5，没有形成企业文化，也是不行的！</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/24/1624667/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/05/24/1624667/" class="post-title-link" itemprop="url">合久必分，分久必合</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-05-24 21:20:00" itemprop="dateCreated datePublished" datetime="2007-05-24T21:20:00+08:00">2007-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>304</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>话说上次宣传部和编辑部合并，成立宣传编辑部。现任部长张磊。 现在校里搞个大型义捐。本院承办。（龙哥说过，外包给别人的单位都挣了大钱，给别人做外包的只能挣些小<br />
+钱）我院还挣不到钱。只是书记们想出出风头吧了。人要出名。由他去吧。</p>
+<p>童梓希望把宣传组分出来。我同意。张磊也同意。大家都同意。但是童梓点名要部里人去做宣传这一块。没有经由张磊的同意。张磊很郁闷的对我说，这学生会真不想做下去了。<br />
+我对他说，让洪莲出台一些制度吧。没有部长的同意，不允许任何人调用部内人员。又把童梓“训”了一顿。（我自己的权力好像很大？？：&gt;）</p>
+<p>正如龙哥所说：制度要完善。要到cmm3级定义级。一切行为都是要有定义的。不能说调我部的人就调走了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/24/1623700/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/05/24/1623700/" class="post-title-link" itemprop="url">聊天，吃饭</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-05-24 10:50:00" itemprop="dateCreated datePublished" datetime="2007-05-24T10:50:00+08:00">2007-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>846</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>昨天一上午都在和睿哥聊天。然后十一点和他吃了顿饭。</p>
+<p>算法老师就是不一样。给我说了一通算法。什么分支定界，NP，完全NP等等。又推荐了李佳同的书。“李佳同”不知道我把他名字写错了没有。然后给我说了他要带的课程设<br />
+计（动态交通图），又问我参不参加。我说当然参加，但是2+2，测试班选的是操作系统和数据库。开发班才能选数据结构。睿哥说没有问题，一切由他搞定。睿哥说现在研究<br />
+生出来也不一定能找到工作。前几天有个研究生（华中的）写过几篇被SEI索引的论文。结果却没有人要他。做研究做的不错，却找不到好的工作单位。我在心里想我应该不光<br />
+是去做研究，动手能力也要加强些。我说我现在有可能有向外保送的名额，如果保到清华，那就应该去吧。如果保到其他的学校，就不读了。工作几年再读。睿哥也有些赞同，说<br />
+可以向中科院那里想想。我问能不能保到那里。他大笑曰：那里必须要考！</p>
+<p>后来聊着聊着，红亮也来了。又讨论了一通动态交通的要求。然后我又说猫咪也可以拉过来。有这两大高手的支持。做这个东西，心里有了些底。</p>
+<p>十一点不到，睿哥非要拉我们去吃饭。向着天马方向走去，我和红亮就嘀咕：是不是去食堂吃饭去？还好中途停下，把我们带到音乐厨房。点了3份套餐，很好吃。其中的猪扒和<br />
+鱿鱼卷很好吃。红亮的那份看起来也不错，不过抑制了一下自己的欲望，没有吃他的。吃着的时候又谈起他以前的同学，他说混的最不错，现在最有钱的是过去被学校开除的那个<br />
+同学。大家上学的时候都认为那家伙是傻子。体育老师说抬铅球一定高度砸脚会很痛。那个同学非要试一下。我说或许他当时有这个想法：“first we try,<br />
+then we<br />
+trust!”。我又说：“有钱并不是衡量一个人是否成功的标准。商界中有人认为只能挣钱的商人还是小商人，能使企业内部和谐，企业和社会和谐的商人才是大商人。”</p>
+<p>后来睿哥和我们谈起学英语。问我们怎么背单词。我说就拿本书背呗。睿哥说不好。然后就推荐我们用文曲星里的单词记忆来背单词。然后把文曲星借个红亮，说：“我家还有一<br />
+个，你先拿去用”。晕，今天睿哥怎么这样搞笑？</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/22/1621298/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/05/22/1621298/" class="post-title-link" itemprop="url">SIT计划--自动作业判定</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-05-22 18:19:00" itemprop="dateCreated datePublished" datetime="2007-05-22T18:19:00+08:00">2007-05-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>409</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>昨日要交SIT人脸的中期检查报告。锦哥突然对我说：你帮我找几个大二的，对作业判定感兴趣的人。然后给我解释了半天这个新的SIT计划。中午赶紧通知几个大二的负责<br />
+人。下午却没有接到任何电话。感觉大二是不是太不积极了，来这都没有人报名。可是后来找到大二的负责人，却发现很多申请书。很可惜，那些申请书写的一塌糊涂。什么爱好<br />
+打篮球，跑步什么的都写上了。和SIT的项目一点关系都没有。真不知道大二的是怎么想的。</p>
+<p>后来因为交的人太多，要和锦哥商量一下。锦哥说反正你和大二的熟，就由你办了。（还真对我放心，很可惜我也不熟。汗！）我推荐了几个和我很熟的人，然后叫锦哥看了简历<br />
+，他又挑了一个写的最多的。看来以后写简历一定要写的多。虽然写的很菜。</p>
+<p>晚上给睿哥发了封email，希望能在我走之前指点我一下。记得睿哥那句最经典的话：程序员就是农民，而你们连农民都不如。现在想来，的确有理！不过为了不引起看这篇<br />
+文章的程序员们的公愤，我先替睿哥道个歉。。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/20/1618221/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/05/20/1618221/" class="post-title-link" itemprop="url">8088汇编指令集</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-05-20 20:43:00" itemprop="dateCreated datePublished" datetime="2007-05-20T20:43:00+08:00">2007-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -545,61 +1530,184 @@ ain的组织形式为:{map_name:map_item1,map_name:map_item2},这样组织成的
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="自动ssh登录的几种方法"><a class="markdownIt-Anchor" href="#自动ssh登录的几种方法"></a> 自动ssh登录的几种方法</h2>
-<p>此帖转载自： <span class="exturl" data-url="aHR0cDovL2JsdWVpY2VyLmJsb2cuNTFjdG8uY29tLzM5NTY4Ni84ODE3NQ=="> http://blueicer.blog.51cto.com/395686/88175<i class="fa fa-external-link-alt"></i></span></p>
-<p>不过好像那个地方的也是转载。</p>
-<p>我依照下面的方法尝试了一下。在2中其实并不需要# ssh -i /root/.ssh/id_rsa_192.168.60.110 <span class="exturl" data-url="bWFpbHRvOnNvbWVvbmVAMTkyLjE2OC42MC4xMTA=">someone@192.168.60.110 <i class="fa fa-external-link-alt"></i></span> 这样写。只需要ssh<br />
-root@192.168.60.110即可。或许是版本的问题吧。</p>
-<p>** 1. 自动ssh/scp方法== **</p>
-<p>A为本地主机(即用于控制其他主机的机器) ;<br />
-B为远程主机(即被控制的机器Server), 假如ip为192.168.60.110;<br />
-A和B的系统都是Linux</p>
-<p>在A上运行命令:</p>
-<h1 id="ssh-keygen-t-rsa-连续三次回车即在本地生成了公钥和私钥不设置密码"><a class="markdownIt-Anchor" href="#ssh-keygen-t-rsa-连续三次回车即在本地生成了公钥和私钥不设置密码"></a> ssh-keygen -t rsa (连续三次回车,即在本地生成了公钥和私钥,不设置密码)</h1>
-<h1 id="ssh-root19216860110-mkdir-ssh"><a class="markdownIt-Anchor" href="#ssh-root19216860110-mkdir-ssh"></a> ssh <span class="exturl" data-url="bWFpbHRvOnJvb3RAMTkyLjE2OC42MC4xMTA="> root@192.168.60.110 <i class="fa fa-external-link-alt"></i></span> “mkdir .ssh”</h1>
-<p>(需要输入密码)</p>
-<h1 id="scp-~sshid_rsapub-root19216860110"><a class="markdownIt-Anchor" href="#scp-~sshid_rsapub-root19216860110"></a> scp ~/.ssh/id_rsa.pub <span class="exturl" data-url="bWFpbHRvOnJvb3RAMTkyLjE2OC42MC4xMTA="> root@192.168.60.110 <i class="fa fa-external-link-alt"></i></span></h1>
-<p>:.ssh/id_rsa.pub (需要输入密码)</p>
-<p>在B上的命令:</p>
-<h1 id="touch-rootsshauthorized_keys-如果已经存在这个文件-跳过这条"><a class="markdownIt-Anchor" href="#touch-rootsshauthorized_keys-如果已经存在这个文件-跳过这条"></a> touch /root/.ssh/authorized_keys (如果已经存在这个文件, 跳过这条)</h1>
-<h1 id="cat-rootsshid_rsapub-rootsshauthorized_keys"><a class="markdownIt-Anchor" href="#cat-rootsshid_rsapub-rootsshauthorized_keys"></a> cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</h1>
-<p>(将id_rsa.pub的内容追加到authorized_keys 中)</p>
-<p>回到A机器:</p>
-<h1 id="ssh-root19216860110-不需要密码-登录成功"><a class="markdownIt-Anchor" href="#ssh-root19216860110-不需要密码-登录成功"></a> ssh <span class="exturl" data-url="bWFpbHRvOnJvb3RAMTkyLjE2OC42MC4xMTA="> root@192.168.60.110 <i class="fa fa-external-link-alt"></i></span> (不需要密码, 登录成功)</h1>
-<p>** 2. 控制n个机器如上所述自动登录 **<br />
-那就需要n对钥匙(密钥和公钥), ssh-keygen 命令可以随意更改钥匙对的名字, 比如:</p>
-<h1 id="ssh-keygen-t-rsa"><a class="markdownIt-Anchor" href="#ssh-keygen-t-rsa"></a> ssh-keygen -t rsa</h1>
-<p>Generating public/private rsa key pair.<br />
-Enter file in which to save the key (/root/.ssh/id_rsa):<br />
-/root/.ssh/id_rsa_192.168.60.110</p>
-<p>这 样私钥和公钥的名字分别就是: id_rsa_192.168.60.110和 id_rsa_192.168.60.110.pub;然后将<br />
-id_rsa_192.168.60.110.pub 文件的内容, 追加到sever的 ~/.ssh/authorized_keys文件中,最后,<br />
-在本地用ssh命令的 -i 参数指定本地密钥, 并登录:</p>
-<h1 id="ssh-i-rootsshid_rsa_19216860110-someone19216860110"><a class="markdownIt-Anchor" href="#ssh-i-rootsshid_rsa_19216860110-someone19216860110"></a> ssh -i /root/.ssh/id_rsa_192.168.60.110 <span class="exturl" data-url="bWFpbHRvOnNvbWVvbmVAMTkyLjE2OC42MC4xMTA="> someone@192.168.60.110<i class="fa fa-external-link-alt"></i></span></h1>
-<p>scp也是一样的</p>
-<h1 id="scp-i-rootsshid_rsa_19216860110-filename-someone19216860110-homesomeone"><a class="markdownIt-Anchor" href="#scp-i-rootsshid_rsa_19216860110-filename-someone19216860110-homesomeone"></a> scp -i /root/.ssh/id_rsa_192.168.60.110 filename <span class="exturl" data-url="bWFpbHRvOnNvbWVvbmVAMTkyLjE2OC42MC4xMTA="> someone@192.168.60.110<i class="fa fa-external-link-alt"></i></span> :/home/someone</h1>
-<p>在文件.bashrc中加下两行，每次做同样的操作就不用敲入这样长的命令了：<br />
-alias sshcell='ssh -i /root/.ssh/id_rsa_192.168.60.110 <span class="exturl" data-url="bWFpbHRvOnNvbWVvbmVAMTkyLjE2OC42MC4xMTA=">someone@192.168.60.110 <i class="fa fa-external-link-alt"></i></span> ’<br />
-alias scpcell=‘scp -i /root/.ssh/id_rsa_192.168.60.110 filename <span class="exturl" data-url="bWFpbHRvOnNvbWVvbmVAMTkyLjE2OC42MC4xMTA=">someone@192.168.60.110 <i class="fa fa-external-link-alt"></i></span> :/home/someone’</p>
-<p>这样，直接键入一下指令实现ssh和scp自动登录：</p>
-<h1 id="sshcell"><a class="markdownIt-Anchor" href="#sshcell"></a> sshcell</h1>
-<h1 id="scpcell"><a class="markdownIt-Anchor" href="#scpcell"></a> scpcell</h1>
-<p>** 3. 自动ssh/scp脚本 **<br />
-如果需要从A，到B，然后才能够到C，那么需要ssh和scp两次，是比较麻烦的。<br />
-ssh自动登录：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/expect -f  </span></span><br><span class="line"><span class="built_in">set</span> <span class="built_in">timeout</span> 30  </span><br><span class="line">spawn ssh weiqiong@B  </span><br><span class="line">expect <span class="string">&quot;password:&quot;</span>  </span><br><span class="line">send <span class="string">&quot;pppppp/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;]*&quot;</span>  </span><br><span class="line">send <span class="string">&quot;ssh weiqiong@C/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;password:&quot;</span>  </span><br><span class="line">send <span class="string">&quot;pppppp/r&quot;</span>  </span><br><span class="line">interact  </span><br><span class="line">scp从A拷贝文件到C：  </span><br><span class="line"><span class="comment">#!/usr/bin/expect -f  </span></span><br><span class="line"><span class="built_in">set</span> <span class="built_in">timeout</span> 300  </span><br><span class="line"><span class="built_in">set</span> file [lindex <span class="variable">$argv</span> 0]  </span><br><span class="line">spawn scp <span class="variable">$file</span> weiqiong@B:/home/weiqiong  </span><br><span class="line">expect <span class="string">&quot;password:&quot;</span>  </span><br><span class="line">send <span class="string">&quot;pppppp/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;]*&quot;</span>  </span><br><span class="line">spawn ssh weiqiong@B  </span><br><span class="line">expect <span class="string">&quot;password:&quot;</span>  </span><br><span class="line">send <span class="string">&quot;pppppp/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;]*&quot;</span>  </span><br><span class="line">send <span class="string">&quot;scp <span class="variable">$file</span> weiqiong@C:/home/weiqiong/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;password:&quot;</span>  </span><br><span class="line">send <span class="string">&quot;pppppp/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;]*&quot;</span>  </span><br><span class="line"><span class="built_in">exit</span>  </span><br><span class="line">interact  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>scp从C拷贝文件到A：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/expect -f  </span></span><br><span class="line"><span class="built_in">set</span> <span class="built_in">timeout</span> 300  </span><br><span class="line"><span class="built_in">set</span> file [lindex <span class="variable">$argv</span> 0]  </span><br><span class="line">spawn ssh weiqiong@B  </span><br><span class="line">expect <span class="string">&quot;password:&quot;</span>  </span><br><span class="line">send <span class="string">&quot;pppppp/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;]*&quot;</span>  </span><br><span class="line">send <span class="string">&quot;scp weiqiong@C:/home/weiqiong/<span class="variable">$file</span> ./r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;password:&quot;</span>  </span><br><span class="line">send <span class="string">&quot;pppppp/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;]*&quot;</span>  </span><br><span class="line">send <span class="string">&quot;exit/r&quot;</span>  </span><br><span class="line">expect <span class="string">&quot;]*&quot;</span>  </span><br><span class="line">spawn scp weiqiong@B:/home/weiqiong/<span class="variable">$file</span> .  </span><br><span class="line">expect <span class="string">&quot;password:&quot;</span>  </span><br><span class="line">send <span class="string">&quot;pppppp/r&quot;</span>  </span><br><span class="line">interact  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>** 4. 建立ssh/scp通道 **<br />
-比如说我的机器是A，中间服务器为B，目标服务器是C<br><br />
-从A可以ssh到B，从B可以ssh到C，但是A不能直接ssh到C<br><br />
-现在展示利用ssh通道技术从A直接传输文件到C<br><br />
-1. ssh -L1234:C:22 userid@B<br><br />
-input B’s password<br><br />
-(1234是本机A的空闲端口，该指令需要A机器上的root用户权限，实际上是在本机1234端口建立了一个通道)<br></p>
-<p>2. 打开一个新的console，键入：<br><br />
-scp -P1234 filename userid@localhost:<br><br />
-input C’s password</p>
+          <p>** 8088 汇编速查手册 **</p>
+<p>一、数据传输指令<br />
+───────────────────────────────────────<br />
+它们在存贮器和寄存器、寄存器和输入输出端口之间传送数据.<br />
+1. 通用数据传送指令.<br />
+MOV    传送字或字节.<br />
+MOVSX  先符号扩展,再传送.<br />
+MOVZX  先零扩展,再传送.<br />
+PUSH    把字压入堆栈.<br />
+POP    把字弹出堆栈.<br />
+PUSHA  把AX,CX,DX,BX,SP,BP,SI,DI依次压入堆栈.<br />
+POPA    把DI,SI,BP,SP,BX,DX,CX,AX依次弹出堆栈.<br />
+PUSHAD  把EAX,ECX,EDX,EBX,ESP,EBP,ESI,EDI依次压入堆栈.<br />
+POPAD  把EDI,ESI,EBP,ESP,EBX,EDX,ECX,EAX依次弹出堆栈.<br />
+BSWAP  交换32位寄存器里字节的顺序<br />
+XCHG    交换字或字节.( 至少有一个操作数为寄存器,段寄存器不可作为操作数)<br />
+CMPXCHG 比较并交换操作数.( 第二个操作数必须为累加器AL/AX/EAX )<br />
+XADD    先交换再累加.( 结果在第一个操作数里 )<br />
+XLAT    字节查表转换.<br />
+── BX 指向一张 256 字节的表的起点, AL 为表的索引值 (0-255,即<br />
+0-FFH); 返回 AL 为查表结果. ( [BX+AL]-&gt;AL )<br />
+2. 输入输出端口传送指令.<br />
+IN      I/O端口输入. ( 语法: IN 累加器, {端口号│DX} )<br />
+OUT    I/O端口输出. ( 语法: OUT {端口号│DX},累加器 )<br />
+输入输出端口由立即方式指定时, 其范围是 0-255; 由寄存器 DX 指定时,<br />
+其范围是 0-65535.<br />
+3. 目的地址传送指令.<br />
+LEA    装入有效地址.<br />
+例: LEA DX,string  ;把偏移地址存到DX.<br />
+LDS    传送目标指针,把指针内容装入DS.<br />
+例: LDS SI,string  ;把段地址:偏移地址存到DS:SI.<br />
+LES    传送目标指针,把指针内容装入ES.<br />
+例: LES DI,string  ;把段地址:偏移地址存到ES:DI.<br />
+LFS    传送目标指针,把指针内容装入FS.<br />
+例: LFS DI,string  ;把段地址:偏移地址存到FS:DI.<br />
+LGS    传送目标指针,把指针内容装入GS.<br />
+例: LGS DI,string  ;把段地址:偏移地址存到GS:DI.<br />
+LSS    传送目标指针,把指针内容装入SS.<br />
+例: LSS DI,string  ;把段地址:偏移地址存到SS:DI.<br />
+4. 标志传送指令.<br />
+LAHF    标志寄存器传送,把标志装入AH.<br />
+SAHF    标志寄存器传送,把AH内容装入标志寄存器.<br />
+PUSHF  标志入栈.<br />
+POPF    标志出栈.<br />
+PUSHD  32位标志入栈.<br />
+POPD    32位标志出栈.</p>
+<p>二、算术运算指令<br />
+───────────────────────────────────────<br />
+ADD    加法.<br />
+ADC    带进位加法.<br />
+INC    加 1.<br />
+AAA    加法的ASCII码调整.<br />
+DAA    加法的十进制调整.<br />
+SUB    减法.<br />
+SBB    带借位减法.<br />
+DEC    减 1.<br />
+NEC    求反(以 0 减之).<br />
+CMP    比较.(两操作数作减法,仅修改标志位,不回送结果).<br />
+AAS    减法的ASCII码调整.<br />
+DAS    减法的十进制调整.<br />
+MUL    无符号乘法.<br />
+IMUL    整数乘法.<br />
+以上两条,结果回送AH和AL(字节运算),或DX和AX(字运算),<br />
+AAM    乘法的ASCII码调整.<br />
+DIV    无符号除法.<br />
+IDIV    整数除法.<br />
+以上两条,结果回送:<br />
+商回送AL,余数回送AH, (字节运算);<br />
+或  商回送AX,余数回送DX, (字运算).<br />
+AAD    除法的ASCII码调整.<br />
+CBW    字节转换为字. (把AL中字节的符号扩展到AH中去)<br />
+CWD    字转换为双字. (把AX中的字的符号扩展到DX中去)<br />
+CWDE    字转换为双字. (把AX中的字符号扩展到EAX中去)<br />
+CDQ    双字扩展.    (把EAX中的字的符号扩展到EDX中去)</p>
+<p>三、逻辑运算指令<br />
+───────────────────────────────────────<br />
+AND    与运算.<br />
+OR      或运算.<br />
+XOR    异或运算.<br />
+NOT    取反.<br />
+TEST    测试.(两操作数作与运算,仅修改标志位,不回送结果).<br />
+SHL    逻辑左移.<br />
+SAL    算术左移.(=SHL)<br />
+SHR    逻辑右移.<br />
+SAR    算术右移.(=SHR)<br />
+ROL    循环左移.<br />
+ROR    循环右移.<br />
+RCL    通过进位的循环左移.<br />
+RCR    通过进位的循环右移.<br />
+以上八种移位指令,其移位次数可达255次.<br />
+移位一次时, 可直接用操作码.  如 SHL AX,1.<br />
+移位&gt;1次时, 则由寄存器CL给出移位次数.<br />
+如  MOV CL,04<br />
+SHL AX,CL</p>
+<p>四、串指令<br />
+───────────────────────────────────────<br />
+DS:SI  源串段寄存器  :源串变址.<br />
+ES:DI  目标串段寄存器:目标串变址.<br />
+CX      重复次数计数器.<br />
+AL/AX  扫描值.<br />
+D标志  0表示重复操作中SI和DI应自动增量; 1表示应自动减量.<br />
+Z标志  用来控制扫描或比较操作的结束.<br />
+MOVS    串传送.<br />
+( MOVSB  传送字符.    MOVSW  传送字.    MOVSD  传送双字. )<br />
+CMPS    串比较.<br />
+( CMPSB  比较字符.    CMPSW  比较字. )<br />
+SCAS    串扫描.<br />
+把AL或AX的内容与目标串作比较,比较结果反映在标志位.<br />
+LODS    装入串.<br />
+把源串中的元素(字或字节)逐一装入AL或AX中.<br />
+( LODSB  传送字符.    LODSW  传送字.    LODSD  传送双字. )<br />
+STOS    保存串.<br />
+是LODS的逆过程.<br />
+REP            当CX/ECX&lt;&gt;0时重复.<br />
+REPE/REPZ      当ZF=1或比较结果相等,且CX/ECX&lt;&gt;0时重复.<br />
+REPNE/REPNZ    当ZF=0或比较结果不相等,且CX/ECX&lt;&gt;0时重复.<br />
+REPC          当CF=1且CX/ECX&lt;&gt;0时重复.<br />
+REPNC          当CF=0且CX/ECX&lt;&gt;0时重复.</p>
+<p>五、程序转移指令<br />
+───────────────────────────────────────<br />
+1&gt;无条件转移指令 (长转移)<br />
+JMP    无条件转移指令<br />
+CALL    过程调用<br />
+RET/RETF过程返回.<br />
+2&gt;条件转移指令 (短转移,-128到+127的距离内)<br />
+( 当且仅当(SF XOR OF)=1时,OP1&lt;OP2 )<br />
+JA/JNBE 不小于或不等于时转移.<br />
+JAE/JNB 大于或等于转移.<br />
+JB/JNAE 小于转移.<br />
+JBE/JNA 小于或等于转移.<br />
+以上四条,测试无符号整数运算的结果(标志C和Z).<br />
+JG/JNLE 大于转移.<br />
+JGE/JNL 大于或等于转移.<br />
+JL/JNGE 小于转移.<br />
+JLE/JNG 小于或等于转移.<br />
+以上四条,测试带符号整数运算的结果(标志S,O和Z).<br />
+JE/JZ  等于转移.<br />
+JNE/JNZ 不等于时转移.<br />
+JC      有进位时转移.<br />
+JNC    无进位时转移.<br />
+JNO    不溢出时转移.<br />
+JNP/JPO 奇偶性为奇数时转移.<br />
+JNS    符号位为 “0” 时转移.<br />
+JO      溢出转移.<br />
+JP/JPE  奇偶性为偶数时转移.<br />
+JS      符号位为 “1” 时转移.<br />
+3&gt;循环控制指令(短转移)<br />
+LOOP            CX不为零时循环.<br />
+LOOPE/LOOPZ    CX不为零且标志Z=1时循环.<br />
+LOOPNE/LOOPNZ  CX不为零且标志Z=0时循环.<br />
+JCXZ            CX为零时转移.<br />
+JECXZ          ECX为零时转移.<br />
+4&gt;中断指令<br />
+INT    中断指令<br />
+INTO    溢出中断<br />
+IRET    中断返回<br />
+5&gt;处理器控制指令<br />
+HLT    处理器暂停, 直到出现中断或复位信号才继续.<br />
+WAIT    当芯片引线TEST为高电平时使CPU进入等待状态.<br />
+ESC    转换到外处理器.<br />
+LOCK    封锁总线.<br />
+NOP    空操作.<br />
+STC    置进位标志位.<br />
+CLC    清进位标志位.<br />
+CMC    进位标志取反.<br />
+STD    置方向标志位.<br />
+CLD    清方向标志位.<br />
+STI    置中断允许位.<br />
+CLI    清中断允许位.</p>
+<p>六、伪指令<br />
+───────────────────────────────────────<br />
+DW      定义字(2字节).<br />
+PROC    定义过程.<br />
+ENDP    过程结束.<br />
+SEGMENT 定义段.<br />
+ASSUME  建立段寄存器寻址.<br />
+ENDS    段结束.<br />
+END    程序结束.</p>
 
       
     </div>
@@ -626,7 +1734,7 @@ input C’s password</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/14/4667460/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/19/1616530/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -644,7 +1752,7 @@ input C’s password</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/14/4667460/" class="post-title-link" itemprop="url">Ubuntu源和scim安装等 Pinyin Ubuntu拼音</a>
+          <a href="/2007/05/19/1616530/" class="post-title-link" itemprop="url">编辑部最近挺忙</a>
         </h2>
 
         <div class="post-meta-container">
@@ -655,14 +1763,14 @@ input C’s password</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-10-14 09:11:00" itemprop="dateCreated datePublished" datetime="2009-10-14T09:11:00+08:00">2009-10-14</time>
+      <time title="Created: 2007-05-19 16:29:00" itemprop="dateCreated datePublished" datetime="2007-05-19T16:29:00+08:00">2007-05-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -672,7 +1780,7 @@ input C’s password</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.6k</span>
+      <span>596</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -690,36 +1798,16 @@ input C’s password</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>首先要update你的源。因为ubuntu自带的源速度不是很快，所以需要替换掉那些源。去官方网站上找到以下这些源： [ 源地址 ](<span class="exturl" data-url="aHR0cDovL3dpa2k=">http://wiki<i class="fa fa-external-link-alt"></i></span>.<br />
-<span class="exturl" data-url="aHR0cDovL3VidW50dS5vcmcuY24vJUU1JUE2JTgyJUU0JUJEJTk1JUU0JUJEJUJGJUU3JTk0JUE4JUU2JTg4JTkxJUU0JUJCJUFDJUU2JThFJUE4JTI1">ubuntu.org.cn/如何使用我们推%<i class="fa fa-external-link-alt"></i></span><br />
-E8%8D%90%E7%9A%84%E6%BA%90)</p>
-<p>例如我选用了中科大的源：</p>
-<p>deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> jaunty main multiverse restricted<br />
-universe deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> jaunty-backports main<br />
-multiverse restricted universe deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> jaunty-<br />
-proposed main multiverse restricted universe deb<br />
-<span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> jaunty-security main multiverse restricted<br />
-universe deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> jaunty-updates main multiverse<br />
-restricted universe deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> jaunty main<br />
-multiverse restricted universe deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span><br />
-jaunty-backports main multiverse restricted universe deb-src<br />
-<span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> jaunty-proposed main multiverse restricted<br />
-universe deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> jaunty-security main<br />
-multiverse restricted universe deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span><br />
-jaunty-updates main multiverse restricted universe</p>
-<p>先把你过去的源改名sudo mv   /etc/apt/sources.list   /etc/apt/sources.list.old</p>
-<p>然后创建新源sudo vi   /etc/apt/sources.list</p>
-<p>然后将上一段的源贴到你的sources.list中。保存。</p>
-<p>然后使用sudo apt-get update这句是更新源。之后你就可以更新你的系统了。使用sudo apt-get upgrade即可。</p>
-<p>下面是安装scim,有很多种安装方法，各个版本各个操作系统的安装方法不一样。因为要使用中文输入法。所以必须装这个。我使用的操作系统是英文版的所以要再装中文包<br />
-。先下载scim和scim-chinese。</p>
-<p>sudo apt-get install scim</p>
-<p>sudo apt-get install scim-chinese</p>
-<p>然后在system-&gt;administration-&gt;language support中Install / remove language中，将chines<br />
-e那项选上。官方文件说如果chinese已经被选上，那么就去掉它并保存，然后重新进入system-&gt;administration-&gt;language<br />
-support，在将chinese那项选上，保存。然后就会有自动安装程序启动。安装好之后，log out,然后再log<br />
-in就可以使用了。我使用的是9.04的版本，旧版本的稍有不同。详见 <a target="_blank" rel="noopener" href="http://wiki.ubuntu.org.cn/UbuntuHelp:SCIM"> scim<br />
-</a> .</p>
+          <p>倒不是我在忙编辑部里的事情。是编辑部自己在忙自己的事情。</p>
+<p>让张磊接班，截至现在仍旧是个明智的选择。希望他能懂得怎样分配任务，不使自己很忙。给他谈话也谈论了很多关于做人做事方面的东西。至于那些东西是否正确要看他日后的<br />
+实践了。我说编辑部不光要做自己应该做的本行，也要做专业方面的事情。我希望编辑部里的人专业都是过关的，而不是说只会操作word,ps,flash什么东东。编程<br />
+培训之类的事情，我们也要做。而且培训自己的部下要比科技部做的还要好。张磊也希望能借助培训来提高自己的威望。我曰善。于是一拍即合。</p>
+<p>回寝的时候有给洪莲讲了些事情。希望她在大学能记住这几点：不要完全指望老师，努力使自己成为优秀的人，不要copy。我希望她做到。至于谈完后是否她还记得，只有她<br />
+自己清楚。这小孩，上机也太不勤快了。叹口气说，女生都是这样。。。</p>
+<p>第二天编辑部培训。张磊竟然借到了院里的会议室来培训。孺子可教。（我从来没有借过，虽然书记时常对我说能借）8点张磊打来电话要我过去合影。我说实验课还要签到，要<br />
+不下次。在qq上何雯也说要去合影。恰好刚刚签完。再给张磊打个电话，还好没有结束。于是急急忙忙的赶到会议室。发现鲁丹也在。编辑部大家庭算是齐了。合影耗时30秒<br />
+。30秒后，又急急忙忙的赶会实验室。前后总耗时3分钟。还好老师没有抽查签到情况。</p>
+<p>希望这届编辑部比我这届做的要好。希望我12月份再回来的时候，他们能给我个很好的交待。</p>
 
       
     </div>
@@ -746,7 +1834,7 @@ in就可以使用了。我使用的是9.04的版本，旧版本的稍有不同�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/10/4650905/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/19/1616004/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -764,7 +1852,7 @@ in就可以使用了。我使用的是9.04的版本，旧版本的稍有不同�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/10/4650905/" class="post-title-link" itemprop="url">WebSQL查询www</a>
+          <a href="/2007/05/19/1616004/" class="post-title-link" itemprop="url">从程序员做起，但是有谁想当一辈子程序员？</a>
         </h2>
 
         <div class="post-meta-container">
@@ -775,14 +1863,14 @@ in就可以使用了。我使用的是9.04的版本，旧版本的稍有不同�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-10-10 16:24:00" itemprop="dateCreated datePublished" datetime="2009-10-10T16:24:00+08:00">2009-10-10</time>
+      <time title="Created: 2007-05-19 09:38:00" itemprop="dateCreated datePublished" datetime="2007-05-19T09:38:00+08:00">2007-05-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -792,7 +1880,7 @@ in就可以使用了。我使用的是9.04的版本，旧版本的稍有不同�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>231</span>
+      <span>527</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -810,10 +1898,22 @@ in就可以使用了。我使用的是9.04的版本，旧版本的稍有不同�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>本来想自己写个语言来查找web中的某些类似的信息。比如价格，程序啥的。因为一般这样的信息都会在某些类似的地方重复出现。开始使用查找language craw<br />
-l等关键字，结果啥都没有找到。后来想web可以类比为网状型数据库，而网站内的页面中的标签可以类比为层次型数据库。然后准备看看有没有层次型数据库的查询语言，准<br />
-备改进为web搜索的语言。结果搜到了WebQL，看了他的论文后，又找到了webSQL这东西。准备小小研究一下。</p>
-<p>当自己有个想法的时候，总是有人提前想到了…</p>
+          <p>金山的kingsoft college准备在湖南大学招人。</p>
+<p>沈家政做了个报告：</p>
+<p>值得做笔记的地方：</p>
+<p>软件要注重可用，性能，可靠，国际化</p>
+<p>成为编程高手要多看，多试，多实践。</p>
+<p>雷军希望程序员具有的品质：热爱编程 ，追求完美，个性执着。</p>
+<p>金山训练营希望达到的目标：让进去的人都能写出规范漂亮的代码，夯实基础，熟悉工具，乐于合作。</p>
+<p>然后是大家熟知的两句话：细节体现人品，细节决定成败。</p>
+<p>什么是好的程序员（做人方面）自觉，职业，习惯，快乐。</p>
+<p>什么是好的程序（做事方面）</p>
+<p>就我感觉，金山训练营是个培训程序员的地方。它对于数据结构，算法的要求并不是太高，认为应该向印度人一样写程序。</p>
+<p>我们是应该向印度人那样代码规范化，但是我总是感觉中国人要有自己的一条路。在创新的基础上规范化。代码为什么不能有些自己的个性？否则真的让人感觉那是群编代码的机<br />
+器。</p>
+<p>至于培训最基础的东西，我没有任何异议。只是如果一个人只是把自己定位于程序员。未免让人感觉缺乏追求。当然要看把自己定位于做个什么样的程序员，有些程序员的确是令<br />
+我们倏然起敬的人。自己和福特.甘不太一样，不会去到说：我来就是为了服从您的命令。所以也不认为自己能有福特.甘那样的成就。</p>
+<p>到底当个什么还是看自己。没有谁规定必须在软件这行里成为什么才能算功德圆满。</p>
 
       
     </div>
@@ -840,7 +1940,7 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/07/4639937/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/18/1615305/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -858,7 +1958,7 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/07/4639937/" class="post-title-link" itemprop="url">X61拆机</a>
+          <a href="/2007/05/18/1615305/" class="post-title-link" itemprop="url">IBM笔试题几点注意</a>
         </h2>
 
         <div class="post-meta-container">
@@ -869,14 +1969,14 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-10-07 18:34:00" itemprop="dateCreated datePublished" datetime="2009-10-07T18:34:00+08:00">2009-10-07</time>
+      <time title="Created: 2007-05-18 16:20:00" itemprop="dateCreated datePublished" datetime="2007-05-18T16:20:00+08:00">2007-05-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -886,7 +1986,7 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>576</span>
+      <span>560</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -904,25 +2004,25 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>其实我非常不喜欢动机器。不过每次让别人修理自己的x61,总有一种被宰的感觉。所以索性在旁边店里花9.9买了一系列拆机螺丝刀。开始的自己的拆机体验。因为x61<br />
-是非常的难拆的机器。今天第一次拆加清理大概花了三个小时的时间。不过有几点要牢记：</p>
-<p>1.找两个小盒，装外部螺丝和内部螺丝</p>
-<p>2.拿张纸记下刚才拆过的线和接口的对应关系(哪种颜色的线对哪个接口)</p>
-<p>3.小心的拆，如果一个方向拆不下来，就多试几个方向。慢慢的不会伤到本本。</p>
-<p>4.注意屏线(传说经常有人拆的时候会毁掉它)</p>
-<p>5.安装回去的装键盘后先测试一下。这时要将键盘盖到主板上。这样可以防止因手上的静电而烧掉主板。</p>
-<p>拆机顺序：</p>
-<p>1.卸掉底部所有螺丝</p>
-<p>2.上推后抬起键盘，拆掉和主板的连接。拆掉屏线和主板的连接。</p>
-<p>3.拆掉外壳，这里要小心。先抬前再抬后。</p>
-<p>4.先卸掉硬盘旁的外壳再卸掉硬盘。</p>
-<p>5.拔掉各种插线。然后取出主板。</p>
-<p>上个最后的拆机图：</p>
-<p>![](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA5MTAwNy8=">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/20091007/<i class="fa fa-external-link-alt"></i></span><br />
-20091007.jpg)</p>
-<p>安装回去的图：</p>
-<p>![](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA5MTAwNy8=">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/20091007/<i class="fa fa-external-link-alt"></i></span><br />
-20091007(001).jpg)</p>
+          <p>有一题：</p>
+<p>对构造方法的叙述正确的是</p>
+<p>A 类不能继承父类的构造符</p>
+<p>B子类不能重载父类的构造符</p>
+<p>c类中必须定义自己的构造符</p>
+<p>以上的各个答案都是错的。B选项我一直不太肯定。改天做个实验验证下。</p>
+<p>在java中父类对象不能当成其某个子类的对象。V</p>
+<p>java程序中javaapplet是可以解析器解析运行的独立程序。X</p>
+<p>连接两个字符串使用concat()方法。（自己从来都没有用过这个东东。都是用’+'或者append()）</p>
+<p>注意print()和println()。做的时候竟然看错…</p>
+<p>注意文件输入输出流</p>
+<p>注意异常类的写法。</p>
+<p>事务的特性：原子，一致，持久，隔离</p>
+<p>事务的原子性指的是，事务中包含的程序作为数据库的逻辑工作单位，它所做的对数据修改操作要么全部执行，要么完全不执行。这种特性称为原子性。</p>
+<p>事务的一致性指的是在一个事务执行之前和执行之后数据库都必须处于一致性状态。这种特性称为事务的一致性。假如数据库的状态满足所有的完整性约束，就说该数据库是一致<br />
+的。<br />
+持久性意味着当系统或介质发生故障时，确保已提交事务的更新不能丢失。即一旦一个事务提交，DBMS保证它对数据库中数据的改变应该是永久性的，耐得住任何系统故障。<br />
+持久性通过数据库备份和恢复来保证。<br />
+分离性指并发的事务是相互隔离的。即一个事务内部的操作及正在操作的数据必须封锁起来，不被其它企图进行修改的事务看到。</p>
 
       
     </div>
@@ -949,7 +2049,7 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/02/4628162/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/17/1612814/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -967,7 +2067,7 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/02/4628162/" class="post-title-link" itemprop="url">C++继续学习 Virtual Destruct Function (虚析构函数)</a>
+          <a href="/2007/05/17/1612814/" class="post-title-link" itemprop="url">从湖南大学可笑的四星比赛投票看公平</a>
         </h2>
 
         <div class="post-meta-container">
@@ -978,14 +2078,14 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-10-02 22:21:00" itemprop="dateCreated datePublished" datetime="2009-10-02T22:21:00+08:00">2009-10-02</time>
+      <time title="Created: 2007-05-17 10:38:00" itemprop="dateCreated datePublished" datetime="2007-05-17T10:38:00+08:00">2007-05-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -995,7 +2095,7 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>705</span>
+      <span>535</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1013,18 +2113,17 @@ l等关键字，结果啥都没有找到。后来想web可以类比为网状型�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>一般类是不写成虚析构函数的。除非你要使用多态的性质。对于一个没有多态性质的类结构而言。子类析构可能会导致父类析构。</p>
-<p>// TestRef.cpp : Defines the entry point for the console application. //<br />
-#include <iostream> #include <string> using namespace std; class A {<br />
-protected: string _name; public: A(string name):_name(name) { } ~A(){cout &lt;&lt;<br />
-_name &lt;&lt; “destruct A” &lt;&lt;endl;} }; class B: public A { public: B(string<br />
-name):A(name){} ~B(){cout &lt;&lt; _name &lt;&lt; “destruct B” &lt;&lt;endl;} }; int main(int<br />
-argc, char* argv[]) { // 这里bb析构时不光会调用<sub>B()也会调用</sub>A() // 因为这里没有使用到多态的性质。 B bb(&quot;I<br />
-am b &quot;); A aa(&quot;I am a &quot;); //以下两行函数使用到了多态性质。 A* x = new B(&quot;I am x &quot;); delete x;<br />
-return 0; }</p>
-<p>main中最下几行使用到多态性质，所以你运行上面的代码仅仅调用了~A()。因为A中的析构函数并不是virtual类型的。如果你将A中的析构函数前加上virt<br />
-ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
-<p>析构虚函数和其他的虚函数的不一致的地方在于它不再参照相同的函数签名，而仅仅是每个类中唯一的析构函数。</p>
+          <p>本校有个4星大赛，还是网上投票。本来就认为网上投票不科学。黄韵还问我怎样做是不是科学。我就问他们怎么判断同一个人投多了票的？黄韵就问了那边的负责人。然后告诉<br />
+我是用ip判断的。当初也没有什么感觉。想想ip就ip吧。与我也没有太多关系。反正自己也没有参加，而且自己正在应付考试，也没有闲工夫理睬这些事情。</p>
+<p>考完了，回头想想这样做其实一点都没有体现什么公平。</p>
+<p>一：院系人多的分的内部ip就多。</p>
+<p>二：用ip判断，有些人的ip使用的是共同ip，经过地址转换进行的通信。这样使用ip进行判断当然行不通。</p>
+<p>三：一个人可以换用多个ip。负责人并没有告诉我ip判断到底判断是ip包中的目的ip，还是加载在应用层协议中的ip。前者使用七七八八的工具可以改掉。后者也可以<br />
+通过工具把内存中的ip重写。这样刷点击率，也是可以的。</p>
+<p>不管怎样，这种做法对于稍微懂电脑的人来说，刷点击是小菜一碟。当初做这个系统人就没有考虑到这点吗？至少要公平的化也要使用唯一的MAC地址嘛。使用ip判断…<br />
+…唉！当然感觉上最公平的方法还是使用手机投票。当然对于少数及其有钱的人来说，这样做是行不通的。当然有钱的人也不会来读湖大，估计早就出国了。</p>
+<p>四星网上投票地址：</p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5jaG5nb2QuY29tLzR4ZHMvdG91LmFzcA=="> http://www.chngod.com/4xds/tou.asp <i class="fa fa-external-link-alt"></i></span></p>
 
       
     </div>
@@ -1051,7 +2150,7 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/30/4619823/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/17/1612748/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1069,7 +2168,7 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/09/30/4619823/" class="post-title-link" itemprop="url">国庆</a>
+          <a href="/2007/05/17/1612748/" class="post-title-link" itemprop="url">实习机会</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1080,14 +2179,14 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-09-30 08:57:00" itemprop="dateCreated datePublished" datetime="2009-09-30T08:57:00+08:00">2009-09-30</time>
+      <time title="Created: 2007-05-17 10:18:00" itemprop="dateCreated datePublished" datetime="2007-05-17T10:18:00+08:00">2007-05-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -1097,7 +2196,7 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>30</span>
+      <span>255</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1115,8 +2214,12 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>国家要过六十岁生日，我blog啥时候能到60万呢？</p>
-<p>白日梦中…</p>
+          <p>本以为搭上了微软的末班车，没有想到竟然是早班车。</p>
+<p>现在可好，IBM笔试 在院里考了第二，却不能被院里推荐。怕占名额。google的实习推荐又来了。结果怕占名额又不能去了。这年头想多经历些磨练，却常常不能得到<br />
+满足。明天金山的又来了…想哭！</p>
+<p>记起微软的一道面试题，每层楼都有一颗钻石，乘电梯上楼。每层都可以开门看，但是只能在一层取钻石，问怎样取法。（电梯从底到顶只一次）这是博弈论的题目。最好的取法<br />
+是前三分之一的层看钻石，中三分之一比钻石，后三分之一取钻石。</p>
+<p>当初实习的时候，就没有这样做。现在几乎全部的面试机会都没有了。</p>
 
       
     </div>
@@ -1143,7 +2246,7 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/29/4617514/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/14/1608915/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1161,7 +2264,7 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/09/29/4617514/" class="post-title-link" itemprop="url">C++继续学习 Error C2243</a>
+          <a href="/2007/05/14/1608915/" class="post-title-link" itemprop="url">Tcp/ip Linux编程初步</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1172,14 +2275,14 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-09-29 15:35:00" itemprop="dateCreated datePublished" datetime="2009-09-29T15:35:00+08:00">2009-09-29</time>
+      <time title="Created: 2007-05-14 20:38:00" itemprop="dateCreated datePublished" datetime="2007-05-14T20:38:00+08:00">2007-05-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-08 16:59:15" itemprop="dateModified" datetime="2023-10-08T16:59:15+08:00">2023-10-08</time>
     </span>
 
   
@@ -1189,14 +2292,14 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>153</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -1207,10 +2310,35 @@ ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>error C2243: ‘type cast’ : conversion from “XX” to “OO”  exists, but is<br />
-inaccessible</p>
-<p>这是为啥米？你应该看看那个XX的定义，是否是class XX : public<br />
-OO,如果没有写public,或者写成protected,或者是private都不能进行转换。</p>
+          <p>Server端</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/types.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/socket.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;netdb.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;netinet/in.h&gt;</span>  </span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="type">int</span> ssock;<span class="comment">//主套接字  </span></span><br><span class="line"><span class="type">char</span> *s = <span class="string">&quot;X&quot;</span>;  </span><br><span class="line"><span class="type">char</span> *r;  </span><br><span class="line"><span class="type">int</span> port = <span class="number">3490</span>;<span class="comment">//本机要邦定的端口，通过此端口  </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sin</span>;</span><span class="comment">//本机地址  </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">pin</span>;</span><span class="comment">//客户端（远端）地址  </span></span><br><span class="line"><span class="type">int</span> address_size;  </span><br><span class="line"><span class="type">int</span> tempssock;<span class="comment">//实际与客户端交互套接字  </span></span><br><span class="line"><span class="type">int</span> size = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">sin</span>.sin_family = AF_INET;  </span><br><span class="line"><span class="built_in">sin</span>.sin_addr.s_addr = INADDR_ANY;  </span><br><span class="line"><span class="built_in">sin</span>.sin_port = htons(port);  </span><br><span class="line">bind(ssock,(<span class="keyword">struct</span> sockaddr *)&amp;<span class="built_in">sin</span>,<span class="keyword">sizeof</span>(<span class="built_in">sin</span>));  </span><br><span class="line">listen(ssock,<span class="number">5</span>);  </span><br><span class="line">ssock = socket(PF_INET,SOCK_STREAM,<span class="number">0</span>);  </span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)  </span><br><span class="line">&#123;  </span><br><span class="line">address_size = <span class="keyword">sizeof</span>(pin);  </span><br><span class="line">tempssock = accept(ssock,(<span class="keyword">struct</span> sockaddr*)&amp;pin,&amp;address_size);  </span><br><span class="line"><span class="keyword">while</span>(recv(tempssock,r,size,<span class="number">0</span>) &gt; <span class="number">0</span>)  </span><br><span class="line">send(tempssock,s,<span class="built_in">strlen</span>(s),<span class="number">0</span>);  </span><br><span class="line">  </span><br><span class="line">close(tempssock);  </span><br><span class="line"><span class="keyword">break</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">close(ssock);  </span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>#include&lt;sys/types.h&gt;这个头文件中包含了struct sockaddr_in<br />
+#include&lt;sys/socket.h&gt;包含了socket的一些基础的api函数。</p>
+<p>sin.sin_family = AF_INET;<br />
+sin.sin_addr.s_addr = INADDR_ANY;<br />
+sin.sin_port = htons(port);<br />
+这三句合起来是地址族是AF_INET，ip地址是本机的地址。使用INADDR_ANY的好处是如果本机有多个ip地址，它都能成功的访问。而不需要指定ip。然后<br />
+是要邦定的端口。htons()是把本机的short型转换成网络的short型。</p>
+<p>bind(ssock,(struct sockaddr *)&amp;sin,sizeof(sin));邦定端口，需要套接字，本机地址，地址的大小</p>
+<p>listen(ssock,5);置为被动套接字，侦听端口。</p>
+<p>tempssock = accept(ssock,(struct sockaddr*)&amp;pin,&amp;address_size);//accept需要3个参数，<br />
+第一个是主套接字，第二个是客户端地址，和客户端地址大小。当服务器端接到用户的连接请求是，将连接请求中的地址信息填充到pin里。并且返回一个与客户端交互的套接<br />
+字。所以本机的地址要写明，而远端的地址自动填充就可以了。</p>
+<p>recv(tempssock,r,size,0)接受数据，第一为与客户端连接套接字，第二个为接受的char数组（或者认为是字符串），第3个是那个字符串的大小<br />
+或长度。第四个是由需要带外控制，一般置为0。这个函数如果有数据接受到会返回接受的字符串长度，如果客户端shutdown或close了（后面还会介绍shutd<br />
+own函数），就会返回0，出错及其它会返回－1。</p>
+<p>send(tempssock,s,strlen(s),0);和recv几乎一样，s为发送的字符串。</p>
+<p>close(tempssock);关闭与客户端连接的套接字，这里意味这交互已经结束。这里的关闭为引用计数。如果多个进程同时引用了这一个socket，那么每次<br />
+就减一。直到最后一次才真正的关闭。</p>
+<p>这里再介绍一个shutdown()函数，第一个参数为套接字，第二个为命令码。第二个参数为0，不允许输入，1不允许输出，2双方关闭。<br />
+我们做的Socket编程一般是unix的经典文件读写方式（open,read,write,close）。</p>
+<p>创建服务器（循环面向连接）</p>
+<p>1。创建套接字并邦定熟知端口，</p>
+<p>2。套接字置为被动，侦听端口</p>
+<p>3。循环接受来自下一个客户端的连接请求。并  创建新的套接字</p>
+<p>4。处理客户端的请求</p>
+<p>5关闭连接，跳转到第3步。</p>
+<p>socket在上面看来是个int型，但是实质上socket是一个结构体包含远端地址信息，本机地址信息。而我们使用的只是socket结构体数组的一个下标.</p>
 
       
     </div>
@@ -1237,7 +2365,7 @@ OO,如果没有写public,或者写成protected,或者是private都不能进行�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/28/4611598/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/14/1608857/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1255,7 +2383,7 @@ OO,如果没有写public,或者写成protected,或者是private都不能进行�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/09/28/4611598/" class="post-title-link" itemprop="url">Google Searchwiki</a>
+          <a href="/2007/05/14/1608857/" class="post-title-link" itemprop="url">编辑部开会换届</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1266,14 +2394,14 @@ OO,如果没有写public,或者写成protected,或者是private都不能进行�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2009-09-28 22:15:00" itemprop="dateCreated datePublished" datetime="2009-09-28T22:15:00+08:00">2009-09-28</time>
+      <time title="Created: 2007-05-14 20:06:00" itemprop="dateCreated datePublished" datetime="2007-05-14T20:06:00+08:00">2007-05-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
     </span>
 
   
@@ -1283,7 +2411,7 @@ OO,如果没有写public,或者写成protected,或者是private都不能进行�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>34</span>
+      <span>582</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1301,8 +2429,119 @@ OO,如果没有写public,或者写成protected,或者是private都不能进行�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>看了下简介，得出一条结论：人民的力量是无穷的！！！</p>
-<p>貌似很有政治觉悟~</p>
+          <p>星期六晚上开了一个小会。关于下届工作的事情。</p>
+<p>开始时我对加入编辑部的人表示祝贺。然后就交由下届部长讲话。张磊很惊讶的看着我（就讲完了？）。 我说是呀我就讲这些。剩下的你讲吧。然后就是各个成员自我介绍，再<br />
+后就是各个组的具体分工。自我介绍非常简单，因为大家之前都见过几次面。所以总会有人这样说：大家都认识我吧…确实，编辑部是老成员留下最多的部门。工作依<br />
+旧是那些，不过有宣传组和摄影组的加入，每一个组都要相互合作。这样的组织真的很负责。多加一个部门整体就要增加n的工作量。这是留给大一们的挑战.下届就靠他们了。<br />
+自己真的有些不放心。我简单强调了要把培训做好，编辑部出去的人不要只是懂编辑，ps之类的。专业一定要学好。不过看来这个想法挺难实现的。毕竟他们都还是大一，谁给<br />
+谁培训…鲁丹把宣传组的工作重点和记者组的工作重点要交代了一下，然后开玩笑的要苟旭博采访我，还故意强调问些私人问题。下面的人便笑个不停。或许我反应慢<br />
+，到现在还没有搞懂他们为啥笑…这年头思维正常的人总是被多数思维不正常的人搞晕。最后我让他们每人问一个问题，我说过去从来都没有人主动问我问题，都是<br />
+我亲自问部下。杨之旭接话说那是因为学长很恐怖，于是下面又是一阵哄笑。很可惜，笑过后依然没有几个人问。现在都不敢发表自己的观点。不过很快会好的。</p>
+<p>编辑部的故事让杨之旭整理，恐怕又象镜中花水中月一样。这家伙嘴上说的比做的多…</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/13/1607306/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/05/13/1607306/" class="post-title-link" itemprop="url">今日吃得很饱</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-05-13 20:24:00" itemprop="dateCreated datePublished" datetime="2007-05-13T20:24:00+08:00">2007-05-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>890</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>去刘爷爷家又吃了顿大餐。青蛙很辣。。不过呆在湖南这么多年也习惯了。还有龙虾，自己吃了两三个。后来刘爷爷对我说不要考公务员。…我说这东东自己根本没有想过。<br />
+其实感觉自己也不太懂得政治斗争。在学生会工作了一年，虽然斗争不是很激励，但是也体会到点点滴滴。自己在政治斗争上没有点才能。编辑部成立一年，最后却和宣传部合并<br />
+了。自己在学生会带出来的几个人，不是走掉了，就是只在部内做事情。编辑部留下的人是很多。但是掌握权利的却没有几个，就有一个部长。虽然书记同意我让部长带着各个组<br />
+长同时来开会。但是感觉他们这些组长的说话分量也不会很大。 就像中国在联合国里的情况差不多。虽然席位很多，但是却都是投弃权票。大概我的手下们也是如此。</p>
+<p>政治斗争的事情还是放弃吧。刘爷爷问我想不想出国。我说没有想过。自己感觉以后可能会出去看看。不过对那条路充满这迷惑。英语没有学扎实。要下些功夫了。</p>
+<p>刘爷爷说研究生是要读的。我也是这么认为。不过先去微软实习再说吧。如果能保到外校，就读研，要不就工作在来考研。目标已定，只是选择路的问题了。近路还是远路，自己<br />
+还不能预见。毕竟自己的视野太狭窄了。</p>
+<p>忽然想起来给鲁丹说的那句话：过去看世界，到处都是牛；现在看来，其实还有很多草。不知道她是否理解，文学书看得也挺多，这话应该还是好理解的吧。不过谁知道呢？反应<br />
+有些迟钝的家伙…</p>
+<p>前几天，学生会换届，大家又吃了顿饭。本来自己已经吃过晚饭了。有要吃。。不过菜倒是好吃，省得老妈整天说我要去吃点好的。吃就吃吧。武大姐有事没事的说我走狗屎运。<br />
+听得我耳朵都腻了，最后回应她：有本事自己也走嘛！现在想想最好的回答方式是：运气也是实力的一部分。——凯。看来自己真的还不适合做政治工作。快吃饱的时候，童梓对<br />
+我说：吃完后再请你吃那个。我心想哪个呀？我就说我都已经吃饱了，不想吃了。她的室友马上说：生日蛋糕，她过20岁生日。过了今天就没有20岁蛋糕吃了。唉！反应迟钝<br />
+…不过最后还是吃了。我实在是想给我寝的小强们吃，不过不辜负好心，还是吃了。。。。好饱。。。。</p>
+<p>后来问问张波才知道，湖南这边20岁的生日是很重要的。但是…那个童梓是湖北的…不是这么快就入乡随俗了吧。</p>
 
       
     </div>
@@ -1322,7 +2561,7 @@ OO,如果没有写public,或者写成protected,或者是private都不能进行�
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/34/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/36/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/34/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/36/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1352,7 +2591,7 @@ OO,如果没有写public,或者写成protected,或者是private都不能进行�
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">23:58</span>
+    <span title="Reading time total">24:10</span>
   </span>
 </div>
 

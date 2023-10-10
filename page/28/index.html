@@ -172,12 +172,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">739</span>
+        <span class="site-state-item-count">750</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/09/2010-04-09-some-bugs-in-programing/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/03/11/2170908/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/09/2010-04-09-some-bugs-in-programing/" class="post-title-link" itemprop="url">Some Bugs in Programing</a>
+          <a href="/2008/03/11/2170908/" class="post-title-link" itemprop="url">给作业加个数字签名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,23 +243,844 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-04-09 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-09T00:00:00+08:00">2010-04-09</time>
+      <time title="Created: 2008-03-11 20:15:00" itemprop="dateCreated datePublished" datetime="2008-03-11T20:15:00+08:00">2008-03-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:53:52" itemprop="dateModified" datetime="2023-10-06T22:53:52+08:00">2023-10-06</time>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>当了数据结构的助教，还要修改作业。在学生们的作业本上留下了对错号。但是没有写其他的东西。为了防止有学生来冒充我的笔迹来自行打对错号，然后声称没有给分这种现象<br />
+的发生。我花了一个小时做了一个数字签名。因为我的笔迹很烂，很容易模仿。</p>
+<p>代码如下：基本原理使用的Hash散列。所以不知道签名数据的人，绝对可能从自己作业的签名中获取签名数据，自然也不可能去冒充一个签名。</p>
+<p>我使用的mysql的散列函数</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &quot;  stdafx.h  &quot;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &lt; iostream  &gt;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &lt; string  &gt;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+using  namespace  std;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+int  iHTLen;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
+mySql hash<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+unsigned  int  Hash (  const  char  *  keys,  const  int  len)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+const  char  *  key  =  keys;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+//  Hash function for character keys<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+int  length  =  len;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+int  nr  =  1  , nr2  =  4  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+while  (length  --  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+nr  ^=  (((nr  &amp; 63  )  +  nr2)  *  (  *  key  ++  ))  +  (nr  &lt;&lt; 8  );<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+nr2  +=  3  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  ((unsigned  int  ) nr)  %  iHTLen;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
+just Test the consequence are correct or not<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+bool  TestHashValue(  const  unsigned  int  hashValue[],  int  len)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  i  =  0  ; i  &lt; len; i  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  j  =  i  +  1  ; j  &lt; len; j  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (hashValue[i]  ==  hashValue[j])<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  false  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  true  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
+guarantee the input values are not the same<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+bool  TestPreValue(  const  string  students[],  int  len)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  i  =  0  ; i  &lt; len; i  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  j  =  i  +  1  ; j  &lt; len; j  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (students[i]  ==  students[j])<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  false  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  true  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+unsigned  int  Hash(  string  studentName,  string  date,  string  signer)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+int  len  =  studentName.length()  +  date.length()  +  signer.length();<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+char  *  sign  =  new  char  [len];<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+memset(sign,  0  ,len);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+strcpy(sign,studentName.c_str());<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+strcat(sign,date.c_str());<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+strcat(sign,signer.c_str());<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  Hash(sign,len);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+int  _tmain(  int  argc, _TCHAR  *  argv[])<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+int  num  =  0  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cin  &gt;&gt; num;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+string  *  students  =  new  string  [num];<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+string  signName;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+string  date;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  i  =  0  ; i  &lt; num; i  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cin  &gt;&gt; students[i];<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cin  &gt;&gt; date;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cin  &gt;&gt; signName;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cin  &gt;&gt; iHTLen;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+bool  isGoon  =  TestPreValue(students,num);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (  !  isGoon)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  students’ names are the same?  &quot;  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+exit(  2  );<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+unsigned  int  *  signNum  =  new  unsigned  int  [num];<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  i  =  0  ; i  &lt; num; i  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+signNum[i]  =  Hash(students[i],signName,date);<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+bool  isSuccess  =  TestHashValue(signNum,num);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (  !  isSuccess)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  please change the last value and run again!  &quot;  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+exit(  2  );<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  i  =  0  ; i  &lt; num; i  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; students[i]  &lt;&lt; &quot;  &quot;  &lt;&lt; signNum[i]  &lt;&lt; endl;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  0  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }</p>
+<p>幸好没有重名的学生。(<em><sup>__</sup></em>) 嘻嘻……</p>
+<p>以上的代码使用VS2005的编译器。不过数据不方便透露，所以大家看懂代码可以自己输入自己的签名数据。大家不必在意Hash函数是如何去写的。因为我也不清楚为什<br />
+么这样写。</p>
+<p>以后改作业可以省心了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/03/10/2164540/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/03/10/2164540/" class="post-title-link" itemprop="url">去旅游？</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-03-10 19:35:00" itemprop="dateCreated datePublished" datetime="2008-03-10T19:35:00+08:00">2008-03-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
+        <i class="far fa-calendar-check"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>521</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>请点点吃饭。气氛依旧很不愉快，发现从来没有和她吃饭愉快的时候。 期间提到想去旅游，问我支持不支持。点点给我的每一个想法都很新奇，远远超出我的想象空间。旅游是<br />
+个好事情可以增长眼界，锻炼胆识。不过要是一个人去，我想还不如躺在自己的床上睡觉舒服。发现自己不喜欢旅游。因为很累，而且要去看风景识人文，为何不在互联网上取得<br />
+呢？因为自己每到一个地方，总是发现还没有网上的照片好看。比如说天津。只是感觉校园很大，而且有种很“自卑”的感觉。她还说不想去实习。问了为啥，答曰害怕。仔细想<br />
+想，这些想法间矛盾很多。一个人去旅游是为了锻炼胆识，而不去实习却因为害怕孤独。真的想不通。她很希望得到我的支持。我说可以，但是你要给我拿出计划和方案出来。只<br />
+有个想法，估计谁都不会同意的。可恰恰相反，她的同学和家人竟然都欣然同意。看来是自己的想法太不合群了。于是就在郁郁中结束了吃饭这个活动。</p>
+<p>知难行易，知易行难。不清楚这句话对不对，也不清楚是不是自己书读的太多，反而束缚了自己的手脚。的确有很多想法和自己想法不同，就会招到自己的排挤。但是自己从没有<br />
+强迫别人改变他的想法。不过我清楚的知道：做一件事情，如果没有计划和方案，还能顺利的进行，那真的是上天眷顾！希望上天多多眷顾我一下…</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/03/09/2159816/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/03/09/2159816/" class="post-title-link" itemprop="url">死亡之旅（摘要）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-03-09 15:49:00" itemprop="dateCreated datePublished" datetime="2008-03-09T15:49:00+08:00">2008-03-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>374</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>死亡之旅即为那些时间要求提高50％，预算减少50％，人员减少50%，功能增加50％的项目。按常规来说根本达不成目标的项目<br />
+小型的项目成功的概率最大，大型项目就是真的死亡之旅了。</p>
+<p>产生的原因：人人都是傻瓜。只是在不同的时间对不同的事物成为傻瓜。<br />
+不要对项目做出乐观的估计。<br />
+刚刚起步的公司容易换海军陆战队综合症</p>
+<p>成为死亡之旅的原因并不在于技术，而在于荒谬的进度。</p>
+<p>项目就像场婚姻，开始时，我们通常天真而充满希望。但随着现实的慢慢介入，我们不得不重新调整自己对这种关系的期望.</p>
+<p>以为无比的自信，死亡之旅项目团队才能够完成传统项目团队无能为力的任务。<br />
+年轻人不会放弃的乐观，精力以及专注于某一问题的能力。。。还有他们的天真。。。</p>
+<p>向团队授权。</p>
+<p>加入死亡之旅，要在其中一个方面（功能，成本，时间）上有机动性。并承认是死亡之旅。</p>
+<p>没有爬过富士山的人是傻瓜，爬过两次富士山的人更傻。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/03/07/2157036/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/03/07/2157036/" class="post-title-link" itemprop="url">湖大校园网（爆笑）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-03-07 18:13:00" itemprop="dateCreated datePublished" datetime="2008-03-07T18:13:00+08:00">2008-03-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>479</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>朋友！你想戒掉网瘾吗？你想从沉迷的网游世界挣脱吗？</p>
+<p>如果你想，那么，装湖大校园网吧！</p>
+<p>你的孩子沉迷网游无法认真学习吗？装湖大校园网吧！</p>
+<p>湖大承诺，24小时质量保证让你的孩子无法正常游戏。强大的技术支持，保证让你的孩子10分钟掉一次线，练级、副本、任务、PK，一个都别想要。绝对让你体会宽带的价<br />
+格，拨号的享受。</p>
+<p>下面是对用户王同学的调查：</p>
+<p>问：你觉得湖大校园网好吗？</p>
+<p>王：太好了！</p>
+<p>问：为什么这么觉得呢？</p>
+<p>王：现在我的已经从网游中彻底摆脱了。</p>
+<p>问：效果这么好？</p>
+<p>王：是啊，现在我一看到电脑就会吐，一看见网游的广告就会休克。</p>
+<p>问：哇……了不起啊！</p>
+<p>王：是啊，是啊！湖大校园网让我从虚拟世界走了出来。不仅如此，我还越来越喜欢和家长交流。</p>
+<p>问：为什么呢？</p>
+<p>王：说话不会掉线。不会说着说着人就消失，让我很有存在感。</p>
+<p>朋友！看到这里你还犹豫什么？拨打电话给我们吧！湖大校园网，真正为用户着想！我们深知免费咨询会伤害用户的消费心理，让您的自尊受到伤害！所以，我们顶住社会压力，<br />
+开放收费电话咨询！为了满足你奢侈的消费欲望，我们一直在努力！</p>
+<p>湖大的承诺：没有最慢，只有更慢！</p>
+<p>湖大的保证：没有掉线，只有无法连接</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/03/07/2155666/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/03/07/2155666/" class="post-title-link" itemprop="url">向全院本科生演讲</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-03-07 09:34:00" itemprop="dateCreated datePublished" datetime="2008-03-07T09:34:00+08:00">2008-03-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>498</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>准备了10页ppt，最后讲了10分钟。本来和红亮约好每人只讲10分钟，结果他没有把握好时间，花了20分钟讲了5页ppt。我上去前就知道大家都想离开了，其实我<br />
+也很想离开。所以加快了演讲速度，10页只讲了10分钟。下台之后，点点说：你上去的时候掌声稀稀拉拉，下来的时候掌声很大。看来我还是蛮得人心的。同寝的人也说我属<br />
+于幽默搞笑型的，上去做的演讲结果全院都笑了。我自己感觉整个过程并不理想，有些该讲的也遗忘了。但是我还是非常喜欢自己的结尾，特别是那5句英文：Be the<br />
+best, hold on your dream, catch your chance, record your steps, and everyone<br />
+can cook.我在软件学院接触了很多人和事，了解了很多并不喜欢这个专业的学生或者在这个专业里学得并不好的学生。我知道他们也有自己的梦想，只不过那个梦想并<br />
+不是在软件行业成就一番事业。他们要不放弃梦想，要不坚持下去。但是如果犹豫不绝，大学4年就会碌碌无为的过去了。所以为了过去或者现在的梦想，抓住点滴的机会才是最<br />
+重要的。</p>
+<p>虽然我不清楚机会是什么，但是我清楚地知道有些事情如果现在不做，以后就再也没有做的可能了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/03/01/2137889/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/03/01/2137889/" class="post-title-link" itemprop="url">天津一游</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-03-01 20:55:00" itemprop="dateCreated datePublished" datetime="2008-03-01T20:55:00+08:00">2008-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>515</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>跟着叔去天津。途径德州扒鸡总店，吃了次正宗的扒鸡。口感不错，比真空包装的好吃多了。下午4点左右到了天津劝业场。然后跟着大姑和张阿姨昏天暗地的逛各个商场。那个<br />
+感觉真的累！晚上吃了顿海鲜。清蒸蝶鱼头和香辣豆腐很好吃。然后住进机场宾馆。</p>
+<p>第二天约好大学同学去逛南开和天津两个大学。定的地点是劝业场的那个铜板中心。结果他竟然不清楚那个铜板在哪里。只知道那个铜马车。见到我之后才知道，那个铜板在地上<br />
+。而且铜板还是我自己取的名字。之后去了趟天津和南开，这两个大学距离非常近，类似于湖大宿舍和湖师宿舍。而且天大和南开非常像个学校。看了之后叹了口气，还是人家像<br />
+个学校。我都不好意思在人家校口照相留念。太自卑了，果真学到了“望麓自卑”的精华。刹那间，突然悟道：“从湖大出来，去哪个名校都自卑。能不‘自卑’吗？”只有去吃<br />
+了旁边的狗不理分店。30元速冻狗不理包子（8个），心里暗暗喊贵。不过钱不是我出，也就吃的心安理得。晚上，大姑和叔想喊着我的那个室友去吃饭。还是室友和我想法一<br />
+致，拒绝了。因为在他的地盘，如果还是我姑和叔请客的话，就说不过去。他请又没有钱。所以只得拒绝。</p>
+<p>第三天，坐车回家。</p>
+<p>注：叔每天夜里打酣，吵得我没有睡好。所以这两天一直处于昏睡状态。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/27/2124685/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/02/27/2124685/" class="post-title-link" itemprop="url">失落的帝国-亚特兰蒂斯</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-02-27 15:01:00" itemprop="dateCreated datePublished" datetime="2008-02-27T15:01:00+08:00">2008-02-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
     </span>
 
   
@@ -287,26 +1108,73 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="459" />
-when you use double type to count, it will be dangerous. see like that
-<p>[codesyntax lang=“c” tab_width=“2”]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">  double i;</span><br><span class="line">  for(i=0; i != 5; i++)&#123;</span><br><span class="line">    printf(&quot;%lf &quot;,i);</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>it will never stop, because the condition of i != 5 will never satisfied. If you want to count, using int type. When you compare two double type number, you should use fabs(a-b) &lt; 0.001, 0.001 is threshold. Sometimes, double is not precision. macro is a great tool, but it is also dangerous. I often forget the language of define. The correct language is :</p>
-<p>#define</p>
-<p>#if defined</p>
-<p>#if !defined</p>
-<p>#ifndef</p>
-<p>#ifdef</p>
-<p>#endif</p>
-<p>compile .c file with math lib in linux. It will be like that: cc test.c -o test <span style="color: rgb(255, 102, 0);">-lm</span></p>
-<p>stdio redirect to file use freopen() function. like that:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">// don&#x27;t write freopen here, it will be some compile error.</span><br><span class="line">//freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);</span><br><span class="line">//freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);</span><br><span class="line">int main()&#123;</span><br><span class="line">	int n,i;</span><br><span class="line">	#if defined REDIRECT</span><br><span class="line">	freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);</span><br><span class="line">	#endif</span><br><span class="line">	scanf(&quot;%d&quot;,&amp;amp;n);</span><br><span class="line">	for(i = 0; i &amp;lt; n; i++)&#123;</span><br><span class="line">		printf(&quot;%d &quot;,i);</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>if you want redirect to file, use the code and compile it with -D REDIRECT. cc test.c -o test -D REDIRECT</p>
-<p>If you want to use struct FILE to do the same thing:</p>
-<p>[codesyntax lang=“c” tab_width=“2”]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include&amp;lt;math.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">  FILE * fin, *fout;</span><br><span class="line">  fin = fopen(&quot;z.in&quot;,&quot;rb&quot;);</span><br><span class="line">  fout = fopen(&quot;z.out&quot;,&quot;wb&quot;);</span><br><span class="line">  int n;</span><br><span class="line">  #ifdef REDIRECT</span><br><span class="line">  #define fin stdin</span><br><span class="line">  #define fout stdout</span><br><span class="line">  #endif</span><br><span class="line"></span><br><span class="line">  fscanf(fin,&quot;%d&quot;,&amp;amp;n);</span><br><span class="line">  fprintf(fout,&quot;%d,%lf&quot;,n,sqrt(n));</span><br><span class="line">  fclose(fin);</span><br><span class="line">  fclose(fout);</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>try cc t3.c -o t3 -lm -D REDIRECT and cc t3.c -o t3 -lm</p>
+          <p>** 中文名称 ** ：失落的帝国<br />
+** 英文名称 ** ：Atlantis: The Lost Empire<br />
+** 资源类型 ** ：MP3!<br />
+** 发行时间 ** ：2001年<br />
+** 专辑歌手 ** ： <span class="exturl" data-url="aHR0cDovL3NlYXJjaC52ZXJ5Y2QuY29tL2FydGlzdC8lRDQlQUQlQzklRjklQjQlRjMlQjUlRkE="> 原声大碟 <i class="fa fa-external-link-alt"></i></span><br />
+** 地区 ** ：美国<br />
+** 语言 ** ：英语<br />
+** 简介 ** ：<br />
+<img src="http://img.verycd.com/posts/0508/post-271181-1125201239.jpg" alt="0.jpg" /></p>
+<p>** 专辑介绍： **</p>
+<p>這回迪士尼動畫場景移到了沉沒的大地—亞特蘭提斯（Atlantis），本片由 Jules Verne 冒險小說《20,000 Leagues Beneath<br />
+the Sea》中取材其風格，並參考亞特蘭提斯相關主題的傳說。故事設定在２０世紀初期，主角是一位名為 Milo Thatcher 的年輕人，他由祖父留下的資<br />
+料一直深信亞特蘭提斯城的存在，後來一支探險隊獲得一本古老手札後，邀他一同加入海底探險的旅程，尋找傳說中的神秘之城－亞特蘭提斯，他們搭乘著 Rourke<br />
+船長所領導的潛水艇深入海底，經歷怪物攻擊等重重危機，最後終於來到亞特蘭提斯城，也結識了 Kida 公主和其他族民們，但是探險隊員間各自盤算卻在此時漸漸浮現，<br />
+帝國的興衰、私心的利誘，演變成一觸即發的衝突。這部以冒險和動作為主的動畫片，跟以往大多音樂性質的迪士尼動畫很不一樣，全片並沒有任何歌曲，迪士尼動畫家?#09<br />
+2;用３Ｄ電腦動畫來製作許多場景之外，還設計了稀奇古怪的生物，造型頗具特色，本片畫風也很有東方味道。本片同時也是迪士尼繼１９８５年的【黑神鍋傳奇】之後，又一<br />
+部７０ｍｍ超寬螢幕的動畫電影，也跟當年的【黑神鍋傳奇】一樣，在美國是以ＰＧ級上映。</p>
+<h1 id="where-the-dream-takes-you"><a class="markdownIt-Anchor" href="#where-the-dream-takes-you"></a> Where the Dream Takes You</h1>
+<p>They’ll try to hold you back</p>
+<p>They will say you’re wrong</p>
+<p>But they will never understand</p>
+<p>The journey that you’re on</p>
+<p>They’ll try to change your mind</p>
+<p>They’ll try to change your heart</p>
+<p>But they will never understand who you are</p>
+<p>And you still believe</p>
+<p>And you know</p>
+<p>You must go</p>
+<p>Where the dream takes you</p>
+<p>(Where your dream takes your heart)</p>
+<p>Where your heart longs to be</p>
+<p>(Your dream will lead you on)</p>
+<p>When you finally find that place</p>
+<p>You’ll find all you need</p>
+<p>Where the dream takes you</p>
+<p>(Where the dream takes you)</p>
+<p>There’s something in your soul</p>
+<p>(There’s something in your soul)</p>
+<p>That won’t be denied</p>
+<p>It’s the faith to dream that keeps</p>
+<p>the dream alive</p>
+<p>So you still believe</p>
+<p>And you know</p>
+<p>You must go</p>
+<p>Where dream takes you</p>
+<p>(Where your dream takes your heart)</p>
+<p>Where your heart longs to be</p>
+<p>(Your dream will lead you on)</p>
+<p>When you finally find that place</p>
+<p>You’ll find all you need</p>
+<p>Where the dream takes you</p>
+<p>Go where your heart is meant to be</p>
+<p>And you may find</p>
+<p>Somebody there</p>
+<p>Someone to share your dream</p>
+<p>When you finally find that place</p>
+<p>You’ll find all you need</p>
+<p>Where the dream leads you</p>
+<p>(Your dream will lead you home)</p>
+<p>Far as your heart can see</p>
+<p>There’s a world that waits for you</p>
+<p>You’re not alone</p>
+<p>You’ll find your home</p>
+<p>Where the dream takes you</p>
+<h3 id="作词-diana-warren"><a class="markdownIt-Anchor" href="#作词-diana-warren"></a> 作词: Diana Warren</h3>
+<h3 id="作曲-diane-warren-james-newton-howard"><a class="markdownIt-Anchor" href="#作曲-diane-warren-james-newton-howard"></a> 作曲: Diane Warren &amp; James Newton Howard</h3>
+<h3 id="演唱-mya"><a class="markdownIt-Anchor" href="#演唱-mya"></a> 演唱: Mya</h3>
 
       
     </div>
@@ -333,7 +1201,7 @@ when you use double type to count, it will be dangerous. see like that
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/05/2010-04-05-software-architecture-singleton/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/22/2113492/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -351,7 +1219,7 @@ when you use double type to count, it will be dangerous. see like that
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/05/2010-04-05-software-architecture-singleton/" class="post-title-link" itemprop="url">Software Architecture--Singleton</a>
+          <a href="/2008/02/22/2113492/" class="post-title-link" itemprop="url">《禅说》摘录</a>
         </h2>
 
         <div class="post-meta-container">
@@ -362,23 +1230,14 @@ when you use double type to count, it will be dangerous. see like that
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-05T00:00:00+08:00">2010-04-05</time>
+      <time title="Created: 2008-02-22 15:18:00" itemprop="dateCreated datePublished" datetime="2008-02-22T15:18:00+08:00">2008-02-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:00:55" itemprop="dateModified" datetime="2023-10-05T23:00:55+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
     </span>
 
   
@@ -388,110 +1247,7 @@ when you use double type to count, it will be dangerous. see like that
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="530" />
-Singleton is a pattern in Software Architecture. It is used to create a instance and there will be only one instance in system at any time. If you want to write this pattern in a file, it will be like that:
-<p>[codesyntax lang=“cpp” tab_width=“2”]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">#include &amp;lt;iostream&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line">/* ==========================</span><br><span class="line"> * Program name:</span><br><span class="line"> * Author: chico chen</span><br><span class="line"> * Email:  chillycreator @t gmail.com</span><br><span class="line"> * Purpose: this class is testing singleton pattern in</span><br><span class="line"> *          Software Architecture.</span><br><span class="line"> * ========================== */</span><br><span class="line"></span><br><span class="line">class Singleton &#123;</span><br><span class="line">	private:</span><br><span class="line">	static Singleton* _instance;</span><br><span class="line">	Singleton()&#123;&#125;</span><br><span class="line">	public:</span><br><span class="line">		static Singleton* Instance();</span><br><span class="line">&#125;;</span><br><span class="line">Singleton* Singleton::_instance = NULL;</span><br><span class="line">Singleton* Singleton::Instance() &#123;</span><br><span class="line">    if (_instance == NULL) &#123;</span><br><span class="line">        _instance = new Singleton();</span><br><span class="line">        cout &amp;lt;&amp;lt;&quot;new Singleton&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    return _instance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    cout &amp;lt;&amp;lt; &quot;Hello world!&quot; &amp;lt;&amp;lt; endl;</span><br><span class="line">    Singleton *s1 = Singleton::Instance();</span><br><span class="line">    Singleton *s2 = Singleton::Instance();</span><br><span class="line">    Singleton *s3 = Singleton::Instance();</span><br><span class="line">    Singleton *s4 = Singleton::Instance();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>If you want write this pattern into different files, it will has Singleton.h Singleton.cpp and other files like that:</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2010/04/05/2010-04-05-software-architecture-singleton/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/02/5446330/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/02/5446330/" class="post-title-link" itemprop="url">Ubuntu 9.10 与Python 3 IDLE, Kscope等冲突</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-04-02 22:18:00" itemprop="dateCreated datePublished" datetime="2010-04-02T22:18:00+08:00">2010-04-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>455</span>
+      <span>617</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -509,12 +1265,41 @@ Singleton is a pattern in Software Architecture. It is used to create a instance
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>我至今不知道为啥出现的这种情况。不过很有可能是弹出提示后出现的卡机现象。首先下载一个python IDLE 3或者2.6什么的，然后打开，写入最简单的一行p<br />
-rint(“hello”),当输入完&quot;)&quot;之后，就完全不能动了，输入回车，点击鼠标均无效果。不过使用Alt+tab切换一下窗口就可以了。不知道这是否是一项不<br />
-错的专利，灰常强大！可以有效减少amp.其实我就想要一个可以编辑，然后按下F5或者啥能运行的ide就可以了。结果这都不支持… sigh~Eric4貌似界面<br />
-更加华丽，就是不知为何老是错，不知道是否是python版本不兼容的问题…最后只得选用PIDA,短小精悍，这个编python就夠用了。不用emacs的原因<br />
-是操作太诡异还不如 vi。最近编c++代码使用codeblocks,感觉这个IDE做得不错，虽然比不上vs2010…另外开头提到的那个卡机现象在k<br />
-scope中也会出现。不过这里仅限于ubuntu,它們在centos倒是活得挺好。有人遇到并解决的，请回复…不胜感激，临blog涕零。</p>
+          <p>告诫别人错误的时候，自己却有可能抱持着相同的错误。<br />
+善恶一念间，天堂地狱由此开。<br />
+把握现实。<br />
+迷时三界有，悟后十方空<br />
+使人放下屠刀的是爱心罢了<br />
+问题本身才是完美的答案<br />
+言行一致，才是修身的基础<br />
+懂得周围事物的美好，才距禅越来越近<br />
+能帮助自己的只是自己而言，天是不能帮助人的。<br />
+急功近利，便会欲速而不达<br />
+有了得失之心才有了喜怒哀乐，要想超越得失、善恶，随缘就可以了。<br />
+知行要合而为一<br />
+山水，日月，星辰，花草都因己存在<br />
+万物皆有所用，无论多么卑微，都有自己的一片天空，自己的一席之地<br />
+不思过去，不想未来，珍惜现在<br />
+为而不恃，功成而不居，勤劳工作而不抱怨<br />
+是喜是悲，全看你站的角度<br />
+内心夹杂了两种想法，就会因矛盾而破坏心中的统一，所以当取则取，当断则断<br />
+最大的困扰源于自己<br />
+富不富有，不在于金钱的多少，而在于知不知足<br />
+天下万物，无论巨细贵贱，皆有其容身之处，各有各的位置，恰到好处，若问为何。本应如此。<br />
+生命的真谛是变化<br />
+当依赖的对象失去时，自身的潜质才得以发挥<br />
+自己向外追求就会迷失自我<br />
+用眼去看，用耳去听，你能做到吗？<br />
+太在意形式反而会失去本体，见到还不如不见<br />
+认清自己，扮演自己应该扮演的角色<br />
+知难行易，知易行难<br />
+平常心就是道<br />
+任何时候，任何地点就是最好的时机最好的地点，只要你能细心体会<br />
+无我无他的慈悲心帮助需要帮助的人<br />
+帮助学生看清自己内心的一切，才是为师的要义<br />
+寒即路边烤火，热便竹林乘凉<br />
+有物先天地，无形本寂寥，能为万象主，不逐四时凋<br />
+不可以一朝风月，昧却万古长空； 不可以万古长空，不明一朝风月</p>
 
       
     </div>
@@ -541,7 +1326,7 @@ scope中也会出现。不过这里仅限于ubuntu,它們在centos倒是活得�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/02/5446286/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/17/2100271/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -559,7 +1344,7 @@ scope中也会出现。不过这里仅限于ubuntu,它們在centos倒是活得�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/02/5446286/" class="post-title-link" itemprop="url">Linux Pthread_join使用</a>
+          <a href="/2008/02/17/2100271/" class="post-title-link" itemprop="url">Beowulf歌词</a>
         </h2>
 
         <div class="post-meta-container">
@@ -570,14 +1355,14 @@ scope中也会出现。不过这里仅限于ubuntu,它們在centos倒是活得�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-04-02 22:01:00" itemprop="dateCreated datePublished" datetime="2010-04-02T22:01:00+08:00">2010-04-02</time>
+      <time title="Created: 2008-02-17 09:50:00" itemprop="dateCreated datePublished" datetime="2008-02-17T09:50:00+08:00">2008-02-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
     </span>
 
   
@@ -587,7 +1372,7 @@ scope中也会出现。不过这里仅限于ubuntu,它們在centos倒是活得�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
+      <span>807</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -605,31 +1390,57 @@ scope中也会出现。不过这里仅限于ubuntu,它們在centos倒是活得�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>这个函数没有什么好说的。其实就两个参数，第一个是线程变量，第二个是线程返回值。其函数原型为:</p>
-<p>int pthread_join(pthread_t thread,void** result);</p>
-<p>不过查阅许多网上资料，依旧没有使用result这个形参的。一般的使用为pthread_join(thread,NULL);于是自己在想那个NULL能做啥米用<br />
-。于是写下下面的代码：</p>
-<p>#include &lt;stdio.h&gt; #include &lt;pthread.h&gt; int count =0; // 初始化mutex变量。<br />
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; void * print_count(int);<br />
-int main() { const int num = 10; pthread_t threads[num]; int i=0; for(i=0; i&lt;<br />
-num; i++){ //第一个参数是pthread_t变量，第二个是pthread_t变量的属性<br />
-//第三个是pthread_t需要执行的函数，其函数原型为 // void* (<em>startfun)(void</em>) //<br />
-所以传入的是一个返回void<em>的函数(这里当然可以转换) // 并且接受的是void</em>的参数，所以需要把i转换为void *<br />
-pthread_create(&amp;threads[i],NULL,print_count,(void*)i); } void* result = NULL;<br />
-for(i=0; i &lt; num; i++){ // 这里就是同步得到结果。打印的是线程执行的状态，0为成功。非0失败 printf(“end<br />
-%d;/n”,pthread_join(threads[i],&amp;result)); if(result == NULL){<br />
-printf(“NULL/n”); } else{ // 这里打印的是pthread_t执行完print_count后返回的结果。<br />
-printf(“%x/n”,result); } } return 0; }<br />
-//这里返回的类型是void*，因为pthread_create中的函数指针为void* //这里的参数int<br />
-i,可有可无，如果没有pthread_create中就使用NULL作为参数。 void * print_count(int i){ // 设置mutex锁<br />
-pthread_mutex_lock(&amp;mutex); printf(“thread: %d—&gt; count %d/n”,i,count);<br />
-count++; sleep(2); printf(“thread: %d—&gt; count %d/n”,i,count); // 释放锁<br />
-pthread_mutex_unlock(&amp;mutex); //这里是返回值, void * result就可以被赋值了…否则为result = NULL<br />
-return (void*)count; }</p>
-<p>另外值得注意的是pthread_join()中第二个参数不要乱传。如果非NULL,可能造成segment failure.</p>
-<p>另外这里如果使用c<ins>进行编译可能会有void*<br />
-(<em>)(int)不能转换为void</em>(<em>)(void</em>)的问题。这是因为c</ins>编译器要求太严格了。只好改动函数签名为void *<br />
-print_count(void *);之后再进行转换。现在终于知道为啥这么多人都喜欢在linux下使用c了。</p>
+          <p>Out of the mist of history<br />
+He’ll come again<br />
+Sailing on ships across the sea<br />
+To a wounded Nation</p>
+<p>Signs of a savoir<br />
+Like fire on the water<br />
+It’s what we prayed for<br />
+One of our own</p>
+<p>Just wait<br />
+Though while he may roam</p>
+<p>Always<br />
+A hero comes home<br />
+He goes where no one has gone<br />
+But always<br />
+A hero comes home</p>
+<p>Deep in the heart of darkness sparks<br />
+A dream of lies<br />
+Surrounded by hopelessness<br />
+He finds the will to fight</p>
+<p>Theres no surrender<br />
+Always remember<br />
+It doesn’t end here<br />
+We’re not alone</p>
+<p>Just wait<br />
+Though while he may roam<br />
+Always<br />
+A hero comes home<br />
+He goes where no one has gone<br />
+But always<br />
+A hero comes home</p>
+<p>And he will come back on the crimson tide<br />
+Dead or alive<br />
+And even though we know the bridge has burned<br />
+He will return<br />
+He will return</p>
+<p>Just wait<br />
+Though while he may roam<br />
+Always<br />
+A hero comes home<br />
+He knows of places unknown<br />
+Always<br />
+A hero comes home</p>
+<p>Someday they’ll carve in stone<br />
+“The hero comes home”</p>
+<p>He goes and comes back alone<br />
+But always<br />
+A hero comes home</p>
+<p>Just wait<br />
+Though while he may roam<br />
+Always<br />
+A hero comes home</p>
 
       
     </div>
@@ -656,7 +1467,7 @@ print_count(void *);之后再进行转换。现在终于知道为啥这么多人
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/02/5445250/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/15/2097132/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -674,7 +1485,7 @@ print_count(void *);之后再进行转换。现在终于知道为啥这么多人
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/02/5445250/" class="post-title-link" itemprop="url">广义表的定义</a>
+          <a href="/2008/02/15/2097132/" class="post-title-link" itemprop="url">中国的研究论文</a>
         </h2>
 
         <div class="post-meta-container">
@@ -685,14 +1496,14 @@ print_count(void *);之后再进行转换。现在终于知道为啥这么多人
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-04-02 16:07:00" itemprop="dateCreated datePublished" datetime="2010-04-02T16:07:00+08:00">2010-04-02</time>
+      <time title="Created: 2008-02-15 14:49:00" itemprop="dateCreated datePublished" datetime="2008-02-15T14:49:00+08:00">2008-02-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
     </span>
 
   
@@ -702,177 +1513,7 @@ print_count(void *);之后再进行转换。现在终于知道为啥这么多人
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>转自 <a target="_blank" rel="noopener" href="http://blog.csdn.net/lpioneer/archive/2008/01/16/2046940.aspx"> http://blog.csdn.net/lpioneer/archive/2008/01/16/2046940.aspx<br />
-</a></p>
-<p>广义表(Lists，又称列表)是线性表的推广。即广义表中放松对表元素的原子限制，容许它们具有其自身结构。</p>
-<p>** 1、广义表定义 **<br />
-广义表是n(n≥0)个元素a1，a2，…，ai，…，an的有限序列。<br />
-其中：<br />
-①ai–或者是原子或者是一个广义表。<br />
-②广义表通常记作：<br />
-Ls=( a1，a2，…，ai，…，an)。<br />
-③Ls是广义表的名字，n为它的长度。<br />
-④若ai是广义表，则称它为Ls的子表。<br />
-注意：<br />
-①广义表通常用圆括号括起来，用逗号分隔其中的元素。<br />
-②为了区分原子和广义表，书写时用大写字母表示广义表，用小写字母表示原子。<br />
-③若广义表Ls非空(n≥1)，则al是LS的表头，其余元素组成的表(a1，a2，…，an)称为Ls的表尾。<br />
-④广义表是递归定义的</p>
-<p>** 2、广义表表示 **<br />
-（1）广义表常用表示<br />
-① E=()<br />
-E是一个空表，其长度为0。<br />
-② L=(a，b)<br />
-L是长度为2的广义表，它的两个元素都是原子，因此它是一个线性表<br />
-③ A=(x，L)=(x，(a，b))<br />
-A是长度为2的广义表，第一个元素是原子x，第二个元素是子表L。<br />
-④ B=(A，y)=((x，(a，b))，y)<br />
-B是长度为2的广义表，第一个元素是子表A，第二个元素是原子y。<br />
-⑤ C=(A，B)=((x，(a，b))，((x，(a，b))，y))<br />
-C的长度为2，两个元素都是子表。<br />
-⑥ D=(a，D)=(a，(a，(a，(…))))<br />
-D的长度为2，第一个元素是原子，第二个元素是D自身，展开后它是一个无限的广义表。</p>
-<p>（2）广义表的深度<br />
-一个表的&quot;深度&quot;是指表展开后所含括号的层数。<br />
-【例】表L、A、B、C的深度为分别为1、2、3、4，表D的深度为∞。</p>
-<p>（3）带名字的广义表表示<br />
-如果规定任何表都是有名字的，为了既表明每个表的名字，又说明它的组成，则可以在每个表的前面冠以该表的名字，于是上例中的各表又可以写成：<br />
-①E()<br />
-②L(a，b)<br />
-③A(x，L(a，b))<br />
-④B(A(x，L(a，b))，y)<br />
-⑤C(A(x，l(a，b))，B(A(x，L(a，b))，y))<br />
-⑥D(a，D(a，D(…)))</p>
-<p>（4）广义表的图形表示<br />
-（a）广义表的图形表示：<br />
-①图中的分支结点对应广义表<br />
-②非分支结点一般是原子<br />
-③但空表对应的也是非分支结点。<br />
-【例】下图给出了几个广义表的图形表示。<br />
-![](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2xwaW9uZWVyLyU3QkNBNjhCNEU0LUQ3NkItNDU=">http://p.blog.csdn.net/images/p_blog_csdn_net/lpioneer/{CA68B4E4-D76B-45<i class="fa fa-external-link-alt"></i></span><br />
-21-9E58-0533AA5C011A%7D.bmp)<br />
-（b）广义表的图形形状划分：<br />
-①与树对应的广义表称为纯表，它限制了表中成分的共享和递归<br />
-②允许结点共享的表称再入表<br />
-【例】上图(d),子表A是共享结点，它既是C的一个元素，又是子表B的元素；<br />
-③允许递归的表称为递归表<br />
-【例】上图(e)，表D是其自身的子表。</p>
-<p>（5）递归表、再入表、纯表、线性表之间的关系满足：<br />
-<img src="http://hi.csdn.net/attachment/201004/2/1050_1270195893kM9N.gif" alt="wu" /><br />
-广义表不仅是线性表的推广，也是树的推广。</p>
-<p>** 3、广义表运算<br />
-** 由于广义表是对线性表和树的推广，并且具有共享和递归特性的广义表可以和有向图(见第7章)建立对应，因此广义表的大部分运算与这些数据结构上的运算类似。<br />
-在此，只讨论广义表的两个特殊的基本运算：取表头head(Ls)和取表尾tail(Ls)。<br />
-根据表头、表尾的定义可知：任何一个非空广义表的表头是表中第一个元素，它可以是原子，也可以是子表，而其表尾必定是子表。<br />
-【例】<br />
-head(L)=a， tail(L)=(b)<br />
-head(B)=A， tail(B)=(y)<br />
-由于tail(L)是非空表，可继续分解得到：<br />
-head(tail(L))=b， tail(tail(L))=()<br />
-对非空表A和(y)，也可继续分解。<br />
-注意:<br />
-广义表()和(())不同。前者是长度为0的空表，对其不能做求表头和表尾的运算；而后者是长度为l的非空表(只不过该表中惟一的一个元素是空表)，对其可进行分解，<br />
-得到的表头和表尾均是空表()。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/30/2010-03-30-how-to-get-through-firewall-great/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/30/2010-03-30-how-to-get-through-firewall-great/" class="post-title-link" itemprop="url">How to Get Through Firewall (Great)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-03-30 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-30T00:00:00+08:00">2010-03-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:00:35" itemprop="dateModified" datetime="2023-10-05T23:00:35+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>795</span>
+      <span>144</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -890,163 +1531,8 @@ head(tail(L))=b， tail(tail(L))=()<br />
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="631" />
-This is graph for getting through firewall.  This is another method for climbing over the wall.
-<p>Phase1. setup the connection between client and server by three-way handshake. when server send ACK and seq to the client. Client should let the wall know this connection is over. So client send FIN and seq to server. The wall get it, and consider the connection from client is over. Because the wall is not based on status. Then server get it, and find the seq of  package is wrong. And server send the RESET package to client. The wall get the package and consider the connection from server is over. Client receive and ignore the RESET package, and then it send the ACK and seq+1 to server.  The connection between client and server is established. However, the connection between client and server is over from viewpiont of the wall. The wall will not exam contents of the connection. So we can get though the wall!</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2010/03/30/2010-03-30-how-to-get-through-firewall-great/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/26/5421050/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/26/5421050/" class="post-title-link" itemprop="url">mysql中使用InnoDB还是MyISAM ?</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-03-26 21:27:00" itemprop="dateCreated datePublished" datetime="2010-03-26T21:27:00+08:00">2010-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>自己经常使用sqlserver,不怎么使用mysql.所以也对mysql不咋米了解。这里转两个帖子关于mysql中的InnoDB和MyIsAM的介绍，个人觉<br />
-得还是不错的。</p>
-<p>转载自 <span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS8="> http://database.51cto.com <i class="fa fa-external-link-alt"></i></span> 2009-05-19 09:58<br />
-邵宗文  IT168</p>
-<p>链接：<span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS9hcnQvMjAwOTA1LzEyMjM4Mi5odG0=">http://database.51cto.com/art/200905/122382.htm<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="浅谈mysql存储引擎选择-innodb还是myisam"><a class="markdownIt-Anchor" href="#浅谈mysql存储引擎选择-innodb还是myisam"></a> 浅谈MySQL存储引擎选择 InnoDB还是MyISAM</h3>
-<p>MyISAM<br />
-是MySQL中默认的存储引擎，一般来说不是有太多人关心这个东西。决定使用什么样的存储引擎是一个很tricky的事情，但是还是值我们去研究一下，这<br />
-里的文章只考虑 MyISAM 和InnoDB这两个，因为这两个是最常见的。</p>
-<p>下面先让我们回答一些问题：<br />
-◆你的数据库有外键吗？<br />
-◆你需要事务支持吗？<br />
-◆你需要全文索引吗？<br />
-◆你经常使用 什么样的查询模式？<br />
-◆你的数据有多大？</p>
-<p>思考上面这些问题可以让你找到合适的方向，但那并不是绝对的。如果你需要事务处理或是外键，那么InnoDB 可能是比较好的方式。如果你需要全文索引，那么通常来说<br />
-MyISAM是好的选择，因为这是系统内建的，然而，我们其实并不会经常地去测试两百万行记录。所以，就算是慢一点，我们可以通过使用Sphinx从<br />
-InnoDB中获得全文索引。</p>
-<p>数据的大小，是一个影响你选择什么样存储引擎的重要因素，大尺寸的数据集趋向于选择InnoDB方式，因为其支持事务处理和故障恢复。数据库的在小<br />
-决定了故障恢复的时间长短，InnoDB可以利用事务日志进行数据恢复，这会比较快。而MyISAM可能会需要几个小时甚至几天来干这些事，InnoDB<br />
-只需要几分钟。</p>
-<p>您操作数据库表的习惯可能也会是一个对性能影响很大的因素。比如： COUNT() 在 MyISAM 表中会非常快，而在InnoDB<br />
-表下可能会很痛苦。而主键查询则在InnoDB下会相当相当的快，但需要小心的是如果我们的主键太长了也会导致性能问题。大批的inserts<br />
-语句在MyISAM下会快一些，但是updates 在InnoDB 下会更快一些——尤其在并发量大的时候。</p>
-<p>所以，到底你检使用哪一个呢？根据经验来看，如果是一些小型的应用或项目，那么MyISAM 也许会更适合。当然，在大型的环境下使用MyISAM<br />
-也会有很大成功的时候，但却不总是这样的。如果你正在计划使用一个超大数据量的项目，而且需要事务处理或外键支持，那么你真的应该直接使用InnoDB方<br />
-式。但需要记住InnoDB 的表需要更多的内存和存储，转换100GB 的MyISAM 表到InnoDB 表可能会让你有非常坏的体验。</p>
-<p>转载自 <span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS8="> http://database.51cto.com <i class="fa fa-external-link-alt"></i></span> 2009-05-19 09:58<br />
-邵宗文  IT168</p>
-<p>链接：<span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS9hcnQvMjAwOTA1LzEyNDM3MC5odG0=">http://database.51cto.com/art/200905/124370.htm<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="innodb还是myisam-再谈mysql存储引擎的选择"><a class="markdownIt-Anchor" href="#innodb还是myisam-再谈mysql存储引擎的选择"></a> InnoDB还是MyISAM 再谈MySQL存储引擎的选择</h3>
-<p>两种类型最主要的差别就是Innodb 支持事务处理与外键和行级锁.而MyISAM不支持.所以MyISAM往往就容易被人认为只适合在小项目中使用。</p>
-<p>我作为使用MySQL的用户角度出发，Innodb和MyISAM都是比较喜欢的，但是从我目前运维的数据库平台要达到需求：99.9%的稳定性，<br />
-方便的扩展性和高可用性来说的话，MyISAM绝对是我的首选。</p>
-<p>原因如下：</p>
-<p>1、首先我目前平台上承载的大部分项目是读多写少的项目，而MyISAM的读性能是比Innodb强不少的。</p>
-<p>2、MyISAM的索引和数据是分开的，并且索引是有压缩的，内存使用率就对应提高了不少。能加载更多索引，而Innodb是索引和数据是紧密捆绑<br />
-的，没有使用压缩从而会造成Innodb比MyISAM体积庞大不小。</p>
-<p>3、从平台角度来说，经常隔1，2个月就会发生应用开发人员不小心update一个表where写的范围不对，导致这个表没法正常用了，这个时候<br />
-MyISAM的优越性就体现出来了，随便从当天拷贝的压缩包取出对应表的文件，随便放到一个数据库目录下，然后dump成sql再导回到主库，并把对应的<br />
-binlog补上。如果是Innodb，恐怕不可能有这么快速度，别和我说让Innodb定期用导出xxx.sql机制备份，因为我平台上最小的一个数据<br />
-库实例的数据量基本都是几十G大小。</p>
-<p>4、从我接触的应用逻辑来说，select count(*) 和order by<br />
-是最频繁的，大概能占了整个sql总语句的60%以上的操作，而这种操作Innodb其实也是会锁表的，很多人以为Innodb是行级锁，那个只是<br />
-where对它主键是有效，非主键的都会锁全表的。</p>
-<p>5、还有就是经常有很多应用部门需要我给他们定期某些表的数据，MyISAM的话很方便，只要发给他们对应那表的frm.MYD,MYI的文件，让<br />
-他们自己在对应版本的数据库启动就行，而Innodb就需要导出xxx.sql了，因为光给别人文件，受字典数据文件的影响，对方是无法使用的。</p>
-<p>6、如果和MyISAM比insert写操作的话，Innodb还达不到MyISAM的写性能，如果是针对基于索引的update操作，虽然<br />
-MyISAM可能会逊色Innodb,但是那么高并发的写，从库能否追的上也是一个问题，还不如通过多实例分库分表架构来解决。</p>
-<p>7、如果是用MyISAM的话，merge引擎可以大大加快应用部门的开发速度，他们只要对这个merge表做一些select<br />
-count(*)操作，非常适合大项目总量约几亿的rows某一类型(如日志，调查统计)的业务表。</p>
-<p>当然Innodb也不是绝对不用，用事务的项目如模拟炒股项目，我就是用Innodb的，活跃用户20多万时候，也是很轻松应付了，因此我个人也是<br />
-很喜欢Innodb的，只是如果从数据库平台应用出发，我还是会首选MyISAM。</p>
-<p>另外，可能有人会说你MyISAM无法抗太多写操作，但是我可以通过架构来弥补，说个我现有用的数据库平台容量：主从数据总量在几百T以上，每天十 多亿<br />
-pv的动态页面，还有几个大项目是通过数据接口方式调用未算进pv总数，(其中包括一个大项目因为初期memcached没部署,导致单台数据库每天处理<br />
-9千万的查询)。而我的整体数据库服务器平均负载都在0.5-1左右。</p>
+          <p>在网上搜索论文，只要是中文的，一般就被放在的维普或者万方，或者某个不知名但是却要收钱的站点。根本不像国外那样即使被IEEE收录了，在外面至少也可以下载到。中<br />
+文的竟然不存在挂在某个免费站点的论文pdf版本。做研究至少也应该免费传播一下自己的研究成果。现在却都用钱锁住了，还怎么让其他人研究？</p>
 
       
     </div>
@@ -1073,7 +1559,7 @@ pv的动态页面，还有几个大项目是通过数据接口方式调用未算
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/24/5412585/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/15/2097097/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1091,7 +1577,7 @@ pv的动态页面，还有几个大项目是通过数据接口方式调用未算
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/24/5412585/" class="post-title-link" itemprop="url">Bzr</a>
+          <a href="/2008/02/15/2097097/" class="post-title-link" itemprop="url">经典语录</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1102,14 +1588,14 @@ pv的动态页面，还有几个大项目是通过数据接口方式调用未算
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-03-24 16:33:00" itemprop="dateCreated datePublished" datetime="2010-03-24T16:33:00+08:00">2010-03-24</time>
+      <time title="Created: 2008-02-15 14:33:00" itemprop="dateCreated datePublished" datetime="2008-02-15T14:33:00+08:00">2008-02-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
     </span>
 
   
@@ -1119,7 +1605,7 @@ pv的动态页面，还有几个大项目是通过数据接口方式调用未算
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>543</span>
+      <span>335</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1137,17 +1623,17 @@ pv的动态页面，还有几个大项目是通过数据接口方式调用未算
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>首先使用sudo ssh-keygen -t rsa 生成key，key分公私钥，公钥是,然后使用launchpad登录,然后出现</p>
-<p>Warning: Permanently added ‘<span class="exturl" data-url="aHR0cDovL2JhemFhci5sYXVuY2hwYWQubmV0">bazaar.launchpad.net<i class="fa fa-external-link-alt"></i></span>,91.189.90.11’ (RSA) to the<br />
-list of known hosts.<br />
-Permission denied (publickey).<br />
-bzr: ERROR: Connection closed: Unexpected end of message. Please check<br />
-connectivity and permissions, and report a bug if problems persist.</p>
-<p>这样之后使用ssh-agent bash清洗一下。然后再使用ssh-add<br />
-key.这里key是私钥。这里添加的话是普通权限的user的key.当然如果你真想添加，然么就要改下key的访问权限。</p>
-<p>如果使用sudo ssh-agent bash,之后就变为root用户。添加一致。</p>
-<p>之后再使用 sudo bzr launchpad-login [username]   这里的 username是在launchpad.org中注册的。<br />
-然后再sudo bzr lp:XXX dir, lp:XXX是分支名，dir是将分支存放在某个目录下。</p>
+          <p>记录下看到听到的经典语录：</p>
+<p>1.对于感受的人来说，生活是一出悲剧。对于思考的人来说，生活是一出喜剧。</p>
+<p>2.用“我——有——钱”替代合影时的“茄子”和“田七”</p>
+<p>3.解脱是放下，不是放弃</p>
+<p>4.在网上找最好的网站，然后想办法做的比它更好</p>
+<p>5.一个人只能在一条路上走，不可能同时尝试走好几条路，但周围许许多多人所走过的路是可以借鉴的。</p>
+<p>7.如果我们连青年都不相信了，那我们就绝望到底了。下一代都绝望了，你还能指望什么？你也知道青年是有问题的，但你还是要相信他们。</p>
+<p>8.如果你想走的快，那么你就一个人走。如果你想走的远，那么就一起走。</p>
+<p>9.我不在乎起点有多高，最重要的是终点</p>
+<p>10.自信不是相信自己强，而是相信自己会变强</p>
+<p>11.如今人们不甘心做一个普通人，而是想成为“人物”。结果人性少了，物性多了。</p>
 
       
     </div>
@@ -1174,7 +1660,7 @@ key.这里key是私钥。这里添加的话是普通权限的user的key.当然�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/23/2010-03-23-ubuntu-10-04-belta-released/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/12/2088845/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1192,7 +1678,7 @@ key.这里key是私钥。这里添加的话是普通权限的user的key.当然�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/23/2010-03-23-ubuntu-10-04-belta-released/" class="post-title-link" itemprop="url">Ubuntu 10.04 Beta Released</a>
+          <a href="/2008/02/12/2088845/" class="post-title-link" itemprop="url">黑社会成员定义</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1203,23 +1689,14 @@ key.这里key是私钥。这里添加的话是普通权限的user的key.当然�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-23T00:00:00+08:00">2010-03-23</time>
+      <time title="Created: 2008-02-12 16:02:00" itemprop="dateCreated datePublished" datetime="2008-02-12T16:02:00+08:00">2008-02-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 22:59:47" itemprop="dateModified" datetime="2023-10-05T22:59:47+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
     </span>
 
   
@@ -1247,12 +1724,7 @@ key.这里key是私钥。这里添加的话是普通权限的user的key.当然�
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="1242" />
-download:
-<span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQvdWJ1bnR1LTEwLjA0LWJldGExLWRlc2t0b3AtaTM4Ni5pc28=">desktop(32 bit)<i class="fa fa-external-link-alt"></i></span>
-<p><span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQvdWJ1bnR1LTEwLjA0LWJldGExLXNlcnZlci1pMzg2Lmlzbw==">server(32 bit)<i class="fa fa-external-link-alt"></i></span></p>
-<p><span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQv">Ubuntu 10.04 LTS (Lucid Lynx) Beta 1<i class="fa fa-external-link-alt"></i></span></p>
+          <p>一日朋友聚会，really的妹妹问廉波：“你是黑社会的吧？”廉波回答到：“你怎么看出来的？”小妹回答到：“因为你很黑.”廉波：“…”</p>
 
       
     </div>
@@ -1279,7 +1751,7 @@ download:
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/23/2010-03-23-listening-songs/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/11/2088105/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1297,7 +1769,7 @@ download:
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/23/2010-03-23-listening-songs/" class="post-title-link" itemprop="url">Listening Songs~</a>
+          <a href="/2008/02/11/2088105/" class="post-title-link" itemprop="url">2008春节 个性签名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1308,14 +1780,222 @@ download:
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-23T00:00:00+08:00">2010-03-23</time>
+      <time title="Created: 2008-02-11 11:33:00" itemprop="dateCreated datePublished" datetime="2008-02-11T11:33:00+08:00">2008-02-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:53:51" itemprop="dateModified" datetime="2023-10-06T22:53:51+08:00">2023-10-06</time>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>861</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>春晚是永恒的,因为它从出现就没怎么更新过!</p>
+<p>新年猜灯谜啦：你和老鼠站在一起。(打一动物) 谜底：象</p>
+<p>上帝呀，赐给我一张火车票吧，赐两张就夫妻双双把家还，赐三张我就当一把黄牛党，赐四张我就是上帝了</p>
+<p>08年中国百姓的愿望：手机单向收费，猪肉好吃不贵，房价跌到实惠，看病不乱收费。</p>
+<p>小时候过年我最大的心愿是可以吃一顿猪肉馅饺子，没想到20年后，还得许愿。</p>
+<p>如果一片雪花代表涨一分钱,那么看看今年的雪，就知道物价上涨了多少。</p>
+<p>十面埋伏是雄心，破釜沉舟是决心，完璧归赵是忠心，程门立雪是虚心，卧薪尝胆是苦心，愚公移山是信心，绳锯木断是专心，精卫填海是恒心，大展宏图需八心，朋友您可别花<br />
+心。祝新春快乐！</p>
+<p>工作没有领导不行；电视没有广告不行；消费没有钞票不行；炒股没有胆量不行；这些都没有什么，关键是08年没有希望不行。</p>
+<p>快到春节了，买个红裤衩，穿在蓝线裤外面。我，就是超人。</p>
+<p>只要让我爬上飞快的火车，我就像开着奔驰和宝马一样开心!</p>
+<p>上联：买票乱，乱于无人管；下联：回家难，难于上青天；横批：一票难求</p>
+<p>银河系春运开始，地球站即日起发售2万光年以内的航天飞机票，中国航天9折，美国航天86折，土星马拉卡航天3折，月球包机88折，注意：以上均无返程票。</p>
+<p>火鼠送福送吉祥，奥运福娃来帮忙：贝贝送你谷满仓，晶晶送你亲满堂，欢欢送你事如意，迎迎送你身安康，妮妮送你福寿长。祝你新春快乐，好运无限！</p>
+<p>走着,走着,每一滴汗水都是一个故事,每一个脚印都是一个传奇,每一个擦身而过的人都是一个勇者, 每一个国度都是一次人生的反思. 2008新春的祝福:<br />
+让中国向世界出发!!</p>
+<p>严重申明：未经许可，不得对该祝福进行打折消费。一经发现，本人将强行不间断祝福，直到你完全享有该祝福为至。</p>
+<p>我在遥望,市场之上 有多少物价在自由的上涨 昨天已忘,掏干了钱囊 我要和你重逢在借钱的路上 手头越来越紧,只能回想 有钱的日子,像在天堂 呕也. …呕也<br />
+… 谁在呼喊，“工资快涨。” 昂贵的猪肉像白云在飘荡。 东边借钱，西边还帐。 一碟碟的钞票，就送进了银行。 在工资没涨的苍桑中， 致富的路在何方?<br />
+再紧紧裤带，来碗面汤!! 呕也， …呕也…</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/10/2087555/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/02/10/2087555/" class="post-title-link" itemprop="url">《后天》启示</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-02-10 10:01:00" itemprop="dateCreated datePublished" datetime="2008-02-10T10:01:00+08:00">2008-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>424</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>1.I’m scientist, and you are<br />
+not.气象学家在和副总统辩论时说。政府首脑在做决策的时候，最好听听科学家的意见。而不是举手表决一下就ok了。政治永远不能取代科学。</p>
+<p>2.Should we survive more lives or sacrifice lives for politics.<br />
+我们是为政见牺牲还是去挽救更多的人？当副总统为将美国人迁移到墨西哥的问题犹豫不绝的时候，他的助手这样问。政治是为人服务的，连人都没有了还有什么政治？</p>
+<p>3.We should not burn this one. I get some about law and tax.<br />
+当他们要烧采尼的书取暖的时候，有人这样说。烧些法律和税收的书籍。对人类来说，这样能存活下来，法律和税收的书还能重写。但是思想方面的书籍，却难有修复之日。</p>
+<p>4.We learn a lot just for not existent<br />
+tomorrow.我们不断的学习，只是为了不存在的明天。当明天人类文明尽成废墟的时候，那后天将会怎样？</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/10/play-chess/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/02/10/play-chess/" class="post-title-link" itemprop="url">下棋之一剑封喉</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-02-10 09:32:00" itemprop="dateCreated datePublished" datetime="2008-02-10T09:32:00+08:00">2008-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-08 20:56:20" itemprop="dateModified" datetime="2023-10-08T20:56:20+08:00">2023-10-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1334,7 +2014,7 @@ download:
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>32</span>
+      <span>160</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1352,9 +2032,497 @@ download:
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="636" />
-use douban: <span class="exturl" data-url="aHR0cDovL2RvdWJhbi5mbS9yYWRpbw==">http://douban.fm/radio<i class="fa fa-external-link-alt"></i></span>
+          <p>春节期间和老爸下了盘。虽然开局不利，被老爸打的满地找牙。但最后还是抓住战机，一剑封喉。感觉赢得不是很光彩，不管怎样，依旧赢了。坚持是一个原因，或许结局很难看<br />
+。但是只要坚持，就有可能有杀敌制胜的机会。但是如果缴械，那就一点希望也没有了。感觉很类似圣斗士星矢，每次打的都快挂掉了，然后小宇宙爆发，来个钻石星辰拳，敌人就挂了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/07/2086492/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/02/07/2086492/" class="post-title-link" itemprop="url">春节</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-02-07 21:54:00" itemprop="dateCreated datePublished" datetime="2008-02-07T21:54:00+08:00">2008-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>383</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今年春节过的心里总是有点不舒服。在三十和初一连续听到两起杀人案。杀得人竟然是自己家人认识的朋友 ，虽然不常联系。但是毕竟曾经认识。与看到报纸上写到某某杀人案<br />
+还是有些区别。而且两起杀人案的凶手依旧没有查出来。这年头感觉越来越“和谐”了。动不动便和谐了许多人命。今天一不小心，自己也和谐掉了diablo2里第一幕的b<br />
+oss。真不容易。</p>
+<p>晚上外面吵吵的鞭炮声搅得无法入睡。但中午竟然在更加吵闹的鞭炮声中安然入睡。不知道自己是不是已经对鞭炮声免疫了。</p>
+<p>老姐买了款sony相机，整天拿着相机拍来拍去。想着自己什么时候也能挣到钱买个自己的相机。估计还要n年后。于是可以在这n年的每一个年三十拿到姐的压岁钱，想想也<br />
+是很不错的。</p>
+<p>拜年的短信发了很多，居然发现老师们几乎都不回。看来以后还是在qq上发给他们，或者用邮箱发吧。发个小宁哥一封email，没想到今天居然回了。难道他昨天也在过春<br />
+节？</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/02/02/2078933/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/02/02/2078933/" class="post-title-link" itemprop="url">约定</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-02-02 20:31:00" itemprop="dateCreated datePublished" datetime="2008-02-02T20:31:00+08:00">2008-02-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>379</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>想想自己是不是疯了。给一个XX高中的女生定了一个师徒之约。内容大概是等她考上重点大学，就可以拜我为师。想想自己的电脑水平也不是很好，为啥她就选我做师傅？想不<br />
+通，也不想再深想了。不管怎样，定下上重点大学的目标，对于她也是个不错的目标。听说她那所高中创校十多年从未有一次性考上重点大学的。所以这只能是两种结果：一是她<br />
+打破了那个高校的束缚，考上了重点，一是她未能考上重点。（这纯属废话）反正她高考要到2010年，还有两年的时间，什么都是有可能发生的。多多鼓励下，希望她能考上<br />
+，然后带着录取通知书来见我。不过估计她即使考上了，也不会再拜我为师了，人生的理想是多变的。</p>
+<p>近期想让自己罩着的人越来越多了。可毕竟自己精力有限，所以用些借口推脱了。想想下个学期也可能当当助教，帮自己的导师出份力。然后快快结束自己的毕设。多写几篇论文<br />
+，多发表几篇。好让自己的大学时光再辉煌一下。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/01/30/2072847/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/01/30/2072847/" class="post-title-link" itemprop="url">料理鼠王摘要及人生启示</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-01-30 13:03:00" itemprop="dateCreated datePublished" datetime="2008-01-30T13:03:00+08:00">2008-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>911</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>1. The world we live only belongs to the emeny. We must live carefully.<br />
+That’s why things are, you cannot change the nature. But change is nature,<br />
+even some part we can influence. So we must have brave heart, straight forword<br />
+and say luck to ourselves.我们的世界属于敌人。所以我们必须小心翼翼的生活下去。这就是万物存在的道理，我们不能改变自然。这是小鼠的老<br />
+爸说的话。小鼠的答话：自然的真谛就是改变。至少我们能够影响自然的一部分。所以我们能够勇往直前。总有我们可能控制的事情！</p>
+<p>2.why you care? Because I am a cook.专注的做事情，不管你属于哪个行业。请热爱你的工作。</p>
+<p>3. In many way, the work of critic is easy. we risk very little. we enjoy who<br />
+offer up thier work and sell our judgement. We are rised in opposite critical<br />
+and fun the readers. But after all long time, critics’s risk is discover and<br />
+defense the new. The world is not  very kind to the new: new creativation, new<br />
+talent, new friends.评论家所冒险的风险极小，去评论大大小小的事情，只是为了讨取读者的欢心。但是评论家所冒的最大的风险就是能不能发现和保护<br />
+新事物。这个世界总是不那么喜欢新的事物，不管是新的创造，新的天才，还是新的朋友。有没有勇气去接受新的事物，这不光是对评论家的考验，也是对我们每一个平常人的考<br />
+验。</p>
+<p>4. Not everyone can become great artist. But great artist can came from<br />
+everywhere.不是每给人都能成为伟大的艺术家。但是什么地方都有可能出来伟大的艺术家。请留心身边的每一个人，或许某个人就是未来的伟大艺术家。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/01/30/2072614/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/01/30/2072614/" class="post-title-link" itemprop="url">老大的正则式解析器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-01-30 10:49:00" itemprop="dateCreated datePublished" datetime="2008-01-30T10:49:00+08:00">2008-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>263</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>他说只有几个功能没有实现了。虽然跑的比pathon慢点。但是匹配的还是可以。我一直劝他干点正事，不要不务正业。编正则式解析器竟然没有用状态机，那不是疯了吗？<br />
+结果是我的编译原理书被他借过去看了一个月。我也不知道这对哪个正则式解析器有没有帮助。</p>
+<p>或许知识不能帮助我们前进，但是知识却能加快我们前进的速度。正则式解析是我大学里唯一失败的试验。每次都在嘴上说说，重来没有重新再做一次的想法。最近算是挺清闲，<br />
+手里无事。写写也无妨。但是一定不能像老大一样不用状态机而使用遍历去解析正则式。这是常识。不知道他看了这篇文章会有什么反应。期待中。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/01/29/2072111/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/01/29/2072111/" class="post-title-link" itemprop="url">这几天</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-01-29 20:39:00" itemprop="dateCreated datePublished" datetime="2008-01-29T20:39:00+08:00">2008-01-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>345</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>感冒…从买到火车票的那一霎那，就得了。强忍了三天，想想再有3天就到家了。结果到家了，又实实在在的打了3天的吊瓶。啥事情也没有做。家里也没有什么事情要我去做<br />
+。每天只是上上网看看电影，聊聊天。还是做了一个重大的决定。去读研，而不是去工作。老妈让我先签协议，然后交些违约金就好了。我去不想那么做。感觉一旦自己有了后路<br />
+，顾虑的事情就多了。现在只需要专心的写好论文。一切事情以后待定。</p>
+<p>人生又很多选择，不知道还能不能见到饭团众人。然后下一个阶段就是最快速的把论文搞定。公交算法…还是先搜下资料。</p>
+<p>发短信问了问学弟学妹们的近况。发现竟然很多人都被困在长沙了。真的庆幸自己不再长沙。否则春节是别想再回家来了。而且长沙校区还停电。真不知道那群人是咋过的。不过<br />
+还有些学弟学妹很幸运的逃脱了魔掌。战战兢兢的回家了。</p>
 
       
     </div>
@@ -1374,7 +2542,7 @@ use douban: <span class="exturl" data-url="aHR0cDovL2RvdWJhbi5mbS9yYWRpbw==">htt
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/27/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/29/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/27/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/29/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1404,7 +2572,7 @@ use douban: <span class="exturl" data-url="aHR0cDovL2RvdWJhbi5mbS9yYWRpbw==">htt
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">23:58</span>
+    <span title="Reading time total">24:10</span>
   </span>
 </div>
 

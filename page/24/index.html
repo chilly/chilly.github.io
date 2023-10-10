@@ -172,12 +172,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">739</span>
+        <span class="site-state-item-count">750</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/07/07/2010-07-07-absolute-valueinteger/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/27/3156039/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/07/07/2010-07-07-absolute-valueinteger/" class="post-title-link" itemprop="url">Get Absolute Value(integer)</a>
+          <a href="/2008/10/27/3156039/" class="post-title-link" itemprop="url">Open Source Camp校园开源社区聚会</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,23 +243,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-07-07 00:00:00" itemprop="dateCreated datePublished" datetime="2010-07-07T00:00:00+08:00">2010-07-07</time>
+      <time title="Created: 2008-10-27 08:04:00" itemprop="dateCreated datePublished" datetime="2008-10-27T08:04:00+08:00">2008-10-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:05" itemprop="dateModified" datetime="2023-10-06T22:54:05+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
     </span>
 
   
@@ -269,909 +260,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="how to use bit operator and simple +-*/ to get absolute number." />
-<meta name="_su_keywords" content="bit,operator,absolute,complement,number,priority" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="bit operators absolute complement number priority" />
-<meta name="views" content="1060" />
-<meta name="_wp_old_slug" content="absolute-numberinteger" />
-How to get absolute (integer) only use bit operators and +-*/.(In gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)&nbsp; )
-<ul>
-	<li>if number &gt;= 0 , then number &gt;&gt; 31 == 0</li>
-</ul>
-<ul>
-	<li>if number &lt; 0&nbsp;&nbsp; , then number &gt;&gt; 31 == 0xFFFFFFFF</li>
-</ul>
-If some number exclusive or( xor ) 0xFFFFFFFF means each bit becomes its "opposite" number. (1 becomes 0, and 0 becomes 1).And If a number xor 0x00000000 means nothing happened to this number. So:
-<ul>
-	<li>number ^ 0xFFFFFFFF = ~number</li>
-	<li>number ^ 0x00000000 = number</li>
-</ul>
-In this question, you should also know something about<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TaWduZWRfbnVtYmVyX3JlcHJlc2VudGF0aW9ucyNPbmVzLjI3X2NvbXBsZW1lbnQ="> complement number(see two's complement)<i class="fa fa-external-link-alt"></i></span>. When a number is negative, |number| = ~number +1 or you can use |number| = !number + 1. When a number is positive, |number| = number.
-<p>If you know above, then the goal of |x| = (x^(x&gt;&gt;31))+(~(x&gt;&gt;31)+1).</p>
-<p>(x^(x&gt;&gt;31)) means:</p>
-<ul>
-	<li>x &gt;= 0, x^(x&gt;&gt;31) = x^0x00000000 = x</li>
-	<li>x &lt; 0, x^(x&gt;&gt;31) = x^0xFFFFFFFF = ~x</li>
-</ul>
-And (~(x&gt;&gt;31)+1)means:
-<ul>
-	<li>x &gt;= 0, ~(x&gt;&gt;31)+1 = 0xFFFFFFFF+1 = 0</li>
-	<li>x &lt; 0, ~(x&gt;&gt;31)+1 = 0x00000000+1 = 1</li>
-</ul>
-And we should take care of those brackets, because the priorities of operators are: ~ <span style="color: rgb(128, 0, 0); font-size: 16pt;"><strong>&gt;</strong></span> */ <span style="color: rgb(153, 51, 0); font-size: 16pt;"><strong>&gt;</strong></span> + - <strong><span style="color: rgb(153, 51, 0); font-size: 16pt;">&gt;</span></strong> bit operators(&amp;,^,|)
-<table>
-<tbody>
-<tr>
-<th>Level</th>
-<th>Operator</th>
-<th>Description</th>
-<th>Grouping</th>
-</tr>
-<tr>
-<td>1</td>
-<td><tt>::</tt></td>
-<td>scope</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>2</td>
-<td><tt>() [] . -&gt; ++ -- dynamic_cast static_cast  reinterpret_cast const_cast typeid</tt></td>
-<td>postfix</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td rowspan="3">3</td>
-<td><tt>++ -- ~ ! sizeof new delete</tt></td>
-<td>unary  (prefix)</td>
-<td rowspan="3">Right-to-left</td>
-</tr>
-<tr>
-<td><tt>* &amp;</tt></td>
-<td>indirection and reference (pointers)</td>
-</tr>
-<tr>
-<td><tt>+ -</tt></td>
-<td>unary sign operator</td>
-</tr>
-<tr>
-<td>4</td>
-<td><tt>(type)</tt></td>
-<td>type casting</td>
-<td>Right-to-left</td>
-</tr>
-<tr>
-<td>5</td>
-<td><tt>.* -&gt;*</tt></td>
-<td>pointer-to-member</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>6</td>
-<td><tt>* / %</tt></td>
-<td>multiplicative</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>7</td>
-<td><tt>+ -</tt></td>
-<td>additive</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>8</td>
-<td><tt>&lt;&lt; &gt;&gt;</tt></td>
-<td>shift</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>9</td>
-<td><tt>&lt; &gt; &lt;= &gt;=</tt></td>
-<td>relational</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>10</td>
-<td><tt>== !=</tt></td>
-<td>equality</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>11</td>
-<td><tt>&amp;</tt></td>
-<td>bitwise AND</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>12</td>
-<td><tt>^</tt></td>
-<td>bitwise XOR</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>13</td>
-<td><tt>|</tt></td>
-<td>bitwise OR</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>14</td>
-<td><tt>&amp;&amp;</tt></td>
-<td>logical AND</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>15</td>
-<td><tt>||</tt></td>
-<td>logical OR</td>
-<td>Left-to-right</td>
-</tr>
-<tr>
-<td>16</td>
-<td><tt>?:</tt></td>
-<td>conditional</td>
-<td>Right-to-left</td>
-</tr>
-<tr>
-<td>17</td>
-<td><tt>= *= /= %= += -= &gt;&gt;= &lt;&lt;= &amp;= ^= |=</tt></td>
-<td>assignment</td>
-<td>Right-to-left</td>
-</tr>
-<tr>
-<td>18</td>
-<td><tt>,</tt></td>
-<td>comma</td>
-<td>Left-to-right</td>
-</tr>
-</tbody>
-</table>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/07/05/2010-07-05-memory-allocation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/07/05/2010-07-05-memory-allocation/" class="post-title-link" itemprop="url">Memory Allocation in C</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-07-05 00:00:00" itemprop="dateCreated datePublished" datetime="2010-07-05T00:00:00+08:00">2010-07-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:04" itemprop="dateModified" datetime="2023-10-06T22:54:04+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_description" content="c language , memory allocation about malloc function , calloc function and realloc function, free function and new and delete. " />
-<meta name="views" content="1100" />
-<meta name="_su_title" content="memory allocation in c" />
-<meta name="_su_keywords" content="memory, allocation,malloc,calloc,realloc,free,new,delete,c,c++" />
-In c language, there are three methods for memory allocation: malloc(), calloc(), realloc(). And one method to free memory: free().
-<p>The <strong>malloc</strong> function prototype is :<strong> void* malloc(size_t size);</strong> This function will allocates a block of <em>size</em> bytes of memory, returning a pointer to  the beginning of the block. <span style="color: #ff0000;">Attention:</span> this function is only for allocating memory! So the initial value of these memory will be Non-Zero. Maybe sometimes, it will be zero. Code for example:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include&amp;lt;stdlib.h&amp;gt;</span><br><span class="line">int main()&#123;</span><br><span class="line"></span><br><span class="line">	int * a = NULL;</span><br><span class="line">	a = malloc(sizeof(int)*4);</span><br><span class="line">	// like int a[4], but those memory is in heap</span><br><span class="line">	for(int i = 0; i&amp;lt; 4; i++)</span><br><span class="line">		printf(&quot;%d &quot;,a[i]);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>The <strong>realloc</strong> function prototype is :<strong> void* realloc(void* ptr, size_t size);</strong> This function will reallocates a block of <em>size</em> bytes of memory,  returning a pointer to  the beginning of the block. If size is zero and ptr is not <strong>NULL</strong>, it will be used as <strong>free()</strong>. If prt is NULL and size is not zero, it will be used as <strong>malloc()</strong>. If ptr is NULL and size is zero, return value is some kind of memory which contains zero elements! Wooo~~~~. Look at the following codes:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">char * p = NULL;</span><br><span class="line">printf(&quot;%x&quot;,(int)p); // will output 0</span><br><span class="line"></span><br><span class="line">p = (char*)realloc(p,0);</span><br><span class="line">printf(&quot;%x&quot;,(int)p); // will output non-zero</span><br><span class="line"></span><br><span class="line">p = (char*)realloc(p,0);</span><br><span class="line">printf(&quot;%x&quot;,(int)p);</span><br></pre></td></tr></table></figure>
-<p>why?! Because if this function is called successfully, it will return non-zero memory address. And you will see the third output <strong>subtract </strong>the second output will be<strong> 16 bytes</strong>. If ptr is not NULL , and size is non-zero, and current block can simply expand without moving,  the return value is the same as ptr. But there is not enough space for simply expand, it will execute<strong> free(ptr) and return malloc(size)</strong>. This function will become very <span style="color: #ff0000;">dangerous!</span></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char * k = (char*)realloc(NULL,100);</span><br><span class="line">char * kbigger = (char*)realloc(k,104);</span><br><span class="line">char * kbiggest = (char*)realloc(k,106); &lt;span style=&quot;color: #ff0000;&quot;&gt;// crash!&lt;/span&gt;</span><br></pre></td></tr></table></figure>
-<p>Safety called will be like the following:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char * k = (char*)realloc(NULL,100);</span><br><span class="line">k = (char*)realloc(k,4); // k&#x27;s address is not changed</span><br><span class="line">k = (char*)realloc(k,104); // k&#x27;s address is changed</span><br></pre></td></tr></table></figure>
-<p>If there is not enough free memory to be allocated, this function will return NULL.<span style="color: #ff0000;">Attention:</span> this function will not initialize those memory also.</p>
-<p><strong>calloc</strong>'s prototype is void* calloc(int num, size_t size).</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">char* p = (char*)calloc(20,sizeof(char));</span><br><span class="line"></span><br><span class="line">// it is equal to</span><br><span class="line"></span><br><span class="line">char* p = (char*)malloc(20*sizeof(char));</span><br><span class="line">memset(p,0,20*sizeof(char));</span><br></pre></td></tr></table></figure>
-<p><span style="color: #ff0000;">But calloc is efficient!</span></p>
-<p><span style="color: #ff0000;"> <strong> </strong><span style="color: #000000;"><strong>free</strong> function is to delete memory which has been allocated. But free function will not assign the point to zero.</span></span></p>
-<p><span style="color: #ff0000;"><span style="color: #000000;"></span></span></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">char * p = (char*)calloc(100);</span><br><span class="line"></span><br><span class="line">p[0] = &#x27;a&#x27;;</span><br><span class="line">printf(&quot;%c&quot;,p[0]);   // output &#x27;a&#x27;</span><br><span class="line">printf(&quot;%x&quot;,(int)p);</span><br><span class="line">free(p);</span><br><span class="line">printf(&quot;%c&quot;,p[0]); // output nothing</span><br><span class="line">printf(&quot;%x&quot;,(int)p); // the value is the same as the first.</span><br></pre></td></tr></table></figure>
-<p>And all of those functions will not recommend to be used in c++, because those functions will not initialize class structure or v_ptr. free() function will not destruct parent class when sub class is destructed. In c++, maybe should always use <strong>new</strong> and <strong>delete</strong>!</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/07/02/5709968/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/07/02/5709968/" class="post-title-link" itemprop="url">XMLCSPReader Null Point Error</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-07-02 19:28:00" itemprop="dateCreated datePublished" datetime="2010-07-02T19:28:00+08:00">2010-07-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>package queens; import java.io.FileNotFoundException; import<br />
-java.io.IOException; import org.sat4j.csp.SolverFactory; import<br />
-org.sat4j.reader.ParseFormatException; import org.sat4j.reader.XMLCSPReader;<br />
-import org.sat4j.specs.ContradictionException; import<br />
-org.sat4j.specs.IProblem; import org.sat4j.specs.ISolver; import<br />
-org.sat4j.specs.TimeoutException; import org.sat4j.tools.ModelIterator; public<br />
-class Solver { public static void main(String[] args) { ISolver solver =<br />
-SolverFactory.newDefault(); solver.setTimeout(360); ModelIterator mi = new<br />
-ModelIterator(solver); XMLCSPReader reader = new XMLCSPReader(solver); try {<br />
-if (reader != null) reader.parseInstance(“queens.xml”); IProblem problem = mi;<br />
-boolean unsat = true; int count = 1; while (problem.isSatisfiable()) { unsat =<br />
-false; System.out.print(“[” + count + &quot;] “); for (int i = 0; i &lt;<br />
-mi.model().length; i++) { System.out.print(mi.model()[i] + &quot; “); }<br />
-System.out.println(””); // Call mi.model() to be sure you iterate to the next<br />
-solution mi.model(); count++; } if (unsat) {<br />
-System.out.println(“Unsitisfied”); } } catch (TimeoutException e) {<br />
-System.out.println(“Timeout”); } catch (FileNotFoundException e) {<br />
-System.out.println(“File not found”); } catch (IOException e) {<br />
-System.out.println(“IO Exception”); } catch (ParseFormatException e) {<br />
-System.out.println(“ParseFormatException”); } catch (ContradictionException e)<br />
-{ System.out.println(“Contradiction”); } catch (java.lang.NullPointerException<br />
-e) { System.out.print(“NullPointerException”); } } }</p>
-<p>上面一段代码不知道如何，一直报NULL Point Exception. 最后发现并非是代码写错，而是因为jre不对。需要使用opensdk-1.6。</p>
-<p><img src="http://hi.csdn.net/attachment/201007/2/0_1278069103M0j0.gif" alt="" /></p>
-<p>然后：</p>
-<p><img src="http://hi.csdn.net/attachment/201007/2/0_1278069268oWP9.gif" alt="java" /></p>
-<p>然后：</p>
-<p><img src="http://hi.csdn.net/attachment/201007/2/0_1278069345M766.gif" alt="java" /></p>
-<p>选中java-opensdk1.6 然后在外面选中刚才的JavaSE-1.6 :</p>
-<p><img src="http://hi.csdn.net/attachment/201007/2/0_1278069450Fl9g.gif" alt="" /></p>
-<p>有时候eclipse报出Class Not Found错误，可能是因为jar包应该放在external<br />
-jar的地方，但是你却放错了位置。添加external jar的地方。如果想添加external jars,需要在：</p>
-<p><img src="http://hi.csdn.net/attachment/201007/2/0_1278069654J18h.gif" alt="" /></p>
-<p>选中propertise,然后：</p>
-<p><img src="http://hi.csdn.net/attachment/201007/2/0_1278069784s1ld.gif" alt="" /></p>
-<p>左边add external jars, 添加需要的jar即可。</p>
-<p>如果发生了selection dose not contain a main type,<br />
-那么就需要重新创建一个Project,然后将你的文件再重新导入到新的Project中。或者粘贴过去。不知道为什么eclipse经常发生这个错误。</p>
-<p><span class="exturl" data-url="aHR0cDovL3huLS1YTUxDU1BSZWFkZXJqYXJzYXQ0ai05ZDQ1YWpnOTFhcDdtZzEzYm5jcmJ3MmdjbzFlNDV0YTR2MWllcDFkN3NjLm9yZw==">上面一个XMLCSPReader的各种jar文件需要在sat4j.org<i class="fa fa-external-link-alt"></i></span> 上下载。该下模块的都下，但是注意版本号。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/30/2010-06-30-try-catch-exception-c/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/06/30/2010-06-30-try-catch-exception-c/" class="post-title-link" itemprop="url">try...catch...exception in C++</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-06-30 00:00:00" itemprop="dateCreated datePublished" datetime="2010-06-30T00:00:00+08:00">2010-06-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:05:22" itemprop="dateModified" datetime="2023-10-05T23:05:22+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>4.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="try...catch...exception in c++, and it describe how to use it.  the philosophy of exceptions." />
-<meta name="_su_keywords" content="c,c++,exception,throw, catch,try" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="try...catch...exception in c++" />
-<meta name="views" content="2645" />
-if you will throw something, you should catch it as the same type. like following:
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">int main()&#123;</span><br><span class="line">    try&#123;</span><br><span class="line">        throw 20;</span><br><span class="line">    &#125;catch(int i)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;Exception Num is NO.&quot;&amp;lt;&amp;lt;i&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    try&#123;</span><br><span class="line">        throw &#x27;X&#x27;;</span><br><span class="line">    &#125;catch(char c)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;this exception is a char:&quot;&amp;lt;&amp;lt;c&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    try&#123;</span><br><span class="line">        throw &quot;abc&quot;;</span><br><span class="line">    &#125;catch(const char * e)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;this is string exception:&quot;&amp;lt;&amp;lt;e&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    try&#123;</span><br><span class="line">        int *d = new int(65);</span><br><span class="line">        throw d;</span><br><span class="line">    &#125;catch(const int * e)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;this is int point exception:&quot;&amp;lt;&amp;lt;*e&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    /* ok, catch will handle everything, if you throw correct type.*/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>and if you want create classes for exceptions. You should add #include&lt;exception&gt; and inherit exception class, and then override the function “<strong>what</strong>”.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#include&amp;lt;iostream&amp;gt;</span><br><span class="line">#include&amp;lt;exception&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">/// this exception class is from #include&amp;lt;exception&amp;gt;</span><br><span class="line">/// you should override the function what() to generate your exception string</span><br><span class="line">class MyException: public exception&#123;</span><br><span class="line">    virtual const char* what() const throw()&#123;</span><br><span class="line">        return &quot;myExceptions!!!!!!!&quot;;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class SubException: public MyException&#123;</span><br><span class="line">    virtual const char* what()const throw()&#123;</span><br><span class="line">        return &quot;sub exception !!!!!!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    try&#123;</span><br><span class="line">        throw MyException();</span><br><span class="line">    &#125;catch(exception&amp;amp; e)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; e.what()&amp;lt;&amp;lt;endl;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    try&#123;</span><br><span class="line">        throw SubException();</span><br><span class="line">    &#125;catch(bad_alloc&amp;amp;)&#123;</span><br><span class="line">        // this will not occur, just test this type.</span><br><span class="line">        // if it is occured, your computer will be locked.</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;nothing&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;catch(exception&amp;amp; e)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; e.what()&amp;lt;&amp;lt;endl;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>There are some standard exceptions in exception.h. These exceptions are:</p>
-<p><strong>bad_alloc</strong></p>
-<p>A bad_alloc is thrown by new if an allocation failure occurs.</p>
-<p><strong>bad_cast</strong></p>
-<p>A bad_cast is thrown by dynamic_cast when it fails with a referenced  type.</p>
-<p><strong>bad_exception</strong></p>
-<p>A bad_exception is thrown when an exception type doesn’t match any  catch</p>
-<p><strong>bad_typeid</strong></p>
-<p>A bad_typeid is thrown by typeid</p>
-<p><strong>ios_base::failure</strong></p>
-<p>An ios_base::failure is thrown by functions in the iostream library.</p>
-<p>in #include&lt;stdexecpt&gt; can use these exception:<br />
-class <strong>logic_error</strong>; // :  public exception<br />
-class <strong>domain_error</strong>; // :  public logic_error<br />
-class <strong>invalid_argument</strong>; // : public logic_error<br />
-class<strong> length_error</strong>; // :  public logic_error<br />
-class <strong>out_of_range</strong>; // :  public logic_error<br />
-class <strong>runtime_error</strong>; // :  public exception<br />
-class <strong>range_error</strong>; // :  public runtime_error<br />
-class <strong>overflow_error</strong>; // :  public runtime_error<br />
-class <strong>underflow_error</strong>; // :  public runtime_error</p>
-<p>If you don’t know which kind of exception will occur. you should use <strong>catch(…)</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">        srand(time(NULL));</span><br><span class="line">        int i = rand()%4;</span><br><span class="line"></span><br><span class="line">        switch(i)&#123;</span><br><span class="line">            case 0:</span><br><span class="line">                throw; // terminate called without an active exception</span><br><span class="line">                       // Aborted, ... will not catch it.</span><br><span class="line">                break;</span><br><span class="line">            case 1:</span><br><span class="line">                throw &#x27;x&#x27;;</span><br><span class="line">                break;</span><br><span class="line">            case 2:</span><br><span class="line">                throw 50;</span><br><span class="line">                break;</span><br><span class="line">            case 3:</span><br><span class="line">                throw &quot;my string&quot;;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;catch(...)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;I don&#x27;t know which exception will occur!&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>But when i == 0, the program will execute throw;, and it will exit and print:</p>
-<blockquote>terminate called without an active exception
-<p>Aborted</blockquote><br />
-<strong>You should specify something to throw. throw; is only be used within catch clauses.</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">        try&#123;</span><br><span class="line">            throw 2;</span><br><span class="line">        &#125;catch(int i)&#123;</span><br><span class="line">            throw; // here I use it again!</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;catch(...)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;re-throw it!!!!&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>you can declare your functions using throw(). But it is just declare!  you can throw everything! But you declare it will throw bad_exception, and use set_unexpected(), it will process some unexpected exceptions.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">void foo() throw(int,bad_exception)&#123;</span><br><span class="line"></span><br><span class="line">    throw &quot;abc&quot;;</span><br><span class="line">&#125;</span><br><span class="line">void myunexpected()&#123;</span><br><span class="line">    cout &amp;lt;&amp;lt; &quot;I get unexpected exceptions!&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">    throw;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// in main</span><br><span class="line"></span><br><span class="line">    set_unexpected(myunexpected);</span><br><span class="line">    try&#123;</span><br><span class="line">        foo();</span><br><span class="line">    &#125;catch(int)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;catch a integer&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;catch(bad_exception&amp;amp;)&#123;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;bad_exception&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    // you can use catch(...)</span><br></pre></td></tr></table></figure>
-<p>output is</p>
-<blockquote>I get unexpected exceptions!
-bad_exception</blockquote>
-If the program or your function can not process some kind of situation. you should throw something out.  Sometime, someone argued that it will reduce the usability. But If you don't stop the processing(program or function), it will create a disaster.  Remember, by all means, throw it! But should we catch those exceptions and how we catch those? e....as your wish. Some bug will not appear, if you use not appropriate catch and process those exceptions in unsuitable way. If your program have some bug, and it is difficult to find, please delete all catches!
-<p>In some languages which have finally clauses. But in c++, it dose not have finally clauses.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/29/5700952/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/06/29/5700952/" class="post-title-link" itemprop="url">博弈问题及SG函数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-06-29 09:11:00" itemprop="dateCreated datePublished" datetime="2010-06-29T09:11:00+08:00">2010-06-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>6.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>转载自<span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbG9naWNfbnV0L2FyY2hpdmUvMjAwOS8xMC8yMi80NzExNDg5LmFzcHg=">http://blog.csdn.net/logic_nut/archive/2009/10/22/4711489.aspx<i class="fa fa-external-link-alt"></i></span></p>
-<p>推荐看看：<span class="exturl" data-url="aHR0cDovL3d3dy5tYXRoLnVjbGEuZWR1L350b20v">http://www.math.ucla.edu/~tom/<i class="fa fa-external-link-alt"></i></span></p>
-<p>学习理论在这里：<span class="exturl" data-url="aHR0cDovL3d3dy5tYXRoLnVjbGEuZWR1L350b20vR2FtZV9UaGVvcnkvQ29udGVudHMuaHRtbA==">http://www.math.ucla.edu/~tom/Game_Theory/Contents.html<i class="fa fa-external-link-alt"></i></span></p>
-<p>博弈问题<br />
-若你想仔细学习博弈论，我强烈推荐加利福尼亚大学的Thomas S.<br />
-Ferguson教授精心撰写并免费提供的这份教材，它使我受益太多。（如果你的英文水平不足以阅读它，我只能说，恐怕你还没到需要看“博弈论”的时 候。）</p>
-<p>Nim游戏是博弈论中最经典的模型（之一？），它又有着十分简单的规则和无比优美的结论，由这个游戏开始了解博弈论恐怕是最合适不过了。</p>
-<p>Nim游戏是组合游戏(Combinatorial Games)的一种，准确来说，属于“Impartial Combinatorial<br />
-Games”（以下简称ICG）。满足以下条件的游戏是ICG（可能不太严谨）：1、有两名选手；2、两名选手交替对游戏进行移动(move)，每次一<br />
-步，选手可以在（一般而言）有限的合法移动集合中任选一种进行移动；3、对于游戏的任何一种可能的局面，合法的移动集合只取决于这个局面本身，不取决于轮<br />
-到哪名选手操作、以前的任何操作、骰子的点数或者其它什么因素；<br />
-4、如果轮到某名选手移动，且这个局面的合法的移动集合为空（也就是说此时无法进行移动），则这名选手负。根据这个定义，很多日常的游戏并非ICG。例如<br />
-象棋就不满足条件3，因为红方只能移动红子，黑方只能移动黑子，合法的移动集合取决于轮到哪名选手操作。</p>
-<p>通常的Nim游戏的定义是这样的：有若干堆石子，每堆石子的数量都是有限的，合法的移动是“选择一堆石子并拿走若干颗（不能不拿）”，如果轮到某个人时所<br />
-有的石子堆都已经被拿空了，则判负（因为他此刻没有任何合法的移动）。</p>
-<p>这游戏看上去有点复杂，先从简单情况开始研究吧。如果轮到你的时候，只剩下一堆石子，那么此时的必胜策略肯定是把这堆石子全部拿完一颗也不给对手剩，然后<br />
-对手就输了。如果剩下两堆不相等的石子，必胜策略是通过取多的一堆的石子将两堆石子变得相等，以后如果对手在某一堆里拿若干颗，你就可以在另一堆中拿同样<br />
-多的颗数，直至胜利。如果你面对的是两堆相等的石子，那么此时你是没有任何必胜策略的，反而对手可以遵循上面的策略保证必胜。如果是三堆石子……好像已经<br />
-很难分析了，看来我们必须要借助一些其它好用的（最好是程式化的）分析方法了，或者说，我们最好能够设计出一种在有必胜策略时就能找到必胜策略的算法。</p>
-<p>定义P-position和N-position，其中P代表Previous，N代表Next。直观的说，上一次move的人有必胜策略的局面是P-<br />
-position，也就是“后手可保证必胜”或者“先手必败”，现在轮到move的人有必胜策略的局面是N-position，也就是“先手可保证必<br />
-胜”。更严谨的定义是：1.无法进行任何移动的局面（也就是terminal position）是P-position；2.可以移动到P-<br />
-position的局面是N-position；3.所有移动都导致N-position 的局面是P-position。</p>
-<p>按照这个定义，如果局面不可能重现，或者说positions的集合可以进行拓扑排序，那么每个position或者是P-position或者是N-<br />
-position，而且可以通过定义计算出来。</p>
-<p>以Nim游戏为例来进行一下计算。比如说我刚才说当只有两堆石子且两堆石子数量相等时后手有必胜策略，也就是这是一个P-position，下面我们依靠<br />
-定义证明一下(3,3)是一个P-position。首先(3,3)的子局面（也就是通过合法移动可以导致的局面）有(0,3)(1,3)(2,3)（显<br />
-然交换石子堆的位置不影响其性质，所以把(x,y)和(y,x)看成同一种局面），只需要计算出这三种局面的性质就可以了。<br />
-(0,3)的子局面有(0,0)、(0,1)、(0,2)，其中(0,0)显然是P-position，所以(0,3)是N-position（只要找到 一个是P-<br />
-position的子局面就能说明是N-position）。(1,3)的后继中(1,1)是P-position（因为(1,1)的唯一子局 面(0,1)是N-<br />
-position），所以(1,3)也是N-position。同样可以证明(2,3)是N-position。所以(3,3)的所有 子局面都是N-<br />
-position，它就是P-position。通过一点简单的数学归纳，可以严格的证明“有两堆石子时的局面是P-position当且<br />
-仅当这两堆石子的数目相等”。</p>
-<p>根据上面这个过程，可以得到一个递归的算法——对于当前的局面，递归计算它的所有子局面的性质，如果存在某个子局面是P-position，那么向这个子<br />
-局面的移动就是必胜策略。当然，可能你已经敏锐地看出有大量的重叠子问题，所以可以用DP或者记忆化搜索的方法以提高效率。但问题是，利用这个算法，对于<br />
-某个Nim游戏的局面(a1,a2,…,an)来说，要想判断它的性质以及找出必胜策略，需要计算O(a1<em>a2</em>…*an)个局面的性质，不管<br />
-怎样记忆化都无法降低这个时间复杂度。所以我们需要更高效的判断Nim游戏的局面的性质的方法。</p>
-<p>直接说结论好了。(Bouton’s Theorem)对于一个Nim游戏的局面(a1,a2,…,an)，它是P-<br />
-position当且仅当a1<sup>a2</sup>…<sup>an=0，其中</sup>表示异<br />
-或(xor)运算。怎么样，是不是很神奇？我看到它的时候也觉得很神奇，完全没有道理的和异或运算扯上了关系。但这个定理的证明却也不复杂，基本上就是按<br />
-照两种position的证明来的。</p>
-<p>根据定义，证明一种判断position的性质的方法的正确性，只需证明三个命题： 1、这个判断将所有terminal position判为P-<br />
-position；2、根据这个判断被判为N-position的局面一定可以移动到某个P-position；3、根据这个判 断被判为P-<br />
-position的局面无法移动到某个P-position。</p>
-<p>第一个命题显然，terminal position只有一个，就是全0，异或仍然是0。</p>
-<p>第二个命题，对于某个局面(a1,a2,…,an)，若a1<sup>a2</sup>…^an!=0，一定存在某个合法的移动，将ai改变成ai’后满足<br />
-a1<sup>a2</sup>…<sup>ai’</sup>…<sup>an=0。不妨设a1</sup>a2<sup>…</sup>an=k，则一定存在某个ai，它的二进制表示在k的最高位上是1（否则k的<br />
-最高位那个1是怎么得到的）。这时ai<sup>k&lt;ai一定成立。则我们可以将ai改变成ai’=ai</sup>k，此时<br />
-a1<sup>a2</sup>…<sup>ai’</sup>…<sup>an=a1</sup>a2<sup>…</sup>an^k=0。</p>
-<p>第三个命题，对于某个局面(a1,a2,…,an)，若a1<sup>a2</sup>…^an=0，一定不存在某个合法的移动，将ai改变成ai’后满足<br />
-a1<sup>a2</sup>…<sup>ai’</sup>…<sup>an=0。因为异或运算满足消去率，由a1</sup>a2<sup>…</sup>an=a1<sup>a2</sup>…<sup>ai’</sup>…^an可以得<br />
-到ai=ai’。所以将ai改变成ai’不是一个合法的移动。证毕。</p>
-<p>根据这个定理，我们可以在O(n)的时间内判断一个Nim的局面的性质，且如果它是N-position，也可以在O(n)的时间内找到所有的必胜策略。<br />
-Nim问题就这样基本上完美的解决了。</p>
-<p>在下一节“Sprague-Grundy函数”中，我们将面对更多与Nim游戏有关的变种，还会看到Nim游戏的a1<sup>a2</sup>…^an这个值更广泛的<br />
-意义。敬请期待。<br />
-上一期的文章里我们仔细研究了Nim游戏，并且了解了找出必胜策略的方法。但如果把Nim的规则略加改变，你还能很快找出必胜策略吗？比如说：有n堆石<br />
-子，每次可以从第1堆石子里取1颗、2颗或3颗，可以从第2堆石子里取奇数颗，可以从第3堆及以后石子里取任意颗……这时看上去问题复杂了很多，但相信你<br />
-如果掌握了本节的内容，类似的千变万化的问题都是不成问题的。</p>
-<p>现在我们来研究一个看上去似乎更为一般的游戏：给定一个有向无环图和一个起始顶点上的一枚棋子，两名选手交替的将这枚棋子沿有向边进行移动，无法移动者判<br />
-负。事实上，这个游戏可以认为是所有Impartial Combinatorial<br />
-Games的抽象模型。也就是说，任何一个ICG都可以通过把每个局面看成一个顶点，对每个局面和它的子局面连一条有向边来抽象成这个“有向图游戏”。下<br />
-面我们就在有向无环图的顶点上定义Sprague-Garundy函数。</p>
-<p>首先定义mex(minimal excludant)运算，这是施加于一个集合的运算，表示最小的不属于这个集合的非负整数。例如mex{0,1,2,4}=3、<br />
-mex{2,3,5}=0、mex{}=0。</p>
-<p>对于一个给定的有向无环图，定义关于图的每个顶点的Sprague-Garundy函数g如下：g(x)=mex{ g(y) | y是x的后继 }。</p>
-<p>来看一下SG函数的性质。首先，所有的terminal<br />
-position所对应的顶点，也就是没有出边的顶点，其SG值为0，因为它的后继集合是空集。然后对于一个g(x)=0的顶点x，它的所有后继y都满足<br />
-g(y)!=0。对于一个g(x)!=0的顶点，必定存在一个后继y满足g(y)=0。</p>
-<p>以上这三句话表明，顶点x所代表的postion是P-position当且仅当g(x)=0（跟P-positioin/N-position的定义的<br />
-那三句话是完全对应的）。我们通过计算有向无环图的每个顶点的SG值，就可以对每种局面找到必胜策略了。但SG函数的用途远没有这样简单。如果将有向图游<br />
-戏变复杂一点，比如说，有向图上并不是只有一枚棋子，而是有n枚棋子，每次可以任选一颗进行移动，这时，怎样找到必胜策略呢？</p>
-<p>让我们再来考虑一下顶点的SG值的意义。当g(x)=k时，表明对于任意一个0&lt;=i&lt;k，都存在x的一个后继y满足g(y)=i。也就是<br />
-说，当某枚棋子的SG值是k时，我们可以把它变成0、变成1、……、变成k-1，但绝对不能保持k不变。不知道你能不能根据这个联想到Nim游戏，Nim<br />
-游戏的规则就是：每次选择一堆数量为k的石子，可以把它变成0、变成1、……、变成k-1，但绝对不能保持k不变。这表明，如果将n枚棋子所在的顶点的<br />
-SG值看作n堆相应数量的石子，那么这个Nim游戏的每个必胜策略都对应于原来这n枚棋子的必胜策略！</p>
-<p>对于n个棋子，设它们对应的顶点的SG值分别为(a1,a2,…,an)，再设局面(a1,a2,…,an)时的Nim游戏的一种必胜策略是把<br />
-ai变成k，那么原游戏的一种必胜策略就是把第i枚棋子移动到一个SG值为k的顶点。这听上去有点过于神奇——怎么绕了一圈又回到Nim游戏上了。</p>
-<p>其实我们还是只要证明这种多棋子的有向图游戏的局面是P-position当且仅当所有棋子所在的位置的SG函数的异或为0。这个证明与上节的 Bouton’s<br />
-Theorem几乎是完全相同的，只需要适当的改几个名词就行了。</p>
-<p>刚才，我为了使问题看上去更容易一些，认为n枚棋子是在一个有向图上移动。但如果不是在一个有向图上，而是每个棋子在一个有向图上，每次可以任选一个棋子<br />
-（也就是任选一个有向图）进行移动，这样也不会给结论带来任何变化。</p>
-<p>所以我们可以定义有向图游戏的和(Sum of Graph<br />
-Games)：设G1、G2、……、Gn是n个有向图游戏，定义游戏G是G1、G2、……、Gn的和(Sum)，游戏G的移动规则是：任选一个子游戏Gi<br />
-并移动上面的棋子。Sprague-Grundy<br />
-Theorem就是：g(G)=g(G1)<sup>g(G2)</sup>…^g(Gn)。也就是说，游戏的和的SG函数值是它的所有子游戏的SG函数值的异或。</p>
-<p>再考虑在本文一开头的一句话：任何一个ICG都可以抽象成一个有向图游戏。所以“SG函数”和“游戏的和”的概念就不是局限于有向图游戏。我们给每个<br />
-ICG的每个position定义SG值，也可以定义n个ICG的和。所以说当我们面对由n个游戏组合成的一个游戏时，只需对于每个游戏找出求它的每个局<br />
-面的SG值的方法，就可以把这些SG值全部看成Nim的石子堆，然后依照找Nim的必胜策略的方法来找这个游戏的必胜策略了！</p>
-<p>回到本文开头的问题。有n堆石子，每次可以从第1堆石子里取1颗、2颗或3颗，可以从第2堆石子里取奇数颗，可以从第3堆及以后石子里取任意颗……我们可<br />
-以把它看作3个子游戏，第1个子游戏只有一堆石子，每次可以取1、2、3颗，很容易看出x颗石子的局面的SG值是x%4。第2个子游戏也是只有一堆石子，<br />
-每次可以取奇数颗，经过简单的画图可以知道这个游戏有x颗石子时的SG值是x%2。第3个游戏有n-2堆石子，就是一个Nim游戏。对于原游戏的每个局<br />
-面，把三个子游戏的SG值异或一下就得到了整个游戏的SG值，然后就可以根据这个SG值判断是否有必胜策略以及做出决策了。其实看作3个子游戏还是保守了<br />
-些，干脆看作n个子游戏，其中第1、2个子游戏如上所述，第3个及以后的子游戏都是“1堆石子，每次取几颗都可以”，称为“任取石子游戏”，这个超简单的<br />
-游戏有x颗石子的SG值显然就是x。其实，n堆石子的Nim游戏本身不就是n个“任取石子游戏”的和吗？</p>
-<p>所以，对于我们来说，SG函数与“游戏的和”的概念不是让我们去组合、制造稀奇古怪的游戏，而是把遇到的看上去有些复杂的游戏试图分成若干个子游戏，对于<br />
-每个比原游戏简化很多的子游戏找出它的SG函数，然后全部异或起来就得到了原游戏的SG函数，就可以解决原游戏了。<br />
-例子程序：<br />
-acm.hdu上的例子</p>
-<p>A New Tetris Game 22222</p>
-<p>#include <iostream><br />
-#include <set><br />
-#include <bitset><br />
-#include <map><br />
-//#include <algorithm><br />
-using namespace std;</p>
-<p>//better if find area that not linked and sg each<br />
-typedef bitset&lt;32&gt; int_set;<br />
-struct array2{<br />
-bitset&lt;64&gt; bs;<br />
-int r,c;<br />
-bool operator&lt;(const array2&amp; a2)const{<br />
-if(r!=a2.r)return r&lt;a2.r;<br />
-if(c!=a2.c)return c&lt;a2.c;<br />
-return <em>(long long</em>)&amp;bs&lt; <em>(long long</em>)&amp;<span class="exturl" data-url="aHR0cDovL2EyLmJz">a2.bs<i class="fa fa-external-link-alt"></i></span>;<br />
-}<br />
-bitset&lt;64&gt;::reference operator()(int ir,int ic){<br />
-return bs[ir*c+ic];<br />
-}<br />
-}g;<br />
-inline int mex(const int_set&amp; is){<br />
-if(is.none())return 0;<br />
-for(int i=0;i!=32;++i){ //assum i will never exceed 32<br />
-if(is.test(i)==0)<br />
-return i;<br />
-}<br />
-}<br />
-inline bool check_ok(int ir,int ic){<br />
-return !g(ir,ic)&amp;&amp;!g(ir+1,ic)&amp;&amp;!g(ir,ic+1)&amp;&amp;!g(ir+1,ic+1);<br />
-}<br />
-map&lt;array2,int&gt; ma;<br />
-inline void set_it(int ir,int ic,int s){<br />
-g(ir,ic)=s;<br />
-g(ir+1,ic)=s;<br />
-g(ir,ic+1)=s;<br />
-g(ir+1,ic+1)=s;<br />
-}<br />
-inline int sg(int r,int c){<br />
-map&lt;array2,int&gt;::iterator p=ma.find(g);//optimizing for the repeated<br />
-if(p!=ma.end())return p-&gt;second;<br />
-int_set sgs;<br />
-for(int i=0;i&lt;r-1;++i)<br />
-for(int j=0;j&lt;c-1;++j)<br />
-if(check_ok(i,j)){<br />
-set_it(i,j,1);<br />
-sgs.set(sg(r,c));<br />
-set_it(i,j,0);<br />
-}<br />
-return ma[g]=mex(sgs);<br />
-}<br />
-int main(){<br />
-int n;<br />
-while(cin&gt;&gt;n){<br />
-int out=0;<br />
-while(n–){<br />
-int r,c;<br />
-cin&gt;&gt;g.r &gt;&gt;g.c;<br />
-for(int i=0;i!=g.r;++i)<br />
-for(int j=0;j!=g.c;++j){<br />
-char c;<br />
-cin&gt;&gt;c;<br />
-g(i,j)=c-‘0’;<br />
-}<br />
-out^=sg(g.r,g.c);<br />
-}<br />
-cout&lt;&lt;(out?“Yes”:“No”)&lt;&lt;endl;<br />
-}<br />
-return 0;<br />
-}</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/28/5698822/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/06/28/5698822/" class="post-title-link" itemprop="url">Python 解析XML</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-06-28 10:58:00" itemprop="dateCreated datePublished" datetime="2010-06-28T10:58:00+08:00">2010-06-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>763</span>
+      <span>666</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1189,24 +278,20 @@ return 0;<br />
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><root> <nodes> <node name="n1"> node1 </node> <node name="n2"> node2 </node><br />
-</nodes> <edge> nothing </edge> </root></p>
-<p>xml 格式如上.</p>
-<p>首先要得到root节点:</p>
-<p>from xml.etree.ElementTree import ElementTree tree = ElementTree()<br />
-tree.parse(filename) # 你想使用哪个文件作为输入? root = tree.getroot()<br />
-“”“如果你的输入的是一段content”“” from xml.etree.ElementTree import XML file =<br />
-open(filename) content = file.read(-1) root = XML(content) print(root.tag)<br />
-file.close() # or you can use from xml.etree.ElementTree import XMLID file =<br />
-open(filename) root = XMLID(file.read(-1)) print(root[0].tag) # root[0] is<br />
-<root></root> file.close()</p>
-<p>上面的root是class Element的object, 而tree 是ElementTree的object. 如果想得到某个节点的attribute,<br />
-例如<node name="name1"><br />
-则element.attrib[‘name’]即可.如果是<edge>text</edge>,就是element.text.</p>
-<p>如果想得到下一层节点,可以使用root.find(tag)得到,如果不知道具体的tag,那么可以使用root.getchildren().如果想使用某个ta<br />
-g作为迭代,例如nodes中有两个node.代码如下:</p>
-<p>element_nodes = root.find(‘nodes’) nodes_list =<br />
-element_nodes.getiterator(‘node’) for node in nodes_list: print(node.tag)</p>
+          <p>主要是为了件T恤和免费的东西吃才去的。</p>
+<p>不过在听别人的讲的过程中也有点点滴滴的体会,同时也扩展了自己的知识面。</p>
+<p>RSpec这个是可以将文本语言转换为代码的工具。感觉挺新奇的。于是有了些想法:编程语言-&gt;中间语言-&gt;自然语言。似乎必须经历这一个过程。所以人们一味的创建自<br />
+然语言到程序代码的强制转换，似乎有些勉强。之所以是编程语言-&gt;中间语言-&gt;自然语言而不是编程语言&lt;-中间语言&lt;-自然语言.是因为其实有很多自然语言连人类自己<br />
+的都很难识别。所以更别说机器了。所以机器能识别的语言应该是自然语言的子集，而不是全集。</p>
+<p>从Testing Scenario(测试场景)-&gt;自动化测试，其实我认为这里还是单箭头。利用刚才的RSpec这个工具，似乎可以达到这个效果。RSpec做的事<br />
+情说的直白点就是从文档到软件是转换。千古难题呀！</p>
+<p>DW2的CEO的一句话“without software, we are<br />
+nothing.”细细想来，感触很多。感觉自己应该有第二门手艺，一门完全脱离计算机还能养活自己的手艺。</p>
+<p>CISCO的人很想把Network与Application融合到一起。然后说了一句话：“Network is always in the middle.”</p>
+<p>听了一个创业人所讲的创业经历：</p>
+<p>1.做产品还是做开发。（其实这两者是不一样的，很多人都会编码，但是不会写文档，不会做界面。）</p>
+<p>2.让少量的人做大量的事。这是一个产品化的过程。也是一个开始盈利的过程。</p>
+<p>3.知道自己擅长什么。这个很关键。不过入行才几年的人的确不知道自己擅长什么。</p>
 
       
     </div>
@@ -1233,7 +318,7 @@ element_nodes.getiterator(‘node’) for node in nodes_list: print(node.tag)</p
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/21/5683238/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/25/3141288/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1251,7 +336,7 @@ element_nodes.getiterator(‘node’) for node in nodes_list: print(node.tag)</p
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/06/21/5683238/" class="post-title-link" itemprop="url">Static 关键字用途</a>
+          <a href="/2008/10/25/3141288/" class="post-title-link" itemprop="url">编程练习——Huffman编码</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1262,14 +347,1790 @@ element_nodes.getiterator(‘node’) for node in nodes_list: print(node.tag)</p
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-06-21 10:47:00" itemprop="dateCreated datePublished" datetime="2010-06-21T10:47:00+08:00">2010-06-21</time>
+      <time title="Created: 2008-10-25 08:56:00" itemprop="dateCreated datePublished" datetime="2008-10-25T08:56:00+08:00">2008-10-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这个类的名字叫huffman Tree，但是不仅仅是生成huffman Tree，因为Huffman树的生成要使用优先队列，也就是堆。stl中其实有这个的实<br />
+现。但是我机器里的vs2005这个堆的使用有点小bug（估计是stl中使用的就是数组存储，而且数组一旦固定大小，就再也无法改变，其实这样实现失去了堆的某些特<br />
+性。 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/10/25/3141267.aspx"> _ 所以我还是自己实现了一下 _<br />
+</a> 。顺便练习下。）。刚开始的时候<br />
+就采用int作为编码的存储单元。后来发现huffman是可变长编码。所以使用int作为编码单元就失去了huffman的特性。于是寻找bit数组。找到了bit<br />
+set这个stl类，却发现这个是不可变的。无语。只得自己实现一个可变大小的 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/10/25/3141275.aspx"> _ bit vector _<br />
+</a><br />
+。然后近乎重写了这个Huffman的编码和解码。不过也不是很难。在这之间又陆陆续续的发现了一系列的bug和编译错误。对以后的编程大有启发。</p>
+<ol>
+<li>/* created by chico chen</li>
+<li>*  date 2008/10/25</li>
+<li>*/</li>
+<li>
+<ol start="5">
+<li>
+<ol start="6">
+<li>#ifndef <em>HUFFMAN_TREE</em></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>#define <em>HUFFMAN_TREE</em></li>
+<li>#include “Heap.h”</li>
+<li>#include “TreeNode.h”</li>
+<li>#include “BinaryTree.h”</li>
+<li>#include <map></li>
+<li>#include “…/…/ArithmeticTest/ArithmeticTest/BITVector.h”</li>
+<li>using  namespace  std;</li>
+<li>
+<ol start="15">
+<li>// this class is used for the combin function in huffmanTree class.</li>
+</ol>
+</li>
+<li>class  IntCombin</li>
+<li>{</li>
+<li>public  :</li>
+<li>static  int  Add(  int  i,  int  j)</li>
+<li>{</li>
+<li>return  i+j;</li>
+<li>}</li>
+<li>};</li>
+<li>
+<ol start="25">
+<li>// this class for compare tree node</li>
+</ol>
+</li>
+<li>template  &lt; class  T&gt;</li>
+<li>class  TreeNodeCompare</li>
+<li>{</li>
+<li>public  :</li>
+<li>static  bool  Up(TreeNode<T>* d1, TreeNode<T>* d2)</li>
+<li>{</li>
+<li>return  Lt(d1-&gt;getData(),d2-&gt;getData());</li>
+<li>}</li>
+<li>
+<ol start="35">
+<li>static  bool  Eq(T&amp; d1, T&amp; d2)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (d1 == d2)</li>
+<li>return  true  ;</li>
+<li>return  false  ;</li>
+<li>}</li>
+<li>
+<ol start="42">
+<li>static  bool  Gt(T&amp; d1, T&amp; d2)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (d1 &gt; d2)</li>
+<li>return  true  ;</li>
+<li>return  false  ;</li>
+<li>}</li>
+<li>
+<ol start="49">
+<li>static  bool  Lt(T&amp; d1, T&amp; d2)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (d1 &lt; d2)</li>
+<li>return  true  ;</li>
+<li>return  false  ;</li>
+<li>}</li>
+<li>};</li>
+<li>
+<ol start="57">
+<li>// this class is for storing huffman code.</li>
+</ol>
+</li>
+<li>// bits and the length of bits</li>
+<li>class  HuffmanCode</li>
+<li>{</li>
+<li>public  :</li>
+<li>BITVector bits;</li>
+<li>int  len;</li>
+<li>HuffmanCode()</li>
+<li>{</li>
+<li>len = 0;</li>
+<li>}</li>
+<li>
+<ol start="69">
+<li>HuffmanCode(  const  HuffmanCode &amp; codes):bits(codes.bits)</li>
+</ol>
+</li>
+<li>{</li>
+<li>len  = codes.len;</li>
+<li>
+<ol start="73">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="75">
+<li>const  HuffmanCode&amp; operator=(  const  HuffmanCode &amp; codes)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (  this  != &amp;codes)</li>
+<li>{</li>
+<li>this  -&gt;len = codes.len;</li>
+<li>this  -&gt;bits = codes.bits;</li>
+<li>}</li>
+<li>return  *  this  ;</li>
+<li>}</li>
+<li>
+<ol start="85">
+<li>~HuffmanCode()</li>
+</ol>
+</li>
+<li>{</li>
+<li>
+<ol start="88">
+<li>}</li>
+</ol>
+</li>
+<li>};</li>
+<li>
+<ol start="91">
+<li>template  &lt; class  T,  class  Cmp,  class  Combin&gt;</li>
+</ol>
+</li>
+<li>class  HuffmanTree:  public  BinaryTree<T></li>
+<li>{</li>
+<li>private  :</li>
+<li>// store the data, and sort it, then for building a huffman tree</li>
+<li>Heap&lt;TreeNode<T>* ,Cmp&gt; huffmanQueue;</li>
+<li>
+<ol start="98">
+<li>const  unsigned  int  mask;</li>
+</ol>
+</li>
+<li>// the max number can be shifted, if it is unsigned int then it will be 32.</li>
+<li>const  int  maxShiftNum;</li>
+<li>
+<ol start="102">
+<li>
+<ol start="103">
+<li>TreeNode<T>* initTree()</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>// init the huffman tree</li>
+<li>{</li>
+<li>TreeNode<T> * combinNode = NULL;</li>
+<li>T tempData;</li>
+<li>while  (!  this  -&gt;huffmanQueue.IsEmpty())</li>
+<li>{</li>
+<li>// fetch two small data and generate a large data</li>
+<li>TreeNode<T> * node1 =  this  -&gt;huffmanQueue.Top();</li>
+<li>combinNode = node1;</li>
+<li>this  -&gt;huffmanQueue.RemoveTop();</li>
+<li>if  (!  this  -&gt;huffmanQueue.IsEmpty())</li>
+<li>{</li>
+<li>TreeNode<T> * node2 =  this  -&gt;huffmanQueue.Top();</li>
+<li>this  -&gt;huffmanQueue.RemoveTop();</li>
+<li>tempData =  Combin::Add(node1-&gt;getData(),node2-&gt;getData());</li>
+<li>
+<ol start="120">
+<li>
+<ol start="121">
+<li>if  (Cmp::Lt(node1-&gt;getData(),node2-&gt;getData()))</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>// here is comparing the data1 of node1 and the data2 of node2</li>
+<li>//  Cmp:Lt means ‘&lt;’ and Cmp:Gt means ‘&gt;’</li>
+<li>
+<ol start="126">
+<li>combinNode =  new  TreeNode<T>(tempData,node1,node2);</li>
+</ol>
+</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>combinNode =  new  TreeNode<T>(tempData,node2,node1);</li>
+<li>}</li>
+<li>this  -&gt;huffmanQueue.Insert(combinNode);</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>break  ;</li>
+<li>}</li>
+<li>
+<ol start="139">
+<li>}</li>
+</ol>
+</li>
+<li>return  combinNode;</li>
+<li>}</li>
+<li>
+<ol start="143">
+<li>
+<ol start="144">
+<li>
+<ol start="145">
+<li>// the final huffman code</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>map&lt;T,HuffmanCode&gt; huffmanTable;</li>
+<li>
+<ol start="148">
+<li>
+<ol start="149">
+<li>void  SelfEncode(TreeNode<T>* subRoot,unsigned  int  bitcode,  int  num,map&lt;T,HuffmanCode &gt; &amp;ht)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>// encoding the data from a huffman tree.</li>
+<li>// The left branch is 0, and the right branch is 1</li>
+<li>{</li>
+<li>
+<ol start="154">
+<li>if  (subRoot != NULL)</li>
+</ol>
+</li>
+<li>{</li>
+<li>
+<ol start="157">
+<li>if  (subRoot-&gt;left == NULL &amp;&amp; subRoot-&gt;right==NULL)</li>
+</ol>
+</li>
+<li>{</li>
+<li>HuffmanCode hc;</li>
+<li>hc.bits.SetInt(bitcode,0,maxShiftNum-num);</li>
+<li>hc.len = maxShiftNum-num;</li>
+<li>ht[subRoot-&gt;getData()] = hc;</li>
+<li>return  ;</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>if  (num&lt;=0)</li>
+<li>{</li>
+<li>throw  “the huffman is too deep!”  ;</li>
+<li>}</li>
+<li>
+<ol start="172">
+<li>
+<ol start="173">
+<li>SelfEncode(subRoot-&gt;left,bitcode,num-1,ht);</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>bitcode = bitcode | (0x80000000 &gt;&gt; (maxShiftNum-num));</li>
+<li>SelfEncode(subRoot-&gt;right,bitcode,num-1,ht);</li>
+<li>}</li>
+<li>}</li>
+<li>
+<ol start="179">
+<li>
+<ol start="180">
+<li>}</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<ol start="182">
+<li>
+<ol start="183">
+<li>void  DecodeFromTree(TreeNode<T>* subRoot,BITVector&amp; bits,  int  index,  const  int  &amp; len,vector<T>&amp; decode)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>// decoding the code. use the code to search the data from the huffmanTree.</li>
+<li>// here you can create you own map&lt;code,data&gt; deHuffmanTable.</li>
+<li>// but I can not analyze the space the table will use,</li>
+<li>// so I find the data by searching huffman tree</li>
+<li>{</li>
+<li>if  (index == len)</li>
+<li>{</li>
+<li>if  (subRoot-&gt;getLeft()==NULL &amp;&amp; subRoot-&gt;getRight() == NULL)</li>
+<li>{</li>
+<li>
+<ol start="194">
+<li>decode.push_back(subRoot-&gt;getData());</li>
+</ol>
+</li>
+<li>return  ;</li>
+<li>}</li>
+<li>throw  “code length is not match the bits length. Huffman Tree construct error.”  ;</li>
+<li>}</li>
+<li>if  (subRoot == NULL)</li>
+<li>{</li>
+<li>throw  “decode error!”  ;</li>
+<li>
+<ol start="203">
+<li>}</li>
+</ol>
+</li>
+<li>else  if  (subRoot-&gt;getLeft() == NULL &amp;&amp; subRoot-&gt;getRight() == NULL)</li>
+<li>{</li>
+<li>
+<ol start="207">
+<li>decode.push_back(subRoot-&gt;getData());</li>
+</ol>
+</li>
+<li>return  DecodeFromTree(  this  -&gt;root,bits,index,len,decode);</li>
+<li>}</li>
+<li>
+<ol start="211">
+<li>if  (bits.Get(index) == 0)</li>
+</ol>
+</li>
+<li>{</li>
+<li>return  DecodeFromTree(subRoot-&gt;getLeft(),bits,index+1,len,decode);</li>
+<li>}</li>
+<li>else  if  (bits.Get(index)==1)</li>
+<li>{</li>
+<li>
+<ol start="218">
+<li>return  DecodeFromTree(subRoot-&gt;getRight(),bits,index+1,len,decode);</li>
+</ol>
+</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>throw  “code error!”  ;</li>
+<li>}</li>
+<li>
+<ol start="225">
+<li>
+<ol start="226">
+<li>}</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<ol start="228">
+<li>
+<ol start="229">
+<li>unsigned  int  FindCodeFromTable(T&amp; data)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>// find the data code from huffman table</li>
+<li>// may be not efficient.</li>
+<li>{</li>
+<li>return  this  -&gt;huffmanTable[data];</li>
+<li>}</li>
+<li>
+<ol start="236">
+<li>public  :</li>
+</ol>
+</li>
+<li>
+<ol start="238">
+<li>HuffmanTree(T t[],  int  n):</li>
+</ol>
+</li>
+<li>BinaryTree<T>(),mask(0x80000000),maxShiftNum(  sizeof  (unsigned  int  )*8)</li>
+<li>// the array t type is T, and the number is n</li>
+<li>{</li>
+<li>if  (n == 0)</li>
+<li>return  ;</li>
+<li>TreeNode<T>* node;</li>
+<li>for  (  int  i = 0; i &lt; n; i++)</li>
+<li>{</li>
+<li>node =  new  TreeNode<T>(t[i]);</li>
+<li>this  -&gt;huffmanQueue.Insert(node);</li>
+<li>}</li>
+<li>this  -&gt;root = initTree();</li>
+<li>}</li>
+<li>
+<ol start="253">
+<li>~HuffmanTree()</li>
+</ol>
+</li>
+<li>{</li>
+<li>// destroy</li>
+<li>
+<ol start="257">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="259">
+<li>
+<ol start="260">
+<li>void  SelfEncode()</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>// convert the huffmanTree into huffmanTable</li>
+<li>// unsigned int code is 32 bits, so the huffman tree has only less than 33 layer.</li>
+<li>{</li>
+<li>string s=  “”  ;</li>
+<li>
+<ol start="266">
+<li>SelfEncode(  this  -&gt;root,0,maxShiftNum,  this  -&gt;huffmanTable);</li>
+</ol>
+</li>
+<li>
+<ol start="268">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="270">
+<li>
+<ol start="271">
+<li>
+<ol start="272">
+<li>void  Decode(HuffmanCode&amp; huffmanCode,vector<T>&amp; decode)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>// use bit to find the data node.</li>
+<li>{</li>
+<li>
+<ol start="276">
+<li>return  DecodeFromTree(  this  -&gt;root,huffmanCode.bits,0,huffmanCode.len,decode);</li>
+</ol>
+</li>
+<li>
+<ol start="278">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="280">
+<li>HuffmanCode Encode(T info[],  int  n)</li>
+</ol>
+</li>
+<li>// n is size</li>
+<li>{</li>
+<li>HuffmanCode hc;</li>
+<li>
+<ol start="285">
+<li>for  (  int  i = 0; i &lt; n; i++)</li>
+</ol>
+</li>
+<li>{</li>
+<li>
+<ol start="288">
+<li>hc.bits.SetBitVector(((HuffmanCode)  this  -&gt;huffmanTable[info[i]]).bits,hc.len,((HuffmanCode)  this  -&gt;huffmanTable[info[i]]).len);</li>
+</ol>
+</li>
+<li>hc.len +=((HuffmanCode)  this  -&gt;huffmanTable[info[i]]).len;</li>
+<li>}</li>
+<li>
+<ol start="292">
+<li>return  hc;</li>
+</ol>
+</li>
+<li>}</li>
+<li>
+<ol start="295">
+<li>
+<ol start="296">
+<li>void  PrintHuffmanTable()</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>// print the huffman table</li>
+<li>// print the pair data&lt;-&gt;code</li>
+<li>{</li>
+<li>int  len =  this  -&gt;huffmanTable.size();</li>
+<li>cout &lt;&lt; “i/tdata/tcode/n”  ;</li>
+<li>int  count = 0;</li>
+<li>map&lt;T,HuffmanCode&gt;::iterator i=  this  -&gt;huffmanTable.begin();</li>
+<li>for  (; i !=  this  -&gt;huffmanTable.end(); i++)</li>
+<li>{</li>
+<li>cout &lt;&lt; count++&lt;&lt; “/t”  &lt;&lt;(*i).first&lt;&lt; “/t”  ;</li>
+<li>(*i).second.bits.PrintfZeroOne(0,(*i).second.len);</li>
+<li>cout&lt;&lt;endl;</li>
+<li>}</li>
+<li>
+<ol start="311">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="313">
+<li>};</li>
+</ol>
+</li>
+<li>
+<ol start="315">
+<li>
+<ol start="316">
+<li>#endif</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>这个类设计方面还有些不足之处。比如encode方法</p>
+<p>测试一下：</p>
+<ol>
+<li>int  a[10] = {12,224,33,32,1,91,35,34,36,291};</li>
+<li>HuffmanTree&lt; int  ,TreeNodeCompare&lt; int  &gt;,IntCombin&gt; ht(a,10);</li>
+<li>ht.SelfEncode();</li>
+<li>ht.PrintHuffmanTable();</li>
+<li>ht.printTree();</li>
+<li>cout &lt;&lt; endl;</li>
+<li>int  info[] = {33,34,33};</li>
+<li>HuffmanCode hc = ht.Encode(info,3);</li>
+<li>hc.bits.PrintfZeroOne(0,hc.len);</li>
+<li>vector&lt; int  &gt; code;</li>
+<li>ht.Decode(hc,code);</li>
+<li>** for  ** (  int  i = 0; i != code.size();i++)</li>
+<li>{</li>
+<li>
+<ol start="15">
+<li>cout&lt;&lt;code[i]&lt;&lt;endl;</li>
+</ol>
+</li>
+<li>}</li>
+<li>
+<ol start="18">
+<li>** return  ** 0;</li>
+</ol>
+</li>
+<li></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/25/3141275/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/25/3141275/" class="post-title-link" itemprop="url">编程练习——可变长bit数组(bitArray)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-25 08:45:00" itemprop="dateCreated datePublished" datetime="2008-10-25T08:45:00+08:00">2008-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>其实c++里有bitset这个类，但是bitset使用时必须给定大小。例如</p>
+<p>bitset&lt;8&gt; c;//这里必须在编码里写死，不能使用变量替代</p>
+<p>c = 234;</p>
+<p>我主要是用这个东西来存储可变长的huffman编码。所以这个类对我根本不能用。除非开始就给一个足够大的bitset。</p>
+<p>所以我创建里一个可变长的bit vector用于存放Huffman编码。</p>
+<p>在这里内部使用的是__int64,64位。当然根据实际需要可以将这个做为模板传入，不过现在还没有这样编码。</p>
+<ol>
+<li>/* created by chico chen</li>
+<li>*  date 2008/10/25</li>
+<li>*/</li>
+<li>#ifndef <em>BIT_VECTOR</em></li>
+<li>#define <em>BIT_VECTOR</em></li>
+<li>#include <iostream></li>
+<li>using  namespace  std;</li>
+<li>
+<ol start="9">
+<li>
+<ol start="10">
+<li>class  BITVector</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>private  :</li>
+<li>__int64  * bitarray;</li>
+<li>const  int  bits;</li>
+<li>const  unsigned  __int64  mask ;</li>
+<li>int  size;</li>
+<li>void  SetOne(  int  index);  // x is 0</li>
+<li>void  SetZero(  int  index);  // x is 1</li>
+<li>void  Larger();</li>
+<li>
+<ol start="21">
+<li>public  :</li>
+</ol>
+</li>
+<li>BITVector(  void  );</li>
+<li>void  Set(  int  index,  int  x);  // x is 0 or 1</li>
+<li>int  Get(  int  index);</li>
+<li>int  Size();</li>
+<li>void  SetInt(unsigned  int  integer,  int  start,  int  len);</li>
+<li>void  PrintfZeroOne(  int  start ,  int  len);  // print the unsigned it as 0 or 1</li>
+<li>void  SetBitVector(BITVector &amp; c,  int  start,  int  len);</li>
+<li>const  BITVector&amp; operator=(  const  BITVector&amp; bitVector);</li>
+<li>explicit  BITVector(  const  BITVector &amp; bitVector);</li>
+<li>
+<ol start="32">
+<li>public  :</li>
+</ol>
+</li>
+<li>~BITVector(  void  );</li>
+<li>};</li>
+<li>#endif</li>
+</ol>
+<p>然后是bitVector.cpp文件</p>
+<ol>
+<li>/* created by chico chen</li>
+<li>*  date 2008/10/25</li>
+<li>*/</li>
+<li>#include “StdAfx.h”</li>
+<li>#include “BITVector.h”</li>
+<li>
+<ol start="7">
+<li>BITVector::BITVector(  void  ):mask(0x8000000000000000),bits(  sizeof  (  __int64  )*8)</li>
+</ol>
+</li>
+<li>{</li>
+<li>bitarray =  new  __int64  [1];</li>
+<li>memset(bitarray,0,  sizeof  (  __int64  ));</li>
+<li>size = 1;</li>
+<li>}</li>
+<li>
+<ol start="14">
+<li>BITVector::~BITVector(  void  )</li>
+</ol>
+</li>
+<li>{</li>
+<li>size = 0;</li>
+<li>delete  [] bitarray;</li>
+<li>}</li>
+<li>
+<ol start="20">
+<li>void  BITVector::Set(  int  index,  int  x)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (x == 0)</li>
+<li>{</li>
+<li>return  SetZero(index);</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>return  SetOne(index);</li>
+<li>}</li>
+<li>}</li>
+<li>
+<ol start="32">
+<li>void  BITVector::SetZero(  int  index)</li>
+</ol>
+</li>
+<li>{</li>
+<li>int  innIndex = index/bits;</li>
+<li>int  bitPos = index &amp; (bits-1);  // innIndex % 8</li>
+<li>if  ( innIndex &lt; size)</li>
+<li>{</li>
+<li>// vector maybe has enough space to store this .</li>
+<li>this  -&gt;bitarray[innIndex] =  this  -&gt;bitarray[innIndex] &amp; ~(mask &gt;&gt; bitPos);</li>
+<li>}</li>
+<li>else  if  (innIndex == size)</li>
+<li>{</li>
+<li>// should larger the size of bitarray</li>
+<li>// and innIndex must be the first bit of last char</li>
+<li>
+<ol start="46">
+<li>if  (bitPos == 0)</li>
+</ol>
+</li>
+<li>{</li>
+<li>// correct</li>
+<li>this  -&gt;Larger();</li>
+<li>this  -&gt;bitarray[innIndex] =  this  -&gt;bitarray[innIndex] &amp; ~(mask &gt;&gt; bitPos);</li>
+<li>
+<ol start="52">
+<li>}</li>
+</ol>
+</li>
+<li>else</li>
+<li>{</li>
+<li>// error</li>
+<li>
+<ol start="57">
+<li>}</li>
+</ol>
+</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>// there may be something error, or some code missing</li>
+<li>
+<ol start="63">
+<li>}</li>
+</ol>
+</li>
+<li>}</li>
+<li>
+<ol start="66">
+<li>
+<ol start="67">
+<li>void  BITVector::Larger()</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>__int64  * tempArray =  new  __int64  [size];</li>
+<li>memcpy(tempArray,  this  -&gt;bitarray,  sizeof  (  __int64  )*size);</li>
+<li>delete  []  this  -&gt;bitarray;</li>
+<li>
+<ol start="73">
+<li>this  -&gt;bitarray =  new  __int64  [size*2];  // may be error</li>
+</ol>
+</li>
+<li>memset(bitarray,0,  sizeof  (  __int64  )<em>size</em>2);</li>
+<li>memcpy(  this  -&gt;bitarray,tempArray,  sizeof  (  __int64  )*size);</li>
+<li>size = size*2;</li>
+<li>delete  [] tempArray;</li>
+<li>
+<ol start="79">
+<li>
+<ol start="80">
+<li>}</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<ol start="82">
+<li>void  BITVector::SetOne(  int  index)</li>
+</ol>
+</li>
+<li>{</li>
+<li>int  innIndex = index/bits;  // you can use &gt;&gt;(bits-1)</li>
+<li>int  bitPos = index % bits;  // innIndex &amp; (bits-1)</li>
+<li>if  ( innIndex &lt; size)</li>
+<li>{</li>
+<li>// vector maybe has enough space to store this .</li>
+<li>this  -&gt;bitarray[innIndex] =  this  -&gt;bitarray[innIndex] | (mask &gt;&gt; bitPos);</li>
+<li>}</li>
+<li>else  if  (innIndex == size)</li>
+<li>{</li>
+<li>// should larger the size of bitarray</li>
+<li>// and innIndex must be the first bit of last char</li>
+<li>
+<ol start="96">
+<li>if  (bitPos == 0)</li>
+</ol>
+</li>
+<li>{</li>
+<li>// correct</li>
+<li>this  -&gt;Larger();</li>
+<li>this  -&gt;bitarray[innIndex] =  this  -&gt;bitarray[innIndex] | (mask &gt;&gt; bitPos);</li>
+<li>
+<ol start="102">
+<li>}</li>
+</ol>
+</li>
+<li>else</li>
+<li>{</li>
+<li>// error</li>
+<li>
+<ol start="107">
+<li>}</li>
+</ol>
+</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>// there may be something error, or some code missing</li>
+<li>
+<ol start="113">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="115">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="117">
+<li>int  BITVector::Get(  int  index)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (index &lt; size*bits)</li>
+<li>{</li>
+<li>int  position = index &amp; (bits-1);  // % bits</li>
+<li>int  innIndex = index/bits;</li>
+<li>__int64  i =  this  -&gt;bitarray[innIndex] &amp; (mask &gt;&gt; position);</li>
+<li>if  (i == 0)</li>
+<li>{</li>
+<li>return  0;</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>return  1;</li>
+<li>}</li>
+<li>}</li>
+<li>throw  “access out of the array”  ;</li>
+<li>}</li>
+<li>
+<ol start="136">
+<li>int  BITVector::Size()</li>
+</ol>
+</li>
+<li>{</li>
+<li>return  size*bits;</li>
+<li>}</li>
+<li>
+<ol start="141">
+<li>// int integer is 0x01010111</li>
+</ol>
+</li>
+<li>// start is the start position of bitvector, and start starts zero</li>
+<li>// len is length of the number of bits you want set into bit array</li>
+<li>void  BITVector::SetInt(unsigned  int  integer,  int  start,  int  len)</li>
+<li>{</li>
+<li>int  finalPos = start + len;</li>
+<li>int  i=start;</li>
+<li>int  j = 0;</li>
+<li>int  temp = 0;</li>
+<li>for  (;i &lt; finalPos; i++,j++)</li>
+<li>{</li>
+<li>temp = integer &amp; (0x80000000 &gt;&gt; j);</li>
+<li>this  -&gt;Set(i,temp);</li>
+<li>}</li>
+<li>}</li>
+<li>
+<ol start="157">
+<li>
+<ol start="158">
+<li>void  BITVector::PrintfZeroOne(  int  start,  int  len)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>int  finalPos = start+len;</li>
+<li>int  temp = 0;</li>
+<li>for  (  int  i = start; i &lt; finalPos; i++)</li>
+<li>{</li>
+<li>printf(  “%d”  ,  this  -&gt;Get(i));</li>
+<li>}</li>
+<li>}</li>
+<li>
+<ol start="168">
+<li>// start is where to insert bit vector c</li>
+</ol>
+</li>
+<li>// len is the length of bits inserted</li>
+<li>// “start” is of this, and “len” is of c;</li>
+<li>void  BITVector::SetBitVector(BITVector &amp; c,  int  start,  int  len)</li>
+<li>{</li>
+<li>
+<ol start="174">
+<li>for  (  int  i = 0; i &lt; len; i++)</li>
+</ol>
+</li>
+<li>{</li>
+<li>this  -&gt;Set(start+i,c.Get(i));</li>
+<li>}</li>
+<li>
+<ol start="179">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="181">
+<li>// copy construct</li>
+</ol>
+</li>
+<li>BITVector::BITVector(  const  BITVector &amp; bitVector):mask(0x8000000000000000),bits(  sizeof  (  __int64  )*8)</li>
+<li>{</li>
+<li>this  -&gt;size = bitVector.size;</li>
+<li>this  -&gt;bitarray =  new  __int64  [  this  -&gt;size];</li>
+<li>memcpy(  this  -&gt;bitarray,bitVector.bitarray,  sizeof  (  __int64  )*bitVector.size);</li>
+<li>}</li>
+<li>
+<ol start="189">
+<li>const  BITVector&amp; BITVector::operator=(  const  BITVector&amp; bitVector)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (  this  != &amp;bitVector)</li>
+<li>{</li>
+<li>this  -&gt;size = bitVector.size;</li>
+<li>delete  []  this  -&gt;bitarray;</li>
+<li>this  -&gt;bitarray =  new  __int64  [  this  -&gt;size];</li>
+<li>memcpy(  this  -&gt;bitarray,bitVector.bitarray,  sizeof  (  __int64  )*  this  -&gt;size);</li>
+<li>}</li>
+<li>return  *  this  ;</li>
+<li>}</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/25/3141267/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/25/3141267/" class="post-title-link" itemprop="url">编程练习——堆Heap</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-25 08:37:00" itemprop="dateCreated datePublished" datetime="2008-10-25T08:37:00+08:00">2008-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>因为vs2005中c++的Heap构造 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/10/14/3074616.aspx"> _ 有些问题 _<br />
+</a> ，所以才重写了heap类。</p>
+<p>不知道vs2008中这个是不是个bug。</p>
+<ol>
+<li>/* created by chico chen</li>
+<li>*  date 2008/10/25</li>
+<li>*/</li>
+<li>template&lt; class  T,  class  Cmp&gt;</li>
+<li>class  Heap</li>
+<li>{</li>
+<li>private  :</li>
+<li>vector<T> heap;</li>
+<li>void  ShiftDown(  int  index)</li>
+<li>{</li>
+<li>while  (!IsLeaf(index))</li>
+<li>{</li>
+<li>int  l = Lchild(index);</li>
+<li>int  r = Rchild(index);</li>
+<li>if  (r != -1)</li>
+<li>{</li>
+<li>if  (Cmp::Up(heap[r],heap[l]))</li>
+<li>{</li>
+<li>// put the up node to the left</li>
+<li>swap(heap[l],heap[r]);</li>
+<li>}</li>
+<li>}</li>
+<li>if  (Cmp::Up(heap[l],heap[index]))</li>
+<li>{</li>
+<li>// up the left child</li>
+<li>swap(heap[l],heap[index]);</li>
+<li>index = l;</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>break  ;</li>
+<li>}</li>
+<li>}</li>
+<li>
+<ol start="35">
+<li>}</li>
+</ol>
+</li>
+<li>void  ShiftUp(  int  index)</li>
+<li>{</li>
+<li>int  parent = -1;</li>
+<li>while  (index != 0)</li>
+<li>{</li>
+<li>parent = Parent(index);</li>
+<li>if  (Cmp::Up(heap[index],heap[parent]))</li>
+<li>{</li>
+<li>swap(heap[index],heap[parent]);</li>
+<li>index = parent;</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>break  ;</li>
+<li>}</li>
+<li>}</li>
+<li>
+<ol start="53">
+<li>}</li>
+</ol>
+</li>
+<li>void  ReHeapAll()</li>
+<li>{</li>
+<li>for  (  int  i=Parent(heap.size()-1); i&gt;= 0; i–)</li>
+<li>{</li>
+<li>ShiftDown(i);</li>
+<li>}</li>
+<li>}</li>
+<li>void  ReHeapOne(  int  index)</li>
+<li>// set one prior and re-position the index node</li>
+<li>{</li>
+<li>T data = heap[index];</li>
+<li>ShiftDown(index);</li>
+<li>if  (Cmp::Eq(data,heap[index]))</li>
+<li>{</li>
+<li>ShiftUp(index);</li>
+<li>}</li>
+<li>}</li>
+<li>int  Parent(  int  index)</li>
+<li>// parent node of the index node</li>
+<li>{</li>
+<li>return  (index-1)/2;</li>
+<li>}</li>
+<li>int  Lchild(  int  index)</li>
+<li>// Left child of the index node</li>
+<li>{</li>
+<li>if  (!IsLeaf(index))</li>
+<li>return  index*2+1;</li>
+<li>return  -1;</li>
+<li>}</li>
+<li>int  Rchild(  int  index)</li>
+<li>// Right child of the index node</li>
+<li>{</li>
+<li>if  (!IsLeaf(index))</li>
+<li>{</li>
+<li>int  r= index*2+2;</li>
+<li>if  (r&lt;heap.size())</li>
+<li>return  r;</li>
+<li>}</li>
+<li>return  -1;</li>
+<li>}</li>
+<li>
+<ol start="95">
+<li>int  IsLeaf(  int  index)</li>
+</ol>
+</li>
+<li>{</li>
+<li>assert(index &lt; heap.size());</li>
+<li>if  (heap.size() == 1)</li>
+<li>return  true  ;</li>
+<li>int  lastNode = Parent(heap.size()-1);</li>
+<li>return  lastNode &lt; index;</li>
+<li>}</li>
+<li>
+<ol start="104">
+<li>int  FindData(T&amp; data)</li>
+</ol>
+</li>
+<li>{</li>
+<li>int  len = heap.size();</li>
+<li>for  (  int  i = 0; i &lt; len; i++)</li>
+<li>{</li>
+<li>if  (Cmp::Eq(data,heap[i]))</li>
+<li>{</li>
+<li>return  i;</li>
+<li>}</li>
+<li>}</li>
+<li>return  -1;  // can not find the data</li>
+<li>}</li>
+<li>
+<ol start="117">
+<li>void  printTree(  int  index,  int  count)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (index &lt; heap.size() &amp;&amp; index &gt;=0)</li>
+<li>{</li>
+<li>
+<ol start="122">
+<li>printTree(Rchild(index),count+4);</li>
+</ol>
+</li>
+<li>for  (  int  i = 0; i &lt; count; i++)</li>
+<li>{</li>
+<li>cout &lt;&lt; &quot; &quot;  ;</li>
+<li>}</li>
+<li>cout &lt;&lt;heap[index]&lt;&lt;endl;</li>
+<li>printTree(Lchild(index),count+4);</li>
+<li>}</li>
+<li>}</li>
+<li>public  :</li>
+<li>Heap()</li>
+<li>{</li>
+<li>heap = vector<T>();</li>
+<li>}</li>
+<li>~Heap()</li>
+<li>{</li>
+<li>// heap destroyed</li>
+<li>}</li>
+<li>bool  IsEmpty()</li>
+<li>{</li>
+<li>return  heap.size() == 0;</li>
+<li>}</li>
+<li>
+<ol start="145">
+<li>
+<ol start="146">
+<li>
+<ol start="147">
+<li>void  Insert(T&amp; data)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>heap.push_back(data);</li>
+<li>ShiftUp(heap.size()-1);</li>
+<li>}</li>
+<li>void  Delete(  int  index)</li>
+<li>{</li>
+<li>int  last = heap.size()-1;</li>
+<li>if  (index&gt;=0 &amp;&amp; index &lt;= last)</li>
+<li>{</li>
+<li>
+<ol start="158">
+<li>swap(heap[index],heap[last]);</li>
+</ol>
+</li>
+<li>heap.pop_back();</li>
+<li>ReHeapOne(index);</li>
+<li>}</li>
+<li>}</li>
+<li>void  Delete(T&amp; data)</li>
+<li>{</li>
+<li>int  index = FindData(data);</li>
+<li>if  (index != -1)</li>
+<li>Delete(index);</li>
+<li>}</li>
+<li>
+<ol start="170">
+<li>
+<ol start="171">
+<li>void  RemoveTop()</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>
+<ol start="174">
+<li>if  (!IsEmpty()&amp;&amp;heap.size()&gt;1)</li>
+</ol>
+</li>
+<li>{</li>
+<li>swap(heap[0],heap[heap.size()-1]);</li>
+<li>heap.pop_back();</li>
+<li>ShiftDown(0);</li>
+<li>}</li>
+<li>else  if  (heap.size() == 1)</li>
+<li>{</li>
+<li>heap.pop_back();</li>
+<li>}</li>
+<li>
+<ol start="185">
+<li>}</li>
+</ol>
+</li>
+<li>T&amp; Top()</li>
+<li>{</li>
+<li>return  heap[0];</li>
+<li>}</li>
+<li>
+<ol start="191">
+<li>void  Print()</li>
+</ol>
+</li>
+<li>{</li>
+<li>printTree(0,1);</li>
+<li>}</li>
+<li>
+<ol start="196">
+<li>
+<ol start="197">
+<li>
+<ol start="198">
+<li>};</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/22/3127266/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/22/3127266/" class="post-title-link" itemprop="url">Error C2558\:no Copy Constructor Available or Copy Constructor Is Declared 'Explicit'</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-22 22:55:00" itemprop="dateCreated datePublished" datetime="2008-10-22T22:55:00+08:00">2008-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>901</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Error 3 error C2558: class ‘HuffmanCode’ : no copy constructor available or<br />
+copy constructor is declared ‘explicit’ d:/microsoft visual studio<br />
+8/vc/include/utility 37</p>
+<p>今天发现了这个错误,发现报错的地方是</p>
+<dl>
+<dt>pair(const _Ty1&amp; _Val1, const _Ty2&amp; _Val2)</dt>
+<dd>first(_Val1), second(_Val2)<br />
+{ // construct from specified values<br />
+}</dd>
+</dl>
+<p>但这里是std_utility里，这里根本不可能是编译器的错误。</p>
+<p>那哪里写错了？根据提示估计是’HuffmanCode’ 的拷贝构造函数错误。然后检查了下：</p>
+<p>explicit HuffmanCode(HuffmanCode &amp; codes):b(codes.b)</p>
+<p>感觉没有错呀。然后试着去掉了explicit 关键字，发现…还是报相同的错误。</p>
+<p>然后仔细看了下 pair(const _Ty1&amp; _Val1, const _Ty2&amp; _Val2)，然后<br />
+second(_Val2)，这里我使用了<map>然后将HuffmanCode作为value而不是作为key。这里看出在成员列表中<br />
+second(_Val2)是cosnt的。</p>
+<p>这就使得copy construct函数也必须使用const的参数…</p>
+<p>所以更改了下<br />
+explicit HuffmanCode(const HuffmanCode &amp; codes):b(codes.b)</p>
+<p>现在终于渐渐的知道为啥拷贝构造函数其参数是const的了。<br />
+修改完毕后在其他函数里写了这样一句代码</p>
+<p>HuffmanCode hc = Encode(…);</p>
+<p>这里Encode的返回值是Huffman.结果系统编译时提示相同的错误。</p>
+<p>explicit HuffmanCode(const HuffmanCode &amp; codes):b(codes.b)是这里的错误。</p>
+<p>因为写了explicit,所以返回值必须是const Huffman&amp;才可以.所以还是把explicit关键字去掉了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/22/3127202/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/22/3127202/" class="post-title-link" itemprop="url">Compiler Error C2071</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-22 22:46:00" itemprop="dateCreated datePublished" datetime="2008-10-22T22:46:00+08:00">2008-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>831</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天在编程时遇到这个错误</p>
+<p>错误提示：error c2071::illegal storage class</p>
+<p>然后在msdn上查了下：</p>
+<p>Compiler Error C2071</p>
+<h4 id="error-message"><a class="markdownIt-Anchor" href="#error-message"></a> Error Message</h4>
+<p>‘identifier’ : illegal storage class<br />
+_ identifier _ was declared with an invalid storage class.</p>
+<h1 id="example"><a class="markdownIt-Anchor" href="#example"></a> Example</h1>
+<p>The following sample generates C2071.</p>
+<p>[ ![](<span class="exturl" data-url="aHR0cDovL2kubXNkbi5taWNyb3NvZnQuY29tL1BsYXRmb3JtL0NvbnRyb2xzL0NvZGVTbmlwcGV0L3Jlc291cmNlcy9jb3B5">http://i.msdn.microsoft.com/Platform/Controls/CodeSnippet/resources/copy<i class="fa fa-external-link-alt"></i></span><br />
+_off.gif) Copy Code<br />
+](javascript:CopyCode(‘ctl00_rs1_mainContentContainer_ctl01other’)😉</p>
+<pre><code>// C2071.cpp
+// compile with: /c
+struct C &#123;
+   extern int i;   // C2071
+&#125;;
+struct D &#123;
+   int i;   // OK
+&#125;;
+</code></pre>
+<p>The following sample generates C2071.</p>
+<p>[ ![](<span class="exturl" data-url="aHR0cDovL2kubXNkbi5taWNyb3NvZnQuY29tL1BsYXRmb3JtL0NvbnRyb2xzL0NvZGVTbmlwcGV0L3Jlc291cmNlcy9jb3B5">http://i.msdn.microsoft.com/Platform/Controls/CodeSnippet/resources/copy<i class="fa fa-external-link-alt"></i></span><br />
+_off.gif) Copy Code<br />
+](javascript:CopyCode(‘ctl00_rs1_mainContentContainer_ctl02other’)😉</p>
+<pre><code>// C2071_b.cpp
+// compile with: /c
+typedef int x(int i) &#123; return i; &#125;   // C2071
+typedef int x;   // OK
+发现原来是错用了那些关键字。
+后来检查了一下，发现是explicit使用错误。
+我将operator=()重载使用了explicit关键字。所以去掉后程序编译通过。
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/22/3122308/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/22/3122308/" class="post-title-link" itemprop="url">微软黑屏后的十句大实话</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-22 08:09:00" itemprop="dateCreated datePublished" datetime="2008-10-22T08:09:00+08:00">2008-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>中国网　 丁斐</p>
+<p>1.虽然有人会觉得，有便宜不占王 八 蛋，傻 子才不用。实在想占便宜，那你就占吧，别把自己搞得太压抑。但是别觉得自己义正词严，也别觉得自己挺精明，四处跟人宣<br />
+讲你的选择多正确。同意你看法的人，不用你说，也会像你那么干，不同意你看法的人，当面不说什么，背后也不会高看你，最多落下一个现实的名声，没啥好处。</p>
+<p>2.虽然很多人认为，嘴上说得好听，该买还是会买。但是，最起码打击盗版普及了一种价值观，或许还能说服几个人。不是说有了经济学，假设人人都是理性又自私，道德就没<br />
+用了。道德可以让不熟悉的人们相互认同，或者认异，人们好看清楚，谁跟自己是一头儿的，谁跟自己是两种境界，谁即便买了盗版，也能承认，不会虚伪。</p>
+<p>3.虽然有人说：法律都管不了这事，我们别操心了。但是，正是因为知识产权保护作为一种价值观并没有为人接受，法律时才因欠缺权威性而在执行过程中大打折扣，而任何一<br />
+种法律只有在具有公认权威的前提下才可以有效。在漫天VCD广告都以“超强纠错”为诉求的国度里，如果我们主观上放弃作为，法律就很难主动出来维护正确。</p>
+<p>4.虽然微软现在用这种悍然的方式入侵了你的电脑。但是，如果你偷了人家的车，哪怕你把赃车里外装修了，人家要是遥控锁住了你的车，也是一点问题都没有。这可不能叫影<br />
+响了你的生活。</p>
+<p>5.虽然微软正版最初卖得很贵，好多人确实买不起。但是，那是微软没办法。你们全都抄人家的创意，然后不给钱，他不卖贵点，服务于有钱人，他活不活啊？同情微软是同情<br />
+微软，自己也要同情。穷的时候，用盗版也就用了，心里知道这是不对的。等有钱了，把钱还给人家微软。买得起手机、笔记本、P2P的人，也不缺那几个钱。</p>
+<p>6.虽然很多人判断微软是垄断企业。但是，说真的，你不是单枪匹马，用侠盗的方式去惩罚一个企业吧？水厂电厂基本都垄断，你也不能为了反垄断就偷水偷电。再说，有几个<br />
+人是为了反正版垄断才去买盗版的，还真稀罕。</p>
+<p>7.虽然盗版，为电脑普及、IT业升级做出过一定贡献。但是，它砸了创意人才的饭碗。这方面最生动的例子不就是中文单机游戏吗？有那么几款大作玩家也快上百万了（正版<br />
++盗版），可有几家厂商赚到钱了，有几家活得还不错的？最后什么情况，优秀的中文单机游戏88了，大家都去做网游。什么盗版用户养活了程序员，都被养死了。</p>
+<p>8.虽然盗版，为后进国家吸收文明成果做出过一定贡献。但是，不能老用白拿别人的来发展自己啊。这种厚脸皮的成本竞争，最典型的就是黑砖窑了，啥代价都不付，工人就干<br />
+活。如果完全奉行知识产权的价值观念，则中国人吸收文明成果的速度必然会下降，可速度快了，又必然是以对知识产权价值观念的牺牲为代价的。</p>
+<p>9.虽然知识产权，不是永远第一重要的。但是，中国想给占优势的劳动密集产品打天下，就必须尊重国际规则约束。只有巴西规定，在出现大规模瘟疫传染病情况下可以强制授<br />
+权爱滋病治疗药专利，但仅限于这种事情。短时期内人们只看到盗版所带来的方便和廉价，而看不到由此造成的压抑创新活动带来的长远利益的损害。</p>
+<p>10.虽然，这个专题里说的话，你也不一定能认可。但是，我们只有负责任地说，并不是一定要让所有人来认可。如果时间还宽裕，而且碰巧觉得这个专题还顺眼，那就请把这<br />
+个专题多转几个地方，毕竟理性、文明的人多了，咱们心里也舒坦。</p>
+<p>传说王 八 蛋，傻 子是csdn禁语…我找了很久终于发现这一点。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/20/3112616/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/20/3112616/" class="post-title-link" itemprop="url">编程练习——求无序数组第K小的数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-20 22:29:00" itemprop="dateCreated datePublished" datetime="2008-10-20T22:29:00+08:00">2008-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
     </span>
 
   
@@ -1297,216 +2158,124 @@ element_nodes.getiterator(‘node’) for node in nodes_list: print(node.tag)</p
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>copy from <span class="exturl" data-url="aHR0cDovL3d3dy5jbml0YmxvZy5jb20vaWN0Zmx5L2FyY2hpdmUvMjAwNi8xMS8yNS8xOTU5NC5odG1s">http://www.cnitblog.com/ictfly/archive/2006/11/25/19594.html<i class="fa fa-external-link-alt"></i></span></p>
-<p>本文只是本人对C++中关于静态类型的一个总结，如错误之处，请大家帮我改正。我分两个方面来总结，第一方面主要是相对于面向过程而言，即在这方面不涉及<br />
-到类，第二方面相对于面向对象而言，主要说明static在类中的作用。</p>
-<p>一、在面向过程设计中的static关键字</p>
-<p>1、 静态全局变量</p>
-<p>定义：在全局变量前，加上关键字 static 该变量就被定义成为了一个静态全局变量。</p>
-<p>特点：<br />
-A、该变量在全局数据区分配内存。<br />
-B、初始化：如果不显式初始化，那么将被隐式初始化为0。<br />
-C、访变量只在本源文件可见， 严格的讲应该为定义之处开始到本文件结束。</p>
-<p>例（摘于C++程序设计教程—钱能主编P103）： 　　　　　　　　<a target="_blank" rel="noopener" href="//file1.cpp">//file1.cpp</a><br />
-#include&lt;iostream.h&gt;<br />
-void fn();<br />
-extern int n;<br />
-void main()<br />
-{<br />
-n=20;<br />
-cout &lt;&lt; n &lt;&lt; endl;<br />
-fn();<br />
-}</p>
-<p><a target="_blank" rel="noopener" href="//file2.cpp">//file2.cpp</a><br />
-#include&lt;iostream.h&gt;</p>
-<p>static int n; //定义静态全局变量，初始化为0；<br />
-void fn()<br />
-{<br />
-n++;<br />
-cout &lt;&lt; n &lt;&lt; endl;<br />
-}</p>
-<p>文件 分别编译能通过，但连接时file1.cpp 中的变量n找不到定义，产生连接错误。</p>
-<p>D、文件作用域下声明的const的常量默认 为static存储类型。</p>
-<p>2、静态局部变量</p>
-<p>定义：在局部变量前加上static关键字时，就定义了静态局部变量。</p>
-<p>特 点：<br />
-A、该变量在全局数据区分配内存。<br />
-B、初始化：如果不显式初始化，那么将被隐式初始化为0。<br />
-C、它始终驻 留在全局数据区，直到程序运行结束。但其作用域为局部作用域，当定义它的函数或　语句块结束时，其作用域随之结束。</p>
-<p>3、静态函数（注意 与类的静态成员函数区别）</p>
-<p>定义：在函数的返回类型前加上static关键字，函数即被定义成静态函数。</p>
-<p>特点：<br />
-A、静态函数只能在本源文件中使用（这是与普通函数区别）<br />
-例（摘于C++程序设计教程—钱能主编P103）： 　　　　　　　　<a target="_blank" rel="noopener" href="//file1.cpp">//file1.cpp</a><br />
-void fn();<br />
-void staticFn()</p>
-<p>void main()<br />
-{</p>
-<p>fn();<br />
-staticFn();<br />
-}</p>
-<p><a target="_blank" rel="noopener" href="//file2.cpp">//file2.cpp</a><br />
-#include&lt;iostream.h&gt;</p>
-<p>static void staticFn();<br />
-void fn();</p>
-<p>void fn()<br />
-{<br />
-staticFn();<br />
-cout &lt;&lt; “this is fn() /n”;<br />
-}</p>
-<p>void staticFn()<br />
-{<br />
-cout &lt;&lt; “this is staticFn() /n”;<br />
-}<br />
-连接时，将产生找不到函数 staticFn()定义的错误。</p>
-<p>B、主意事项</p>
-<p>在文件作用域下声明的inline函数默认为static类 型。</p>
-<p>二、面象对象中的static关键字（主要指类中的static关键字）</p>
-<p>1、静态数据成员</p>
-<p>特 点：<br />
-A、内存分配：在程序的全局数据区分配。<br />
-B、初始化和定义：<br />
-a、静态数据成员定义时要分配空间，所以不 能在类声明中定义。<br />
-b、为了避免在多个使用该类的源文件中，对其重复定义，所在，不能在类的头文件中<br />
-定义。<br />
-c、静态数据成员因为程序一开始运行就必需存在，所以其初始化的最佳位置在类的内部实现。<br />
-C、特点<br />
-a、对相于 public,protected,private 关键字的影响它和普通数据成员一样，<br />
-b、因为其空间在全局数据区分配，属于所有本类<br />
-的对象共享，所以，它不属于特定的类对象，在没产生类对象时其作用域就可见，即在没有产生类的实例时，我们就可以操作它。</p>
-<p>D、访问 形式<br />
-a、 类对象名.静态数据成员名<br />
-b、 类类型名:: 静态数据成员名</p>
-<p>E、静态数据成员，主要 用在类的所有实例都拥有的属性上。比如，对于一个存款类，帐号相对<br />
-于每个实例都是不同的，但每个实例的利息是相同的。所以，应该把利息设为存款类的<br />
-静态数据成员。这有两个好处，第一，不管定义多少个存款类对象，利息数据成员都共享分配在全局区的内存，所以节省存贮空间。第二，一旦利息需要改变时，只<br />
-要改变一次，则所有存款类对象的利息全改变过来了，因为它们实际上是共用一个东西。</p>
-<p>2、静态成员函数</p>
-<p>特点：<br />
-A、静态成员函数与类相联系，不与类的对象相联系。<br />
-B、静态成员函数不能访问非静态数据成员。原因很简单，非静态数据成员属于特定的类实 例。</p>
-<p>作用：<br />
-主要用于对静态数据成员的操作。<br />
-调用形式：<br />
-A、类对象名.静态成员函数名（）<br />
-B、类类型名:: 静态成员函数名（）</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/21/2010-06-21-volatile-do/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/06/21/2010-06-21-volatile-do/" class="post-title-link" itemprop="url">What Does Volatile Do?</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-06-21 00:00:00" itemprop="dateCreated datePublished" datetime="2010-06-21T00:00:00+08:00">2010-06-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:05:08" itemprop="dateModified" datetime="2023-10-05T23:05:08+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="536" />
-<meta name="_wp_old_slug" content="copy" />
-copy from http://www.javaperformancetuning.com/news/qotm030.shtml
-<p><strong>What does <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure> do?</strong></p>
-<p>This is probably best explained by comparing the effects that <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure> and <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure> have on a method. <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure> is a  field modifier, while <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure> modifies code blocks and  methods. So we can specify three variations of a simple accessor using those two  keywords:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">         int i1;              int geti1() &#123;return i1;&#125;</span><br><span class="line">volatile int i2;              int geti2() &#123;return i2;&#125;</span><br><span class="line">         int i3; synchronized int geti3() &#123;return i3;&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geti1()</span><br></pre></td></tr></table></figure> accesses the value currently stored in <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i1</span><br></pre></td></tr></table></figure> <em>in the current thread</em>. Threads can have local copies of variables, and  the data does not have to be the same as the data held in other threads. In  particular, another thread may have updated <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i1</span><br></pre></td></tr></table></figure> in it's thread, but the  value in the current thread could be different from that updated value. In  fact Java has the idea of a "main" memory, and this is the memory that holds the  current "correct" value for variables. Threads can have their own copy of data  for variables, and the thread copy can be different from the "main" memory.  So in fact, it is possible for the "main" memory  to have a value of 1 for <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i1</span><br></pre></td></tr></table></figure>, for thread1 to have a value of 2 for <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i1</span><br></pre></td></tr></table></figure> and for thread2 to  have a value of 3 for <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i1</span><br></pre></td></tr></table></figure> if thread1 and thread2 have both updated <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i1</span><br></pre></td></tr></table></figure> but those updated value has not yet been propagated to "main" memory or  other threads.
-<p>On the other hand, <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geti2()</span><br></pre></td></tr></table></figure> effectively accesses the value  of <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i2</span><br></pre></td></tr></table></figure> from “main” memory. A <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure> variable is not allowed to  have a local copy of a variable that is different from the value currently held in “main”  memory. Effectively, a variable declared <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure> must have it’s data  synchronized across all threads, so that whenever you access or update the variable in any thread, all  other threads immediately see the same value. Of course, it is likely that <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure> variables have a higher access and update overhead than “plain”  variables, since the reason threads can have their own copy of data is for better efficiency.</p>
-<p>Well if <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure> already synchronizes data across threads,  what is <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure> for? Well there are two differences. Firstly <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure> obtains and releases locks on monitors which  can force only one thread at a time to execute a code block, if both threads use  the same monitor (effectively the same object lock). That’s the fairly well known  aspect to <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure>. But <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure> also  synchronizes memory. In fact <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure> synchronizes the whole of thread  memory with “main” memory. So executing <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geti3()</span><br></pre></td></tr></table></figure> does the following:</p>
+          <p>为同寝的家伙写了一个求一个无序数组中第k小数的程序。思想就是快排的思想。找一个点，然后放到末尾，然后将小于这个数的值放在数组前面，大于这个值的放在数组后面，<br />
+然后在将这个末尾的数放回。这个末尾数放入的位置i代表已经找到第i小的数。下面你应该明白了吧，放入的位置如果是k，恭喜你找到了第k小的数。</p>
+<p>同样找到第k大的数类似的解法，找到前k个最大数也一样。找一个数组的中位数也一样做。求n个数组的中位数也一样的做。求n个数组的前k个大数或小数也类似可以做。</p>
+<p>这个程序的算法复杂度是O（n）</p>
+<p>另外这个程序是交换了这个数组元素中的顺序的。现在考虑一下如果不交换过去数组中的元素顺序，并且不开辟一个O(n)空间。那么这个算法的平均复杂度是多少？考虑一下<br />
+，写在评论中。谢谢。</p>
 <ol>
-	<li>The thread acquires the lock on the monitor for object <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this</span><br></pre></td></tr></table></figure> (assuming the monitor is unlocked, otherwise the thread waits until the  monitor is unlocked).</li>
-	<li>The thread memory flushes <em>all</em> its variables, i.e. it  has all of its variables effectively read from "main" memory (JVMs can use dirty sets to optimize  this so that only "dirty" variables are flushed, but conceptually this is the same. See  section 17.9 of the Java language specification).</li>
-	<li>The code block is executed (in this case setting the return  value to the current value of <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i3</span><br></pre></td></tr></table></figure>, which may have just been reset from "main"  memory).</li>
-	<li>(Any changes to variables would normally now be written out to  "main" memory, but for <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geti3()</span><br></pre></td></tr></table></figure> we have no changes.)</li>
-	<li>The thread releases the lock on the monitor for object <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this</span><br></pre></td></tr></table></figure>.</li>
+<li>// swap two number</li>
+<li>void  swap(  int  &amp;i,  int  &amp;j)</li>
+<li>{</li>
+<li>int  temp = i;</li>
+<li>i = j;</li>
+<li>j = temp;</li>
+<li>}</li>
+<li>// find a position to partition the array</li>
+<li>int  partition(  int  start,  int  end)</li>
+<li>{</li>
+<li>return  end/2+start/2;</li>
+<li>}</li>
+<li>
+<ol start="14">
+<li>// quick sort</li>
 </ol>
-So where <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure> only synchronizes the value of one  variable between thread memory and "main" memory, <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure> synchronizes  the value of all variables between thread memory and "main" memory, and locks and  releases a monitor to boot. Clearly <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized</span><br></pre></td></tr></table></figure> is likely to have  more overhead than <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile</span><br></pre></td></tr></table></figure>.
+</li>
+<li>int  QuickSort(  int  a[],  int  start,  int  end)</li>
+<li>{</li>
+<li>if  (start &gt; end)</li>
+<li>{</li>
+<li>throw  “error”  ;</li>
+<li>}</li>
+<li>if  (start == end)</li>
+<li>{</li>
+<li>return  end;</li>
+<li>}</li>
+<li>int  p = partition(start,end);</li>
+<li>int  i =0;</li>
+<li>
+<ol start="28">
+<li>swap(a[p],a[end]);</li>
+</ol>
+</li>
+<li>int  j = end-1;</li>
+<li>while  (j&gt;=i)</li>
+<li>{</li>
+<li>while  (a[i]&lt;a[end])</li>
+<li>{</li>
+<li>i++;</li>
+<li>}</li>
+<li>
+<ol start="37">
+<li>while  (j &gt;= 0 &amp;&amp; a[j]&gt;a[end])</li>
+</ol>
+</li>
+<li>{</li>
+<li>j–;</li>
+<li>}</li>
+<li>swap(a[i],a[j]);</li>
+<li>}</li>
+<li>swap(a[i],a[j]);</li>
+<li>swap(a[i],a[end]);</li>
+<li>return  i;</li>
+<li>}</li>
+<li>
+<ol start="48">
+<li>// find the k-th smaller number</li>
+</ol>
+</li>
+<li>int  FindK(  int  a[],  int  num,  int  kth)</li>
+<li>{</li>
+<li>if  (kth &gt; num || kth &lt;= 0)</li>
+<li>{</li>
+<li>throw  “error: no such k-th number”  ;</li>
+<li>}</li>
+<li>int  k = kth-1;  // because the array index starts with 0, not 1;</li>
+<li>int  position= -1;</li>
+<li>int  start = 0;</li>
+<li>int  end = num-1;</li>
+<li>while  (position != k)</li>
+<li>{</li>
+<li>position = QuickSort(a,start,end);</li>
+<li>
+<ol start="63">
+<li>if  (position &lt; k)</li>
+</ol>
+</li>
+<li>{</li>
+<li>start = position+1;</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>end = position-1;</li>
+<li>}</li>
+<li>
+<ol start="72">
+<li>}</li>
+</ol>
+</li>
+<li>return  a[position];</li>
+<li>
+<ol start="75">
+<li>}<br />
+public class Sort{ public int Partition(SortTag[] al,int start, int end){<br />
+SortTag p = al[start]; SortTag tmp; while(start&lt;end){ while(start&lt;end &amp;&amp;<br />
+al[end].compare(p)&lt;=0) end–; tmp = al[start]; al[start] = al[end]; al[end] =<br />
+tmp; while(start&lt;end &amp;&amp; al[start].compare(p)&gt;=0) start++; tmp = al[start];<br />
+al[start] = al[end]; al[end] = tmp; } return start; } public void<br />
+FindTopK(SortTag [] al,int k){ if(al.length &lt; k){ return; } int mid = 0; int<br />
+low = 0; int high = al.length-1; while(low &lt;= high){ mid =<br />
+Partition(al,low,high); if(mid &lt; k){ low = mid+1; } else if(mid &gt; k){ high =<br />
+mid-1; } else{ return ; } } } } class SortTag{ public Integer n; public Double<br />
+score; public SortTag(Integer n, Double score){ this.n = n; this.score =<br />
+score; } public int compare(Object o){ Double d = this.score -<br />
+((SortTag)o).score; if ( d &gt; 0 + 1E-12) return 1; else if( d &lt; 0-1E-12) return<br />
+-1; else return 0; } }</li>
+</ol>
+</li>
+</ol>
+<p>注意这k个数可是无序的…如果想有序…再排序一下就可以了.</p>
 
       
     </div>
@@ -1533,7 +2302,7 @@ So where <figure class="highlight plaintext"><table><tr><td class="gutter"><pre>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/17/5674707/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/17/3092536/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1551,7 +2320,7 @@ So where <figure class="highlight plaintext"><table><tr><td class="gutter"><pre>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/06/17/5674707/" class="post-title-link" itemprop="url">微博系统</a>
+          <a href="/2008/10/17/3092536/" class="post-title-link" itemprop="url">One编程组宗旨</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1562,14 +2331,14 @@ So where <figure class="highlight plaintext"><table><tr><td class="gutter"><pre>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-06-17 09:25:00" itemprop="dateCreated datePublished" datetime="2010-06-17T09:25:00+08:00">2010-06-17</time>
+      <time title="Created: 2008-10-17 17:09:00" itemprop="dateCreated datePublished" datetime="2008-10-17T17:09:00+08:00">2008-10-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
     </span>
 
   
@@ -1579,7 +2348,7 @@ So where <figure class="highlight plaintext"><table><tr><td class="gutter"><pre>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>195</span>
+      <span>145</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1597,9 +2366,11 @@ So where <figure class="highlight plaintext"><table><tr><td class="gutter"><pre>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>貌似网上大家都使用Easytalk搭建微博系统。那东东使用php和mysql的。就是备案难了点，可以考虑放到米国。小量用户速度蛮快的，大量的用户没有测试过.<br />
-…(废话ing)有个家伙做了一个IT的微博，就是贴代码麻烦了点，要先去<span class="exturl" data-url="aHR0cDovL3Bhc3RlYmluLnhuLS1jb20tencyZXI4Y3AxNGFvdmdnejRobmdj">http://pastebin.com那里发布成功<i class="fa fa-external-link-alt"></i></span>，然后再从分享那里贴进来。。。虽然<br />
-webservice已经大行其道，但是真正的接口互用似乎还要等到在未来的若干年。</p>
+          <p>One编程组宗旨：<br />
+One team, Open and Share.<br />
+One编程组吸纳积极进取并乐于助人的人。组内成员分享知识、技能、和机会。<br />
+One编程组现在是一个团队，将来成员分散在各地，依旧是一个团队。<br />
+One编程组区别于其他俱乐部的地方在于：非功利性组织，旨在提高组内成员的核心竞争力、培养新人。</p>
 
       
     </div>
@@ -1626,7 +2397,7 @@ webservice已经大行其道，但是真正的接口互用似乎还要等到在�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/17/2010-06-17-sizeof-c/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/16/3087108/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1644,7 +2415,7 @@ webservice已经大行其道，但是真正的接口互用似乎还要等到在�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/06/17/2010-06-17-sizeof-c/" class="post-title-link" itemprop="url">Sizeof in C++</a>
+          <a href="/2008/10/16/3087108/" class="post-title-link" itemprop="url">职员和老板的对话（爆笑语录）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1655,23 +2426,14 @@ webservice已经大行其道，但是真正的接口互用似乎还要等到在�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2010-06-17 00:00:00" itemprop="dateCreated datePublished" datetime="2010-06-17T00:00:00+08:00">2010-06-17</time>
+      <time title="Created: 2008-10-16 19:58:00" itemprop="dateCreated datePublished" datetime="2008-10-16T19:58:00+08:00">2008-10-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:04" itemprop="dateModified" datetime="2023-10-06T22:54:04+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
     </span>
 
   
@@ -1681,7 +2443,123 @@ webservice已经大行其道，但是真正的接口互用似乎还要等到在�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.8k</span>
+      <span>372</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>请坚持看到最后。。。</p>
+<p>新职员到岗<br />
+老板：万分欢迎，没有你我们的公司肯定大不一样！<br />
+职员：如果工作太累，搞不好我会辞职的<br />
+老板：放心，我不会让这样的事情发生的！<br />
+职员：我双休日可以休息吗？<br />
+老板：当然了！这是底线！<br />
+职员：平时会天天加班到凌晨吗？<br />
+老板：不可能，谁告诉你的？<br />
+职员：有餐费补贴吗？<br />
+老板：还用说吗，绝对比同行都高！<br />
+职员：有没有工作猝死的风险？<br />
+老板：不会！你怎么会有这种念头？<br />
+职员：公司会定期组织旅游吗？<br />
+老板：这是我们的明文规定！<br />
+职员：那我需要准时上班吗？<br />
+老板：不，看情况吧<br />
+职员：工资呢？会准时发吗？<br />
+老板：一向如此！<br />
+职员：事情全是新员工做吗？<br />
+老板：怎么可能，你上头还有很多资深同事！<br />
+职员：如果领导职位有空缺，我可以参与竞争吗啊？<br />
+老板：毫无疑问，这是我们公司赖以生存的机制！<br />
+职员：你不会是在骗我吧？<br />
+进入公司后……<br />
+（按顺序向上倒回去看O(∩_∩)O哈哈~）</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/14/3074616/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/14/3074616/" class="post-title-link" itemprop="url">Vs2005 C++ Heap使用push_head()异常invalid Heap（bug）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-14 16:27:00" itemprop="dateCreated datePublished" datetime="2008-10-14T16:27:00+08:00">2008-10-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1699,25 +2577,1259 @@ webservice已经大行其道，但是真正的接口互用似乎还要等到在�
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="the inside of sizeof
-the inside of memory alignment" />
-<meta name="_su_keywords" content="c++, sizeof, double, int, align,memory" />
-<meta name="_su_title" content="c++, sizeof, double, int, align,memory" />
-<meta name="views" content="1054" />
-I use c++ in linux which is gcc version 4.4.1 (Ubuntu 4.4.1-4ubuntu9).
-<p>I considered that c++ memory alignment is like the following:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// pseudo-code of memory alignment</span><br><span class="line">remove_all_static_varibles();</span><br><span class="line">int max= 0;</span><br><span class="line">foreach(element in struct)</span><br><span class="line">    find_the_max_memory_used(element,&amp;amp;max);</span><br><span class="line">int align = max &amp;gt; default? default: max;</span><br><span class="line">// if max memory used for element is larger than the default, use default.</span><br><span class="line">int memory = sum(memory_used(elements));</span><br><span class="line"></span><br><span class="line">if(memory%align != 0)</span><br><span class="line">// here will execute alignment!</span><br><span class="line">&#123;</span><br><span class="line">    memory = (memory/align + 1 )*align;</span><br><span class="line">&#125;</span><br><span class="line">if(memory == 0)</span><br><span class="line">    memory = 1;</span><br><span class="line">return memory;</span><br></pre></td></tr></table></figure>
-<p>vc++ use #pragma_pack(n) set the default.if there are three char in a struct, like:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef struct&#123;</span><br><span class="line">	char a;</span><br><span class="line">	char b;</span><br><span class="line">	char c;</span><br><span class="line">&#125;X;</span><br><span class="line">sizeof(X); // it will be 3</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">typedef struct&#123;</span><br><span class="line">	char a;</span><br><span class="line">	short b;</span><br><span class="line"></span><br><span class="line">&#125;Y;</span><br><span class="line">sizeof(Y); // here will be 4</span><br><span class="line"></span><br><span class="line">typedef struct&#123;</span><br><span class="line">	char a;</span><br><span class="line">	int b;</span><br><span class="line">&#125;Z;</span><br><span class="line"></span><br><span class="line">sizeof(Z); // here will be 8</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct&#123;</span><br><span class="line">	double a;</span><br><span class="line">	char b;</span><br><span class="line">&#125;W;</span><br><span class="line">sizeof(W);</span><br><span class="line">// it will be 12, the align is 4</span><br><span class="line">// when the max memory used is larger</span><br><span class="line">// than 4, it will be 4</span><br></pre></td></tr></table></figure>
-<p>if the class or struct is empty, sizeof(it) will be 1.</p>
-<p>But if there are static varibles in classes or structs, you can remove it!. like:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class A&#123;</span><br><span class="line">	static int a;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">sizeof(A); // it will be 1</span><br></pre></td></tr></table></figure>
-<p>in class there will be many class functions. But A class is thought as A struct and many functions set. sizeof(A class) will compute the size of struct.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class ZZ&#123;</span><br><span class="line">    public:</span><br><span class="line">        ZZ()&#123;</span><br><span class="line">            int a = 3;</span><br><span class="line">            cout &amp;lt;&amp;lt; &quot;I am ZZ&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">            cout &amp;lt;&amp;lt; a&amp;lt;&amp;lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">        ~ZZ()&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    int c;</span><br><span class="line">&#125;;</span><br><span class="line">sizeof(ZZ); // will be 4;</span><br><span class="line">/* it is like a struct and two member functions.</span><br><span class="line">struct ZZ&#123;</span><br><span class="line">	int c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ZZ@ZZ() is name mingling</span><br><span class="line">ZZ@ZZ()&#123;</span><br><span class="line">	int a = 3;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;I am ZZ&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">        cout &amp;lt;&amp;lt; a&amp;lt;&amp;lt;endl;</span><br><span class="line">&#125;</span><br><span class="line">ZZ@~ZZ()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
-<p>but when we meet the virtual member functions and virtual derived class, it will be different.</p>
+          <p>最近想使用STL的heap，我的vs2005 Team Edition For Software Developers版本是version<br />
+8.0.50727.42，.Net Framework Version 2.0.50727 .</p>
+<p>然后看到微软官网的一段使用Heap的代码</p>
+<ol>
+<li>// alg_push_heap.cpp</li>
+<li>// compile with: /EHsc</li>
+<li>#include <vector></li>
+<li>#include <algorithm></li>
+<li>#include <functional></li>
+<li>#include <iostream></li>
+<li>
+<ol start="8">
+<li>int  main( ) {</li>
+</ol>
+</li>
+<li>using  namespace  std;</li>
+<li>vector &lt; int  &gt; v1, v2;</li>
+<li>vector &lt; int  &gt;::iterator Iter1, Iter2;</li>
+<li>
+<ol start="13">
+<li>int  i;</li>
+</ol>
+</li>
+<li>for  ( i = 1 ; i &lt;= 9 ; i++ )</li>
+<li>v1.push_back( i );</li>
+<li>
+<ol start="17">
+<li>random_shuffle( v1.begin( ), v1.end( ) );</li>
+</ol>
+</li>
+<li>
+<ol start="19">
+<li>cout &lt;&lt; &quot;Vector v1 is ( &quot;  ;</li>
+</ol>
+</li>
+<li>for  ( Iter1 = v1.begin( ) ; Iter1 != v1.end( ) ; Iter1++ )</li>
+<li>cout &lt;&lt; *Iter1 &lt;&lt; &quot; &quot;  ;</li>
+<li>cout &lt;&lt; “).”  &lt;&lt; endl;</li>
+<li>
+<ol start="24">
+<li>// Make v1 a heap with default less than ordering</li>
+</ol>
+</li>
+<li>make_heap ( v1.begin( ), v1.end( ) );</li>
+<li>cout &lt;&lt; &quot;The heaped version of vector v1 is ( &quot;  ;</li>
+<li>for  ( Iter1 = v1.begin( ) ; Iter1 != v1.end( ) ; Iter1++ )</li>
+<li>cout &lt;&lt; *Iter1 &lt;&lt; &quot; &quot;  ;</li>
+<li>cout &lt;&lt; “).”  &lt;&lt; endl;</li>
+<li>
+<ol start="31">
+<li>// Add an element to the heap</li>
+</ol>
+</li>
+<li>v1.push_back( 10 );</li>
+<li>cout &lt;&lt; &quot;The heap v1 with 10 pushed back is ( &quot;  ;</li>
+<li>for  ( Iter1 = v1.begin( ) ; Iter1 != v1.end( ) ; Iter1++ )</li>
+<li>cout &lt;&lt; *Iter1 &lt;&lt; &quot; &quot;  ;</li>
+<li>cout &lt;&lt; “).”  &lt;&lt; endl;</li>
+<li>
+<ol start="38">
+<li>push_heap( v1.begin( ), v1.end( ) );</li>
+</ol>
+</li>
+<li>cout &lt;&lt; &quot;The reheaped v1 with 10 added is ( &quot;  ;</li>
+<li>for  ( Iter1 = v1.begin( ) ; Iter1 != v1.end( ) ; Iter1++ )</li>
+<li>cout &lt;&lt; *Iter1 &lt;&lt; &quot; &quot;  ;</li>
+<li>cout &lt;&lt; “).”  &lt;&lt; endl &lt;&lt; endl;</li>
+<li>
+<ol start="44">
+<li>// Make v1 a heap with greater than ordering</li>
+</ol>
+</li>
+<li>make_heap ( v1.begin( ), v1.end( ), greater&lt; int  &gt;( ) );</li>
+<li>cout &lt;&lt; &quot;The greater-than heaped version of v1 is/n ( &quot;  ;</li>
+<li>for  ( Iter1 = v1.begin( ) ; Iter1 != v1.end( ) ; Iter1++ )</li>
+<li>cout &lt;&lt; *Iter1 &lt;&lt; &quot; &quot;  ;</li>
+<li>cout &lt;&lt; “).”  &lt;&lt; endl;</li>
+<li>
+<ol start="51">
+<li>v1.push_back(0);</li>
+</ol>
+</li>
+<li>cout &lt;&lt; &quot;The greater-than heap v1 with 11 pushed back is/n ( &quot;  ;</li>
+<li>for  ( Iter1 = v1.begin( ) ; Iter1 != v1.end( ) ; Iter1++ )</li>
+<li>cout &lt;&lt; *Iter1 &lt;&lt; &quot; &quot;  ;</li>
+<li>cout &lt;&lt; “).”  &lt;&lt; endl;</li>
+<li>
+<ol start="57">
+<li>push_heap( v1.begin( ), v1.end( ), greater&lt; int  &gt;( ) );</li>
+</ol>
+</li>
+<li>cout &lt;&lt; &quot;The greater than reheaped v1 with 11 added is/n ( &quot;  ;</li>
+<li>for  ( Iter1 = v1.begin( ) ; Iter1 != v1.end( ) ; Iter1++ )</li>
+<li>cout &lt;&lt; *Iter1 &lt;&lt; &quot; &quot;  ;</li>
+<li>cout &lt;&lt; “).”  &lt;&lt; endl;</li>
+<li>}</li>
+</ol>
+<p>发现竟然在push_heap()那里抛了异常。（invalid Heap）</p>
+<p>然后无奈去了 <span class="exturl" data-url="aHR0cDovL3d3dy5jcGx1c3BsdXMuY29t"> www.cplusplus.com <i class="fa fa-external-link-alt"></i></span> 也下了一段代码：</p>
+<ol>
+<li>// range heap example</li>
+<li>#include <iostream></li>
+<li>#include <algorithm></li>
+<li>#include <vector></li>
+<li>using  namespace  std;</li>
+<li>
+<ol start="7">
+<li>int  main () {</li>
+</ol>
+</li>
+<li>int  myints[] = {10,20,30,5,15};</li>
+<li>vector&lt; int  &gt; v(myints,myints+5);</li>
+<li>vector&lt; int  &gt;::iterator it;</li>
+<li>
+<ol start="12">
+<li>make_heap (v.begin(),v.end());</li>
+</ol>
+</li>
+<li>cout &lt;&lt; &quot;initial max heap   : &quot;  &lt;&lt; v.front() &lt;&lt; endl;</li>
+<li>
+<ol start="15">
+<li>pop_heap (v.begin(),v.end()); v.pop_back();</li>
+</ol>
+</li>
+<li>cout &lt;&lt; &quot;max heap after pop : &quot;  &lt;&lt; v.front() &lt;&lt; endl;</li>
+<li>
+<ol start="18">
+<li>v.push_back(99); push_heap (v.begin(),v.end());</li>
+</ol>
+</li>
+<li>cout &lt;&lt; &quot;max heap after push: &quot;  &lt;&lt; v.front() &lt;&lt; endl;</li>
+<li>
+<ol start="21">
+<li>sort_heap (v.begin(),v.end());</li>
+</ol>
+</li>
+<li>
+<ol start="23">
+<li>cout &lt;&lt; “final sorted range :”  ;</li>
+</ol>
+</li>
+<li>for  (unsigned i=0; i&lt;v.size(); i++) cout &lt;&lt; &quot; &quot;  &lt;&lt; v[i];</li>
+<li>
+<ol start="26">
+<li>cout &lt;&lt; endl;</li>
+</ol>
+</li>
+<li>
+<ol start="28">
+<li>return  0;</li>
+</ol>
+</li>
+<li>}</li>
+</ol>
+<p>这段代码没有抛异常，运行完好。仔细检查一番，发现可能是vector数组中的元素没有增多的缘故。于是将</p>
+<p>pop_heap (v.begin(),v.end()); v.pop_back();改为</p>
+<p>pop_heap (v.begin(),v.end()); 这样vector元素就在总数上多了一。</p>
+<p>然后运行…相同的错误。</p>
+<p>不知道vs2008版本上有没有相同的错误。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/13/3070820/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/13/3070820/" class="post-title-link" itemprop="url">坠入(Fall)赏析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-13 19:46:00" itemprop="dateCreated datePublished" datetime="2008-10-13T19:46:00+08:00">2008-10-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这是一部很有趣也很感人的片子。片子中的小女孩以真诚感化了企图用自杀来解脱自己的骨伤演员。电影以描述故事的口吻细祥讲述了这个演员的内心世界。故事中的世界与现实<br />
+世界的紧密结合，反反复复刻画了一个即将坠入深渊的人（或者是英雄）。有趣的故事人物设置，增添了故事的魔幻喜剧效果。最后一个故事情节中小女孩大声疾呼：“Get<br />
+up(起来)”，感化了这个已经近乎绝望的人，让他看到了自己的存在意义和人生价值。小女孩如同天使一样挽救了他的灵魂。Get up （起来）对应Fall(坠入)<br />
+这也是影片的艺术之处。希望看过影片的人能从自己的失利挫折的阴影中走出来，看看周围需要你的人，重拾剑甲再入战斗。与其说这部电影描写要坠入深渊的人，不如说它希望<br />
+展现一个人如何才能爬出悲剧的深渊的心理变化历程。丰富而细致的人物内心刻画让这个影片得到如期得到柏林大奖。</p>
+<p>Are you trying to save my soul? The Euchrist, it saves your<br />
+soul.小女孩拿到圣餐，以为就是小片面包，将它分与骨伤演员后的一段对话。骨伤演员以为是拯救他灵魂的。</p>
+<p>My grief has gone blood red with revenge.这句话很经典。可以用于复仇。我的悲伤化为血红的仇恨。</p>
+<p>googly googly googly be gone.这是老人交给小女孩在看到可怕事情时念的“咒语”。</p>
+<p>Always following your heart.we are finally free to follow our<br />
+hearts.我们都是follow了自己的heart。所以没有必要为其他人考虑。总是为自己的利益最大化而坚持不懈的努力。自己评判是对是错。</p>
+<p>There is no happy ending with me.结局即使不是喜剧，我们也要尽量制造接近喜剧的结局。这让我想到十全九美，其实如果最后的分离结<br />
+局放在开始，结局也就没有什么悲伤的情绪在里面了。所以是好结局还是坏结局，凭乎内心。总不会天天有十全十美的事情发生。</p>
+<p>Promise? And don’t cross your fingers.食指中指交叉是说谎的表现。所以发誓的时候，看看发誓者有没有做这个动作。</p>
+<p>My lord, all hope is lost. It seems your mighty army shall finally be<br />
+conquered. Not by the persons, but by our own greedy. This helmet contains<br />
+last we supply. I believe your wisdom shall save us all.</p>
+<p>-why?</p>
+<p>-It’s Alexander’s way showing the army they were all equal.</p>
+<p>-It’s stupid</p>
+<p>亚历山大在处理沙漠缺水时，将仅剩的最后一钢盔水倒在漫漫黄沙上，为了表现全军将士人人平等。小女孩对此做出的评价：It’s stupid.</p>
+<p>我想但是亚历山大怎么做都是stupid.</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA4MTAxMy8=">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/20081013/<i class="fa fa-external-link-alt"></i></span><br />
+Fall.jpg)</p>
+<p>【影片原名】The Fall<br />
+【中文译名】坠入<br />
+【出品公司】Paradise Group<br />
+【出品年代】2008<br />
+【上映日期】2008年5月30日 美国<br />
+【影片级别】USA:R<br />
+【官方网站】 <span class="exturl" data-url="aHR0cDovL3d3dy50aGVmYWxsdGhlbW92aWUuY29tLw=="> <i class="fa fa-external-link-alt"></i></span> <a target="_blank" rel="noopener" href="http://www.thefallthemovie.com/"> _<br />
+http://www.thefallthemovie.com/  _ </a><br />
+【IMDB链接】 <span class="exturl" data-url="aHR0cDovL3d3dy5pbWRiLmNvbS90aXRsZS90dDA0NjA3OTE="> <i class="fa fa-external-link-alt"></i></span> <a target="_blank" rel="noopener" href="http://www.imdb.com/title/tt0460791"> _<br />
+http://www.imdb.com/title/tt0460791  _ </a><br />
+【IMDB评分】8.2/10 (4,831 votes)<br />
+【字　　幕】 <span class="exturl" data-url="aHR0cDovL3d3dy53YWYuY29tLmNuL2Jicy9pbmRleC5hc3A/Ym9hcmRpZD0yNA=="> _ 点击打开字幕下载页 _ <i class="fa fa-external-link-alt"></i></span><br />
+【国　　家】美国 /英国 /印度<br />
+【类　　别】奇幻/剧情/冒险<br />
+【导　　演】Tarsem Singh<br />
+【主　　演】李·佩斯 Lee Pace …Roy Walker/The Black Bandit<br />
+凯婷卡·安塔鲁 Catinca Untaru …Alexandria<br />
+贾斯蒂恩·瓦戴尔 Justine Waddell …Evelyn<br />
+Daniel Caltagirone …Sinclair/Governor Odious<br />
+Leo Bill …Charles Darwin<br />
+Julian Bleach …The Mystic</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/12/3062653/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/12/3062653/" class="post-title-link" itemprop="url">必须学习的8个DOS命令</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-12 12:12:00" itemprop="dateCreated datePublished" datetime="2008-10-12T12:12:00+08:00">2008-10-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 11:52:57" itemprop="dateModified" datetime="2023-10-07T11:52:57+08:00">2023-10-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>一，ping</p>
+<p>它是用来检查网络是否通畅或者网络连接速度的命令。作为一个生活在网络上的管理员或者黑客来说，ping命令是第一个必须掌握的DOS命令，它所利用的原理是这样的：<br />
+网络上的机器都有唯一确定的IP地址，我们给目标IP地址发送一个数据包，对方就要返回一个同样大小的数据包，根据返回的数据包我们可以确定目标主机的存在，可以初步<br />
+判断目标主机的操作系统等。下面就来看看它的一些常用的操作。先看看帮助吧，在DOS窗口中键入：ping /?<br />
+回车，。所示的帮助画面。在此，我们只掌握一些基本的很有用的参数就可以了（下同）。</p>
+<p>-t 表示将不间断向目标IP发送数据包，直到我们强迫其停止。试想，如果你使用100M的宽带接入，而目标IP是56K的小猫，那么要不了多久，目标IP就因为承受不了这么多的数据而掉线，呵呵，一次攻击就这么简单的实现了。</p>
+<p>-l 定义发送数据包的大小，默认为32字节，我们利用它可以最大定义到65500字节。结合上面介绍的-t参数一起使用，会有更好的效果哦。</p>
+<p>-n 定义向目标IP发送数据包的次数，默认为3次。如果网络速度比较慢，3次对我们来说也浪费了不少时间，因为现在我们的目的仅仅是判断目标IP是否存在，那么就定义为一次吧。</p>
+<p>说明一下，如果-t 参数和 -n参数一起使用，ping命令就以放在后面的参数为标准，比如&quot;ping IP -t -n 3&quot;，虽然使用了-<br />
+t参数，但并不是一直ping下去，而是只ping 3次。另外，ping命令不一定非得ping IP，也可以直接ping主机域名，这样就可以得到主机的IP。</p>
+<p>下面我们举个例子来说明一下具体用法。</p>
+<p>这里time=2表示从发出数据包到接受到返回数据包所用的时间是2秒，从这里可以判断网络连接速度的大小<br />
+。从TTL的返回值可以初步判断被ping主机的操作系统，之所以说&quot;初步判断&quot;是因为这个值是可以修改的。这里TTL=32表示操作系统可能是win98。</p>
+<p>（小知识：如果TTL=128，则表示目标主机可能是Win2000；如果TTL=250，则目标主机可能是Unix）</p>
+<p>至于利用ping命令可以快速查找局域网故障，可以快速搜索最快的QQ服务器，可以对别人进行ping攻击……这些就靠大家自己发挥了。</p>
+<p>二，nbtstat</p>
+<p>该命令使用TCP/IP上的NetBIOS显示协议统计和当前TCP/IP连接，使用这个命令你可以得到远程主机的NETBIOS信息，比如用户名、所属的工作组、网<br />
+卡的MAC地址等。在此我们就有必要了解几个基本的参数。</p>
+<p>-a 使用这个参数，只要你知道了远程主机的机器名称，就可以得到它的NETBIOS信息（下同）。</p>
+<p>-A 这个参数也可以得到远程主机的NETBIOS信息，但需要你知道它的IP。</p>
+<p>-n 列出本地机器的NETBIOS信息。</p>
+<p>当得到了对方的IP或者机器名的时候，就可以使用nbtstat命令来进一步得到对方的信息了，这又增加了我们入侵的保险系数。</p>
+<p>三，netstat</p>
+<p>这是一个用来查看网络状态的命令，操作简便功能强大。</p>
+<p>-a 查看本地机器的所有开放端口，可以有效发现和预防木马，可以知道机器所开的服务等信息，如图4。</p>
+<p>这里可以看出本地机器开放有FTP服务、Telnet服务、邮件服务、WEB服务等。用法：netstat -a IP。</p>
+<p>-r 列出当前的路由信息，告诉我们本地机器的网关、子网掩码等信息。用法：netstat -r IP。<br />
+四，tracert</p>
+<p>跟踪路由信息，使用此命令可以查出数据从本地机器传输到目标主机所经过的所有途径，这对我们了解网络布局和结构很有帮助。如图5。</p>
+<p>这里说明数据从本地机器传输到192.168.0.1的机器上，中间没有经过任何中转，说明这两台机器是在同一段局域网内。用法：tracert IP。</p>
+<p>五，net</p>
+<p>这个命令是网络命令中最重要的一个，必须透彻掌握它的每一个子命令的用法，因为它的功能实在是太强大了，这简直就是<br />
+微软为我们提供的最好的入侵工具。首先让我们来看一看它都有那些子命令，键入net /?回车如图6。</p>
+<p>在这里，我们重点掌握几个入侵常用的子命令。</p>
+<p>net view</p>
+<p>使用此命令查看远程主机的所以共享资源。命令格式为net view /IP。</p>
+<p>net use</p>
+<p>把远程主机的某个共享资源影射为本地盘符，图形界面方便使用，呵呵。命令格式为net use x: /IP/sharename。上面一个表示把192.168.0<br />
+.5IP的共享名为magic的目录影射为本地的Z盘。下面表示和192.168.0.7建立IPC$连接（net use /IP/IPC$ “password”<br />
+/user:“name”），</p>
+<p>建立了IPC$连接后，呵呵，就可以上传文件了：copy nc.exe<br />
+/192.168.0.7/admin$，表示把本地目录下的nc.exe传到远程主机，结合后面要介绍到的其他DOS命令就可以实现入侵了。</p>
+<p>net start</p>
+<p>使用它来启动远程主机上的服务。当你和远程主机建立连接后，如果发现它的什么服务没有启动，而你又想利用此服务怎么办？就使用这个命令来启动吧。用法：net<br />
+start servername，如图9，成功启动了telnet服务。</p>
+<p>net stop</p>
+<p>入侵后发现远程主机的某个服务碍手碍脚，怎么办？利用这个命令停掉就ok了，用法和net start同。</p>
+<p>net user</p>
+<p>查看和帐户有关的情况，包括新建帐户、删除帐户、查看特定帐户、激活帐户、帐户禁用等。这对我们入侵是很有利的，最重要的，它为我们克隆帐户提供了前提。键入不带参数<br />
+的net user，可以查看所有用户，包括已经禁用的。下面分别讲解。</p>
+<p>1，net user abcd 1234 /add，新建一个用户名为abcd，密码为1234的帐户，默认为user组成员。</p>
+<p>2，net user abcd /del，将用户名为abcd的用户删除。</p>
+<p>3，net user abcd /active:no，将用户名为abcd的用户禁用。</p>
+<p>4，net user abcd /active:yes，激活用户名为abcd的用户。</p>
+<p>5，net user abcd，查看用户名为abcd的用户的情况</p>
+<p>net localgroup</p>
+<p>查看所有和用户组有关的信息和进行相关操作。键入不带参数的net localgroup即列出当前所有的用户组。在入侵过程中，我们一般利用它来把某个帐户提升为a<br />
+dministrator组帐户，这样我们利用这个帐户就可以控制整个远程主机了。用法：net localgroup groupname username<br />
+/add。</p>
+<p>现在我们把刚才新建的用户abcd加到administrator组里去了，这时候abcd用户已经是超级管理员了，呵呵，你可以再使用net user abcd来<br />
+查看他的状态，和图10进行比较就可以看出来。但这样太明显了，网管一看用户情况就能漏出破绽，所以这种方法只能对付菜鸟网管，但我们还得知道。现在的手段都是利用其<br />
+他工具和手段克隆一个让网管看不出来的超级管理员，这是后话。有兴趣的朋友可以参照《黑客防线》第30期上的《由浅入深解析隆帐户》一文。</p>
+<p>net time</p>
+<p>这个命令可以查看远程主机当前的时间。如果你的目标只是进入到远程主机里面，那么也许就用不到这个命令了。但简单的入侵成功了，难道只是看看吗？我们需要进一步渗透。<br />
+这就连远程主机当前的时间都需要知道，因为利用时间和其他手段（后面会讲到）可以实现某个命令和程序的定时启动，为我们进一步入侵打好基础。用法：net time<br />
+/IP。</p>
+<p>六，at</p>
+<p>这个命令的作用是安排在特定日期或时间执行某个特定的命令和程序（知道net<br />
+time的重要了吧？）。当我们知道了远程主机的当前时间，就可以利用此命令让其在以后的某个时间（比如2分钟后）执行某个程序和命令。用法：at time<br />
+command /computer。</p>
+<p>表示在6点55分时，让名称为a-01的计算机开启telnet服务（这里net start telnet即为开启telnet服务的命令）。<br />
+七，ftp</p>
+<p>大家对这个命令应该比较熟悉了吧？网络上开放的ftp的主机很多，其中很大一部分是匿名的，也就是说任何人都可以登陆上去。现在如果你扫到了一台开放ftp服务的主机<br />
+（一般都是开了21端口的机器），如果你还不会使用ftp的命令怎么办？下面就给出基本的ftp命令使用方法。</p>
+<p>首先在命令行键入ftp回车，出现ftp的提示符，这时候可以键入&quot;help&quot;来查看帮助（任何DOS命令都可以使用此方法查看其帮助)。</p>
+<p>大家可能看到了，这么多命令该怎么用？其实也用不到那么多，掌握几个基本的就够了。</p>
+<p>首先是登陆过程，这就要用到open了，直接在ftp的提示符下输入&quot;open 主机IP<br />
+ftp端口&quot;回车即可，一般端口默认都是21，可以不写。接着就是输入合法的用户名和密码进行登陆了，这里以匿名ftp为例介绍。</p>
+<p>用户名和密码都是ftp，密码是不显示的。当提示**** logged in时，就说明登陆成功。这里因为是匿名登陆，所以用户显示为Anonymous。</p>
+<p>接下来就要介绍具体命令的使用方法了。</p>
+<p>dir 跟DOS命令一样，用于查看服务器的文件，直接敲上dir回车，就可以看到此ftp服务器上的文件。</p>
+<p>cd 进入某个文件夹。</p>
+<p>get 下载文件到本地机器。</p>
+<p>put 上传文件到远程服务器。这就要看远程ftp服务器是否给了你可写的权限了，如果可以，呵呵，该怎么 利用就不多说了，大家就自由发挥去吧。</p>
+<p>delete 删除远程ftp服务器上的文件。这也必须保证你有可写的权限。</p>
+<p>bye 退出当前连接。</p>
+<p>quit 同上。<br />
+八，telnet</p>
+<p>功能强大的远程登陆命令，几乎所有的入侵者都喜欢用它，屡试不爽。为什么？它操作简单，如同使用自己的机器一样，只要你熟悉DOS命令，在成功以administra<br />
+tor身份连接了远程机器后，就可以用它来干你想干的一切了。下面介绍一下使用方法，首先键入telnet回车，再键入help查看其帮助信息。</p>
+<p>然后在提示符下键入open IP回车，这时就出现了登陆窗口，让你输入合法的用户名和密码，这里输入任何密码都是不显示的。</p>
+<p>当输入用户名和密码都正确后就成功建立了telnet连接，这时候你就在远程主机上具有了和此用户一样的权限，利用DOS命令就可以实现你想干的事情了。这里我使用的<br />
+超级管理员权限登陆的。</p>
+<p>到这里为止，网络DOS命令的介绍就告一段落了，这里介绍的目的只是给菜鸟网管一个印象，让其知道熟悉和掌握网络DOS命令的重要性。其实和网络有关的DOS命令还远<br />
+不止这些，这里只是抛砖引玉，希望能对广大菜鸟网管有所帮助。学好DOS对当好网管有很大的帮助，特别的熟练掌握了一些网络的DOS命令。</p>
+<p>另外大家应该清楚，任何人要想进入系统，必须得有一个合法的用户名和密码（输入法漏洞差不多绝迹了吧），哪怕你拿到帐户的只有一个很小的权限，你也可以利用它来达到最<br />
+后的目的。所以坚决消灭空口令，给自己的帐户加上一个强壮的密码，是最好的防御弱口令入侵的方法。</p>
+<p>最后，由衷的说一句，培养良好的安全意识才是最重要的。</p>
+<p>=========================================<br />
+开始→运行→命令集锦<br />
+winver---------检查Windows版本<br />
+wmimgmt.msc----打开windows管理体系结构(WMI)<br />
+wupdmgr--------windows更新程序<br />
+wscript--------windows脚本宿主设置<br />
+write----------写字板<br />
+winmsd---------系统信息<br />
+wiaacmgr-------扫描仪和照相机向导<br />
+winchat--------XP自带局域网聊天</p>
+<p>mem.exe--------显示内存使用情况<br />
+Msconfig.exe—系统配置实用程序<br />
+mplayer2-------简易widnows media player<br />
+mspaint--------画图板<br />
+mstsc----------远程桌面连接<br />
+mplayer2-------媒体播放机<br />
+magnify--------放大镜实用程序<br />
+mmc------------打开控制台<br />
+mobsync--------同步命令</p>
+<p>dxdiag---------检查DirectX信息<br />
+drwtsn32------ 系统医生<br />
+devmgmt.msc— 设备管理器<br />
+dfrg.msc-------磁盘碎片整理程序<br />
+diskmgmt.msc—磁盘管理实用程序<br />
+dcomcnfg-------打开系统组件服务<br />
+ddeshare-------打开DDE共享设置<br />
+dvdplay--------DVD播放器</p>
+<p>net stop messenger-----停止信使服务<br />
+net start messenger----开始信使服务<br />
+notepad--------打开记事本<br />
+nslookup-------网络管理的工具向导<br />
+ntbackup-------系统备份和还原<br />
+narrator-------屏幕&quot;讲述人&quot;<br />
+ntmsmgr.msc----移动存储管理器<br />
+ntmsoprq.msc—移动存储管理员操作请求<br />
+netstat -an----(TC)命令检查接口</p>
+<p>syncapp--------创建一个公文包<br />
+sysedit--------系统配置编辑器<br />
+sigverif-------文件签名验证程序<br />
+sndrec32-------录音机<br />
+shrpubw--------创建共享文件夹<br />
+secpol.msc-----本地安全策略<br />
+syskey---------系统加密，一旦加密就不能解开，保护windows xp系统的双重密码<br />
+services.msc—本地服务设置<br />
+Sndvol32-------音量控制程序<br />
+sfc.exe--------系统文件检查器<br />
+sfc /scannow—windows文件保护</p>
+<p>tsshutdn-------60秒倒计时关机命令<br />
+tourstart------xp简介（安装完成后出现的漫游xp程序）<br />
+taskmgr--------任务管理器</p>
+<p>eventvwr-------事件查看器<br />
+eudcedit-------造字程序<br />
+explorer-------打开资源管理器<br />
+packager-------对象包装程序<br />
+perfmon.msc----计算机性能监测程序<br />
+progman--------程序管理器</p>
+<p>regedit.exe----注册表<br />
+rsop.msc-------组策略结果集<br />
+regedt32-------注册表编辑器<br />
+rononce -p ----15秒关机<br />
+regsvr32 /u *.dll----停止dll文件运行<br />
+regsvr32 /u zipfldr.dll------取消ZIP支持</p>
+<p>cmd.exe--------CMD命令提示符<br />
+chkdsk.exe-----Chkdsk磁盘检查<br />
+certmgr.msc----证书管理实用程序<br />
+calc-----------启动计算器<br />
+charmap--------启动字符映射表<br />
+cliconfg-------SQL SERVER 客户端网络实用程序<br />
+Clipbrd--------剪贴板查看器<br />
+conf-----------启动netmeeting<br />
+compmgmt.msc—计算机管理<br />
+cleanmgr-------垃圾整理<br />
+ciadv.msc------索引服务程序</p>
+<p>osk------------打开屏幕键盘<br />
+odbcad32-------ODBC数据源管理器<br />
+oobe/msoobe /a----检查XP是否激活<br />
+lusrmgr.msc----本机用户和组<br />
+logoff---------注销命令<br />
+iexpress-------木马捆绑工具，系统自带</p>
+<p>Nslookup-------IP地址侦测器</p>
+<p>fsmgmt.msc-----共享文件夹管理器</p>
+<p>utilman--------辅助工具管理器</p>
+<p>gpedit.msc-----组策略</p>
+<pre class="highlight"><code class="">~~
+
+其实我认为曾经应该值得学习的是exit这个命令，在98环境下，常常有人进入了DOS后，不知道怎么出来。
+
+还有dir和cd命令
+
+其实for命令也是常用的，经常用于脚本编程。
+
+echo...这个命令就是为了写文件显示方便点..
+
+这篇文章摘抄自....很多地方。最后一次转载来时 [ _ chaihuoniu  _ ](http://hi.csdn.net/chaihuoniu)  
+
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/12/3061782/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/12/3061782/" class="post-title-link" itemprop="url">越来越喜欢看英文的网站了</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-12 09:41:00" itemprop="dateCreated datePublished" datetime="2008-10-12T09:41:00+08:00">2008-10-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>116</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>现在看到中文的网站全部贴的花花绿绿的图片，对我一点也没有用。还占用我的流量。</p>
+<p>外国的专业网站多好，没有啥七七八八的图片和广告。全部都是内容。这流量用的多值。</p>
+<p>建议以后大家使用非图片的各种内容信息。当然为了主题的表达也可以加些少量的图片。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/10/3053452/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/10/3053452/" class="post-title-link" itemprop="url">英文书和中文翻译版</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-10 22:36:00" itemprop="dateCreated datePublished" datetime="2008-10-10T22:36:00+08:00">2008-10-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>433</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近帮朋友翻译书籍。朋友最后整合，我只是翻译其中一个章节。因为根本没有看前面的文章，所以难免字词把握不准。当然比Google翻译和金山翻译都强一些。但是难免<br />
+还能看出翻译的痕迹。因为时间紧迫，所以只用了2个小时不到的时间就完成了任务。</p>
+<p>后来接触到翻译的各种内幕，发现有很多本科生为了生计也接翻译的任务。辛苦而快速的翻译。当然这里不是说本科生翻译的就差。但是我认为看他们翻译的版本还不如自己看英<br />
+文版的舒服些。过去我还没有这种思想，现在自己翻译过书之后，发现还是英文版的好。因为如果翻译者像我这样为了完成任务草草的翻译，可能根本没有领悟到每一句话的真正<br />
+含义，很有可能错误翻译。计算机的专业文章很多还要看懂代码后做翻译，与其看别人的二义性翻译还不如自己理解下英文原版好。</p>
+<p>另外也发现一个问题，很多专业词汇根本不知道中文对应的是什么。但是英文还是好理解的。所以很有可能翻译者会生造出一个词汇。当然看翻译版看久了就会知道这两个中文词<br />
+竟然是一个英文词…所以何苦呢？开始看英文不就好了？</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/07/3028275/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/07/3028275/" class="post-title-link" itemprop="url">7年前的互联网世界</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-07 14:13:00" itemprop="dateCreated datePublished" datetime="2008-10-07T14:13:00+08:00">2008-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>210</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>google 将7年前的索引拿了出来，现在大家可以输入各种关键字看看过去的互联网世界。</p>
+<p>不过google也有没有爬到的地方。不过Google的这个活动还是蛮新奇的。</p>
+<p>Hey!everybody, we are looking back the history!</p>
+<p>使用GOOGLE 2001的索引，发现7年前的网络是啥样的，来个今昔大对比，对比那可是真是相当惊人呐。<br />
+<a target="_blank" rel="noopener" href="http://www.google.com/search2001.html"> _ http://www.google.co  m/search2001.html  _<br />
+</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/07/3025644/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/07/3025644/" class="post-title-link" itemprop="url">给湖大软件学院学弟学妹的演讲Ppt</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-07 09:00:00" itemprop="dateCreated datePublished" datetime="2008-10-07T09:00:00+08:00">2008-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>124</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>主要是关于树立自信的，其实我也知道很多学生是调剂到湖大软件学院的。这点和我有很大的不同。因为我第一志愿就是软件学院。天知道我当时是怎么想的。估计是感觉计科太<br />
+接近硬件了吧。</p>
+<p>不过不管怎样，既然进来了就要好好学。否则耽误4年，太不值了。</p>
+<p><span class="exturl" data-url="aHR0cDovL2Rvd25sb2FkLmNzZG4ubmV0L3NvdXJjZS82NzAwNzE="> _ ppt下载地址 _ <i class="fa fa-external-link-alt"></i></span></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/07/3025614/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/07/3025614/" class="post-title-link" itemprop="url">微软实习最后的心得报告</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-07 08:52:00" itemprop="dateCreated datePublished" datetime="2008-10-07T08:52:00+08:00">2008-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>49</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>已经过去半年了，将自己的东西整理整理都贴到网上来吧。</p>
+<p><span class="exturl" data-url="aHR0cDovL2Rvd25sb2FkLmNzZG4ubmV0L3NvdXJjZS82NzAwNDM="> _ 实习总结下载 _ <i class="fa fa-external-link-alt"></i></span></p>
+<p>csdn上传文件还是很方便的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/07/3025580/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/07/3025580/" class="post-title-link" itemprop="url">毕业设计公交选路算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-07 08:34:00" itemprop="dateCreated datePublished" datetime="2008-10-07T08:34:00+08:00">2008-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>397</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><span class="exturl" data-url="aHR0cDovL2Rvd25sb2FkLmNzZG4ubmV0L3NvdXJjZS82NzAwMTQ="> <i class="fa fa-external-link-alt"></i></span></p>
+<p>这是自己的毕业设计论文。</p>
+<p>其实算法感觉上也没有什么高深的，只是至今还没有用那个算法而已。</p>
+<p>前一个算法是导师想到的，后一个算法是自己看了大量的论文发现还为提出的。</p>
+<p>这篇论文估计已经存在在湖大的档案室中了。</p>
+<p>本来想投稿到某个杂志发表一下。但是自己迟迟未整理文章，没有将文章缩减至7000字一下。所以发表的概率也不大。</p>
+<p>而且还要交版面费。索性发表到csdn，供各位做电子地图的人参考一下。</p>
+<p>电子地图的前台代码即将开源。但是写的不好，大家也不要有太高的期望。我感觉那javascript运行的太慢了。</p>
+<p>也可能是传输和画图的地方没有设计好。另外也使用的开源的javascript画图包。</p>
+<p>后台代码的算法部分开源。因为还有一些是阿咪写的。</p>
+<p>暂且就写这么多吧。</p>
+<p><span class="exturl" data-url="aHR0cDovL2Rvd25sb2FkLmNzZG4ubmV0L3NvdXJjZS82NzAwMTQ="> _ 先把论文挂上。 _ <i class="fa fa-external-link-alt"></i></span><br />
+这里资源分是0，所以只要是注册用户都可以下载。</p>
+<p>心存叵测之人勿将此文当作自己的毕设论文。因为我会写大量的关键词来让Google索引的。(<em><sup>__</sup></em>) 嘻嘻……</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/06/3023529/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/06/3023529/" class="post-title-link" itemprop="url">One编程组logo</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-06 18:51:00" itemprop="dateCreated datePublished" datetime="2008-10-06T18:51:00+08:00">2008-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>188</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在暑假里为One编程组设计的logo</p>
+<p>里面有One编程组组建宗旨：</p>
+<p>Open Share</p>
+<p>然后环绕一圈的就是One这个词了</p>
+<p>意为统一整体。</p>
+<p>编程组成员以后可以使用这个logo，扩大One编程组的影响。呵呵。</p>
+<p>![](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA4MTAwNi8=">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/20081006/<i class="fa fa-external-link-alt"></i></span><br />
+OneGroup.png)</p>
 
       
     </div>
@@ -1737,7 +3849,7 @@ I use c++ in linux which is gcc version 4.4.1 (Ubuntu 4.4.1-4ubuntu9).
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/23/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/25/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/23/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/25/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1767,7 +3879,7 @@ I use c++ in linux which is gcc version 4.4.1 (Ubuntu 4.4.1-4ubuntu9).
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">23:58</span>
+    <span title="Reading time total">24:10</span>
   </span>
 </div>
 

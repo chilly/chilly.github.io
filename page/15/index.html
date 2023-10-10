@@ -172,12 +172,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">739</span>
+        <span class="site-state-item-count">750</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/31/2012-01-31-git-alias/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/21/5402004/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/31/2012-01-31-git-alias/" class="post-title-link" itemprop="url">Git Alias</a>
+          <a href="/2010/03/21/5402004/" class="post-title-link" itemprop="url">用编译原理编写计算器程序中需要注意的问题</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,23 +243,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-31 19:57:00" itemprop="dateCreated datePublished" datetime="2012-01-31T19:57:00+08:00">2012-01-31</time>
+      <time title="Created: 2010-03-21 18:29:00" itemprop="dateCreated datePublished" datetime="2010-03-21T18:29:00+08:00">2010-03-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:16:52" itemprop="dateModified" datetime="2023-10-05T23:16:52+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -269,7 +260,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>559</span>
+      <span>572</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -287,17 +278,1010 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今天唐大牛教了些git的命令。顺便把他的git别名也发给我了。啥叫别名，就是</p>
-<blockquote><p>git br<br />
-==&gt;<br />
-git branch</p>
+          <p>计算器程序有优先级。所以文法归于必须有先后顺序。也就是高优先级的先规约，低优先级的后规约。也就是在写文法时，见到高优先级便扩展。</p>
+<p>例如: -+在*/之后扩展</p>
+<p>Express = Express ‘+’ F | Express ‘-’ F F = T ‘*’ T | T ‘/’ T T = terminal</p>
+<p>这就完事了吗？no…因为这样很有可能产生shift/reduce文法错误。解决方法为:</p>
+<p>Express = Express ‘+’ F | Express ‘-’ F | F F = F ‘*’ T | F ‘/’ T | T T = num</p>
+<h1 id="这里num和terminal一致-都为终结符"><a class="markdownIt-Anchor" href="#这里num和terminal一致-都为终结符"></a> 这里num和terminal一致。都为终结符</h1>
+<p>这样做完之后，不会出现shift/reduce错误。我觉得解决shift/reduce可能有某种规律，例如在左递归文法中,每句几乎都是以非终结符开始，并以终<br />
+结符结束。并且在最后一种扩展中添加下一个非终结符。当然这对于简单文法可能是成立的。至少这样不会有错。但是如果这个是文法的话，计算器不会终止。也就是说如果执行<br />
+1+2*3-4/5,则在最后一个低优先级符号处结束。也就是说最后规约为7-0.8,之后不会继续规约。所以这里必须将明确的结束符告诉程序。例如下一段中最终的结<br />
+束符为=或者回车：</p>
+<p>Value = Express ‘/n’ | Express ‘=’ Express = Express ‘+’ F | Express ‘-’ F | F<br />
+F = F ‘*’ T | F ‘/’ T | T T = num</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/18/5393914/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/18/5393914/" class="post-title-link" itemprop="url">Yacc Lex 使用中错误信息解决解决方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-18 19:19:00" itemprop="dateCreated datePublished" datetime="2010-03-18T19:19:00+08:00">2010-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>ex3.y: In function ‘yyerror’:<br />
+ex3.y:32: warning: incompatible implicit declaration of built-in function<br />
+‘printf’</p>
+<p>这一条是因为.y缺少头文件。在.y文件中需要在%{…%}之中写入#include<br />
+&lt;stdio.h&gt;等头文件。如果只有printf那就只用这个头文件就行了。</p>
+<p>ex3.l: In function ‘yylex’:<br />
+ex3.l:11: error: ‘yylval’ undeclared (first use in this function)<br />
+ex3.l:11: error: (Each undeclared identifier is reported only once<br />
+ex3.l:11: error: for each function it appears in.)</p>
+<p>这一条信息是由于yylval 对于lex不可见造成的。原因yacc调用yylex()读取token,lex读到一个token就将这个token返回，但这个t<br />
+oken同时可能有值。此值必须保留在yylval中。但是古老的yacc不让lex见到，那么就需要extern YYSTPYE<br />
+yylval.传说这就需要加在y.tab.h中。但是经我测试这是不行的。(我也不知道为啥偏偏就我这么倒霉。)我在加上extern YYSTPYE<br />
+yylval之后产生如下错误：</p>
+<p>ex3.l:5: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘<strong>attribute</strong>’ before<br />
+‘yylval’<br />
+ex3.l: In function ‘yylex’:</p>
+<p>…不过还有救，我不使用byacc,而改用bison。之后去掉extern YYSTPYE yylval再编译：</p>
+<p>ex3.y: In function ‘yyparse’:<br />
+ex3.y:26: warning: format ‘%s’ expects type ‘char *’, but argument 2 has type<br />
+‘YYSTYPE’</p>
+<p>这是因为YYSTYPE这个变量是int型的。所以要在.y文件的%{…%}中添加两行</p>
+<p>typedef char* string; #define YYSTPYE string</p>
+<p>然后编译成功，却冒出了:</p>
+<p>ex3.l: In function ‘yylex’:<br />
+ex3.l:10: warning: assignment makes integer from pointer without a cast</p>
+<p>这肯定是yylval=strdup(yytext);处没有进行强制转换。于是改为yylval=(int)strdup(yytext);就ok了。但这里的问题<br />
+是yylval应该是一个YYSTYPE的变量。但是却必须转换为int型，确实有些诡异。之后又尝试在gcc中添加-Wstrict-<br />
+prototypes来查看此错误。结果发现又报一错⚠️ function declaration isn’t a<br />
+prototype.这个错误的确是自己从来不喜欢写void造成的。将main()改为main(void)<br />
+即可。</p>
+<p>首先要有flex 和 bison两个东东，没有就yum或者apt-get</p>
+<p>最终的两个文件和编译命令为：</p>
+<p>ex3.l文件：</p>
+<p>%{ #include &lt;stdio.h&gt; #include “ex3.tab.h” %} name [a-zA-Z][a-zA-Z0-9]* age<br />
+[1-9][0-9]* eq = %% {name} {yylval=(int)strdup(yytext); return NAME;} {age}<br />
+{yylval=(int)strdup(yytext); return AGE;} {eq} {return EQ;} %% int yywrap() {<br />
+return 1; }</p>
+<p>ex3.y文件</p>
+<p>%{ typedef char* string; #define YYSTYPE string #include &lt;stdio.h&gt; #include<br />
+&lt;string.h&gt; int main(void) { // extern int yyparse(void); yyparse(); return 0;<br />
+} int yyerror(char * msg) { printf(“%s is error in line”,msg); } %} %token<br />
+NAME EQ AGE %% file : record file | record ; record : NAME EQ NAME {<br />
+printf(“%s’s age is equal with %s./n”,$1,$3); } | NAME EQ AGE {<br />
+printf(“ssssss/n”); } ; %%</p>
+<p>这之后执行:</p>
+<p>root@chico-laptop:~/compiler# bison -d ex3.y root@chico-laptop:~/compiler#<br />
+flex ex3.l root@chico-laptop:~/compiler# cc -Wstrict-prototypes lex.yy.c<br />
+ex3.tab.c -o test root@chico-laptop:~/compiler# ./test</p>
+<p>input:</p>
+<p>AA = BB</p>
+<p>output:</p>
+<p>AA’s age is equal with BB.</p>
+<p>简单的东西算是完成了</p>
+<p>但是还有一个问题没有解决,为啥使用bison就可以解决问题，而使用byacc就不行呢？我看了下bison生成的ex3.tab.h文件，其中有几句话：</p>
+<p>#if ! defined YYSTYPE &amp;&amp; ! defined YYSTYPE_IS_DECLARED typedef int YYSTYPE; #<br />
+define yystype YYSTYPE /* obsolescent; will be withdrawn */ # define<br />
+YYSTYPE_IS_DECLARED 1 # define YYSTYPE_IS_TRIVIAL 1 #endif extern YYSTYPE<br />
+yylval;</p>
+<p>直接将上面的话贴入byacc生成的y.tab.h即可编译通过。不过即使你在其中更改 typedef char*<br />
+YYSTYPE;lex程序还是会将yylval默认为int型。</p>
+<p>不过想要通过c＋＋编译的话，还需要做些改动。</p>
+<p>ex4.y</p>
+<p>%{ #include<iostream> #include<string> using namespace std; typedef char*<br />
+strings; #define YYSTYPE strings extern “C” { int yyparse(void); int<br />
+yylex(void); int yydebug; int yyerror(const char*); } int main(void) { //<br />
+extern int yyparse(void); yydebug=1; yyparse(); return 0; } int yyerror(const<br />
+char * msg) { printf(“%s is error in line”,msg); } %} %token NAME EQ AGE %%<br />
+file : record file | record ; record : NAME EQ NAME { printf(“%s’s age is<br />
+equal with %s./n”,$1,$3); } | NAME EQ AGE { printf(“ssssss/n”); } ; %%</p>
+<p>ex4.l</p>
+<p>%{ #include &lt;stdio.h&gt; #include “ex4.tab.h” %} name [a-zA-Z][a-zA-Z0-9]* age<br />
+[1-9][0-9]* eq = %% {name} {yylval=(int)strdup(yytext); return NAME;} {age}<br />
+{yylval=(int)strdup(yytext); return AGE;} {eq} {return EQ;} %% int<br />
+yywrap(){return 1;}</p>
+<p>编译指令：</p>
+<p>root@chico-laptop:~/compiler# bison -d ex4.y root@chico-laptop:~/compiler#<br />
+flex ex4.l root@chico-laptop:~/compiler# cc -c lex.yy.c -o lex.yy.o root<br />
+@chico-laptop:~/compiler# c++ lex.yy.o ex4.tab.c -o ex4test</p>
+<p>常见的编译error和warning有:</p>
+<p>ex4.tab.c:1519: warning: deprecated conversion from string constant to ‘char*’<br />
+这里去查看了一下ex4.tab.c发现是函数yyerror的问题，将int yyerror(char*)改为int yyerror(const<br />
+char*)即可。</p>
+<p>另外不要typedef char* string;这可能会重，不定义又会报出：</p>
+<p>ex4.y: In function ‘int yyparse()’:<br />
+ex4.y:36: warning: cannot pass objects of non-POD type ‘struct<br />
+std::basic_string&lt;char, std::char_traits<char>, std::allocator<char> &gt;’<br />
+through ‘…’; call will abort at runtime</p>
+<p>所以改为typedef char* strings;</p>
+<p>另外lex.yy.c要先用cc或gcc编译为.o文件,然后在用g<ins>或c</ins>联合编译。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/18/5391920/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/18/5391920/" class="post-title-link" itemprop="url">Yacc与lex入门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-18 11:20:00" itemprop="dateCreated datePublished" datetime="2010-03-18T11:20:00+08:00">2010-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 14:14:18" itemprop="dateModified" datetime="2023-10-07T14:14:18+08:00">2023-10-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转自<br />
+<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L3Nkay9sZXgvaW5kZXguaHRtbCNhdXRob3I=">Ashish Bansal<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="bWFpbHRvOmFiYW5zYWxAaWVlZS5vcmc/c3ViamVjdD1ZYWNjJTIwJUU0JUI4JThFJTIwTGV4JTIwJUU1JUJGJUFCJUU5JTgwJTlGJUU1JTg1JUE1JUU5JTk3JUE4JmNjPWFiYW5zYWxAaWVlZS5vcmc=">abansal@ieee.org<i class="fa fa-external-link-alt"></i></span>, 软件工程师, Sapient 公司</p>
+<p>Lex</p>
+<p>Lex 是一种生成扫描器的工具。扫描器是一种识别文本中的词汇模式的程序。这些词汇模式（或者常规表达式）在一种特殊的句子结构中定义，这个我们一会儿就要讨论。</p>
+<p>一种匹配的常规表达式可能会包含相关的动作。这一动作可能还包括返回一个标记。当 Lex<br />
+接收到文件或文本形式的输入时，它试图将文本与常规表达式进行匹配。它一次读入一个输入字符，直到找到一个匹配的模式。如果能够找到一个匹配的模式，Lex<br />
+就执行相关的动作（可能包括返回一个标记）。另一方面，如果没有可以匹配的常规表达式，将会停止进一步的处理，Lex 将显示一个错误消息。</p>
+<p>Lex 和 C 是强耦合的。一个 _ .lex _ 文件（Lex 文件具有 _ .lex _ 的扩展名）通过 lex 公用程序来传递，并生成 C<br />
+的输出文件。这些文件被编译为词法分析器的可执行版本。</p>
+<p>Lex 的常规表达式</p>
+<p>常规表达式是一种使用元语言的模式描述。表达式由符号组成。符号一般是字符和数字，但是 Lex 中还有一些具有特殊含义的其他标记。 下面两个表格定义了 Lex<br />
+中使用的一些标记并给出了几个典型的例子。</p>
+<p>用 Lex 定义常规表达式</p>
+<p>** 字符 **<br />
+** 含义 **</p>
+<p>** A-Z, 0-9, a-z **<br />
+构成了部分模式的字符和数字。</p>
+<p>** . **<br />
+匹配任意字符，除了 /n。</p>
+<p>** - **<br />
+用来指定范围。例如：A-Z 指从 A 到 Z 之间的所有字符。</p>
+<p>** [ ] **<br />
+一个字符集合。匹配括号内的 _ 任意 _ 字符。如果第一个字符是 ** ^ ** 那么它表示否定模式。例如: [abC] 匹配 a, b, 和<br />
+C中的任何一个。</p>
+<hr />
+<p>匹配 _ 0个 _ 或者多个上述的模式。</p>
+<p>** + **<br />
+匹配 _ 1个 _ 或者多个上述模式。</p>
+<p>** ? **<br />
+匹配 _ 0个或1个 _ 上述模式。</p>
+<p>** $ **<br />
+作为模式的最后一个字符匹配一行的结尾。</p>
+<p>** { } **<br />
+指出一个模式可能出现的次数。 例如: A{1,3} 表示 A 可能出现1次或3次。</p>
+<p>** / **<br />
+用来转义元字符。同样用来覆盖字符在此表中定义的特殊意义，只取字符的本意。</p>
+<p>** ^ **<br />
+否定。</p>
+<p>** | **<br />
+表达式间的逻辑或。</p>
+<p>** “&lt;一些符号&gt;” **<br />
+字符的字面含义。元字符具有。</p>
+<p>** / **<br />
+向前匹配。如果在匹配的模版中的“/”后跟有后续表达式，只匹配模版中“/”前面的部分。如：如果输入 A01，那么在模版 A0/1 中的 A0 是匹配的。</p>
+<p>** ( ) **<br />
+将一系列常规表达式分组。</p>
+<p>常规表达式举例</p>
+<p>** 常规表达式 **<br />
+** 含义 **</p>
+<p>joke[rs]</p>
+<p>匹配 jokes 或 joker。</p>
+<p>A{1,2}shis+</p>
+<p>匹配 AAshis, Ashis, AAshi, Ashi。</p>
+<p>(A[b-e])+</p>
+<p>匹配在 A 出现位置后跟随的从 b 到 e 的所有字符中的 0 个或 1个。</p>
+<p>注：这小朋友将A{1,2}shis*写为了A{1,2}shis+。</p>
+<p>Lex 中的标记声明类似 C 中的变量名。每个标记都有一个相关的表达式。（下表中给出了标记和表达式的例子。）使用这个表中的例子，我们就可以编一个字数统计的程<br />
+序了。我们的第一个任务就是说明如何声明标记。</p>
+<p>标记声明举例</p>
+<p>** 标记 **<br />
+** 相关表达式 **<br />
+** 含义 **</p>
+<p>数字(number)</p>
+<p>([0-9])+</p>
+<p>1个或多个数字</p>
+<p>字符(chars)</p>
+<p>[A-Za-z]</p>
+<p>任意字符</p>
+<p>空格(blank)</p>
+<p>&quot; &quot;</p>
+<p>一个空格</p>
+<p>字(word)</p>
+<p>(chars)+</p>
+<p>1个或多个 _ chars _</p>
+<p>变量(variable)</p>
+<p>(字符)+(数字)<em>(字符)</em>(数字)*</p>
+<p>Lex 编程</p>
+<p>Lex 编程可以分为三步：</p>
+<ol>
+<li>以 Lex 可以理解的格式指定模式相关的动作。</li>
+<li>在这一文件上运行 Lex，生成扫描器的 C 代码。</li>
+<li>编译和链接 C 代码，生成可执行的扫描器。</li>
+</ol>
+<p>注意: 如果扫描器是用 Yacc 开发的解析器的一部分，只需要进行第一步和第二步。关于这一特殊问题的帮助请阅读 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#9"> Yacc<br />
+</a> 和 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#15"> 将 Lex 和<br />
+Yacc 结合起来 </a><br />
+部分。</p>
+<p>现在让我们来看一看 Lex 可以理解的程序格式。一个 Lex 程序分为三个段：第一段是 C 和 Lex 的全局声明，第二段包括模式（C<br />
+代码），第三段是补充的 C 函数。 例如, 第三段中一般都有 main() 函数。这些段以%%来分界。 那么，回到字数统计的 Lex<br />
+程序，让我们看一下程序不同段的构成。</p>
+<p>C 和 Lex 的全局声明</p>
+<p>这一段中我们可以增加 C 变量声明。这里我们将为字数统计程序声明一个整型变量，来保存程序统计出来的字数。我们还将进行 Lex 的标记声明。</p>
+<p>** 字数统计程序的声明 **<br />
+%{<br />
+int wordCount = 0;<br />
+%}<br />
+chars [A-za-z/_/'/./“]<br />
+numbers ([0-9])+<br />
+delim [” &quot;/n/t]<br />
+whitespace {delim}+<br />
+words {chars}+<br />
+%%<br />
+两个百分号标记指出了 Lex 程序中这一段的结束和三段中第二段的开始。</p>
+<p>Lex 的模式匹配规则</p>
+<p>让我们看一下 Lex 描述我们所要匹配的标记的规则。（我们将使用 C 来定义标记匹配后的动作。）继续看我们的字数统计程序，下面是标记匹配的规则。</p>
+<p>** 字数统计程序中的 Lex 规则 **<br />
+{words} { wordCount++; /*<br />
+increase the word count by one*/ }<br />
+{whitespace} { /* do<br />
+nothing*/ }<br />
+{numbers} { /* one may<br />
+want to add some processing here*/ }<br />
+%%<br />
+C 代码</p>
+<p>Lex 编程的第三段，也就是最后一段覆盖了 C 的函数声明（有时是主函数）。注意这一段必须包括 yywrap() 函数。 Lex<br />
+有一套可供使用的函数和变量。 其中之一就是 yywrap。一般来说，yywrap() 的定义如下例。我们将在 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#8"> 高级 Lex<br />
+</a> 中探讨这一问题。</p>
+<p>** 字数统计程序的 C 代码段 **<br />
+void main()<br />
+{<br />
+yylex(); /* start the<br />
+analysis*/<br />
+printf(&quot; No of words:<br />
+%d/n&quot;, wordCount);<br />
+}<br />
+int yywrap()<br />
+{<br />
+return 1;<br />
+}<br />
+上一节我们讨论了 Lex 编程的基本元素，它将帮助你编写简单的词法分析程序。 在 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#8"> 高级 Lex<br />
+</a> 这一节中我们将讨论<br />
+Lex 提供的函数，这样你就能编写更加复杂的程序了</p>
+<p>将它们全部结合起来</p>
+<p>_ .lex _ 文件是 Lex 的扫描器。它在 Lex 程序中如下表示：</p>
+<pre><code>   $ lex &lt;file name.lex&gt;  
+</code></pre>
+<p>这生成了 lex.yy.c 文件，它可以用 C 编译器来进行编译。它还可以用解析器来生成可执行程序，或者在链接步骤中通过选项�ll 包含 Lex 库。</p>
+<p>这里是一些 Lex 的标志：</p>
+<ul>
+<li>_ -c _ 表示 C 动作，它是缺省的。</li>
+<li>_ -t _ 写入 lex.yy.c 程序来代替标准输出。</li>
+<li>_ -v _ 提供一个两行的统计汇总。</li>
+<li>_ -n _ 不打印 -v 的汇总。</li>
+</ul>
+<p>高级 Lex</p>
+<p>Lex 有几个函数和变量提供了不同的信息，可以用来编译实现复杂函数的程序。下表中列出了一些变量和函数，以及它们的使用。 详尽的列表请参考 Lex 或<br />
+Flex 手册（见后文的 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#resources"> 资源<br />
+</a> ）。</p>
+<p>Lex 变量</p>
+<p>yyin</p>
+<p>FILE* 类型。 它指向 lexer 正在解析的当前文件。</p>
+<p>yyout</p>
+<p>FILE* 类型。 它指向记录 lexer 输出的位置。 缺省情况下，yyin 和 yyout 都指向标准输入和输出。</p>
+<p>yytext</p>
+<p>匹配模式的文本存储在这一变量中（char*）。</p>
+<p>yyleng</p>
+<p>给出匹配模式的长度。</p>
+<p>yylineno</p>
+<p>提供当前的行数信息。（lexer不一定支持。）</p>
+<p>Lex 函数</p>
+<p>yylex()</p>
+<p>这一函数开始分析。 它由 Lex 自动生成。</p>
+<p>yywrap()</p>
+<p>这一函数在文件（或输入）的末尾调用。如果函数的返回值是1，就停止解析。 因此它可以用来解析多个文件。代码可以写在第三段，这就能够解析多个文件。 方法是使用<br />
+yyin 文件指针（见上表）指向不同的文件，直到所有的文件都被解析。最后，yywrap() 可以返回 1 来表示解析的结束。</p>
+<p>yyless(int n)</p>
+<p>这一函数可以用来送回除了前�n? 个字符外的所有读出标记。</p>
+<p>yymore()</p>
+<p>这一函数告诉 Lexer 将下一个标记附加到当前标记后。</p>
+<p>对 Lex 的讨论就到这里。下面我们来讨论 Yacc…</p>
+<p>Yacc</p>
+<p>Yacc 代表 Yet Another Compiler Compiler。 Yacc 的 GNU 版叫做<br />
+Bison。它是一种工具，将任何一种编程语言的所有语法翻译成针对此种语言的 Yacc 语 法解析器。它用巴科斯范式(BNF, Backus Naur<br />
+Form)来书写。按照惯例，Yacc 文件有 .y 后缀。编译行如下调用 Yacc 编译器：</p>
+<pre><code>       $ yacc &lt;options&gt;  
+        &lt;filename ending with .y&gt;  
+</code></pre>
+<p>在进一步阐述以前，让我们复习一下什么是语法。在上一节中，我们看到 Lex<br />
+从输入序列中识别标记。如果你在查看标记序列，你可能想在这一序列出现时执行某一动作。这种情况下有效序列的规范称为语法。Yacc<br />
+语法文件包括这一语法规范。它还包含了序列匹配时你想要做的事。</p>
+<p>为了更加说清这一概念，让我们以英语为例。 这一套标记可能是：名词, 动词,<br />
+形容词等等。为了使用这些标记造一个语法正确的句子，你的结构必须符合一定的规则。一个简单的句子可能是名词+动词或者名词+动词+名词。(如 I care.<br />
+See spot run.)</p>
+<p>所以在我们这里，标记本身来自语言（Lex），并且标记序列允许用 Yacc 来指定这些标记(标记序列也叫语法)。</p>
+<p><img src="http://www.ibm.com/i/c.gif" alt="" /></p>
+<p>** 终端和非终端符号 **<br />
+** 终端符号 ** : 代表一类在语法结构上等效的标记。终端符号有三种类型：</p>
+<p>_ 命名标记 _ : 这些由 _ %token _ 标识符来定义。按照惯例，它们都是大写。</p>
+<p>_ 字符标记 _ : 字符常量的写法与 C 相同。例如, – 就是一个字符标记。</p>
+<p>_ 字符串标记 _ : 写法与 C 的字符串常量相同。例如，“&lt;&lt;” 就是一个字符串标记。</p>
+<p>lexer 返回命名标记。</p>
+<p>** 非终端符号 ** : 是一组非终端符号和终端符号组成的符号。按照惯例，它们都是小写。 在例子中，file 是一个非终端标记而 NAME 是一个终端标记。</p>
+<p>。</p>
+<p>用 Yacc 编写语法</p>
+<p>如同 Lex 一样, 一个 Yacc 程序也用双百分号分为三段。它们是：声明、语法规则和 C 代码。 我们将解析一个格式为 姓名 =<br />
+年龄的文件作为例子，来说明语法规则。我们假设文件有多个姓名和年龄，它们以空格分隔。 在看 Yacc 程序的每一段时，我们将为我们的例子编写一个语法文件。</p>
+<p>C 与 Yacc 的声明</p>
+<p>C 声明可能会定义动作中使用的类型和变量，以及宏。还可以包含头文件。每个 Yacc<br />
+声明段声明了终端符号和非终端符号（标记）的名称，还可能描述操作符优先级和针对不同符号的数据类型。 lexer (Lex)<br />
+一般返回这些标记。所有这些标记都必须在 Yacc 声明中进行说明。</p>
+<p>在文件解析的例子中我们感兴趣的是这些标记：name, equal sign, 和 age。Name 是一个完全由字符组成的值。 Age<br />
+是数字。于是声明段就会像这样：</p>
+<p>** 文件解析例子的声明 **<br />
+%<br />
+#typedef char* string; /*<br />
+to specify token types as char* <em>/<br />
+#define YYSTYPE string /</em><br />
+a Yacc variable which has the value of returned token <em>/<br />
+%}<br />
+%token NAME EQ AGE<br />
+%%<br />
+你可能会觉得 YYSTYPE 有点奇怪。但是类似 Lex, Yacc 也有一套变量和函数可供用户来进行功能扩展。 YYSTYPE 定义了用来将值从<br />
+lexer 拷贝到解析器或者 Yacc 的 yylval （另一个 Yacc 变量）的类型。默认的类型是 int。 由于字符串可以从 lexer<br />
+拷贝，类型被重定义为 char</em>。 关于 Yacc 变量的详细讨论，请参考 Yacc 手册（见 <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/sdk/lex/index.html#resources"> 资源<br />
+</a> ）。</p>
+<p>Yacc 语法规则</p>
+<p>Yacc 语法规则具有以下一般格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">result: components &#123; /*  </span><br><span class="line"> action to be taken in C */ &#125;  </span><br><span class="line"> ;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在这个例子中，result 是规则描述的非终端符号。Components 是根据规则放在一起的不同的终端和非终端符号。 如果匹配特定序列的话<br />
+Components 后面可以跟随要执行的动作。 考虑如下的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">param : NAME EQ NAME &#123;  </span><br><span class="line"> printf(&quot;/tName:%s/tValue(name):%s/n&quot;, $1,$3);&#125;  </span><br><span class="line">     | NAME EQ VALUE&#123;  </span><br><span class="line">     printf(&quot;/tName:%s/tValue(value):%s/n&quot;,$1,$3);&#125;  </span><br><span class="line"> ;  </span><br></pre></td></tr></table></figure>
+<p>如果上例中序列 NAME EQ NAME 被匹配，将执行相应的 { } 括号中的动作。 这里另一个有用的就是 $1 和 $3 的使用, 它们引用了标记<br />
+NAME 和 NAME（或者第二行的 VALUE）的值。 lexer 通过 Yacc 的变量 yylval 返回这些值。标记 NAME 的 Lex<br />
+代码是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">char [A-Za-z]  </span><br><span class="line"> name &#123;char&#125;+  </span><br><span class="line"> %%  </span><br><span class="line"> &#123;name&#125; &#123; yylval = strdup(yytext);  </span><br><span class="line"> return NAME; &#125;  </span><br></pre></td></tr></table></figure>
+<p>这里yylval=strdup(yytext);需要进行强制转换。否则有warning.</p>
+<p>文件解析例子的规则段是这样的：</p>
+<p>** 文件解析的语法 **</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">file : record file  </span><br><span class="line"> | record  </span><br><span class="line"> ;  </span><br><span class="line"> record: NAME EQ AGE &#123;  </span><br><span class="line"> printf(&quot;%s is now %s years old!!!&quot;, $1, $3);&#125;  </span><br><span class="line"> ;  </span><br><span class="line"> %%  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>附加 C 代码</p>
+<p>现在让我们看一下语法文件的最后一段，附加 C 代码。（这一段是可选的，如果有人想要略过它的话：）一个函数如 main() 调用 yyparse()<br />
+函数（Yacc 中 Lex 的 yylex() 等效函数）。 一般来说，Yacc 最好提供 yyerror(char msg) 函数的代码。<br />
+当解析器遇到错误时调用 yyerror(char msg)。错误消息作为参数来传递。 一个简单的 yyerror( char* ) 可能是这样的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">yyerror</span><span class="params">(<span class="type">char</span>* msg)</span>  </span><br><span class="line"> &#123;  </span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;Error: %s  </span></span><br><span class="line"><span class="string"> encountered at line number:%d/n&quot;</span>, msg, yylineno);  </span><br><span class="line"> &#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>yylineno 提供了行数信息。</p>
+<p>这一段还包括文件解析例子的主函数：</p>
+<p>** 附加 C 代码 **</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>  </span><br><span class="line"> &#123;  </span><br><span class="line">     yyparse();  </span><br><span class="line"> &#125;  </span><br><span class="line"> <span class="type">int</span> <span class="title function_">yyerror</span><span class="params">(<span class="type">char</span>* msg)</span>  </span><br><span class="line"> &#123;  </span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;Error: %s  </span></span><br><span class="line"><span class="string"> encountered /n&quot;</span>, msg);  </span><br></pre></td></tr></table></figure>
+<p>要生成代码，可能用到以下命令：</p>
+<pre><code>       $ yacc _d &lt;filename.y&gt;  
+</code></pre>
+<p>这里的命令有误：其实为 yacc -d &lt;filename.y&gt;</p>
+<p>这生成了输出文件 y.tab.h 和 y.tab.c，它们可以用 UNIX 上的任何标准 C 编译器来编译（如 gcc）。</p>
+<p>命令行的其他常用选项</p>
+<ul>
+<li>_ ‘-d’ ,‘–defines’ _ : 编写额外的输出文件，它们包含这些宏定义：语法中定义的标记类型名称，语义的取值类型 _ YYSTYPE _ , 以及一些外部变量声明。如果解析器输出文件名叫 ‘name.c’, 那么 ‘-d’ 文件就叫做 ‘name.h’。 如果你想将 _ yylex _ 定义放到独立的源文件中，你需要 ‘name.h’, 因为 _ yylex _ 必须能够引用标记类型代码和 _ yylval _ 变量。</li>
+<li>_ ‘-b file-prefix’ ,‘–file-prefix=prefix’ _ : 指定一个所有Yacc输出文件名都可以使用的前缀。选择一个名字，就如输入文件名叫 ‘prefix.c’.</li>
+<li>_ ‘-o outfile’ ,‘–output-file=outfile’ _ : 指定解析器文件的输出文件名。其他输出文件根据 ‘-d’ 选项描述的输出文件来命名。</li>
+</ul>
+<p>Yacc 库通常在编译步骤中自动被包括。但是它也能被显式的包括，以便在编译步骤中指定 _ �ly _ 选项。这种情况下的编译命令行是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cc &lt;<span class="built_in">source</span> file names&gt; -ly  </span><br></pre></td></tr></table></figure>
+<p>将 Lex 与 Yacc 结合起来</p>
+<p>到目前为止我们已经分别讨论了 Lex 和 Yacc。现在让我们来看一下他们是怎样结合使用的。</p>
+<p>一个程序通常在每次返回一个标记时都要调用 _ yylex() _ 函数。只有在文件结束或者出现错误标记时才会终止。</p>
+<p>一个由 Yacc 生成的解析器调用 _ yylex() _ 函数来获得标记。 _ yylex() _ 可以由 Lex 来生成或完全由自己来编写。 对于由<br />
+Lex 生成的 lexer 来说，要和 Yacc 结合使用，每当 Lex 中匹配一个模式时都必须返回一个标记。 因此 Lex 中匹配模式时的动作一般格式为：</p>
+<pre><code>       &#123;pattern&#125; &#123; /* do smthg*/  
+        return TOKEN_NAME; &#125;  
+</code></pre>
+<p>于是 Yacc 就会获得返回的标记。当 Yacc 编译一个带有 _d 标记的 _ .y _ 文件时，会生成一个头文件，它对每个标记都有 _ #define<br />
+_ 的定义。 如果 Lex 和 Yacc 一起使用的话，头文件必须在相应的 Lex 文件 _ .lex _ 中的 C 声明段中包括。</p>
+<p>让我们回到名字和年龄的文件解析例子中，看一看 Lex 和 Yacc 文件的代码。</p>
+<p>** Name.y - 语法文件 **</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;%  </span><br><span class="line">            typedef char* string;  </span><br><span class="line">            #define YYSTYPE string  </span><br><span class="line">            %&#125;  </span><br><span class="line">            %token NAME EQ AGE  </span><br><span class="line">            %%  </span><br><span class="line">            file : record file  </span><br><span class="line">            | record  </span><br><span class="line">            ;  </span><br><span class="line">            record : NAME EQ AGE &#123;  </span><br><span class="line">            printf(&quot;%s is %s years old!!!/n&quot;, $1, $3); &#125;  </span><br><span class="line">            ;  </span><br><span class="line">            %%  </span><br><span class="line">            int main()  </span><br><span class="line">            &#123;  </span><br><span class="line">            yyparse();  </span><br><span class="line">            return 0;  </span><br><span class="line">            &#125;  </span><br><span class="line">            int yyerror(char *msg)  </span><br><span class="line">            &#123;  </span><br><span class="line">            printf(&quot;Error  </span><br><span class="line">            encountered: %s /n&quot;, msg);  </span><br><span class="line">            &#125;  </span><br></pre></td></tr></table></figure>
+<p>** Name.lex - Lex 的解析器文件 **</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">%&#123;  </span><br><span class="line"> #include &quot;y.tab.h&quot;  </span><br><span class="line"> #include &lt;stdio.h&gt;  </span><br><span class="line"> #include &lt;string.h&gt;  </span><br><span class="line"> extern char* yylval;  </span><br><span class="line"> %&#125;  </span><br><span class="line"> char [A-Za-z]  </span><br><span class="line"> num [0-9]  </span><br><span class="line"> eq [=]  </span><br><span class="line"> name &#123;char&#125;+  </span><br><span class="line"> age &#123;num&#125;+  </span><br><span class="line"> %%  </span><br><span class="line"> &#123;name&#125; &#123; yylval = strdup(yytext);  </span><br><span class="line"> return NAME; &#125;  </span><br><span class="line"> &#123;eq&#125; &#123; return EQ; &#125;  </span><br><span class="line"> &#123;age&#125; &#123; yylval = strdup(yytext);  </span><br><span class="line"> return AGE; &#125;  </span><br><span class="line"> %%  </span><br><span class="line"> int yywrap()  </span><br><span class="line"> &#123;  </span><br><span class="line"> return 1;  </span><br><span class="line"> &#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>作为一个参考，我们列出了 _ y.tab.h _ , Yacc 生成的头文件。</p>
+<p>** y.tab.h - Yacc 生成的头文件 **<br />
+# define NAME 257<br />
+# define EQ 258<br />
+# define AGE 259<br />
+当然即使你执行了yacc -d &lt;filename.y&gt;,也执行了lex &lt;filename.l&gt;, 并且执行了gcc y.tab.c lex.yy.c<br />
+-o <filename> -ly</p>
+<p>还是有可能会报错。 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAxMC8wMy8xOC81MzkzOTE0LmFzcHg="> 欲知解决方案请参考我的下篇文章<i class="fa fa-external-link-alt"></i></span> 。</p>
+<p>我们对于 Lex 和 Yacc的讨论到此为止。今天你想要编译什么语言呢？</p>
+<p>参考资料</p>
+<ul>
+<li>您可以参阅本文在 developerWorks 全球站点上的 <span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2xpYnJhcnkvbC1sZXguaHRtbD9TX1RBQ1Q9MTA1QUdYNTImU19DTVA9Y24tYS1s"> 英文原文 <i class="fa fa-external-link-alt"></i></span> .</li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMTU2NTkyMDAwNy9xaWQ9OTY2NzYxNTQyL3NyPTEtMS8xMDItOTcxMzgyOS0xNjc3NzEz"> Lex and Yacc <i class="fa fa-external-link-alt"></i></span> , Levine, Mason 和 Branson, O�Reilly 及其合作公司，2nd Ed。</li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMDEzMjM3Mzk3MS9xaWQ9OTY2NzYxNzAxL3NyPTEtMi8xMDItOTcxMzgyOS0xNjc3NzEz"> Program Development in UNIX <i class="fa fa-external-link-alt"></i></span> , J. T. Shen, Prentice-Hall India。</li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5hbWF6b24uY29tL2V4ZWMvb2JpZG9zL0FTSU4vMDIwMTEwMDg4Ni9vL3FpZD05NjY3NjE3Mzkvc3I9Mi0xLzEwMi05NzEzODI5LTE2Nzc3MTM="> Compilers: Principles, Techniques and Tools <i class="fa fa-external-link-alt"></i></span> , Ahoo, Sethi 和 Ullman, Addison-Wesley Pub. Co., 1985，11。</li>
+<li><span class="exturl" data-url="aHR0cDovL3RpbmYyLnZ1Yi5hYy5iZS9+ZHZlcm1laXIvY291cnNlcy9jb21waWxlcnMv"> Lex and Yacc and compiler writing <i class="fa fa-external-link-alt"></i></span> 指导。</li>
+<li>Java 版的 Lex 指导, 叫做 <span class="exturl" data-url="aHR0cDovL2JtcmMuYmVya2VsZXkuZWR1L2NvdXJzZXdhcmUvY3MxNjQvZmFsbDk5L2Fzc2lnbm1lbnQvYTEvdHV0b3JpYWwuaHRtbA=="> Jlex <i class="fa fa-external-link-alt"></i></span> 。</li>
+<li>使用 Lex 和 Yacc 的 <span class="exturl" data-url="aHR0cDovL3d3dy5jcy5tYW4uYWMudWsvfnBqai9jczIxMTEvZXg1X2hpbnQuaHRtbA=="> formalizing a grammar <i class="fa fa-external-link-alt"></i></span> 实例。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/15/5380313/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/15/5380313/" class="post-title-link" itemprop="url">程序员能力矩阵</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-15 08:40:00" itemprop="dateCreated datePublished" datetime="2010-03-15T08:40:00+08:00">2010-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="程序员能力矩阵-by-xguru-is-licensed-under-a"><a class="markdownIt-Anchor" href="#程序员能力矩阵-by-xguru-is-licensed-under-a"></a> 程序员能力矩阵  by <span class="exturl" data-url="aHR0cDovL3d3dy5jcHBibG9nLmNvbS94Z3VydQ=="> XGuru <i class="fa fa-external-link-alt"></i></span> is licensed under a</h4>
+<p><a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/2.5/cn/"> Creative Commons 署名-非商业性使用-相同方式共享 2.5 中国大陆 License<br />
+</a> . 原文请看 [ 这 里<br />
+](<span class="exturl" data-url="aHR0cDovL3d3dy5pbmRpYW5nZWVrLm5ldC93cC0=">http://www.indiangeek.net/wp-<i class="fa fa-external-link-alt"></i></span><br />
+content/uploads/Programmer%20competency%20matrix.htm) 。<br />
+Thanks to bearice for debugging.<br />
+Thanks to <span class="exturl" data-url="aHR0cDovL2Z1bGxvZi5icy8="> John Haugeland <i class="fa fa-external-link-alt"></i></span> for a reformatting of it that<br />
+works much more nicely on the web.</p>
+<h1 id="译文程序员能力矩阵-programmer-competency-matrix"><a class="markdownIt-Anchor" href="#译文程序员能力矩阵-programmer-competency-matrix"></a> [译文]程序员能力矩阵 Programmer Competency Matrix</h1>
+<blockquote>
+<p>注意:每个层次的知识都是渐增的，位于层次 _ n _ ，也蕴涵了你需了解所有低于层次 _ n _ 的 知识。</p>
 </blockquote>
-<p>只需要在home目录下的.gitconfig文件中添加：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[alias]</span><br><span class="line">  st = status -s</span><br><span class="line">  ci = commit</span><br><span class="line">  l = log --oneline --decorate -13</span><br><span class="line">  ll = log --oneline --decorate</span><br><span class="line">  co = checkout</span><br><span class="line">  br = branch</span><br><span class="line">  rb = rebase</span><br><span class="line">  dci = dcommit</span><br></pre></td></tr></table></figure>
-<p>以后就可以使用别名了。</p>
+<p>计算机科学 Computer Science</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>数据结构</p>
+<p>不知道数组和链表的差异</p>
+<p>能够解释和使用数组， 链表，字典等，并且能够用于实际的编程任务。</p>
+<p>了解基本数据结构时间和空间的折中，比如数组vs 链表，能够解释如何实现哈希表和处理冲突，了解优先队列及其实现。</p>
+<p>高等的数据结构的知识，比如B-树、二项堆、斐波那契堆、AVL 树、红黑树、伸展树、跳跃表以及前缀树等。</p>
+<p>算法</p>
+<p>不能够找出一个数组各数的平均值(这令人难以置信，但是我的确在应聘者 中遇到过)</p>
+<p>基本的排序，搜索和数据的遍历和检索算法。</p>
+<p>树，图，简单的贪婪算法和分而治之算法，能够适度了解矩阵该 层的含义。</p>
+<p>能够辨识和编写动态规划方案，良好的图算法知识，良好的数值估算的知识，能够辨别NP问题等。</p>
+<p>Working with someone who has a good topcoder ranking would be an unbelievable<br />
+piece of luck!</p>
+<p>编程体系</p>
+<p>不知道何为编译器、链接器和解释器。</p>
+<p>对编译 器、链接器、解释器有基本的了解。知道什么是汇编代码以及在硬件层如何工作。有一些虚拟内存和分页知识。</p>
+<p>了解内核模式vs用户模式, 多线程，同步原语以及它们如何实现，能够阅读汇编代码。了解网络如何工作，了解网络协议和socket级别编程。</p>
+<p>了解整个程序堆栈、 硬件(CPU+内存+中断+微码)、二进制代码、汇编、静态和动态链接、编码、解释、JIT（just-in-<br />
+time）编译、内存碎片回收、堆、栈、存 储器编址…</p>
+<p>软件工程 Software Engineering</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>源码版本控制</p>
+<p>通过日期备份文件夹</p>
+<p>VSS和初级的 CVS/SVN用户</p>
+<p>熟练地使用CVS和SVN特性。知道如何分支和归并，使用程序库补丁安装特性等</p>
+<p>有分布式VCS 系统的知识。尝试过Bzr/Mercurial/Darcs/Git</p>
+<p>自动化编译</p>
+<p>只知道在IDE下编译</p>
+<p>知道如何编译在命令行 下编译系统</p>
+<p>能够安装一个脚本构建基本的系统</p>
+<p>能够安装一个脚本来构建系统并且归档，安装程序，生成发布记录和给源 码控制中的代码分配标签。</p>
+<p>自动化测试</p>
+<p>认为所有的测试都是测试员的工作。</p>
+<p>能够编写 自动化的单元测试，能够为正在编写的代码提出良好的测试用例。</p>
+<p>按照TDD （Test Driven Development）方式编写代码。</p>
+<p>了解并且能够有效自动化安装，载入/性能和UI测试</p>
+<p>程序设计 Programming</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>问题分解</p>
+<p>只有直线式的代码，通过复制粘贴来复用</p>
+<p>能够把 问题分散到多个函数中</p>
+<p>能够想出可复用的函数/对象来解决大题的问题</p>
+<p>使用适宜的数据结构和算法，写出通用的/面向 对象的代码来封装问题的易改变的层面。</p>
+<p>系统分解</p>
+<p>N想不出比单一的文件/类更好的层面</p>
+<p>如果不在 同一平台或没采用相同的技术，能够把问题空间和设计方案分解。</p>
+<p>能够设计跨技术/平台的系统。</p>
+<p>能够在多个产品线和 与外部体系一体化中虚拟化和设计复制的系统。同时也能够设计支持系统监视、报告、故障恢复等。</p>
+<p>交流</p>
+<p>不能向同伴表达想法/主意。匮乏拼写和语法的能力。</p>
+<p>同 伴能了解你在说什么。有良好的拼写和语法能力。</p>
+<p>能够和同伴进行高效的交流</p>
+<p>能够使用清晰的方式了解和交流想法/设计 /主意/细则，能适应每种环境的交流</p>
+<p>This is an often under rated but very critical criteria for judging a<br />
+programmer. With the increase in outsourcing of programming tasks to places<br />
+where English is not the native tongue this issue has become more prominent. I<br />
+know of several projects that failed because the programmers could not<br />
+understand what the intent of the communication was.</p>
+<p>同一文件中代码组织</p>
+<p>同一文件中组织没有依据</p>
+<p>按照逻辑 性或者易接近的方法</p>
+<p>代码分块和对于其他源文件来说是易于是释,引用其他源文件时有良好的注释</p>
+<p>文档头部有许可声 明，总结，良好的注释，一致的空格缩进。文档外观美观。</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>跨文件代码组织</p>
+<p>没够想过给代码跨文件组织</p>
+<p>相关文件按文件 夹分组</p>
+<p>每个物理文件都有独立的目的，比如一个类的定义，一个特性的实现等。</p>
+<p>代码在物理层组织紧密，在文件名上与 设计和外观相匹配，可以通过文件分布方式洞察设计理念。</p>
+<p>源码树组织</p>
+<p>一切都放在一个文件夹内</p>
+<p>初步地将代码分散进 对应逻辑的文件夹。</p>
+<p>没有循环依赖，二进制文件，库，文档，构建，第三方的代码都组织进合适的文件夹内。</p>
+<p>源码树的 物理布局与逻辑层次、组织方式相匹配。可以通过目录名称和组织方式洞察设计理念。</p>
+<p>The difference between this and the previous item is in the scale of<br />
+organization, source tree organization relates to the entire set of artifacts<br />
+that define the system.</p>
+<p>代码可读性</p>
+<p>单音节的名称 （在国内应该是那些类似用汉语拼音命名的习惯）</p>
+<p>对文件、变量、类、方法等，有良好的命名。</p>
+<p>没有长函数、注释解释不常规的代码，bug修复,代码假设。</p>
+<p>代 码假设验证使用断言，自然的代码流，没有深层嵌套的条件和方法</p>
+<p>防御性编码</p>
+<p>不知道这个概念</p>
+<p>检查代码中所有的参数，对关键 的假设进行断言</p>
+<p>确保检查了返回值和使代码失败的异常。</p>
+<p>有自己的库来帮助防御性编程、编写单元测试模拟故障</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>错误处理</p>
+<p>只给乐观的情形编码</p>
+<p>基本的代码错误处理，抛出 异常/生成错误</p>
+<p>确保错误/异常留在程序中有良好的状态，资源，连接，内存都有被合适的清理。</p>
+<p>在编码之前察觉可能 出现的异常，在代码的所有层次中维持一致性的异常处理策略，提出整个系统的错误处理准则。</p>
+<p>IDE</p>
+<p>IDE大部分用来进行文本编辑</p>
+<p>了解其周围的接 口，能够高效地通过菜单来使用IDE</p>
+<p>了解最常操作的键盘快捷键</p>
+<p>编写自定义宏</p>
+<p>API</p>
+<p>需要频繁地查阅文档</p>
+<p>把最频繁使用的API记在脑 子里</p>
+<p>广阔且深入的API知识。</p>
+<p>为了使实际任务中常用API使用更加便捷，编写过API的上层库，填补API之间 的缺口。</p>
+<p>E.g. of API can be Java library, .net framework or the custom API for the<br />
+application</p>
+<p>框架</p>
+<p>没有使用过主平台外的任何框架</p>
+<p>听过但没用过平台下 流行的可用框架</p>
+<p>在专业的职位中使用过一个以上的框架，通晓各框架的特色。</p>
+<p>某框架的作者</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>需求分析</p>
+<p>接受给定的需求和代码规格</p>
+<p>能对规格的遗漏提出 疑问</p>
+<p>了解全面情况，提出需要被规格化的整体范围。</p>
+<p>能够提出更好的可选方案，根据经验的浮现给出需求</p>
+<p>脚本</p>
+<p>不具备脚本工具的知识</p>
+<p>批处理文件/shell脚本</p>
+<p>Perl/Python/Ruby/VBScript/Powershell</p>
+<p>写过并且发表过可重用的代码</p>
+<p>数据库</p>
+<p>认为Excel就是数据库</p>
+<p>知道基本的数据库概<br />
+念，规范化、ACID（原子性Atomicity、一致性Consistency、隔离性Isolation、持久性Durability）、事务化，能<br />
+够写简单的select语句</p>
+<p>能够牢记在运行时必要查询中设计良好的规范化数据库模式，<br />
+精通用户视图，存储过程，触发器和用户定义类型。知道聚集与非聚集索引之间的差异。精通使用ORM（Object Relational<br />
+Mapping对象关系映射）工具</p>
+<p>能做基本的数据库管理，性能优化，索引优化，编写高级的select查询，能够使用相关sql来替<br />
+换游标，理解数据内部的存储，了解如何镜像、复制数据库。知道两段数据提交如何工作</p>
+<p>经验 Experience</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>专业语言经验</p>
+<p>命令式语言和面向对象语言</p>
+<p>命令式语言,面向对象语言和说明型语言(SQL),如果了解静态类型vs动态类型，弱类型vs强类型则有加分</p>
+<p>函数式语言,如果了解延 缓求值，局部套用函数，延续则有加分</p>
+<p>并发语言(Erlang, Oz) 逻辑语言(Prolog)</p>
+<p>专业平台经验</p>
+<p>1</p>
+<p>2-3</p>
+<p>4-5</p>
+<p>6+</p>
+<p>专业经验年龄</p>
+<p>1</p>
+<p>2-5</p>
+<p>6-9</p>
+<p>10+</p>
+<p>领域知识</p>
+<p>没有该领域的知识</p>
+<p>在该领域中曾经至少为一个 产品工作过</p>
+<p>在同一领域中为多个产品工作过</p>
+<p>领域专家。在该领域设计和实现数种产品/方案。精通该领域使用的标准条款 和协议</p>
+<p>学识 Knowledge</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>工具知识</p>
+<p>仅限于主要的IDE(<span class="exturl" data-url="aHR0cDovL1ZTLk5ldA==">VS.Net<i class="fa fa-external-link-alt"></i></span>, Eclipse等)</p>
+<p>知 道一些流行和标准工具的备选方案</p>
+<p>对编辑器、调试器、IDE、开源的备选方案有很好的了解。比如某人了解大多数Scott Hanselman的威力工具列表中的工具，使用过ORM工具。</p>
+<p>实际地编写过工具和脚本，如果这些被发布则有加分</p>
+<p>语言接触</p>
+<p>命令式语言和面向对象语言</p>
+<p>命令式语言、面向对象 语言和说明型语言(SQL),如果了解静态类型vs动态类型、弱类型vs强类型则有加分</p>
+<p>函数式语言,如果了解延缓求值、局部套用函 数、continuations （源于scheme中的一种高级控制结构）则有加分</p>
+<p>并发语言(Erlang, Oz) 逻辑语言(Prolog)</p>
+<p>代码库知识</p>
+<p>从来没有查询过代码库</p>
+<p>基本的代码层知识，了 解如果构建系统</p>
+<p>良好的代码库工作知识，实现过几次bug修复或者完成了一些细小的特性</p>
+<p>实现了代码库中多个大型特 性，能够轻松地将多数特性的需求变更具体化，从容地处理bug修复。</p>
+<p>下一代技术知识</p>
+<p>从来没听说过即将到来的技术</p>
+<p>听说过某领 域即将到来的技术</p>
+<p>下载过alpha preview/CTP/beta版本，并且读过一些文章和手册</p>
+<p>试用过预览 版而且实际地构建过某物，如果共享给其他人的话则有加分</p>
+<p>2  n  (Level 0)</p>
+<p>n  2  (Level 1)</p>
+<p>n  (Level 2)</p>
+<p>log(n)  (Level 3)</p>
+<p>Comments</p>
+<p>平台内部</p>
+<p>对平台内部毫无所知</p>
+<p>有平台基本的内部工作的 知识</p>
+<p>深度的平台内部知识，能够设想平台如何将程序转换成可执行代码。</p>
+<p>编写过增强平台或者为其平台内部提供信息的 工具。比如，反汇编工具，反编译工具，调试工具等。</p>
+<p>书籍</p>
+<p>菜鸟系列，21天系列，24小时系列，蠢货系列…</p>
+<p>《代 码大全》，《别让我思考》, 《精通正则表达式》</p>
+<p>《设计模式》，《人件》，《代码珠玑》，《算法设计手册》，《程序员修炼之道》， 《人月神话》</p>
+<p>《计算机程序设计与解释》，《事务处理:概念与技术》，《计算机程序设计模型》，《计算机程序设计艺术》，《数据库系统 导论》 C.J<br />
+Date版，《Thinking Forth》 ，《Little Schemer》（没找到其中译本）</p>
+<p>博客</p>
+<p>听过但是从来抽不出空去接触</p>
+<p>阅读一些科技/编程 /软件工程的博客，并且经常的收听一些播客</p>
+<p>维护一些博客的链接，收集博主分享的有用的文章和工具</p>
+<p>维护一个在编程方 面，分享有个人见解和思考的博客</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/15/2010-03-15-programmer-competency-matrix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/15/2010-03-15-programmer-competency-matrix/" class="post-title-link" itemprop="url">Programmer Competency Matrix</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-15 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-15T00:00:00+08:00">2010-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:51" itemprop="dateModified" datetime="2023-10-06T22:53:51+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="957" />
+<div><span class="exturl" data-url="aHR0cDovL3d3dy5jcHBibG9nLmNvbS94Z3VydQ==">XGuru<i class="fa fa-external-link-alt"></i></span> / <span class="exturl" data-url="aHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnktbmMtc2EvMi41L2NuLw==">CC BY-NC-SA 2.5<i class="fa fa-external-link-alt"></i></span></div>
+# Programmer Competency Matrix
+<h6>Note that the knowledge for each level is cumulative;  being at      level <em>n</em> implies that you also know everything from the     levels  lower than <em>n</em>.</h6>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2012/01/31/2012-01-31-git-alias/#more" rel="contents">
+              <a class="btn" href="/2010/03/15/2010-03-15-programmer-competency-matrix/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -328,7 +1312,7 @@ git branch</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/26/2012-01-26-kong-fu-kong-miao-kong-lin/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/10/2010-03-10-math-symbol/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -346,7 +1330,7 @@ git branch</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/26/2012-01-26-kong-fu-kong-miao-kong-lin/" class="post-title-link" itemprop="url">孔府，孔庙，孔林</a>
+          <a href="/2010/03/10/2010-03-10-math-symbol/" class="post-title-link" itemprop="url">Math Symbol</a>
         </h2>
 
         <div class="post-meta-container">
@@ -357,14 +1341,882 @@ git branch</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-26 19:41:00" itemprop="dateCreated datePublished" datetime="2012-01-26T19:41:00+08:00">2012-01-26</time>
+      <time title="Created: 2010-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-10T00:00:00+08:00">2010-03-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:13" itemprop="dateModified" datetime="2023-10-06T22:54:13+08:00">2023-10-06</time>
+      <time title="Modified: 2023-10-07 13:42:15" itemprop="dateModified" datetime="2023-10-07T13:42:15+08:00">2023-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/math/" itemprop="url" rel="index"><span itemprop="name">math</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <div>
+<h1 id="copy-from-httpblogsinacomcnsblog_598529cd0100ecv9html"><a class="markdownIt-Anchor" href="#copy-from-httpblogsinacomcnsblog_598529cd0100ecv9html"></a> copy from <span class="exturl" data-url="aHR0cDovL2Jsb2cuc2luYS5jb20uY24vcy9ibG9nXzU5ODUyOWNkMDEwMGVjdjkuaHRtbA==">http://blog.sina.com.cn/s/blog_598529cd0100ecv9.html<i class="fa fa-external-link-alt"></i></span></h1>
+<p><span style="font-size: small;">大写 小写 英文注音 国际音标注音 中文注音<br />
+Α           α       alpha              alfa                 阿耳法<br />
+Β           β       beta                beta                贝塔<br />
+Γ           γ       gamma            gamma           伽马<br />
+Δ           δ       deta                delta               德耳塔<br />
+Ε           ε       epsilon            epsilon           艾普西隆<br />
+Ζ           ζ        zeta                zeta                截塔<br />
+Η           η       eta                  eta                 艾塔<br />
+Θ           θ      theta               θita                 西塔<br />
+Ι             ι       iota                  iota                约塔<br />
+Κ           κ      kappa              kappa            卡帕<br />
+∧          λ      lambda            lambda           兰姆达<br />
+Μ          μ        mu                    miu                 缪<br />
+Ν           ν        nu                    niu                 纽<br />
+Ξ           ξ         xi                     ksi               可塞<br />
+Ο           ο      omicron           omikron       奥密可戎<br />
+∏           π      pi                     pai                   派<br />
+Ρ            ρ      rho                   rou                   柔<br />
+∑           σ      sigma              sigma            西格马<br />
+Τ            τ        tau                  tau                  套<br />
+Υ            υ      upsilon             jupsilon     衣普西隆<br />
+Φ           φ       phi                    fai               斐<br />
+Χ            χ       chi                  khai               喜<br />
+Ψ           ψ       psi                  psai            普西<br />
+Ω           ω      omega            omiga         欧米伽</span></p>
+<table summary="See table caption for summary."><caption>符号表</caption>
+<thead>
+<tr>
+<th scope="col">符号</th>
+<th scope="col">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="font-size: small;">i</span></td>
+<td><span style="font-size: small;">-1的平方根</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">f(x)</span></td>
+<td><span style="font-size: small;">函数f在自变量x处的值</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">sin(x)</span></td>
+<td><span style="font-size: small;">在自变量x处的正弦函数值</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">exp(x)</span></td>
+<td><span style="font-size: small;">在自变量x处的指数函数值，常被写作e<sup>x</sup></span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">a^x</span></td>
+<td><span style="font-size: small;">a的x次方；有理数x由反函数定义</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">ln x</span></td>
+<td><span style="font-size: small;">exp x 的反函数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">a<sup>x</sup></span></td>
+<td><span style="font-size: small;">同 a^x</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">log<sub>b</sub>a</span></td>
+<td><span style="font-size: small;">以b为底a的对数； b<sup><sup>log<sub>b</sub>a</sup></sup> = a</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">cos x</span></td>
+<td><span style="font-size: small;">在自变量x处余弦函数的值</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">tan x</span></td>
+<td><span style="font-size: small;">其值等于 sin x/cos x</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">cot x</span></td>
+<td><span style="font-size: small;">余切函数的值或 cos x/sin x</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">sec x</span></td>
+<td><span style="font-size: small;">正割含数的值，其值等于 1/cos x</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">csc x</span></td>
+<td><span style="font-size: small;">余割函数的值，其值等于 1/sin x</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">asin x</span></td>
+<td><span style="font-size: small;">y，正弦函数反函数在x处的值，即 x = sin y</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">acos x</span></td>
+<td><span style="font-size: small;">y，余弦函数反函数在x处的值，即 x = cos y</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">atan x</span></td>
+<td><span style="font-size: small;">y，正切函数反函数在x处的值，即 x = tan y</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">acot x</span></td>
+<td><span style="font-size: small;">y，余切函数反函数在x处的值，即 x = cot y</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">asec x</span></td>
+<td><span style="font-size: small;">y，正割函数反函数在x处的值，即 x = sec y</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">acsc x</span></td>
+<td><span style="font-size: small;">y，余割函数反函数在x处的值，即 x = csc y</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">θ</span></td>
+<td><span style="font-size: small;">角度的一个标准符号，不注明均指弧度，尤其用于表示atan x/y，当x、y、z用于表示空间中的点时</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">i, j, k</span></td>
+<td><span style="font-size: small;">分别表示x、y、z方向上的单位向量</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">(a, b, c)</span></td>
+<td><span style="font-size: small;">以a、b、c为元素的向量</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">(a, b)</span></td>
+<td><span style="font-size: small;">以a、b为元素的向量</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">(a, b)</span></td>
+<td><span style="font-size: small;">a、b向量的点积</span></td>
+</tr>
+<tr>
+<td height="17"><span style="font-size: small;">a•b</span></td>
+<td><span style="font-size: small;">a、b向量的点积</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">(a•b)</span></td>
+<td><span style="font-size: small;">a、b向量的点积</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">|v|</span></td>
+<td><span style="font-size: small;">向量v的模</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">|x|</span></td>
+<td><span style="font-size: small;">数x的绝对值</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">Σ</span></td>
+<td><span style="font-size: small;">表示求和，通常是某项指数。下边界值写在其下部，上边界值写在其上部。如j从1到100的和可以表示成：<img src="http://www.core.org.cn/NR/rdonlyres/Mathematics/18-013ASpring-2005/08B23D50-1CCF-4A12-A58D-72F2036534F8/0/glossary_eqn1.jpg" border="0" alt="" align="middle" />。这表示 1 + 2 + … + n</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">M</span></td>
+<td><span style="font-size: small;">表示一个矩阵或数列或其它</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">|v&gt;</span></td>
+<td><span style="font-size: small;">列向量，即元素被写成列或可被看成k×1阶矩阵的向量</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">&lt;v|</span></td>
+<td><span style="font-size: small;">被写成行或可被看成从1×k阶矩阵的向量</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">dx</span></td>
+<td><span style="font-size: small;">变量x的一个无穷小变化，dy, dz, dr等类似</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">ds</span></td>
+<td><span style="font-size: small;">长度的微小变化</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">ρ</span></td>
+<td><span style="font-size: small;">变量 (x<sup>2</sup> + y<sup>2</sup> + z<sup>2</sup>)<sup>1/2</sup> 或球面坐标系中到原点的距离</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">r</span></td>
+<td><span style="font-size: small;">变量 (x<sup>2</sup> + y<sup>2</sup>)<sup>1/2</sup> 或三维空间或极坐标中到z轴的距离</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">|M|</span></td>
+<td><span style="font-size: small;">矩阵M的行列式，其值是矩阵的行和列决定的平行区域的面积或体积</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">||M||</span></td>
+<td><span style="font-size: small;">矩阵M的行列式的值，为一个面积、体积或超体积</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">det M</span></td>
+<td><span style="font-size: small;">M的行列式</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">M<sup>-1</sup></span></td>
+<td><span style="font-size: small;">矩阵M的逆矩阵</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">v×w</span></td>
+<td><span style="font-size: small;">向量v和w的向量积或叉积</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">θ<sub>vw</sub></span></td>
+<td><span style="font-size: small;">向量v和w之间的夹角</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">A•B×C</span></td>
+<td><span style="font-size: small;">标量三重积，以A、B、C为列的矩阵的行列式</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">u<sub>w</sub></span></td>
+<td><span style="font-size: small;">在向量w方向上的单位向量，即 w/|w|</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">df</span></td>
+<td><span style="font-size: small;">函数f的微小变化，足够小以至适合于所有相关函数的线性近似</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">df/dx</span></td>
+<td><span style="font-size: small;">f关于x的导数，同时也是f的线性近似斜率</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">f '</span></td>
+<td><span style="font-size: small;">函数f关于相应自变量的导数，自变量通常为x</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">∂f/∂x</span></td>
+<td><span style="font-size: small;">y、z固定时f关于x的偏导数。通常f关于某变量q的偏导数为当其它几个变量固定时df与dq的比值。任何可能导致变量混淆的地方都应明确地表述</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">(∂f/∂x)|<sub>r,z</sub></span></td>
+<td><span style="font-size: small;">保持r和z不变时，f关于x的偏导数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">grad f</span></td>
+<td><span style="font-size: small;">元素分别为f关于x、y、z偏导数 [(∂f/∂x), (∂f/∂y), (∂f/∂z)] 或 (∂f/∂x)i + (∂f/∂y)j + (∂f/∂z)k; 的向量场，称为f的梯度</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">∇</span></td>
+<td><span style="font-size: small;">向量算子(∂/∂x)i + (∂/∂x)j + (∂/∂x)k, 读作 "del"</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">∇f</span></td>
+<td><span style="font-size: small;">f的梯度；它和 u<sub>w</sub> 的点积为f在w方向上的方向导数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">∇•w</span></td>
+<td><span style="font-size: small;">向量场w的散度，为向量算子∇ 同向量 w的点积, 或 (∂w<sub>x</sub> /∂x) + (∂w<sub>y</sub> /∂y) + (∂w<sub>z</sub> /∂z)</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">curl w</span></td>
+<td><span style="font-size: small;">向量算子 ∇ 同向量 w 的叉积</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">∇×w</span></td>
+<td><span style="font-size: small;">w的旋度，其元素为[(∂f<sub>z</sub> /∂y) - (∂f<sub>y</sub> /∂z), (∂f<sub>x</sub> /∂z) - (∂f<sub>z</sub> /∂x), (∂f<sub>y</sub> /∂x) - (∂f<sub>x</sub> /∂y)]</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">∇•∇</span></td>
+<td><span style="font-size: small;">拉普拉斯微分算子： (∂<sup>2</sup>/∂x<sup>2</sup>) + (∂/∂y<sup>2</sup>) + (∂/∂z<sup>2</sup>)</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">f "(x)</span></td>
+<td><span style="font-size: small;">f关于x的二阶导数，f '(x)的导数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">d<sup>2</sup>f/dx<sup>2</sup></span></td>
+<td><span style="font-size: small;">f关于x的二阶导数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">f<sup>(2)</sup>(x)</span></td>
+<td><span style="font-size: small;">同样也是f关于x的二阶导数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">f<sup>(k)</sup>(x)</span></td>
+<td><span style="font-size: small;">f关于x的第k阶导数，f<sup>(k-1)</sup> (x)的导数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">T</span></td>
+<td><span style="font-size: small;">曲线切线方向上的单位向量，如果曲线可以描述成 r(t), 则T = (dr/dt)/|dr/dt|</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">ds</span></td>
+<td><span style="font-size: small;">沿曲线方向距离的导数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">κ</span></td>
+<td><span style="font-size: small;">曲线的曲率，单位切线向量相对曲线距离的导数的值：|dT/ds|</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">N</span></td>
+<td><span style="font-size: small;">dT/ds投影方向单位向量，垂直于T</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">B</span></td>
+<td><span style="font-size: small;">平面T和N的单位法向量，即曲率的平面</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">τ</span></td>
+<td><span style="font-size: small;">曲线的扭率： |dB/ds|</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">g</span></td>
+<td><span style="font-size: small;">重力常数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">F</span></td>
+<td><span style="font-size: small;">力学中力的标准符号</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">k</span></td>
+<td><span style="font-size: small;">弹簧的弹簧常数</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">p<sub>i</sub></span></td>
+<td><span style="font-size: small;">第i个物体的动量</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">H</span></td>
+<td><span style="font-size: small;">物理系统的哈密尔敦函数，即位置和动量表示的能量</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">{Q, H}</span></td>
+<td><span style="font-size: small;">Q, H的泊松括号</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;"><img src="http://www.core.org.cn/NR/rdonlyres/Mathematics/18-013ASpring-2005/B0800DBE-F064-435C-872D-9D834F4FF8D4/0/glossary_eqn2.jpg" border="0" alt="" align="middle" /></span></td>
+<td><span style="font-size: small;">以一个关于x的函数的形式表达的f(x)的积分</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;"><img src="http://www.core.org.cn/NR/rdonlyres/Mathematics/18-013ASpring-2005/9C981D5B-8A84-4DFC-8224-2F7E4B7DE4ED/0/glossary_eqn3.jpg" border="0" alt="" align="middle" /></span></td>
+<td><span style="font-size: small;">函数f 从a到b的定积分。当f是正的且 a &lt; b 时表示由x轴和直线y = a, y = b 及在这些直线之间的函数曲线所围起来图形的面积</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">L(d)</span></td>
+<td><span style="font-size: small;">相等子区间大小为d，每个子区间左端点的值为 f的黎曼和</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">R(d)</span></td>
+<td><span style="font-size: small;">相等子区间大小为d，每个子区间右端点的值为 f的黎曼和</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">M(d)</span></td>
+<td><span style="font-size: small;">相等子区间大小为d，每个子区间上的最大值为 f的黎曼和</span></td>
+</tr>
+<tr>
+<td><span style="font-size: small;">m(d)</span></td>
+<td><span style="font-size: small;">相等子区间大小为d，每个子区间上的最小值为 f的黎曼和</span></td>
+</tr>
+</tbody>
+</table>
+<p>+:plus(positive正的)<br />
+-：minus（negative负的）<br />
+*：multiplied by<br />
+÷：divided by<br />
+=:be equal to<br />
+≈:be approximately equal to<br />
+():round brackets(parenthess)<br />
+[]:square brackets<br />
+{}:braces<br />
+∵:because<br />
+∴:therefore<br />
+≤:less than or equal to<br />
+≥：greater than or equal to<br />
+∞：infinity<br />
+LOGnX:logx to the base n<br />
+xn:the nth power of x<br />
+f(x):the function of x<br />
+dx:diffrencial of x<br />
+x+y:x plus y<br />
+(a+b):bracket a plus b bracket closed<br />
+a=b:a equals b<br />
+a≠b：a isn’t equal to b<br />
+a&gt;b:a is greater than b<br />
+a&gt;&gt;b:a is much greater than b<br />
+a≥b: a is greater than or equal to b<br />
+x→∞：x approches infinity<br />
+x2:x square<br />
+x3:x cube<br />
+√￣x:the square root of x<br />
+3√￣x:the cube root of x<br />
+3‰：three peimill<br />
+n∑i=1xi:the summation of x where x goes from 1to n<br />
+n∏i=1xi:the product of x sub i where igoes from 1to n<br />
+∫ab:integral betweens a and b</p>
+</div>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/10/2010-03-10-use-c-language-to-connect-postgresql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/10/2010-03-10-use-c-language-to-connect-postgresql/" class="post-title-link" itemprop="url">Use C Language to Connect postgreSQL</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-10T00:00:00+08:00">2010-03-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 13:42:29" itemprop="dateModified" datetime="2023-10-07T13:42:29+08:00">2023-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>There is a small example copied from <span class="exturl" data-url="aHR0cDovL3d3dy5wb3N0Z3Jlc3FsLm9yZy9maWxlcy9kb2N1bWVudGF0aW9uL2Jvb2tzL2F3X3Bnc3FsL3dyaXRpbmdfYXBwcy9ub2RlMy5odG1s">postgreSQL.org<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*  libpq sample program</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;libpq-feh&quot;</span>                                   <span class="comment">/* libpq header file */</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span>        state_code[<span class="number">3</span>];                          <span class="comment">/* holds user state code */</span></span><br><span class="line">	<span class="type">char</span>        query_string[<span class="number">256</span>];                      <span class="comment">/* holds constructed SQL query */</span></span><br><span class="line">	PGconn     *conn;                                   <span class="comment">/* holds database connection */</span></span><br><span class="line">	PGresult   *res;                                    <span class="comment">/* holds query result */</span></span><br><span class="line">	<span class="type">int</span>         i;</span><br><span class="line"></span><br><span class="line">	conn = PQconnectdb(<span class="string">&quot;dbname=test&quot;</span>); <span class="comment">/* connect to the database */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (PQstatus(conn) == CONNECTION_BAD)               <span class="comment">/* did the connection fail? */</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;Connection to database failed.\n&quot;</span>);</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%s&quot;</span>, PQerrorMessage(conn));</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Enter a state code:  &quot;</span>);                    <span class="comment">/* prompt user for a state code */</span></span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%2s&quot;</span>, state_code);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">sprintf</span>(query_string,                               <span class="comment">/* create an SQL query string */</span></span><br><span class="line">	<span class="string">&quot;SELECT name \</span></span><br><span class="line"><span class="string">	FROM statename \</span></span><br><span class="line"><span class="string">	WHERE code = &#x27;%s&#x27;&quot;</span>, state_code);</span><br><span class="line"></span><br><span class="line">	res = PQexec(conn, query_string); <span class="comment">/* send the query */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (PQresultStatus(res) != PGRES_TUPLES_OK)         <span class="comment">/* did the query fail? */</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;SELECT query failed.\n&quot;</span>);</span><br><span class="line">		PQclear(res);</span><br><span class="line">		PQfinish(conn);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &amp;lt; PQntuples(res); i++)                <span class="comment">/* loop through all rows returned */</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, PQgetvalue(res, i, <span class="number">0</span>));          <span class="comment">/* print the value returned */</span></span><br><span class="line"></span><br><span class="line">	PQclear(res); <span class="comment">/* free result */</span></span><br><span class="line"></span><br><span class="line">	PQfinish(conn); <span class="comment">/* disconnect from the database */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>above is how to connect localhost database. If you want to connect with remote postgreSQL server. You will following those rules(copied from <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1s">vivek<i class="fa fa-external-link-alt"></i></span>):</p>
+<h2 id="step-1-login-over-ssh-if-server-is-outside-your-idc"><a class="markdownIt-Anchor" href="#step-1-login-over-ssh-if-server-is-outside-your-idc"></a> Step # 1: Login over ssh if server is outside your IDC</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh user@remote.pgsql.server.com</span><br></pre></td></tr></table></figure>
+<h2 id="step-2-enable-client-authentication"><a class="markdownIt-Anchor" href="#step-2-enable-client-authentication"></a> Step # 2: Enable client authentication</h2>
+<p>Once connected, you need edit the PostgreSQL configuration file, edit the PostgreSQL configuration file <strong>/var/lib/pgsql/data/pg_hba.conf</strong> (or <strong>/etc/postgresql/8.2/main/pg_hba.conf</strong> for latest 8.2 version) using a text editor such as vi.</p>
+<p>Login as postgres user using su / sudo command, enter:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ su - postgres</span><br><span class="line">Edit the file:</span><br><span class="line">$ vi /var/lib/pgsql/data/pg_hba.conf</span><br><span class="line">OR</span><br><span class="line">$ vi /etc/postgresql/8.2/main/pg_hba.conf</span><br><span class="line">Append the following configuration lines to give access to 10.10.29.0/24 network:</span><br><span class="line">host all all 10.10.29.0/24 trust</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Save and close the file. Make sure you replace 10.10.29.0/24 with actual network IP address range of the clients system in your own network.</p>
+<h2 id="step-3-enable-networking-for-postgresql"><a class="markdownIt-Anchor" href="#step-3-enable-networking-for-postgresql"></a> Step # 3: Enable networking for PostgreSQL</h2>
+<p>You need to enable TCP / IP networking. Use either step #3 or #3a as per your PostgreSQL database server version.</p>
+<h2 id="step-4-allow-tcpip-socket"><a class="markdownIt-Anchor" href="#step-4-allow-tcpip-socket"></a> Step # 4: Allow TCP/IP socket</h2>
+<p>If you are using <strong>PostgreSQL version 8.x or newer</strong> use the following instructions or skip to <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1sIzNh">Step # 3a<i class="fa fa-external-link-alt"></i></span> for older version (7.x or older).</p>
+<p>You need to open PostgreSQL configuration file /var/lib/pgsql/data/postgresql.conf or /etc/postgresql/8.2/main/postgresql.conf.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi /etc/postgresql/8.2/main/postgresql.conf</span></span><br><span class="line">OR</span><br><span class="line"><span class="comment"># vi /var/lib/pgsql/data/postgresql.conf </span></span><br><span class="line">Find configuration line that <span class="built_in">read</span> as follows:</span><br><span class="line">listen_addresses=<span class="string">&#x27;localhost&#x27;</span></span><br><span class="line">Next <span class="built_in">set</span> IP address(es) to listen on; you can use comma-separated list of addresses; defaults to <span class="string">&#x27;localhost&#x27;</span>, and <span class="string">&#x27;*&#x27;</span> is all ip address:</span><br><span class="line">listen_addresses=<span class="string">&#x27;*&#x27;</span></span><br><span class="line">Or just <span class="built_in">bind</span> to 202.54.1.2 and 202.54.1.3 IP address</span><br><span class="line">listen_addresses=<span class="string">&#x27;202.54.1.2 202.54.1.3&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>Save and close the file. Skip to <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1sIzQ=">step # 4<i class="fa fa-external-link-alt"></i></span>.</p>
+<h3 id="step-4a-information-for-old-version-7x-or-older"><a class="markdownIt-Anchor" href="#step-4a-information-for-old-version-7x-or-older"></a> Step #4a - Information for old version 7.x  or older</h3>
+<p>Following configuration only required for <strong>PostgreSQL version 7.x or older</strong>. Open config file, enter:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi /var/lib/pgsql/data/postgresql.conf</span></span><br><span class="line">Bind and open TCP/IP port by setting tcpip_socket to <span class="literal">true</span>.  Set / modify tcpip_socket to <span class="literal">true</span>:</span><br><span class="line">tcpip_socket = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>Save and close the file.</p>
+<h2 id="step-5-restart-postgresql-server"><a class="markdownIt-Anchor" href="#step-5-restart-postgresql-server"></a> Step # 5: Restart PostgreSQL Server</h2>
+<p>Type the following command:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># /etc/init.d/postgresql restart</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="step-6-iptables-firewall-rules"><a class="markdownIt-Anchor" href="#step-6-iptables-firewall-rules"></a> Step # 6: Iptables firewall rules</h2>
+<p>Make sure iptables is not blocking communication, <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvaG93dG8taXB0YWJsZXMtcG9zdGdyZXNxbC1vcGVuLXBvcnQuaHRtbA==">open port 5432<i class="fa fa-external-link-alt"></i></span> (append rules to your iptables scripts or file <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L2ZhcS9ob3d0by1ibG9jay1pcGFkZHJlc3Mtb2Ytc3BhbW1lcnMtd2l0aC1maXJld2FsbC8=">/etc/sysconfig/iptables<i class="fa fa-external-link-alt"></i></span>):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 10.10.29.50  --dport 5432\</span><br><span class="line"> -m state --state NEW,ESTABLISHED -j ACCEPT</span><br><span class="line">iptables -A OUTPUT -p tcp -s 10.10.29.50 --sport 5432 -d 0/0 --dport \</span><br><span class="line">1024:65535 -m state --state ESTABLISHED -j ACCEPT</span><br><span class="line">Restart firewall:</span><br><span class="line"># /etc/init.d/iptables restart</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="step-7-test-your-setup"><a class="markdownIt-Anchor" href="#step-7-test-your-setup"></a> Step # 7: Test your setup</h2>
+<p>Use psql command from client system. Connect to remote server using IP address 10.10.29.50 and login using vivek username and sales database, enter:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ psql -h 10.10.29.50 -U vivek -d sales</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="step-8-change-your-code"><a class="markdownIt-Anchor" href="#step-8-change-your-code"></a> Step #8: Change your code</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const char * connstr = &quot;host=&#x27;10.10.29.50&#x27; dbname=&#x27;my_database&#x27; user=&#x27;postgres&#x27; password=&#x27;secret&#x27;&quot;</span><br><span class="line">conn = PQconnectdb(connstr);                  /* connect to the database */</span><br><span class="line"> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/09/5359295/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/09/5359295/" class="post-title-link" itemprop="url">C系语言中extern详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-09 10:58:00" itemprop="dateCreated datePublished" datetime="2010-03-09T10:58:00+08:00">2010-03-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转载自：<span class="exturl" data-url="aHR0cDovL3d3dy5jbmJsb2dzLmNvbS9sdWxpYW5nL2FyY2hpdmUvMjAwOC8wOC8yMS8xMjcyNzQ2Lmh0bWw=">http://www.cnblogs.com/luliang/archive/2008/08/21/1272746.html<i class="fa fa-external-link-alt"></i></span></p>
+<p>** 1 基本解释<br />
+** extern可以置于变量或者  函数  前，以标示变量或者  函数  的定义在别的文件中，提示编译器遇到此变量和  函数  时在其他模块中寻找其定义。<br />
+另外，extern也可用来进行链接指定。</p>
+<p>** 2 问题：extern 变量 **<br />
+在一个源文件里定义了一个数组：char a[6];<br />
+在另外一个文件里用下列语句进行了声明：extern char *a；<br />
+请问，这样可以吗？<br />
+答案与分析：<br />
+1)、不可以，程序运行时会告诉你非法访问。原因在于，指向类型T的  指针  并不等价于类型T的数组。extern char <em>a声明的是一个  指针<br />
+变量而不是字符数组，因此与实际的定义不同，从而造成运行时非法访问。应该将声明改为extern char a[ ]。<br />
+2)、例子分析如下，如果a[] = “abcd”,则外部变量a=0x61626364 (abcd的ASCII码值)，<em>a显然没有意义<br />
+显然a指向的空间（0x61626364）没有意义，易出现非法内存访问。<br />
+3)、这提示我们，在使用extern时候要严格对应声明时的格式，在实际编程中，这样的错误屡见不鲜。<br />
+4)、extern用在变量声明中常常有这样一个作用，你在</em>.c文件中声明了一个全局的变量，这个全局的变量如果要被引用，就放在</em>.h中并用extern来声明。<br />
+** 4 问题：extern  函数  2 **<br />
+当  函数  提供方单方面修改  函数  原型时，如果使用方不知情继续沿用原来的extern申明，这样编译时编译器不会报错。但是在运行过程中，因为少了或者多<br />
+了输入参数，往往会照成系统错误，这种情况应该如何解决？<br />
+答案与分析：<br />
+目前业界针对这种情况的处理没有一个很完美的方案，通常的做法是提供方在自己的xxx_pub.h中提供对外部  接口<br />
+的声明，然后调用方include该头文件，从而省去extern这一步。以避免这种错误。<br />
+宝剑有双锋，对extern的应用，不同的场合应该选择不同的做法。</p>
+<p>** 5 问题：extern “C” **<br />
+在  C++  环境下使用C  函数  的时候，常常会出现编译器无法找到obj模块中的C  函数  定义，从而导致链接失败的情况，应该如何解决这种情况呢？</p>
+<p>答案与分析：<br />
+C++  语言在编译的时候为了解决  函数  的多态问题，会将  函数  名和参数联合起来生成一个中间的  函数  名称，而  C语言<br />
+则不会，因此会造成链接时找不到对应  函数  的情况，此时C  函数  就需要用extern<br />
+“C”进行链接指定，这告诉编译器，请保持我的名称，不要给我生成用于链接的中间  函数  名。<br />
+下面是一个标准的写法：<br />
+<a target="_blank" rel="noopener" href="//xn--3ds.xn--h-lo6a92ax31axppu6x">//在.h文件的头上</a><br />
+#ifdef __cplusplus<br />
+#if __cplusplus<br />
+extern “C”{<br />
+#endif<br />
+#endif /* __cplusplus <em>/<br />
+…<br />
+…<br />
+//.h文件结束的地方<br />
+#ifdef __cplusplus<br />
+#if __cplusplus<br />
+}<br />
+#endif<br />
+#endif /</em> __cplusplus */</p>
+<p>** 3 问题：extern  函数  1 **<br />
+常常见extern放在  函数  的前面成为  函数  声明的一部分，那么，  C语言  的关键字extern在  函数  的声明中起什么作用？<br />
+答案与分析：<br />
+如果  函数  的声明中带有关键字extern，仅仅是暗示这个  函数  可能在别的源文件里定义，没有其它作用。即下述两个  函数  声明没有明显的区别：<br />
+extern int f(); 和int f();<br />
+当然，这样的用处还是有的，就是在程序中取代include “*.h”来声明  函数  ，在一些复杂的项目中，我比较习惯在所有的  函数<br />
+声明前添加extern修饰。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/08/2010-03-08-facebook-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/08/2010-03-08-facebook-api/" class="post-title-link" itemprop="url">Facebook API</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-08 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-08T00:00:00+08:00">2010-03-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-08 16:59:15" itemprop="dateModified" datetime="2023-10-08T16:59:15+08:00">2023-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="887" />
+Now I should do some work in investgate Facebook API. The Facebook API can be called as the following format( I use php as an example):
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&amp;lt;?php</span><br><span class="line">/**</span><br><span class="line">* Set the configuration settings for Facebook</span><br><span class="line">*/</span><br><span class="line">~~$~~facebook_config[&#x27;debug&#x27;] = false;</span><br><span class="line">$facebook_config[&#x27;api_key&#x27;] = &#x27;&amp;lt;your_api_key&amp;gt;&#x27;;</span><br><span class="line">$facebook_config[&#x27;secret_key&#x27;] = &#x27;&amp;lt;your_secret_key&amp;gt;&#x27;;</span><br><span class="line">/**</span><br><span class="line">* include the Facebook client library</span><br><span class="line">*/</span><br><span class="line">require_once(&#x27;&amp;lt;path_to_client_library&amp;gt;/facebook.php&#x27;);</span><br><span class="line">/**</span><br><span class="line">* Set up the facebook object</span><br><span class="line">*/</span><br><span class="line">$facebook = new Facebook($facebook_config[&#x27;api_key&#x27;],</span><br><span class="line">$facebook_config[&#x27;secret&#x27;]);</span><br><span class="line">/**</span><br><span class="line">* Ensure the user has logged on to Facebook</span><br><span class="line">*/</span><br><span class="line">$user = $facebook-&amp;gt;require_login();</span><br><span class="line">/**</span><br><span class="line">* Make an API call to call get a user&#x27;s friends using the PHP library&#x27;s</span><br><span class="line">* library</span><br><span class="line">*/</span><br><span class="line">$friends = $facebook-&amp;gt;api_client-&amp;gt;friends_get();</span><br><span class="line">echo &quot;&amp;lt;pre&amp;gt;Friends:&quot; . print_r($friends, true). &quot;&amp;lt;/pre&amp;gt;&quot;;</span><br><span class="line">?&amp;gt;</span><br></pre></td></tr></table></figure>
+<p>The structure of the above codes is:</p>
+<ul>
+	<li>set api_key and secret_key by your own</li>
+	<li>send facebook_config to Facebook class and create an object of Facebook.</li>
+	<li>call some method of this object and get some data of facebook which you want</li>
+	<li>using those data to create an application</li>
+</ul>
+In technology, facebook uses RESTful technology, such as web services. facebook api transform data in JSON or XML format. And FBML( facebook Markup Language ) is used to combine and present data coming from developers' application servers. There are some technologic points: first, APIs should be packet into web services. Second, developers' application data should be presented in web pages. But I don't think there is new technology here.
+<p>The flow diagram of calling facebook api is:</p>
+<p><a href="http://chillyc.info/wp-content/uploads/2010/03/08/facebook-api/the-flow-diagram-of-calling-facebook-api.jpg"><img class="aligncenter size-medium wp-image-98" title="the flow diagram of calling facebook api" src="http://chillyc.info/wp-content/uploads/2010/03/08/facebook-api/the-flow-diagram-of-calling-facebook-api-290x300.jpg" alt="" width="290" height="300" /></a></p>
+<p>Chinese version is here:</p>
+<p><strong><strong><a href="../wp-content/uploads/2010/03/Facebook_API.doc" target="newUpload">Facebook_API.doc</a></strong></strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/08/2010-03-08-international-womens-day/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/08/2010-03-08-international-womens-day/" class="post-title-link" itemprop="url">International Women's Day!</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-08 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-08T00:00:00+08:00">2010-03-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:53:48" itemprop="dateModified" datetime="2023-10-06T22:53:48+08:00">2023-10-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -383,7 +2235,7 @@ git branch</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>141</span>
+      <span>65</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -401,8 +2253,10 @@ git branch</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今天跟姐和姐夫逛了下曲阜。三孔很小的时候去过，现在基本什么记忆都没有了。当年好像破破烂烂。现在好像好一点了。很多翻修的痕迹，如果过去不砸，也就不用修了。跟着导游看了看，貌似只有题字有看的必要。翻修的有些差，就如同翻修的长城。<br />
-在孔林里听说只要姓孔就可以埋到孔林里。孔老师看来很有希望…</p>
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="750" />
+the price of borrowing a boy-friend in international women's day.
+<p>[gallery]</p>
 
       
     </div>
@@ -429,7 +2283,7 @@ git branch</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/25/2012-01-25-octopress-deploy/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/01/5334844/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -447,7 +2301,7 @@ git branch</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/25/2012-01-25-octopress-deploy/" class="post-title-link" itemprop="url">Octopress Deploy</a>
+          <a href="/2010/03/01/5334844/" class="post-title-link" itemprop="url">回京</a>
         </h2>
 
         <div class="post-meta-container">
@@ -458,14 +2312,118 @@ git branch</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-25 23:23:00" itemprop="dateCreated datePublished" datetime="2012-01-25T23:23:00+08:00">2012-01-25</time>
+      <time title="Created: 2010-03-01 09:55:00" itemprop="dateCreated datePublished" datetime="2010-03-01T09:55:00+08:00">2010-03-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:16:37" itemprop="dateModified" datetime="2023-10-05T23:16:37+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天12点的火车，想想这三个星期也没有在家干啥事。不过是吃吃喝喝，看看电视电影，聚聚会，玩玩游戏，编编程。不过在家里就是放松，不管啥时候进家都犯困。今天自己<br />
+查了下这个blog的pagerank,发现已经到6.还算不错。自己新开的blog：chillyc.info还依旧是0。虽然在春节前后经历了垃圾评论的洪泛攻击<br />
+，点击率是直线上升，可惜pr依旧是0。这只能说指向它的那几个网站排名还相对差一点，以及他指向的还大多是无名的网站。不过seo倒是挺有点子，找到某个网站的跟帖<br />
+处，只要没有验证码就不停的洪泛呀，评论里不忘粘贴些自己的地址啥的。这样做虽然有点技术含量，但是google貌似已经对此种做法有一定的戒备，所以得不偿失。只是<br />
+可怜我不停的删除垃圾评论。暑假里也看了阿凡达、风声、吉普森的一家、潘神的迷宫啥的。都是一些不错的片子。只不过没有来得及写下自己的评论。玩过不少的游戏，也没有<br />
+一一做评。归家的火车上看到一群科苑的小朋友们在火车上玩三国杀，玩得不亦乐乎。但是距他们较远，并且自己需看好行李，所以也就没有参与。杀人游戏规则是相对简单的，<br />
+但是要求人们要诚实守信。三国杀到没这要求，不过规则比较繁琐，并且大都是有二义性的规则构成，所以解释起来比较麻烦。在家参加聚会，大多只是和三五个好友一起聚聚。<br />
+人多反而觉得不热闹。工作的都工作的安居乐业，学习的也多混出了点名堂。浩浩说要回国，我实在想不通在日本打工和在中国打工到底有啥差别。在国外打工的钱至少还能在国<br />
+内买套房子。浩浩或者自觉不是苦命的主，可能决心回国创业。小杜子在德意志幸好学对了专业，如果学金融恐怕回国都找不到工作。话说老板有心让门下的弟子去德意志学学计<br />
+算机，可惜没有积极响应号召的人。或许大家都觉得德国经济维持不了他们的工资罢了。不过学了八年之后德国经济是否能养的起呢？这又是一个未知数。正如做研究，总是在未<br />
+知中寻找已知。却发现啥事往往是自己说了算，无须证明。因为这本来就是一个NP，没有人会怪你为啥不能更好。计算机界的科研中或许有许多有趣的现象，好看的规律，值得<br />
+人们去研究。不过在研究的路上有一个难题人们始终无法解决。人们喜欢绕开它继续前行。不知谁曾说过一句话：计算机科学本不是科学。我更觉得它只是在数据上的数学推演。<br />
+不知是看透才觉得黑暗，还是因为看不透才觉得更加黑暗。既然大家都在走，那就认定一个方向走呗。走的再远，心还是近的。</p>
+<p>该是出发的时候了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/02/28/2010-02-28-play-small-games/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/02/28/2010-02-28-play-small-games/" class="post-title-link" itemprop="url">Play Small Games:)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-02-28 00:00:00" itemprop="dateCreated datePublished" datetime="2010-02-28T00:00:00+08:00">2010-02-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 22:57:55" itemprop="dateModified" datetime="2023-10-05T22:57:55+08:00">2023-10-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -473,7 +2431,7 @@ git branch</p>
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+          <a href="/categories/game/" itemprop="url" rel="index"><span itemprop="name">game</span></a>
         </span>
     </span>
 
@@ -484,7 +2442,7 @@ git branch</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>366</span>
+      <span>144</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -502,10 +2460,12 @@ git branch</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>octopress这东西还是很难弄的。这几天发生了各种git的异常。也不知道是怎么发生的。亦难解决。这stack overflow中查到都是中看不中用的东西。最后只好从github上再次clone下来。然后<code>git init</code>.这里要注意的是，octopress的home目录中其实是ignore <code>_deploy</code> 文件夹的。home 对应的是自己的source分支。而<code>_deploy</code>中才是master分支。<br />
-<code>rake deploy</code> 其实是调用的<code>rake push</code>。其实是将<code>_public</code>中的内容copy到<code>_deploy</code>中。然后</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd _deploy</span><br><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git add -u</span><br><span class="line">git commit -m &quot;some time&quot;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>    
-<p>所以还是多看看octopress的内部实现比较好。</p>
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="954" />
+this is a small game to find the play icon.
+<p>the play icon is in every screening.</p>
+<p>here is the address of small flash game:</p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5pbG9nb2VyLmNvbS5jbi9hcnRpY2FsL3ZkL3ZkMDc0LmFzcHg=" title="player game">http://www.ilogoer.com.cn/artical/vd/vd074.aspx<i class="fa fa-external-link-alt"></i></span></p>
 
       
     </div>
@@ -532,7 +2492,7 @@ git branch</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/21/2012-01-21-octopress-bugs/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/02/28/2010-02-28-to-be-a-google-prayer-to-sing-songs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -550,7 +2510,7 @@ git branch</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/21/2012-01-21-octopress-bugs/" class="post-title-link" itemprop="url">Octopress Bugs</a>
+          <a href="/2010/02/28/2010-02-28-to-be-a-google-prayer-to-sing-songs/" class="post-title-link" itemprop="url">To Be a Google Prayer. to Sing Songs~</a>
         </h2>
 
         <div class="post-meta-container">
@@ -561,124 +2521,14 @@ git branch</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-21 21:19:00" itemprop="dateCreated datePublished" datetime="2012-01-21T21:19:00+08:00">2012-01-21</time>
+      <time title="Created: 2010-02-28 00:00:00" itemprop="dateCreated datePublished" datetime="2010-02-28T00:00:00+08:00">2010-02-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:16:34" itemprop="dateModified" datetime="2023-10-05T23:16:34+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>421</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="Keywords" content="octopress,bug,solve"/>
-<meta name="Description" content="The page will show many octopress bugs. And tell you how to solve it."> 
-<p>Today, I have met a bug of octopress. When you write your blog with number in categories, like “cattegories: [some keyword, 2012]”.</p>
-<p>When you type  <code>rake generate</code>. The command will report:</p>
-<blockquote><p>/plugins/category_generator.rb:109:in <code>block in write_category_indexes</code>;: undefined method <code>gsub</code>; for 2012:Fixnum (NoMethodError)</p>
-</blockquote>   
-<p>It is caused by your number <code>2012</code>.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi plugins/category_generator.rb</span><br></pre></td></tr></table></figure>   
-<p>Go to line <code>109</code>. and add a line code:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">category = category.to_s</span><br></pre></td></tr></table></figure>  
-<p>Now, type <code>rake generate</code> again. It will be fine.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/21/2012-01-21-back-home/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/21/2012-01-21-back-home/" class="post-title-link" itemprop="url">Back Home</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-01-21 21:11:00" itemprop="dateCreated datePublished" datetime="2012-01-21T21:11:00+08:00">2012-01-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:13" itemprop="dateModified" datetime="2023-10-06T22:54:13+08:00">2023-10-06</time>
+      <time title="Modified: 2023-10-06 22:54:28" itemprop="dateModified" datetime="2023-10-06T22:54:28+08:00">2023-10-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -697,14 +2547,14 @@ git branch</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>249</span>
+      <span>3.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -715,10 +2565,83 @@ git branch</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今天终于到家了。卧了一夜到火车。在六点多睡势良好的情况下被列车猿唤醒换票。另外卧铺车厢开灯太早了，并且关灯太晚了。 <br/><br />
-回到家中吃吃喝喝，洗澡理发，不知不觉就到中午了。下午实在困，睡了一下午。晚上的时候家人一起玩玩UNO.感觉很好。教会了爸妈。UNO还是适合各种人群的。 <br/><br />
-公司发的扑克牌，貌似只对懂外语的年轻人有效。对爸妈一点杀伤力都没有。下午还看了一下holmes.剧情还不错，根据现代场景改变的历史剧还是很有看头。 <br/><br />
-晚上再研究一下wordpress导入。自己改的脚本还是多多少少有些问题。导致解析不成功。</p>
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="481" />
+Glory be to Google,
+As it was in 1998,
+Is now,
+And ever shall be,
+Searching without end,
+Amen.
+<p><strong>By Todd Berry</strong></p>
+<strong>
+</strong>
+<p>Our Google, who art in internet,<br />
+Greatness be thy Name.<br />
+Thy Answers come.<br />
+When Searches be Done,<br />
+On Pc’s as its calculated in internet.<br />
+Give us our Maps and daily Gmail.<br />
+And give us our Daily Trends,<br />
+As we seek out those in ZeitGeist.<br />
+And lead us not into the darkness of MSN,<br />
+But deliver us from Microsoft.<br />
+The Google is my Lord; I shall never want,<br />
+Thy Maketh me search in the great vastness:<br />
+Thy leadeth me to proper results.<br />
+Thy Restoreth my page:<br />
+Thy leadeth me in the links of righteiusness for the crawlers sake.<br />
+YEA!!! though I walk through the Valley of the shadow of Microsoft.<br />
+I will “do no evil” For thou art with me;<br />
+Oh, thy Picasa and thy webaccelerator, they Comfort me,<br />
+Thou preparest a page before me in the presence of mine enemies:<br />
+Microsoft, Yahoo, Aim, and others who give to evil too willingly.<br />
+Oh, my cache runneth over with your light.<br />
+Surely security and viruslessness shall follow me all the days of my life:<br />
+and I will dwell in the system of the Google for ever.<br />
+Heil to your Greatness;<br />
+For thine is the truest Kingdom of all,<br />
+and the Ultimate Power,<br />
+and the Glory,<br />
+for ever and ever.<br />
+For you are all knowing and good.<br />
+Amen</p>
+<p><strong>By Texas Schultz</strong></p>
+<p>Trust in the GOOGLE with all your heart<br />
+and lean not on your own understanding;<br />
+in all your ways acknowledge Her,<br />
+and She will direct your paths.</p>
+<p>By Susan Harrison</p>
+<p>The Google is my Engine; I shall not want.<br />
+She maketh me to improve myself:<br />
+She leadeth me to troves of knowledge.<br />
+She cacheth my lost pages:<br />
+She leadeth me in the paths of pagerank for her name’ sake.</p>
+<p>Yea, though I walk through the valley of the shadow of ignorance,<br />
+I will fear no linkfarms: For thou art with me;<br />
+Thy rank and thy mail, they comfort me.<br />
+Thou preparest tables before me with the presence of mine results;<br />
+Thou annointest my search with value; My content runneth over.</p>
+<p>Surely pagerank and content shall follow me all the days of my life,<br />
+and I will dwell at the site of Google forever.</p>
+<p><strong>By Gavin McDonald</strong></p>
+<p><span style="font-size: x-small;"><em>Dear users, we had joined this newsgroup (forum/chat/chainletter/etc) to  	unite certain two of you in a holy and(&lt;user1&gt;,&lt;user2&gt;,…) function.  	&lt;user1&gt; and &lt;user2&gt; (and others, if there`s more then two), please, come  	forward with your posts.</em></span></p>
+<p><em>(Involved users acknowledge presence)</em></p>
+<p><em>If any of the present here has an exception to raise against this function,  	speak up now, or erase tbe function call forever!</em></p>
+<p><em>(pause for objections)</em></p>
+<p><em>Let us proceed! Users, exchange parity bits!</em></p>
+<p><em>(users exchange bits (use imagination <sup>_</sup>))</em></p>
+<p><em>By the grace of our lord omnipotent, Google, I declare this search a  	successful one, and merge the caches of users in one. You may now perform  	CRC checks.</em></p>
+<p><em>(Festivities commence. Cake should be divided with N cuts through (where N  	is number of users present), and each user has to have two slices. Cake is  	advocated to be .jpg, .gif, .png, or ASCII art for old-time people.)</em></p>
+<p><strong>By Alice Shade</strong></p>
+<p><em><span style="font-family: Arial; font-size: x-small;">Google grant me<br />
+Serenity to accept search engines that fail to produce,<br />
+Courage to explore new things Google, and<br />
+Wisdom to know that Google will dominate.</span></em><span style="font-size: x-small;">Amen.</span></p>
+<p><strong><span style="font-family: Arial; font-size: x-small;">By </span></strong> <span style="font-family: Arial; font-size: x-small;"><strong> Mathew Taylor</strong></span></p>
+<p><span style="color: #000080;"><strong>This prayer is in binary.</strong></span></p>
+<p><strong> </strong><span style="font-size: x-small;"><em>01010111 01100101 00100000 01101010  	01101111 01101001 01101110 00100000 01110100 01101111 01100111 01100101  	01110100 01101000 01100101 01110010 00100000 01110100 01101111 00100000  	01110100 01101000 01100001 01101110 01101011 00100000 01000111 01101111  	01101111 01100111 01101100 01100101 00100000 01100110 01101111 01110010  	00100000 01110100 01101000 01100101 00100000 01101011 01101110 01101111  	01110111 01101100 01100001 01100111 01100101 00100000 01100001 01101110  	01100100 00100000 01110111 01101001 01110011 01100100 01101111 01101101  	00100000 01110011 01101000 01100101 00100000 01100010 01110010 01101001  	01101110 01100111 01110011</em></span></p>
+<p><strong><span style="font-size: x-small;">By </span> <span style="font-size: x-small;">Jonathan Hill</span></strong></p>
 
       
     </div>
@@ -745,7 +2668,7 @@ git branch</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/17/2012-01-17-xin-lang-oauth/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/02/27/2010-02-27-spam-comments/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -763,7 +2686,7 @@ git branch</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/17/2012-01-17-xin-lang-oauth/" class="post-title-link" itemprop="url">新浪Oauth</a>
+          <a href="/2010/02/27/2010-02-27-spam-comments/" class="post-title-link" itemprop="url">Spam Comments</a>
         </h2>
 
         <div class="post-meta-container">
@@ -774,14 +2697,14 @@ git branch</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-17 00:11:00" itemprop="dateCreated datePublished" datetime="2012-01-17T00:11:00+08:00">2012-01-17</time>
+      <time title="Created: 2010-02-27 00:00:00" itemprop="dateCreated datePublished" datetime="2010-02-27T00:00:00+08:00">2010-02-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:16:04" itemprop="dateModified" datetime="2023-10-05T23:16:04+08:00">2023-10-05</time>
+      <time title="Modified: 2023-10-06 22:54:27" itemprop="dateModified" datetime="2023-10-06T22:54:27+08:00">2023-10-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -789,7 +2712,7 @@ git branch</p>
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+          <a href="/categories/prose/" itemprop="url" rel="index"><span itemprop="name">prose</span></a>
         </span>
     </span>
 
@@ -800,7 +2723,7 @@ git branch</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>810</span>
+      <span>162</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -818,18 +2741,9 @@ git branch</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="description" content="这篇文章是关于新浪Oauth认证上的一些经验">
-新浪Oauth好像是上Oauth2.0了。不过也支持OAuth 1.0a.但是新浪的OAuth 1.0a是冒牌的。也就是说，应该是1.0～1.0a或者是真正到1.0 alpha.
-因为这个Oauth不支持oauth_callback_confirm参数，也就是在request_token之后就仅仅返回oauth_token和oauth_secret.因为没有这个oauth_call_confirm,
-也就无法区分Oauth到底是1.0的还是1.0a的。另外如果你真的照着OAuth1.0a的流程与新浪的接口整合。就会发现在获取authorized_token，还是要传给新浪
-oauth_callback,否则新浪真的不知道callback到哪里去，于是新浪就展示给你获取oauth_verifier到页面,也就是授权码页面。   
-<blockquote class="pullquote"><p>另外如果你真的加了oauth_callback,加入你的callback中没有参数，那谢天谢地，你的程序可以跑得很好。如果你的callback中有一个参数，那也谢天谢地，<br />
-你的程序可以跑得良好。如果你的callback中有更多到参数，那就别想跑得好了。因为新浪在某些情况下会丢参数。即使你将oauth_callback中的值整个用urlEncode编码一下（再使用替换个别字符转为Oauth特殊编码），也是有可能给你丢参数的。<br />
-{&quot; 所以请记住：国内就真的没有什么Oauth1.0a. &quot;}<br />
-另外传说腾讯Oauth的oauth_callback的特殊值不是oob, 而是null.<br />
-所以最简单有效到方法是将oauth_callback值中的’&amp;‘替换为’||‘，将’=‘替换为’|'.然后在callback之后的页面进行反编码。就可以得到自己想要到参数了。<br />
-新浪是从Oauth1.0进行改版到Oauth1.0a的。其实就仅仅做了oauth_verifier的生成。然后就真的啥事请都没有做。</p>
-</blockquote>
+          <meta name="views" content="1153" />
+<meta name="_edit_last" content="1" />
+Recently, I have not taken care of this web site. It is filled with spam comments. Some SEO companies use this technology to improve some sites page-rank. Now I use CAPTCHA code to stop spam flood.
 
       
     </div>
@@ -856,7 +2770,7 @@ oauth_callback,否则新浪真的不知道callback到哪里去，于是新浪就
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/16/2012-01-16-test/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/02/23/5320747/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -874,7 +2788,7 @@ oauth_callback,否则新浪真的不知道callback到哪里去，于是新浪就
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/16/2012-01-16-test/" class="post-title-link" itemprop="url">Temp File, Just Test</a>
+          <a href="/2010/02/23/5320747/" class="post-title-link" itemprop="url">经典游戏感悟总结</a>
         </h2>
 
         <div class="post-meta-container">
@@ -885,23 +2799,14 @@ oauth_callback,否则新浪真的不知道callback到哪里去，于是新浪就
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-16 20:43:00" itemprop="dateCreated datePublished" datetime="2012-01-16T20:43:00+08:00">2012-01-16</time>
+      <time title="Created: 2010-02-23 21:13:00" itemprop="dateCreated datePublished" datetime="2010-02-23T21:13:00+08:00">2010-02-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:16:00" itemprop="dateModified" datetime="2023-10-05T23:16:00+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -911,14 +2816,14 @@ oauth_callback,否则新浪真的不知道callback到哪里去，于是新浪就
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>130</span>
+      <span>4.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
@@ -929,8 +2834,134 @@ oauth_callback,否则新浪真的不知道callback到哪里去，于是新浪就
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>This blog is just for octopress test. Not use <code>rake new_post</code>, just <code>vi source/_post/2012-01-16-test.markdown</code>. I want to see whether it works.<br />
-En, it works.</p>
+          <p>这里把自己见过的游戏做个总结：</p>
+<p>0.</p>
+<p>游戏名称：梦之旅（三部曲）</p>
+<p>英文名称：  Dream Chronicles</p>
+<p>游戏发行：PlayFirst<br />
+游戏制作：Kat Games</p>
+<p>游戏类型：解密</p>
+<p>游戏简介：在这次的故事中，玩家需要协助女主角Faye穿越梦境解开谜题，使家人团圆并拯救一个无辜的王国。</p>
+<p>** 笔者简评：<br />
+**</p>
+<p>** 梦之旅系列的解密游戏其实说起来和迷画之塔、机械迷城等游戏吸引人眼球的地方差不多。不过因为是梦中世界，所以存在更重绮丽的事物让人流连忘返。不管从技术还是风格还是情节，比起后几款游戏，都略有逊色。不过梦之旅系列因其发行时间很早，所以可以说是后几款解谜游戏的鼻祖。所以理应先放在解谜类游戏之前。其中的各种小游戏也大多在后几款游戏中显现身影。  **</p>
+<p>1.</p>
+<p>中文名称：迷画之塔</p>
+<p>英文名称：Drawn: The Painted Tower<br />
+汉化名称：谜画之塔<br />
+制作发行：BigFish Games<br />
+游戏类型：冒险解谜<br />
+游戏容量：192.5M<br />
+游戏语言：英语<br />
+较官方的游戏简介：<br />
+这可能是09年最棒的解谜找图型小游戏，从创意、美工、动画、音乐、音效都属一流，就是稍微短了点；它更像一个冒险解谜游戏，而不是找图游戏<br />
+一个暴君的亲信魔术师预言一个独具天赋的儿童将会摧毁他！国王派出40个士兵寻找所有的婴儿，但是一个小女婴被隐藏在小镇边缘的一座高塔之中。数年后，国<br />
+王发现了这个女孩，对她施展了邪恶的魔法。在这款刺激的冒险游戏中，帮助这个女孩逃离他的威胁，完成她的使命！在这个具有传奇色彩的旅程中，你要发挥出你<br />
+所有的智慧，完成探险任务！</p>
+<p>** 笔者简评： **</p>
+<p>** 个人认为这款游戏中画中世界，现实为画，画与现实交相呼应是一个非常成功的创意。单是想到在自己所画出的古树中建立自己的小小王国就是激动不已。不知道我小时候是否也怀着这样的梦想。剧院中日月的呼应也演绎了一场有趣的戏剧。游戏中的小游戏也不错。需要动下脑筋，个人感觉较为棘手的是数字拼盘。这些小游戏很多不言自明。所以觉得设计者匠心独到。 **</p>
+<p>2.</p>
+<p>** 英文名称 ** ：Echoes of the Past: Royal House of Stone<br />
+** 中文名称 ** ：远古回响<br />
+** 制作发行 ** ：BFG<br />
+** 游戏类型 ** ：解谜找图<br />
+** 游戏版本 ** ：v1.0<br />
+** 游戏容量 ** ：174.8MB<br />
+** 游戏语言 ** ：英语</p>
+<p>** 游戏简介 ** ：<br />
+Having made an incredible journey in time, you’ll find yourself in the<br />
+medieval kingdom of Orion. Reveal an ancient curse and save the kingdom and<br />
+its inhabitants. The last prince of Orion is waiting for your help! Open the<br />
+weird locks and explore every room of the castle in Echoes of the Past: Royal<br />
+House of Stone. You will meet the castle’s inhabitants and learn the horrible<br />
+mystery of the royal family in this exciting Hidden Object Adventure game.</p>
+<p>** 笔者简评： **</p>
+<p>** 这个游戏较迷画之塔而言，小游戏并不多。并且大多是找各种图案，最难的要属找那个拉丁字母。没有提示的确很难。这款游戏的优点在于过场动画的效果处理不错。画面的移动带给人真实的感觉。另外其开始的引入也是人入画中。所以和迷画之塔较为类似。<br />
+**</p>
+<p>3.</p>
+<p>游戏名称：机械迷城<br />
+英文名称：Machinarium<br />
+制作厂商：Amanita<br />
+游戏发行：Amanita<br />
+游戏类型：Adventure<br />
+发售日期：2009年10月16日</p>
+<p>游戏简介：<br />
+由捷克独立开发小组Amanita<br />
+Design设计制作的最新作品《Machinarium》PC版发售日定于09年10月16日。此作堪称以独特的水墨风格展现给玩家的是一款冒险解谜游<br />
+戏，值得期待。游戏将采用传统点击式界面，和Samorost游戏相似，2D背景和人物，没有对白。不过，Machinarium游戏时间将更长更复杂，<br />
+这次画面将由手画，而玩家有个小物品栏。Machinarium中每个人都是机器人，包括我们的小英雄，他将对从 “Black Cap<br />
+Brotherhood”来的坏人。本游戏在2009年独立游戏节上斩获了视觉艺术奖。</p>
+<p>** 笔者简评： **</p>
+<p>** 第一这个游戏是手绘风格，和以上两种游戏中横为横，竖即竖的风格迥然不同。不过在迷画只塔中载入游戏的画面也是手绘风格。另外和以上两款游戏不同的是。这款游戏中可以完全没有任何人类语言。但是你却能了解自己在游戏中的使命。这的确比前两款游戏更胜一筹。 **</p>
+<p>4.</p>
+<p>游戏名称：  ** 植物大战僵尸 **</p>
+<p>英文名称：Plants vs. Zombies</p>
+<p>制作厂商：PopCap Games</p>
+<p>游戏介绍： **<br />
+**</p>
+<p>是一款新奇的即时战略、塔防御战游戏，武装您的49种植物，切换他们不同的功能，诸如樱桃炸弹或强悍的食人花，更加快速有效的将僵尸阻挡 在入侵的道路上。不同的敌人<br />
+，不同的玩法构成五种不同的游戏模式，加之夕阳、浓雾以及泳池之类的障碍增加了其挑战性奇特的游戏乐趣永无止境。可怕的僵尸即将入侵你的家庭，你唯一的防御方式就是您<br />
+栽种的植物。</p>
+<p>** 笔者简评： **</p>
+<p>** 这款游戏就是塔防。每一关卡都会多出不同的防御手段，多出几个不同的敌人，所以才有乐趣。难度一点点的提升。不过难度的确不是太大。另外种花的小游戏以及 ** ** 各种小关卡 ** ** 在以前的《宠物鱼水族馆》中早有这样的创意。不过让人耳目一新的是各种已知的小游戏还能换成僵尸和植物。 **</p>
+<p>5.</p>
+<p>游戏名称：黏黏世界</p>
+<p>英文名称：World Of Goo</p>
+<p>制作厂商：2D Boy</p>
+<p>游戏简介：</p>
+<p>World of Goo是一款由&quot;2D Boy&quot;开发的基于物理和建筑原理的益智类游戏，2008年10月13日于北美发布，通过搭建路径，使Goo到达目的地!<br />
+World of Goo游戏中数以百万的黏性球体物质Goo居住在一个不知名的美丽世界，游戏界面非常可爱，并配有奇妙的剧情贯穿始末，有意思的是游戏还带有挑战模<br />
+式，全世界的玩家都可以挑战用Goo搭建更高的高度，游戏官网设立排行榜，目前最高纪录是德国的watson所创造的41米高度，令人兴奋的是，排行榜中也不乏中国玩<br />
+家，如果你由兴趣的话，就挑战一下吧：）<br />
+粘粘世界是一个基于物理和建筑原理的益智游戏.<br />
+数以百万的黏性球体物质居住在一个不知名的美丽世界，它们在这个游戏中显得非常可口（delicious）。游戏中有各种各样不同职能的粘粘, 你需要抓起你的鼠标,<br />
+将各个粘粘连在一起铺成通道, 让剩余的粘粘顺利到达管道口, 当剩余数量足够, 则可通往下一个据点.<br />
+这个由2D BOY开发的另类益智游戏曾经在美国独立游戏节上包揽多项大奖。根据2D BOY官网的消息，World of<br />
+Goo会在今年之内推出PC版本，并支持Mac/Linux操作系统。<br />
+游戏的场景极具创意, 音乐也搭配得很好, 和别的游戏感觉很不一样, 令人耳目一新. 游戏操作很简单, 基本上只要你会用鼠标就能玩起来,<br />
+但很多关卡难度比较高, 可不是会玩就能轻易过关的.</p>
+<p>** 笔者简介：  **</p>
+<p>** 这款游戏的特点结合了事物的物理特性，或者说把这种物理特性发挥到极致。一般的动作类游戏的物理特性不过是跑得快自然跳得高，或者跳起来自然会落地。这款游戏在各个关卡不断突出重力和弹力的相互作用。才使得黏黏世界中的粘球变得真实。  **</p>
+<p>6.</p>
+<p>游戏名称：麦克斯与魔法标记</p>
+<p>英文名称：Max and the Magic Marker</p>
+<p>** 游戏类型 ** :  ACT 动作游戏</p>
+<p>** 制作发行 ** :  Press Play</p>
+<p>游戏简介：</p>
+<p>一款包含物理元素的2D横版过关游戏，其中玩家要操控男孩和他的魔术标记。你需要通过标记工具创造场景从而给过关，每关都有一些隐藏要素比较难拿。这个游戏不由得让人<br />
+想起小时候的《神笔马良》！</p>
+<p>** 笔者简评：  **</p>
+<p>** 这款游戏的成功就在于玩家需要自己在游戏中实时设计行进路线。这些路线也是富含物理特性的。这让我想起一款游戏《蜡笔物理》  **</p>
+<p>7.</p>
+<p>中文名称：蜡笔物理学</p>
+<p>英文名:Crayon Physics Deluxe<br />
+类型:解谜<br />
+版本号:1.0<br />
+语言:英语<br />
+开发商:Kloonigames<br />
+发行商:Kloonigames<br />
+容量:34.0 MB</p>
+<p>游戏简介：</p>
+<p>《蜡笔物理学》是一款奇妙的创意游戏，游戏采用了前所未有的新奇设计，在游戏中你将自由的控制图形来推动小球到达目的地，究竟该如果完成任务则完全依靠你的想象力和敏<br />
+捷的操作来自由发挥！</p>
+<p>** 笔者简评：  **</p>
+<p>** 这是一个纯粹的物理学游戏。当年在微软看到他们制作物理学软件和这款游戏有很大的近似之处。不过物理学实验软件比这款游戏中用到的物理知识更加丰富。  **</p>
+<p>8.</p>
+<p>中文名称：时空幻境</p>
+<p>英文名称：Braid</p>
+<p>发行：Stardock<br />
+开发：Jonathan Blow<br />
+类型：2D动作</p>
+<p>游戏简介：</p>
+<p>《Braid》是一款传统的2D卷轴式动作冒险游戏，游戏的剧情设定也是相当老套的“拯救公主”路线，但利用时间流动方式解迷的奇妙设定却是其与众不同的最大亮点所在<br />
+。在游戏的全部7个世界中，分布着各种希奇古怪的时空模式，  玩家  要充分掌握时间运行的规律配合灵活多变的思维才能顺利过关。</p>
+<p>** 笔者简评：  **</p>
+<p>** 这款游戏虽然路线老，但是场景特技新。控制时间的流动是这款游戏的创新之处。以上许许多多的游戏不过是让人们在休闲之余让人练练大脑动动手脚。但是这款游戏的意义远过于此。对于游戏中的人物来说，生生死死完全可以使用Save, Load来解决。对于人来说，不能像游戏那样先设个存盘点，也不能像游戏那样可以使时间倒流。我们所能做的仅仅是珍惜时间，珍惜身边的人。对于游戏来说，也可以做到富有深意的启发，的确是佳作。游戏设计者往往难以从身边之事提炼出精华所在。  **</p>
+<p>** 最终评论： **</p>
+<p>1.游戏的上层佳作在于育人，其次娱人，再次愚人</p>
+<p>2.游戏的创意极其重要。以上的创意之处在于：结合现实，贴近现实；超越现实，虚幻现实；重复经典，重塑经典。</p>
+<p>3.老套的东西不一定是不好，一是可以提高上手度，二是减少的培训时间，三是不必再用help文件。</p>
+<p>4.难度渐渐提升，套路不断重复。这是设计关卡游戏的关键所在。</p>
 
       
     </div>
@@ -957,7 +2988,7 @@ En, it works.</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/15/2012-01-15-web-config-permission-of-files-and-dirs/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/02/20/5312270/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -975,7 +3006,7 @@ En, it works.</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/15/2012-01-15-web-config-permission-of-files-and-dirs/" class="post-title-link" itemprop="url">Web Config Permission of Files and Dirs</a>
+          <a href="/2010/02/20/5312270/" class="post-title-link" itemprop="url">美报称谷歌遭受攻击来自两校</a>
         </h2>
 
         <div class="post-meta-container">
@@ -986,23 +3017,14 @@ En, it works.</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-15 23:29:00" itemprop="dateCreated datePublished" datetime="2012-01-15T23:29:00+08:00">2012-01-15</time>
+      <time title="Created: 2010-02-20 09:03:00" itemprop="dateCreated datePublished" datetime="2010-02-20T09:03:00+08:00">2010-02-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:15:56" itemprop="dateModified" datetime="2023-10-05T23:15:56+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1012,7 +3034,7 @@ En, it works.</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>151</span>
+      <span>302</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1030,10 +3052,12 @@ En, it works.</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>permission of files: 0644<br />
-permission of dirs:  0755<br />
-if not, you will not see the web page. Or your site may have an exploit.<br />
-配置文件的权限为0644, 配置dir的权限为0755,这样即可以让用户访问到，又不会有太大的安全漏洞。</p>
+          <p>经美国国防部深入调查，发现谷歌遭受黑客攻击一事来自于两起恶性黑客攻击。这两起攻击分别来自于山东济宁医学院解剖室中的计算机和济宁大学的某台电脑。济宁某卫生清洁<br />
+工人已声明对此事负责！</p>
+<p>我们由衷的感慨中国人民电脑技术的高超~</p>
+<p>美国中情局近期继续调查发现：济宁幼儿园的小朋友喔喔和佳佳是此次活动的幕后策划者，其两人在三岁左右时策划了一系列的黑客红客活动：例如百度和美国国防部被黑事件。<br />
+其两人在两岁半左右曾为中国获得ACM金牌和Topcoder大赛前十名等好成绩。在中情局的审讯下，两位小朋友对自己的罪行供认不讳。中情局内部人士认为，这次Go<br />
+ogle被黑事件与此两位小朋友关系密切，并认为那位卫生清洁工人可能受其指使。</p>
 
       
     </div>
@@ -1060,7 +3084,7 @@ if not, you will not see the web page. Or your site may have an exploit.<br />
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/14/2012-01-14-new-title/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/02/05/5292101/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1078,7 +3102,7 @@ if not, you will not see the web page. Or your site may have an exploit.<br />
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/14/2012-01-14-new-title/" class="post-title-link" itemprop="url">Octopress Markdown</a>
+          <a href="/2010/02/05/5292101/" class="post-title-link" itemprop="url">从某处看的幽默集</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1089,23 +3113,14 @@ if not, you will not see the web page. Or your site may have an exploit.<br />
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-14 20:49:00" itemprop="dateCreated datePublished" datetime="2012-01-14T20:49:00+08:00">2012-01-14</time>
+      <time title="Created: 2010-02-05 17:16:00" itemprop="dateCreated datePublished" datetime="2010-02-05T17:16:00+08:00">2010-02-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:15:49" itemprop="dateModified" datetime="2023-10-05T23:15:49+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1115,14 +3130,14 @@ if not, you will not see the web page. Or your site may have an exploit.<br />
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>319</span>
+      <span>2.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -1133,18 +3148,99 @@ if not, you will not see the web page. Or your site may have an exploit.<br />
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>今天又弄了一下octopress，发现octopress和markdown中间还是有些兼容问题。例如codeblock、四个空格、tab、` ` `以及*的使用。都有些bug。应该是octopress解析时候有问题。<code>*</code>后面紧跟的一段，如果后面紧跟代码一定是8个空格或者两个tab。偶然情况下，使用4个空格也是可以作为code的。而code一定是以没有空格开头到行结束的。即使你使用了<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">以及 </span><br></pre></td></tr></table></figure> 也是不会被识别的。<br />
-所以blog还是简单点好。</p>
-<blockquote>
-<p>Simple is beauty!<br />
-by someone</p>
-</blockquote>
-<blockquote><p>Simple is beauty!</p>
-<footer><strong>someone</strong><cite><a href="http://chillyc.info">chillyc.info</a></cite></footer></blockquote>
-<blockquote class="pullquote"><p>下面再使用一下pull quote<br />
-{“其实我真的不想再说什么了…”}<br />
-好吧，让这篇blog结束吧。</p>
-</blockquote>
+          <p>1、孔子曰：中午不睡，下午崩溃。孟子曰：孔子说的对！</p>
+<p>2、客官 您是打尖还是住店</p>
+<p>我大便</p>
+<p>3、我年轻过，你们呢，老过么？</p>
+<p>4、绅士无非就是耐心的狼</p>
+<p>5、所有的人都站在一边并不一定是好事，譬如他们都站在船的一边</p>
+<p>6、别紧张,我不是什么好人……</p>
+<p>7、你说…你喜欢我?其实…我一开始…其实我也…唉跟你说了吧,其实我也挺喜欢我自己的.</p>
+<p>8、作为失败的典型,你实在是太成功了</p>
+<p>9、小时候刚学骑自行车，还不太会就跑到大街上，看到前面一个老大爷在走，自己感觉要撞上，就大叫，不要动，不要动。那个老大爷一下站在那里没有动，结果我拐来拐去，<br />
+还是撞上了。老大爷站起来说，你瞄准呢</p>
+<p>10、如果有300W，大家说是买奔驰好还是法拉利好呀。</p>
+<p>回复：最好买300辆二手奥托，再雇300个司机，让他们跟在你后面开，一会排成s形，一会排成B形</p>
+<p>11、多多微笑，阴天谨防情绪感冒！</p>
+<p>12、我自横刀向天笑，笑完我就去睡觉！</p>
+<p>13、 路遥知马力不足，日久见人心叵测</p>
+<p>14、我爸面对我发胖一事发表了看法：没有韩红的命，还得了韩红的病。</p>
+<p>15、我这人从不记仇,一般有仇当场我就报了。</p>
+<p>16、别在我的坟前哭。脏了我轮回的路。</p>
+<p>17、是这样的张总，你在家里的电脑上按了CTRL+C，然后在公司的电脑上再按CTRL+V是肯定不行的。即使同一篇文章也不行。不不，多贵的电脑都不行。</p>
+<p>18、我以为你只是1和3中间的数，没想到你还是1和3俩数的组合。</p>
+<p>20、一食人族去班，经理再三交代不能吃同事，答应。过几天忍不住，偷吃一个清洁工</p>
+<p>人，当即被发现。其感悟是：千万别吃真正做事的人。</p>
+<p>21、现在你骂我，是因为你还不了解我，等你以后了解了我，你一定会动手打我的。</p>
+<p>22、人永远不知道谁哪次不经意的跟你说了再见之后就真的再也不见了。</p>
+<p>23、通往成功的路，总是在施工中。</p>
+<p>24、我不下地狱，谁爱下谁下</p>
+<p>25、猜一句英文：「ABABBBAAAAAABBBABAAAABBBBAABBBAAAAA」？〈答案：Long time no C〉</p>
+<p>26、想你的眉目，想到模糊。——突然觉得，思念大都如此，越来越淡（我依稀记得这是王菲《我也不想这样》的歌词，不知对否？）</p>
+<p>27、在经年后，感叹，那两个少年：一个惊艳了时光，一个温柔了岁月。</p>
+<p>28、如果她（他）对你说：“忘了我吧。”你告诉对方：“我一直没记住。”</p>
+<p>29、你对咱的好 俺永远记得 俺做鬼都不会放过你的。</p>
+<p>30、各位女同事,请不要对我放电,我老婆有来电显示.</p>
+<p>31、微笑，挥手，再见，结束。</p>
+<p>32、我想起来，我曾立志做一个好玩的人</p>
+<p>33、将薪比薪的想一下，算了，不想活了。</p>
+<p>34、那啥，就给我个经济适用坟好了。</p>
+<p>35、活了二十多年，没能为祖国、为人民做点什么，每思及此，伤心欲绝</p>
+<p>36、趁着年轻把能干的坏事都干了吧，没几年了。</p>
+<p>37、挣着卖白菜的钱，****着卖白粉的心</p>
+<p>38、七岁的小男孩是地球上最可怕的生物，他们有好奇心、行动力、破坏力以及《未成年人保****》。</p>
+<p>39、人贵在言而有信——我说不还钱就不还钱!</p>
+<p>40、老子曰：睡可睡，非常睡。</p>
+<p>41、我虽然相信海誓山盟，但是未必相信你啊</p>
+<p>42、上帝说：出门不要忘记带伞，一会儿我要浇花</p>
+<p>43、特别的人从来不说自己特别，比如说我</p>
+<p>44、我的否已极了 可泰说他没空来</p>
+<p>45、我知道,天下无不散宴席,可是,至少,宴席上我要吃得爽!</p>
+<p>46、我走我的阳光道，你过你的奈何桥。</p>
+<p>47、世界是我们的，也是孩子们的，但最终是那帮孙子们的！</p>
+<p>48、每当困难的时候我就念藏经：“噢嘛呢哞嘛哄”， 翻译成英文就是:All money go my home!</p>
+<p>49、最简单的长寿秘决————–保持呼吸，不要断气</p>
+<p>50、等我有钱了，我就买一辆公交车，专门走公交专用车道，专门停在公交车站，等有人想上车了，我就说：对不起，这是私家车</p>
+<p>51、善良就是别人挨饿的时候，我吃肉不bia ji嘴</p>
+<p>52、漫漫人生路，总会错几步。</p>
+<p>53、我从不以强凌弱～～～我欺负他之前真不知道他比我弱…</p>
+<p>54、你走你的过街天桥，我过我的地下通道。</p>
+<p>55、我的兴趣爱好可分为静态和动态两种，静态就是睡觉，动态就是翻身…</p>
+<p>56、哪里跌倒，哪里爬起……老是在那里跌倒，我怀疑那里有个坑！</p>
+<p>57、唉～这人要一没正形，连头痛都是偏的</p>
+<p>58、我这人不太懂音乐，所以时而不靠谱，时而不着调。</p>
+<p>59、人干点好事儿总想让鬼神知道，干点坏事儿总以为鬼神不知道，我们让鬼神太为难了。</p>
+<p>60、问世间谁最坦荡，直叫我当仁不让</p>
+<p>61、如果你容不下我，说明不是你的心胸太狭小，就是我的人格太伟大。</p>
+<p>62、行到水穷处，口渴；坐看云起时，头晕。</p>
+<p>63、我想学凤凰涅磐，谁知道一不小心……熟了！</p>
+<p>64、反正我这命老和他们算的不一样，不知道是他们没算对，还是我活错了。</p>
+<p>65、你嘴角三十度的微笑，百度搜索不到。</p>
+<p>66、上帝肯定会原谅我的，因为那是他的职业。</p>
+<p>67、执子之手,方知子丑,泪流满面,子不走我走。</p>
+<p>68、帅有个P用?搞不好还不是被卒子给吃掉！</p>
+<p>69、别和我说放马过来—-我是阿凡提！</p>
+<p>70、再烦我就把你绑草船上借箭去！</p>
+<p>71、人不犯我，我不犯人；人若犯我，礼让三分；人再犯我，我还一针；人还犯我，斩草除根。</p>
+<p>72、我又不是人民币，怎么能让人人都喜欢我？！</p>
+<p>73、单身并不难，难的是应付那些千方百计想让你结束单身的人 。</p>
+<p>74、有空学风水去，死后占个好墓也算弥补了生前买不起好房的遗憾</p>
+<p>75、曾经我们都以为自己可以为爱情死，其实爱情死不了人，它只会在最疼的地方扎上一针，然后我们欲哭无泪，我们辗转反侧，我们久病成医，我们百炼成钢。你不是风儿，<br />
+我也不是沙，再缠绵也到不了天涯，擦干了泪，明天早上，我们都要上班。</p>
+<p>76、世界就是一个大型夹娃娃机，我隔着玻璃窗，只想要你</p>
+<p>77、你若先走了，转身时就不要怪我背对着你。</p>
+<p>78、一个人只有一个心脏，却有两个心房。一个住着快乐；一个住着悲伤。不要笑得太大声，不然会吵醒旁边的悲伤。</p>
+<p>79、对自己好点，因为一辈子不长；对身边的人好点，因为下辈子不一定能够遇见</p>
+<p>80、有人说，旋转木马是最残忍的游戏，彼此追逐却有永恒的距离</p>
+<p>81、如果有来生，要做一棵树，站成永恒，没有悲欢的姿势。一半在尘土里安详，一半在风里飞扬，一半洒落阴凉，一半沐浴阳光。非常沉默非常骄傲，从不依靠从不寻找!</p>
+<p>82、话说搭讪也要讲究技术，要在正确的时间正确的地点找到正确的人搭讪，比如此刻我就在线</p>
+<p>83、我想我曾经爱你的时候也低到过尘埃里，但是并没有开出花，后来那些尘埃只是越来越多终于把我们都活埋了，原来爱情还真是不能太卑微，光有尘埃没有养料是不行的</p>
+<p>84、觉得不快乐，是因为追求的不是“幸福”，而是“比别人幸福”。</p>
+<p>85、5岁的女儿让老爸帮她做某事。</p>
+<p>老爸：“爸爸很累啦，你夸我两句吧，你夸我两句我就又有劲儿了。”</p>
+<p>女儿：“老郑！”</p>
+<p>老爸：“哎！”</p>
+<p>女儿：“你家妞妞长得可真漂亮啊……”</p>
 
       
     </div>
@@ -1171,7 +3267,7 @@ by someone</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/14/2012-01-14-new/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/02/01/5278632/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -1189,7 +3285,7 @@ by someone</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/14/2012-01-14-new/" class="post-title-link" itemprop="url">First Use Octopress</a>
+          <a href="/2010/02/01/5278632/" class="post-title-link" itemprop="url">网站统计工具</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1200,23 +3296,14 @@ by someone</p>
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2012-01-14 20:43:00" itemprop="dateCreated datePublished" datetime="2012-01-14T20:43:00+08:00">2012-01-14</time>
+      <time title="Created: 2010-02-01 22:09:00" itemprop="dateCreated datePublished" datetime="2010-02-01T22:09:00+08:00">2010-02-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:15:52" itemprop="dateModified" datetime="2023-10-05T23:15:52+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
     </span>
 
   
@@ -1226,7 +3313,7 @@ by someone</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
+      <span>174</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1244,39 +3331,216 @@ by someone</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>这是第二篇blog。第一篇貌似什么都没有写。现在在linux下过得相当到舒坦。比windows的感觉好多了。就是拼音输入法支持到不怎么样。谢谢搭建octopress的感受吧。第一感受是这东西真不好装。需要现学到知识也有很多，例如rvm, ruby, gem, bundle, rake, git, MarkDown. 再加上在windows下养成到习惯，到linux下还是要熟悉一下。首先要先安装openssl和libtool相关的包。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openssh-client openssl libruby1.9.1 libssl-dev libssl libtool</span><br></pre></td></tr></table></figure>
-<p>下面挨个介绍吧。</p>
-<ul>
-<li>rvm 是管理ruby的工具，因为octopress需要使用ruby1.9.2所以必须使用rvm,否则就自己去[ruby] []的官网上自己下载，然后编译安装。这里使用rvm是可以管理多个ruby版本。并且可以自动编译安装ruby。安装rvm需要一行命令<br />
-bash -s stable &lt; &lt;(curl -s <span class="exturl" data-url="aHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS93YXluZWVzZWd1aW4vcnZtL21hc3Rlci9iaW5zY3JpcHRzL3J2bS1pbnN0YWxsZXI=">https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer<i class="fa fa-external-link-alt"></i></span>)<br />
-敲命令时注意<code>&lt; &lt;</code>之间的空格。安装完这个，需要将rvm添加到path中。在~/.bashrc中添加<code>PATH=$PATH:~/.rvm/bin</code>。注意有些系统可能~/.bashprofile或者其他，详情在哪里添加请[google] []。添加完后，关闭bash shell.再启动shell或者终端。然后下面的命令可以很好执行：<br />
-which rvm
-<h1 id="看到底rvm路径对了没有"><a class="markdownIt-Anchor" href="#看到底rvm路径对了没有"></a> 看到底rvm路径对了没有</h1>
-rvm install 1.9.2 &amp;&amp; rvm use 1.9.2
-<h1 id="安装ruby-192并且使用这个版本"><a class="markdownIt-Anchor" href="#安装ruby-192并且使用这个版本"></a> 安装ruby 1.9.2并且使用这个版本</h1>
-ruby --version
-<h1 id="是否是192版本"><a class="markdownIt-Anchor" href="#是否是192版本"></a> 是否是1.9.2版本</h1>
-</li>
-</ul>
-<p>这里需要注意rvm use 1.9.2,如果你的机器重启，这里下次还要再设置一边。否则很有可能不能找到正确的ruby.</p>
-<ul>
-<li>这一步要使用到git, git是管理代码到工具。不会用的话详情见[git] []。octopress也主要使用了git和github,否则该实现到功能都不能用了。<br />
-git clone git://github.com/imathis/octopress.git octopress
-<h1 id="把octopress的主要内容down下来"><a class="markdownIt-Anchor" href="#把octopress的主要内容down下来"></a> 把octopress的主要内容down下来。</h1>
-</li>
-<li>这里要使用gem， bundle, rake了。gem,bundler都是管理ruby各个小类库的工具。而rake是ruby make.<br />
-gem install bundler<br />
-bundle install<br />
-rake install<br />
-# 如果这里rake运行不成功，有可能是有多个版本到rake,要使用bundle exec rake install</li>
-<li>剩下的详情请查阅[octopress][octopress-deploy]。<br />
-如果在<code>rake generate</code>处因为openssl卡住，则需要安装完openssl,再安装ruby.yaml编译不成功，是因为没有安装libtool.<br />
-[octopress-deploy]: <span class="exturl" data-url="aHR0cDovL29jdG9wcmVzcy5vcmcvZG9jcy9kZXBsb3lpbmcv">http://octopress.org/docs/deploying/<i class="fa fa-external-link-alt"></i></span><br />
-[git]: <span class="exturl" data-url="aHR0cDovL2dpdC1zY20uY29t">http://git-scm.com<i class="fa fa-external-link-alt"></i></span><br />
-[ruby]: <span class="exturl" data-url="aHR0cDovL3J1YnktbGFuZy5vcmc=">http://ruby-lang.org<i class="fa fa-external-link-alt"></i></span><br />
-[google]: <span class="exturl" data-url="aHR0cDovL2dvb2dsZS5jb20=">http://google.com<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
+          <p>最先使用google Analytics,后来发现只有按天数统计的，没有按照小时，或者更少的时间段统计的选项。最近突然需要用到统计小时或者更短的时间。找了半<br />
+天发现<span class="exturl" data-url="aHR0cDovL2NvdW50LjUxeWVzLmNvbS8lRTglQkYlOTklRTQlQjglQUElRTYlOTglQUYlRTUlODUlOEQlRTglQjQlQjklRTclOUElODQlRUYlQkMlOEMlRTUlOEYlQUYlRTQlQkIlQTUlRTYlOEMlODklRTUlQjAlOEYlRTYlOTclQjYlRTclQkIlOUYlRTglQUUlQTElRTMlODAlODIlRTclOTklQkUlRTUlQkElQTYlRTclQkIlOUYlRTglQUUlQTElRTglQjIlOEMlRTQlQkMlQkMlRTclQkQlOTElRTQlQjglOEElRTglQUYlQjQlRTUlOEYlQUYlRTQlQkIlQTUlRTclQkIlOUYlRTglQUUlQTElRTUlODglQjAxNSVFNSU4OCU4NiVFOSU5MiU5RiVFNSU4NiU4NSVFNyU5QSU4NCVFNiU5NSVCMCVFNiU4RCVBRSVFMyU4MCU4MiVFNCVCOCU4RCVFOCVCRiU4NyVFNSU5QiVBMCVFNCVCOCVCQSVFOSU5QyU4MCVFOCVBNiU4MSVFNiVCMyVBOCVFNSU4NiU4QyVFNSU4OCVCMCVFNyU5OSVCRSVFNSVCQSVBNiVFOCU4MSU5NCVFNyU5QiU5RiVFNiU4OCU5Ng==">http://count.51yes.com/这个是免费的，可以按小时统计。百度统计貌似网上说可以统计到15分钟内的数据。不过因为需要注册到百度联盟或<i class="fa fa-external-link-alt"></i></span><br />
+者百度推广，最后还是没有选择这个东东。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/01/28/2010-01-28-ping-shu-san-guo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/01/28/2010-01-28-ping-shu-san-guo/" class="post-title-link" itemprop="url">评书三国</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-01-28 00:00:00" itemprop="dateCreated datePublished" datetime="2010-01-28T00:00:00+08:00">2010-01-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:54:26" itemprop="dateModified" datetime="2023-10-06T22:54:26+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/prose/" itemprop="url" rel="index"><span itemprop="name">prose</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>164</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="views" content="1297" />
+this is a comedy.  some of scripts are copied from some web pages. But the rest of them are created by the actors and me. Laughing~
+<p><span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAxMC8wMS8xOC81MjA1ODYyLmFzcHg=">http://blog.csdn.net/cctt_1/archive/2010/01/18/5205862.aspx<i class="fa fa-external-link-alt"></i></span></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/01/27/5262447/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/01/27/5262447/" class="post-title-link" itemprop="url">C++中的宏定义 G++中参数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-01-27 17:03:00" itemprop="dateCreated datePublished" datetime="2010-01-27T17:03:00+08:00">2010-01-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>654</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>如果定义Debug时才能出现的函数调用，那么就可以这样写：<br />
+#ifdef DEBUG #define debug(x)/ {/ printf(x);/ } #endif #ifdef RELEASE #define<br />
+debug(x)/ {}/ #endif<br />
+使用就可以直接使用debug(“abc”);<br />
+然后在g<ins>或者gcc编译时使用 g</ins> def.cpp -D DEUBG,-D 后面的是宏定义名。</p>
+<p>如果希望定义多参宏：那么函数括号中参数的变为…即可。但是个人感觉多参还是比较麻烦。如果我工程再开发阶段可能需要打印一些中间值但是在发布阶段这些中间值用户<br />
+应该是不需要见到的。那么总不能一行行的添加注释或者删除。这就可以使用宏：</p>
+<p>#ifdef DEBUG #include &lt;stdio.h&gt; #define <em>debugp</em> printf //定义为printf函数 #define<br />
+<em>debug</em>(CODE) CODE //这里可以输出CODE #else #define <em>debugp</em> // // 将其注释掉 /printf<br />
+#define <em>debug</em>(CODE) // //注释掉注意这里只能写 //,在一行写会被注释的。 /CODE #endif</p>
+<p>如果希望可以使用gdb调试程序信息，需要在g<ins>后添加-g参数。<br />
+g</ins> -g -o read read.cpp这个语句中-g与-o的位置不能颠倒，否则会有错误。最好-<br />
+o这个参数在最后添加。否则很有可能将过去的源文件删除。这个命令就可以写为g++ -g read.cpp -o read<br />
+另外.h文件和.cpp应该是配套使用的。否则其他.cpp文件找不到该头文件定义的全局变量。</p>
 
       
     </div>
@@ -1296,7 +3560,7 @@ rake install<br />
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/14/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/16/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/14/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/16/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1326,7 +3590,7 @@ rake install<br />
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">23:58</span>
+    <span title="Reading time total">24:10</span>
   </span>
 </div>
 
