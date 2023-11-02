@@ -8,8 +8,6 @@ tags: ["math", "math", "symbol"]
 categories:
 - math
 ---
-<meta name="_edit_last" content="1" />
-<meta name="views" content="629" />
 <div>
 
 # copy from http://blog.sina.com.cn/s/blog_598529cd0100ecv9.html
@@ -361,7 +359,8 @@ categories:
 </tr>
 </tbody>
 </table>
-<span style="font-size: small;">+:plus(positive正的)
+
++:plus(positive正的)
 -：minus（negative负的）
 *：multiplied by
 ÷：divided by
@@ -394,6 +393,6 @@ x3:x cube
 3‰：three peimill
 n∑i=1xi:the summation of x where x goes from 1to n
 n∏i=1xi:the product of x sub i where igoes from 1to n
-∫ab:integral betweens a and b</span>
+∫ab:integral betweens a and b
 
 </div>

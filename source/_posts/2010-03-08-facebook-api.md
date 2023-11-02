@@ -7,7 +7,6 @@ comments: true
 tags: ["api", "facebook", "php", "see-hear", "structure"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="887" />
@@ -18,7 +17,7 @@ Now I should do some work in investgate Facebook API. The Facebook API can be ca
 /**
 * Set the configuration settings for Facebook
 */
-$facebook_config['debug'] = false;
+~~$~~facebook_config['debug'] = false;
 $facebook_config['api_key'] = '&lt;your_api_key&gt;';
 $facebook_config['secret_key'] = '&lt;your_secret_key&gt;';
 /**

@@ -4,7 +4,7 @@ date: 2017-06-12 22:41:59
 tags: ['csdn','blog','export','markdown','md']
 categories:
 - prose
-- blog
+
 ---
 
 因为感觉csdn的界面越来越乱了，是不是的还有各种广告。另外CSDN借工信部的名义强制要求输入手机号。像我这样根本没有手机的人，再也没有办法登陆了。所以还是把所有的blog迁移过来。从此我就再也不写csdn的blog.专心写我的这里的blog吧。

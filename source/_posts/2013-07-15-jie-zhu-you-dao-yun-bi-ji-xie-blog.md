@@ -3,7 +3,7 @@ layout: post
 title: "借助有道云笔记写blog"
 date: 2013-07-15 22:12
 comments: true
-tags: 有道云笔记,blog,图片
+tags: [有道云笔记,blog,图片]
 categories:
 - knowledge
 ---
@@ -18,7 +18,7 @@ categories:
 
 ## 1. 分享你的图片
   &nbsp; &nbsp; &nbsp; &nbsp;首先打开有道云笔记的客户端，然后创建一篇新的笔记，然后点击**'分享链接'**
-![分享链接 图片](http://note.youdao.com/yws/public/resource/d54e01fec212f37df16b5bcd032a83dd/25FBFC3EADAD4EDEB46F9AD6F147C0D9)
+![分享链接 图片](https://photos.google.com/album/AF1QipO83FbqnkVdDXVs-hFs12xqxg6Myp1ec1vWf9M/photo/AF1QipM5pI75erNeSbyGdSKhsneXCMlYr6HUlchcR0E)
 
 ## 2. 获取图片地址
   &nbsp; &nbsp; &nbsp; &nbsp;打开浏览器(chrome, 火狐,IE均可) 这里只介绍firefox. 点击[分享链接](http://note.youdao.com/share/?id=d54e01fec212f37df16b5bcd032a83dd&type=note)。然后在调出firebug. 使用它，选中你要获取的图片。然后就可以看到下面这段html. 注意其中的src属性。没错，这就是你的图片url了。

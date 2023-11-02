@@ -7,7 +7,6 @@ comments: true
 tags: ["cc", "code", "code", "crontab", "environment", "execute", "not", "program", "timer"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_description" content="crontab can not execute some program.

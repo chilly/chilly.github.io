@@ -3,7 +3,7 @@ layout: post
 title: "致青春"
 date: 2013-08-25 02:10
 comments: true
-tags: movie,致青春,电影,影评 
+tags: ["movie","致青春","电影","影评"]
 categories:
 - movie
 ---

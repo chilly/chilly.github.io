@@ -7,7 +7,6 @@ comments: true
 tags: ["asce", "cc", "code", "linux", "qsort", "quicksort", "sort", "stable", "unix"]
 categories:
 - code
-- program
 ---
 <meta name="views" content="1142" />
 <meta name="_edit_last" content="1" />

@@ -7,7 +7,6 @@ comments: true
 tags: ["c", "code", "code", "first", "first"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="1079" />

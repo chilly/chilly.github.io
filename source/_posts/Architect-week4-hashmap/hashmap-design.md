@@ -17,7 +17,9 @@ containsValue, remove* etc and answer the *complexity*.
 All of us knows "HashMap". It is not "HashTable" see **Figure 1.1**. It means there does not exist a big array to store all of data.
 
 <div align=center>
+
 ![hashtable.png](/images/Architect-week4-hashmap/hashtable.png)
+
 **Figure 1.1** hashtable
 </div>
 
@@ -25,7 +27,9 @@ All of us knows "HashMap". It is not "HashTable" see **Figure 1.1**. It means th
 Compute hash(key) and put the value into array[hash(key)]. If array[hash(key)] is stored by other data, you **must not** put it into another slot. See **Figure 1.2**. You should create space for storing your new data.
 
 <div align=center>
+
 ![hashmap.png](/images/Architect-week4-hashmap/hashmap.png)
+
 **Figure 1.2** hashmap
 </div>
 

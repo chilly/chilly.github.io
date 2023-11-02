@@ -14,7 +14,9 @@ categories:
 
 # 第一章 Review流程
 <div align=center>
+
 ![reviewflow](/images/code-review/reviewstate.png)
+
 </div>
 写完代码后，发送diff给指定人review。待给出意见后，修改代码，继续提交diff，直到review通过。通过review的代码由审阅者自动或者手工Merge代码到指定分支。多人协作review时，第一位阅读者给出粗略意见，第二位看意见是否给的恰当，再补充其他意见。多人同时review,也可将代码用投影仪打到大屏，共同review一段代码。
 
@@ -30,7 +32,9 @@ categories:
 
 # 第二章 阅读代码的技巧
 <div align=center>
-![code](/images/code-review/code.png)
+
+![代码](/images/code-review/code.png)
+
 </div>
 如何阅读别人提交的代码？首先要了解这代码的上下文和需求，不能不负责的指点江山。要充分了解需求，才能考虑如何实现，然后才能审阅别人的代码。不能因为读不懂别人的代码就拒绝别人的代码。这事开源界常发生，但公司内部最好杜绝发生。大家都是同事，低头不见抬头见，没必要关系僵化。你是能炒别人鱿鱼还是你自己要离职呢？看不懂代码可能有三种：一种使用了混淆、一种提交者写的烂、一种审查者能力不足。
 
@@ -446,7 +450,9 @@ private void processPing() {
 
 我们将推动Code Review这件事情划分为四个阶段。这四个阶段一定是顺序发展的。但是每个阶段又可能直接退化到第一阶段。我称之为“逆水行舟，不进则退”。
 <div align=center>
+
 ![review\_pharse](/images/code-review/review_pharse.png)
+
 </div>
 ### 准备阶段
 这个阶段要注意三点：培训、播种、除草。这一阶段的重点是让大家或多或少的知道Code Review；激发少部分人尝试Code Review的欲望；削弱反对派的声音。当某个团队中大部分都是赞同派时就可以开始下一阶段。

@@ -7,7 +7,7 @@ comments: true
 tags: ["see-hear"]
 categories:
 - prose
-- blog
+
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="750" />

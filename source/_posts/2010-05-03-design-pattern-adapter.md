@@ -5,6 +5,8 @@ date: 2010-5-3
 wordpress_id: 191
 comments: true
 tags: ["adapter", "cc", "code", "design", "pattern", "software-architecture-code", "virtual"]
+categories:
+- architect
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_description" content="adapter pattern is used for combining two or more classes,which have the same behaviors but different interfaces." />

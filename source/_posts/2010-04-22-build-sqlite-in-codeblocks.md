@@ -7,7 +7,6 @@ comments: true
 tags: ["blocks", "build", "cc", "code", "database", "error", "open-source", "project", "readline", "sqlite", "sqlite3api", "tcl"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="1356" />

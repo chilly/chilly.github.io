@@ -7,7 +7,7 @@ comments: true
 tags: ["flash", "second", "see-hear", "war", "world"]
 categories:
 - prose
-- blog
+
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="1763" />

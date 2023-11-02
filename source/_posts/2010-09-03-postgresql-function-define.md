@@ -7,7 +7,6 @@ comments: true
 tags: ["cc", "code", "database", "define", "function", "own", "postgresql", "postgresql", "self", "type"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />

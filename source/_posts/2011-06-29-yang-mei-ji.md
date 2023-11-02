@@ -7,7 +7,7 @@ comments: true
 tags: ["chinese", "see-hear"]
 categories:
 - prose
-- blog
+
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />

@@ -39,7 +39,7 @@ categories:
 
 eclipse中windows-&gt;show views-&gt;Ant，选中check-existence然后 Run As-&gt;Ant Build
 
-用ant执行上面的代码将产生User Home,判断${user.home}/ivy.properties文件是否存在，并且是否能读到ivy.auth.username和Password
+用ant执行上面的代码将产生User Home,判断\${user.home}/ivy.properties文件是否存在，并且是否能读到ivy.auth.username和Password
 
 创建一个ivy.properties（这里要看扩展名是否是properties，一定不能是txt）放入到User Home中。并且这个文本也必须是UTF-8的。
 

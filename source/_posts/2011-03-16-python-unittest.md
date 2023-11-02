@@ -5,6 +5,8 @@ date: 2011-3-16
 wordpress_id: 359
 comments: true
 tags: ["code", "python", "python", "test", "unit"]
+categories:
+- code
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />

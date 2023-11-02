@@ -31,16 +31,20 @@ transaction(xid, seller_id, buyer_id, amount)
 其中user表记录用户交易汇总信息，transaction表记录每个交易的详细信息。
 
 这样，在进行一笔交易时，若使用事务，就需要对数据库进行以下操作：
+```sql
 begin;
 INSERT INTO transaction VALUES(xid, $seller_id, $buyer_id, $amount);
 UPDATE user SET amt_sold = amt_sold + $amount WHERE id = $seller_id;
 UPDATE user SET amt_bought = amt_bought + $amount WHERE id = $buyer_id;
 commit;
+```
+
 即在transaction表中记录交易信息，然后更新卖家和买家的状态。
 
 假设transaction表和user表存储在不同的节点上，那么上述事务就是一个分布式事务。要消除这一分布式事务，将它拆分成两个子事务，一个更新transaction表，一个更新user表是不行的，因为有可能transaction表更新成功后，更新user失败，系统将不能恢复到一致状态。
 
 解决方案是使用消息队列。如下所示，先启动一个事务，更新transaction表后，并不直接去更新user表，而是将要对user表进行的更新插入到消息队列中。另外有一个异步任务轮询队列内容进行处理。
+```sql
 begin;
 INSERT INTO transaction VALUES(xid, $seller_id, $buyer_id, $amount);
 put_to_queue “update user(“seller”, $seller_id, amount);
@@ -56,12 +60,15 @@ UPDATE user SET amt_bought = amt_bought + message.amount WHERE id = message.user
 end
 commit;
 end
+```
+
 
 上述解决方案看似完美，实际上还没有解决分布式问题。为了使第一个事务不涉及分布式操作，消息队列必须与transaction表使用同一套存储资源，但为了使第二个事务是本地的，消息队列存储又必须与user表在一起。这两者是不可能同时满足的。
 
 如果消息具有操作幂等性，也就是一个消息被应用多次与应用一次产生的效果是一样的话，上述问题是很好解决的，只要将消息队列放到transaction表一起，然后在第二个事务中，先应用消息，再从消息队列中删除。由于消息队列存储与user表不在一起，应用消息后，可能还没来得及将应用过的消息从队列中删除时系统就出故障了。这时系统恢复后会重新应用一次这一消息，由于幂等性，应用多次也能产生正确的结果。
 
 但实际情况下，消息很难具有幂等性，比如上述的UPDATE操作，执行一次和执行多次的结束显然是不一样的。解决这一问题的方法是使用另一个表记录已经被成功应用的消息，并且这个表使用与user表相同的存储。假设增加以下表 message_applied(msg_id)记录被成功应用的消息，则产生最终的解决方案如下：
+```sql
 begin;
 INSERT INTO transaction VALUES(xid, $seller_id, $buyer_id, $amount);
 put_to_queue “update user(“seller”, $seller_id, amount);
@@ -84,6 +91,8 @@ dequeue message
 DELETE FROM message_applied WHERE msg_id = message.id;
 end
 end
+```
+
 
 我们来仔细分析一下：
 1、消息队列与transaction使用同一实例，因此第一个事务不涉及分布式操作；

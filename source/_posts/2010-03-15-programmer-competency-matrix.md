@@ -7,7 +7,6 @@ comments: true
 tags: ["code", "competency", "logn", "matrix", "n", "programming"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="957" />

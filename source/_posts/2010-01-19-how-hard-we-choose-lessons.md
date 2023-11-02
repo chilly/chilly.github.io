@@ -7,7 +7,7 @@ comments: true
 tags: ["funny", "funny", "lesson", "see-hear", "video", "war", "world"]
 categories:
 - prose
-- blog
+
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="825" />

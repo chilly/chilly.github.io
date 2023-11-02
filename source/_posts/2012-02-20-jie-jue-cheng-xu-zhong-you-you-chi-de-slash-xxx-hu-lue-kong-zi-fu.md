@@ -8,10 +8,10 @@ categories:
 - knowledge
 ---
 今天解决了linux 环境中编译c++或者c文件时产生的错误。
-{% blockquote %}
+```
 程序中有游离的"\xxx"
 忽略空字符
-{% endblockquote %}
+```
 以上两个错误，产生的原因和字符编码有关系。一般是文件从windows转移到linux下，然后使用c或者cc或者g++编译。产生了一系列的报警和错误信息。
 解决方法如下：
 ```

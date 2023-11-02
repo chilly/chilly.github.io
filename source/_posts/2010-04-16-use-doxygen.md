@@ -7,7 +7,6 @@ comments: true
 tags: ["auto", "code", "document", "doxygen", "generate", "how-to", "open-source", "project", "see-hear"]
 categories:
 - code
-- program
 ---
 <meta name="views" content="677" />
 <meta name="_edit_last" content="1" />

@@ -7,7 +7,6 @@ comments: true
 tags: ["code", "debug", "postgresql", "postgresql", "symbol"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_description" content="postgresql debug" />

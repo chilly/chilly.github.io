@@ -1,9 +1,10 @@
 ---
 layout: post
 title: "first Formula"
-date: 2010-1-8
+date: 2010-01-08
 wordpress_id: 24
 comments: true
+mathjax: true
 tags: ["first", "first", "formula", "formula"]
 categories:
 - math
@@ -12,6 +13,6 @@ categories:
 <meta name="views" content="1013" />
 Write first formula using latex here:
 
-$latex \alpha+\beta=x^{\delta+3}/y $
+$$\alpha+\beta=x^{\delta+3}/y $$
 
 wooo~~~~

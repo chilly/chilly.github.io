@@ -7,7 +7,6 @@ comments: true
 tags: ["allocation", "cc", "calloc", "code", "code", "free", "malloc", "memory", "realloc"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />

@@ -18,6 +18,7 @@ categories:
     你做错了吗？
                                      ————《帐前卒的寓言》
 <div align=center>
+
 ![I don't want to know](/images/code-comments/not_to_know.jpg)                                     
 </div>
 
@@ -60,7 +61,9 @@ Code Review作为编码社会活动，一直被人诟病。每个人似乎都知
 
 # 书写评论
 <div align=center>
+
 ![write comments](/images/code-comments/write.jpeg)
+
 </div>
 初识，最好多点赞，并建议如何编码。如果对方是新入职的人员，最好一次性的指出程序要修改的地方。一是他有时间修改；二是新人需要了解公司里的编码规范；三是提升他的编码水平。
 
@@ -82,6 +85,7 @@ Code Review作为编码社会活动，一直被人诟病。每个人似乎都知
 
 # 当面交流
 <div align=center>
+
 ![communicate](/images/code-comments/communicate.jpeg)
 </div>
 既然当面交流，不妨听听编码者怎么看待你的评论。不要一言不合就暴跳如雷，要问问他想怎么修改，或者为什么不想修改。

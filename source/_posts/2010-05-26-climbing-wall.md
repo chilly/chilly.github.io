@@ -12,5 +12,8 @@ categories:
 <meta name="_su_rich_snippet_type" content="none" />
 <meta name="views" content="495" />
 <meta name="_wp_old_slug" content="" />
+```
 #!/bin/sh
 plink -ssh -D 7070 -P 22 -pw "$1" freessh@a.freessh.us
+
+```

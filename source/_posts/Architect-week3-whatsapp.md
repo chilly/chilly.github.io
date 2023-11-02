@@ -35,7 +35,9 @@ Step 1 or Step 2 is not a scenario. Step 1 with Step 2 is a completed scenario.
 And our chat system will be like:
 
 <div align=center>
+
 ![init-system](/images/Architect-week3-whatsapp/init-system.png)
+
 **Figure 2.1** init system
 </div>
 
@@ -101,7 +103,9 @@ Here, scenario 5 and 4 is similar to 2 and 1. So can we consider scenario 2 and 
 In this article, we can not talk all above. It's too complicated. I will only focus on group chat and chat status changing scenarios. 
 
 <div align=center>
+
 ![scenarios](/images/Architect-week3-whatsapp/scenarios.png)
+
 **Figure 2.2** scenarios relationship
 </div>
 
@@ -112,14 +116,18 @@ Like Figure 2.2 describles, one-one chat is a special case of group chat. So her
 Seems like we always talk about how user use our messager service. Er...Correct! So here I will write something about how to design it. I don't know how to build the system. I only knows there should be a client and a server...So like that:
 
 <div align=center>
+
 ![init-components](/images/Architect-week3-whatsapp/init-components.png)
+
 **Figure 3.1** init components
 </div>
 
 Now, we have first components diagram. Let's do more thinking. If we store data, we will have database. If we connect with others, there should have a channel mananger. My chat groups should be controlled by group manager. If some user is offline, can we send offline message to them by APNS? Adding schedule component for sending message to offline user is a good idea. There should have a component for transforming "chat message" to service data, and doing reverse. And another component called "chat service" controls all component to work togather.
 
 <div align=center>
+
 ![more-components](/images/Architect-week3-whatsapp/more-components.png)
+
 **Figure 3.2** decompose components
 </div>
 

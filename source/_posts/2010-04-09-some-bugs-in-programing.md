@@ -7,7 +7,6 @@ comments: true
 tags: ["bug", "c", "cc", "code", "define", "freopen", "macro", "math", "programming", "redirect"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="459" />

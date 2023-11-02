@@ -7,7 +7,6 @@ comments: true
 tags: ["absolute", "bit", "c", "code", "complement", "math", "math", "priority"]
 categories:
 - code
-- program
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_description" content="how to use bit operator and simple +-*/ to get absolute number." />

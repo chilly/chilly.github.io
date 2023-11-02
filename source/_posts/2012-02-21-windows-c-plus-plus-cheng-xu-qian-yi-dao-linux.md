@@ -12,7 +12,7 @@ categories:
 这里其实可以使用eclipse中到cdt插件，然后就可以从eclipse中写c++。挺方便的，同时也解决了make file的问题。因为创建一个c++ 或者 c project，eclipse会自动创建一系列的makefile文件。所以让make file步骤简单无比。       
 ####lib库和include库   
 这里真的要注意/usr/include和/usr/lib中是否有你想要到文件。当然如果你是纯c++代码，可以尝试下只使用/usr/include/c++. 当如除了-L libpath, 还有-llibname, 这里的libname其实是libXXXX.so中的XXXX. 不过如果不会写，这里还是会费些劲。还有include路径要使用`-I`,每一个路径前都要有一个`-I`. 另外还要在eclipse run configurate中的environment中填入LD_LIBRARY_PATH,这个是你要调用的lib库（这个lib库如果不在/usr/lib中，那么就要手工将路径填入到LD_LIBRARY_PATH变量里）。并且在.bashrc中写：
-```
+```bash
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:your_lib_path
 ```  
 ####编码

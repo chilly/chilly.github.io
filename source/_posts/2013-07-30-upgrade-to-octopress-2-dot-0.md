@@ -21,8 +21,11 @@ categories:
 
  * Could not find sass-3.2.9 in any of the sources    
     
- &nbsp;&nbsp;再将http://rubygems.org修改为 https://rubygems.org/ 发现这个东西被封了。所以需要使用代理：   
-        $ export http_proxy=http://username:password@your-proxy-site.com:[your_proxy_port]
+ &nbsp;&nbsp;再将http://rubygems.org修改为 https://rubygems.org/ 发现这个东西被封了。所以需要使用代理：
+ ```bash
+export http_proxy=http://username:password@your-proxy-site.com:[your_proxy_port]
+ ```   
+ 
 
  * _Let's Go on._ An error occured while installing rdiscount (2.0.7.3), and Bundler cannot continue. Make sure that `gem install rdiscount -v '2.0.7.3'` succeeds before bundling.   
 

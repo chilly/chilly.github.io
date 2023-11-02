@@ -7,7 +7,7 @@ comments: true
 tags: ["china", "forget", "forgive", "japan", "see-hear", "war"]
 categories:
 - prose
-- blog
+
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="1058" />

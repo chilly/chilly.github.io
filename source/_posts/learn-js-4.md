@@ -1,0 +1,141 @@
+---
+layout: post
+title: '4.javascript--第二天源代码'
+date: 2006-07-25 21:46
+comments: true
+tags: ['javascript','html','input']
+categories:
+- [code]
+- [learn, javascript]
+---
+
+ex6.html
+```html
+<html>
+
+<head>
+
+    <head>
+
+    <body>
+        <script language="javascript">
+            var currentDate = new Date();
+            document.write("<table border=1 cellpadding=3 cellspacing=0>");
+            document.write("<tr>");
+            document.write("<td colspan=7 align='center'>" +
+                7 + "</td>");
+            document.write("<tr>");
+            document.write("<td align='center'>Sun</td>");
+            document.write("<td align='center'>Mon</td>");
+            document.write("<td align='center'>Tue</td>");
+            document.write("<td align='center'>Wes</td>");
+            document.write("<td align='center'>The</td>");
+            document.write("<td align='center'>Fri</td>");
+            document.write("<td align='center'>Sat</td>");
+            document.write("</tr>");
+            if (currentDate.getDay() != 0) {
+                document.write("<tr>");
+                for (i = 0; i < currentDate.getDay(); i++) {
+                    document.write("<td>&nbsp;</td>");
+                }
+            }
+            document.write("</table>");
+            document.write("<br><br><br><hr>");
+            document.write(document.URL);
+            document.write("<br>");
+            var Surl = document.URL.split("//");
+            var part = Surl[1].split("//");
+            for (var i = 0; i < part.length; i++) {
+                var cho = "choice" + i;
+                document.write("<a href = document.URL+" + cho +
+                    ">" + cho + "</a><br>");
+            }
+
+            function newDoc() {
+                document.open();
+                document.write("byebye");
+                document.close();
+            }
+        </script>
+        <a href="#" onClick="newDoc();">New Document</a>
+    </body>
+
+</html>
+```
+
+
+ex7.html
+```html
+<html>
+
+<head>
+    <script>
+        window.location = " [ http://www.google.com/ ](http://www.google.com/) ";
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
+```
+
+
+ex8.html
+```html
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <form>
+        Enter a URL: <input type="text" name="url">
+        <input type="button" value="Go" onClick="window.location = this.form.url.value">
+    </form>
+
+</body>
+
+</html>
+
+```
+
+ex9.html
+```html
+<html>
+
+<head>
+    <script language="javascript">
+        var placeHold = window.open("PageLoading.html", "placeholder",
+            "width = 200, height = 200");
+    </script>
+    <title>
+        The Main Page
+    </title>
+</head>
+
+<body onLoad="placeHold.close()">
+    Main Page...
+</body>
+
+</html>
+
+PageLoading.html
+
+<html>
+
+<head>
+    <title>
+        The Page is loading
+    </title>
+</head>
+
+<body>
+    The Page is loading........
+</body>
+
+</html>
+```
+
+

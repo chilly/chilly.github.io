@@ -7,7 +7,7 @@ comments: true
 tags: ["see-hear", "spam-flood-stop-captcha-cod-seo-comment"]
 categories:
 - prose
-- blog
+
 ---
 <meta name="views" content="1153" />
 <meta name="_edit_last" content="1" />

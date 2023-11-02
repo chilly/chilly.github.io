@@ -7,7 +7,6 @@ comments: true
 tags: ["c", "cc", "code", "double"]
 categories:
 - code
-- program
 ---
 <meta name="views" content="1686" />
 <meta name="_edit_last" content="1" />

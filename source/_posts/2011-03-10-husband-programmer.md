@@ -7,7 +7,7 @@ comments: true
 tags: ["life", "programmer", "ruby", "see-hear"]
 categories:
 - prose
-- blog
+
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_description" content="My husband is a programmer; I have no idea what that means." />

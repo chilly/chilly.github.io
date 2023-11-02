@@ -5,6 +5,8 @@ date: 2011-5-13
 wordpress_id: 413
 comments: true
 tags: ["eucalyptus", "login", "open-source", "project", "solution", "ssh"]
+categories:
+- knowledge
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />

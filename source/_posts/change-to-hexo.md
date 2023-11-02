@@ -4,7 +4,7 @@ date: 2017-06-17 15:24:31
 tags: ['hexo','blog','Octopress','theme','Jekyll','wordpress']
 categories:
 - prose
-- blog
+
 ---
 
 # CSDN 时代

@@ -1,0 +1,48 @@
+---
+layout: post
+title: 'java手记---算术符号'
+date: 2006-07-26 09:19
+comments: true
+tags: ['java','float','编译器']
+categories:
+- [learn, java]
+---
+
+第一个程序:
+```java
+public class Hello
+
+{
+
+    public static void main(String[] args)
+
+    {
+
+        System.out.println("Hello");
+
+    }
+
+}
+```
+
+
+算术符号：  
+<<左移  低位填充零  
+>>右移  这是符号右移，如果为正则高位填充零，如果为负高位填充一  
+>>>右移 不管是否为负，高位均填零  
+char  byte short进行移位时先转化为int  
+他们进行运算时也是先转换为int型了
+
+浮点数系统能表示的精度 
+$$ 2*(M-m+1)*b^{p-1}+1  $$
+IEEE使用：M=1023,m=-1022,p = 53,b=2;  
+小数可以有的位数为：$2^{64}-2^{54}$
+
+^异或运算符  
+~非运算符
+
+boolean型不允许转换为其他类型。  
+float f4 = 1e-45f; // 10 to the power
+1*pow(10,45);后面必须加f表示是float型，否则编译器报错。认为是double型的  
+Math.random()可以直接使用。。。。。
+

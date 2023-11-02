@@ -3,6 +3,7 @@ title: 'Java9:Flow feature'
 date: 2017-09-29 21:00:04
 tags: ['java9','java','jdk9','jdk','Flow','feature','new','Publisher','Subscriber','Processor','performance']
 categories:
+- knowledge
 - java
 ---
 
@@ -18,13 +19,17 @@ reactive-stream是什么？就是反向压力流（back pressure），其实你�
 什么是反向控制？这里还是抄袭一下别人的图吧。图的出处在[这里](https://community.oracle.com/docs/DOC-1006738)。
 
 <div align=center>
+
 ![flow1.png](/images/jdk9/flow/flow1.png)
+
 **图 1** 正常流处理
 </div>
 
 下面是反向的流处理：
 <div align=center>
+
 ![flow2.png](/images/jdk9/flow/flow2.png)
+
 **图 2** 反向流处理
 </div>
 
@@ -127,12 +132,16 @@ Flow还有一个重要的Processor接口，这个其实就是函数变换。其�
 看下图就知道我在说什么了。竟然无图可盗了...
 
 <div align=center>
+
 ![withProcessor.png](/images/jdk9/flow/withProcessor.png)
+
 **图 3** 带有Processor的流
 </div>
 
 <div align=center>
+
 ![withoutProcessor.png](/images/jdk9/flow/withoutProcessor.png)
+
 **图 4** 没有Processor的流
 </div>
 
@@ -254,7 +263,9 @@ class chillyc.info.speed.jdk9flow.Jdk9Flow:6818252qps
 
 性能对比图：
 <div align=center>
+
 ![性能对比](/images/jdk9/flow/speed.png)
+
 **图 5** 性能对比图
 </div>
 

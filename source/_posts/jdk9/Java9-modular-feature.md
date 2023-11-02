@@ -11,7 +11,9 @@ categories:
 这次写写JAVA9的modular，俗称模块化。这个应该是Java9的最出彩的地方。之前Java的那个项目叫做Jigsaw。 为什么会有这个项目呢？原因在于之前Java使用package作为管理的。大家为了图省事，里面写的class都是public class。 也就是说包外都可用。大家都使用各种包管理工具ivy, maven, gradle啥的，A依赖C的1.0版本, B依赖于C的2.0版本。然后A,B又被自己的工程所依赖。C的1.0版本和2.0版本中有相同的类，不同的函数定义。见下图：
 
 <div align=center>
+
 ![jarhell.png](/images/jdk9/modular/modular_jar_hell.png)
+
 **图 1** 运行时依赖不同版本的类
 </div>
 
