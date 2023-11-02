@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,115 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/08/4250809/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/06/08/4250809/" class="post-title-link" itemprop="url">Oracle 远程连接TNS 超时问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-08 10:37:00" itemprop="dateCreated datePublished" datetime="2009-06-08T10:37:00+08:00">2009-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>704</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>传说一般是由于防火墙问题造成的。最简单的方法是关闭防火墙。</p>
+<p>解决方案如下：</p>
+<p>Oracle在windows平台下使用的是Socket专用模式。要改为共享模式才行。</p>
+<p>首先到你的远程数据所在的机器下</p>
+<p>在运行处regedit</p>
+<p>找到HKEY_LOCAL_MACHINE—&gt;SOFTWARE—&gt;ORACLE—&gt;HOME0</p>
+<p>添加一个字符串USE_SHARED_SOCKET 值为TRUE</p>
+<p>然后去控制面板，例外处，添加一个例外端口:1521(这里的例外端口可以在你的Oracle Enterprise Manager<br />
+Console中点击数据库名，看看右边的port,就是那个值)</p>
+<p>然后去你的Oracle安装目录，找一个类似init.ora的文件。这个文件可能有很多，找到你的数据库名所在的目录下的文件例如我的数据库名叫chicoDB,那<br />
+么找到oracle/admin/chicoDB下的那几个init.ora文件可能文件后面有一大串数字…在那些文件末尾添加一行</p>
+<p>mts_dispatchers=“(address=(protocol=tcp)(host=chico)(port=1521))(dispatchers=1<br />
+)”</p>
+<p>这里的host是你的主机名。</p>
+<p>然后去你的Oracle Enterprise Manager Console关闭chicoDB，然后再启动它即可。</p>
+<p>当然你的首要条件是已经建立的public database link, 已经在tnsnames.ora中添加的协议适配器。</p>
+<p>如果不知道如何添加，参考我的blog:</p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/06/05/4245996.aspx"> http://blog.csdn.net/cctt_1/archive/2009/06/05/4245996.aspx<br />
+</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1723,118 +1832,6 @@ Cut(list(cutlist),list(lines.decode(‘gbk’))) for line in l: if line.strip() 
 “”:#这里可能包含空格 li = line.strip().split() for sentence in li: print<br />
 “se:”,sentence</p>
 <p>大家要copy代码的时候注意格式。反正不管怎么说，总算把中文分句搞定了。大家可以根据自己的需要减少或者增加cutlist</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/04/26/4126586/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/04/26/4126586/" class="post-title-link" itemprop="url">Python 引用,浅Copy和深拷贝</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-04-26 21:01:00" itemprop="dateCreated datePublished" datetime="2009-04-26T21:01:00+08:00">2009-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>396</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>l = [1,2,3,4]</p>
-<p>g = l</p>
-<p>g[-1] = 3</p>
-<p>上面这个方法是引用复制，因为g和l是同一个东东,输出结果是 g=[1,2,3,3]  l =[1,2,3,3]</p>
-<p>如果想复制所有的生成一个新的list，那么使用下面的方法</p>
-<p>g = [data for data in l]</p>
-<p>这样就全部的值都copy 过来</p>
-<p>现在你再g[-1] = 5，g和l 的值肯定不一样。</p>
-<p>但是如果l=[1,[1,2]] 在使用同样的方法 g = [data for data in l]，然后g[1][-1].append(3)</p>
-<p>你会发现l中的值和g中的值还是一样的。原因还是由于copy了引用，而没有copy真正的值。</p>
-<p>所以要解决的话，使用笨的方法是：</p>
-<p>g = []</p>
-<p>g.append(l[0])</p>
-<p>g.append([data for data in l[1]])</p>
-<p>更好的方式是使用list中的extend,</p>
-<p>例如</p>
-<p>a = [1,2]</p>
-<p>b = []</p>
-<p>b.extend(a)</p>
-<p>a = []</p>
-<p>print(b)</p>
-<p>可以看到b还是有a原来的值。</p>
 
       
     </div>

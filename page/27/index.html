@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,163 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/20/5505831/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/20/5505831/" class="post-title-link" itemprop="url">事务和锁(SQLite)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-20 10:41:00" itemprop="dateCreated datePublished" datetime="2010-04-20T10:41:00+08:00">2010-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转自：<span class="exturl" data-url="aHR0cDovL3d3dy5zcWxpdGUuY29tLmNuL015U3FsaXRlLzQvNTM5Lkh0bWw=">http://www.sqlite.com.cn/MySqlite/4/539.Html<i class="fa fa-external-link-alt"></i></span></p>
+<p>2、    事务(Transaction)</p>
+<p>2.1、事务的周期(Transaction Lifecycles)<br />
+程 序与事务之间有两件事值得注意：<br />
+（1）    哪些对象在事务下运行——这直接与API有关。<br />
+（2）    事务的生命周期，即什么时候开始，什么时候结束以及它在什么时候开始影响别的连接（这点对于并发性很重要）——这涉及到SQLite的具体实现。<br />
+一 个连接（connection）可以包含多个(statement)，而且每个连接有一个与数据库关联的B-tree和一个pager。Pager在连接<br />
+中起着很重要的作用，因为它管理事务、锁、内存缓存以及负责崩溃恢复(crash<br />
+recovery)。当你进行数据库写操作时，记住最重要的一件事：在任何时候，只在一个事务下执行一个连接。这些回答了第一个问题。<br />
+一般来说， 一个事务的生命和statement差不多，你也可以手动结束它。默认情况下，事务自动提交，当然你也可以通过BEGIN…COMMIT手动提交。接下<br />
+来就是锁的问题。<br />
+<img src="http://hi.csdn.net/attachment/201004/20/0_12717444856lL0.gif" alt="锁状态" /><br />
+2.2、锁的状态(Lock States)<br />
+锁 对于实现并发访问很重要，而对于大型通用的DBMS，锁的实现也十分复杂，而SQLite相对较简单。通常情况下，它的持续时间和事务一致。一个事务开<br />
+始，它会先加锁，事务结束，释放锁。但是系统在事务没有结束的情况下崩溃，那么下一个访问数据库的连接会处理这种情况。<br />
+在SQLite中有5种不 同状态的锁，连接（connection）任何时候都处于其中的一个状态。下图显示了相应的状态以及锁的生命周期。</p>
+<p>关于这个图有以下几点 值得注意：<br />
+（1）    一个事务可以在UNLOCKED，RESERVED或EXCLUSIVE三种状态下开始。默认情况下在UNLOCKED时开始。<br />
+（2）    白色框中的UNLOCKED, PENDING, SHARED和 RESERVED可以在一个数据库的同一时存在。<br />
+（3）    从灰色的PENDING开始，事情就变得严格起来，意味着事务想得到排斥锁(EXCLUSIVE)（注意与白色框中的区别）。<br />
+虽然锁有这么多状 态，但是从体质上来说，只有两种情况：读事务和写事务。</p>
+<p>2.3、读事务(Read Transactions)<br />
+我们先来看看SELECT语句执行时锁的状态变化过程，非常简单：一个连接执行select语句，触<br />
+发一个事务，从UNLOCKED到SHARED，当事务COMMIT时，又回到UNLOCKED，就这么简单。<br />
+考虑下面的例子(为了简单，这里用 了伪码)：<br />
+** db = open(‘foods.db’)<br />
+db.exec(‘BEGIN’)<br />
+db.exec(‘SELECT * FROM episodes’)<br />
+db.exec(‘SELECT * FROM episodes’)<br />
+db.exec(‘COMMIT’)<br />
+db.close() **</p>
+<p>由 于显式的使用了BEGIN和COMMIT，两个SELECT命令在一个事务下执行。第一个exec()执行时，connection处于SHARED，然<br />
+后第二个exec()执行，当事务提交时，connection又从SHARED回到UNLOCKED状态，如下：<br />
+UNLOCKED→PENDING→SHARED→UNLOCKED<br />
+如 果没有BEGIN和COMMIT两行时如下：<br />
+UNLOCKED→PENDING→SHARED→UNLOCKED→PENDING→ SHARED→UNLOCKED</p>
+<p>2.4、写事务（Write Transactions）<br />
+下面我们来考虑写数据库，比如UPDATE。和读事务一样，它也会经历 UNLOCKED→PENDING→SHARED，但接下来却是灰色的PENDING，</p>
+<p>2.4.1、The Reserved States<br />
+当一个连接（connection）向数据库写数据时，从<br />
+SHARED状态变为RESERVED状态，如果它得到RESERVED锁，也就意味着它已经准备好进行写操作了。即使它没有把修改写入数据库，也可以把<br />
+修改保存到位于pager中缓存中（page cache）。<br />
+当一个连接进入RESERVED状态，pager就开始初始化恢复日志 （rollback<br />
+journal）。在RESERVED状态下，pager管理着三种页面：<br />
+(1)    Modified pages：包含被B-树修改的记录，位于page cache中。<br />
+(2)    Unmodified pages：包含没有被B-tree修改的记录。<br />
+(3)    Journal pages：这是修改页面以前的版本，这些并不存储在page cache中，而是在B-tree修改页面之前写入日志。<br />
+Page cache非常重要，正是因为它的存在，一个处于RESERVED状态的连接可以真正的开始工作，而不会干扰其它的（读）连接。所以，SQLite可以高<br />
+效的处理在同一时刻的多个读连接和一个写连接。</p>
+<p>2.4.2 、The Pending States<br />
+当一个连接完成修改，就真正开始提交事务，执行该过程的pager进入EXCLUSIVE状态。从 RESERVED状态，pager试着获取<br />
+PENDING锁，一旦得到，就独占它，不允许任何其它连接获得PENDING锁（PENDING is a gateway<br />
+lock）。既然写操作持有PENDING锁，其它任何连接都不能从UNLOCKED状态进入SHARED状态，即没有任何连接可以进入数据（no new<br />
+readers, no new<br />
+writers）。只有那些已经处于SHARED状态的连接可以继续工作。而处于PENDING状态的Writer会一直等到所有这些连接释放它们的锁，<br />
+然后对数据库加EXCUSIVE锁，进入EXCLUSIVE状态，独占数据库(讨论到这里，对SQLite的加锁机制应该比较清晰了)。<br />
+2.4.3、The Exclusive State<br />
+在EXCLUSIVE状态下，主 要的工作是把修改的页面从page cache写入数据库文件，这是真正进行写操作的地方。<br />
+在pager写入modified<br />
+pages之前，它还得先做一件事：写日志。它检查是否所有的日志都写入了磁盘，而这些通常位于操作的缓冲区中，所以pager得告诉OS把所有的文件写<br />
+入磁盘，这是由程序synchronous(通过调用OS的相应的API实现)完成的。<br />
+日志是数据库进行恢复的惟一方法，所以日志对于DBMS非<br />
+常重要。如果日志页面没有完全写入磁盘而发生崩溃，数据库就不能恢复到它原来的状态，此时数据库就处于不一致状态。日志写入完成后，pager就把所有的<br />
+modified pages写入数据库文件。接下来就取决于事务提交的模式，如果是自动提交，那么pager清理日志，page<br />
+cache，然后由EXCLUSIVE进入UNLOCKED。如果是手动提交，那么pager继续持有EXCLUSIVE锁和保存日志，直到COMMIT<br />
+或者ROLLBACK。</p>
+<p>总之，从性能方面来说，进程占有排斥锁的时间应该尽可能的短，所以DBMS通常都是在真正写文件时才会占有排斥 锁，这样能大大提高并发性能。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -756,6 +913,114 @@ if you use const variable to define an array out of main, like that:
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/12/2010-04-12-the-scale-of-types/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/12/2010-04-12-the-scale-of-types/" class="post-title-link" itemprop="url">The Scale of Types</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-12 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-12T00:00:00+08:00">2010-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 13:31:49" itemprop="dateModified" datetime="2023-10-07T13:31:49+08:00">2023-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>617</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>The scale of type int is<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><msup><mn>2</mn><mn>31</mn></msup><mo separator="true">,</mo><msup><mn>2</mn><mn>31</mn></msup><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2^{31},2^{31}-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>, and it is a little more than<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>2</mn><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo separator="true">,</mo><mn>2</mn><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2*10^{9},2*10^{9}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span>. and the scale of long long type is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><msup><mn>2</mn><mn>63</mn></msup><mo separator="true">,</mo><msup><mn>2</mn><mn>63</mn></msup><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2^{63},2^{63}-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>, and it is a little less than <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><msup><mn>0</mn><mn>19</mn></msup><mo separator="true">,</mo><mn>1</mn><msup><mn>0</mn><mn>19</mn></msup><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-10^{19},10^{19}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></p>
+<p>int i = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>6</mn></msup><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">10^{6}* 10^{6}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>; // this is wrong!!!</p>
+<p>long long j = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup></mrow><annotation encoding="application/x-tex">10^{9}* 10^{9}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></span> ; // this is correct!</p>
+<p>printf(“%d”,i);</p>
+<p>printf(“%lld”,j);</p>
+<p>int some platform or some compiler, long type is equal to int type. They are 32 bits. But long long type is 64 bits in linux.</p>
+<p>use #define to declare a const, like this( if the number is too big):</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> BIG (9000000000000000000)ULL <span class="comment">// this is unsigned long long</span></span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/12/2010-04-12-ascii/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -845,114 +1110,6 @@ if you use const variable to define an array out of main, like that:
 <p>The ASCII art is the art of using characters to create a “picture”. like:</p>
 <p><a href="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/Redwingblackbird1.jpg"><img class="aligncenter size-full wp-image-159" title="Redwingblackbird" src="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/Redwingblackbird1.jpg" alt="" width="250" height="212"></a>the ASCII is:</p>
 <p><a href="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/Screenshot.png"><img class="aligncenter size-medium wp-image-164" title="Screenshot" src="http://chillyc.info/wp-content/uploads/2010/04/12/ascii/Screenshot-300x240.png" alt="" width="300" height="240"></a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/12/2010-04-12-the-scale-of-types/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/12/2010-04-12-the-scale-of-types/" class="post-title-link" itemprop="url">The Scale of Types</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-04-12 00:00:00" itemprop="dateCreated datePublished" datetime="2010-04-12T00:00:00+08:00">2010-04-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 13:31:49" itemprop="dateModified" datetime="2023-10-07T13:31:49+08:00">2023-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>617</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>The scale of type int is<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><msup><mn>2</mn><mn>31</mn></msup><mo separator="true">,</mo><msup><mn>2</mn><mn>31</mn></msup><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2^{31},2^{31}-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>, and it is a little more than<br />
-<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>2</mn><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo separator="true">,</mo><mn>2</mn><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2*10^{9},2*10^{9}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span>. and the scale of long long type is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><msup><mn>2</mn><mn>63</mn></msup><mo separator="true">,</mo><msup><mn>2</mn><mn>63</mn></msup><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2^{63},2^{63}-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>, and it is a little less than <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><msup><mn>0</mn><mn>19</mn></msup><mo separator="true">,</mo><mn>1</mn><msup><mn>0</mn><mn>19</mn></msup><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-10^{19},10^{19}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></p>
-<p>int i = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>6</mn></msup><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">10^{6}* 10^{6}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>; // this is wrong!!!</p>
-<p>long long j = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>9</mn></msup></mrow><annotation encoding="application/x-tex">10^{9}* 10^{9}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></span> ; // this is correct!</p>
-<p>printf(“%d”,i);</p>
-<p>printf(“%lld”,j);</p>
-<p>int some platform or some compiler, long type is equal to int type. They are 32 bits. But long long type is 64 bits in linux.</p>
-<p>use #define to declare a const, like this( if the number is too big):</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> BIG (9000000000000000000)ULL <span class="comment">// this is unsigned long long</span></span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1267,181 +1424,6 @@ man.就可以解释为自己是杀妻杀人的精神病凶手(monster)度过余�
 <p>4.请大家思考以暴制暴是对是错？live as a monster, or die as a good man？</p>
 <p>5.请大家思考以死谢罪，还是以生赎罪？live as a monster, or die as a good man？</p>
 <p>不过观后感千人千面，各有不同，如同《罗生门》。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/10/5469810/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/10/5469810/" class="post-title-link" itemprop="url">Svn Install Svn安装配置</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-04-10 10:58:00" itemprop="dateCreated datePublished" datetime="2010-04-10T10:58:00+08:00">2010-04-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>4.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>因为使用的是ubuntu, 安装相当简单，去软件管理器中输入svn就可以。或者使用</p>
-<p>$ sudo apt-get install subversion</p>
-<p>其实也没有怎么按照svn的安装流程走，那样的话需要添加新的用户,用户组。安全系数高一些。下面是自己的流程：</p>
-<p>首先建一个svn目录,mkdir /home/cc/svn</p>
-<p>在此目录下创建你自己的代码目录:</p>
-<p>cd /home/cc/svn svnadmin create trunk //然后启动svn svnserve -d<br />
-–root=/home/cc/svn</p>
-<p>如果想在trunk之下创建其他目录，可以直接使用mkdir director的方法。之后去其他机器使用svnclient.也可以使用刚才的apt-get<br />
-install subversion的方式。</p>
-<p>svnserve.conf:12: Option<br />
-expected，产生的原因是没有顶格写。例如在/home/cc/svn/trunk/conf/svnserve.conf中：</p>
-<p>[general] anon-access = none ### 这里auth-access的写法是错误的。 auth-access = write ###<br />
-这样写才是正确的 auth-access = write</p>
-<p>svn  :  No  access  allowed  to  this  repository</p>
-<p>首先要把  svnserve.conf中的password-db = passwd注释去掉。然后在passwd文件中添加:</p>
-<p>[users] cc = 123</p>
-<p>在authz中添加:</p>
-<p>[groups] ### 这里是建立一个组 user = cc,aa,bb,dd ###<br />
-这里repository:后添加的是相对路径，例如我的路径/home/cc/svn/trunk在这里就是/trunk [repository:/trunk]</p>
-<h3 id="这里user是某一个组的权限-user-rw-这是所有用户的权限-r"><a class="markdownIt-Anchor" href="#这里user是某一个组的权限-user-rw-这是所有用户的权限-r"></a> 这里@user是某一个组的权限 @user = rw ### 这是所有用户的权限 * = r</h3>
-<p>以后使用svn需要输入–username=cc --password=123</p>
-<p>Authorization failed</p>
-<p>这里是因为在authz中的路径可能设置有问题(repository:之后的那个路径，那里面的路径全部都是相对路径)，或者是命令没有顶格写。passwd,<br />
-authz, svnserve.conf中的所有命令必须是顶格写的。</p>
-<p>下面是远程机器使用svn导入项目：</p>
-<p>svn import  [本地目录] svn://[ip]/trunk -m &quot;import project&quot;即可.例如我的是 svn import<br />
-~/code/cnode svn://192.168.1.22/trunk -m “import”  --username=cc<br />
-–password=123</p>
-<p>这里要注意的是svn会将本地目录之下的所有东西都按照相同的组织方式放入到trunk.所有最好导入工程根目录。</p>
-<p>贴一下写好的配置文件,这里我的trunk是pddms: authz</p>
-<h3 id="this-file-is-an-example-authorization-file-for-svnserve-its-format-is"><a class="markdownIt-Anchor" href="#this-file-is-an-example-authorization-file-for-svnserve-its-format-is"></a> This file is an example authorization file for svnserve. ### Its format is</h3>
-<p>identical to that of mod_authz_svn authorization ### files. ### As shown below<br />
-each section defines authorizations for the path and ### (optional) repository<br />
-specified by the section name. ### The authorizations follow. An authorization<br />
-line can refer to: ### - a single user, ### - a group of users defined in a<br />
-special [groups] section, ### - an alias defined in a special [aliases]<br />
-section, ### - all authenticated users, using the ‘$authenticated’ token, ###</p>
-<ul>
-<li>only anonymous users, using the ‘$anonymous’ token, ### - anyone, using the<br />
-‘*’ wildcard. ### ### A match can be inverted by prefixing the rule with ‘~’.<br />
-Rules can ### grant read (‘r’) access, read-write (‘rw’) access, or no access</li>
-</ul>
-<h3 id="aliases-joe-cxzstdessertlsnake-cityosnake-oil"><a class="markdownIt-Anchor" href="#aliases-joe-cxzstdessertlsnake-cityosnake-oil"></a> (‘’). [aliases] # joe = /C=XZ/ST=Dessert/L=Snake City/O=Snake Oil,</h3>
-<p>Ltd./OU=Research Institute/CN=Joe Average [groups] harry_and_sally =<br />
-cc,aa,bb,dd # harry_sally_and_joe = harry,sally,&amp;joe [/] cc = rw # &amp;joe = r #</p>
-<ul>
-<li>= [repository:/pddms] @harry_and_sally = rw * = r</li>
-</ul>
-<p>passwd:</p>
-<h3 id="this-file-is-an-example-password-file-for-svnserve-its-format-is"><a class="markdownIt-Anchor" href="#this-file-is-an-example-password-file-for-svnserve-its-format-is"></a> This file is an example password file for svnserve. ### Its format is</h3>
-<p>similar to that of svnserve.conf. As shown in the ### example below it<br />
-contains one section labelled [users]. ### The name and password for each user<br />
-follow, one account per line. [users] cc = 123 aa = 123 # harry = harryssecret</p>
-<h1 id="sally-sallyssecret"><a class="markdownIt-Anchor" href="#sally-sallyssecret"></a> sally = sallyssecret</h1>
-<p>svnserve.conf</p>
-<h3 id="this-file-controls-the-configuration-of-the-svnserve-daemon-if-you"><a class="markdownIt-Anchor" href="#this-file-controls-the-configuration-of-the-svnserve-daemon-if-you"></a> This file controls the configuration of the svnserve daemon, if you</h3>
-<p>use it to allow access to this repository. (If you only allow ### access<br />
-through http: and/or file: URLs, then this file is ### irrelevant.) ### Visit<br />
-<span class="exturl" data-url="aHR0cDovL3N1YnZlcnNpb24udGlncmlzLm9yZy8=">http://subversion.tigris.org/<i class="fa fa-external-link-alt"></i></span> for more information. [general] ### These<br />
-options control access to the repository for unauthenticated ### and<br />
-authenticated users. Valid values are “write”, “read”, ### and “none”. The<br />
-sample settings below are the defaults. anon-access = none auth-access = write</p>
-<h3 id="the-password-db-option-controls-the-location-of-the-password-database"><a class="markdownIt-Anchor" href="#the-password-db-option-controls-the-location-of-the-password-database"></a> The password-db option controls the location of the password ### database</h3>
-<p>file. Unless you specify a path starting with a /, ### the file’s location is<br />
-relative to the directory containing ### this configuration file. ### If SASL<br />
-is enabled (see below), this file will NOT be used. ### Uncomment the line<br />
-below to use the default password file. password-db = passwd ### The authz-db<br />
-option controls the location of the authorization ### rules for path-based<br />
-access control. Unless you specify a path ### starting with a /, the file’s<br />
-location is relative to the the ### directory containing this file. If you<br />
-don’t specify an ### authz-db, no path-based access control is done. ###<br />
-Uncomment the line below to use the default authorization file. authz-db =<br />
-authz ### This option specifies the authentication realm of the repository.</p>
-<h3 id="if-two-repositories-have-the-same-authentication-realm-they-should"><a class="markdownIt-Anchor" href="#if-two-repositories-have-the-same-authentication-realm-they-should"></a> If two repositories have the same authentication realm, they should</h3>
-<p>have the same password database, and vice versa. The default realm ### is<br />
-repository’s uuid. realm = pddms_a [sasl] ### This option specifies whether<br />
-you want to use the Cyrus SASL ### library for authentication. Default is<br />
-false. ### This section will be ignored if svnserve is not built with Cyrus</p>
-<h3 id="sasl-support-to-check-run-svnserve-version-and-look-for-a-line"><a class="markdownIt-Anchor" href="#sasl-support-to-check-run-svnserve-version-and-look-for-a-line"></a> SASL support; to check, run ‘svnserve --version’ and look for a line</h3>
-<p>reading ‘Cyrus SASL authentication is available.’ # use-sasl = true ### These<br />
-options specify the desired strength of the security layer ### that you want<br />
-SASL to provide. 0 means no encryption, 1 means ### integrity-checking only,<br />
-values larger than 1 are correlated ### to the effective key length for<br />
-encryption (e.g. 128 means 128-bit ### encryption). The values below are the<br />
-defaults. # min-encryption = 0 # max-encryption = 256</p>
 
       
     </div>

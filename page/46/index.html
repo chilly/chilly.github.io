@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,165 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/12/07/3464689/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/12/07/3464689/" class="post-title-link" itemprop="url">Linear线性级排序算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-12-07 10:41:00" itemprop="dateCreated datePublished" datetime="2008-12-07T10:41:00+08:00">2008-12-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>线性级排序算法</p>
+<p>需求：需要找到前  m  个大数，这  m  个数必须有序。现在有  n  个数（  n&gt;&gt;m  ）。可以使用大空间但是空间远小于  n<br />
+。这里的含义是连同这  n  个数都不要占用  n  的空间。因为数据量太大了。  N  个数是一个一个生成的。</p>
+<p>思考：</p>
+<p>1.  这  m  个数有序，这当然不是一个排序问题，或者是一个部分排序问题。已知的排序是冒泡，插入，选择，归并，快速和基数排序。</p>
+<p>2.  冒泡效率低。选择排序的要求是这  n  个数已经存在，并且需要的空间（包括这  n  个数的存储空间）肯定大于  n  。快排，虽然在找第  k<br />
+的数是  klogk  的复杂度也就是线性级  O(n)  。但是它还是需要  O(n)  的空间。归并排序，基数排序也是同样如此。</p>
+<p>3.  插入排序要求，元素是要移动的。所以插入的移动数据复杂度是  O(n  2  )  。所以这里要改进下插入排序。要将插入变为  O(1)<br />
+。那么就要使用链表。而且数据是一个一个生成的，那么小的数据插入在大的数据后面。这样就完成了排序任务。</p>
+<p>4.  另外设置固定长度为  l,  可以认为即使是大数据量  n  ，也有  cl=n/l,  其中  cl  为较小常数。</p>
+<p>部分伪代码：</p>
+<p>public static void Sort (LinkedList lsort ,double num)</p>
+<p>{</p>
+<p>if(lsort.size() == 0 )</p>
+<p>{</p>
+<p>lsort.add(0, num);</p>
+<p>return;</p>
+<p>}</p>
+<p>for(int i = 0; i &lt; m &amp;&amp; i&lt; lsort.size(); i++)</p>
+<p>{</p>
+<p>if(num &gt; lsort.get(i))</p>
+<p>{</p>
+<p>lsort.add(i,num);</p>
+<p>break;</p>
+<p>}</p>
+<p>}</p>
+<p>// remove no used sort object</p>
+<p>if(lsort.size() == maxSize)</p>
+<p>{</p>
+<p>int startIndex = maxSize - fileSetNum;</p>
+<p>while(startIndex – != 0)</p>
+<p>{</p>
+<p>lsort.removeLast();</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>我们下面对上面的这段代码进行分析  ,  因为使用链表，所以插入删除的复杂度为  O(1),  查找的复杂度为  O(m)  但是会包含在第二段代码中：</p>
+<p>if(lsort.size() == 0 )</p>
+<p>{</p>
+<p>lsort.add(0, num);</p>
+<p>return;</p>
+<p>}</p>
+<p>这段代码的时间复杂度明显是  O(1)</p>
+<p>for(int i = 0; i &lt; m &amp;&amp; i&lt; lsort.size(); i++)</p>
+<p>{</p>
+<p>if(num &gt; lsort.get(i))</p>
+<p>{</p>
+<p>lsort.add(i,num);</p>
+<p>break;</p>
+<p>}</p>
+<p>}</p>
+<p>这段代码中  m  个数为常数。所以这个进行比较的时间复杂度最差为  O(m)  ，即只与前  m  个数进行比较。</p>
+<p>// remove no used sort object</p>
+<p>if(lsort.size() == l)</p>
+<p>{</p>
+<p>int startIndex = l – m;</p>
+<p>while(startIndex – != 0)</p>
+<p>{</p>
+<p>lsort.removeLast();</p>
+<p>}</p>
+<p>}</p>
+<p>这段代码是为了减少存储空间。当空间达到  l  时，将会释放  l-m  个空间。使得存储空间不会到达  n  。这段代码的时间复杂度为  O(l-m)<br />
+。  但是因为这段代码不是经常执行  ,  要在链表长度到达  l  时才会执行，所以分摊到各个执行上其复杂度为  O((l-m)*l/n).</p>
+<p>当此段代码需要访问  n  次。</p>
+<p>所以总复杂度为各个复杂度加和再乘  n  为：  n*(O(1)+ O(m)+O((1-m)*l/n)) = O(n+mn+(1-m)*l)=O(mn),<br />
+因为  m  为常数，所以故为  O(n)</p>
+<p>总结：</p>
+<p>根据已有的算法知识，做出符合需求的算法。并且这个算法的时间复杂度也很理想。在实际运行过程中达到了很好的效果。使用  java  测试。在  290000<br />
+条待排序的数据中，时间消耗在  700ms  左右。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1596,105 +1755,6 @@ sda.Fill(ds);</p>
 <li>label2.Text = sqlAccess.EXESql(sql, my).ToString();</li>
 <li>}</li>
 </ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/27/3161492/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/10/27/3161492/" class="post-title-link" itemprop="url">如果没有接起百度的电话(搞笑)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-10-27 22:32:00" itemprop="dateCreated datePublished" datetime="2008-10-27T22:32:00+08:00">2008-10-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>275</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>刚才不久百度给我打了电话。我没有接到。之后拨通电话，发现是百度的总机。不知道要拨哪个分机，所以就挂掉了。<br />
-因为我参加了百度的笔试。所以认为可能是百度让我去参加面试。欣喜的将此事告诉了别人。<br />
-我：“我没有接起百度给我的面试电话。”<br />
-A:“你怎么知道百度是让你去面试？”<br />
-我：“我猜的。”<br />
-A:“那是百度看你的卷子看的崩溃了，他是想通知你以后不要浪费别人公司的草稿纸，不会答就不要去做！…”<br />
-我：“你的观点很有新意，我要写成blog!”<br />
-。。于是就有了这篇blog。据说blog是采用了传说中杀人于无形的流水帐式文笔。不知看过此blog的各位小同学中有没有谁吐血身亡。<br />
-<img src="http://imgcache.qq.com/ac/b.gif" alt="" /></p>
 
       
     </div>

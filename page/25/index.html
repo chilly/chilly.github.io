@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,124 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/17/2010-06-17-sizeof-c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/06/17/2010-06-17-sizeof-c/" class="post-title-link" itemprop="url">Sizeof in C++</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-06-17 00:00:00" itemprop="dateCreated datePublished" datetime="2010-06-17T00:00:00+08:00">2010-06-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:54:04" itemprop="dateModified" datetime="2023-10-06T22:54:04+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="the inside of sizeof
+the inside of memory alignment" />
+<meta name="_su_keywords" content="c++, sizeof, double, int, align,memory" />
+<meta name="_su_title" content="c++, sizeof, double, int, align,memory" />
+<meta name="views" content="1054" />
+I use c++ in linux which is gcc version 4.4.1 (Ubuntu 4.4.1-4ubuntu9).
+<p>I considered that c++ memory alignment is like the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// pseudo-code of memory alignment</span><br><span class="line">remove_all_static_varibles();</span><br><span class="line">int max= 0;</span><br><span class="line">foreach(element in struct)</span><br><span class="line">    find_the_max_memory_used(element,&amp;amp;max);</span><br><span class="line">int align = max &amp;gt; default? default: max;</span><br><span class="line">// if max memory used for element is larger than the default, use default.</span><br><span class="line">int memory = sum(memory_used(elements));</span><br><span class="line"></span><br><span class="line">if(memory%align != 0)</span><br><span class="line">// here will execute alignment!</span><br><span class="line">&#123;</span><br><span class="line">    memory = (memory/align + 1 )*align;</span><br><span class="line">&#125;</span><br><span class="line">if(memory == 0)</span><br><span class="line">    memory = 1;</span><br><span class="line">return memory;</span><br></pre></td></tr></table></figure>
+<p>vc++ use #pragma_pack(n) set the default.if there are three char in a struct, like:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef struct&#123;</span><br><span class="line">	char a;</span><br><span class="line">	char b;</span><br><span class="line">	char c;</span><br><span class="line">&#125;X;</span><br><span class="line">sizeof(X); // it will be 3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">typedef struct&#123;</span><br><span class="line">	char a;</span><br><span class="line">	short b;</span><br><span class="line"></span><br><span class="line">&#125;Y;</span><br><span class="line">sizeof(Y); // here will be 4</span><br><span class="line"></span><br><span class="line">typedef struct&#123;</span><br><span class="line">	char a;</span><br><span class="line">	int b;</span><br><span class="line">&#125;Z;</span><br><span class="line"></span><br><span class="line">sizeof(Z); // here will be 8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct&#123;</span><br><span class="line">	double a;</span><br><span class="line">	char b;</span><br><span class="line">&#125;W;</span><br><span class="line">sizeof(W);</span><br><span class="line">// it will be 12, the align is 4</span><br><span class="line">// when the max memory used is larger</span><br><span class="line">// than 4, it will be 4</span><br></pre></td></tr></table></figure>
+<p>if the class or struct is empty, sizeof(it) will be 1.</p>
+<p>But if there are static varibles in classes or structs, you can remove it!. like:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class A&#123;</span><br><span class="line">	static int a;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">sizeof(A); // it will be 1</span><br></pre></td></tr></table></figure>
+<p>in class there will be many class functions. But A class is thought as A struct and many functions set. sizeof(A class) will compute the size of struct.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class ZZ&#123;</span><br><span class="line">    public:</span><br><span class="line">        ZZ()&#123;</span><br><span class="line">            int a = 3;</span><br><span class="line">            cout &amp;lt;&amp;lt; &quot;I am ZZ&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">            cout &amp;lt;&amp;lt; a&amp;lt;&amp;lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">        ~ZZ()&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    int c;</span><br><span class="line">&#125;;</span><br><span class="line">sizeof(ZZ); // will be 4;</span><br><span class="line">/* it is like a struct and two member functions.</span><br><span class="line">struct ZZ&#123;</span><br><span class="line">	int c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ZZ@ZZ() is name mingling</span><br><span class="line">ZZ@ZZ()&#123;</span><br><span class="line">	int a = 3;</span><br><span class="line">        cout &amp;lt;&amp;lt; &quot;I am ZZ&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">        cout &amp;lt;&amp;lt; a&amp;lt;&amp;lt;endl;</span><br><span class="line">&#125;</span><br><span class="line">ZZ@~ZZ()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<p>but when we meet the virtual member functions and virtual derived class, it will be different.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1259,111 +1377,6 @@ dows/system32下找到chkdsk.exe 然后执行chkdsk /r,结果它说不能在DOS�
 <p>非OEM的用户：</p>
 <p>使用windows安装盘，进入recover console,然后执行chkdsk c: /r /f 如果不行再使用fixboot</p>
 <p>要是没有ubuntu,真的以为硬盘坏掉了。windows系统实在是太霸道了,害我差点想把整个硬盘重新格式化。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/03/2010-05-03-design-pattern-adapter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/05/03/2010-05-03-design-pattern-adapter/" class="post-title-link" itemprop="url">Design Pattern -- Adapter</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">2010-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:02" itemprop="dateModified" datetime="2023-10-06T22:54:02+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="adapter pattern is used for combining two or more classes,which have the same behaviors but different interfaces." />
-<meta name="_su_keywords" content="design,pattern,virtual,class,constructor,destory,adapter" />
-<meta name="_su_title" content="design pattern adapter pattern" />
-<meta name="views" content="546" />
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">// Adapter.cpp : Defines the entry point for the console application.</span><br><span class="line">// author: chillyc</span><br><span class="line">// email: chillycreator @t gmail.com</span><br><span class="line"></span><br><span class="line">#include&amp;lt;iostream&amp;gt;</span><br><span class="line">#include&amp;lt;string&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">/// adapter pattern is used for combining two or more classes,</span><br><span class="line">/// which have the same behaviors but different interfaces.</span><br><span class="line">/// some classes is common used in future, and the other which are special will never used.</span><br><span class="line">/// common used classes should be public, and the other is private.</span><br><span class="line">/// some classes which inherit adapter class will never use the special ones. </span><br><span class="line">/// adapter pattern is divided into two patterns.</span><br><span class="line">/// one is belong to class structure, and the other is belong to object structure.</span><br><span class="line"></span><br><span class="line">#ifndef INTERFACEA_H</span><br><span class="line">#define INTERFACEA_H</span><br><span class="line">/// Interface A is a common interface!</span><br><span class="line">class Interface_A&#123;</span><br><span class="line">public :</span><br><span class="line">	virtual void connect_com();</span><br><span class="line">&#125;;</span><br><span class="line">#endif</span><br><span class="line">void Interface_A::connect_com()&#123;</span><br><span class="line">	cout&amp;lt;&amp;lt;&quot;connect a&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#ifndef INTERFACEB_H</span><br><span class="line">#define INTERFACEB_H</span><br><span class="line">/// Interface B is not a common interface, </span><br><span class="line">/// it will be used in some special area!</span><br><span class="line">class Interface_B&#123;</span><br><span class="line">public :</span><br><span class="line">	virtual void connect_B();</span><br><span class="line">&#125;;</span><br><span class="line">#endif</span><br><span class="line">void Interface_B::connect_B()&#123;</span><br><span class="line">	cout&amp;lt;&amp;lt; &quot;connect b&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#ifndef ADAPTERCLASS_H</span><br><span class="line">#define ADAPTERCLASS_H</span><br><span class="line">/// this class uses private inheritance to construct adapter.</span><br><span class="line">/// and it is a kind of class structure.</span><br><span class="line">class Adapter_Class: public Interface_A, private Interface_B&#123;</span><br><span class="line">public:</span><br><span class="line">	Adapter_Class();</span><br><span class="line">	~Adapter_Class();</span><br><span class="line">	virtual void connect();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/// this class uses private member variable to construct adapter.</span><br><span class="line">/// and it uses object relationship.</span><br><span class="line">class Adapter_Object: public Interface_A&#123;</span><br><span class="line">private:</span><br><span class="line">	Interface_B * b;</span><br><span class="line">public:</span><br><span class="line">	Adapter_Object();</span><br><span class="line">	~Adapter_Object();</span><br><span class="line"></span><br><span class="line">	virtual void connect();</span><br><span class="line">&#125;;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">Adapter_Class::Adapter_Class()&#123;</span><br><span class="line">	cout&amp;lt;&amp;lt; &quot;Adapter_Class construct&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">Adapter_Class::~Adapter_Class()&#123;&#125;</span><br><span class="line">void Adapter_Class::connect()&#123;</span><br><span class="line">	Interface_A::connect_com();</span><br><span class="line">	Interface_B::connect_B();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Adapter_Object::Adapter_Object()&#123;</span><br><span class="line">	cout&amp;lt;&amp;lt;&quot;Adapter_Object construct&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	b = new Interface_B();</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">Adapter_Object::~Adapter_Object()&#123;</span><br><span class="line">	delete b;</span><br><span class="line">&#125;</span><br><span class="line">void Adapter_Object::connect()&#123;</span><br><span class="line">	Interface_A::connect_com();</span><br><span class="line">	b-&amp;gt;connect_B();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	Adapter_Class ac;</span><br><span class="line">	ac.connect();</span><br><span class="line">	Adapter_Object ao;</span><br><span class="line">	ao.connect();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>

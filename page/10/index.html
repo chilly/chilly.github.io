@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,105 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/05/22/8962322/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/05/22/8962322/" class="post-title-link" itemprop="url">Spring MultipartResolver 或者 ServletFileUpload 冲突导致获取不到http数据/Multipart数据为空</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-05-22 21:10:00" itemprop="dateCreated datePublished" datetime="2013-05-22T21:10:00+08:00">2013-05-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>如果不知道MultipartResolver 或者ServletFileUpload 的，请 <a href="http://chillyc.info/2013/8800964/">JAVA Server上传文件 Spring MultipartResolver 或者 ServletFileUpload<br />
+</a></p>
+<p>如果同时使用了MultipartResolver和ServletFileUpload，就会在iter.hasNext()返回false.然后整个循环就跳出去了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isMultipart) &#123;</span><br><span class="line">            <span class="type">DiskFileItemFactory</span> <span class="variable">factory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DiskFileItemFactory</span>(<span class="number">1024</span> * <span class="number">1024</span> * <span class="number">20</span>, <span class="literal">null</span>);</span><br><span class="line">            <span class="type">ServletFileUpload</span> <span class="variable">upload</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ServletFileUpload</span>(factory);</span><br><span class="line">            upload.setHeaderEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">            upload.setSizeMax(<span class="number">1024</span> * <span class="number">1024</span> * <span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">            List&lt;FileItem&gt; fileItems = upload.parseRequest(req);</span><br><span class="line">            Iterator&lt;FileItem&gt; iter = fileItems.iterator();</span><br><span class="line">            <span class="comment">// 这里获取不到任何FileItem</span></span><br><span class="line">            <span class="keyword">while</span> (iter.hasNext()) &#123;</span><br><span class="line">                <span class="type">FileItem</span> <span class="variable">item</span> <span class="operator">=</span> (FileItem) iter.next();</span><br><span class="line">                <span class="keyword">if</span> (item.isFormField()) &#123;</span><br><span class="line">                    <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> item.getFieldName();</span><br><span class="line">                    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> item.getString(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">                    request.put(name, value);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="type">byte</span>[] filebytes = item.get();</span><br><span class="line">                    <span class="keyword">if</span> (StringUtils.isBlank(item.getName())) &#123;</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    </span><br><span class="line">                    request.put(item.getFieldName(), <span class="keyword">new</span> <span class="title class_">String</span>(filebyte, <span class="string">&quot;utf-8&quot;</span>));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>整个问题产生的原因是Spring框架先调用了MultipartResolver 来处理http multi-part的请求。这里http multipart的请求已经消耗掉。后面又交给ServletFileUpload ，那么ServletFileUpload 就获取不到相应的multi-part请求。</p>
+<p>如果帐前 卒想快速解决这个问题。解决方法是加入帐前卒的  multipartResolver,  来单独处理某些请求。这些请求需要特判。例如下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.commons.CommonsMultipartResolver;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 帐前卒</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyMultipartResolver</span> <span class="keyword">extends</span> <span class="title class_">CommonsMultipartResolver</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String excludeUrls;   </span><br><span class="line">    <span class="keyword">private</span> String[] excludeUrlArray;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getExcludeUrls</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> excludeUrls;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setExcludeUrls</span><span class="params">(String excludeUrls)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.excludeUrls = excludeUrls;</span><br><span class="line">        <span class="built_in">this</span>.excludeUrlArray = excludeUrls.split(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 这里是处理Multipart http的方法。如果这个返回值为true,那么Multipart http body就会MyMultipartResolver 消耗掉.如果这里返回false</span></span><br><span class="line"><span class="comment">     * 那么就会交给后面的自己写的处理函数处理例如刚才ServletFileUpload 所在的函数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> org.springframework.web.multipart.commons.CommonsMultipartResolver#isMultipart(javax.servlet.http.HttpServletRequest)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isMultipart</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (String url: excludeUrlArray) &#123;</span><br><span class="line">            <span class="comment">// 这里可以自己换判断</span></span><br><span class="line">            <span class="keyword">if</span> (request.getRequestURI().contains(url)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.isMultipart(request);</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后在web.xml中这样写：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;multipartResolver&quot;</span> <span class="attr">class</span>=<span class="string">&quot;example.MyMultipartResolver&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;excludeUrls&quot;</span> <span class="attr">value</span>=<span class="string">&quot;example&quot;</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- url中带有example的http请求就不会被multipartResolver先解析--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1484,124 +1583,6 @@ public class Client &#123;
 <p>done.</p>
 <p>简单快速，搭建和写client 也就是10分钟搞定。当然这只是起步</p>
 <p>这个方法适用于JDK6及以上，其他版本未知。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/03/04/8632642/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/03/04/8632642/" class="post-title-link" itemprop="url">JAVA 远程Debug</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-03-04 10:48:00" itemprop="dateCreated datePublished" datetime="2013-03-04T10:48:00+08:00">2013-03-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>开启JVM的远程Debug模式, 在启动JVM的时候加上参数:</p>
-<pre><code>// 非阻塞方式，这样启动jvm后，可以再任意时间attach到server上
--Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=11312,server=y,suspend=n
-// 阻塞debug，启动JVM后，需要远程连接attach到相应的端口，JVM才会继续执行。
--Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=11312,server=y,suspend=y
-</code></pre>
-<p>第二条特别适合调试类初始化的程序模块。</p>
-<p>在eclipse中，bug项里有Debug Configurations… 选中。然后选中remove java application, 新建一个</p>
-<p>Project就是你要远程调试的 JAVA源码文件工程。  HOST就是那个server所在的机器名或者IP。 PORT就是<br />
-上面的address项11312。Connection Type就写Standard. 然后点击debug就可以。</p>
-<p>如果debug后，有连接错误。 1. 要查看server或者service是否已经启动。 2. 要看是否配置正确。3.检测端口是否被其他程序占用了。</p>
-<p>如果上面的检测完毕，还是连接失败。那么重启eclipse 或者 重启server. 这两个方法就可以解决问题。</p>
-<p>另外</p>
-<pre><code>-Xnoagent
-这一个选项在远程debug中一般不需要。其含义为Disables VM support for oldjdb。禁用旧的java debug。
-</code></pre>
-<p>下面是各个options的详解。摘自 <a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/1.4.2/docs/tooldocs/windows/jdb.html"><br />
-http://docs.oracle.com/javase/1.4.2/docs/tooldocs/windows/jdb.html<br />
-</a><br />
-<code>-Xdebug</code></p>
-<p>Enables debugging support in the VM</p>
-<p><code>-Xrunjdwp:transport=dt_shmem,server=y,suspend=n</code></p>
-<p>Loads in-process debugging libraries and specifies the kind of connection to<br />
-be made.</p>
-<p><code>-Xnoagent</code></p>
-<p>Disables VM support for ** oldjdb **</p>
-<p><code>-Djava.compiler=NONE</code></p>
-<p>Disables the JIT compiler. This is required for debugging under the classic VM</p>
 
       
     </div>

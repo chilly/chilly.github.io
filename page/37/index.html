@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,200 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/14/4550332/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/09/14/4550332/" class="post-title-link" itemprop="url">使用云计算～Eucalyptus tools安装到centos5.3记录日志</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-09-14 10:16:00" itemprop="dateCreated datePublished" datetime="2009-09-14T10:16:00+08:00">2009-09-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我只是记点流水帐，不是技术文档。</p>
+<p>1。首先找到文档 <a target="_blank" rel="noopener" href="http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2"> http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2<br />
+</a> 看看安装前需要准备什么。</p>
+<p>2。去 <a target="_blank" rel="noopener" href="http://open.eucalyptus.com/downloads"> http://open.eucalyptus.com/downloads<br />
+</a> 下载一个安装包。我使用的是centos5.3</p>
+<p>3.因为下载时间过慢，所以顺便下载了一个 <a target="_blank" rel="noopener" href="http://open.eucalyptus.com/wiki/Euca2oolsCentosInstall"> euca2ools<br />
+</a><br />
+。按照文档的指示安装。结果说缺少swig.然后使用yum upgrade,再yum install swig.</p>
+<p>4.安装完毕后，使用下面的命令：</p>
+<p>sudo -s rpm -Uvh python25-libs-2.5.1-bashton1.i386.rpm<br />
+python25-2.5.1-bashton1.i386.rpm euca2ools-1.0-1.i386.rpm<br />
+//后面三个是euca2ools中的三个文件。</p>
+<p>安装成功后配置证书：证书的下载要现注册一个帐号。证书获得可以参考 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/09/14/4550353.aspx"> 我的blog<br />
+</a><br />
+.然后解压证书。并输入以下命令（进入/.euca后执行解压命令）：</p>
+<p>mkdir ~/.euca cd ~/.euca chmod 0700 ~/.euca chmod 0600 ~/.euca/* . eucarc<br />
+//最后一个配置环境文件。你只要找到相应的eucarc文件即可。</p>
+<p>然后你就可以使用那些命令了…例如euca-XXXX。例如输入euca-describle-images 传说就能看到自己的image<br />
+ID.但是我却没有看到。不过我还是继续尝试命令。euca-add-keypair mykey &gt; mykey.private<br />
+.然后就可以看到生成了mykey.private。之后在chmod 0600 mykey.private 这句只不过是为了安全。之后euca-run-<br />
+instances -k mykey -n <numbers of instance you want> <IMage ID><br />
+这个命令里我还是没有imageID.不过imageID可以从 <a target="_blank" rel="noopener" href="https://mayhem9.cs.ucsb.edu:8443/#images"> https://mayhem9.cs.ucsb.edu:8443/#images<br />
+</a> 得到,也可以使用euca-describle-images<br />
+-a.然后你会看到如下的输出内容：</p>
+<p>IMAGE   eki-D29C1495    ttylinux-kernel/vmlinuz-2.6.16.33-xen.manifest.xml<br />
+admin   available       public  x86_64  kernel<br />
+IMAGE   emi-2D08128F    ttylinux-image/ttylinux.img.manifest.xml        admin<br />
+available       public  x86_64  machine<br />
+IMAGE   eki-A70313EB    vdebian-kernel/vmlinuz-2.6.24-19-xen.manifest.xml<br />
+admin   available       public  x86_64  kernel<br />
+IMAGE   eri-002A152F    vdebian-ramdisk/initrd.img-2.6.24-19-xen.manifest.xml<br />
+admin   available       public  x86_64  ramdisk<br />
+IMAGE   emi-E8D41123    vdebian-image/vdebian.img.manifest.xml  admin<br />
+available       public  x86_64  machine<br />
+IMAGE   eki-300A15CA    ttylinux-<br />
+kernel-i386/vmlinuz-2.6.16.33-xen.manifest.xml admin   available       public<br />
+i386    kernel<br />
+IMAGE   emi-7D1B13CD    ttylinux-image-i386/ttylinux.img.manifest.xml   admin<br />
+available       public  i386    machine<br />
+IMAGE   eki-00C81523    vdebian-kernel-i386/vmlinuz-2.6.24-19-xen.manifest.xml<br />
+admin   available       public  i386    kernel<br />
+IMAGE   eri-5FB81668    vdebian-<br />
+ramdisk-i386/initrd.img-2.6.24-19-xen.manifest.xml      admin   available<br />
+public  i386    ramdisk<br />
+IMAGE   emi-33E9125A    vdebian-image-i386/vdebian.img.manifest.xml     admin<br />
+available       public  i386    machine<br />
+IMAGE   emi-EDBC1AC5    public-euca-test-3-1241020869/public-euca-<br />
+test-3-1241020869.raw.manifest.xml    yan     available       public  i386<br />
+machine<br />
+IMAGE   emi-042211C4    my-images-bkt/ttylinux.img.manifest.xml iravana<br />
+available       public  i386    machine<br />
+IMAGE   eki-618C1258    kernel2627/vmlinuz-2.6.27.21-0.1-xen.manifest.xml<br />
+admin   available       public  i386    kernel<br />
+IMAGE   eri-5C861240    ramdisk2627/initrd-2.6.27.21-0.1-xen.manifest.xml<br />
+admin   available       public  i386    ramdisk<br />
+IMAGE   emi-AD9013E6    ubuntu-jaunty/ubuntu.9-04.x86-64.img.manifest.xml<br />
+admin   available       public  i386    machine<br />
+IMAGE   emi-6BDF15B8<br />
+server-668309-1243550256/server-668309-1243550256.raw.manifest.xml      arania<br />
+available       public  i386    machine<br />
+IMAGE   emi-EFBB13FA<br />
+pmor-696423-1245204942/pmor-696423-1245204942.raw.manifest.xml  itatc<br />
+available       public  i386    machine<br />
+IMAGE   emi-73201BF6    dpe-eucalyptus-745793-1246037237/dpe-<br />
+eucalyptus-745793-1246037237.raw.manifest.xml      jjones  available<br />
+public  i386    machine<br />
+IMAGE   emi-D0F719CB    steve13-test2-880525-1250176080/steve13-test2-880525-1<br />
+250176080.raw.manifest.xml        SteveL  available       public  i386<br />
+machine<br />
+IMAGE   emi-916B1414    test-bundled-vol-ubuntu-ec2/image.manifest.xml  admin<br />
+available       public  x86_64  machine<br />
+IMAGE   emi-7D7E0EC5    test-bundle-11/image.manifest.xml       admin<br />
+available       public  x86_64  machine</p>
+<p>第二列就是你可以使用的image.不过有些可能没有kernel,有些没有random disk,可能不能使用。所以最好去那个网站上  <a target="_blank" rel="noopener" href="https://mayhem9.cs.ucsb.edu:8443/#images"><br />
+https://mayhem9.cs.ucsb.edu:8443/#images<br />
+</a> 找合适的。找到后，按照上面的命令输入:euca-run-<br />
+instances -k mykey -n 1 emi-AD9013E6 我选择生成一个ubuntu的实例。然后会看到如下的输出：</p>
+<p>RESERVATION     r-3C7907AD      chico   chico-default<br />
+INSTANCE        i-3BCA0634      emi-AD9013E6    0.0.0.0 0.0.0.0 pending<br />
+2009-09-14T07:31:05.127Z        eki-618C1258    eri-5C861240<br />
+看到第二行为instance,就是你生成的instance，它的id为 i-3BCA0634.然后你可以看它的具体描述：传说需要自己配这个实例的IP,不过我<br />
+使用的是Eucalyptus已经搭建起来的云，所以就不用配置了。看看这个实例的描述,使用命令euca-describle-<br />
+instances,看到如下的输出:</p>
+<p>RESERVATION     r-3C7907AD      chico   default<br />
+INSTANCE        i-3BCA0634      emi-AD9013E6    128.111.45.39   128.111.45.39<br />
+pending         0       m1.small        2009-09-14T07:31:05.127Z        epc<br />
+eki-618C1258    eri-5C861240<br />
+这个和上面的差不多。但是你可以看到那个实例ID后面有 128.111.45.39<br />
+128.111.45.39，如果是亚马逊的弹性计算云，前面的就是外部IP，后面的就是内部ip. Eucalyptus可能简单些，就有一个ip.那我们怎么登录<br />
+上去呢？亚马逊的使用方法是http://<host>/。Eucalyptus使用的是如下命令:ssh -i mykey.private root<br />
+@<accessible-instance-ip> 如果我敲的话就是：ssh -i mykey.private<br />
+root@128.111.45.39输入命令后再根据提示输入yes.你将看到:</p>
+<p>Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by<br />
+applicable law.</p>
+<p>To access official Ubuntu documentation, please visit:<br />
+<span class="exturl" data-url="aHR0cDovL2hlbHAudWJ1bnR1LmNvbS8=">http://help.ubuntu.com/<i class="fa fa-external-link-alt"></i></span><br />
+Last login: Sun May 10 18:38:38 2009 from localhost.localdomain<br />
+root@ubuntu:~#<br />
+哈哈～得到另一个新的操作系统！还有一个好处就是增加了很多硬盘空间。你可以使用df<br />
+-lh查看以下。所有的ubuntu命令都可以在那上面使用了！使用完毕后，别忘记关掉instances.使用命令:euca-terminate-<br />
+instances <instance1 ID> <instance2 ID>,就可以关闭所有的instance.如果你再次使用euca-<br />
+describle-instances查看那些实例，状态应该会被标记为terminate.</p>
+<p>对我们个人而言。Eucalyptus以及亚马逊的弹性云EC2都让你多了控制网上电脑的能力。但是对于灰鸽子的制造者来说，他们提供了24小时服务，并且是合法的，<br />
+不过缺点就是要收费。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1583,226 +1777,6 @@ Via: 1.0 <span class="exturl" data-url="aHR0cDovL2NhY2hlZGV2LkNTRE4uTkVU">cached
 <p>蜂鸟歇鸣归屋檐，伊人抱枕还未眠</p>
 <p>你我本不一，缘何念为一，心生魔障起，不可泄天机</p>
 <p>自观烟雨楼，冥想雷无休，幻化飞舞蝶，静心几菲求</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/08/14/4447801/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/08/14/4447801/" class="post-title-link" itemprop="url">Hash函数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-08-14 19:38:00" itemprop="dateCreated datePublished" datetime="2009-08-14T19:38:00+08:00">2009-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>转自 <span class="exturl" data-url="aHR0cDovL2JhaWtlLmJhaWR1LmNvbS92aWV3LzYwNDAyMS5odG1s">http://baike.baidu.com/view/604021.html<i class="fa fa-external-link-alt"></i></span></p>
-<p>Hash，一般翻译做&quot;散列&quot;，也有直接音译为&quot;哈希&quot;的，就是把任意长度的输入（又叫做预映射， pre-<br />
-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不<br />
-同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。</p>
-<p>简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。<br />
-HASH主要用于信息安全领域中加密算法，他把一些不同长度的信息转化成杂乱的128位的编码里,叫做HASH值.<br />
-也可以说，hash就是找到一种数据内容和数据存放地址之间的映射关系<br />
-了解了hash基本定义，就不能不提到一些著名的hash算法，MD5 和 SHA1 可以说是目前应用最广泛的Hash算法，而它们都是以 MD4<br />
-为基础设计的。那么他们都是什么意思呢？<br />
-这里简单说一下：</p>
-<ol>
-<li>MD4<br />
-MD4(RFC 1320)是 MIT 的 Ronald L. Rivest 在 1990 年设计的，MD 是 Message Digest<br />
-的缩写。它适用在32位字长的处理器上用高速软件实现–它是基于 32 位操作数的位操作来实现的。</li>
-<li>MD5<br />
-MD5(RFC 1321)是 Rivest 于1991年对MD4的改进版本。它对输入仍以512位分组，其输出是4个32位字的级联，与 MD4<br />
-相同。MD5比MD4来得复杂，并且速度较之要慢一点，但更安全，在抗分析和抗差分方面表现更好</li>
-<li>SHA1 及其他<br />
-SHA1是由NIST NSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为160bit的散列值，因此抗穷举(brute-<br />
-force)性更好。SHA-1 设计时基于和MD4相同原理,并且模仿了该算法。<br />
-那么这些Hash算法到底有什么用呢？<br />
-Hash算法在信息安全方面的应用主要体现在以下的3个方面：</li>
-<li>文件校验<br />
-我们比较熟悉的校验算法有奇偶校验和CRC校验，这2种校验并没有抗数据篡改的能力，它们一定程度上能检测并纠正数据传输中的信道误码，但却不能防止对数据的恶意破坏<br />
-。<br />
-MD5 Hash算法的&quot;数字指纹&quot;特性，使它成为目前应用最广泛的一种文件完整性校验和(Checksum)算法，不少Unix系统有提供计算md5<br />
-checksum的命令。</li>
-<li>数字签名<br />
-Hash 算法也是现代密码体系中的一个重要组成部分。由于非对称算法的运算速度较慢，所以在数字签名协议中，单向散列函数扮演了一个重要的角色。 对 Hash<br />
-值，又称&quot;数字摘要&quot;进行数字签名，在统计上可以认为与对文件本身进行数字签名是等效的。而且这样的协议还有其他的优点。</li>
-<li>鉴权协议<br />
-如下的鉴权协议又被称作&quot;挑战–认证模式：在传输信道是可被侦听，但不可被篡改的情况下，这是一种简单而安全的方法。<br />
-hash函数在程序设计中的实现<br />
-// 说明：Hash函数（即散列函数）在程序设计中的应用目标 ------ 把一个对象通过某种转换机制对应到一个<br />
-// size_t类型（即unsigned long）的整型值。<br />
-// 而应用Hash函数的领域主要是 hash表（应用非常广）、密码等领域。<br />
-// 实现说明：<br />
-// （1）、这里使用了函数对象以及泛型技术，使得对所有类型的对象（关键字）都适用。<br />
-// （2）、常用类型有对应的偏特化，比如string、char*、各种整形等。<br />
-// （3）、版本可扩展，如果你对某种类型有特殊的需要，可以在后面实现专门化。<br />
-// （4）、以下实现一般放在头文件中，任何包含它的都可使用hash函数对象。<br />
-//------------------------------------实现--------------------------------------</li>
-</ol>
-<hr />
-<p>#include <string><br />
-using std::string;<br />
-inline size_t hash_str( const char* s )<br />
-{<br />
-unsigned long res = 0;<br />
-for ( ; <em>s; ++s )<br />
-res = 5 * res + <em>s;<br />
-return size_t(res);<br />
-}<br />
-template <class Key><br />
-struct hash<br />
-{<br />
-size_t operator () ( const Key&amp; k ) const;<br />
-};<br />
-// 一般的对象，比如：vector&lt; queue<string> &gt;的对象，需要强制转化<br />
-template &lt; class Key &gt;<br />
-size_t hash<Key>::operator () ( const Key&amp; k ) const<br />
-{<br />
-size_t res = 0;<br />
-size_t len = sizeof( Key );<br />
-const char</em> p = reinterpret_cast&lt;const char</em>&gt;( &amp;k );<br />
-while ( len-- )<br />
-{<br />
-res = (res&lt;&lt;1)^<em>p++;<br />
-}<br />
-return res;<br />
-}<br />
-// 偏特化<br />
-template&lt;&gt;<br />
-size_t hash&lt; string &gt;::operator () ( const string&amp; str ) const<br />
-{<br />
-return hash_str( str.c_str() );<br />
-}<br />
-typedef char</em> PChar;<br />
-template&lt;&gt;<br />
-size_t hash<PChar>::operator () ( const PChar&amp; s ) const<br />
-{<br />
-return hash_str(s);<br />
-}<br />
-typedef const char* PCChar;<br />
-template&lt;&gt;<br />
-size_t hash<PCChar>::operator () ( const PCChar&amp; s ) const<br />
-{<br />
-return hash_str(s);<br />
-}<br />
-template&lt;&gt; size_t hash<char>::operator () ( const char&amp; x ) const { return x;<br />
-}<br />
-template&lt;&gt; size_t hash<unsigned char>::operator () ( const unsigned char&amp; x )<br />
-const { return x; }<br />
-template&lt;&gt; size_t hash<signed char>::operator () ( const signed char&amp; x )<br />
-const { return x; }<br />
-template&lt;&gt; size_t hash<short>::operator () ( const short&amp; x ) const { return<br />
-x; }<br />
-template&lt;&gt; size_t hash<unsigned short>::operator () ( const unsigned short&amp; x<br />
-) const { return x; }<br />
-template&lt;&gt; size_t hash<int>::operator () ( const int&amp; x ) const { return x; }<br />
-template&lt;&gt; size_t hash<unsigned int>::operator () ( const unsigned int&amp; x )<br />
-const { return x; }<br />
-template&lt;&gt; size_t hash<long>::operator () ( const long&amp; x ) const { return x;<br />
-}<br />
-template&lt;&gt; size_t hash<unsigned long>::operator () ( const unsigned long&amp; x )<br />
-const { return x; }<br />
-// 使用说明：<br />
-//<br />
-// （1）、使用时首先由于是泛型，所以要加上关键字类型。<br />
-//<br />
-// （2）、其次要有一个函数对象，可以临时、局部、全局的，只要在作用域就可以。<br />
-//<br />
-// （3）、应用函数对象作用于对应类型的对象。<br />
-//----------------------- hash函数使用举例 -------------------------<br />
-#include <iostream><br />
-#include <vector><br />
-#include <string><br />
-using namespace std;<br />
-int main()<br />
-{<br />
-vector<string> vstr(2);<br />
-vstr[0] = “sjw”;<br />
-vstr[1] = “suninf”;<br />
-hash<string> strhash; // 局部函数对象<br />
-cout &lt;&lt; &quot; Hash value: &quot; &lt;&lt; strhash( vstr[0] ) &lt;&lt; endl;<br />
-cout &lt;&lt; &quot; Hash value: &quot; &lt;&lt; strhash( vstr[1] ) &lt;&lt; endl;<br />
-cout &lt;&lt; &quot; Hash value: &quot; &lt;&lt; hash&lt; vector<string> &gt;() ( vstr ) &lt;&lt; endl;<br />
-cout &lt;&lt; &quot; Hash value: &quot; &lt;&lt; hash<int>() ( 100 ) &lt;&lt; endl; // hash<int>() 临时函数对象<br />
-return 0;<br />
-}</p>
 
       
     </div>

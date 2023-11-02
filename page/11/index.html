@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,124 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/03/04/8632642/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/03/04/8632642/" class="post-title-link" itemprop="url">JAVA 远程Debug</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-03-04 10:48:00" itemprop="dateCreated datePublished" datetime="2013-03-04T10:48:00+08:00">2013-03-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>开启JVM的远程Debug模式, 在启动JVM的时候加上参数:</p>
+<pre><code>// 非阻塞方式，这样启动jvm后，可以再任意时间attach到server上
+-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=11312,server=y,suspend=n
+// 阻塞debug，启动JVM后，需要远程连接attach到相应的端口，JVM才会继续执行。
+-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=11312,server=y,suspend=y
+</code></pre>
+<p>第二条特别适合调试类初始化的程序模块。</p>
+<p>在eclipse中，bug项里有Debug Configurations… 选中。然后选中remove java application, 新建一个</p>
+<p>Project就是你要远程调试的 JAVA源码文件工程。  HOST就是那个server所在的机器名或者IP。 PORT就是<br />
+上面的address项11312。Connection Type就写Standard. 然后点击debug就可以。</p>
+<p>如果debug后，有连接错误。 1. 要查看server或者service是否已经启动。 2. 要看是否配置正确。3.检测端口是否被其他程序占用了。</p>
+<p>如果上面的检测完毕，还是连接失败。那么重启eclipse 或者 重启server. 这两个方法就可以解决问题。</p>
+<p>另外</p>
+<pre><code>-Xnoagent
+这一个选项在远程debug中一般不需要。其含义为Disables VM support for oldjdb。禁用旧的java debug。
+</code></pre>
+<p>下面是各个options的详解。摘自 <a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/1.4.2/docs/tooldocs/windows/jdb.html"><br />
+http://docs.oracle.com/javase/1.4.2/docs/tooldocs/windows/jdb.html<br />
+</a><br />
+<code>-Xdebug</code></p>
+<p>Enables debugging support in the VM</p>
+<p><code>-Xrunjdwp:transport=dt_shmem,server=y,suspend=n</code></p>
+<p>Loads in-process debugging libraries and specifies the kind of connection to<br />
+be made.</p>
+<p><code>-Xnoagent</code></p>
+<p>Disables VM support for ** oldjdb **</p>
+<p><code>-Djava.compiler=NONE</code></p>
+<p>Disables the JIT compiler. This is required for debugging under the classic VM</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1189,101 +1307,6 @@ System.setProperty(&quot;http.proxyPort&quot;, &quot;1234&quot;);
 <p>老婆大人边在旁边跳舞，边在旁边讥讽我拿了双薪…我问她为什么跳舞不动手，她说还没有学会手的动作…</p>
 <p>今天重构了一下RSA,AES模块，发现和c++通信的RSA模块还是不行，这该死的RSA算法,写的非常的通用，就是多个语言之间通常都不用。嗯，&quot;通用&quot;新解。</p>
 <p>另外今天发布blog一直不成功，后来发现需要先验证git.com的邮箱…竟然有这样的事情.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/12/13/8290371/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/12/13/8290371/" class="post-title-link" itemprop="url">Nginx 转发会去掉带有下划线(_)的Header Name</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-12-13 13:36:00" itemprop="dateCreated datePublished" datetime="2012-12-13T13:36:00+08:00">2012-12-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>168</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>nginx对header name的字符做了限制，默认 underscores_in_headers 为off，表示如果header<br />
-name中包含下划线，则忽略掉。<br />
-处理办法：</p>
-<p>1：配置中http部分 增加underscores_in_headers on; 配置<br />
-2：用减号-替代下划线符号_，避免这种变态问题。nginx默认忽略掉下划线可能有些原因。</p>
 
       
     </div>

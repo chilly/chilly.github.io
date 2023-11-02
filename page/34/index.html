@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,234 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/11/09/4788611/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/11/09/4788611/" class="post-title-link" itemprop="url">ubuntu9.04 (Server版) 配置Xen虚拟机</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-11-09 10:20:00" itemprop="dateCreated datePublished" datetime="2009-11-09T10:20:00+08:00">2009-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转载自：<span class="exturl" data-url="aHR0cDovL3dlbGxzLm9zYWxsLmNvbS9ibG9nL2luZGV4LnBocD91aWQ9MSZtPWNvbnRlbnQmcD0xNDM0I2FydGljbGVfY29udGU=">http://wells.osall.com/blog/index.php?uid=1&amp;m=content&amp;p=1434#article_conte<i class="fa fa-external-link-alt"></i></span><br />
+nt.php%3Fid%3D1434%26uid%3D1%26dt%3DY:pane:N;</p>
+<h1 id="bitime-咀嚼时光"><a class="markdownIt-Anchor" href="#bitime-咀嚼时光"></a> BITimE // 咀嚼时光</h1>
+<p>前两天买了个Seagate的320G的2.5寸SATA硬盘，真便宜，300多元，差不多每G一元钱了。于是就把原来移动硬盘里的160G的硬盘装在那台ATOM小<br />
+PC上了。如果大家还没忘记的话，应该还记得 <a target="_blank" rel="noopener" href="http://wells.osall.com/blog/index.php?uid=1&amp;m=content&amp;p=1417"> 我的那个ATOM小PC里面是用的8G的CF转IDE作为硬盘<br />
+</a><br />
+的。现在突然存储设备容量大了20倍，那就让它干更多的活吧。兔子老是跟我说他在他的服务器上装了 <a target="_blank" rel="noopener" href="http://blog.lalacafe.com/category/xen/"> n多虚拟机<br />
+</a> ，充分利用硬件资源，那我也来试一下吧。</p>
+<p>Linux上有很多虚拟机软件， <span class="exturl" data-url="aHR0cDovL3d3dy54ZW4ub3JnLw=="> XEN <i class="fa fa-external-link-alt"></i></span> 、 [ KVM ](http://www.linux-<br />
+<span class="exturl" data-url="aHR0cDovL2t2bS5vcmcvcGFnZS9NYWluX1BhZ2U=">kvm.org/page/Main_Page<i class="fa fa-external-link-alt"></i></span>) 、 <span class="exturl" data-url="aHR0cDovL3d3dy52bXdhcmUuY29tLw=="> VMWare <i class="fa fa-external-link-alt"></i></span> 、 <a target="_blank" rel="noopener" href="http://www.virtualbox.org/"> VirtualBox<br />
+</a><br />
+，从开源角度和性能角度来考量，当然选XEN啦。XEN性能非常优异，虚拟的主机的性能几乎和原生主机一致，如果主机硬件支持 <a target="_blank" rel="noopener" href="http://www.intel.com/technology/virtualization/"> VT (intel)<br />
+</a> 或者 [ SVM (AMD) ](<span class="exturl" data-url="aHR0cDovL3d3dw==">http://www<i class="fa fa-external-link-alt"></i></span><br />
+.amd.com/us/products/technologies/virtualization/Pages/virtualization.aspx)<br />
+的技术的话，则可以虚拟任何能在x86架构上运行的操作系统。可惜我的ATOM 330<br />
+CPU不支持VT技术，因此只能玩半虚拟模式，虚拟出内核支持XEN的操作系统了。</p>
+<p>换上新硬盘，首先就是安装新的操作系统。我一直用惯了Ubuntu，因此就安装了 <a target="_blank" rel="noopener" href="http://www.ubuntu.com/products/WhatIsUbuntu/serveredition"> Ubuntu 9.04 Server Edition 64位<br />
+</a><br />
+版本。安装OS的过程就不多说了，直接说XEN的安装配置吧。</p>
+<p>在XEN虚拟机环境上第一个被启动的操作系统被称为Domain-0，而之后启动的其他虚拟操作系统则被称为Domain-U，每一个Domain 就是一台虚拟机<br />
+。Domain-0除了可以运行应用程序外，还担负着XEN的控制功能，所以也被称为XEN Hypervisor。在Domain-<br />
+0上启动了XEN服务后，最重要的一个进程就是xend，这就是XEN的服务进程。</p>
+<p>我们新安装的操作系统如果没有安装XEN软件，则就相当于普通的一个单机使用。如果安装了XEN软件，并且以XEN化的内核启动，则这个操作系统环<br />
+境就变成了Domain-0，而后在这个环境下安装的其他操作系统则就是Domain-U了，都可以通过Domain-0来进行控制。</p>
+<p>![虚拟机架构](<span class="exturl" data-url="aHR0cDovL3AuYmxvZy5jc2RuLm5ldC9pbWFnZXMvcF9ibG9nX2NzZG5fbmV0L2NjdHRfMS9FbnRyeUltYWdlcy8yMDA5">http://p.blog.csdn.net/images/p_blog_csdn_net/cctt_1/EntryImages/2009<i class="fa fa-external-link-alt"></i></span><br />
+1109/hypervisor_01.png)</p>
+<p>要安装并使用XEN，首先更新软件源的信息。</p>
+<h1 id="sudo-apt-get-update"><a class="markdownIt-Anchor" href="#sudo-apt-get-update"></a> sudo apt-get update</h1>
+<p>然后安装xen服务器软件和工具。</p>
+<h1 id="sudo-apt-get-install-ubuntu-xen-server-sudo-apt-get-install-ubuntu-xen-"><a class="markdownIt-Anchor" href="#sudo-apt-get-install-ubuntu-xen-server-sudo-apt-get-install-ubuntu-xen-"></a> sudo apt-get install ubuntu-xen-server # sudo apt-get install ubuntu-xen-</h1>
+<p>desktop<br />
+这时候我们去/boot目录看，可以看到一个xen3.3.gz文件，但是没有供操作系统使用的XEN化的内核，因此此时的操作系统还不是Doamin-0。我找了好<br />
+久都没找到现成的XEN化内核，于是就只能根据XEN手册自己编译一个内核了。</p>
+<p>下载安装最新的kernel文件。</p>
+<h1 id="sudo-apt-get-install-linux-image-server-linux-server"><a class="markdownIt-Anchor" href="#sudo-apt-get-install-linux-image-server-linux-server"></a> sudo apt-get install linux-image-server linux-server</h1>
+<p>安装编译所需要的一些工具包。</p>
+<h1 id="sudo-apt-get-install-build-essential-libncurses5-dev-gawk-mercurial"><a class="markdownIt-Anchor" href="#sudo-apt-get-install-build-essential-libncurses5-dev-gawk-mercurial"></a> sudo apt-get install build-essential libncurses5-dev gawk mercurial</h1>
+<p>接下来下载XEN所提供的XEN化的内核的源代码。</p>
+<h1 id="mkdir-p-~buildlinux-2627-xen-cd-usrsrc-sudo-hg-clone"><a class="markdownIt-Anchor" href="#mkdir-p-~buildlinux-2627-xen-cd-usrsrc-sudo-hg-clone"></a> mkdir -p ~/build/linux-2.6.27-xen # cd /usr/src/ # sudo hg clone</h1>
+<p><span class="exturl" data-url="aHR0cDovL3hlbmJpdHMueGVuc291cmNlLmNvbS9leHQvbGludXgtMi42LjI3LXhlbi5oZw==">http://xenbits.xensource.com/ext/linux-2.6.27-xen.hg<i class="fa fa-external-link-alt"></i></span><br />
+配置内核选项。</p>
+<h1 id="cd-usrsrclinux-2627-xenhg-sudo-make-o~buildlinux-2627-xen"><a class="markdownIt-Anchor" href="#cd-usrsrclinux-2627-xenhg-sudo-make-o~buildlinux-2627-xen"></a> cd /usr/src/linux-2.6.27-xen.hg # sudo make O=~/build/linux-2.6.27-xen/</h1>
+<p>menuconfig<br />
+出现内核参数的配置菜单后，根据如下的选项修改配置。</p>
+<p>1。General setup —&gt; Choose SLAB allocator (SLUB (Unqueued Allocator)) —&gt;<br />
+(X) SLAB</p>
+<p>2。Processor type and features —&gt; Subarchitecture Type (PC-compatible) —&gt;<br />
+(X) Enable Xen compatible kernel</p>
+<p>3。</p>
+<p>Bus options (PCI etc.) —&gt; [<em>] PCI support [</em>] Xen PCI Frontend [ ] Xen PCI<br />
+Frontend Debugging (NEW)<br />
+4。将 <M> 802.1d Ethernet Bridging 修改为 &lt;*&gt; 802.1d Ethernet Bridging:</p>
+<p>Networking support —&gt; Networking options —&gt; &lt;*&gt; 802.1d Ethernet Bridging</p>
+<p>5。关闭 10000 Mbit Ethernet 支持（否则可能编译失败）：</p>
+<p>Device Drivers —&gt; [*] Network device support —&gt; [ ] Ethernet (10000 Mbit)<br />
+—&gt;</p>
+<p>6。在 XEN 选项区中，按照下面选择选项（确认选择 Xen version compatibility (3.0.4 and later) 来取代原来的<br />
+Xen version compatibility (3.0.2 and later)）：<br />
+Device Drivers —&gt; XEN —&gt; [<em>] Privileged Guest (domain 0) &lt;</em>&gt; Backend<br />
+driver support (NEW) &lt;<em>&gt; Block-device backend driver (NEW) &lt;</em>&gt; Block-device<br />
+tap backend driver (NEW) &lt;<em>&gt; Network-device backend driver (NEW) (8) Maximum<br />
+simultaneous transmit requests (as a power of 2) (NEW) [ ] Pipelined<br />
+transmitter (DANGEROUS) (NEW) &lt; &gt; Network-device loopback driver (NEW) &lt;</em>&gt;<br />
+PCI-device backend driver (NEW) PCI Backend Mode (Virtual PCI) —&gt; [ ] PCI<br />
+Backend Debugging (NEW) &lt; &gt; TPM-device backend driver (NEW) <M> SCSI backend<br />
+driver (NEW) <M> Block-device frontend driver <M> Network-device frontend<br />
+driver <M> Network-device frontend driver acceleration for Solarflare NICs<br />
+(NEW) <M> SCSI frontend driver (NEW) &lt;<em>&gt; User-space granted page access driver<br />
+(NEW) &lt;</em>&gt; Framebuffer-device frontend driver (NEW) &lt;<em>&gt; Keyboard-device<br />
+frontend driver (NEW) [</em>] Disable serial port drivers (NEW) &lt;*&gt; Export Xen<br />
+attributes in sysfs (NEW) (256) Number of guest devices (NEW) Xen version<br />
+compatibility (3.0.4 and later) —&gt;<br />
+ESC退出并保存完配置后就可以开始编译内核了。</p>
+<p>可能这里要先 make mrproper</p>
+<h1 id="sudo-make-o~buildlinux-2627-xen"><a class="markdownIt-Anchor" href="#sudo-make-o~buildlinux-2627-xen"></a> sudo make O=~/build/linux-2.6.27-xen/</h1>
+<h1 id="sudo-make-o~buildlinux-2627-xen-modules_install-install"><a class="markdownIt-Anchor" href="#sudo-make-o~buildlinux-2627-xen-modules_install-install"></a> sudo make O=~/build/linux-2.6.27-xen/ modules_install install</h1>
+<p>通过漫长的等待（我的Atom 330<br />
+CPU花了大约3个小时），终于编译完内核了。编译安装完成后，去/boot目录检查，应该可以看到生成了支持xen的2.6.27.5的内核了。</p>
+<h1 id="ls-l-boot"><a class="markdownIt-Anchor" href="#ls-l-boot"></a> ls -l /boot</h1>
+<p>total 72697<br />
+-rw-r–r-- 1 root root   525592 2009-04-17 12:05 abi-2.6.28-11-server<br />
+-rw-r–r-- 1 root root   524602 2009-07-25 11:14 abi-2.6.28-14-server<br />
+-rw-r–r-- 1 root root    87448 2009-08-13 19:50 config-2.6.27.5<br />
+-rw-r–r-- 1 root root    90587 2009-04-17 12:05 config-2.6.28-11-server<br />
+-rw-r–r-- 1 root root    90560 2009-07-25 11:14 config-2.6.28-14-server<br />
+drwxr-xr-x 2 root root     1024 2009-08-13 20:04 grub<br />
+-rw-r–r-- 1 root root  8259056 2009-08-14 03:31 initrd.img-2.6.28-11-server<br />
+-rw-r–r-- 1 root root  8272673 2009-08-13 15:02 initrd.img-2.6.28-14-server<br />
+drwxr-xr-x 2 root root    12288 2009-08-14 03:17 lost+found<br />
+-rw-r–r-- 1 root root   128796 2009-03-28 04:12 memtest86+.bin<br />
+-rw-r–r-- 1 root root  1651431 2009-08-13 19:50 System.map-2.6.27.5<br />
+-rw-r–r-- 1 root root  1871187 2009-04-17 12:05 System.map-2.6.28-11-server<br />
+-rw-r–r-- 1 root root  1863183 2009-07-25 11:14 System.map-2.6.28-14-server<br />
+-rw-r–r-- 1 root root     1169 2009-04-17 12:09 vmcoreinfo-2.6.28-11-server<br />
+-rw-r–r-- 1 root root     1169 2009-07-25 11:16 vmcoreinfo-2.6.28-14-server<br />
+-rw-r–r-- 1 root root  3145318 2009-08-13 19:50 vmlinuz-2.6.27.5<br />
+-rw-r–r-- 1 root root  3520832 2009-04-17 12:05 vmlinuz-2.6.28-11-server<br />
+-rw-r–r-- 1 root root  3510496 2009-07-25 11:14 vmlinuz-2.6.28-14-server<br />
+-rw-r–r-- 1 root root   470084 2009-06-18 16:16 xen-3.3.gz</p>
+<p>内核有了，但是还没有initrd.img也就是启动时所需的ramdisk文件，手动来生成一个。</p>
+<h1 id="sudo-depmod-26275"><a class="markdownIt-Anchor" href="#sudo-depmod-26275"></a> sudo depmod 2.6.27.5</h1>
+<h1 id="sudo-update-initramfs-c-k-26275"><a class="markdownIt-Anchor" href="#sudo-update-initramfs-c-k-26275"></a> sudo update-initramfs -c -k 2.6.27.5</h1>
+<p>更新grub引导程序。</p>
+<h1 id="update-grub"><a class="markdownIt-Anchor" href="#update-grub"></a> update-grub</h1>
+<p>现在XEN的环境基本上都建好了，我们需要来修改一下配置文件了。</p>
+<p>XEN服务的配置文件都在/etc/xen目录下。XEN服务的主配置文件是 /etc/xen/xend-<br />
+config.sxp。打开这个文件，我们要确认的是XEN虚拟服务器的网络连接方式，这是相当重要的。我选择了桥接模式， 也就是说，Domain-<br />
+U虚拟机和Domain-0在同一子网，用Domain-0的物理网卡来进行桥接到虚拟机的虚拟网卡。</p>
+<h1 id="sudo-vi-etcxenxend-configsxp"><a class="markdownIt-Anchor" href="#sudo-vi-etcxenxend-configsxp"></a> sudo vi /etc/xen/xend-config.sxp</h1>
+<p>确认网络部分是这样配置的：<br />
+(network-script network-bridge)<br />
+下一步要根据你的习惯来修改。你喜欢将虚拟机安装在哪里？是用一个镜像文件来虚拟成磁盘，还是将一个LVM逻辑卷虚拟成磁盘，或者干脆就是将物理磁盘给虚拟机使用？</p>
+<p>对于后两种选择，你可以跳过这一步。但如果你选择了在现有的文件系统中建立一个镜像文件来虚拟成一个虚拟机的物理磁盘，那就要按照下面修改默认配置了。</p>
+<p>由于镜像文件在加载的时候是作为回圈设备（loop device），因此要将操作系统的默认最大回圈设备数量调大，以免出现不必要的问题。</p>
+<h1 id="sudo-vi-etcmodules"><a class="markdownIt-Anchor" href="#sudo-vi-etcmodules"></a> sudo vi /etc/modules</h1>
+<p>将loop这一行修改为：<br />
+loop max_loop=64<br />
+好啦，重启主机，进入Domain-0的世界！！！</p>
+<h1 id="sudo-shutdown-r-now"><a class="markdownIt-Anchor" href="#sudo-shutdown-r-now"></a> sudo shutdown -r now</h1>
+<p>重启完成后检查一下kernel版本，是不是XEN化的那个2.6.27.5？</p>
+<h1 id="uname-r"><a class="markdownIt-Anchor" href="#uname-r"></a> uname -r</h1>
+<p>2.6.27.5<br />
+现在可以使用XEN的管理命令xm，来看看虚拟机运行状况啦！</p>
+<h1 id="sudo-xm-list"><a class="markdownIt-Anchor" href="#sudo-xm-list"></a> sudo xm list</h1>
+<p>Name                                        ID   Mem VCPUs      State<br />
+Time(s)<br />
+Domain-0                                     0  1473     4     r-----    479.8<br />
+哈哈，可以看到Domain-0正常运行！！！你可以使用xm help来学习如何通过xm来管理虚拟机。</p>
+<p>在State列，看到Domain-0是r的状态，也就是说，这个Domain正在运行中，并有任务在该Domain上运行。虚拟机还有如下几种状态：</p>
+<ul>
+<li>r ：该domain正在消耗CPU资源，任务运行中；</li>
+<li>b ：该domain正被暂时搁置(blockded)，一般来说是因为这个domain在闲置中，等待输入或输出(I/O)；</li>
+<li>p ：该domain处于暂停状态，通常是因为管理员使用 xm pause 暂停了这个domain。当domain至于暂停状态时，Xen的管理器将不会处理这个domain的任何动作；</li>
+<li>s ：该domain正在关机；</li>
+<li>c ：该domain已经crash了，但是没有关机。一般来说是因为domain的配置文件没有设置 on_crash 动作所致；</li>
+<li>d ：该domain正在死机中，一般来说是因为这个domain无法正确 shutdown/crashed 之故。</li>
+</ul>
+<p>先到这里吧，总算是把XEN安装上了，而且也把Domain-0给顺利启动了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2752,130 +2980,6 @@ username,如果想加入多个组可不能频繁的使用usermod -g命令，因�
 username可以让用户加入到两个组中，但是继续使用usermod -G依旧只能加入两个组。可以使用gpasswd -a username<br />
 groupname就可以将用户加入到多个组中。</p>
 <p>记下点简单的命令。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/21/4709125/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/10/21/4709125/" class="post-title-link" itemprop="url">弹性计算云Eucalyptus代码（start With A）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-10-21 16:28:00" itemprop="dateCreated datePublished" datetime="2009-10-21T16:28:00+08:00">2009-10-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>A Eucalyptus cloud setup consists of three types of components – the cloud<br />
-controller, the cluster controller(s), and the node controller(s). The cloud<br />
-controller is a Java program that, in addition to high-level resource<br />
-scheduling and system accounting, offers a Web services interface and a Web<br />
-interface to the outside world. Cluster controller and node controller are<br />
-written in C and deployed as Web services inside Apache.</p>
-<p>Eucalyptus使用了 ** Axis2 ** ,啥是Axis2或者说Axis2有啥用。Axis就是快速发布web<br />
-service的工具，提供了SOAP协议的封装，方便于client端于webservice通信。</p>
-<p>log机制使用了log4j。</p>
-<p>使用X509认证。</p>
-<p>** class AbstractIsomorph ** ,注释为MappedSuperclass，个人认为是一个保存用户信息和状态的抽象类。</p>
-<p>** class AbstractKeyStore ** ,这个抽象类很有意思，其静态方法调用了子类的构造函数。并且子类GenericKeyStore是其内部类。感觉设计得不好。其意图是让这个类含有几个抽象的方法，但是这几个抽象方法有一个默认的实现。AbstractKeyStore主要是为了添加证书查找证书，并查找用户名对应的password来认证。并且将alias，cert添加到某一文件中。并将此alias对应的password放入到keystore中。</p>
-<p>** class AbstractNamedRegistry ** ,这个抽象类将存放、更新某种继承自HasName接口的对象的两种状态。一种是active,一种是disable,这两种状态放在ConcurrentNavigableMap中，并且以对象的名作为key,value就是对象自身。</p>
-<p>** class AbstractOperation ** ,这个抽象类是操作的抽象，并认为凡是操作就应该有request和reply,并且request和reply继承自EucalyptusMessage</p>
-<p>** class AccessDeniedException ** ,就是一个禁止访问的异常，继承自EucalyptusCloudException。</p>
-<p>** class Address ** ,这是一个address类(废话)，存放地址id,  地址名(?? 个人认为可能是真实地址)  ,cluster的地址，使用者的用户名，实例地址等(其实就是一个描述实例所需要的属性。)并使用高性能锁ReentrantReadWriteLock加以控制。  加锁是为了将实例assign出去，或者收回。不过我个人觉得ReentrantReadWriteLock可能使用的有问题。以为我看到函数release()中有this.canHas.writeLock().lock();，并在之后调用了unassign()方法，而unassign()方法中也有this.canHas.writeLock().lock();…难道可以对同一写锁加两次lock？不过我没有研究过ReentrantReadWriteLock。</p>
-<p>** class Addresses, ** 这个类继承了  ** AbstractNamedRegistry， ** 并且可以填入 ** Address ** .这就是说，这个类是用来active,disable一个address的。另外它是用来单实例模式，也就是整个cloud中只有这一份实例。(  这里会不会崩溃后无法恢复的问题?  )</p>
-<p>** class AddressManager ** ,继承了org.mule.api.lifecycle.Startable类，  Startable可能是处理生命周期吧  …不过这个类是和地址相关的，是用来分配，释放，将address和vm关联起来的类。</p>
-<p>** class AddressUpdateCallback ** 继承了QueuedEventCallback并且实现了Runnable，也就是说它可以作为一个线程类。另外它sleep的时间好像有点过长了5<em>1000.这个类的作用好像是将用户名封装到msg中，然后发送给cluster队列来处理。之后睡一个5</em>1000秒，然后再醒来看看是否有cluster的回复，然后根据回复设置实例的地址。这里采用线程，是因为需要一直监督address的更新。可以看成是守护线程。</p>
-<p>add_key.pl,这个是perl文件，看不太明白，应该是加入了ssh的public key.不过中间为啥使用loop<br />
-device,并且将图片加载到loop device上就不得而知了。后来发现，这里image的含义不是图片的意思，而是镜像，也就是将镜像加载到loop<br />
-device上。</p>
-<p>add_key~add_wsdllocation.pl都是perl写成的。</p>
-<p>** class Admin ** 是用来创建EucalyptusMessage的类。</p>
-<p>** admin.xml ** 用来配置www的conf的。<br />
-** interface Allocator ** ，这接口用来分配的，根据String requestId, String userName, String vmtype, int min, int max, SortedSet<ClusterNodeState> clusters 来分配资源，会抛出NotEnoughResourcesAvailable异常</p>
-<p>** class AlreadyExistsException ** 继承了RuntimeException</p>
-<p>** class AOEManager ** 继承了StorageExportManager，是用来导出存储容量的？</p>
-<p>** interface AppMessages ** 继承了Messages，从其函数中看，是一个与页面控件事件相关的类。</p>
-<p>** class AssignAddressCallback ** ，分配地址的cluster,发送回消息后就会将network configure更新。</p>
-<p>** class AttachedVolumeInfo ** 这是一个将附加逻辑磁盘id,逻辑磁盘名，实例id,设备名，状态和添加时间合成的类。如果其为一行，那么一张表就是AttachedVolumes</p>
-<p>** interface Authenticator ** 是将X509证书和EucalyptusMessage中信息来生成是否授权的Msg的接口。</p>
-<p>** aws-base.xml~aws-zones.xml ** 是将java类映射为XML,是否为Hibernate就不得而知了。</p>
-<p>** Axis2.xml~class AxisHttpResponseImpl ** 可以认为是和Axis2打交道的东西。可以以后再研究下。</p>
 
       
     </div>

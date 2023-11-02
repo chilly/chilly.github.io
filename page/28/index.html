@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,181 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/10/5469810/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/10/5469810/" class="post-title-link" itemprop="url">Svn Install Svn安装配置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-10 10:58:00" itemprop="dateCreated datePublished" datetime="2010-04-10T10:58:00+08:00">2010-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>因为使用的是ubuntu, 安装相当简单，去软件管理器中输入svn就可以。或者使用</p>
+<p>$ sudo apt-get install subversion</p>
+<p>其实也没有怎么按照svn的安装流程走，那样的话需要添加新的用户,用户组。安全系数高一些。下面是自己的流程：</p>
+<p>首先建一个svn目录,mkdir /home/cc/svn</p>
+<p>在此目录下创建你自己的代码目录:</p>
+<p>cd /home/cc/svn svnadmin create trunk //然后启动svn svnserve -d<br />
+–root=/home/cc/svn</p>
+<p>如果想在trunk之下创建其他目录，可以直接使用mkdir director的方法。之后去其他机器使用svnclient.也可以使用刚才的apt-get<br />
+install subversion的方式。</p>
+<p>svnserve.conf:12: Option<br />
+expected，产生的原因是没有顶格写。例如在/home/cc/svn/trunk/conf/svnserve.conf中：</p>
+<p>[general] anon-access = none ### 这里auth-access的写法是错误的。 auth-access = write ###<br />
+这样写才是正确的 auth-access = write</p>
+<p>svn  :  No  access  allowed  to  this  repository</p>
+<p>首先要把  svnserve.conf中的password-db = passwd注释去掉。然后在passwd文件中添加:</p>
+<p>[users] cc = 123</p>
+<p>在authz中添加:</p>
+<p>[groups] ### 这里是建立一个组 user = cc,aa,bb,dd ###<br />
+这里repository:后添加的是相对路径，例如我的路径/home/cc/svn/trunk在这里就是/trunk [repository:/trunk]</p>
+<h3 id="这里user是某一个组的权限-user-rw-这是所有用户的权限-r"><a class="markdownIt-Anchor" href="#这里user是某一个组的权限-user-rw-这是所有用户的权限-r"></a> 这里@user是某一个组的权限 @user = rw ### 这是所有用户的权限 * = r</h3>
+<p>以后使用svn需要输入–username=cc --password=123</p>
+<p>Authorization failed</p>
+<p>这里是因为在authz中的路径可能设置有问题(repository:之后的那个路径，那里面的路径全部都是相对路径)，或者是命令没有顶格写。passwd,<br />
+authz, svnserve.conf中的所有命令必须是顶格写的。</p>
+<p>下面是远程机器使用svn导入项目：</p>
+<p>svn import  [本地目录] svn://[ip]/trunk -m &quot;import project&quot;即可.例如我的是 svn import<br />
+~/code/cnode svn://192.168.1.22/trunk -m “import”  --username=cc<br />
+–password=123</p>
+<p>这里要注意的是svn会将本地目录之下的所有东西都按照相同的组织方式放入到trunk.所有最好导入工程根目录。</p>
+<p>贴一下写好的配置文件,这里我的trunk是pddms: authz</p>
+<h3 id="this-file-is-an-example-authorization-file-for-svnserve-its-format-is"><a class="markdownIt-Anchor" href="#this-file-is-an-example-authorization-file-for-svnserve-its-format-is"></a> This file is an example authorization file for svnserve. ### Its format is</h3>
+<p>identical to that of mod_authz_svn authorization ### files. ### As shown below<br />
+each section defines authorizations for the path and ### (optional) repository<br />
+specified by the section name. ### The authorizations follow. An authorization<br />
+line can refer to: ### - a single user, ### - a group of users defined in a<br />
+special [groups] section, ### - an alias defined in a special [aliases]<br />
+section, ### - all authenticated users, using the ‘$authenticated’ token, ###</p>
+<ul>
+<li>only anonymous users, using the ‘$anonymous’ token, ### - anyone, using the<br />
+‘*’ wildcard. ### ### A match can be inverted by prefixing the rule with ‘~’.<br />
+Rules can ### grant read (‘r’) access, read-write (‘rw’) access, or no access</li>
+</ul>
+<h3 id="aliases-joe-cxzstdessertlsnake-cityosnake-oil"><a class="markdownIt-Anchor" href="#aliases-joe-cxzstdessertlsnake-cityosnake-oil"></a> (‘’). [aliases] # joe = /C=XZ/ST=Dessert/L=Snake City/O=Snake Oil,</h3>
+<p>Ltd./OU=Research Institute/CN=Joe Average [groups] harry_and_sally =<br />
+cc,aa,bb,dd # harry_sally_and_joe = harry,sally,&amp;joe [/] cc = rw # &amp;joe = r #</p>
+<ul>
+<li>= [repository:/pddms] @harry_and_sally = rw * = r</li>
+</ul>
+<p>passwd:</p>
+<h3 id="this-file-is-an-example-password-file-for-svnserve-its-format-is"><a class="markdownIt-Anchor" href="#this-file-is-an-example-password-file-for-svnserve-its-format-is"></a> This file is an example password file for svnserve. ### Its format is</h3>
+<p>similar to that of svnserve.conf. As shown in the ### example below it<br />
+contains one section labelled [users]. ### The name and password for each user<br />
+follow, one account per line. [users] cc = 123 aa = 123 # harry = harryssecret</p>
+<h1 id="sally-sallyssecret"><a class="markdownIt-Anchor" href="#sally-sallyssecret"></a> sally = sallyssecret</h1>
+<p>svnserve.conf</p>
+<h3 id="this-file-controls-the-configuration-of-the-svnserve-daemon-if-you"><a class="markdownIt-Anchor" href="#this-file-controls-the-configuration-of-the-svnserve-daemon-if-you"></a> This file controls the configuration of the svnserve daemon, if you</h3>
+<p>use it to allow access to this repository. (If you only allow ### access<br />
+through http: and/or file: URLs, then this file is ### irrelevant.) ### Visit<br />
+<span class="exturl" data-url="aHR0cDovL3N1YnZlcnNpb24udGlncmlzLm9yZy8=">http://subversion.tigris.org/<i class="fa fa-external-link-alt"></i></span> for more information. [general] ### These<br />
+options control access to the repository for unauthenticated ### and<br />
+authenticated users. Valid values are “write”, “read”, ### and “none”. The<br />
+sample settings below are the defaults. anon-access = none auth-access = write</p>
+<h3 id="the-password-db-option-controls-the-location-of-the-password-database"><a class="markdownIt-Anchor" href="#the-password-db-option-controls-the-location-of-the-password-database"></a> The password-db option controls the location of the password ### database</h3>
+<p>file. Unless you specify a path starting with a /, ### the file’s location is<br />
+relative to the directory containing ### this configuration file. ### If SASL<br />
+is enabled (see below), this file will NOT be used. ### Uncomment the line<br />
+below to use the default password file. password-db = passwd ### The authz-db<br />
+option controls the location of the authorization ### rules for path-based<br />
+access control. Unless you specify a path ### starting with a /, the file’s<br />
+location is relative to the the ### directory containing this file. If you<br />
+don’t specify an ### authz-db, no path-based access control is done. ###<br />
+Uncomment the line below to use the default authorization file. authz-db =<br />
+authz ### This option specifies the authentication realm of the repository.</p>
+<h3 id="if-two-repositories-have-the-same-authentication-realm-they-should"><a class="markdownIt-Anchor" href="#if-two-repositories-have-the-same-authentication-realm-they-should"></a> If two repositories have the same authentication realm, they should</h3>
+<p>have the same password database, and vice versa. The default realm ### is<br />
+repository’s uuid. realm = pddms_a [sasl] ### This option specifies whether<br />
+you want to use the Cyrus SASL ### library for authentication. Default is<br />
+false. ### This section will be ignored if svnserve is not built with Cyrus</p>
+<h3 id="sasl-support-to-check-run-svnserve-version-and-look-for-a-line"><a class="markdownIt-Anchor" href="#sasl-support-to-check-run-svnserve-version-and-look-for-a-line"></a> SASL support; to check, run ‘svnserve --version’ and look for a line</h3>
+<p>reading ‘Cyrus SASL authentication is available.’ # use-sasl = true ### These<br />
+options specify the desired strength of the security layer ### that you want<br />
+SASL to provide. 0 means no encryption, 1 means ### integrity-checking only,<br />
+values larger than 1 are correlated ### to the effective key length for<br />
+encryption (e.g. 128 means 128-bit ### encryption). The values below are the<br />
+defaults. # min-encryption = 0 # max-encryption = 256</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1250,111 +1425,6 @@ key.这里key是私钥。这里添加的话是普通权限的user的key.当然�
           <meta name="_edit_last" content="1" />
 <meta name="views" content="636" />
 use douban: <span class="exturl" data-url="aHR0cDovL2RvdWJhbi5mbS9yYWRpbw==">http://douban.fm/radio<i class="fa fa-external-link-alt"></i></span>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/23/2010-03-23-ubuntu-10-04-belta-released/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/23/2010-03-23-ubuntu-10-04-belta-released/" class="post-title-link" itemprop="url">Ubuntu 10.04 Beta Released</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-23T00:00:00+08:00">2010-03-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 22:59:47" itemprop="dateModified" datetime="2023-10-05T22:59:47+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>66</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="views" content="1242" />
-download:
-<span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQvdWJ1bnR1LTEwLjA0LWJldGExLWRlc2t0b3AtaTM4Ni5pc28=">desktop(32 bit)<i class="fa fa-external-link-alt"></i></span>
-<p><span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQvdWJ1bnR1LTEwLjA0LWJldGExLXNlcnZlci1pMzg2Lmlzbw==">server(32 bit)<i class="fa fa-external-link-alt"></i></span></p>
-<p><span class="exturl" data-url="aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20vcmVsZWFzZXMvMTAuMDQv">Ubuntu 10.04 LTS (Lucid Lynx) Beta 1<i class="fa fa-external-link-alt"></i></span></p>
 
       
     </div>

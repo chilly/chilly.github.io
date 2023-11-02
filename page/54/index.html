@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,337 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/04/08/2260065/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/04/08/2260065/" class="post-title-link" itemprop="url">c++I/O流</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-04-08 11:35:00" itemprop="dateCreated datePublished" datetime="2008-04-08T11:35:00+08:00">2008-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>输出流(cout)基本操作<br />
+1、使用流插入运算符（&lt;&lt;）<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+char c[]=“Good morning”;<br />
+cout&lt;&lt;c&lt;&lt;endl;<br />
+}<br />
+运行结果：<br />
+Good morning<br />
+Press any key to continue<br />
+2、使用成员函数<br />
+// ostream &amp;put(char);<br />
+// 输出一个字符，可连续使用<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+cout.put(‘A’).put(‘/n’);<br />
+}<br />
+运行结果：<br />
+A<br />
+Press any key to continue<br />
+// ostream &amp;write(const char*,int);<br />
+// 输出若干个字符<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+char c[]=“Good morning”;<br />
+cout.write(c,4)&lt;&lt;endl;<br />
+}<br />
+运行结果：<br />
+Good<br />
+Press any key to continue<br />
+输入流(cin)基本操作<br />
+1、使用提取运算符（&gt;&gt;）<br />
+//输入用空格、制表符、回车分隔<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+int i,j; char c;<br />
+cin&gt;&gt;i&gt;&gt;c&gt;&gt;j;<br />
+cout&lt;&lt;i&lt;&lt;“[”&lt;&lt;c&lt;&lt;“]”&lt;&lt;j&lt;&lt;endl;<br />
+}<br />
+运行结果：<br />
+123 456<br />
+123[4]56<br />
+Press any key to continue<br />
+2、使用成员函数<br />
+// int get();<br />
+// 读到结束标记返回EOF(-1)<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+while(true)<br />
+{<br />
+cout&lt;&lt;cin.get()&lt;&lt;‘//’;<br />
+if(cin.eof())break;<br />
+}<br />
+}<br />
+运行结果：<br />
+12 34　 5<br />
+49/50/32/51/52/9/53/10/^Z<br />
+-1/Press any key to continue<br />
+// istream &amp;get(char&amp;);<br />
+// 读到结束标记返回NULL指针<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+char c;<br />
+while(true)<br />
+{<br />
+cout&lt;&lt;cin.get©&lt;&lt;endl;<br />
+if(cin.eof())break;<br />
+}<br />
+}<br />
+运行结果：<br />
+12<br />
+0x004300EC<br />
+0x004300EC<br />
+0x004300EC<br />
+^Z<br />
+0x00000000<br />
+Press any key to continue<br />
+//istream &amp;get(char*,int n,char delimit=‘/n’);<br />
+//get不从流中取出结束符，默认结束符是回车<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+char s1[10],s2[10],s3[10];<br />
+cin.get(s1,10);<br />
+cin.get(s2,10);<br />
+cin.get(s3,10);<br />
+cout&lt;&lt;“---------------------/n”;<br />
+cout&lt;&lt;s1&lt;&lt;endl;<br />
+cout&lt;&lt;s2&lt;&lt;endl;<br />
+cout&lt;&lt;s3&lt;&lt;endl;<br />
+}<br />
+运行结果：<br />
+1234567890ABCDEF<br />
+---------------------<br />
+123456789<br />
+0ABCDEF</p>
+<p>Press any key to continue<br />
+//istream &amp;getline(char*,int n,char delimit=‘/n’);<br />
+//getline将从流中取出结束符，默认结束符是回车<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+char s1[10],s2[10],s3[10];<br />
+cin.getline(s1,10);<br />
+cin.getline(s2,10);<br />
+cin.getline(s3,10);<br />
+cout&lt;&lt;“---------------------/n”;<br />
+cout&lt;&lt;s1&lt;&lt;endl;<br />
+cout&lt;&lt;s2&lt;&lt;endl;<br />
+cout&lt;&lt;s3&lt;&lt;endl;<br />
+}<br />
+1234567890ABCDEF<br />
+Bye bye<br />
+---------------------<br />
+123456789<br />
+0ABCDEF<br />
+Bye bye<br />
+Press any key to continue<br />
+//isrream &amp;read(char *,int);<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+char c[10];<br />
+cin.read(c,10);<br />
+cout.write(c,cin.gcount())&lt;&lt;endl;<br />
+}<br />
+运行结果：<br />
+1234567890ABCDEF<br />
+1234567890<br />
+Press any key to continue</p>
+<p>2、I/O格式控制<br />
+ios类中有一些格式控制标志位，可通过公有函数来改变这些标志位<br />
+long　　flags() ;  //返回标志字的值<br />
+long　　flags(long);  //设置标志字的值<br />
+long　　setf(long);  //设置标志位<br />
+long　　setf(long,long);  //设置对齐、数制、浮点标志位<br />
+long　　unsetf(long);  //清除标志位<br />
+int　　 width();<br />
+int　　 width(int);  //无保持性，对紧随其后输出的数据有效<br />
+char　　fill();<br />
+char　　fill(chac);  //填充字符<br />
+int　　 precision();<br />
+int　　 precision(int);  //设置精度</p>
+<p>设置标志位时，可使用ios类定义的枚举常量：<br />
+enum {　skipws　　 = 0x0001,<br />
+left　　　 = 0x0002,　　// adjustfield<br />
+right　　　= 0x0004,<br />
+internal　 = 0x0008,<br />
+dec　　　　= 0x0010,　　// basefield<br />
+oct　　　　= 0x0020,<br />
+hex　　　　= 0x0040,<br />
+showbase　 = 0x0080,<br />
+showpoint　= 0x0100,<br />
+uppercase　= 0x0200,<br />
+showpos　　= 0x0400,<br />
+scientific = 0x0800,　　// floatfield<br />
+fixed　　　= 0x1000,<br />
+unitbuf　　= 0x2000,<br />
+stdio　　　= 0x4000<br />
+};</p>
+<p>用成员函数控制：<br />
+#include&lt;stdio.h&gt;<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+int i=234;<br />
+printf(“%08X/n”,i);<br />
+cout.setf(ios::hex,ios::basefield);<br />
+cout.setf(ios::uppercase);<br />
+cout.width(8);<br />
+cout.fill(‘0’);<br />
+cout&lt;&lt;i&lt;&lt;endl;<br />
+cout.setf(ios::dec,ios::basefield);<br />
+cout&lt;&lt;i&lt;&lt;endl;<br />
+}<br />
+运行结果：<br />
+000000EA<br />
+000000EA<br />
+234<br />
+Press any key to continue</p>
+<p>用流操纵算子控制格式<br />
+算子可直接作为I/O输出表达式的一项，算子分为无参算子及有参算子<br />
+算子分为无参算子  iostream.h<br />
+dec  //十进制<br />
+oct  //八进制<br />
+hex  //16进制<br />
+endl  //换行<br />
+flush  //立即输出<br />
+有参算子  iomanip.h<br />
+resetiosflags(long)  //清除标志位<br />
+setfill(int)  //设置填充字符<br />
+setiosflags(long)  //设置标志位<br />
+setprecision(int)  //设置精度<br />
+setw(int)  //设置宽度<br />
+//用流操纵算子控制格式<br />
+#include&lt;iostream.h&gt;<br />
+#include&lt;iomanip.h&gt;<br />
+void main()<br />
+{<br />
+int i=234;<br />
+cout&lt;&lt;hex&lt;&lt;setfill(‘0’)&lt;&lt;setw(8)&lt;&lt;setiosflags(ios::uppercase)&lt;&lt;i&lt;&lt;endl;<br />
+cout&lt;&lt;i&lt;&lt;endl;<br />
+cout&lt;&lt;dec&lt;&lt;i&lt;&lt;endl;<br />
+cout&lt;&lt;setw(8)&lt;&lt;i&lt;&lt;endl;<br />
+}<br />
+运行结果：<br />
+000000EA<br />
+EA<br />
+234<br />
+00000234<br />
+Press any key to continue<br />
+显示浮点数<br />
+//没指定是定点(fixed)还是科学(scientific)时，默认输出6位有效数字<br />
+//指定后，精度是指小数点后的有效位数<br />
+#include&lt;iomanip.h&gt;<br />
+#include&lt;stdio.h&gt;<br />
+#include&lt;iostream.h&gt;<br />
+void main()<br />
+{<br />
+double d=123.4567890123456789123456789;<br />
+cout&lt;&lt;d&lt;&lt;endl;  //默认6位有效数字<br />
+cout&lt;&lt;setprecision(4)&lt;&lt;d&lt;&lt;endl;  //保留小数点后3位<br />
+cout&lt;&lt;setiosflags(ios::fixed)&lt;&lt;d&lt;&lt;endl;  //科学记数法<br />
+cout&lt;&lt;setprecision(20)&lt;&lt;d&lt;&lt;endl;  //能显示20位吗？<br />
+cout&lt;&lt;resetiosflags(ios::fixed);  //取消定点显示<br />
+cout&lt;&lt;setiosflags(ios::scientific);  //科学记数法<br />
+cout&lt;&lt;setprecision(4)&lt;&lt;d&lt;&lt;endl;  //保留小数点后2位<br />
+}<br />
+运行结果：<br />
+123.457<br />
+123.5<br />
+123.4568<br />
+123.456789012345680<br />
+1.2346e+002<br />
+Press any key to continue</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1371,163 +1702,6 @@ Runtime   libraray中选择MultiThread   DLL等其他库，逐一尝试。<br 
 <p>这就是我所遇到过的LNK2005错误的几种情况，肯定还有其他的情况也可能造成这种错误，所以我不希望你在看完这篇文章以后，再遇到LNK2005错误时候，不动脑<br />
 筋的想对号入座的排除错误。编程的过程就是一个思考的过程，所以还是多多开动你的头脑，那样收获会更多！</p>
 <p>注意：头文件中只是全局变量和函数的声明，严禁定义。只有模板类中重载运算符除外… 这是我得到的结论。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/03/12/2174638/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/03/12/2174638/" class="post-title-link" itemprop="url">模板类的小问题（链接失败）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-03-12 21:44:00" itemprop="dateCreated datePublished" datetime="2008-03-12T21:44:00+08:00">2008-03-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天上午做模板类。结果还发现了大大小小的问题。</p>
-<p>希望自己的模板变的越来越规范，所以强迫自己把模板类中的函数的定义和声明分开。 而且放在了不同的文件里。</p>
-<p>下面是大概的写法。</p>
-<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-template  &lt; class  type  &gt;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-class  A<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
-ContractedBlock.gif) …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-public  :<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-friend ostream  &amp; operator  &lt;&lt; (ostream  &amp; , A  &lt; type  &gt;&amp; );<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-A();<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-…<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kEnd.gif) }  ;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /></p>
-<p>然后在另一个.cpp中这样定义</p>
-<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-template  &lt; class  type  &gt;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-ostream  &amp; operator  &lt;&lt; (ostream  &amp; os,A  &lt; type  &gt;&amp; a)<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
-ContractedBlock.gif) …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-os  &lt;&lt; a…  &lt;&lt; endl;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-return  os;<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kEnd.gif) }<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-template  &lt; class  type  &gt;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> A<br />
-&lt; type  &gt; ::A()<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
-ContractedBlock.gif) …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-…<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kEnd.gif) }<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-template  &lt; class  type  &gt;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-void  A  &lt; type  &gt; ::test()<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
-ContractedBlock.gif) …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-…<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kEnd.gif) }</p>
-<p>在main函数中这样调用</p>
-<p>A<int> a();</p>
-<p>a.test();</p>
-<p>cout &lt;&lt; a;</p>
-<p>结果链接失败…报的错误好像是link2019.</p>
-<p>不清楚为啥，后来同时在main的文件中include A.h 和A.cpp可以解决构造函数和Test()函数reference的问题。</p>
-<p>然后又将重载&lt;&lt;的函数放在类的定义中才解决了link2019链接错误.</p>
-<p>但是我还是想把这个重载的函数声明和定义分开写，不知道哪位高手可以指点一下。</p>
 
       
     </div>

@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">793</span>
+          <span class="site-state-item-count">794</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">750</span>
+        <span class="site-state-item-count">751</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,125 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/02/01/2012-02-01-jstack-jmap-resin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2012/02/01/2012-02-01-jstack-jmap-resin/" class="post-title-link" itemprop="url">Jstack Jmap Resin</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2012-02-01 20:41:00" itemprop="dateCreated datePublished" datetime="2012-02-01T20:41:00+08:00">2012-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:16:57" itemprop="dateModified" datetime="2023-10-05T23:16:57+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Today, I use <code>jstack</code>, <code>jmap</code>, and <code>resin</code> to look up why my server is deading in stress test. And I also find printing information into log is useful. You can print log in entrance of function and exit of function.<br />
+jstack is a tool which is looked up stack of system, specailly in threads. It is mainly for looking up dead lock and some functions which are executed too slowly.<br />
+jmap is a tool which is looked up current memory of system or some memery jvm can not delete immediately.<br />
+You can use jstack like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack -l [pid]</span><br></pre></td></tr></table></figure>
+<p>If you know pid of the process, you can see what’s the situation of stacks in process. If you want to see the detail, looking at those stacks.<br />
+jmap is used like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -heap [pid]</span><br></pre></td></tr></table></figure>
+<p>Today, Big niu Qiao tells me about JVM GC policy.<br />
+There are New Generation, Old Generate and Perm Generation in JVM. You can find them in jmap command. And New Generation are new objects. And Old Generation are old objects which are still be refered. Eden Space stores new generate objects. And From Space stores still alive objects after gc once. To space stores objects which are not refered and in From space before gc once. If an objects is in From Space many times, it will be moved to Old Generation by JVM. Perm Generation are static objects and Classes.<br />
+By the way, if your application runs in resin, you should look up those logs of resin, for example, jvm-default.log. The log file contains GC log information. If GC throws overMemory exception, you should modify your configuration of resin (resin.xml in resin4.0+). Modify or add:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;jvm-arg&gt;-Xmx1024&lt;/jvm-arg&gt;</span><br></pre></td></tr></table></figure>
+<p>This means set JVM heap space to 1G.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2012/02/01/2012-02-01-jstack-jmap-resin/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1145,138 +1264,6 @@ by someone</p>
 {“其实我真的不想再说什么了…”}<br />
 好吧，让这篇blog结束吧。</p>
 </blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2012/01/14/2012-01-14-new/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2012/01/14/2012-01-14-new/" class="post-title-link" itemprop="url">First Use Octopress</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2012-01-14 20:43:00" itemprop="dateCreated datePublished" datetime="2012-01-14T20:43:00+08:00">2012-01-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:15:52" itemprop="dateModified" datetime="2023-10-05T23:15:52+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这是第二篇blog。第一篇貌似什么都没有写。现在在linux下过得相当到舒坦。比windows的感觉好多了。就是拼音输入法支持到不怎么样。谢谢搭建octopress的感受吧。第一感受是这东西真不好装。需要现学到知识也有很多，例如rvm, ruby, gem, bundle, rake, git, MarkDown. 再加上在windows下养成到习惯，到linux下还是要熟悉一下。首先要先安装openssl和libtool相关的包。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openssh-client openssl libruby1.9.1 libssl-dev libssl libtool</span><br></pre></td></tr></table></figure>
-<p>下面挨个介绍吧。</p>
-<ul>
-<li>rvm 是管理ruby的工具，因为octopress需要使用ruby1.9.2所以必须使用rvm,否则就自己去[ruby] []的官网上自己下载，然后编译安装。这里使用rvm是可以管理多个ruby版本。并且可以自动编译安装ruby。安装rvm需要一行命令<br />
-bash -s stable &lt; &lt;(curl -s <span class="exturl" data-url="aHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS93YXluZWVzZWd1aW4vcnZtL21hc3Rlci9iaW5zY3JpcHRzL3J2bS1pbnN0YWxsZXI=">https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer<i class="fa fa-external-link-alt"></i></span>)<br />
-敲命令时注意<code>&lt; &lt;</code>之间的空格。安装完这个，需要将rvm添加到path中。在~/.bashrc中添加<code>PATH=$PATH:~/.rvm/bin</code>。注意有些系统可能~/.bashprofile或者其他，详情在哪里添加请[google] []。添加完后，关闭bash shell.再启动shell或者终端。然后下面的命令可以很好执行：<br />
-which rvm
-<h1 id="看到底rvm路径对了没有"><a class="markdownIt-Anchor" href="#看到底rvm路径对了没有"></a> 看到底rvm路径对了没有</h1>
-rvm install 1.9.2 &amp;&amp; rvm use 1.9.2
-<h1 id="安装ruby-192并且使用这个版本"><a class="markdownIt-Anchor" href="#安装ruby-192并且使用这个版本"></a> 安装ruby 1.9.2并且使用这个版本</h1>
-ruby --version
-<h1 id="是否是192版本"><a class="markdownIt-Anchor" href="#是否是192版本"></a> 是否是1.9.2版本</h1>
-</li>
-</ul>
-<p>这里需要注意rvm use 1.9.2,如果你的机器重启，这里下次还要再设置一边。否则很有可能不能找到正确的ruby.</p>
-<ul>
-<li>这一步要使用到git, git是管理代码到工具。不会用的话详情见[git] []。octopress也主要使用了git和github,否则该实现到功能都不能用了。<br />
-git clone git://github.com/imathis/octopress.git octopress
-<h1 id="把octopress的主要内容down下来"><a class="markdownIt-Anchor" href="#把octopress的主要内容down下来"></a> 把octopress的主要内容down下来。</h1>
-</li>
-<li>这里要使用gem， bundle, rake了。gem,bundler都是管理ruby各个小类库的工具。而rake是ruby make.<br />
-gem install bundler<br />
-bundle install<br />
-rake install<br />
-# 如果这里rake运行不成功，有可能是有多个版本到rake,要使用bundle exec rake install</li>
-<li>剩下的详情请查阅[octopress][octopress-deploy]。<br />
-如果在<code>rake generate</code>处因为openssl卡住，则需要安装完openssl,再安装ruby.yaml编译不成功，是因为没有安装libtool.<br />
-[octopress-deploy]: <span class="exturl" data-url="aHR0cDovL29jdG9wcmVzcy5vcmcvZG9jcy9kZXBsb3lpbmcv">http://octopress.org/docs/deploying/<i class="fa fa-external-link-alt"></i></span><br />
-[git]: <span class="exturl" data-url="aHR0cDovL2dpdC1zY20uY29t">http://git-scm.com<i class="fa fa-external-link-alt"></i></span><br />
-[ruby]: <span class="exturl" data-url="aHR0cDovL3J1YnktbGFuZy5vcmc=">http://ruby-lang.org<i class="fa fa-external-link-alt"></i></span><br />
-[google]: <span class="exturl" data-url="aHR0cDovL2dvb2dsZS5jb20=">http://google.com<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
 
       
     </div>
