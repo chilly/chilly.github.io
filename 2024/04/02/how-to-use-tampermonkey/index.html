@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":20,"unescape":false,"preload":false}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/config.min.js"></script>
+
+    <meta name="description" content="1. 下载油猴tampermonkey 首先去chrome webstore下载tampermonkey,就是众所周知的油猴。 这东西还是要从专门的渠道下载。因为如果你要做免登录脚本，那么用户名，密码不可能避免的需要被这些脚本知道。 如果是恶意制作的油猴插件，可能这些脚本就会被传送的特殊的服务器上去。用户名及密码就可能被拿到。 我这里最近在尝试学习油猴插件来制作某些网站的免登录脚本。 具体方法如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Use Tampermonkey">
+<meta property="og:url" content="http://chillyc.info/2024/04/02/how-to-use-tampermonkey/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="1. 下载油猴tampermonkey 首先去chrome webstore下载tampermonkey,就是众所周知的油猴。 这东西还是要从专门的渠道下载。因为如果你要做免登录脚本，那么用户名，密码不可能避免的需要被这些脚本知道。 如果是恶意制作的油猴插件，可能这些脚本就会被传送的特殊的服务器上去。用户名及密码就可能被拿到。 我这里最近在尝试学习油猴插件来制作某些网站的免登录脚本。 具体方法如">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-02T10:04:16.000Z">
+<meta property="article:modified_time" content="2024-04-02T10:38:41.078Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="tampermonkey">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2024/04/02/how-to-use-tampermonkey/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2024/04/02/how-to-use-tampermonkey/","path":"2024/04/02/how-to-use-tampermonkey/","title":"How to Use Tampermonkey"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>How to Use Tampermonkey | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/rss2.xml" title="帐前卒专栏" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.<br/>代码，软件架构，博客和小说</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-feeds"><a href="/rss2.xml" rel="section"><i class="fa fa-feed fa-fw"></i>feeds</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%B8%8B%E8%BD%BD%E6%B2%B9%E7%8C%B4tampermonkey"><span class="nav-number">1.</span> <span class="nav-text"> 1. 下载油猴tampermonkey</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%AE%B0%E5%BD%95%E4%B8%80%E4%B8%8B%E5%90%84%E4%B8%AA%E7%BD%91%E7%AB%99%E7%9A%84%E7%99%BB%E5%BD%95%E8%84%9A%E6%9C%AC"><span class="nav-number">2.</span> <span class="nav-text"> 2. 记录一下各个网站的登录脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-xxl-job-admin"><span class="nav-number">2.1.</span> <span class="nav-text"> 1. xxl-job-admin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-gitlab"><span class="nav-number">2.2.</span> <span class="nav-text"> 2. gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-grafana"><span class="nav-number">2.3.</span> <span class="nav-text"> 3. grafana</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-rancher"><span class="nav-number">2.4.</span> <span class="nav-text"> 4. rancher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-jenkins"><span class="nav-number">2.5.</span> <span class="nav-text"> 5. jenkins</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text"> 3. 总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2024/04/02/how-to-use-tampermonkey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="How to Use Tampermonkey | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          How to Use Tampermonkey
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-04-02 18:04:16 / Modified: 18:38:41" itemprop="dateCreated datePublished" datetime="2024-04-02T18:04:16+08:00">2024-04-02</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="1-下载油猴tampermonkey"><a class="markdownIt-Anchor" href="#1-下载油猴tampermonkey"></a> 1. 下载油猴tampermonkey</h1>
+<p>首先去chrome webstore下载<code>tampermonkey</code>,就是众所周知的油猴。</p>
+<p>这东西还是要从专门的渠道下载。因为如果你要做免登录脚本，那么用户名，密码不可能避免的需要被这些脚本知道。</p>
+<p>如果是恶意制作的油猴插件，可能这些脚本就会被传送的特殊的服务器上去。用户名及密码就可能被拿到。</p>
+<p>我这里最近在尝试学习油猴插件来制作某些网站的免登录脚本。</p>
+<p><strong>具体方法如下:</strong></p>
+<ol>
+<li>先找到要登录的网站</li>
+<li>点击油猴的插件图标</li>
+<li>选择<code>create a new script...</code></li>
+<li>进入后修改<code>@name</code> 和 <code>@match</code> 一个是这个脚本文件的名字，一个是脚本会在哪个url下执行。 @match支持<code>*</code>通配符</li>
+<li>然后在 <code>// Your code here...</code> 处编写代码</li>
+</ol>
+<h1 id="2-记录一下各个网站的登录脚本"><a class="markdownIt-Anchor" href="#2-记录一下各个网站的登录脚本"></a> 2. 记录一下各个网站的登录脚本</h1>
+<h2 id="1-xxl-job-admin"><a class="markdownIt-Anchor" href="#1-xxl-job-admin"></a> 1. xxl-job-admin</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&quot;:text&quot;</span>)[<span class="number">0</span>].<span class="property">value</span>=<span class="string">&quot;your name&quot;</span>;</span><br><span class="line">$(<span class="string">&quot;:password&quot;</span>)[<span class="number">0</span>].<span class="property">value</span>=<span class="string">&#x27;your password&#x27;</span>;</span><br><span class="line">$(<span class="string">&quot;:checkbox&quot;</span>)[<span class="number">0</span>].<span class="property">checked</span>=<span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> loginButton = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;button[type=&#x27;submit&#x27;]&quot;</span>);</span><br><span class="line">loginButton.<span class="title function_">click</span>();</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="2-gitlab"><a class="markdownIt-Anchor" href="#2-gitlab"></a> 2. gitlab</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#username&#x27;</span>).<span class="property">value</span>=<span class="string">&quot;your name&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#password&#x27;</span>).<span class="property">value</span>=<span class="string">&quot;your password&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;.btn-confirm&#x27;</span>).<span class="title function_">click</span>();</span><br></pre></td></tr></table></figure>
+<h2 id="3-grafana"><a class="markdownIt-Anchor" href="#3-grafana"></a> 3. grafana</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> userId = <span class="string">&#x27;your name&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> password = <span class="string">&#x27;your password&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> userInput = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;input[name^=user]&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> passwordInput= <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;input[name^=password]&#x27;</span>);</span><br><span class="line">   </span><br><span class="line"><span class="keyword">var</span> loginButton = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;.css-3coq9d-button&#x27;</span>);</span><br><span class="line"></span><br><span class="line">userInput.<span class="property">value</span> = userId;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">userInput.<span class="title function_">blur</span>();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">passwordInput.<span class="property">value</span> = password;</span><br><span class="line"></span><br><span class="line">passwordInput.<span class="title function_">blur</span>();</span><br><span class="line"><span class="comment">// grafana 是非常奇怪的，这里需要两次click, 缺少任何一次都无法正常登录</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    </span><br><span class="line">    loginButton.<span class="title function_">click</span>();</span><br><span class="line">    &#125;,<span class="number">1200</span>);</span><br><span class="line">&#125;,<span class="number">1200</span>);</span><br><span class="line"></span><br><span class="line">loginButton.<span class="title function_">click</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="4-rancher"><a class="markdownIt-Anchor" href="#4-rancher"></a> 4. rancher</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 这个rancher 需要等待 document load 出来。也就是说他渲染界面有点慢。</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> userInput = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;div.labeled-input.edit input[type=&#x27;text&#x27;]&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> passwordInput = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;div.labeled-input.edit input[type=&#x27;password&#x27;]&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> loginButton = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;div.col.span-12.text-center button[type=&#x27;submit&#x27;]&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> user = <span class="string">&#x27;your name&#x27;</span>;</span><br><span class="line">        <span class="keyword">var</span> pass = <span class="string">&#x27;your password&#x27;</span>;</span><br><span class="line"></span><br><span class="line">        userInput.<span class="property">value</span> = user;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> event = <span class="variable language_">document</span>.<span class="title function_">createEvent</span>(<span class="string">&#x27;HTMLEvents&#x27;</span>);</span><br><span class="line">        event.<span class="title function_">initEvent</span>(<span class="string">&quot;input&quot;</span>, <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line">        event.<span class="property">eventType</span> = <span class="string">&#x27;message&#x27;</span>;</span><br><span class="line">        <span class="comment">// 调度事件</span></span><br><span class="line">        userInput.<span class="title function_">dispatchEvent</span>(event);</span><br><span class="line"></span><br><span class="line">        passwordInput.<span class="property">value</span>=pass;</span><br><span class="line"></span><br><span class="line">        passwordInput.<span class="title function_">dispatchEvent</span>(event);</span><br><span class="line"></span><br><span class="line">        loginButton.<span class="title function_">click</span>();</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="5-jenkins"><a class="markdownIt-Anchor" href="#5-jenkins"></a> 5. jenkins</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;input[type=&#x27;text&#x27;]&quot;</span>).<span class="property">value</span>=<span class="string">&quot;your name&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;input[type=&#x27;password&#x27;]&quot;</span>).<span class="property">value</span>=<span class="string">&#x27;your password&#x27;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;input[type=&#x27;checkbox&#x27;]&quot;</span>).<span class="property">checked</span>=<span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> loginButton = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;button[type=&#x27;submit&#x27;]&quot;</span>);</span><br><span class="line">loginButton.<span class="title function_">click</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="3-总结"><a class="markdownIt-Anchor" href="#3-总结"></a> 3. 总结</h1>
+<ol>
+<li>有些非常简单，只需要<code>input</code>组件<code>value</code>正确, 点击<code>button</code>就可以发请求，但有些就需要控制组件失焦， 还有一些需要模拟动作。</li>
+<li>有些input非常容易获取到，可以通过id属性来找，有些就只能通过input子属性才能获取到。</li>
+<li>每个网站的界面做的都大同小异，但是写脚本仍然非常头疼。登录这部分没有标准。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/tampermonkey/" rel="tag"># tampermonkey</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/03/clash-for-windows-download/" rel="prev" title="Clash-for-Windows-Download">
+                  <i class="fa fa-angle-left"></i> Clash-for-Windows-Download
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Word count total: </span>
+    <span title="Word count total">1.6m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">24:12</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/next-boot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/bookmark.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/search/local-search.min.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/comments/utterances.min.js"></script>
+
+</body>
+</html>

@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">794</span>
+          <span class="site-state-item-count">795</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">751</span>
+        <span class="site-state-item-count">752</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,257 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/03/05/8639903/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/03/05/8639903/" class="post-title-link" itemprop="url">JAVA 快速实现webService （同步逻辑）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-03-05 22:09:00" itemprop="dateCreated datePublished" datetime="2013-03-05T22:09:00+08:00">2013-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天因为需要调用第三方的接口些fake service, 用于testcase. 该第三方使用的是soap的webservice模式。</p>
+<p>首先是创建service。</p>
+<pre><code>package myws;
+
+import java.io.IOException;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.ws.Endpoint;
+
+/**
+ *
+ * @author 帐前卒
+ *
+ */
+@WebService(
+        name=&quot;HELLO&quot;,
+        targetNamespace=&quot;http://chillyc.info/api&quot;, 
+        serviceName=&quot;API&quot;, 
+        portName=&quot;PortName&quot;)
+public class WebServiceHolder &#123;
+    @WebMethod
+    @WebResult(name=&quot;return&quot;)
+    public String hello(@WebParam(name=&quot;name&quot;)String name) &#123;
+        return &quot;hello&quot; + name;
+    &#125;
+    
+    public static void main(String[] args) throws IOException &#123;
+        Endpoint.publish(&quot;http://localhost:80/fake/ws&quot;, new WebServiceHolder());
+        System.in.read();
+    &#125;
+&#125;
+</code></pre>
+<p>这里写System.in.read();是希望服务在那里卡死。基本上所有的server都是类似死循环的写法。所以我这里就偷懒使用IO.</p>
+<p>这里要注意的是@WebService annotation. 其中 name是指这个portType 叫什么。<br />
+targetNameSpace这个在所有的后续调用中名字都是一致的。serviceName就是服务的名称。portName<br />
+其实就是提供服务的端口名称（这里对服务本身的调用没有什么关系）。如果没有name, 那么java会默认使用WebServiceHolder<br />
+也就类名称作为name.</p>
+<p>运行后，在浏览器中打开</p>
+<pre><code>http://localhost:80/fake/ws?wsdl
+</code></pre>
+<p>然后就可以看到wsdl文件。</p>
+<pre><code>This XML file does not appear to have any style information associated with it. The document tree is shown below.
+&lt;!--
+ Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.6 in JDK 6. 
+--&gt;
+&lt;!--
+ Generated by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.6 in JDK 6. 
+--&gt;
+&lt;definitions xmlns:soap=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot; xmlns:tns=&quot;http://chillyc.info/api&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns=&quot;http://schemas.xmlsoap.org/wsdl/&quot; targetNamespace=&quot;http://chillyc.info/api&quot; name=&quot;API&quot;&gt;
+&lt;types&gt;
+&lt;xsd:schema&gt;
+&lt;xsd:import namespace=&quot;http://chillyc.info/api&quot; schemaLocation=&quot;http://localhost/fake/ws?xsd=1&quot;/&gt;
+&lt;/xsd:schema&gt;
+&lt;/types&gt;
+&lt;message name=&quot;hello&quot;&gt;
+&lt;part name=&quot;parameters&quot; element=&quot;tns:hello&quot;/&gt;
+&lt;/message&gt;
+&lt;message name=&quot;helloResponse&quot;&gt;
+&lt;part name=&quot;parameters&quot; element=&quot;tns:helloResponse&quot;/&gt;
+&lt;/message&gt;
+&lt;message name=&quot;getReturnInfo&quot;&gt;
+&lt;part name=&quot;parameters&quot; element=&quot;tns:getReturnInfo&quot;/&gt;
+&lt;/message&gt;
+&lt;message name=&quot;getReturnInfoResponse&quot;&gt;
+&lt;part name=&quot;parameters&quot; element=&quot;tns:getReturnInfoResponse&quot;/&gt;
+&lt;/message&gt;
+&lt;portType name=&quot;HELLO&quot;&gt;
+&lt;operation name=&quot;hello&quot;&gt;
+&lt;input message=&quot;tns:hello&quot;/&gt;
+&lt;output message=&quot;tns:helloResponse&quot;/&gt;
+&lt;/operation&gt;
+&lt;operation name=&quot;getReturnInfo&quot;&gt;
+&lt;input message=&quot;tns:getReturnInfo&quot;/&gt;
+&lt;output message=&quot;tns:getReturnInfoResponse&quot;/&gt;
+&lt;/operation&gt;
+&lt;/portType&gt;
+&lt;binding name=&quot;PortNameBinding&quot; type=&quot;tns:HELLO&quot;&gt;
+&lt;soap:binding transport=&quot;http://schemas.xmlsoap.org/soap/http&quot; style=&quot;document&quot;/&gt;
+&lt;operation name=&quot;hello&quot;&gt;
+&lt;soap:operation soapAction=&quot;&quot;/&gt;
+&lt;input&gt;
+&lt;soap:body use=&quot;literal&quot;/&gt;
+&lt;/input&gt;
+&lt;output&gt;
+&lt;soap:body use=&quot;literal&quot;/&gt;
+&lt;/output&gt;
+&lt;/operation&gt;
+&lt;operation name=&quot;getReturnInfo&quot;&gt;
+&lt;soap:operation soapAction=&quot;&quot;/&gt;
+&lt;input&gt;
+&lt;soap:body use=&quot;literal&quot;/&gt;
+&lt;/input&gt;
+&lt;output&gt;
+&lt;soap:body use=&quot;literal&quot;/&gt;
+&lt;/output&gt;
+&lt;/operation&gt;
+&lt;/binding&gt;
+&lt;service name=&quot;API&quot;&gt;
+&lt;port name=&quot;PortName&quot; binding=&quot;tns:PortNameBinding&quot;&gt;
+&lt;soap:address location=&quot;http://localhost/fake/ws&quot;/&gt;
+&lt;/port&gt;
+&lt;/service&gt;
+&lt;/definitions&gt;
+</code></pre>
+<p>大家自己对照刚才的那些name, serviceName等，在wsdl文件中的什么地方。</p>
+<p>然后是写一个stub作为调用的接口。</p>
+<pre><code>package myws;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
+
+/**
+ *
+ * @author 帐前卒
+ *
+ */
+@WebService(targetNamespace = &quot;http://chillyc.info/api&quot;, name=&quot;HELLO&quot;)
+public interface WebServiceAPI &#123;
+    String hello(@WebParam(name=&quot;name&quot;)String name);
+
+&#125;
+</code></pre>
+<p>这里要注意的是 那个hello函数，必须与webService发布的函数名相一致(要看wdsl文件中的名字。)<br />
+另外WebParam中的name也需要和发布函数中的参数名字一致。<br />
+这里WebService中传入了两个值。其中name就是刚才WebService中的name. 其实就是wsdl中的portType.<br />
+如果这里写错了。就会有Undefined port type：{<a href="http://chillyc.info/api">http://chillyc.info/api</a>}Name. 这个错误。所以要小心。</p>
+<p>另外写个可执行的类。</p>
+<pre><code>package myws;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+
+/**
+ *
+ * @author 帐前卒
+ *
+ */
+public class Client &#123;
+    public static void main(String[] args) throws MalformedURLException &#123;
+        WebServiceAPI api = Service.create(
+                new URL(&quot;http://localhost:80/fake/ws?wsdl&quot;),
+                new QName(&quot;http://chillyc.info/api&quot;, &quot;API&quot;))
+                .getPort(WebServiceAPI.class);
+        System.out.println(api.hello(&quot;sss&quot;));
+    &#125;
+&#125;
+</code></pre>
+<p>这里URL中的就是wsdl文件的地址。 QName传入的就是targetNamespace 和 serviceName.<br />
+另外getPort就填入刚才的stub. 然后直接调用stub中的接口就能得到结果。</p>
+<p>done.</p>
+<p>简单快速，搭建和写client 也就是10分钟搞定。当然这只是起步</p>
+<p>这个方法适用于JDK6及以上，其他版本未知。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1219,112 +1470,6 @@ System.setProperty(&quot;http.proxyPort&quot;, &quot;1234&quot;);
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/01/06/2013-01-06-2013-dot-01-dot-07jin-ri-jian-wen/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/01/06/2013-01-06-2013-dot-01-dot-07jin-ri-jian-wen/" class="post-title-link" itemprop="url">2013.01.07今日见闻，奖金，年终奖，感谢贵公司</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-01-06 22:16:00" itemprop="dateCreated datePublished" datetime="2013-01-06T22:16:00+08:00">2013-01-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:14" itemprop="dateModified" datetime="2023-10-06T22:54:14+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/prose/" itemprop="url" rel="index"><span itemprop="name">prose</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>474</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>today, 今天发了双薪，本来那一个月的薪水是应该在奖金中一起发的。按照过去的发钱方法交税是比较少的，还能给自己留点余额。今年可好了，一半的工资都被做为税收了…感谢国家，感谢党，感谢贵公司。</p>
-<p>据说年终奖4万元以上的话，这样发双薪划算。想来贵公司这么的人性化。老婆说没发这么多年终奖的话，就不让我回家…所以我准备从现在开始筹钱。</p>
-<p>今天贵公司发的二手笔记本电源灯一直闪红色，插电源充电也没有用。解决方法不是换电源、不是换主板、不是换另外一个二手电脑，而是用贴纸把灯贴住。感谢贵公司，我又学会了节省。</p>
-<p>今天打开了久违的虚拟机，写了blog. 很长时间没有用，都不知道怎么写octopress的blog了。</p>
-<p>老婆大人边在旁边跳舞，边在旁边讥讽我拿了双薪…我问她为什么跳舞不动手，她说还没有学会手的动作…</p>
-<p>今天重构了一下RSA,AES模块，发现和c++通信的RSA模块还是不行，这该死的RSA算法,写的非常的通用，就是多个语言之间通常都不用。嗯，&quot;通用&quot;新解。</p>
-<p>另外今天发布blog一直不成功，后来发现需要先验证git.com的邮箱…竟然有这样的事情.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/12/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1356,7 +1501,7 @@ System.setProperty(&quot;http.proxyPort&quot;, &quot;1234&quot;);
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:10</span>
+    <span title="Reading time total">24:12</span>
   </span>
 </div>
 

@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">794</span>
+          <span class="site-state-item-count">795</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">751</span>
+        <span class="site-state-item-count">752</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,110 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/05/01/4141471/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/05/01/4141471/" class="post-title-link" itemprop="url">Python中文处理问题——分句</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-05-01 10:32:00" itemprop="dateCreated datePublished" datetime="2009-05-01T10:32:00+08:00">2009-05-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>829</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>从普通文件中例如txt中读到的中文是使用gbk编码的。但是我始终不知道decode(‘gbk’)之后是什么编码。但是那种应该是某个unicode编码.</p>
+<p>我不知道有没有好的处理方式。但是中文分词要先分句。结果我使用string.maketrans()或者是re.sub()…都没有起到将七七八八的符号转换为空<br />
+格的效果。最后发现可能是由于编码的问题。然后使用了笨方法来做分句，一个一个字符读，读到对应的就分句。另外注意这里如果是gbk编码一定要decode('gbk<br />
+'),而且不能编码成utf-8,也不能使用过去的gbk活着gb2312编码。否则你分出来的句子就会有乱码的问题。这个问题，我一直不明白为啥米。下面是：</p>
+<p>def Cut(cutlist,lines): l = [] line = [] for i in lines: if<br />
+FindTok(cutlist,i): l.append(“”.join(line)) l.append(i) line = [] else:<br />
+line.append(i) return l</p>
+<p>然后以行读文件，在切分行为句。上面返回的结果中含有标点符号。标点符号单独存。并且可能结果中包含空格。</p>
+<p>cutlist = “[。，,！……!《》&lt;&gt;/”‘:：？/?、/|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂’‘/n/r<br />
+&quot;.decode(‘gbk’) for lines in file(inputfilename): l =<br />
+Cut(list(cutlist),list(lines.decode(‘gbk’))) for line in l: if line.strip() &lt;&gt;<br />
+“”:#这里可能包含空格 li = line.strip().split() for sentence in li: print<br />
+“se:”,sentence</p>
+<p>大家要copy代码的时候注意格式。反正不管怎么说，总算把中文分句搞定了。大家可以根据自己的需要减少或者增加cutlist</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1159,110 +1263,6 @@ single act of forgiveness can change everything. 宽恕仇人，宽恕自己。�
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/04/13/4071027/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/04/13/4071027/" class="post-title-link" itemprop="url">微软实习宣讲会</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-04-13 22:12:00" itemprop="dateCreated datePublished" datetime="2009-04-13T22:12:00+08:00">2009-04-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>437</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>同步（这个应该是主流趋势，并且顺应了普适计算的潮流）<br />
-易用性（因为没有这么多高手，大家都是菜鸟，所以能吸引更多的用户）<br />
-windows 7 对vista做了优化，细节功能优化（这个也就是修复了很多bug）<br />
-态度决定一切。（这个是米卢老先生说的attitude is everything）<br />
-全身心投入（这个应该是干一行爱一行）<br />
-早了解，早准备，早尝试（这个应该叫笨鸟先飞）</p>
-<p>分析完毕…</p>
-<p>其实这次宣讲会本没有必要在中科院开。因为中科院几乎所有院系统一规定：出去实习者死！但是当然也有不法分子和有权有势者冒着杀头的危险去尝试。但是我想大多数人还是<br />
-胆小的。</p>
-<p>另外实习即使是兼职也要有每周三天的时间，连续三个月。而且不含星期六星期天…很抱歉…可以明确的说除了逃课别无选择。当然7月份要进实验室…不想被砍头就勇于<br />
-去尝试吧…(虽然我一直没有看到被砍头的)</p>
-<p>其实这次提问中有个很搞笑的事情发生，有人说…你们说的XX功能…linux不都实现了吗?</p>
-<p>…当场哄笑…</p>
-<p>其实我感觉，微软应该先做调研…然后再看看适不适合做宣讲会。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/39/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><span class="page-number current">40</span><a class="page-number" href="/page/41/">41</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/41/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1294,7 +1294,7 @@ windows 7 对vista做了优化，细节功能优化（这个也就是修复了�
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:10</span>
+    <span title="Reading time total">24:12</span>
   </span>
 </div>
 

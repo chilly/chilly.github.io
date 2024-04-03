@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">794</span>
+          <span class="site-state-item-count">795</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">751</span>
+        <span class="site-state-item-count">752</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,127 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/03/3859570/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/02/03/3859570/" class="post-title-link" itemprop="url">GeneralTreeNode 一般树形结构节点类</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-02-03 09:58:00" itemprop="dateCreated datePublished" datetime="2009-02-03T09:58:00+08:00">2009-02-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>写这个类是配合GeneralTree这个类的。</p>
+<p>这个类使用TreeNode基类继承而来。这里有一点要说明的。为了编程的方便，这里TreeNode中的成员属性均设置为Public</p>
+<p>当然，如果有需求一遍写为protected。当然我这里是为了自娱自乐…所以没有在意太多。</p>
+<p>TreeNode头文件详见 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/08/19/2794469.aspx"> http://blog.csdn.net/cctt_1/archive/2008/08/19/2794469.aspx<br />
+</a></p>
+<p>这个Node其实是二叉树的一种变形形式。它含有一个父指针，和一个孩子个数计数器。</p>
+<p>#ifndef <em>GENERALTREENODE_H</em> #define <em>GENERALTREENODE_H</em> #include “TreeNode.h”<br />
+template<class T> class GeneralTreeNode : public TreeNode<T> { public : int<br />
+childLength; // how many children does the node have GeneralTreeNode<T>*<br />
+parent;// the parent point of the node public: GeneralTreeNode(T &amp;<br />
+data):TreeNode(data) { childLength = 0; parent = NULL; } GeneralTreeNode(T&amp;<br />
+data, TreeNode<T>* left, TreeNode<T>* right, TreeNode<T>* parent)<br />
+:TreeNode(data,left,right) { childLength = 0; parent = parent; }<br />
+GeneralTreeNode(GeneralTreeNode* a):TreeNode(a-&gt;data,a-&gt;left,a-&gt;right) {<br />
+childLength = a-&gt;childLength; parent = a-&gt;parent; } // to print the data<br />
+virtual void Print(void (*print)(T&amp; data)) { print(data); } virtual<br />
+~GeneralTreeNode() { childLength = 0; parent = NULL; } };</p>
+<p>查找它的各个孩子的任务交给了GeneralTree类来做，它的职能就是记录孩子节点的个数，并快速的查找到它的父节点可能上面那个网页的TreeNode.h文件<br />
+由于以前是直接贴代码到CSDN上，所以可能现在不适合拷贝。</p>
+<p>所以将TreeNode.h的代码在贴到下方：</p>
+<p>/* * create by chico chen * date: 2009/02/02 <em>/ #ifndef <em>TREENODE_H</em> #define<br />
+<em>TREENODE_H</em> template<class T> class TreeNode { public: T data; TreeNode<T> *<br />
+left; TreeNode<T> * right; public: TreeNode(T&amp; data) { this-&gt;data = data;<br />
+this-&gt;left = NULL; this-&gt;right = NULL; } TreeNode(T&amp; data,TreeNode<T></em> left,<br />
+TreeNode<T>* right) { this-&gt;data = data; this-&gt;left = left; this-&gt;right =<br />
+right; } virtual ~TreeNode() { // cout &lt;&lt; “node (”&lt;<this->data&lt;&lt;“)<br />
+destory!”&lt;&lt;endl; // to do } T&amp; getData() { return data; } void setData(T&amp;<br />
+data) { this-&gt;data = data; } TreeNode<T> * getLeft() { return left; } void<br />
+setLeft(TreeNode<T> * left) { this-&gt;left = left; } TreeNode<T> * getRight() {<br />
+return right; } void setRight(TreeNode<T>* right) { this-&gt;right = right; } };<br />
+#endif</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1288,97 +1409,6 @@ Sean Donnellan …Penny’s Dad</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/01/15/3790000/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/01/15/3790000/" class="post-title-link" itemprop="url">自然辩证法复习提纲（尚智丛老师）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-01-15 16:42:00" itemprop="dateCreated datePublished" datetime="2009-01-15T16:42:00+08:00">2009-01-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>28</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>如果你不想只看题目那样投机取巧的话,可以看看下面的提纲：</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/43/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/43/">43</a><span class="page-number current">44</span><a class="page-number" href="/page/45/">45</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/45/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1410,7 +1440,7 @@ Sean Donnellan …Penny’s Dad</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:10</span>
+    <span title="Reading time total">24:12</span>
   </span>
 </div>
 

@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">794</span>
+          <span class="site-state-item-count">795</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">751</span>
+        <span class="site-state-item-count">752</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,113 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/07/11/5727277/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/07/11/5727277/" class="post-title-link" itemprop="url">HashMap 将Object 当做Key传入</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-07-11 17:51:00" itemprop="dateCreated datePublished" datetime="2010-07-11T17:51:00+08:00">2010-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>package test; import java.util.*; // Key class class A{ public int a; public<br />
+int b; A(int a, int b){ this.a = a; this.b = b; } public boolean equals(Object<br />
+o){ A x = (A)o; if(x.a == this.a &amp;&amp; x.b == this.b) return true; return false;<br />
+} public int hashCode(){ return a+b; } } public class HashTableTest { /** *<br />
+@param args */ public static void main(String[] args) { // TODO Auto-generated<br />
+method stub HashMap&lt;A,Integer&gt; hm = new HashMap&lt;A,Integer&gt;(); A a1 = new<br />
+A(2,3); A a2 = new A(4,5); A a4 = new A(2,3); A a3 = new A(3,2); hm.put(a1,<br />
+new Integer(1)); hm.put(a2, new Integer(3));<br />
+System.out.print(hm.containsKey(a4)); } }</p>
+<p>对于Key这个类，这里需要重载boolean  equals(Object o) 和int hashCode()<br />
+两个函数。这两个函数必须都要重载，否则会导致key找到不到。这里要说为什么，估计是HashMap中使用key相等的策略是<br />
+if(key1.equals(key2) &amp;&amp; key1.hashCode() == key2.hashCode()),<br />
+因为hashcode可能会有多个不同的实例对应于一个hashCode, 所以这个东东会重叠。对于判断两个对象是否相等，java默认使用的是引用相等，即a<br />
+== b。但是对于String等其他内置的类来说，他们有自己的重载equals()方法。另外java<br />
+doc中也提到，当重载equals()方法时，最好把hashCode()方法也重载掉。这样看来if(key1.equals(key2) &amp;&amp;<br />
+key1.hashCode() == key2.hashCode())这句应该变为：</p>
+<p>Key k = this.Get(key2.hashCode()); if (k.equals(key2)) return …</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1636,99 +1743,6 @@ So where <figure class="highlight plaintext"><table><tr><td class="gutter"><pre>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/17/5674707/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/06/17/5674707/" class="post-title-link" itemprop="url">微博系统</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-06-17 09:25:00" itemprop="dateCreated datePublished" datetime="2010-06-17T09:25:00+08:00">2010-06-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>195</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>貌似网上大家都使用Easytalk搭建微博系统。那东东使用php和mysql的。就是备案难了点，可以考虑放到米国。小量用户速度蛮快的，大量的用户没有测试过.<br />
-…(废话ing)有个家伙做了一个IT的微博，就是贴代码麻烦了点，要先去<span class="exturl" data-url="aHR0cDovL3Bhc3RlYmluLnhuLS1jb20tencyZXI4Y3AxNGFvdmdnejRobmdj">http://pastebin.com那里发布成功<i class="fa fa-external-link-alt"></i></span>，然后再从分享那里贴进来。。。虽然<br />
-webservice已经大行其道，但是真正的接口互用似乎还要等到在未来的若干年。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/23/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/25/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1760,7 +1774,7 @@ webservice已经大行其道，但是真正的接口互用似乎还要等到在�
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:10</span>
+    <span title="Reading time total">24:12</span>
   </span>
 </div>
 

@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">794</span>
+          <span class="site-state-item-count">795</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">751</span>
+        <span class="site-state-item-count">752</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,135 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/09/03/2010-09-03-postgresql-function-define/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/09/03/2010-09-03-postgresql-function-define/" class="post-title-link" itemprop="url">Postgresql Function Define</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2010-09-03T00:00:00+08:00">2010-09-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:54:06" itemprop="dateModified" datetime="2023-10-06T22:54:06+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="views" content="1573" />
+In Postgresql, If you want to do something like "select Hello(a) from A;". You should define your own function Hello().
+<p>First, go to postgresql root directory and go into contrib file folder. Create your own directory, and add hello.h , hello.c, Makefile, <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">hello.sql.in<i class="fa fa-external-link-alt"></i></span> and uninstall_Hello.sql.in</p>
+<p>Makefile is like the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">MODULE_big  = Hello // this is module name</span><br><span class="line">OBJS = Hello.o // those will be create by execute &quot;make&quot;</span><br><span class="line"></span><br><span class="line">DATA_built = hello.sql // install your function using this sql file</span><br><span class="line">DATA = uninstall_Hello.sql</span><br><span class="line">SHLIB_LINK = $(BE_DLLLIBS)</span><br><span class="line"></span><br><span class="line">ifdef USE_PGXS // this is a build infrastructure of extentions in postgreSQL</span><br><span class="line">PGXS = $(shell pg_config --pgxs)</span><br><span class="line">include $(PGXS)</span><br><span class="line">else</span><br><span class="line">subdir = contrib/Hello // here is your code files</span><br><span class="line">top_builddir = ../..</span><br><span class="line">include $(top_builddir)/src/Makefile.global</span><br><span class="line">include $(top_srcdir)/contrib/contrib-global.mk</span><br><span class="line">endif</span><br><span class="line"></span><br><span class="line">// the following code fragment is copying content of *.sql.in into *.sql</span><br><span class="line">%.sql: %.source</span><br><span class="line">	rm -f $@; \</span><br><span class="line">	C=`pwd`; \</span><br><span class="line">	sed -e &quot;s:_OBJWD_:$$C:g&quot; &amp;lt; $&amp;lt; &amp;gt; $@</span><br></pre></td></tr></table></figure>
+<p>Attention!!! In Makefile those command should be with no blank at end.<br />
+Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">hello.sql.in<i class="fa fa-external-link-alt"></i></span>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">SET search_path = public; --you should add this code first.</span><br><span class="line">--functions</span><br><span class="line">--take care of those functions, if those functions are used for data input and out, their args or return type must be cstring or varchar</span><br><span class="line"></span><br><span class="line">-- arg type is cstring</span><br><span class="line">CREATE OR REPLACE FUNCTION hello_in(cstring)</span><br><span class="line">   RETURNS HelloS</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br><span class="line">-- return type is cstring</span><br><span class="line">CREATE OR REPLACE FUNCTION hello_out(HelloS)</span><br><span class="line">   RETURNS cstring</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br><span class="line"></span><br><span class="line">--data type</span><br><span class="line">CREATE TYPE HelloS (</span><br><span class="line">   internallength = 52,</span><br><span class="line">   input = hello_in,</span><br><span class="line">   output = hello_out,</span><br><span class="line">   alignment = double</span><br><span class="line">);</span><br><span class="line">--size is 52 bytes and alignment is 8 bytes.</span><br><span class="line">--if you don&#x27;t know its real size, use internallength = VARIABLE</span><br><span class="line">--if you want use binary array as its input and out, you should use receive=XXX_function, and send = XXX_function</span><br><span class="line"></span><br><span class="line">--outer function</span><br><span class="line">--this function can use kinds of types</span><br><span class="line">CREATE OR REPLACE FUNCTION Hello(HelloS)</span><br><span class="line">   RETURNS cstring</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br></pre></td></tr></table></figure>
+<p>Here is the uninstall_Hello.sql.in:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SET search_path = public;</span><br><span class="line"></span><br><span class="line">DROP FUNCTION hello_in(cstring);</span><br><span class="line">DROP FUNCTION hello_out(HelloS);</span><br><span class="line">DROP TYPE HelloS;</span><br><span class="line">DROP FUNCTION Hello(HelloS);</span><br></pre></td></tr></table></figure>
+<p>In hello.h</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#ifndef HELLO_H</span><br><span class="line">#define HELLO_H</span><br><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include&amp;lt;stdlib.h&amp;gt;</span><br><span class="line"></span><br><span class="line">#include &quot;postgres.h&quot;</span><br><span class="line">#include &quot;fmgr.h&quot;</span><br><span class="line">#include &quot;funcapi.h&quot;</span><br><span class="line">// you should take care of the order of those head files!!!</span><br><span class="line"></span><br><span class="line">typedef struct&#123;</span><br><span class="line">	char content[52];</span><br><span class="line">&#125;HelloS;</span><br><span class="line"></span><br><span class="line">Datum		hello_in(PG_FUNCTION_ARGS);</span><br><span class="line">Datum		hello_out(PG_FUNCTION_ARGS);</span><br><span class="line">Datum               Hello(PG_FUNCTION_ARGS);</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<p>hello.c</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#include “hello.h”</span><br><span class="line"></span><br><span class="line">#ifndef MOD_FOR_PG</span><br><span class="line">PG_MODULE_MAGIC;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">PG_FUNCTION_INFO_V1(hello_in);</span><br><span class="line">Datum</span><br><span class="line">hello_in(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">	// get args[0]</span><br><span class="line">	char * str = PG_GETARG_CSTRING(0);</span><br><span class="line">    HelloS * hs = palloc(sizeof(HelloS));</span><br><span class="line">    if(NULL != str)&#123;</span><br><span class="line">        strcpy(hs-&amp;gt;content,str);</span><br><span class="line">        PG_RETURN_POINTER(hs)</span><br><span class="line">    &#125;</span><br><span class="line">    PG_RETURN_NULL();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PG_FUNCTION_INFO_V1(hello_out);</span><br><span class="line">Datum</span><br><span class="line">hello_out(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">	// get args[0]</span><br><span class="line">    Hello * hs = PG_GETARG_POINTER(0);</span><br><span class="line"></span><br><span class="line">    if(NULL != hs)&#123;</span><br><span class="line">        char * content = palloc(sizeof(HelloS));</span><br><span class="line">        strcpy(content,hs-&amp;gt;content);</span><br><span class="line">        PG_RETURN_CSTRING(content);</span><br><span class="line">    &#125;</span><br><span class="line">    PG_RETURN_CSTRING(&quot;&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PG_FUNCTION_INFO_V1(Hello);</span><br><span class="line">Datum</span><br><span class="line">Hello(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">   HelloS* hs = PG_GETARG_POINTER(0);</span><br><span class="line"> if(NULL != hs)&#123;</span><br><span class="line">    char * res = palloc(sizeof(HelloS));</span><br><span class="line">    sprintf(res,&quot;hello %s&quot;,hs-&amp;gt;content);</span><br><span class="line">    PG_RETURN_CSTRING(res);</span><br><span class="line"> &#125;</span><br><span class="line"> PG_RETURN_CSTRING(&quot;hello nobody&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then cd your folder contrib/Hello, make, and make install</p>
+<p>Then start psql to execute :</p>
+<p>create table A(a HelloS);</p>
+<p>insert into A values(‘cc’);</p>
+<p>insert into A values(‘ff’);</p>
+<p>select Hello(a) from A;</p>
+<p>result:</p>
+<p>Hello cc</p>
+<p>Hello ff</p>
+<p>select * from A;</p>
+<p>result:</p>
+<p>cc</p>
+<p>ff</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1214,113 +1343,6 @@ return 0; }</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/07/11/5727277/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/07/11/5727277/" class="post-title-link" itemprop="url">HashMap 将Object 当做Key传入</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-07-11 17:51:00" itemprop="dateCreated datePublished" datetime="2010-07-11T17:51:00+08:00">2010-07-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>package test; import java.util.*; // Key class class A{ public int a; public<br />
-int b; A(int a, int b){ this.a = a; this.b = b; } public boolean equals(Object<br />
-o){ A x = (A)o; if(x.a == this.a &amp;&amp; x.b == this.b) return true; return false;<br />
-} public int hashCode(){ return a+b; } } public class HashTableTest { /** *<br />
-@param args */ public static void main(String[] args) { // TODO Auto-generated<br />
-method stub HashMap&lt;A,Integer&gt; hm = new HashMap&lt;A,Integer&gt;(); A a1 = new<br />
-A(2,3); A a2 = new A(4,5); A a4 = new A(2,3); A a3 = new A(3,2); hm.put(a1,<br />
-new Integer(1)); hm.put(a2, new Integer(3));<br />
-System.out.print(hm.containsKey(a4)); } }</p>
-<p>对于Key这个类，这里需要重载boolean  equals(Object o) 和int hashCode()<br />
-两个函数。这两个函数必须都要重载，否则会导致key找到不到。这里要说为什么，估计是HashMap中使用key相等的策略是<br />
-if(key1.equals(key2) &amp;&amp; key1.hashCode() == key2.hashCode()),<br />
-因为hashcode可能会有多个不同的实例对应于一个hashCode, 所以这个东东会重叠。对于判断两个对象是否相等，java默认使用的是引用相等，即a<br />
-== b。但是对于String等其他内置的类来说，他们有自己的重载equals()方法。另外java<br />
-doc中也提到，当重载equals()方法时，最好把hashCode()方法也重载掉。这样看来if(key1.equals(key2) &amp;&amp;<br />
-key1.hashCode() == key2.hashCode())这句应该变为：</p>
-<p>Key k = this.Get(key2.hashCode()); if (k.equals(key2)) return …</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/22/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/24/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1352,7 +1374,7 @@ key1.hashCode() == key2.hashCode())这句应该变为：</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:10</span>
+    <span title="Reading time total">24:12</span>
   </span>
 </div>
 
