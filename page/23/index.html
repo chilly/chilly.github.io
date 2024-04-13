@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,131 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/09/07/5868606/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/09/07/5868606/" class="post-title-link" itemprop="url">MFC CString Wstring Char Wchar _T 关系及转换</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-09-07 15:07:00" itemprop="dateCreated datePublished" datetime="2010-09-07T15:07:00+08:00">2010-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近做了下宽字符，窄字符的实验。发现了一系列的有趣东东。我发现我过去一直使用Ascii编码。现在发现unicode还是灰常有用的。</p>
+<p>首先std::string std::wstring 和CString 这几个东东最好不要用于DLL的接口之中，不管是返回值还是传入的参数。当然编译时是不会<br />
+出错的，但是链接可能会有各种奇异的问题，比如不能识别CString等等。所以建议DLL接口还是使用LPCTSTR LPCSTR<br />
+LPCWSTR以及我们经常使用的char*. 反正是DLL接口中的类型越基础也好。当然你可以尝试使用复合类型。</p>
+<p>这里的的LPCTSTR 就是const TCHAR <em>, LPCSTR 就是const char</em> , LPCWSTR就是 const<br />
+wchar_t*。LP就是指针的意思，C就是const,T就是TCHAR, W就是wchar_t, 然后大家都有STR的后缀。关于TCHAR,char,<br />
+以及wchar_t之间的关系，其实看你是否定义了_UNICODE宏，想要定义的话需要在编译的时候添加编译参数-<br />
+D_UNICODE即可。如果定义了这个宏，那么wchar_t就是TCHAR, 否则 TCHAR就是<br />
+char,其实这里就是为了灵活性。对于vs系列，想要识别unicode编码，需要在字符或者字符串前添加L,例如：</p>
+<p>wchar_t a = L’a’; wchar_t *b = L&quot;abc&quot;;</p>
+<p>关于_T()的使用，或许就明了了，_T(“ab”) 就是L&quot;ab&quot; , _T(‘c’) 就是 L’c’, _T(x)的宏定义就是 L ## x，其意思就是将<br />
+L和x像字符串一样连接在一起。关于宏定义的各种用法，感兴趣的可以search.当然为了灵活性，这里也是使用了_T也有两个定义这个也与是否定义了_UNICOD<br />
+E宏有关系。</p>
+<p>所谓窄字符其实就是ascii字符，这个东东只有1个字节。而宽字符有2个字节。这就是宽字和窄字的不同了。当然这里还有WORD和DWORD,这里的WORD其实就<br />
+是unsigned short,就是2个字节和wchar_t一样。而DWORD就是unsigned<br />
+long也就是4字节。根据特殊的应用，有不同的效果。不过说到底还是各种基础类型转来转去的。</p>
+<p>关于各种类型的互相转换其实不是很简单，不过大都可以通过CString来转换。各种窄字符可以直接放入到CString构造函数中，它将自动的为所有的字符添加L.<br />
+让其成为unicode. 例如</p>
+<p>const char * a = “abc”; CString s(a);</p>
+<p>其实CString可以强制转换为LPCTSTR,如果想强制转换为其他的类型，最好考虑下是否有后遗症。但是强转为LPCTSTR是没有问题的。另外std::ws<br />
+tring本身是有wchar_t的数组构成的。而std::string本身是有char数组构成的。对于这些类型只需要调用<br />
+c_str()就可以转变为const wchar_t* 或者 const char*.另外因为string,wstring, CString这几个东东都有引<br />
+用计数的机制，所以在多线程编程中，尽量不要使用。另外对于CString而言，这个东西可以强制不使用引用计数机制，只需要调用lockBuffer即可。另外CS<br />
+tring转char* 如果是在Atl编程的情况下可以使用T2A（）这个函数，对于其他可以调用WideCharToMultiByte（）这个函数：</p>
+<p>WideCharToMultiByte( __in UINT CodePage, __in DWORD dwFlags, __in_opt LPCWSTR<br />
+lpWideCharStr, __in int cchWideChar, __out_bcount_opt(cbMultiByte) LPSTR<br />
+lpMultiByteStr, __in int cbMultiByte, __in_opt LPCSTR lpDefaultChar, __out_opt<br />
+LPBOOL lpUsedDefaultChar);</p>
+<p>这个东东有8个参数，不过一般你如果使用TCHAR* 转 char* 只需要使用其中的若干个。一般使用：WideCharToMultiByte(CP_ACP,<br />
+0, lpw, -1, lpa, nChars, NULL, NULL); lpw是你传入的TCHAR* or wchar_t, lpa是你最终的转换数组，<br />
+当然这个东东开始的内容需要自己分配，当然如果nChars这个是0的话，其实这个函数只是数了下宽字符的个数，然后将这个个数当做返回值返回，如果nChars这个<br />
+不为零，那么就是要填充的大小了，并且这个函数真正做了将宽字符转换成bytes的工作。CP_ACP这个是ascii页表。后两个产生对于未知的编码很有用，最后一<br />
+个你可以传入一个bool型的指针，如果所有的宽字符没有对应的多个窄字符,那么就会被倒数第二个参数替代，如果第二参数是NULL,那么就会使用?替代。当然此时这<br />
+个bool型指针的值就会变为true.</p>
+<p>这样就可以各种类型的转换了。首先所有的类型转换为CString, 然后再用CString转为各种类型。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1212,137 +1337,6 @@ the simplest quick sort is like following:
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/07/13/5732637/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/07/13/5732637/" class="post-title-link" itemprop="url">Stl Upper_bound函数实现</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-07-13 19:50:00" itemprop="dateCreated datePublished" datetime="2010-07-13T19:50:00+08:00">2010-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>写了一个upper_bound的实现。其中递归使用二分法求解最上界，虽然写的完全不像STL的风格，但是练手还是可以的。</p>
-<p>#include<iostream> #include<iterator> #include<cstring> #include<cassert><br />
-using namespace std; int UpperBound(int* a, int start, int end , const int&amp;<br />
-value){ int mid = 0; int index = 0; int up_index = 0; if(a[end]&lt;value) //<br />
-特判比最后一个数大时，end+1 return end+1; //这里是经典的二分 while(start&lt;= end){ mid = start +<br />
-(end - start)/2; if(a[mid] == value){ index = mid + 1; // 去递归的找一下上界 up_index =<br />
-UpperBound(a,mid+1,end,value); // 如果找到的上界比现在的还小，那么就用现在的 return up_index &gt;<br />
-index? up_index : index; } else if(a[mid]&lt;value){ start = mid+1; } else{ end =<br />
-mid-1; // 记录上界 index = mid; } } return index; }</p>
-<p>如果原数组中没有存在那个元素，就根本没有调用那个递归程序，递归只有在出现多个此元素时才会调用。另外中间递归调用段地方还可以改写为：</p>
-<p>if(a[mid] == value){ index = mid + 1; /* up_index =<br />
-UpperBound(a,mid+1,end,value); return up_index &gt; index? up_index : index; */<br />
-// 因为只有在递归调用中start&gt;end时，才会返回一个index = 0 return (mid+1&gt;end) ? index :<br />
-UpperBound(a,mid+1,end,value); }</p>
-<p>这样写完后写一下测试代码,顺便wrap一层upper_bound：</p>
-<p>int upper_bound(int * a,int n, const int&amp; value){ // 使用宏可以在编译时去除 #ifdef TEST<br />
-// pre-condition assert(NULL != a &amp;&amp; n&gt;0); // check the array a is sorted by<br />
-elements for(int i = 1; i &lt; n; i++){ assert(a[i-1]&lt;=a[i]); } int * tmp_a = new<br />
-int[n]; memcpy(tmp_a,a,sizeof(int)*n); #endif int index =<br />
-UpperBound(a,0,n-1,value); #ifdef TEST // post-condition //check whether the<br />
-array is changed or not for(int i = 0; i &lt; n; i++) assert(a[i] == tmp_a[i]);<br />
-if(index == 0){ // min assert(a[index]&gt;value); } else if(index == n){ // max<br />
-assert(a[index-1]&lt;=value); } else{ assert(a[index]&gt;value &amp;&amp;<br />
-a[index-1]&lt;=value); } delete [] tmp_a; #endif return index; }</p>
-<p>如果希望别人不调用UpperBound而只调用upper_bound,可以使用static 关键字， 将UpperBound限制在只在本文件中使用。别人调用<br />
-就只能调用upper_bound()函数。不过STL的教学源码比我这精简的多，根本无须使用递归。真正的STL源码变量名称会使用下划线__作为起始。</p>
-<p>template &lt;class ForwardIterator, class T&gt; ForwardIterator upper_bound (<br />
-ForwardIterator first, ForwardIterator last, const T&amp; value ) {<br />
-ForwardIterator it; iterator_traits<ForwardIterator>::distance_type count,<br />
-step; count = distance(first,last); while (count&gt;0) { it = first;<br />
-step=count/2; advance (it,step); if (!(value&lt;*it)) // or: if<br />
-(!comp(value,*it)), for the comp version { first=++it; count-=step+1; } else<br />
-count=step; } return first; }</p>
-<p>这里的advance()函数定义类似:</p>
-<p>template&lt;class Iterator, class Distance&gt; void advance(Iterator&amp; i, Distance<br />
-n); 类似于 i = x.begin()+n; i is an iterator of x</p>
-<p>最后把主函数贴上做结：</p>
-<p>int main(int argc, char* argv[]) { // 这里你可以使用random的方法进行测试。 int x[] =<br />
-{1,2,3,4,5,5,5,5,9}; vector<int> v(x,x+9); sort(v.begin(),v.end()); cout &lt;&lt;<br />
-(int)(upper_bound(v.begin(),v.end(),9)-v.begin()); cout &lt;&lt; upper_bound(x,9,9);<br />
-return 0; }</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/22/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/24/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1374,7 +1368,7 @@ return 0; }</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 

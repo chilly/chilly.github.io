@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,119 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/06/04/9021543/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/06/04/9021543/" class="post-title-link" itemprop="url">JAVA的HttpClient问题：The Server Failed to Respond With a Valid HTTP Response</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-06-04 13:58:00" itemprop="dateCreated datePublished" datetime="2013-06-04T13:58:00+08:00">2013-06-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>741</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Caused by: org.apache.http.ProtocolException: The server failed to respond with a valid HTTP response</p>
+<p>昨天帐前卒使用java 的HttpClient时遇到这个错误。这个错误大致是说server给的不是正确的http response.这个错误是可能是由于：使用同一个HttpClient长连接/保持连接, 然后又使用这个httpClient进行其他网络请求。</p>
+<p>如果使用的是HttpGet进行的请求(其他请求类似解决)。那么解决方法是：</p>
+<pre><code>//  帐前卒的code
+HttpGet get = new HttpGet(urlWithParam);
+HttpResponse response;
+        try &#123;
+            response = httpclient.execute(get);
+           // read response entity
+           // do something!!!
+
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        &#125; finally &#123;
+            get.abort();
+            if (response != null) &#123;
+                 EntityUtils.consumeQuietly(response.getEntity());
+            &#125;
+        &#125;
+</code></pre>
+<p>在abort()之前要把所有的内容都获取到。然后强制关闭这个连接。同时把entity也干掉。这里解决问题的关键是get.abort()。如果entity不关掉，那么引发的问题是：httpclient卡死。 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FydGljbGUvZGV0YWlscy84MTY2MDY3"> 详情猛击这里<i class="fa fa-external-link-alt"></i></span></p>
+<p>当然还有一种解决方法：不断new出httpclient. 这种方法不推荐（消耗大量资源）。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1115,341 +1228,6 @@ setter方法，那么即使那个field是public的，velocity也得不到值。 
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/03/06/8640546/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/03/06/8640546/" class="post-title-link" itemprop="url">win7下Intel Graphics Accelerator Drivers for Windows Vista(R) 已经停止响应</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-03-06 09:12:00" itemprop="dateCreated datePublished" datetime="2013-03-06T09:12:00+08:00">2013-03-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>19k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>17 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Win7下显示器经常黑屏。有时候从黑屏进化到蓝屏。并且右下角有如下显示：</p>
-<p>![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXoAAABQCAYAAAAX4L50AAAgAElE<br />
-QVR4Ae19CXxV1Z3/F8Wlla2K7bSQvJcXNotsw1THQgghgEDoTK1BNsGEReUzLsVSFRBkx7pRkBm0LE<br />
-Epeyr+W0AFsrE4ta3DErVseXl5wZlpbWcQrUsLyf/3O+eee8+9796X90KCIXMP5N2z/M5v+Z5zfme5<br />
-797XopYC/OAj4CPgI+Aj0GwRuKLZWuYb5iPgI+Aj4CMgEGjphsOrr76K6upqfPzxx27Ffp6PgI+Aj4<br />
-CPQBNAoHXr1khJScEPfvCDuNq0cB7dPPfcc7j11lvRs2dPtGnTJm5lv9BHwEfAR8BH4MtD4Ny5czh2<br />
-7Bjefvtt/OhHP/JUxObof/GLX4jZ4ZZbbvGs4Bf4CPgI+Aj4CDQtBH7729+iqqoKubm5rorZjm7C4T<br />
-ByckbCvz3ripWf6SPgI+Aj0CQR6NWrN4qLiz11szn6L774AtdcczUR+1/E8UTML/AR8BHwEWhiCFx1<br />
-VUv87W9/89TK5ug9qfwCHwEfAR8BH4Emj8CFCxdMHa+88koz7n+90oTCj/gI+Aj4CFzeCPzlL38B/3<br />
-HQnb7v6C/vdvW19xHwEfARMBHgr8VzcDp739GbEPkRHwEfAR+Byx8Bp7Nni2LO6GtqLn9DfQt8BHwE<br />
-fAT+LyLw+9//HjfddJN44JUfpFLBX9ErJPyrj4CPgI9AM0CAnb0z+I7eiYif9hHwEfARuEwRUMc2Tv<br />
-Vjjm6cBMmkwxUVqAifRnW0Gn/6059E1fbt2yMlNQXpoU4Ipacnw86n9RHwEfARaDII/Pznr5i63H33<br />
-RDN+OUQaZEV/9uxZ7N27B3v37cO5jz9Fp67fxu3D/0n8cZzzuIxpmNYPF4tANR4bsRNrztTB5+2D6D<br />
-hiI/0dhPczc3Xw0IuZ34PvIqLnNWK8+DnS/Tn5LQJTjLCp/va48jSZJxI5hzUPbsQ/bz+XCLGd5hLj<br />
-hzPv4p/jtBdj8djbdhWbSop1c2Ic2b4ztj/EUVi0dRz741R1LdKdu+70XYk9Mrme+tNJVF59+eq83O<br />
-IxK/ramuSeij370VmUlZTgL599jr7duuNr9JKdK48cRk11VDypdVXbtvhaSgAdOnVFxX//J0rpMd3M<br />
-rCy0a9vOTR8jjwbTwzsxvyIOia0ogFd29kOWyvvNIaQsqFKphK7j547DU+oVP6712+LJl3IwBe/h+/<br />
-cdxTsOrn3zRuI1es2Em96Sd902SR5tECnchYz1HzkkAKpcPbnMPyVQ67x5btOdcRkncammQe+itykk<br />
-OwPV062bN2a+HvlOKsbPP4CHt6WQrd4vvCtZtgkTi/SKdcRdZZ9DRQQYP74j2aj1ye/0wyvZxP+51L<br />
-r19RTLuGk8PelcCj6I4lcVATy8vHXyPAz8+j/X5iJ0d9HJK6s2BSODO9H/QeDA8u4IanTcxyYWBfDk<br />
-XR+RHbFtmUwbWv1SCkimrqjh2v5UIvq31U7h6Efom9ImMdxpHMg+eBT9RxzVLI8T9dBj46YNGD9ugq<br />
-jIV05zYKes8kVGAh9u9RU/rs7l9e6bceTHOPo4tK5Fv/vtb6STv/4G3LDvDVwXSMUfNhTg6r/7JlrQ<br />
-U1qf/td/ou33voc2x47gK1mD8e4n58B1Bg8e6spPz7Q5X71AjwvHpmdQ/JZ+qCbHf1EhvZc2OKrx+M<br />
-hjGjt9YpEOfKcobYMpy8fRZKCCrNepg0pTQ+oTipVtiwVzc1Dt/m4iG51rQtnuhgt0va3aYmLRF84f<br />
-uE9mZo31O5Gy3kxZEWOgZE0fR47Myo4Xi5GtiD+oxk52qKBJe6TbpH0AKY7JxO5wZLucHq9N4Ip33C<br />
-u32QFsNGkYsx6ocCw8Jjp1iukvOg+TmYwUxerOBYn0DQen+MkO1B+njwRI9x8WapMz9Y2M9aCFSz9M<br />
-0fqmk5kdT2epTLNTX+4oapD2N3k6F0gefY/oLX2pDWmh15B4ejl7U80kIrqzdzr5JNgkRXpRjj5cEU<br />
-a4MoK/p5V8+7cPod199+KaQACfffoposuXo4bemfO1e/Lw1fnzUUsvTDu/6kWEsofhWPgkuG4oPRRX<br />
-2Y0LNmkDLh5pIF5h/coqjiJjpL4SoBW9yakKzoHeN0MV1uFgDpHj2thOm0SMiSKDdwSxKyvFVVyF89<br />
-ac3n2bMF8jaMiODY9JQRPXqNHIv0fwTnZPZN2ScvGTdj00FVjyJLPAquyJL7eLNTMYFYwdYBxHanFu<br />
-wJjXJF0R6yDn2/qP+yKgATVLmtU7vKCopp2mWDzVMa5M7tpEnYT/sJ0ImLzsEeXsdedsp0g8pTt7rs<br />
-XpxgwX5egrKk+j/Y1fR9s/043Xv3yCj+mdyOzovz59Oj798EN8TI/itnp8Fr5CFlQXFaH02FHcEgih<br />
-/Te+Dq5bl6P3HFg6Iq4rV52gnvGYFVoiK3qW9RFOV7SFWMV/cA7H0Q6364O9Hx09YJO1whIr17YY+W<br />
-gdTp5Zq9W6GMwRjOSjJMFbdm4mcW6b5YREg/glPiqLnaC4jgjZKmK/eh0j2akcq1HD2XRLYPfi5CPT<br />
-1XiRjq765rWVSS/npSrb2kplxrm6rqgvgaMTdpylBbZ2zHjRWDns7NAdr+3sbmbKHVPPmKMir3yz4s<br />
-VELsYmA6Nu1B/FCj21HCnLyH/cdU7u8IzjVS/9S5YdwHE6Rj1A/zIOBLUFlYdBhjyPUpGtO2Wnk1fO<br />
-P179plAW4+hraR2eaDhDj9vyzdYWbx3Ef+54DdfQO5Fr6Ljma2PH4vp584D/+R+0aHkFql98Eb+iVf<br />
-03WrTA+WA6buwxHqdPvE/rfS9ZdIZKStTSAbR1QuehlfFO5Rqxf/iYzsh3YUGFB21d2ek9UEZnmWm3<br />
-3Iao6FBKfgcs3dkBxc9vwvdTc7Bj500A3VhLWRjFuDlj8NTyMZjM+rI9Z87ieHoq7u1Adc+wfZzLfC<br />
-ybBo7qgeX3H8DqfxyO0DY67x/UDzuYnvV7+y2kEl/30BZzXxxOR0MSNwsfoy7hNXD6GETp2KT4+S3I<br />
-K07F+p3fxSBmduY92mJraU1AZeHryIwyD6M9xMG/1DuQOxxRj2MkKYMHZA6W3mLowHxF/cTaT0gU7W<br />
-zI5vpvV4mdXF+BGeULfu66C7w2McKafOah4a33IXE0T3hHH0kRVPYPiYGgFzrJmpzLMca7SOCq1WJe<br />
-/bhU10HqUltbhcdGHgK4j9xKJB1aoSuO4o23b8NATlOo/HfauVC7PKjjJ0oa5sMVX2Ltla+kMk5iRb<br />
-1e5Xhf<ins>YxPlr7ifaqX/sLPGj85JD844y7MRZrqU+8k96W9pkSWy/9uf8PJFUrC+kjZlfuZUOqaD1u<br />
-Ra8wbtx4bNoUs20T5OzsuTyZ4ORVHx7JyItx9MlU5q9Q9v1OO5yPVKLFN/8OH9Ivnfz3o48i+MknuG<br />
-b8eFzXrh3+5+WXhZMPEOMb6O/8qeNo26ad+fXLePI2LdxCa99EQqpB1JrOyMdoZ+SOuuTs7rg/ihx2<br />
-lh0dZSopaMpjbraqYmAXUtdbKZuOYtB/hHcCKUhjkg8oTp1TxK0qQMfueD4visz7t1AuOzDN6dz6XU<br />
-TJOQNy0jo9znASev0znGiLkJcNVDesnfCIqiRzh7yRoHMS8TR25jG59gzl1MXE1oFxJIx4YqTVY4x9<br />
-RlUbNnZ29pSYiVQW2b3JTZso8ka65VM90uNSBp7YduS2JmfCE2Q8ySkYSrblHaomR89t3A6d0qkHVd<br />
-NPdN7aWlSspBuMGHSznIzjsfoSypSd8URzv3jBg6A+7c949M1IRShabuNafIiApgXcI4WpAntbISWK<br />
-n38d4bsc41ot3JzEelqMd2qDBILuzJ2OmtN6eTx2el19AkmGRzz+bmUX5egVw/N//QJ/oqexPqOM62<br />
-+7DX9t1QrXtWwp3p52zY034ls33IDr/vxnnKdy+kkrVa3Oq3AqxsrHk1isgD1KuexQisfqjWf91/EI<br />
-+ts7jnCI1taXOSsnxx3/eRxEJh0reOlWWfguVYgitdjSKZMc1NwX+1sZFEvL7Y+5B3ZhV0YP90F+Jk<br />
-pTSg8872Y/TyA2bpwwjos4ynVpUPAx0gsPvwUsp4nDuRLlYkfwsonJBj1CO4VHePLZglQ6mpr74hjs<br />
-8JxoJON4/JRop7OsLDyIBYEemItyst8ILm2iipr6dVA/WoQsrEYx7SAGoTWyM9piwYEoKnN5gqzGHu<br />
-on4+ZoE31TNygJ/erT/tzPaG6kMacJImf8QjH1uTmp2LWwHMW51J95gqw6h0oiq+S+TWOlTKsiohXl<br />
-yBxpnzCcJDKtForupW65uoN2K/fKczp5ptN5NZazvyhHzw9DfXTuLNq0ux6fkwP/Gr1bof3Eibhh5E<br />
-j88eBBsd39yrBhGEI/YFtCv2fY4Q9/wFXBNFGH63oFHuy2lSw77E1t5bGKsdLdlSFXVaAVcFkeraye<br />
-r3Y4dDq3FkcrvDr2CCl0BrzwINbQEYpa4SunrtfgDht9ROXIowymS12o8oyrOBJwHHUYuwgHJR1PlM<br />
-sjpgq7fEVXvI06KNmY5rSXCCqrHavAM+dwgvI7GZVFXdpJ8AqIRgTyHmbsdBvi7BYMHnwJ00SYR5Na<br />
-bPgIC2g3ssBRkMgK0FGFJjz7bqIy2hbrH0lF+GEeoGeTO4rzPJJxSm3ktGiPthgqJsK26EttEKZd2C<br />
-BKp3Gfq/hIOKi0t6tpx0o7OrfJvF4qynaNPbo8ZFt4WKwd+V8Cfs72t3SzYtyfxfEm7YqmzHkLdxRW<br />
-I4d3rIwjTwJVxpGrVUX2q1wDj4DXUZ1WoR5R3UEnWp3ruAWvfDfa+uRdlKPv0LEjPvzjH9CKnPeN9I<br />
-Pi10+ejPbk5P/8zjt4bdQo8H3CzOJitB40CDn0o+Mb8vJwW49eog7X9Qw0GE4sfB1r4h2xqMrU0I+s<br />
-B60w7aui4ucPYRN33DiDKI0mied5krj/LYSMs2yxcu1nPydXW1CxQlHHFkq+cY11ctzJDpKzbkur77<br />
-Z4kMwNm3XUJDQGQw/RamRbNabYzox5pUfntjvl9n7Kj3tgFx2V8EpmEDn+ogO8vfV6DoHrtkUO3ch8<br />
-hxz9g8v7k9M8iKIz3c3JzFSjjkjI9Xyeb/y+i0562xiTWc4/Sn3rYOtSrA9IeWxlYcUrXpfjKwcX58<br />
-7AUfzlJTvSeXM67U5+/TGm0HEPOliOH4foOIL6KK9gGybEHl2KoxW+r8SytSDxutmxONIIKPrOevsx<br />
-pb3USvXNs+L1i+ntbx/HfG9JrObV+OYxW01jtiIV4wZF8cKvyTZ6piE2cD8lH8AFFY4JLYbYuPcVxy<br />
-XFVDEyGttBe8lNNj/G0dck8SBJWjCEktISfItuyH76/ntodeIEzrdpg22jR4OOInE9/f12yBAMLi1F<br />
-tLwc3+iYgs</ins>3R1/otck9OieBS9Zge/chufueR0D7z+EtF9+F1msE/+nq7gxRvEa2kHU1JzD2qfLUX<br />
-PPCEz6FqcN82kHkFecgoJfdrTL4Hp8g0fUlbSBH/TDnP27kfdcCiLTjZZmeaEeKP3ptxEUZGcw858O<br />
-SfmCB/MmvUTZx1j7w93YKXhSISTtZoqNnT0aS/GWWPmy7kRCPM5h9UOH8HvSecd3KONbPdBn2iE8dh<br />
-vRGpNSyTJZvoTqFC3bivwSIQjLt9+MgR15J0Dyl7WybCM2yq7w9nJsyuqBSIeoIbcVJi0bRjsI6uz3<br />
-V0tG6lO/B6LbW30W74TaISjwVsTWlW+96RiWbKUVF9V/TrWB0MdoL9UmVnWXmMSmD03wsk/IdE1tW9<br />
-J9NN3reA//TFvwwy41ZRa3xzDxxK7VpyQP0Wc0HbgNOFh0Mq1/ChJhuyS22k7ytDlA6gSCF5HK/kmc<br />
-bPi1QloqOc2qs0TXitq7DbrQkdop+iLDqWLuI44+qity0fGPxUNnXW7T+orBk9uPx5QXDlzch/vonW<br />
-5O1FKshPrnCiK28WG+ROLE3qrljDnbn+oyj9qzWB0zvs+Ib2T1uacflnSsRXDxMRT9QI1Fgy+N/+Bi<br />
-7utt0Cd0jvqNPpYt2ZFfkI95+Ry1wTC7/7BImk0sxtEnYxl/PbKyshLhP/4X0rOyUfVvK1H57LN03M<br />
-AnxsBV9JdC38LZNWAAWqV3RreHpuMw7QCCgWCdX60M3tkfcw7sxh56RFs6VBfN6PhjIW3LIrbOSI6W<br />
-GpmdrGc9G6vWmEwr5p3kbGd+13K2NpKEE+zky9Fp1WhytEYlfsScnCZjEuastxw6d/g2lt1ThYGb38<br />
-d9t9LE8sH7WFEC6py7EXxZThaR6VSPO+/mcsykc10egDbb6Js+hwnxh0gmH30U8IT1Nq0W9UArocgv<br />
-VYacnE6Pdbc3coaOa+jBt6Aij3s9gz2k79jZalKMS+xRSF9JJXC6jfVwKoTRjl9+26orBjK0ydYqaq<br />
-jY5sVbwZM19eAYljEO0IG1E7+0VPrq7MtRlFC7ZKEjlv6SJi+2gXgXxNlxOgWzU80H9Xe1IHESONM8<br />
-PsLJyXCyuDRp9/Y//PIhHM7Sxzf320PYzIsSMea/i4IswmTZGRMTgVFJG8yhMThZjUEaU3f801axUB<br />
-g7ux+wmHiQYdyOkV969LlLY/glk3JRjp617PsP/4D9ZaWo+PwLpM16AteWv4evv38UFyrDuILKr0gL<br />
-4dt0XPMpreTZyX/l2mtEnbotJAf8UxoQHNhZugV2Xo6BEvlFOTZz53Dki+rCIQL0rKA9KGf71hlaVR<br />
-ur+nA5BpLT1sNYM1GNfOo4euiTwSkexPb9X8lbvLLQjlm+G6tz8M7hNFkZ3JxOzcjmexEFb1GnpvNI<br />
-2clVASAci5haaVKcHueehFUlToyPhmiVM9Zuh3cFw3HpBPREZjdKHz/zsfntEr3YGRdtlqTTc/Jo6L<br />
-TajQUX2zlnTa9rARGLn619DXaiX1A/tU3YdlGOlJpQE20XueCJWRQ4uDZKsoHa3zahsrOeRrs6fedJ<br />
-ymdN74extNsOGhMgt49YGGmGRX5dJZw8Z20mJ6/C4ZfLUXKnYzegCpvZ9aIdfbt2bTEgcyDe+d3vUE<br />
-5HMu2DKbjxln8QX6FkrPhmLZ/j83ENr+R5YuA6XkHOyG6l1XbHG5YrXhslO/jp5DS1TLU9M7OIxpzp<br />
-zUxADEYt7XZ0YxXzUYHqIMbRjVVIDy1Zxy28fZyzile75PQoWCtFrYKKCv09BjKtAPNLWK6xclYd36<br />
-g7dvZwb6chVsCOYxuuZ65aDSY8iMaebYBVYEfcd08b2ha7tJEhynmJq7+TOE46pr2dNoq65BhoFxIT<br />
-DCciVtyiUO2C6OuqMcRWhpxojcmcV9F8VHCr7BcL41WkJ291PWyOzWIvY+LhuxQ85LaAcdKq40Nz5R<br />
-tD4JHh1DnR9jPozP7bwO1v9PVutEvfEWM/LzRGoBMdnwaX8fhvK45Sddw9V+7GSj9foeGYRFR2c7jS<br />
-tx35NEyGRYsW4cc/fkwlk77KVyKE8cGZM/gzPy1L4YYb2oNvvIZoZV/Xk7BJC/QreCNQz+MNnqRWpD<br />
-rPZh0OoNEHhDF5Zuh62HWI6xS9UalniZRtP+py0wfCydjp6inSUU1MYFG691LnsY2hFx9pxqFNnJ9D<br />
-ET/ZZBF45pmf4LrrrgP/shT/yhRfOX3llVcixtH/aEb9HX2TRcBXzEfAR8BHoJkj8Nyz3o6ej9H94C<br />
-PgI+Aj4CPQjBHwHX0zblzfNB8BHwEfAUbAd/R+P/AR8BHwEWjmCPiOvpk3sG+ej4CPgI9AzNcrbU+4<br />
-+fj4CPgI+Aj4CFz2CDTNFX3ZTHqdayDuX+66iAF+BAW58WkFr9y19LMbHGLpnyijF+Gt+75dnqB30s<br />
-7EfuKwf7a7PEsnISjmg2V40kTWIpdszl1X4mGPlB3DlDMYL9M+V4pLkFmCJ9Lj6HgJNLCLYH2+j4KI<br />
-PVekBNYeZS7kTSerqWHcCMh86W1jjXn2C80lxKzom4phvWeXoXBS0F0dcmy5FaooiPzCKno0PJkwDu<br />
-sqlmIAVWHnu9qoasmkAZXLT7rovHmQ7TEo+2B20WvIDxpJ24U7SiYW6y9m6TMXRYWTbVQqwfKzBTHr<br />
-VEU6Uf3dln6STpctJ5pJ/Cp7R8hOX2DPMeQGtFxLHjBmXRUWZWqFjR51YuO0s9EVaEQBhm1d1+P04q<br />
-xGlHO5sHa2Nevd9Nu7at0PsZjbsLB5tWGTdfRHFmeik+Pxc72L9559n55MMr4Jk9KtnzQZs05Wt8kk<br />
-JzmVs3mFsTqEQtalTyf6hRv+QT56Id7q7+OJoa9JR8k0M4DnyJkHbJMDEXIQq5QAjoiEZZecWF7D6U<br />
-l2Ry7I6vior5MOTHqNJpQAVqSXJeDk5WCteLABJgTGIHsButHkctqcXHhCXYuAwK0OgxuyODgZhRXu<br />
-E2+9xUSK6P35fdB7yx7sJ0fPi4jLJzRgOzuMtvVTY6duy3PQozHaxikjTrqq4jB6p6fFobg8i5qso7<br />
-dW1y7A2lb0LuVxs/RVuiTkVe6P8FP6rddKWrUvR7q+Wq86Tb9glE3Ouoh+2swK6VN/Csygo4rMpcBq<br />
-cmDkDPWVs0VJMaPzKjm8U5HxStvqfwtNPr1nr0cOvVxVn4gkr3EYamPqvbIXZC6reUf1S5gkRzJDOn<br />
-n7DiILi5rJyqmq+FfAiJ/ioa6Z2FNGu0VzMruEMDd1UTRWThd1ogmfxo2xo27qKjcX/a5wGsI3Y5vC<br />
-n1hde53TT6LVuHg1aiXW3ul+Xu56xn/nGpSudZzFkww+OpHy8rCFXn+0ONvgyfSnf4+uaQHxWmR0SU<br />
-MK41PLr1AN4J5/qcWkO7+PFcfnYEqGgVvJ4/azfsOG2SXyVaxSbxUP4p5tEZxcY7wubXQBtuUNlHmn<br />
-KN/2twT9VduQfH4FbP+FTFOKffsUbSlm9qYW7T0H+7ZNkrqqOvqV6is9amqKMZvOsteutfTOXVtJfY<br />
-Dz5RHUlkmEB2ERETw438Jc0krbySr3vlO5D7tqNYx0Xcy4bMvZJQZ/Ja9yjbh3odqTcZT900Gv4az6<br />
-L5tZU2TZ1WlWsawreD6OUlO2u00RW1/R6ZUO6lqJffRzWMOzAug/eCy2rFBYqXJ3/hJjNyy96BlhxZ<br />
-OvXnQObOJiyTzqbudO6br9HvxNPA0djX6q2kNcUwdheO9NeFO0owsfs21kmd6/RHsoW5K0PZG2LJ0V<br />
-AB+JSl+g7LVjXBcONludeDRy2unL9XTTXNHTzH/yFK2UEwj52yMu5/MlmDMqjKnbJ9Pv9zjDZJzMV3<br />
-lE1zkfJ2aV4oGKgfRbswU4uShLFYrr/icWYuuSINS7KrsQzRpFQXqu2RvE3iE7LDmG7tGCO7A6tAML<br />
-MxUxrcD3HkbXIUErw4jtDx9Hb4zFcLoHUFCwB0uXbI6h4YzepOe2/CDF+iDEFw5VlVg9YyC2inOhPp<br />
-jJTj8gixL/PIylFQ9JzKvW4q7B01EwiHSnSSQ0aiDCD0QMOxivFQiZMmilTuVzQqrcQ2LkNB1bdbIK<br />
-hYyFxlHWWKyhtlZHHVun7KE08RPUxJ9uoDxLadGOtJPrMmUmhnjRx5Q77VqBgqlZjv5i9YGT+UGbjj<br />
-OWdCNddpi6WYWOWNlL9LsDI7GPcQ8MxegpK1BUNRn5oh08+CNefiIY190WiWLp3s5yXJiYMLadZ8Zp<br />
-KwcmSSRtelLfkIF23g+MxdKVRYjm8ziOoGj3YYx+gMdakrZzf0ugLQcsitDYDmJluhpnLm3UiDgkAV<br />
-nSpDEr+qQ5NHgFAnfUWvrxNQ7sSO5AQRXHvfK5jAI1wF0uX7Fgh6vn738iSB1W/e0hpxERzpMb+eSQ<br />
-PVoZ0ZAeQc4nGvFHK2/b+R11oJU0A2wl57NfamF8UqesGImpmdxRVFkEFSc0B23Sl9Av/o1EV0qn5w<br />
-9FuGKoKW/fLDrznVVqpqWTlxXDq<ins>Qug7ON5w855NjG6xso+sTJZK4zk+aIMgBihDIphWXR4WyPTTh<br />
-6TIGYilNMCfCEY8KHtmBydgmMC3AaAfJ6DWW0xc3wxdNBqgNRZtNiZ0AbfSZ99GOZjP2limmCdjFNt<br />
-EO6Nn8oKokr4EQtclmTOms+p+9WE/t37sZvUdkG5N9FoaMPozXiyOSxIt/vPxEME6gLWzYkAPLrwNL<br />
-0yY33WKwBez8zdoJROzjwJNPJk2aR3bSpEksq4rw+pGxGJJJ8WRtT6Itbco3Og42aY2aaIKOPgsLHz<br />
-iNwXGcVLRgOl4fscxYMRE+PGOv7BQ7WKkoNX+HWK3PMQb/gEXG8YaAlQdyEKJMrAY1R8LHH2pHIGbx<br />
-OzBnr35KT0588E4Mp9XtvlnHsVKfZGiFFx7Cq5AsTKUy4Xi4o5JDp1MhM3QNBRGlFTwGhYw8sn0RaH<br />
-KQznrwEjpSWjLQmHyUw+EJoxuGLNphTgBqEgId/ahJaQ150NFDskxZDRZhXNTEZ1z1CchVjj5gXQk8<br />
-MrldCYsZWCbt2jeHdj6XKlBbCPuW0b0Ybg+Fv1N+CfbSZG+1UxBTRPolx+TvrBcnnSjGidKxqAbB0u<br />
-6g41jgXWTsfvRx4E1sTZrR4p3ArPus3VUyttM4TKwtvTWxlzQADnaGjZ6KcfTiZ9PoLOlLvWYswc+w<br />
-AusifCLJx8msD13pX03pTAymY4at9wQMHSuxbsZODHtGnklLvQ1aw46MBSVIW3mH5Md5GIufnajECf<br />
-rbM7OP5E+Ces8sEXknThTgLpZVQ98KYae7dyjlv4rJ7I9JF1IFr8/IR+3qV5GXUouUex5ClyXTDf6k<br />
-z0ogO6MWpbR7YGe9dW8JSlcvpEPcQeLcnHUM0919titcm46sFNaXzpOFvgOxQNPN0knKqq2ppB1AOl<br />
-IN28x2YgYURDqyBitPPIHJpINZrtGz/myHLJOyJcZGnih2iWcMxV1HFuJnpaou2zhTnHXL9lE2WOVS<br />
-xkBMngnabWhtIPTR7aY6ulwur6Qjn95P4GmjrSNFO8Vxj8RJ0jO2ysbIuum0wxgrsFf6uNpFtnMQfG<br />
-JsKsG6dZWoJQzXCTsDyNtagsd7H0ZFJcnUcBTxUt7lWP2J+5TsP5uxh+t78U843wPjmPo6HcmtB5Ym<br />
-VgbvGQeZ1WEAABa+SURBVIyDsreUj6dyqK8aGDj5Kzr96qShsdtlynE8ro9VJ43eNsQrY8oTwO6X8L<br />
-PdwDC6ByL0Sdb2RNuS5NnGRkPhoGPSiHGC0jO09Cz5kgsyF7yKTD66ceoxYAlODLAyy+ZmIfwvlViY<br />
-auUhWoGTWlIcATyTg9E/XotBW7OpZDPu7Wqt3u+ic2AOR5ZmoetSGQc5mCkYiIU0cMlFixAJH0YXOh<br />
-rhX6EY9kwl8k2ZTDdQEkWL8MaRzThC/O9aTYN+QSnmdM3HvcRvzwKq6wiZeZMpp9SR652sWr8CJ4c/<br />
-7/0NH66aOhlbaVXpFqrW/wD3irIsOlsn2zQsY+mDGDS8D56amoZtrP/WyVi49wnaKaSJoyamZxsVPr<br />
-H1rZxA3qs4MWitqPuUlS0mV8/6A+7F4/+ahaFdF4kavUfT0ZlWl6N3YQ+6Er4ysMNdQv0mmUBtZ7NJ<br />
-8gAmI7SG7Jxq8KLdkt7vlISyfdSPqMwucyAG047q3n2lhK8X/6CHXGe+F8ZOvl50hqZxsXRpZ1rszO<br />
-mqjQcxmfHXh5ML27jvqCrch6h9kuKRmo1hWISnuhL</ins>niztVkdttN4SKQtlZrWlTBuIBwsnl9OLOZ9<br />
-9A89RF8I/xJD2dw0wxEloIThfFTH0evySnhrXtCFCU0eo3+G0FbpENjxrQm9Ss5qFkaH7zXqkHMeXU<br />
-FbcO7Y0lHLzmo4AS8d2RksGOiQyfIeAZ55lSYGjmfhKTrXpl9Z1ZwSy9iDwSfuRdgsd7DhZO+x5NiA<br />
-wYbunMX6D10qn87ytpkpm1uQWIpJPu5k1dzs9u3xEXBHYMWKZxP/4ZEv29G7m+Dn+gg4EfAdvRMRP/<br />
-1/G4F4jj7mjP7/NlS+9T4CPgI+As0PgZgz+hrjZkjzM9W3qHkhQA+sbQmTSXQDrbZ5WeZb4yPQ0Aj4<br />
-K/qGRtTn5yPgI+Aj0MQQ8B19E2sQXx0fAR8BH4GGRsB39A2NqM/PR8BHwEegiSFw+Tv66DqM6XYnXo<br />
-7WA9n9s3HT6HXG6xbqUb+xqlyMTY2lk41vGZ7sFsJNdfyNWR+x1YquvxNP7teyksI/gpdHJ9nOzH+u<br />
-8Ui0JtY1mgytKwOXTA/79s8N2XHgqqLN42Gq214//GM0VDbztdvsup/kJTpnm5o8WX8d63i0RiXuDw<br />
-m3jynIj9QHgZibsRcufLl3tg7MS8c0rMO78zJNe6peyUXOGyOwa9Mk82ELM894wKnmfC0uXDCrJBYR<br />
-d/FqcZ5sTrZqYgLcqdxsZMoGscldpMgV/MMPErYBvDIuG08f1Yh7zTbxZf1eDBVh48SgRqBHB2Duex<br />
-WYq2c54ixrFt3Yt/oTvf/n9a4IDqPBfa/+qyzA7d3kA1GCxSh721tsjacW3dq5ah3Gj1gMYQ7V3xV6<br />
-ATk/UTI24ybziZ0xWPXeYmRYTK1YvyHIvZdeepY3ABMDVvZFxfotwrs1s3Fzt1mmXBPbfo7+SnbB0/<br />
-YItdcMWH28Pvi7WNIxhF7cRqznbsJwTin60bgT/XO7Tm/gRuOlczCgtalGw/rr7c1jS09rpCJKbfbo<br />
-U9xG+Vr7OIko7YmJC62f5YlAjKP3pLxEBRnZY4BVFaiiZw3leIug7A3qEDSKy6ommYMwSk+p9hr2LA<br />
-KBIDa+N+kSadcwYoSN9<ins>hAZWpOR1pZ+60QrIJCdjEgz8b4WkVmOfquRy60sCaJSbLTCqIiMLcF626<br />
-PLhz6I8n2Ix5Ragkx/JKZqGJt4ObcAZF2VZ9Z3lM+sBqPN1lKN6duJhaNhcFaYU2vXlicOaxTgnLYI<br />
-eQX4HxBVJyr8ecExXjZTwCTSRi0jMnA03bEel4WkvG8tEKvaIHyLnfb/8JsGnd9XQ2bv6JrKy3gRc7<br />
-t/yksCEGnvZS2c2aU79ZLLIqqB9IvNI2eUyMbkqJvDLM6z4JhSK+xbTTJBcLinQUzKR3GmiLC7NcRQ<br />
-jD8ZVT4yw2FKF/TQSBJufokZqOXkd3a069CuGjY5A7agvCfDwjvH8ElSf74Pb8YCI2Nj0aeodGLiah<br />
-6AANIuWkq4rxJtl5v0o3sNYHChajM00KAj4X3mLyKVIFQUyc1hU3F5RhIjn+iw/kNFZtoYlZvU8AKL<br />
-w/3XAGFvfcF624e+wwnrY54j54dDdNRq7EVbZdS6/H1uF2B119nayDTWwyYzHepZ0DhwPzclGZr02Y<br />
-vPsoSMdGN1y3T7I5XTtjstWekXQqxt54uujcbRPXFq3dDPyj5JS572xfTPrz6r8C2XEmacYktPRB+q<br />
-GWScjpLnHSxal4r8es/qLy/Gv9ELiiftUasVZgEG7vdVg6dRZzYA8KRw1FfqgPCouM81bhFLsijb0W<br />
-d9bus3FAqMSriVy88gqtqLqni7/xr0REifzgcpkvyh2rLtoz2MtNvjxg02HxknTzpFAqJHnj1tEuRK<br />
-6clOybtfqaEhTNRPYocnbKHq5XthtHyU7h5202ufFk+fLohR2mki2xsOwz9aMVPE+MoVS7FlbKcMQh<br />
-bRrgCfck76y8g5Ct46nFraMT1n8G3qR36KsQmFhIjpBWjY6/uncm7Fj0epoDVcxtV0m/6zFLtq3Yli<br />
-BMjTYU2dym8xI837fxuYgE70ocmMh0ER7tFcs3Ufxjaxo5gXR0NtuY+5QaR44aYuKqAOPIOxynTlWV<br />
-J9A5lC6PWd6bitQq7m9j6OVyzMeBK+VkzDPajVf0rvZSG79IO3s/NBgCTW9FjyAyh/XB0+QE52XQeW<br />
-HRFvrpscUIpFag1xvGkQ69tMx0ijFQ0KqPz6F5RcUOc4Q6guCOTEc8dFzxruiA0nlPM99+JstPcUee<br />
-GJRcebBT5+dz3VSaaI6G2e1RGU0+p3qR86iMUK8NCh17DStCgOX9pCvRF2pHMpKV8zMjfzZ6jVDHN+<br />
-rYxmX1TDxnufDMeK8IIdvRDTnrAmAJDRzhrsUqbDayxZk074q62l6RzPpYq2rpEDeKioam7ASO7hE3<br />
-qvVs3Y6YFaJWKM7ojXQ03BX3TyPoK+2rbI3cisbbzltUDRTjNn8BId4V0HlZCC+YO0nV7xpIUKOwSR<br />
-R/Jdxqb8oxjlBUWdUrL+DUY89insrwuHZOC8aURMNAKBs4RVceHwFa4b/ZBehMi6yMzAqcMmqI4yNx<br />
-jyhT5hxd7K/oDWwa+xLj6GtrahpbZp38UwcMR8/XT6OqJhWVJ3ojlFeD2pQs3F47A2WRPKTt24KeoS<br />
-n0ylLSlW748D965yw/I0m8e+PRvAxZxnV60m+80Ttra/e/icKes7CrH8UNE/sPolcMnjDqHjTK706V<br />
-dVnLflPwaM/BKNq/EE+yTj95Ewfm0iyx7zhuX/IAwjOLUHX3IKHj7XlULyUNnbEY07ofx6O7tmNCah<br />
-xThW6LBe/+qfTGy6OjMU3pptvkyZP0pv/CNmFPKibMzUP05Ttx89PirWlUSPYxLtHTONkzhHyBEesk<br />
-6+auOoUn+wMH53fGtHUlmPBkJhcaIRWhnsdpLqtBfzc7bLJVHeuaevc2/JyS3Eb95y4kIU9gFQNfOx<br />
-qryheBxMaGaAHGzyTGSk+bDEoQLpa9WnXGi9vYuMo+wbIkvS1t8I7Sa6IRzED+oysws7QSEyYEkNb5<br />
-MFaJON043j4a2XOJp8BWk1VntAobxg/G08c0wu32c38uMc/FuU9uzEcq6x736Ib6Nduo9LFho8kyoj<br />
-r+nMX2qvamH0EwcKY2rn0T0charPpJF0wrTxXtJVkYeKu2EDxqERqgdDDKSaH+c7ehP/F8Q+hXiQ3/<br />
-RuNj6XakFYzCK7VdcbQ2XfTLVXgW5XMDhowMPFm+BuixEqE4Y6Up+COJx+X9GePom4Q5qSF0ObYXUT<br />
-qTfwMjsDSVtaKB2OUIiqK0qj7ZG8PyA5dIVZpoWD791uWwnrtRGS1D+OQIehNlkDJXouygrmMmdV5y<br />
-nnTgsWF8Z/Q4RoPTsxMHaOfSW+xc8kO7cSz3AXfnR8c8CfHkwZuzBHh0H8rLCRuRrpAYKTzZDJlj</ins><br />
-z/JP0ua48pmJ8tHb8sjCB8jHYBbhVsteMkWIeCEDaaE0gQEzYuEhNLD3m3zla5J+m+0batsBXXI3EE<br />
-T+d0FjdXe8YccMt2TU0dAcwsRnRCPvpn02RbFKFJaS9OPjqV2rE+IUA2nsIEUZX7Ab0NlpyeOenHYK<br />
-LJyF2DchMrLV/0p3q8VdaUFaSjFLI3X+fJcR5TWzEtB2ISiJ18qawHv9OaJ+chKCqk/lAHKNENM/AG<br />
-fUliI/ebJ7cjdcMoGsMnUJS2HRttAsown/qc6AZGG7FGehD9gSZgP1w8Ak3vjF7YRGfYuVtRVECOat<br />
-gg0znxQCwsWo0wOf/MZB1Qf/r63LElKCDHLAMNwlXixewyaZTP3EATiQoH6Zsipix2zOTUZ65EYZcQ<br />
-6WSkV9G3B5SONLA2CP482PfRbuCIda9B8dSuqZkj0LNwJWa+Qf45P1Mr0aKJ8qTjrGO0OlxqDIwonf<br />
-nri0rautAkpfG1RTNpZdsbhasKrGcKaD9unmrZaJNIsE4u5P2fPEWTkfxblSudDKc3XsygLpyCHjTR<br />
-2eXxRCvlbJwQ1DQpE04rjfsQT+Cgm/+MTf9FwtEeLDqBYZnxHQzvgsbrfUXjbkajxWKhknRfNRlcZM<br />
-TEX07awl5myfmiDxv8aYLhnR2fp8+nry1tINt69KBdSReaeEQ7LQLmTxGTn+WrHTy5OrUBfw1a9UFe<br />
-bMwMP0CT9wP0TTqtb9Hurgc5edCOspxW9bk8wRn9ga/cJ0B5Vn8wFk49OmO+OX5ZoB8SRaCJOnoac+<br />
-zUC7eiS5o24NgZU550tImaqOhoZbyKeE7jTsx/tEIaRkcbZuCV8xp0eXqwUU40dK68irfVBg07Zhw7<br />
-QvcMpFOWaWKjnEJqPtKKFH85UOQAMoXYI2KXcIScU5yJy5On3BEIe2hwRvtPpW9lLEGOsK0zDbCu6G<br />
-lK44mzjklnwrOy/vwyWYudQe4Qj10G+ceQ8ydATGFm5GDRVhMrM7OxIuwsds3SbObdg7aS1uXSir3Q<br />
-tI0nZY2OnNMqPGCtwPV6ZrxKrJDNdjfztQjxGZ+zG8OWWv1HK73oaFL4K3uFg+V+LdtFHNmdHI3ck7<br />
-SbYwfKkztNABPURGzsLgQddMfroT63gRovLCunAtMEDxpb9I2vHO6nVPVgZTp2kUOXY4PKsvdaY476<br />
-bxHtLG07G15w8aRD7XtS+wKDhxZ+tgsCMT88cu99P3Qh87MuewSqCzCBfs5v8c8TcTy0grqbJkI+ck<br />
-jxsJz5xaygHbS0w/iVkkcDfwJ9L3qD2nHQlv57z/C9hNH412P2M/uDCzrjX1yOdhzcZVKXYRBEifds<br />
-Og9Wskx+gnYQygzbMkuVDq6cZSY5r6NznbutMiy4O4w8ZZuzusBmN4bysZ0TPy6j46wNJk/GejCetW<br />
-9FnByttLI3CfyjC0bRVzztughMyHlL2ywdev54n4kbfZtB6LbndpVHdvecgl8obXRsdLuorXu9mG61<br />
-vUHP7fK9ygdwND9s7zs6H6I124vribKgidGd/3YKc61thcHZvzACP3vpp4n/8Ijv6JtvpzEHmulk3G<br />
-3lgfZSmhrc7jR+ro+Aj0DTQiCeo2/ZtFT1tWlMBFInbJevCahDSP+5pzyPbOqo6hf7CPgINEEEmuwZ<br />
-fRPEylfJR8BHwEfgskTAd/SXZbP5SvsI+Aj4CCSOQMzRTQ09IOEHHwEfAR8BH4Hmg4C/om8+belb4i<br />
-PgI+Aj4IqA7+hdYfEzfQR8BHwEmg8CvqNvPm3pW+Ij4CPgI+CKgO/oXWHxM30EfAR8BJoPArabsddc<br />
-cw3<ins>sVfcfXVVzcfC31LfAR8BHwEmjkC58//DVdddZWnlbYVfVpaGk6d/r0nsV/gI+Aj4CPgI9D0ED<br />
-hx8n2kp9OPv3gEm6PPzc3FkcO/wZEjv8Wnn33qUcXP9hHwEfAR8BFoCgiwn2Z/zX67urraU6WWt2T0<br />
-MwrFz3eIH2uY2ro1Dh4qxV8</ins>cS1Yq1rbmxmi9isBsnxkn+p5VnGKI0aW4PG4m9Z4sd8BC4HBOoaCW<br />
-pENqYt3/pmR/x933/E332zgyUmGcEOI/7jP36Nw++8LXglyqZVq1ZISUnBsuUviHpXXX0NQHyvvfYr<br />
-uIqO4K+84gq0aNECLf5f8Zv8Ozwy8K/ccMy48i/21Fy4gM8/+wwffvghZdfig2i1oPnzh39SlYwr17<br />
-OixF1LsGxKG1myyFHuoGdekp3FlMRLIaLMyleCLBkiZsijuBDFH1zHLlfV5TLJX+UIISJPoMJYCKWY<br />
-zihjUlsl4i3/SyaGTZZenO0m37JF8GYy4ity1VWvKWQoQcpWxddIMw8zcJklg7Nlij7lfzPHlEs5iq<br />
-PelpYtZimzs2hdUiKLPtw04DLTZkVhJ1TVDSFSrqUHF9t1URU414uVorlkV09F3Aqc9jjTyWotZciu<br />
-SnFNpOzbzE/LNNmTXE201bOsfK3YrOXGySzkiCKw2FCmwcl+MauJbM1HaFGrrmDMlCRA/jfrm0Id+Y<br />
-Y4k06pZmY4Ik76lG9+A5OnPOygSizp5LVmzXKc+e8/yso2PS2tRMxK2gS1v/FGke5Ajp9D+/ZfJ4d/<br />
-La4gZ9/yrWP/ITK5E/CAE//4Sn/8lGzNhfP44osvRP65/z3L+OF//8hOX1STHyIuuoyWyU1Hpsj/dO<br />
-UU/RPW8Syjyk0CUVcUG1wsEVIfoZ+hmynNIiKektcVLeSJlLhS3hX0j/UwJIq4Vk1K4wzDKBllmeTa<br />
-DXkCC/5ZNcoTcboyGDVcx6gnjSN5QhZJFfro8oUKph4sRzCpZb11G1kOl9C1hi2VlIKtNETY2oLslC<br />
-LoKrBlPsxTYs0xDrKekCQz6FNwZNs4ZlyVrXwVQbBTtYkPCRN/ir8hiwWwxLpDC8MSgz9VELKEfJGw<br />
-dBHMWDeDK8vmf4ZMqQeViQyVz7QeemisDI6eF9GPjFIp3lBC6eJa0yFXYEj2KiwdNqp+I1qA2pgNFe<br />
-yZzimH0maZkC0zmE61nySw0hYPJpK8TawFM+pbykbBSKZUHhdJqPnTwpfbgDGXZSYVRwwlZdT1U2eu<br />
-E4jhavDU8oUMTstGp4u7XO79bKExjAy7SJghT160hBHVRIlobLaeI7UxVJH2U63jFZX4/PPP6+3sdR<br />
-2Yz+Gj5bj2q9fJbFO8GVEm6dVEnLU7cTqM1m3b4dj7J/DV61qJBryq5dVoQQ6p5d8uyFceMCvTsTFo<br />
-1PjKuaHllfjbXz/HtW2uwyf/+zFaXf81UW5Jk4pY6ggZplJmE4qGohRfzT/mIh0Vx/RBxi0luqNgLH<br />
-XiPlljOGDuwDIYV3J87Nwlb+bFccojQyVf4yrIGRpV34hxknjyPx6IjIHAhAbiBZ70ai7gAu1wOO8C<br />
-4abwkoOW5Rn6CzulXKnPlaKMSs1/rDfLUcGwVPyeJtsnefJVOnsSZghgLgYn3pYxdmwn2SgmFpbAih<br />
-iSBH+RppjBgvNYtrCPEOZ8tqWG7GR5opTlGYG15v/8wTIkvizbypciBJGgUzGjosiTPAyrWSYLlsLF<br />
-lUULPYRsoSHliyJxEXJZqqkDS2EdZJ4g4nIZifm0LIopsmcwoTTInu+W8mBqwscR9kB0Ffby1WhTs4<br />
-2N147I/ubOULChIloPaHw4LgPXZRkiR0S1uKzBA0fK5iqsh7hIOtkXuCIXGkEAaeBt4Cx9soaxEye9<br />
-vuJjY2snUH1VNZrizGxVXJUxO0kvYiJbF29yNiLSQqZlu/nKPIXpIl6fDyXP1I2Y/O5EJWppNT6lni<br />
-t7pQereF74mlq0IofNbcLyRNsqojhXto3rf4Wc/HkaSy2vaknXGrHQ/f88KTEe0A0y1QAAAABJRU5E<br />
-rkJggg==)</p>
-<p>现在支持直接黏贴图片了？</p>
-<p>这个问题的解决的解决方法就是升级驱动。下个 <span class="exturl" data-url="aHR0cDovL3d3dy5kcml2ZXJnZW5pdXMuY29tLw=="> 驱动精灵 <i class="fa fa-external-link-alt"></i></span> 什么的，然后就可以修复了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1481,7 +1259,7 @@ rkJggg==)</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 

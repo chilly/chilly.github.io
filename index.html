@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,167 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2024/04/12/prometheus-java-client-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/12/prometheus-java-client-usage/" class="post-title-link" itemprop="url">Prometheus-Java-Client-Usage</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-04-12 17:55:33" itemprop="dateCreated datePublished" datetime="2024-04-12T17:55:33+08:00">2024-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-04-13 23:47:16" itemprop="dateModified" datetime="2024-04-13T23:47:16+08:00">2024-04-13</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-prometheus-介绍"><a class="markdownIt-Anchor" href="#1-prometheus-介绍"></a> 1. prometheus 介绍</h1>
+<p>Prometheus 是一种开源的系统监控和警报工具，最初由 SoundCloud 开发，现在由 Cloud Native Computing Foundation (CNCF) 维护。它专门设计用于在动态环境中监控大规模的分布式系统。</p>
+<p>以下是 Prometheus 的一些主要特点和功能：</p>
+<ol>
+<li>多维数据模型：Prometheus 使用多维数据模型来存储时间序列数据，每个时间序列由指标名称和一组标签组成，使得数据可以灵活地被查询和聚合。</li>
+<li>灵活的查询语言：PromQL 是 Prometheus 的查询语言，它允许用户对时间序列数据进行高级查询、聚合和操作，以生成自定义的监控指标和警报条件。</li>
+<li>持久化存储：Prometheus 使用本地存储引擎来持久化时间序列数据，可以配置多种存储后端，包括本地磁盘、远程对象存储等。</li>
+</ol>
+<h1 id="2-prometheus-如何接入及示例代码"><a class="markdownIt-Anchor" href="#2-prometheus-如何接入及示例代码"></a> 2. prometheus 如何接入及示例代码</h1>
+<h2 id="maven依赖"><a class="markdownIt-Anchor" href="#maven依赖"></a> maven依赖</h2>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.prometheus<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>simpleclient<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.11.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.prometheus<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>simpleclient_httpserver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.11.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="指标项"><a class="markdownIt-Anchor" href="#指标项"></a> 指标项</h2>
+<ol>
+<li>
+<p>计数器（Counter）：</p>
+<ul>
+<li>用途：计数器用于累积值，通常用于表示累积事件的总数，如请求数、任务完成数等。计数器的值只能增加，不能减少或重置。</li>
+<li>示例：表示请求数的总数。</li>
+</ul>
+</li>
+<li>
+<p>计量器（Gauge）：</p>
+<ul>
+<li>用途：计量器用于表示可变值，它可以增加、减少或重置。通常用于表示动态变化的数据，如内存使用量、并发连接数等。</li>
+<li>示例：表示当前活跃用户数。内存占用数等</li>
+</ul>
+</li>
+<li>
+<p>直方图（Histogram）：</p>
+<ul>
+<li>用途：直方图用于度量观察值的分布情况，并提供一组用于汇总这些观察值的统计信息，如总数、均值、分位数等。</li>
+<li>示例：表示请求延迟的分布情况。</li>
+</ul>
+</li>
+<li>
+<p>摘要（Summary）：</p>
+<ul>
+<li>用途：摘要与直方图类似，也用于度量观察值的分布情况。不同之处在于，摘要提供一组用于汇总这些观察值的统计信息，如总数、平均值、标准差等。</li>
+<li>示例：表示响应时间的摘要信息。p99耗时统计等</li>
+</ul>
+</li>
+</ol>
+<h3 id="指标项counter"><a class="markdownIt-Anchor" href="#指标项counter"></a> 指标项Counter</h3>
+<p>java代码示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> io.prometheus.client.CollectorRegistry;</span><br><span class="line"><span class="keyword">import</span> io.prometheus.client.Counter;</span><br><span class="line"><span class="keyword">import</span> io.prometheus.client.exporter.HTTPServer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Counter</span> <span class="variable">requestsTotal</span> <span class="operator">=</span> Counter.build()</span><br><span class="line">            .name(<span class="string">&quot;myapp_requests_total&quot;</span>)</span><br><span class="line">            .help(<span class="string">&quot;Total number of requests.&quot;</span>)</span><br><span class="line">            .labelNames(<span class="string">&quot;name&quot;</span>)</span><br><span class="line">            .register();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// Expose Prometheus metrics at http://localhost:9090/metrics</span></span><br><span class="line">        <span class="type">HTTPServer</span> <span class="variable">server</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTTPServer</span>(<span class="number">9090</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Simulate a request and increment the counter</span></span><br><span class="line">        simulateRequest();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Wait for server to stop (not needed if you have other shutdown mechanisms)</span></span><br><span class="line">        server.stop();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">simulateRequest</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// Increment the requestsTotal counter</span></span><br><span class="line">        requestsTotal.labels(<span class="string">&quot;simulate&quot;</span>).inc();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这代码中count就是一直增加，在未来图表中，可以用当前时间的数字减去1分钟前的数字，就能得到当前1分钟内请求数。</p>
+<p>另外需要注意的是<code>labelNames()</code>函数和<code>labels()</code>函数。这两个是配合使用的。这里可以增加任意的维度。未来搜索或者作图可以更好地展现。</p>
+<p>例如，我希望统计不同路径的访问请求。<br />
+那么我在<code>labels('不同的path')</code>, 这样就能分路径进行统计了。</p>
+<p>如果你想统计不同的路径，不同的客户端请求数量。那么在注册Counter时，需要这样调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Counter</span> <span class="variable">requestsTotal</span> <span class="operator">=</span> Counter.build()</span><br><span class="line">        .name(<span class="string">&quot;myapp_requests_total&quot;</span>)</span><br><span class="line">        .help(<span class="string">&quot;Total number of requests.&quot;</span>)</span><br><span class="line">        .labelNames(<span class="string">&quot;path&quot;</span>, <span class="string">&quot;clientType&quot;</span>)</span><br><span class="line">        .register();</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line"><span class="comment">// 然后在需要增加计数时这样处理.</span></span><br><span class="line">requestsTotal.labels(<span class="string">&quot;请求的URI&quot;</span>, <span class="string">&quot;iOS&quot;</span>).inc();</span><br><span class="line">requestsTotal.labels(<span class="string">&quot;请求的URI&quot;</span>, <span class="string">&quot;Android&quot;</span>).inc();</span><br></pre></td></tr></table></figure>
+<h3 id="指标项gauge"><a class="markdownIt-Anchor" href="#指标项gauge"></a> 指标项Gauge</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> io.prometheus.client.exporter.HTTPServer;</span><br><span class="line"><span class="keyword">import</span> io.prometheus.client.Gauge;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyApp</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Gauge</span> <span class="variable">myGauge</span> <span class="operator">=</span> Gauge.build()</span><br><span class="line">        .name(<span class="string">&quot;my_gauge&quot;</span>)</span><br><span class="line">        .help(<span class="string">&quot;Example of a Gauge metric&quot;</span>)</span><br><span class="line">        .labelNames(<span class="string">&quot;label1&quot;</span>, <span class="string">&quot;label2&quot;</span>) <span class="comment">// 这里label非常重要。注意一定是有限集（可枚举，数量要有限制）</span></span><br><span class="line">        .register();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// 启动 Prometheus HTTP 服务器，暴露指标数据</span></span><br><span class="line">        <span class="type">HTTPServer</span> <span class="variable">server</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTTPServer</span>(<span class="number">8080</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 模拟应用程序中的指标更新</span></span><br><span class="line">        updateMetrics();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 模拟更新指标数据</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">updateMetrics</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 假设这是您应用程序的一部分，定期更新 Gauge 指标的值</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="comment">// 更新 Gauge 指标的值，可以基于应用程序的状态或性能指标进行设置</span></span><br><span class="line">            myGauge.labels(<span class="string">&quot;value1&quot;</span>, <span class="string">&quot;value2&quot;</span>).set(<span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 在这里进行其他业务逻辑和操作</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 休眠一段时间，模拟指标数据的定期更新</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">5000</span>); <span class="comment">// 5秒钟</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="指标项histogram"><a class="markdownIt-Anchor" href="#指标项histogram"></a> 指标项Histogram</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> io.prometheus.client.exporter.HTTPServer;</span><br><span class="line"><span class="keyword">import</span> io.prometheus.client.Histogram;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyApp</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Histogram</span> <span class="variable">requestDuration</span> <span class="operator">=</span> Histogram.build()</span><br><span class="line">        .name(<span class="string">&quot;http_request_duration_seconds&quot;</span>)</span><br><span class="line">        .help(<span class="string">&quot;HTTP request duration in seconds&quot;</span>)</span><br><span class="line">        .buckets(<span class="number">0.1</span>, <span class="number">0.5</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>) <span class="comment">// 定义 Histogram 的 buckets</span></span><br><span class="line">        .register();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// 启动 Prometheus HTTP 服务器，暴露指标数据</span></span><br><span class="line">        <span class="type">HTTPServer</span> <span class="variable">server</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTTPServer</span>(<span class="number">8080</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 模拟应用程序中的请求处理</span></span><br><span class="line">        handleRequest();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 模拟处理 HTTP 请求，并记录响应时间</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">handleRequest</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 假设这是您应用程序的一部分，处理 HTTP 请求并记录响应时间</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 处理 HTTP 请求，执行一些业务逻辑</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 响应时间为处理开始到结束之间的时间差</span></span><br><span class="line">            <span class="type">long</span> <span class="variable">duration</span> <span class="operator">=</span> System.currentTimeMillis() - startTime;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 记录响应时间到 Histogram 中</span></span><br><span class="line">            requestDuration.observe(duration / <span class="number">1000.0</span>); <span class="comment">// 将毫秒转换为秒并记录</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 在这里进行其他业务逻辑和操作</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里的buckets定义了不同桶<br />
+<code>[0, 0.1), [0.1, 0.5), [0.5, 1), [1, 2), [2, 5) [5, 正无穷)</code><br />
+当耗时0.3秒被记录时，Prometheus将增加<code>[0, 0.1), [0.1, 0.5)</code>两个桶的值。</p>
+<h3 id="指标项summary"><a class="markdownIt-Anchor" href="#指标项summary"></a> 指标项Summary</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> io.prometheus.client.Summary;</span><br><span class="line"><span class="keyword">import</span> io.prometheus.client.CollectorRegistry;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个 Summary 指标</span></span><br><span class="line"><span class="type">Summary</span> <span class="variable">requestLatency</span> <span class="operator">=</span> Summary.build()</span><br><span class="line">    .name(<span class="string">&quot;http_request_duration_seconds&quot;</span>)</span><br><span class="line">    .help(<span class="string">&quot;HTTP request latency in seconds.&quot;</span>)</span><br><span class="line">    .quantile(<span class="number">0.5</span>, <span class="number">0.05</span>) <span class="comment">// 统计50%分位数，最大允许误差为 ±5%</span></span><br><span class="line">    .quantile(<span class="number">0.9</span>, <span class="number">0.01</span>)</span><br><span class="line">    .quantile(<span class="number">0.99</span>, <span class="number">0.001</span>)</span><br><span class="line">    .register();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在请求处理过程中记录持续时间</span></span><br><span class="line">Summary.<span class="type">Timer</span> <span class="variable">requestTimer</span> <span class="operator">=</span> requestLatency.startTimer();</span><br><span class="line"><span class="comment">// 执行请求处理逻辑</span></span><br><span class="line"><span class="comment">// 记录请求处理结束时间</span></span><br><span class="line">requestTimer.observeDuration();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 也可使用</span></span><br><span class="line">requestLatency.observe(cost_in_seconds)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="3-prometheus-检查是否成功"><a class="markdownIt-Anchor" href="#3-prometheus-检查是否成功"></a> 3. prometheus 检查是否成功</h1>
+<p>这其实要看设置的监听端口是多少。例如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> io.prometheus.client.exporter.HTTPServer;</span><br><span class="line">...</span><br><span class="line"><span class="type">HTTPServer</span> <span class="variable">server</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTTPServer</span>(<span class="number">8080</span>);</span><br></pre></td></tr></table></figure>
+<p>那么上述代码的启动后，且有指标生成后，访问<code>http://localhost:8080/metrics</code>就能看到相应的指标。</p>
+<h1 id="4-使用注意事项"><a class="markdownIt-Anchor" href="#4-使用注意事项"></a> 4. 使用注意事项</h1>
+<ol>
+<li><code>labels(&quot;value1&quot;, &quot;value2&quot;)</code>中的<code>value1</code>和<code>value2</code>需要可数，不一定是枚举类型，但是数量是有限的。</li>
+<li><code>buckets(0.1, 0.5, 1, 2, 5)</code>, 这里的值越多，统计性能就越低，占用的内存就越大</li>
+<li>Histogram用于统计分布，Summary用来统计多少分位的数据。</li>
+<li>Counter每次放入的是inc()或者inc(number)，放入的是增量。 Gauge每次放入的是当前的数据。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1522,189 +1683,6 @@ And our chat system will be like:</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/08/05/code-comments/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/08/05/code-comments/" class="post-title-link" itemprop="url">代码论千言：如何评价别人的代码</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-05 09:56:02" itemprop="dateCreated datePublished" datetime="2017-08-05T09:56:02+08:00">2017-08-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 20:56:41" itemprop="dateModified" datetime="2023-10-06T20:56:41+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="引子"><a class="markdownIt-Anchor" href="#引子"></a> 引子</h1>
-<pre><code>遇到一个陌生人，只看到他沾满泥土的鞋子。
-夏日地铁里，闻到了周围人的汗臭。
-朋友聚会，似乎有些人眼屎没擦干净。
-初次相亲见面，就一直在说对方不好看。
-你看到别人的种种不足，当面指出来，为什么没有人感谢你？
-不光没有人感谢，似乎还有人恶言相向，某些人还因此要打你。
-你做错了吗？
-                                 ————《帐前卒的寓言》
-</code></pre>
-<div align=center>
-<p><img src="/images/code-comments/not_to_know.jpg" alt="I don't want to know" /></p>
-</div>
-<p>Code Review作为编码社会活动，一直被人诟病。每个人似乎都知道Code Review好，但是推广起来却有种种困难。而“用IDE编程”这事似乎根本就不用推广。这到底是为什么？因为Code Review中不可避免要指出别人的代码不足。我们也经常会遇到：</p>
-<ul>
-<li>评价/建议后，编码者却不修改；</li>
-<li>总是同一种错误，一犯再犯；</li>
-<li>抵制你的评价意见，寻求他人再次Review。</li>
-</ul>
-<p>我们review别人的代码，不是专门为代码点赞，那是“鼓励师”要做的事情。我们主要是指出别人的代码哪里写的不好。我想，即使是最和善、最理智的程序员也肯定不喜欢那些评论。即便如此，我们还是要评论，要让别人接受我们的观点。不过为了让别人乐于接受，肯定要有恰当的鼓励。另外，在评论别人的代码之前，我们最好知道是谁写的代码。如果是匿名的，当然可以肆无忌惮的评论。但Code Review是一种非匿名的社交活动：我们都知道编码者是谁，编码者也知道评价者是谁。与说话的技巧一样：“对什么人,说什么话”。所以我们首先需要了解编码者。</p>
-<h1 id="读代码识人心"><a class="markdownIt-Anchor" href="#读代码识人心"></a> 读代码识人心</h1>
-<pre><code>比鬼神更可怕的，是人心。
-                    ————《盗墓笔记》
-</code></pre>
-<p>读懂人心，实在是太难了。通过代码去读懂人心，那就更难了。如果和编码者经常在一起，性格喜好自然能略知一二。如果你从来没有接触过编码者，只看代码能了解什么呢？我们无法从代码中看出那人的血型、星座、爱好；也难看出勇敢、乐观、顽强、抑郁或悲伤；更看不出他是表现型、分析性还是实干型。当然以上那些性格特点对我们评价代码也没有什么卵用。从代码中读懂人心，只需关注三个方面：</p>
-<ul>
-<li>是否认真编码</li>
-<li>是否对技术有激情</li>
-<li>编码水平怎么样</li>
-</ul>
-<p>为什么只关注这三个方面？认真的编码者对细节格外关心，指明他代码细节的缺陷，他的技术水平一定会有提升。有激情的编码者一定会迫不及待的使用新的技术、新的语法、新的组件。应该告诉他们这些新的技术、语法、组件在代码里用的是否恰当。高水平的编码者乐于提高自己的编程技巧，也喜欢破坏现有的规则，他们看重的只有逻辑错误和运行时问题。Review时，投其所好，才能让编码者信任你，然后才可能接受你的建议。如果编码者编码不认真、技术没激情、水平也不咋样，请问该怎么办？这我们后面会说。</p>
-<h2 id="认真的编码者"><a class="markdownIt-Anchor" href="#认真的编码者"></a> 认真的编码者</h2>
-<p>编码者是否想到你所想到的细节，是否还考虑了你没有想到的点？是否遵循了code style规范中每一条细节？是否考虑了边界情况？在特殊处理的地方，有没有写详细的注释？当他看到你的评论时，不管同意与否，他是否每一条都认真回复了。</p>
-<h2 id="有激情的编码者"><a class="markdownIt-Anchor" href="#有激情的编码者"></a> 有激情的编码者</h2>
-<p>编码者是否尝试了新的技术：新的组件、新的语法糖？是否愿意解决一些别人不碰的难题？不那么美观的代码是否充满了不断尝试的味道？是否规避了存在问题的第三方组件？是否尝试写过一些公用组件？是否对旧的问题有新的思路?</p>
-<h2 id="高水平的编码者"><a class="markdownIt-Anchor" href="#高水平的编码者"></a> 高水平的编码者</h2>
-<p>编码水平有优劣，但这个优劣大多数只存在于人的内心。有时候你看了一眼别人的代码，你心里想：“这段代码能写的更简单，更容易。” 所以优劣大多是和自己比较的：技术比自己好，还是比自己差。如果你熟悉整个团队，那么你就能知道这个人的编码水平大概处于整个团队的什么位置。</p>
-<p>但是编码者提交的代码量太少，或者大多是log/print/bean，无法了解他这三个方面的特质，那就用comments多交流几次。</p>
-<h1 id="书写评论"><a class="markdownIt-Anchor" href="#书写评论"></a> 书写评论</h1>
-<div align=center>
-<p><img src="/images/code-comments/write.jpeg" alt="write comments" /></p>
-</div>
-初识，最好多点赞，并建议如何编码。如果对方是新入职的人员，最好一次性的指出程序要修改的地方。一是他有时间修改；二是新人需要了解公司里的编码规范；三是提升他的编码水平。
-<p>在review的过程中不要否定新技术，也不要轻易肯定新技术，<strong>适用才是评判依据</strong>。为什么使用这些新技术？是旧的写起来麻烦，还是旧的无法满足需求，还是只为尝鲜？对于调研团队，我们鼓励使用各种新的技术。不管是挖坑还是填坑，需要通过他们的使用情况，了解多种新技术的功能特性、成熟度、性能优劣和适用条件。对于功能交付团队，不管是上线还是开发软件给客户使用，能满足需求的同时，一定要为了稳定不折腾。否则后期就会被bug所累，疲于奔命。</p>
-<p>表达相同意思的一段文字可以有不同的写法。工作要有乐趣，不要评论千篇一律、枯燥乏味。下面我要说几种评论的风格:</p>
-<ul>
-<li>
-<p>吐槽。针对熟识的同事或者针对技术水平很高的人。幽默风趣，又让人容易接受。</p>
-</li>
-<li>
-<p>委婉建议。针对有激情的人，不应该抹杀别人的技术追求。多以疑问句为主，让其自己反思。</p>
-</li>
-<li>
-<p>批评。针对多次犯同一错误的新人。他们犯的错误一般都是非常容易改正。例如，多写常量定义、使用linux换行符、打印不用System.out等等。有时用感叹句让批评的语气再严厉一点，否则下次新人还会犯同样的错误。</p>
-</li>
-<li>
-<p>直白陈述。可能大多数评论采用的是这种句式。另外针对编码“得过且过”的<strong>老码农</strong>，你可能需要多写点：除了点明问题所在，还应该建议他怎样去修改代码。这样可以减少他的返工次数，消减他的抵触情绪。</p>
-</li>
-<li>
-<p>讥讽。除非是你的好基友，否则不要用，不要用，不要用，说三遍，不要树敌。</p>
-</li>
-</ul>
-<h1 id="当面交流"><a class="markdownIt-Anchor" href="#当面交流"></a> 当面交流</h1>
-<div align=center>
-<p><img src="/images/code-comments/communicate.jpeg" alt="communicate" /></p>
-</div>
-既然当面交流，不妨听听编码者怎么看待你的评论。不要一言不合就暴跳如雷，要问问他想怎么修改，或者为什么不想修改。
-<p>出发点还是**“利”**字。但是受益者可能不同的：是编码者得利，还是团队得利，还是公司得利。这就要看你的三寸不烂之舌，如何既讨人欢心又让人听你指示。程序员这群理智的动物，有时最看不惯的就是阿谀奉承。大家都是靠技术混饭吃的，虽然糖衣炮弹固然重要，但更重要的是言明利弊。</p>
-<p>有些人即使你心平气和的交流，仍然不愿意修改他们的代码，这时候就要关注问题的边界。如果在容忍的边界里，或者对建议置之不理，或者允许开发者以后再修改。如果是边界之外，就应该据理力争。那边界究竟是怎样划定的呢？我写在下面：</p>
-<ul>
-<li>代码中存在bug。bug会导致各种错误，有些会导致数据错乱、文件错乱等难以修复的问题。</li>
-<li>代码难以理解，日后难维护。当然如果写这代码的人永不离职，自己维护尚可。可人要是离职了，还要看后继者是否愿意担风险去重构这些代码。</li>
-<li>长时间运行有问题。那多久会出问题呢？看多久再次部署，如果每天都部署一次，两天就算长时间了。但是为了让团队每个人都休息好、有自己的假期、以及不在休假时被打扰，还是尽量考虑长远一点。如果你最长假期有10天，那至少要考虑软件运行大半个月没问题。</li>
-<li>数据量大、访问量大时，代码运行缓慢或者宕机。如果估算运行部署几天后数据/访问量就会到达这个规模，那一定要尽早修改代码。</li>
-<li>改动后将大量节省他人的时间。如果将代码抽取为模块或者组件后，有更大的收益。特别是他人即将开始这部分工作时，一定要尽快的抽取出相关代码。不抽取的话，一是别人也要写相关代码；二是一旦有修改，相同功能的代码都会修改；三是即使后期再抽取了组件，也没人愿意重构。</li>
-</ul>
-<p>我们都是执着的技术人，我们心中自有不可逾越的底线，我们也希望所有的编码者不要越过这条底线。我们把这底线告诉给编码者，这也是Code Review中评审者的义务。但建议也写了，见面也谈过了，编码者和审阅者两方就是各不相让。那没有其他办法，只能通过公司里的人事关系去解决：</p>
-<ul>
-<li>如果是你的下属，都已经讲明白道理，还是不执行，那是这个下属不称职。</li>
-<li>如果是你的上级，你已经告知了他风险，他觉得你的建议没有道理，那就请他说出自己的道理。当然你觉得是他是一个傻X领导，拍拍屁股走人就是；但如果你<strong>越职言事</strong>，那就是大忌了。</li>
-<li>如果是你的平级，告知他上级代码的风险，之后就交给他的上级处理吧。</li>
-</ul>
-<p>当然你需要知道，为了权衡：有时为了紧急上线，有时为了更大的利，即使逾越了你的底线，也要先把代码merge了再说。。</p>
-<p>Code Review是为了什么？最终是为了获利。在公司，什么都不考虑，只为把代码写的完美无缺，那才是真的傻。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1736,7 +1714,7 @@ And our chat system will be like:</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 

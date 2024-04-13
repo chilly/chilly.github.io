@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,186 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/15/4553315/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/09/15/4553315/" class="post-title-link" itemprop="url">搭建云计算平台～Eucalyptus安装日志 Centos 5.3</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-09-15 08:54:00" itemprop="dateCreated datePublished" datetime="2009-09-15T08:54:00+08:00">2009-09-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我只是记点流水帐，不是技术文档。</p>
+<p>1。首先找到文档 <a target="_blank" rel="noopener" href="http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2"> http://open.eucalyptus.com/wiki/EucalyptusPrerequisites_v1.5.2<br />
+</a> 看看安装前需要准备什么。</p>
+<p>2。去 <a target="_blank" rel="noopener" href="http://open.eucalyptus.com/downloads"> http://open.eucalyptus.com/downloads<br />
+</a> 下载一个安装包。我使用的是centos5.3</p>
+<p>3.解压缩后进入那个解压的目录。这步可以以后再做。</p>
+<p>4。添加各种可能需要的包：</p>
+<p>//为了和让时钟同步 yum install -y ntp ntpdate <span class="exturl" data-url="aHR0cDovL3Bvb2wubnRwLm9yZw==">pool.ntp.org<i class="fa fa-external-link-alt"></i></span> //安装xen虚拟机 yum install -y<br />
+xen sed --in-place ‘s/#(xend-http-server no)/(xend-http-server yes)/’ /etc/xen<br />
+/xend-config.sxp sed --in-place ‘s/#(xend-address localhost)/(xend-address<br />
+localhost)/’ /etc/xen/xend-config.sxp /etc/init.d/xend restart<br />
+//为了让Eucalyptus正常运行 yum install -y java-1.6.0-openjdk ant ant-nodeps dhcp<br />
+bridge-utils</p>
+<p>然后开放firewall的端口,输入：system-config-securitylevel 我只是开放了端口8443, 8773, 8774 ,8775四<br />
+个端口。传说对于前端前三个端口是必须开的。对于Node来说8775是必须开的。但是Eucalyptus建议：最好把全部的防火墙都关了吧。可见这个项目仅仅是实<br />
+现</p>
+<p>了云，但是对于云的安全性尚没有考虑。</p>
+<p>5。这里前端要安装的命令如下：（这里所说的前端是指和用户打交道的一个PC,node可以看作是集群中的一个节点），以下命令中的x86_64可以替换。我安装时就<br />
+使用的586. 安装云的命令中x86_64有的又变为i386.不过不管怎样。似乎是把里面的rpm包都安装完即可。</p>
+<p>//安装第三方软件 cd eucalyptus-1.5.2-rpm-deps-x86_64 rpm -Uvh<br />
+aoetools-21-1.el4.x86_64.rpm / euca-axis2c-1.5.0-2.x86_64.rpm / euca-<br />
+rampartc-1.2.0-1.x86_64.rpm / vblade-14-1mdv2008.1.x86_64.rpm cd … //安装云 rpm<br />
+-Uvh eucalyptus-1.5.2-1.x86_64.rpm / eucalyptus-cloud-1.5.2-1.x86_64.rpm /<br />
+eucalyptus-gl-1.5.2-1.x86_64.rpm / eucalyptus-cc-1.5.2-1.x86_64.rpm</p>
+<p>6。Node要安装的包</p>
+<p>cd eucalyptus-1.5.2-rpm-deps-x86_64 rpm -Uvh aoetools-21-1.el4.x86_64.rpm /<br />
+euca-axis2c-1.5.0-2.x86_64.rpm / euca-rampartc-1.2.0-1.x86_64.rpm / euca-<br />
+libvirt-1.5-1.x86_64.rpm / vblade-14-1mdv2008.1.x86_64.rpm</p>
+<p>//安装node controller rpm -Uvh eucalyptus-1.5.2-1.x86_64.rpm / eucalyptus-<br />
+gl-1.5.2-1.x86_64.rpm / eucalyptus-nc-1.5.2-1.x86_64.rpm</p>
+<p>7。我这里为了方便。将node和front-end（前端）放在一个PC上。不知道是否可行，姑且一试。执行完第五步后，再回到</p>
+<p>eucalyptus-1.5.2-rpm-deps-i586, 安装 euca-libvirt-1.5-1.i386.rpm<br />
+,然后再回上级目录安装eucalyptus-nc-1.5.2-1.i386.rpm</p>
+<p>8. 然后根据指示输入：su eucalyptus -c “virsh list” 果真fail to connect<br />
+xend,但是没有像传说中的一样，我这里没有显示Domain -0.</p>
+<p>9.暂时不管它，前端要执行</p>
+<p>/etc/init.d/eucalyptus-cloud start /etc/init.d/eucalyptus-cc start</p>
+<p>10. Node要执行：/etc/init.d/eucalyptus-nc start</p>
+<p>11。对于我来说要在同一台PC上执行这三个操作。执行cloud时说You should have at least 32 loop<br />
+devices。可以使用命令：ls -l /dev/loop* | wc -l 来查看你现在有几个loop device.如果小于32，vim<br />
+/etc/modprobe.conf(这里不同的机器可能有所不同)，增加一行：options loop max_loop=64,然后modprobe<br />
+loop。再输入ls-l /dev/loop* | wc -l 看看是否为64。</p>
+<p>如果是64之后继续敲命令。可能会在启动nc的时候报出失败:</p>
+<p>You should have at least 32 loop devices<br />
+Starting Eucalyptus services: Node Controller cannot be started: errors in<br />
+/opt/eucalyptus/var/log/eucalyptus/euca_test_nc.log</p>
+<p>我查看了以下/opt/eucalyptus/var/log/eucalyptus/euca_test_nc.log这个文件。有以下几行。</p>
+<p>libvir: Xen Daemon error : internal error failed to connect to xend<br />
+libvir: Xen Daemon error : unable to connect to ‘localhost:8000’: Connection<br />
+refused<br />
+libvirt error: unable to connect to ‘localhost:8000’: Connection refused<br />
+(code=38)</p>
+<p>难道是8000端口没有开？关闭防火墙和SELinux之后，再试。结果还是这个错误。莫非是有什么软件没有装？再试试这个命令:</p>
+<pre><code>yum install -y java-1.6.0-openjdk-devel ant ant-nodeps libvirt-devel curl-devel /  
+
+ httpd httpd-devel apr-devel openssl-devel dhcp   
+结果还是不行。看来不是包没有装。再使用su eucalyptus -c &quot;virsh list&quot; 命令，得到的信息为&quot; libvir: 错误 : 操作失败 :   
+
+xenProxyOpen错误: 连接到管理程序失败。那可能是xend 服务没有看。使用xend start结果抛出了异常。  
+
+（不能使用system-config-services来查看xend是否已经启动。因为我查看过，结果为对勾，害我又查了很久。）如何开启呢？  
+
+首先要重启，grub会有新的一行出现（在重启之前一定要先关闭SElinux,方法为system-config-securitylevel的第二个选项卡，  
+
+选择禁止即可。否则进入Xen会等待很长时间。）。进入Xen之后。首先Xend start,然后可以使用xm list。这次你应该能看到  
+
+那个domain-0了吧。之后就使用eucalyptus的命令启动即可。不过可能还会遇到loop device less than 32的警告。  
+
+再次更改 /etc/modprobe.conf文件,加入 options loop max_loop=64 保存后在命令行中输入:modprobe loop即可。  
+
+再使用下面的命令：  
+
+eucalyptus-cloud start  
+
+eucalyptus-cc start  
+
+eucalyptus-nc start   
+
+cloud启动时可能会有Is cloud alread start?的提示。如果不放心就使用eucalyptus-cloud restart好了。这次应该啥错误都没有了！  
+
+安装结束！(我只用了一台机器安装云...多台的暂时没有尝试。)
+</code></pre>
+<p>如果出现了以下的错误：</p>
+<p>Restarting Eucalyptus cluster controller: (13)Permission denied: make_sock:<br />
+could not bind to address [::]:8774<br />
+(13)Permission denied: make_sock: could not bind to address 0.0.0.0:8774<br />
+no listening sockets available, shutting down<br />
+Unable to open logs<br />
+Failed to start the CC!</p>
+<p>那一定是system-config-security中，防火墙没有置为disable或者seLinux没有置为passivate或者disable导致的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1663,132 +1843,6 @@ log.如果有log生成，那可能是第二个原因：</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/08/16/4453243/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/08/16/4453243/" class="post-title-link" itemprop="url">Python 编码问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-08-16 19:02:00" itemprop="dateCreated datePublished" datetime="2009-08-16T19:02:00+08:00">2009-08-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>对于python的字符串来说。如果是a = ‘abc’,这就是代表是一个正常的字符串类型为str。如果是a= b’abc’这就代表着一个bytes<br />
-object。对于bytes object<br />
-来说，可以使用decode而非encode;对于正常字符串而言可以使用encode，但是却不能使用decode.如果想将bytes<br />
-object直接转换为字符串型，可以使用str()或者repr()。但是这里对于已经进行编码的字符串而言，这样做没有任何好处。</p>
-<p>今天碰到一个一个问题，使用python取得网页内容的时候：</p>
-<p>request = urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldA==">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>’) content =<br />
-request.read()</p>
-<p>这里content就是一个bytes object.如果使用正则式title[/d/D]*?title就会失效，抛出exception,说不能将findal<br />
-l(),finditer()等函数用在bytes object上。所以要进行decode()</p>
-<p>代码如下：</p>
-<p>import urllib.request import re request =<br />
-urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldA==">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>’) content = request.read() reg =<br />
-re.compile(‘title[/d/D]*?title’) print(reg.findall(content.decode(‘utf-8’)))</p>
-<p>如果想搜索中文，正则式中也可以放入中文。</p>
-<p>还有一点不好的地方，就在于这个decode()中到底放入什么编解码方式。这取决于那个网页的信息了。一般都会给出。csdn.net给出的就是charset=u<br />
-tf-8.也可以使用下面的代码得到编解码方式：</p>
-<p>request = urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldA==">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>’) information =<br />
-<span class="exturl" data-url="aHR0cDovL3JlcXVlc3QuaW5mbw==">request.info<i class="fa fa-external-link-alt"></i></span>() print(information)</p>
-<p>可惜的一点是，这里的information是字符串型。传说它是 <code>http.client.HTTPMessage的实例并且 </code> 继承 <code>了email. message.Message。根据文档说是用information.get_charset()就能得到编码是啥类型。可惜我没有试出来，返回值为None.使 用csdn的例子可以得到info的信息为：</code></p>
-<p>Server: nginx/0.6.36<br />
-Date: Sun, 16 Aug 2009 15:51:04 GMT<br />
-Content-Type: text/html; charset=utf-8<br />
-Connection: close<br />
-Vary: Accept-Encoding<br />
-Cache-Control: max-age=604800<br />
-Content-Length: 109205<br />
-Content-Location: <span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldC9pbmRleC5odG0=">http://www.csdn.net/index.htm<i class="fa fa-external-link-alt"></i></span><br />
-Last-Modified: Sat, 15 Aug 2009 11:11:04 GMT<br />
-Accept-Ranges: bytes<br />
-ETag: “f4756814991dca1:aa9”<br />
-X-Powered-By: <span class="exturl" data-url="aHR0cDovL0FTUC5ORVQ=">ASP.NET<i class="fa fa-external-link-alt"></i></span><br />
-X-UA-Compatible: IE=EmulateIE7<br />
-Age: 19<br />
-X-Cache: HIT from FECACHE<br />
-X-Cache-Lookup: HIT from FECACHE:80<br />
-Via: 1.0 <span class="exturl" data-url="aHR0cDovL2NhY2hlZGV2LkNTRE4uTkVU">cachedev.CSDN.NET<i class="fa fa-external-link-alt"></i></span> (WebCache)</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/36/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/36/">36</a><span class="page-number current">37</span><a class="page-number" href="/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/38/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1820,7 +1874,7 @@ Via: 1.0 <span class="exturl" data-url="aHR0cDovL2NhY2hlZGV2LkNTRE4uTkVU">cached
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 

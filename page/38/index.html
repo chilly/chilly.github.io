@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,132 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/08/16/4453243/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/08/16/4453243/" class="post-title-link" itemprop="url">Python 编码问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-08-16 19:02:00" itemprop="dateCreated datePublished" datetime="2009-08-16T19:02:00+08:00">2009-08-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>对于python的字符串来说。如果是a = ‘abc’,这就是代表是一个正常的字符串类型为str。如果是a= b’abc’这就代表着一个bytes<br />
+object。对于bytes object<br />
+来说，可以使用decode而非encode;对于正常字符串而言可以使用encode，但是却不能使用decode.如果想将bytes<br />
+object直接转换为字符串型，可以使用str()或者repr()。但是这里对于已经进行编码的字符串而言，这样做没有任何好处。</p>
+<p>今天碰到一个一个问题，使用python取得网页内容的时候：</p>
+<p>request = urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldA==">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>’) content =<br />
+request.read()</p>
+<p>这里content就是一个bytes object.如果使用正则式title[/d/D]*?title就会失效，抛出exception,说不能将findal<br />
+l(),finditer()等函数用在bytes object上。所以要进行decode()</p>
+<p>代码如下：</p>
+<p>import urllib.request import re request =<br />
+urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldA==">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>’) content = request.read() reg =<br />
+re.compile(‘title[/d/D]*?title’) print(reg.findall(content.decode(‘utf-8’)))</p>
+<p>如果想搜索中文，正则式中也可以放入中文。</p>
+<p>还有一点不好的地方，就在于这个decode()中到底放入什么编解码方式。这取决于那个网页的信息了。一般都会给出。csdn.net给出的就是charset=u<br />
+tf-8.也可以使用下面的代码得到编解码方式：</p>
+<p>request = urllib.request.urlopen(‘<span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldA==">http://www.csdn.net<i class="fa fa-external-link-alt"></i></span>’) information =<br />
+<span class="exturl" data-url="aHR0cDovL3JlcXVlc3QuaW5mbw==">request.info<i class="fa fa-external-link-alt"></i></span>() print(information)</p>
+<p>可惜的一点是，这里的information是字符串型。传说它是 <code>http.client.HTTPMessage的实例并且 </code> 继承 <code>了email. message.Message。根据文档说是用information.get_charset()就能得到编码是啥类型。可惜我没有试出来，返回值为None.使 用csdn的例子可以得到info的信息为：</code></p>
+<p>Server: nginx/0.6.36<br />
+Date: Sun, 16 Aug 2009 15:51:04 GMT<br />
+Content-Type: text/html; charset=utf-8<br />
+Connection: close<br />
+Vary: Accept-Encoding<br />
+Cache-Control: max-age=604800<br />
+Content-Length: 109205<br />
+Content-Location: <span class="exturl" data-url="aHR0cDovL3d3dy5jc2RuLm5ldC9pbmRleC5odG0=">http://www.csdn.net/index.htm<i class="fa fa-external-link-alt"></i></span><br />
+Last-Modified: Sat, 15 Aug 2009 11:11:04 GMT<br />
+Accept-Ranges: bytes<br />
+ETag: “f4756814991dca1:aa9”<br />
+X-Powered-By: <span class="exturl" data-url="aHR0cDovL0FTUC5ORVQ=">ASP.NET<i class="fa fa-external-link-alt"></i></span><br />
+X-UA-Compatible: IE=EmulateIE7<br />
+Age: 19<br />
+X-Cache: HIT from FECACHE<br />
+X-Cache-Lookup: HIT from FECACHE:80<br />
+Via: 1.0 <span class="exturl" data-url="aHR0cDovL2NhY2hlZGV2LkNTRE4uTkVU">cachedev.CSDN.NET<i class="fa fa-external-link-alt"></i></span> (WebCache)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1372,104 +1498,6 @@ print path Result(nodes,path)</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/14/4268747/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/06/14/4268747/" class="post-title-link" itemprop="url">农家乐一日游</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-06-14 18:30:00" itemprop="dateCreated datePublished" datetime="2009-06-14T18:30:00+08:00">2009-06-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>437</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前几天去北大软件学院…那里果真是能体会到什么是中国的地大物博，地广人稀。一眼望去好多树呀。来来回回跑的都是车…没有人。不过一个软件学院就一百来人占这么<br />
-大块地方很不错了（剩下的两百多人都不知道去哪里了）。中科院软件所几千号人占丁点大的地方，人均土地还是北大多些。</p>
-<p>这里感谢下菲菲和亚红，虽然软件学院没有啥好看的，看两位ppmm也不错。</p>
-<p>自愿的被拉去听课（语义矛盾），北大请rational的总经理讲云计算。总结一句话：云计算就是一种在云里飘的计算。——这是我给的定义。云计算要关注的是安全。另<br />
-外我个人认为因为中国或者其他企业的文化，这种计算环境推行起来还是比较困难。有一个家伙问的问题很好，让我引申到另一个层面。大公司要做云计算，要卖钱。为啥不做一<br />
-种通用的技术，比如，我公司过去有这么多机器，这些机器如果有某种技术可以合并在一起。为啥偏偏要买你云计算的服务？所以我准备研究“海计算”…海纳百川~~~</p>
-<p>胡扯中…</p>
-<p>另外辛苦菲菲和亚红带我在软件学院中跑来跑去…下次还有机会继续带好吃的过去。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/37/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/39/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1501,7 +1529,7 @@ print path Result(nodes,path)</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 

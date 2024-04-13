@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,125 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/14/1608915/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/05/14/1608915/" class="post-title-link" itemprop="url">Tcp/ip Linux编程初步</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-05-14 20:38:00" itemprop="dateCreated datePublished" datetime="2007-05-14T20:38:00+08:00">2007-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-08 16:59:15" itemprop="dateModified" datetime="2023-10-08T16:59:15+08:00">2023-10-08</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Server端</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/types.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/socket.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;netdb.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;netinet/in.h&gt;</span>  </span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="type">int</span> ssock;<span class="comment">//主套接字  </span></span><br><span class="line"><span class="type">char</span> *s = <span class="string">&quot;X&quot;</span>;  </span><br><span class="line"><span class="type">char</span> *r;  </span><br><span class="line"><span class="type">int</span> port = <span class="number">3490</span>;<span class="comment">//本机要邦定的端口，通过此端口  </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sin</span>;</span><span class="comment">//本机地址  </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">pin</span>;</span><span class="comment">//客户端（远端）地址  </span></span><br><span class="line"><span class="type">int</span> address_size;  </span><br><span class="line"><span class="type">int</span> tempssock;<span class="comment">//实际与客户端交互套接字  </span></span><br><span class="line"><span class="type">int</span> size = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">sin</span>.sin_family = AF_INET;  </span><br><span class="line"><span class="built_in">sin</span>.sin_addr.s_addr = INADDR_ANY;  </span><br><span class="line"><span class="built_in">sin</span>.sin_port = htons(port);  </span><br><span class="line">bind(ssock,(<span class="keyword">struct</span> sockaddr *)&amp;<span class="built_in">sin</span>,<span class="keyword">sizeof</span>(<span class="built_in">sin</span>));  </span><br><span class="line">listen(ssock,<span class="number">5</span>);  </span><br><span class="line">ssock = socket(PF_INET,SOCK_STREAM,<span class="number">0</span>);  </span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)  </span><br><span class="line">&#123;  </span><br><span class="line">address_size = <span class="keyword">sizeof</span>(pin);  </span><br><span class="line">tempssock = accept(ssock,(<span class="keyword">struct</span> sockaddr*)&amp;pin,&amp;address_size);  </span><br><span class="line"><span class="keyword">while</span>(recv(tempssock,r,size,<span class="number">0</span>) &gt; <span class="number">0</span>)  </span><br><span class="line">send(tempssock,s,<span class="built_in">strlen</span>(s),<span class="number">0</span>);  </span><br><span class="line">  </span><br><span class="line">close(tempssock);  </span><br><span class="line"><span class="keyword">break</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">close(ssock);  </span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>#include&lt;sys/types.h&gt;这个头文件中包含了struct sockaddr_in<br />
+#include&lt;sys/socket.h&gt;包含了socket的一些基础的api函数。</p>
+<p>sin.sin_family = AF_INET;<br />
+sin.sin_addr.s_addr = INADDR_ANY;<br />
+sin.sin_port = htons(port);<br />
+这三句合起来是地址族是AF_INET，ip地址是本机的地址。使用INADDR_ANY的好处是如果本机有多个ip地址，它都能成功的访问。而不需要指定ip。然后<br />
+是要邦定的端口。htons()是把本机的short型转换成网络的short型。</p>
+<p>bind(ssock,(struct sockaddr *)&amp;sin,sizeof(sin));邦定端口，需要套接字，本机地址，地址的大小</p>
+<p>listen(ssock,5);置为被动套接字，侦听端口。</p>
+<p>tempssock = accept(ssock,(struct sockaddr*)&amp;pin,&amp;address_size);//accept需要3个参数，<br />
+第一个是主套接字，第二个是客户端地址，和客户端地址大小。当服务器端接到用户的连接请求是，将连接请求中的地址信息填充到pin里。并且返回一个与客户端交互的套接<br />
+字。所以本机的地址要写明，而远端的地址自动填充就可以了。</p>
+<p>recv(tempssock,r,size,0)接受数据，第一为与客户端连接套接字，第二个为接受的char数组（或者认为是字符串），第3个是那个字符串的大小<br />
+或长度。第四个是由需要带外控制，一般置为0。这个函数如果有数据接受到会返回接受的字符串长度，如果客户端shutdown或close了（后面还会介绍shutd<br />
+own函数），就会返回0，出错及其它会返回－1。</p>
+<p>send(tempssock,s,strlen(s),0);和recv几乎一样，s为发送的字符串。</p>
+<p>close(tempssock);关闭与客户端连接的套接字，这里意味这交互已经结束。这里的关闭为引用计数。如果多个进程同时引用了这一个socket，那么每次<br />
+就减一。直到最后一次才真正的关闭。</p>
+<p>这里再介绍一个shutdown()函数，第一个参数为套接字，第二个为命令码。第二个参数为0，不允许输入，1不允许输出，2双方关闭。<br />
+我们做的Socket编程一般是unix的经典文件读写方式（open,read,write,close）。</p>
+<p>创建服务器（循环面向连接）</p>
+<p>1。创建套接字并邦定熟知端口，</p>
+<p>2。套接字置为被动，侦听端口</p>
+<p>3。循环接受来自下一个客户端的连接请求。并  创建新的套接字</p>
+<p>4。处理客户端的请求</p>
+<p>5关闭连接，跳转到第3步。</p>
+<p>socket在上面看来是个int型，但是实质上socket是一个结构体包含远端地址信息，本机地址信息。而我们使用的只是socket结构体数组的一个下标.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1893,109 +2012,6 @@ return “”;<br />
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/04/20/1571850/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/04/20/1571850/" class="post-title-link" itemprop="url">通过微软实习面试......</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-04-20 08:08:00" itemprop="dateCreated datePublished" datetime="2007-04-20T08:08:00+08:00">2007-04-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>758</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>没有想到自己竟然过了微软实习生的笔试和面试。 出乎过去的想像。本来是想不为学院丢脸就ok了。现在想想真的没有给学院丢脸。</p>
-<p>上午进行的笔试，Tim Chen来的太晚了，本来说10点，结果快10点半才来。这半个小时里和老边闲聊了一阵。然后Tim就来了。先交了简历，然后自己简短的介绍<br />
-了下自己。自己写的简历最短，自己的介绍似乎也是最短的。说自己兴趣爱好的时候，我说自己喜欢写blog。Tim chen开玩笑的说：作家。我其实心里想，自己喜欢<br />
-看着blog的计数器慢慢增长。然后Tim让我们每人写篇英语短文介绍自己上午干了些什么。限时7分钟。具体用了多长时间我也保护太清楚，反正记得自己写了半页纸。然<br />
-后是最经典的atoi()函数编写，不过要写出测试用例。看来Tim真的是要招测试方面的人。限时大概15分钟。自我感觉良好，毕竟之前看过类似的题。最后一题：写一<br />
-个汉英字典类。自己想了想用两个类实现。一个类是字典，另外一个是单词。还剩下最后2分钟的时候，突然想起他要用一个类。于是马上改过。写了些数据成员，然后加了增删<br />
-查改和构造析构6个方法。还剩10秒。心里不想写了。算了，我反正想不起更多的方法了。</p>
-<p>下午吃饱喝足想睡觉，可迟迟睡不着。Tim说下午打电话通知来面试。睡不着就起来洗个澡。结果还是没有电话来。心有些凉，感觉也不会录自己了，还不如去看看信息安全。<br />
-正想着，浩哥就打来电话找我面试。</p>
-<p>下午面试自我感觉还算良好。没有说错什么，只是说了些自己的缺点和不足。并且很高兴的告诉tim今天学院推荐的五个人其中有4个曾是自己的组员。然后我们俩就聊起来X<br />
-P方法。后来Tim问是否有意向去微软。感觉怪怪的。为什么不说你被录取了。想不通。。。。最后Tim主动与我握手。感觉有些惭愧，没有主动和他握手。下次再见的时候<br />
-补上好了。<br />
-晚上有些兴奋，依然没有睡好觉。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/70/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/70/">70</a><span class="page-number current">71</span><a class="page-number" href="/page/72/">72</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/72/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2027,7 +2043,7 @@ P方法。后来Tim问是否有意向去微软。感觉怪怪的。为什么不�
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 

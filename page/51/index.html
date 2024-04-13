@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,324 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/08/19/2794469/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/08/19/2794469/" class="post-title-link" itemprop="url">编程练习——二叉树（BinaryTree）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-08-19 11:36:00" itemprop="dateCreated datePublished" datetime="2008-08-19T11:36:00+08:00">2008-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>先写一个树节点类。使用Temple也可以，不使用的话，使用特定类型，用法比较局限。不过本着“今天尽量不要做出今天不必要的决定”极限编程法制。做一个特殊类型的<br />
+BinaryTree，也未尝不可。</p>
+<p>这里的TreeNode只有数据域。</p>
+<ol>
+<li>template  &lt; class  T&gt;</li>
+<li>class  TreeNode</li>
+<li>{</li>
+<li>private  :</li>
+<li>T data;</li>
+<li>TreeNode<T> * left;</li>
+<li>TreeNode<T> * right;</li>
+<li>public  :</li>
+<li>
+<ol start="10">
+<li>
+<ol start="11">
+<li>TreeNode(T&amp; data)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>this  -&gt;data = data;</li>
+<li>this  -&gt;left = NULL;</li>
+<li>this  -&gt;right = NULL;</li>
+<li>}</li>
+<li>
+<ol start="18">
+<li>TreeNode(T&amp; data,TreeNode<T>* left, TreeNode<T>* right)</li>
+</ol>
+</li>
+<li>{</li>
+<li>this  -&gt;data = data;</li>
+<li>this  -&gt;left = left;</li>
+<li>this  -&gt;right = right;</li>
+<li>}</li>
+<li>
+<ol start="25">
+<li>~TreeNode()</li>
+</ol>
+</li>
+<li>{</li>
+<li>
+<ol start="28">
+<li>this  -&gt;left = NULL;</li>
+</ol>
+</li>
+<li>this  -&gt;right = NULL;</li>
+<li>cout &lt;&lt; “node (”  &lt;&lt; this  -&gt;data&lt;&lt; “) destory!”  &lt;&lt;endl;</li>
+<li>// to do</li>
+<li>}</li>
+<li>
+<ol start="34">
+<li>T getData()</li>
+</ol>
+</li>
+<li>{</li>
+<li>return  data;</li>
+<li>}</li>
+<li>
+<ol start="39">
+<li>void  setData(T&amp; data)</li>
+</ol>
+</li>
+<li>{</li>
+<li>this  -&gt;data = data;</li>
+<li>}</li>
+<li>
+<ol start="44">
+<li>TreeNode<T> * getLeft()</li>
+</ol>
+</li>
+<li>{</li>
+<li>return  left;</li>
+<li>}</li>
+<li>
+<ol start="49">
+<li>void  setLeft(TreeNode<T> * left)</li>
+</ol>
+</li>
+<li>{</li>
+<li>this  -&gt;left = left;</li>
+<li>
+<ol start="53">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="55">
+<li>TreeNode<T> * getRight()</li>
+</ol>
+</li>
+<li>{</li>
+<li>return  right;</li>
+<li>}</li>
+<li>
+<ol start="60">
+<li>void  setRight(TreeNode<T>* right)</li>
+</ol>
+</li>
+<li>{</li>
+<li>this  -&gt;right = right;</li>
+<li>}</li>
+<li>
+<ol start="65">
+<li>
+<ol start="66">
+<li>};</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<ol start="68">
+<li>下面是BinaryTree的实现。一般来说，一个BinaryTree最重要的函数就是构造和析构。基本的函数是遍历。</li>
+</ol>
+</li>
+</ol>
+<p>下面的类只实现了中序遍历，和树形打印。析构删除节点使用的是后序删除法。</p>
+<ol>
+<li>template  &lt; class  T&gt;</li>
+<li>class  BinaryTree</li>
+<li>{</li>
+<li>protected  :</li>
+<li>TreeNode<T>* head;</li>
+<li>
+<ol start="7">
+<li>void  clearSubTree(TreeNode<T>* node)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (node != NULL)</li>
+<li>{</li>
+<li>clearSubTree(node-&gt;getLeft());</li>
+<li>clearSubTree(node-&gt;getRight());</li>
+<li>delete  node;</li>
+<li>}</li>
+<li>}</li>
+<li>
+<ol start="17">
+<li>void  printTree(TreeNode<T>* subTree,  int  count)</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (subTree!=NULL)</li>
+<li>{</li>
+<li>
+<ol start="22">
+<li>printTree(subTree-&gt;getRight(), count+1);</li>
+</ol>
+</li>
+<li>for  (  int  i = 0; i &lt; count; i++)</li>
+<li>{</li>
+<li>cout &lt;&lt; &quot; &quot;  ;</li>
+<li>}</li>
+<li>cout &lt;<subTree->getData()&lt;&lt;endl;</li>
+<li>printTree(subTree-&gt;getLeft(),count+1);</li>
+<li>}</li>
+<li>}</li>
+<li>
+<ol start="32">
+<li>
+<ol start="33">
+<li>void  printInMidOrder(TreeNode<T>* subTree)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (subTree!=NULL)</li>
+<li>{</li>
+<li>printInMidOrder(subTree-&gt;getLeft());</li>
+<li>
+<ol start="39">
+<li>
+<ol start="40">
+<li>cout &lt;<subTree->getData()&lt;&lt;endl;</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>printInMidOrder(subTree-&gt;getRight());</li>
+<li>}</li>
+<li>}</li>
+<li>public  :</li>
+<li>BinaryTree(T&amp; data)</li>
+<li>{</li>
+<li>head =  new  TreeNode<T>(data);</li>
+<li>}</li>
+<li>
+<ol start="50">
+<li>BinaryTree(TreeNode<T>* head)</li>
+</ol>
+</li>
+<li>{</li>
+<li>this  -&gt;head = head;</li>
+<li>}</li>
+<li>
+<ol start="55">
+<li>~BinaryTree()</li>
+</ol>
+</li>
+<li>{</li>
+<li>clearSubTree(head);</li>
+<li>}</li>
+<li>
+<ol start="60">
+<li>void  printTree()</li>
+</ol>
+</li>
+<li>{</li>
+<li>printTree(  this  -&gt;head,0);</li>
+<li>}</li>
+<li>
+<ol start="65">
+<li>void  printInMidOrder()</li>
+</ol>
+</li>
+<li>{</li>
+<li>printInMidOrder(  this  -&gt;head);</li>
+<li>}</li>
+<li>};</li>
+<li>
+<ol start="71">
+<li>如果BinaryTree中还有插入删除操作就好了。但是如何插入，如何删除必须按照一定的规则进行。所以就有后面的二叉查找树、AVLTree、SplayTree、RedBlackTree等各种类型的二叉树。</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1231,104 +1549,6 @@ i==j,  交换  a[i]  与  c  的位置。</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/07/20/2681425/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/07/20/2681425/" class="post-title-link" itemprop="url">One编程组第五次题目</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-07-20 21:15:00" itemprop="dateCreated datePublished" datetime="2008-07-20T21:15:00+08:00">2008-07-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>189</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>编程实现  10  进制数转换为  2  ，  8  ，  16  进制（栈、除以进制、进制取模）</p>
-<p>25  匹马比赛。每  5  匹为一组进行比赛。需要多少场比赛才能决出前三名？（7场）</p>
-<p>将一句话逆置.例如 I am a student 逆置为 student a am I</p>
-<p>（</p>
-<p>可以将  a  看为一个字母串，  b  也看为一个串，  ab  就可以是一句话。当然如果是  abc  也是一样的处理</p>
-<p>ab  如何变为  ba</p>
-<p>ab-&gt;a  T  b  T  -&gt;(a  T  b  T  )  T  -&gt;ba</p>
-<p>）</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/50/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/50/">50</a><span class="page-number current">51</span><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/52/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1360,7 +1580,7 @@ i==j,  交换  a[i]  与  c  的位置。</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 

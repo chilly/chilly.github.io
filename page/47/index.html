@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,155 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/11/02/3207401/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/11/02/3207401/" class="post-title-link" itemprop="url">Vs2005 C#与mySql连接解决中文乱码问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-11-02 19:42:00" itemprop="dateCreated datePublished" datetime="2008-11-02T19:42:00+08:00">2008-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>按我的这篇文章所写：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2008/11/02/3206314.aspx"> http://blog.csdn.net/cctt_1/archive/2008/11/02/3206314.aspx<br />
+</a></p>
+<p>这里这里读出写入英文是没有问题的。</p>
+<p>但是我们需要读出写入中文。我在mysql的表有一项设置字符集，改为了GBK编码。</p>
+<p>但是还是使用了我上篇文章所写的编码，结果发现插入中文时变为：？？？</p>
+<p>插入中英文结合时，全部的中文变为？？英文不变。</p>
+<p>在网上搜了下，然后将上篇文章的编码改为：</p>
+<ol>
+<li>private  SqlAccess sqlAccess =  new  SqlAccess();</li>
+<li>private  void  button1_Click(  object  sender, EventArgs e)</li>
+<li>{</li>
+<li>DataSet ds = sqlAccess.SelectDataSet(  “select * from users”  );</li>
+<li>
+<ol start="6">
+<li>label1.Text =  “”  ;</li>
+</ol>
+</li>
+<li>Array alist = ds.Tables[0].Rows[0].ItemArray;</li>
+<li>foreach  (  object  o  in  alist)</li>
+<li>{</li>
+<li>label1.Text += o.ToString();</li>
+<li>}</li>
+<li>UpdateName();</li>
+<li>}</li>
+<li>private  const  string  sql =  “UPDATE USERS SET userName=@userName  WHERE userID=@userID”  ;</li>
+<li>private  const  string  userName =  “@userName”  ;</li>
+<li>private  const  string  userID =  “@userID”  ;</li>
+<li>private  void  UpdateName()</li>
+<li>{</li>
+<li>int  i = 1;</li>
+<li>string  name = GB2312_ISO8859(  “和好多岁收到暗示”  );</li>
+<li>MySqlParameter[] my =</li>
+<li>{</li>
+<li>new  MySqlParameter(userName,MySqlDbType.String),</li>
+<li>new  MySqlParameter(userID,MySqlDbType.Int32)</li>
+<li>};</li>
+<li>my[0].Value = name;</li>
+<li>my[1].Value = i;</li>
+<li>label2.Text = sqlAccess.EXESql(sql, my).ToString();</li>
+<li>}</li>
+<li>
+<ol start="31">
+<li>//写入数据库时要进行gb2312转换到iso8895</li>
+</ol>
+</li>
+<li>public  string  GB2312_ISO8859(  string  srcString)</li>
+<li>{</li>
+<li>//字符集gb2312转为iso8859</li>
+<li>System.Text.Encoding iso8859=System.Text.Encoding.GetEncoding(  “iso8859-1”  );</li>
+<li>System.Text.Encoding gb2312=System.Text.Encoding.GetEncoding(  “gb2312”  );</li>
+<li>return  iso8859.GetString(gb2312.GetBytes(srcString));</li>
+<li>}</li>
+</ol>
+<p>发现还是原来的问题。然后又搜了搜mysql的中文文档。发现好像column还是有字符集属性的…怎么不知道为啥这样做…太麻烦了。于是改了每一个表中需要中<br />
+文的列都改为了gbk，在mysql图形界面的字段详细资料中。但是如果你是使用的mysql非图形界面…那就要辛苦的alter<br />
+吧.改完后，运行成功，再也没有？？了。</p>
+<p>发现windowsApplication使用的string是gb2312编码，但是显示的时候gb2312和iso8895-1都可以。</p>
+<p>所以在写入数据库时要转换为iso8895-1编码。注意这里如果转为System.Text.Encoding.GetEncoding(“GBK”)是不可以的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2471,214 +2620,6 @@ typedef int x;   // OK
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/20/3112616/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/10/20/3112616/" class="post-title-link" itemprop="url">编程练习——求无序数组第K小的数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-10-20 22:29:00" itemprop="dateCreated datePublished" datetime="2008-10-20T22:29:00+08:00">2008-10-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>为同寝的家伙写了一个求一个无序数组中第k小数的程序。思想就是快排的思想。找一个点，然后放到末尾，然后将小于这个数的值放在数组前面，大于这个值的放在数组后面，<br />
-然后在将这个末尾的数放回。这个末尾数放入的位置i代表已经找到第i小的数。下面你应该明白了吧，放入的位置如果是k，恭喜你找到了第k小的数。</p>
-<p>同样找到第k大的数类似的解法，找到前k个最大数也一样。找一个数组的中位数也一样做。求n个数组的中位数也一样的做。求n个数组的前k个大数或小数也类似可以做。</p>
-<p>这个程序的算法复杂度是O（n）</p>
-<p>另外这个程序是交换了这个数组元素中的顺序的。现在考虑一下如果不交换过去数组中的元素顺序，并且不开辟一个O(n)空间。那么这个算法的平均复杂度是多少？考虑一下<br />
-，写在评论中。谢谢。</p>
-<ol>
-<li>// swap two number</li>
-<li>void  swap(  int  &amp;i,  int  &amp;j)</li>
-<li>{</li>
-<li>int  temp = i;</li>
-<li>i = j;</li>
-<li>j = temp;</li>
-<li>}</li>
-<li>// find a position to partition the array</li>
-<li>int  partition(  int  start,  int  end)</li>
-<li>{</li>
-<li>return  end/2+start/2;</li>
-<li>}</li>
-<li>
-<ol start="14">
-<li>// quick sort</li>
-</ol>
-</li>
-<li>int  QuickSort(  int  a[],  int  start,  int  end)</li>
-<li>{</li>
-<li>if  (start &gt; end)</li>
-<li>{</li>
-<li>throw  “error”  ;</li>
-<li>}</li>
-<li>if  (start == end)</li>
-<li>{</li>
-<li>return  end;</li>
-<li>}</li>
-<li>int  p = partition(start,end);</li>
-<li>int  i =0;</li>
-<li>
-<ol start="28">
-<li>swap(a[p],a[end]);</li>
-</ol>
-</li>
-<li>int  j = end-1;</li>
-<li>while  (j&gt;=i)</li>
-<li>{</li>
-<li>while  (a[i]&lt;a[end])</li>
-<li>{</li>
-<li>i++;</li>
-<li>}</li>
-<li>
-<ol start="37">
-<li>while  (j &gt;= 0 &amp;&amp; a[j]&gt;a[end])</li>
-</ol>
-</li>
-<li>{</li>
-<li>j–;</li>
-<li>}</li>
-<li>swap(a[i],a[j]);</li>
-<li>}</li>
-<li>swap(a[i],a[j]);</li>
-<li>swap(a[i],a[end]);</li>
-<li>return  i;</li>
-<li>}</li>
-<li>
-<ol start="48">
-<li>// find the k-th smaller number</li>
-</ol>
-</li>
-<li>int  FindK(  int  a[],  int  num,  int  kth)</li>
-<li>{</li>
-<li>if  (kth &gt; num || kth &lt;= 0)</li>
-<li>{</li>
-<li>throw  “error: no such k-th number”  ;</li>
-<li>}</li>
-<li>int  k = kth-1;  // because the array index starts with 0, not 1;</li>
-<li>int  position= -1;</li>
-<li>int  start = 0;</li>
-<li>int  end = num-1;</li>
-<li>while  (position != k)</li>
-<li>{</li>
-<li>position = QuickSort(a,start,end);</li>
-<li>
-<ol start="63">
-<li>if  (position &lt; k)</li>
-</ol>
-</li>
-<li>{</li>
-<li>start = position+1;</li>
-<li>}</li>
-<li>else</li>
-<li>{</li>
-<li>end = position-1;</li>
-<li>}</li>
-<li>
-<ol start="72">
-<li>}</li>
-</ol>
-</li>
-<li>return  a[position];</li>
-<li>
-<ol start="75">
-<li>}<br />
-public class Sort{ public int Partition(SortTag[] al,int start, int end){<br />
-SortTag p = al[start]; SortTag tmp; while(start&lt;end){ while(start&lt;end &amp;&amp;<br />
-al[end].compare(p)&lt;=0) end–; tmp = al[start]; al[start] = al[end]; al[end] =<br />
-tmp; while(start&lt;end &amp;&amp; al[start].compare(p)&gt;=0) start++; tmp = al[start];<br />
-al[start] = al[end]; al[end] = tmp; } return start; } public void<br />
-FindTopK(SortTag [] al,int k){ if(al.length &lt; k){ return; } int mid = 0; int<br />
-low = 0; int high = al.length-1; while(low &lt;= high){ mid =<br />
-Partition(al,low,high); if(mid &lt; k){ low = mid+1; } else if(mid &gt; k){ high =<br />
-mid-1; } else{ return ; } } } } class SortTag{ public Integer n; public Double<br />
-score; public SortTag(Integer n, Double score){ this.n = n; this.score =<br />
-score; } public int compare(Object o){ Double d = this.score -<br />
-((SortTag)o).score; if ( d &gt; 0 + 1E-12) return 1; else if( d &lt; 0-1E-12) return<br />
--1; else return 0; } }</li>
-</ol>
-</li>
-</ol>
-<p>注意这k个数可是无序的…如果想有序…再排序一下就可以了.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/46/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><span class="page-number current">47</span><a class="page-number" href="/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/48/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2710,7 +2651,7 @@ score; } public int compare(Object o){ Double d = this.score -<br />
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 

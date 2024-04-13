@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">752</span>
+        <span class="site-state-item-count">754</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,292 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/05/04/2011-05-04-python-socket-send-recv-atomticly/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2011/05/04/2011-05-04-python-socket-send-recv-atomticly/" class="post-title-link" itemprop="url">Python Socket Send and Recv Atomticly </a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2011-05-04 00:00:00" itemprop="dateCreated datePublished" datetime="2011-05-04T00:00:00+08:00">2011-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:11:50" itemprop="dateModified" datetime="2023-10-05T23:11:50+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="Mood" content="soso" />
+<meta name="Weather" content="cloudy" />
+<meta name="Doing" content="paper, write c/c++ code and play games" />
+<meta name="_su_description" content="this is describe how to create server and client in python. And how to fix bug in simplest server and client." />
+<meta name="_su_keywords" content="python,socket,server,client,send,recv" />
+<meta name="_su_title" content="python,socket,server,client,send,recv" />
+<meta name="views" content="1808" />
+first we write simplest client and server.
+client:
+<h2 id="in-clientpy"><a class="markdownIt-Anchor" href="#in-clientpy"></a> in <span class="exturl" data-url="aHR0cDovL2NsaWVudC5weQ==">client.py<i class="fa fa-external-link-alt"></i></span></h2>
+<p>import socket<br />
+class Client:<br />
+def <strong>init</strong>(self, host , port, bufsize = 1024, timeout = 10):<br />
+self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br />
+self.host = host<br />
+self.port  = port<br />
+self.bufsize = bufsize<br />
+self.timeout = timeout</p>
+<pre><code>def connect(self):
+    self.client.connect((self.host,self.port))
+def close(self):
+    self.client.close()
+def send(self, string):
+    self.client.send(bytes(string,&quot;utf8&quot;))
+def recv(self):
+    return str(self.client.recv(self.bufsize),encoding=&quot;utf8&quot;)
+</code></pre>
+<p>server:</p>
+<h2 id="in-serverpy"><a class="markdownIt-Anchor" href="#in-serverpy"></a> in <span class="exturl" data-url="aHR0cDovL3NlcnZlci5weQ==">server.py<i class="fa fa-external-link-alt"></i></span></h2>
+<p>import socket<br />
+class Server:<br />
+def <strong>init</strong>(self,port,listen = 5,timeout = 10, buf = 4096, queueSize = 10):<br />
+self.host = ‘localhost’<br />
+self.port = port<br />
+self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br />
+self.listen = listen<br />
+self.timeout = timeout<br />
+def send(self, conn, string):<br />
+conn.send(bytes(string,encoding=“utf8”))<br />
+def recv(self, conn):<br />
+return str(conn.recv(self.bufsize),encoding=“utf8”)<br />
+def run(self):<br />
+print(“server start, port:”,self.port,“listen num:”,self.listen)<br />
+self.sock.bind((self.host, self.port))<br />
+self.sock.listen(self.listen)<br />
+while True:<br />
+connection, address = self.sock.accept()<br />
+message = self.recv(connection)<br />
+print(‘message’,message)<br />
+self.send(connection,‘OK’)<br />
+connection.close()</p>
+<p>next I will write some code to run client and server. Here is :</p>
+<h2 id="in-client_startpy"><a class="markdownIt-Anchor" href="#in-client_startpy"></a> in client_start.py</h2>
+<p>from client import Client<br />
+if <strong>name</strong> == “<strong>main</strong>”:<br />
+c = Client(‘localhost’,7777)<br />
+c.connect()<br />
+c.send(‘hello’)<br />
+message = c.recv()<br />
+print(‘message’,message)</p>
+<h2 id="in-server_startpy"><a class="markdownIt-Anchor" href="#in-server_startpy"></a> in server_start.py</h2>
+<p>from server import Server<br />
+if <strong>name</strong> == “<strong>main</strong>”:<br />
+s = Server(7777, listen = 1000)<br />
+s.run()</p>
+<p>Run server_start.py firstly and then run client_start.py. You will find both client and server print messages. Then client is shut down, but server is still running. Yup. Server should not shut down in order to supply services. And shut client down to close socket connection and save resources of server. These code runs perfectly. But we still should make some improvement. Server can server many clients. When it servers one client connection, it should server other connections and not be held by the former connection. Now multi-thread is considered.</p>
+<h2 id="in-run-function-of-server-in-serverpy"><a class="markdownIt-Anchor" href="#in-run-function-of-server-in-serverpy"></a> in “run” function of Server in <span class="exturl" data-url="aHR0cDovL3NlcnZlci5weQ==">server.py<i class="fa fa-external-link-alt"></i></span></h2>
+<h2 id="change-run-function-and-add-a-new-function-called-servicewaiting"><a class="markdownIt-Anchor" href="#change-run-function-and-add-a-new-function-called-servicewaiting"></a> change run function and add a new function called “serviceWaiting”</h2>
+<pre><code>def serviceWaiting(self, connection, address):
+    print(&quot;connection:&quot;,id(connection),&quot;address:&quot;,str(address),&quot; connect...&quot;)
+    message = self.recv(connection)
+    print('message',message)
+    self.send(connection,'OK')
+    connection.close()
+
+def run(self):
+    print(&quot;server start, port:&quot;,self.port,&quot;listen num:&quot;,self.listen)
+    self.sock.bind((self.host, self.port))
+    self.sock.listen(self.listen)
+    while True:
+        connection, address = self.sock.accept()
+        serverThread = Thread(target = self.serviceWaiting, args=(connection, address))
+        serverThread.start()
+</code></pre>
+<p>Ok, done! Now server can server multi-clients in the same time. But only sending and receiving string is not enough for our applications.  Sending and receiving objects should be considered.<br />
+Here we add two functions in <span class="exturl" data-url="aHR0cDovL2NsaWVudC5weQ==">client.py<i class="fa fa-external-link-alt"></i></span> and <span class="exturl" data-url="aHR0cDovL3NlcnZlci5weQ==">server.py<i class="fa fa-external-link-alt"></i></span>.</p>
+<h2 id="we-should-change-a-function-in-our-former-code"><a class="markdownIt-Anchor" href="#we-should-change-a-function-in-our-former-code"></a> we should change a function in our former code:</h2>
+<pre><code>def recv(self, n= -1):
+    if n == -1:
+        return str(self.client.recv(self.bufsize),encoding=&quot;utf8&quot;)
+    else:
+        return str(self.client.recv(n),encoding=&quot;utf8&quot;)
+</code></pre>
+<h2 id="then-we-should-add-two-function-for-sending-and-receive-objects"><a class="markdownIt-Anchor" href="#then-we-should-add-two-function-for-sending-and-receive-objects"></a> then we should add two function for sending and receive objects</h2>
+<pre><code>def recvObj(self):
+    OK = 'Y'
+    obj = None
+    try:
+        buffer = []
+        totalsize = self.recv()
+</code></pre>
+<h1 id="printclienttotalsizetotalsizelenlentotalsize"><a class="markdownIt-Anchor" href="#printclienttotalsizetotalsizelenlentotalsize"></a> print(‘client:totalsize’,totalsize,‘len:’,len(totalsize))</h1>
+<pre><code>        totalsize = int(totalsize)
+        self.send(OK)
+</code></pre>
+<h1 id="printclientsend-length-ok"><a class="markdownIt-Anchor" href="#printclientsend-length-ok"></a> print(‘client:send length ok’)</h1>
+<pre><code>        while totalsize !=0:
+</code></pre>
+<h1 id="printclient-receiving"><a class="markdownIt-Anchor" href="#printclient-receiving"></a> print(‘client: receiving’)</h1>
+<pre><code>            tBuff = self.client.recv(self.bufsize)
+            totalsize -= len(tBuff)
+</code></pre>
+<h1 id="printclienttbuff-lenlentbuff"><a class="markdownIt-Anchor" href="#printclienttbuff-lenlentbuff"></a> print(‘client:tBuff len:’,len(tBuff))</h1>
+<pre><code>            buffer.extend(tBuff) 
+        buffer = bytes(buffer)
+</code></pre>
+<h1 id="printclientbuff-lenlenbuffer"><a class="markdownIt-Anchor" href="#printclientbuff-lenlenbuffer"></a> print(‘client:buff len’,len(buffer))</h1>
+<pre><code>        obj = pickle.loads(buffer)
+</code></pre>
+<h1 id="printclientserver-receiving-done"><a class="markdownIt-Anchor" href="#printclientserver-receiving-done"></a> print(‘client:server receiving done’)</h1>
+<h1 id="printclientobjobj"><a class="markdownIt-Anchor" href="#printclientobjobj"></a> print(‘client:obj’,obj)</h1>
+<pre><code>        self.send(OK)
+</code></pre>
+<h1 id="printclientsend-ok"><a class="markdownIt-Anchor" href="#printclientsend-ok"></a> print(‘client:send ok’)</h1>
+<pre><code>    except socket.timeout:
+        print (&quot;client:time out&quot;)
+        raise socket.timeout
+    except EOFError:
+        print('client:buff',buffer)
+        raise EOFError
+    return obj
+
+def sendObj(self,  obj):
+    OK = 'Y'
+    try:
+        totalbytes = pickle.dumps(obj)
+        totalsize = len(totalbytes)
+</code></pre>
+<h1 id="printclientwill-send-totalsize"><a class="markdownIt-Anchor" href="#printclientwill-send-totalsize"></a> print(‘client:will send totalsize’)</h1>
+<pre><code>        self.send(str(totalsize))
+</code></pre>
+<h1 id="printclientsend-totalsize-done"><a class="markdownIt-Anchor" href="#printclientsend-totalsize-done"></a> print(‘client:send totalsize done’)</h1>
+<pre><code>        if self.recv()== OK:
+</code></pre>
+<h1 id="printclientsend-totalsize-success-and-recv-ok"><a class="markdownIt-Anchor" href="#printclientsend-totalsize-success-and-recv-ok"></a> print(‘client:send totalsize success and recv ok’)</h1>
+<pre><code>            self.client.sendall(totalbytes)
+</code></pre>
+<h1 id="printclientsend-object-done"><a class="markdownIt-Anchor" href="#printclientsend-object-done"></a> print(‘client:send object done’)</h1>
+<pre><code>            string = self.recv(1) 
+</code></pre>
+<h1 id="printclient-recv-stringstring"><a class="markdownIt-Anchor" href="#printclient-recv-stringstring"></a> print(‘client: recv string’,string)</h1>
+<pre><code>            if string == OK:
+                print('client:send object success, and recv ok')
+            else:
+                print('client:send object error')
+        else:
+            print('client:send object error')
+    except:
+        print('client:send object Exception')
+</code></pre>
+<p>Here I will explain these code.<br />
+<li>In sendObj(), first transform object to bytes and send the length of object. Then wait to receive “OK” message(string ‘Y’). If get OK message, then use sendall() function to send all bytes out. Then wait to receive another OK message. Here we use recv(1) to only get one char in receiving queue. We should not use recv to get more information which may not be used by sendObj() function. </li><br />
+<li>In recvObj(), first receive the length of object. Then send OK message back. Receive bytes by fixed buffer each time. And receiv many times until we received all bytes of object. Then transform bytes to objects and send OK message back.</li><br />
+Ok. Now we should consider if the we can not connect server at first time. How do we solve this problem? The simplest idea is try many times until we connected server successfully.We should change connection() function.</p>
+<h2 id="in-connection-function-of-client-in-clientpy"><a class="markdownIt-Anchor" href="#in-connection-function-of-client-in-clientpy"></a> in connection function of Client in <span class="exturl" data-url="aHR0cDovL2NsaWVudC5weQ==">client.py<i class="fa fa-external-link-alt"></i></span></h2>
+<pre><code>def connect(self, count = -1):
+    flag = True
+    success = False
+    while flag:
+        try:
+            print('connect...',self.host, self.port)
+            
+            self.client.connect((self.host,self.port))
+            self.client.settimeout(self.timeout)
+            success = True
+            break
+        except:
+            count -= 1
+            if count == 0:
+                flag = False
+            else:
+                time.sleep(3)
+    return success
+</code></pre>
+<p>OK. Here we solved many problems, such as multi-clients, sending and receiving objects, and connection failed.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1269,113 +1555,6 @@ Google search updating speed is so fast that it shows my blog new post in few se
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/03/16/2011-03-16-python-unittest/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/03/16/2011-03-16-python-unittest/" class="post-title-link" itemprop="url">Python Unittest</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2011-03-16 00:00:00" itemprop="dateCreated datePublished" datetime="2011-03-16T00:00:00+08:00">2011-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:09" itemprop="dateModified" datetime="2023-10-06T22:54:09+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>559</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_rich_snippet_type" content="none" />
-<meta name="_su_title" content="python, unittest, unit,test" />
-<meta name="views" content="338" />
-first you should import unittest, and write a class inherit unittest.TestCase. Then write some function named test_XXX, which uses "test_" as its prefix. Then in main, call the class's main() function.
-<p>this is an example:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import unittest</span><br><span class="line"></span><br><span class="line">class TestFunctions(unittest.TestCase):    </span><br><span class="line">    def test_range(self):</span><br><span class="line">       for i in range(10):</span><br><span class="line">          self.assertEqual(i,i)</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    TestFunctions.main()</span><br></pre></td></tr></table></figure>
-<div id="_mcePaste">In this example, TestFunctions.main() will call all functions like test_XXX between setUp() and tearDown(). The sequence is setUp()---&gt;test_XXX()---&gt;tearDown()---&gt;setUp()---&gt;test_XXX()---&gt;tearDown().....</div>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/19/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/21/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1407,7 +1586,7 @@ first you should import unittest, and write a class inherit unittest.TestCase.
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:12</span>
+    <span title="Reading time total">24:18</span>
   </span>
 </div>
 
