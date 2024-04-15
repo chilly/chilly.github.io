@@ -2,6 +2,9 @@
 title: prometheus-java-client-usage
 date: 2024-04-12 17:55:33
 tags: ["prometheus", "java client"]
+categories:
+- [knowledge, prometheus]
+- [code]
 ---
 
 # 1. prometheus 介绍

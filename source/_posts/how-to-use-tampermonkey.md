@@ -3,6 +3,9 @@ title: how to use tampermonkey
 date: 2024-04-02 18:04:16
 comments: true
 tags: ['tampermonkey']
+categories:
+- [knowledge, tampermonkey]
+- [code]
 ---
 
 # 1. 下载油猴tampermonkey
