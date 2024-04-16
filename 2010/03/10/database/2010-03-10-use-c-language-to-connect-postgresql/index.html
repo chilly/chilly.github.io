@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":20,"unescape":false,"preload":false}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/config.min.js"></script>
+
+    <meta name="description" content="There is a small example copied from postgreSQL.org 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455&#x2F;**  libpq sample program*&#x2F;#include &lt;stdio.h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Use C Language to Connect postgreSQL">
+<meta property="og:url" content="http://chillyc.info/2010/03/10/database/2010-03-10-use-c-language-to-connect-postgresql/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="There is a small example copied from postgreSQL.org 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455&#x2F;**  libpq sample program*&#x2F;#include &lt;stdio.h">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2010-03-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-07T05:42:29.304Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="c">
+<meta property="article:tag" content="code">
+<meta property="article:tag" content="connect">
+<meta property="article:tag" content="database">
+<meta property="article:tag" content="postgresql">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="remote">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2010/03/10/database/2010-03-10-use-c-language-to-connect-postgresql/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2010/03/10/database/2010-03-10-use-c-language-to-connect-postgresql/","path":"2010/03/10/database/2010-03-10-use-c-language-to-connect-postgresql/","title":"Use C Language to Connect postgreSQL"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Use C Language to Connect postgreSQL | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/rss2.xml" title="帐前卒专栏" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.<br/>代码，软件架构，博客和小说</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-feeds"><a href="/rss2.xml" rel="section"><i class="fa fa-feed fa-fw"></i>feeds</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#step-1-login-over-ssh-if-server-is-outside-your-idc"><span class="nav-number">1.</span> <span class="nav-text"> Step # 1: Login over ssh if server is outside your IDC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step-2-enable-client-authentication"><span class="nav-number">2.</span> <span class="nav-text"> Step # 2: Enable client authentication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step-3-enable-networking-for-postgresql"><span class="nav-number">3.</span> <span class="nav-text"> Step # 3: Enable networking for PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step-4-allow-tcpip-socket"><span class="nav-number">4.</span> <span class="nav-text"> Step # 4: Allow TCP&#x2F;IP socket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#step-4a-information-for-old-version-7x-or-older"><span class="nav-number">4.1.</span> <span class="nav-text"> Step #4a - Information for old version 7.x  or older</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step-5-restart-postgresql-server"><span class="nav-number">5.</span> <span class="nav-text"> Step # 5: Restart PostgreSQL Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step-6-iptables-firewall-rules"><span class="nav-number">6.</span> <span class="nav-text"> Step # 6: Iptables firewall rules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step-7-test-your-setup"><span class="nav-number">7.</span> <span class="nav-text"> Step # 7: Test your setup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#step-8-change-your-code"><span class="nav-number">8.</span> <span class="nav-text"> Step #8: Change your code</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">754</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/10/database/2010-03-10-use-c-language-to-connect-postgresql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Use C Language to Connect postgreSQL | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Use C Language to Connect postgreSQL
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-10T00:00:00+08:00">2010-03-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 13:42:29" itemprop="dateModified" datetime="2023-10-07T13:42:29+08:00">2023-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>There is a small example copied from <span class="exturl" data-url="aHR0cDovL3d3dy5wb3N0Z3Jlc3FsLm9yZy9maWxlcy9kb2N1bWVudGF0aW9uL2Jvb2tzL2F3X3Bnc3FsL3dyaXRpbmdfYXBwcy9ub2RlMy5odG1s">postgreSQL.org<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*  libpq sample program</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;libpq-feh&quot;</span>                                   <span class="comment">/* libpq header file */</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span>        state_code[<span class="number">3</span>];                          <span class="comment">/* holds user state code */</span></span><br><span class="line">	<span class="type">char</span>        query_string[<span class="number">256</span>];                      <span class="comment">/* holds constructed SQL query */</span></span><br><span class="line">	PGconn     *conn;                                   <span class="comment">/* holds database connection */</span></span><br><span class="line">	PGresult   *res;                                    <span class="comment">/* holds query result */</span></span><br><span class="line">	<span class="type">int</span>         i;</span><br><span class="line"></span><br><span class="line">	conn = PQconnectdb(<span class="string">&quot;dbname=test&quot;</span>); <span class="comment">/* connect to the database */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (PQstatus(conn) == CONNECTION_BAD)               <span class="comment">/* did the connection fail? */</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;Connection to database failed.\n&quot;</span>);</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%s&quot;</span>, PQerrorMessage(conn));</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Enter a state code:  &quot;</span>);                    <span class="comment">/* prompt user for a state code */</span></span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%2s&quot;</span>, state_code);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">sprintf</span>(query_string,                               <span class="comment">/* create an SQL query string */</span></span><br><span class="line">	<span class="string">&quot;SELECT name \</span></span><br><span class="line"><span class="string">	FROM statename \</span></span><br><span class="line"><span class="string">	WHERE code = &#x27;%s&#x27;&quot;</span>, state_code);</span><br><span class="line"></span><br><span class="line">	res = PQexec(conn, query_string); <span class="comment">/* send the query */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (PQresultStatus(res) != PGRES_TUPLES_OK)         <span class="comment">/* did the query fail? */</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;SELECT query failed.\n&quot;</span>);</span><br><span class="line">		PQclear(res);</span><br><span class="line">		PQfinish(conn);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &amp;lt; PQntuples(res); i++)                <span class="comment">/* loop through all rows returned */</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, PQgetvalue(res, i, <span class="number">0</span>));          <span class="comment">/* print the value returned */</span></span><br><span class="line"></span><br><span class="line">	PQclear(res); <span class="comment">/* free result */</span></span><br><span class="line"></span><br><span class="line">	PQfinish(conn); <span class="comment">/* disconnect from the database */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>above is how to connect localhost database. If you want to connect with remote postgreSQL server. You will following those rules(copied from <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1s">vivek<i class="fa fa-external-link-alt"></i></span>):</p>
+<h2 id="step-1-login-over-ssh-if-server-is-outside-your-idc"><a class="markdownIt-Anchor" href="#step-1-login-over-ssh-if-server-is-outside-your-idc"></a> Step # 1: Login over ssh if server is outside your IDC</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh user@remote.pgsql.server.com</span><br></pre></td></tr></table></figure>
+<h2 id="step-2-enable-client-authentication"><a class="markdownIt-Anchor" href="#step-2-enable-client-authentication"></a> Step # 2: Enable client authentication</h2>
+<p>Once connected, you need edit the PostgreSQL configuration file, edit the PostgreSQL configuration file <strong>/var/lib/pgsql/data/pg_hba.conf</strong> (or <strong>/etc/postgresql/8.2/main/pg_hba.conf</strong> for latest 8.2 version) using a text editor such as vi.</p>
+<p>Login as postgres user using su / sudo command, enter:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ su - postgres</span><br><span class="line">Edit the file:</span><br><span class="line">$ vi /var/lib/pgsql/data/pg_hba.conf</span><br><span class="line">OR</span><br><span class="line">$ vi /etc/postgresql/8.2/main/pg_hba.conf</span><br><span class="line">Append the following configuration lines to give access to 10.10.29.0/24 network:</span><br><span class="line">host all all 10.10.29.0/24 trust</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Save and close the file. Make sure you replace 10.10.29.0/24 with actual network IP address range of the clients system in your own network.</p>
+<h2 id="step-3-enable-networking-for-postgresql"><a class="markdownIt-Anchor" href="#step-3-enable-networking-for-postgresql"></a> Step # 3: Enable networking for PostgreSQL</h2>
+<p>You need to enable TCP / IP networking. Use either step #3 or #3a as per your PostgreSQL database server version.</p>
+<h2 id="step-4-allow-tcpip-socket"><a class="markdownIt-Anchor" href="#step-4-allow-tcpip-socket"></a> Step # 4: Allow TCP/IP socket</h2>
+<p>If you are using <strong>PostgreSQL version 8.x or newer</strong> use the following instructions or skip to <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1sIzNh">Step # 3a<i class="fa fa-external-link-alt"></i></span> for older version (7.x or older).</p>
+<p>You need to open PostgreSQL configuration file /var/lib/pgsql/data/postgresql.conf or /etc/postgresql/8.2/main/postgresql.conf.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi /etc/postgresql/8.2/main/postgresql.conf</span></span><br><span class="line">OR</span><br><span class="line"><span class="comment"># vi /var/lib/pgsql/data/postgresql.conf </span></span><br><span class="line">Find configuration line that <span class="built_in">read</span> as follows:</span><br><span class="line">listen_addresses=<span class="string">&#x27;localhost&#x27;</span></span><br><span class="line">Next <span class="built_in">set</span> IP address(es) to listen on; you can use comma-separated list of addresses; defaults to <span class="string">&#x27;localhost&#x27;</span>, and <span class="string">&#x27;*&#x27;</span> is all ip address:</span><br><span class="line">listen_addresses=<span class="string">&#x27;*&#x27;</span></span><br><span class="line">Or just <span class="built_in">bind</span> to 202.54.1.2 and 202.54.1.3 IP address</span><br><span class="line">listen_addresses=<span class="string">&#x27;202.54.1.2 202.54.1.3&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>Save and close the file. Skip to <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1sIzQ=">step # 4<i class="fa fa-external-link-alt"></i></span>.</p>
+<h3 id="step-4a-information-for-old-version-7x-or-older"><a class="markdownIt-Anchor" href="#step-4a-information-for-old-version-7x-or-older"></a> Step #4a - Information for old version 7.x  or older</h3>
+<p>Following configuration only required for <strong>PostgreSQL version 7.x or older</strong>. Open config file, enter:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi /var/lib/pgsql/data/postgresql.conf</span></span><br><span class="line">Bind and open TCP/IP port by setting tcpip_socket to <span class="literal">true</span>.  Set / modify tcpip_socket to <span class="literal">true</span>:</span><br><span class="line">tcpip_socket = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>Save and close the file.</p>
+<h2 id="step-5-restart-postgresql-server"><a class="markdownIt-Anchor" href="#step-5-restart-postgresql-server"></a> Step # 5: Restart PostgreSQL Server</h2>
+<p>Type the following command:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># /etc/init.d/postgresql restart</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="step-6-iptables-firewall-rules"><a class="markdownIt-Anchor" href="#step-6-iptables-firewall-rules"></a> Step # 6: Iptables firewall rules</h2>
+<p>Make sure iptables is not blocking communication, <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvaG93dG8taXB0YWJsZXMtcG9zdGdyZXNxbC1vcGVuLXBvcnQuaHRtbA==">open port 5432<i class="fa fa-external-link-alt"></i></span> (append rules to your iptables scripts or file <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L2ZhcS9ob3d0by1ibG9jay1pcGFkZHJlc3Mtb2Ytc3BhbW1lcnMtd2l0aC1maXJld2FsbC8=">/etc/sysconfig/iptables<i class="fa fa-external-link-alt"></i></span>):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 10.10.29.50  --dport 5432\</span><br><span class="line"> -m state --state NEW,ESTABLISHED -j ACCEPT</span><br><span class="line">iptables -A OUTPUT -p tcp -s 10.10.29.50 --sport 5432 -d 0/0 --dport \</span><br><span class="line">1024:65535 -m state --state ESTABLISHED -j ACCEPT</span><br><span class="line">Restart firewall:</span><br><span class="line"># /etc/init.d/iptables restart</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="step-7-test-your-setup"><a class="markdownIt-Anchor" href="#step-7-test-your-setup"></a> Step # 7: Test your setup</h2>
+<p>Use psql command from client system. Connect to remote server using IP address 10.10.29.50 and login using vivek username and sales database, enter:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ psql -h 10.10.29.50 -U vivek -d sales</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="step-8-change-your-code"><a class="markdownIt-Anchor" href="#step-8-change-your-code"></a> Step #8: Change your code</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const char * connstr = &quot;host=&#x27;10.10.29.50&#x27; dbname=&#x27;my_database&#x27; user=&#x27;postgres&#x27; password=&#x27;secret&#x27;&quot;</span><br><span class="line">conn = PQconnectdb(connstr);                  /* connect to the database */</span><br><span class="line"> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c</a>
+              <a href="/tags/code/" rel="tag"># code</a>
+              <a href="/tags/connect/" rel="tag"># connect</a>
+              <a href="/tags/database/" rel="tag"># database</a>
+              <a href="/tags/postgresql/" rel="tag"># postgresql</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/remote/" rel="tag"># remote</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2010/03/09/5359295/" rel="prev" title="C系语言中extern详解">
+                  <i class="fa fa-angle-left"></i> C系语言中extern详解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2010/03/10/2010-03-10-math-symbol/" rel="next" title="Math Symbol">
+                  Math Symbol <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Word count total: </span>
+    <span title="Word count total">1.6m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">24:18</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/next-boot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/bookmark.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/search/local-search.min.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/comments/utterances.min.js"></script>
+
+</body>
+</html>

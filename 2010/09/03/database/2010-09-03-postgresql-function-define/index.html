@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.ico">
+  <link rel="mask-icon" href="/icon.svg" color="#222">
+  <meta name="google-site-verification" content="hcdiytqUGPoTW0eAaN6TWAmRfiv7IWFIIc9DKNr7Eno">
+  <meta name="yandex-verification" content="eb8f01295fdccb3d">
+  <meta name="baidu-site-verification" content="QoJxa8tZnO">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Times+New+Roman:300,300italic,400,400italic,700,700italic%7CRaleway:300,300italic,400,400italic,700,700italic%7COswald:300,300italic,400,400italic,700,700italic%7CWork+Sans:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chillyc.info","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.18.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":20,"unescape":false,"preload":false}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/config.min.js"></script>
+
+    <meta name="description" content="In Postgresql, If you want to do something like &quot;select Hello(a) from A;&quot;. You should define your own function Hello(). First, go to postgresql root directory and go into contrib file folder. Creat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Postgresql Function Define">
+<meta property="og:url" content="http://chillyc.info/2010/09/03/database/2010-09-03-postgresql-function-define/">
+<meta property="og:site_name" content="帐前卒专栏">
+<meta property="og:description" content="In Postgresql, If you want to do something like &quot;select Hello(a) from A;&quot;. You should define your own function Hello(). First, go to postgresql root directory and go into contrib file folder. Creat">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2010-09-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-06T14:54:06.575Z">
+<meta property="article:author" content="帐前卒">
+<meta property="article:tag" content="function">
+<meta property="article:tag" content="code">
+<meta property="article:tag" content="database">
+<meta property="article:tag" content="postgresql">
+<meta property="article:tag" content="cc">
+<meta property="article:tag" content="define">
+<meta property="article:tag" content="type">
+<meta property="article:tag" content="own">
+<meta property="article:tag" content="self">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://chillyc.info/2010/09/03/database/2010-09-03-postgresql-function-define/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://chillyc.info/2010/09/03/database/2010-09-03-postgresql-function-define/","path":"2010/09/03/database/2010-09-03-postgresql-function-define/","title":"Postgresql Function Define"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Postgresql Function Define | 帐前卒专栏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/rss2.xml" title="帐前卒专栏" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics start -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11621532-3"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6565392687771630"
+     crossorigin="anonymous"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-11621532-3');
+</script>
+ <!-- Global site tag (gtag.js) - Google Analytics end -->
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">帐前卒专栏</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">code, software architect, articles and novels.<br/>代码，软件架构，博客和小说</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-feeds"><a href="/rss2.xml" rel="section"><i class="fa fa-feed fa-fw"></i>feeds</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="帐前卒"
+      src="/icon.svg">
+  <p class="site-author-name" itemprop="name">帐前卒</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">754</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chilly"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9jY3R0XzE=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cctt_1"><i class="fab fa-twitter fa-fw"></i>Twitter</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC8="><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_nd.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/09/03/database/2010-09-03-postgresql-function-define/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Postgresql Function Define | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Postgresql Function Define
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2010-09-03T00:00:00+08:00">2010-09-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:54:06" itemprop="dateModified" datetime="2023-10-06T22:54:06+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><meta name="_edit_last" content="1" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="views" content="1573" />
+In Postgresql, If you want to do something like "select Hello(a) from A;". You should define your own function Hello().
+<p>First, go to postgresql root directory and go into contrib file folder. Create your own directory, and add hello.h , hello.c, Makefile, <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">hello.sql.in<i class="fa fa-external-link-alt"></i></span> and uninstall_Hello.sql.in</p>
+<p>Makefile is like the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">MODULE_big  = Hello // this is module name</span><br><span class="line">OBJS = Hello.o // those will be create by execute &quot;make&quot;</span><br><span class="line"></span><br><span class="line">DATA_built = hello.sql // install your function using this sql file</span><br><span class="line">DATA = uninstall_Hello.sql</span><br><span class="line">SHLIB_LINK = $(BE_DLLLIBS)</span><br><span class="line"></span><br><span class="line">ifdef USE_PGXS // this is a build infrastructure of extentions in postgreSQL</span><br><span class="line">PGXS = $(shell pg_config --pgxs)</span><br><span class="line">include $(PGXS)</span><br><span class="line">else</span><br><span class="line">subdir = contrib/Hello // here is your code files</span><br><span class="line">top_builddir = ../..</span><br><span class="line">include $(top_builddir)/src/Makefile.global</span><br><span class="line">include $(top_srcdir)/contrib/contrib-global.mk</span><br><span class="line">endif</span><br><span class="line"></span><br><span class="line">// the following code fragment is copying content of *.sql.in into *.sql</span><br><span class="line">%.sql: %.source</span><br><span class="line">	rm -f $@; \</span><br><span class="line">	C=`pwd`; \</span><br><span class="line">	sed -e &quot;s:_OBJWD_:$$C:g&quot; &amp;lt; $&amp;lt; &amp;gt; $@</span><br></pre></td></tr></table></figure>
+<p>Attention!!! In Makefile those command should be with no blank at end.<br />
+Here we can write <span class="exturl" data-url="aHR0cDovL2hlbGxvLnNxbC5pbg==">hello.sql.in<i class="fa fa-external-link-alt"></i></span>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">SET search_path = public; --you should add this code first.</span><br><span class="line">--functions</span><br><span class="line">--take care of those functions, if those functions are used for data input and out, their args or return type must be cstring or varchar</span><br><span class="line"></span><br><span class="line">-- arg type is cstring</span><br><span class="line">CREATE OR REPLACE FUNCTION hello_in(cstring)</span><br><span class="line">   RETURNS HelloS</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br><span class="line">-- return type is cstring</span><br><span class="line">CREATE OR REPLACE FUNCTION hello_out(HelloS)</span><br><span class="line">   RETURNS cstring</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br><span class="line"></span><br><span class="line">--data type</span><br><span class="line">CREATE TYPE HelloS (</span><br><span class="line">   internallength = 52,</span><br><span class="line">   input = hello_in,</span><br><span class="line">   output = hello_out,</span><br><span class="line">   alignment = double</span><br><span class="line">);</span><br><span class="line">--size is 52 bytes and alignment is 8 bytes.</span><br><span class="line">--if you don&#x27;t know its real size, use internallength = VARIABLE</span><br><span class="line">--if you want use binary array as its input and out, you should use receive=XXX_function, and send = XXX_function</span><br><span class="line"></span><br><span class="line">--outer function</span><br><span class="line">--this function can use kinds of types</span><br><span class="line">CREATE OR REPLACE FUNCTION Hello(HelloS)</span><br><span class="line">   RETURNS cstring</span><br><span class="line">   AS &#x27;MODULE_PATHNAME&#x27;</span><br><span class="line">   LANGUAGE C IMMUTABLE STRICT;</span><br></pre></td></tr></table></figure>
+<p>Here is the uninstall_Hello.sql.in:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SET search_path = public;</span><br><span class="line"></span><br><span class="line">DROP FUNCTION hello_in(cstring);</span><br><span class="line">DROP FUNCTION hello_out(HelloS);</span><br><span class="line">DROP TYPE HelloS;</span><br><span class="line">DROP FUNCTION Hello(HelloS);</span><br></pre></td></tr></table></figure>
+<p>In hello.h</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#ifndef HELLO_H</span><br><span class="line">#define HELLO_H</span><br><span class="line">#include&amp;lt;stdio.h&amp;gt;</span><br><span class="line">#include&amp;lt;stdlib.h&amp;gt;</span><br><span class="line"></span><br><span class="line">#include &quot;postgres.h&quot;</span><br><span class="line">#include &quot;fmgr.h&quot;</span><br><span class="line">#include &quot;funcapi.h&quot;</span><br><span class="line">// you should take care of the order of those head files!!!</span><br><span class="line"></span><br><span class="line">typedef struct&#123;</span><br><span class="line">	char content[52];</span><br><span class="line">&#125;HelloS;</span><br><span class="line"></span><br><span class="line">Datum		hello_in(PG_FUNCTION_ARGS);</span><br><span class="line">Datum		hello_out(PG_FUNCTION_ARGS);</span><br><span class="line">Datum               Hello(PG_FUNCTION_ARGS);</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<p>hello.c</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#include “hello.h”</span><br><span class="line"></span><br><span class="line">#ifndef MOD_FOR_PG</span><br><span class="line">PG_MODULE_MAGIC;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">PG_FUNCTION_INFO_V1(hello_in);</span><br><span class="line">Datum</span><br><span class="line">hello_in(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">	// get args[0]</span><br><span class="line">	char * str = PG_GETARG_CSTRING(0);</span><br><span class="line">    HelloS * hs = palloc(sizeof(HelloS));</span><br><span class="line">    if(NULL != str)&#123;</span><br><span class="line">        strcpy(hs-&amp;gt;content,str);</span><br><span class="line">        PG_RETURN_POINTER(hs)</span><br><span class="line">    &#125;</span><br><span class="line">    PG_RETURN_NULL();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PG_FUNCTION_INFO_V1(hello_out);</span><br><span class="line">Datum</span><br><span class="line">hello_out(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">	// get args[0]</span><br><span class="line">    Hello * hs = PG_GETARG_POINTER(0);</span><br><span class="line"></span><br><span class="line">    if(NULL != hs)&#123;</span><br><span class="line">        char * content = palloc(sizeof(HelloS));</span><br><span class="line">        strcpy(content,hs-&amp;gt;content);</span><br><span class="line">        PG_RETURN_CSTRING(content);</span><br><span class="line">    &#125;</span><br><span class="line">    PG_RETURN_CSTRING(&quot;&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PG_FUNCTION_INFO_V1(Hello);</span><br><span class="line">Datum</span><br><span class="line">Hello(PG_FUNCTION_ARGS)</span><br><span class="line">&#123;</span><br><span class="line">   HelloS* hs = PG_GETARG_POINTER(0);</span><br><span class="line"> if(NULL != hs)&#123;</span><br><span class="line">    char * res = palloc(sizeof(HelloS));</span><br><span class="line">    sprintf(res,&quot;hello %s&quot;,hs-&amp;gt;content);</span><br><span class="line">    PG_RETURN_CSTRING(res);</span><br><span class="line"> &#125;</span><br><span class="line"> PG_RETURN_CSTRING(&quot;hello nobody&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then cd your folder contrib/Hello, make, and make install</p>
+<p>Then start psql to execute :</p>
+<p>create table A(a HelloS);</p>
+<p>insert into A values(‘cc’);</p>
+<p>insert into A values(‘ff’);</p>
+<p>select Hello(a) from A;</p>
+<p>result:</p>
+<p>Hello cc</p>
+<p>Hello ff</p>
+<p>select * from A;</p>
+<p>result:</p>
+<p>cc</p>
+<p>ff</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat_pay.jpg" alt="帐前卒 WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="帐前卒 Alipay">
+        <span>Alipay</span>
+      </div>
+      <div>
+        <img src="/images/paypal.png" alt="帐前卒 PayPal">
+        <span>PayPal</span>
+      </div>
+      <div>
+        <img src="/bitcoin.png" alt="帐前卒 Bitcoin">
+        <span>Bitcoin</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/cctt_1">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/function/" rel="tag"># function</a>
+              <a href="/tags/code/" rel="tag"># code</a>
+              <a href="/tags/database/" rel="tag"># database</a>
+              <a href="/tags/postgresql/" rel="tag"># postgresql</a>
+              <a href="/tags/cc/" rel="tag"># cc</a>
+              <a href="/tags/define/" rel="tag"># define</a>
+              <a href="/tags/type/" rel="tag"># type</a>
+              <a href="/tags/own/" rel="tag"># own</a>
+              <a href="/tags/self/" rel="tag"># self</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2010/09/02/2010-09-02-error-lnk2019/" rel="prev" title="Error LNK2019 Unresolved External Symbol ">
+                  <i class="fa fa-angle-left"></i> Error LNK2019 Unresolved External Symbol 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2010/09/07/5868606/" rel="next" title="MFC CString Wstring Char Wchar _T 关系及转换">
+                  MFC CString Wstring Char Wchar _T 关系及转换 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">帐前卒</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Word count total: </span>
+    <span title="Word count total">1.6m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">24:18</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/next-boot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/bookmark.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/search/local-search.min.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha256-3574TpfThVfeAhg+I4+N39EJiLN3QUkuEsMVe8hWAR4=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"chilly/blog_comments","issue_term":"url","theme":"github-dark"}</script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.18.1/source/js/third-party/comments/utterances.min.js"></script>
+
+</body>
+</html>
