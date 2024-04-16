@@ -1,0 +1,20 @@
+---
+layout: post
+title: '微软，google齐聚湖大'
+date: 2006-09-19 16:16
+comments: true
+tags: ['google','微软','体育']
+categories:
+- [daily]
+---
+
+昨天上午听了微软工程院和微软研究院的研发部的高级经理的讲座。晚上在体育馆参与google的李开复的湖大googlecamp的开营仪式。这种机遇恐怕在大学的短
+短4年里也顶多只有这一次了。
+
+i'm a lucky dog....
+
+当了googlecamp的志愿者混了件T-shirt和李开复的签名。。。
+
+虽然自己对李开复没有太多的崇拜情节，但是这个签名却可以在那些开复的fans前炫耀一翻。。。。
+
+

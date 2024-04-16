@@ -1,0 +1,34 @@
+---
+layout: post
+title: 'mysql中插入固定格式的时间  yyyy-MM-dd  HH:mm:ss'
+date: 2006-08-30 09:26
+comments: true
+tags: ['mysql','calendar','string']
+categories:
+- [knowledge, database]
+- [code]
+---
+
+首先将mysql中要插入的表的列属性改为：TIMESTAMP类型
+
+在控制台上随便插入一两组数据，发现可以插入`2006－08－07`，并且在数据库中显示为：`2006-08-27 00:00:00`；想到程序中要做相应的改动，以便插入`2006-08-27 15:27:10`。下面采用java语言得到当前时间的固定格式：
+```java
+Date d = new Date();  
+SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");  
+Calendar MyDate = Calendar.getInstance();  
+MyDate.setTime(d);  
+String adddate =
+df.format(MyDate.getTime()).substring(0);//这里的adddate已经转换为固定的格式。
+
+
+```
+
+下面就是写一条sql语句进行插入即可：
+```java
+StringBuffer sql = new StringBuffer("insert into ").append( table).append("
+values( '").append(adddate).append("'");
+
+dboperat.executeSQL(new String(sql));//程序里要实现这个方法.......
+```
+
+
