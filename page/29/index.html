@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,152 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/26/5421050/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/03/26/5421050/" class="post-title-link" itemprop="url">mysql中使用InnoDB还是MyISAM ?</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-03-26 21:27:00" itemprop="dateCreated datePublished" datetime="2010-03-26T21:27:00+08:00">2010-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>自己经常使用sqlserver,不怎么使用mysql.所以也对mysql不咋米了解。这里转两个帖子关于mysql中的InnoDB和MyIsAM的介绍，个人觉<br />
+得还是不错的。</p>
+<p>转载自 <span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS8="> http://database.51cto.com <i class="fa fa-external-link-alt"></i></span> 2009-05-19 09:58<br />
+邵宗文  IT168</p>
+<p>链接：<span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS9hcnQvMjAwOTA1LzEyMjM4Mi5odG0=">http://database.51cto.com/art/200905/122382.htm<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="浅谈mysql存储引擎选择-innodb还是myisam"><a class="markdownIt-Anchor" href="#浅谈mysql存储引擎选择-innodb还是myisam"></a> 浅谈MySQL存储引擎选择 InnoDB还是MyISAM</h3>
+<p>MyISAM<br />
+是MySQL中默认的存储引擎，一般来说不是有太多人关心这个东西。决定使用什么样的存储引擎是一个很tricky的事情，但是还是值我们去研究一下，这<br />
+里的文章只考虑 MyISAM 和InnoDB这两个，因为这两个是最常见的。</p>
+<p>下面先让我们回答一些问题：<br />
+◆你的数据库有外键吗？<br />
+◆你需要事务支持吗？<br />
+◆你需要全文索引吗？<br />
+◆你经常使用 什么样的查询模式？<br />
+◆你的数据有多大？</p>
+<p>思考上面这些问题可以让你找到合适的方向，但那并不是绝对的。如果你需要事务处理或是外键，那么InnoDB 可能是比较好的方式。如果你需要全文索引，那么通常来说<br />
+MyISAM是好的选择，因为这是系统内建的，然而，我们其实并不会经常地去测试两百万行记录。所以，就算是慢一点，我们可以通过使用Sphinx从<br />
+InnoDB中获得全文索引。</p>
+<p>数据的大小，是一个影响你选择什么样存储引擎的重要因素，大尺寸的数据集趋向于选择InnoDB方式，因为其支持事务处理和故障恢复。数据库的在小<br />
+决定了故障恢复的时间长短，InnoDB可以利用事务日志进行数据恢复，这会比较快。而MyISAM可能会需要几个小时甚至几天来干这些事，InnoDB<br />
+只需要几分钟。</p>
+<p>您操作数据库表的习惯可能也会是一个对性能影响很大的因素。比如： COUNT() 在 MyISAM 表中会非常快，而在InnoDB<br />
+表下可能会很痛苦。而主键查询则在InnoDB下会相当相当的快，但需要小心的是如果我们的主键太长了也会导致性能问题。大批的inserts<br />
+语句在MyISAM下会快一些，但是updates 在InnoDB 下会更快一些——尤其在并发量大的时候。</p>
+<p>所以，到底你检使用哪一个呢？根据经验来看，如果是一些小型的应用或项目，那么MyISAM 也许会更适合。当然，在大型的环境下使用MyISAM<br />
+也会有很大成功的时候，但却不总是这样的。如果你正在计划使用一个超大数据量的项目，而且需要事务处理或外键支持，那么你真的应该直接使用InnoDB方<br />
+式。但需要记住InnoDB 的表需要更多的内存和存储，转换100GB 的MyISAM 表到InnoDB 表可能会让你有非常坏的体验。</p>
+<p>转载自 <span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS8="> http://database.51cto.com <i class="fa fa-external-link-alt"></i></span> 2009-05-19 09:58<br />
+邵宗文  IT168</p>
+<p>链接：<span class="exturl" data-url="aHR0cDovL2RhdGFiYXNlLjUxY3RvLmNvbS9hcnQvMjAwOTA1LzEyNDM3MC5odG0=">http://database.51cto.com/art/200905/124370.htm<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="innodb还是myisam-再谈mysql存储引擎的选择"><a class="markdownIt-Anchor" href="#innodb还是myisam-再谈mysql存储引擎的选择"></a> InnoDB还是MyISAM 再谈MySQL存储引擎的选择</h3>
+<p>两种类型最主要的差别就是Innodb 支持事务处理与外键和行级锁.而MyISAM不支持.所以MyISAM往往就容易被人认为只适合在小项目中使用。</p>
+<p>我作为使用MySQL的用户角度出发，Innodb和MyISAM都是比较喜欢的，但是从我目前运维的数据库平台要达到需求：99.9%的稳定性，<br />
+方便的扩展性和高可用性来说的话，MyISAM绝对是我的首选。</p>
+<p>原因如下：</p>
+<p>1、首先我目前平台上承载的大部分项目是读多写少的项目，而MyISAM的读性能是比Innodb强不少的。</p>
+<p>2、MyISAM的索引和数据是分开的，并且索引是有压缩的，内存使用率就对应提高了不少。能加载更多索引，而Innodb是索引和数据是紧密捆绑<br />
+的，没有使用压缩从而会造成Innodb比MyISAM体积庞大不小。</p>
+<p>3、从平台角度来说，经常隔1，2个月就会发生应用开发人员不小心update一个表where写的范围不对，导致这个表没法正常用了，这个时候<br />
+MyISAM的优越性就体现出来了，随便从当天拷贝的压缩包取出对应表的文件，随便放到一个数据库目录下，然后dump成sql再导回到主库，并把对应的<br />
+binlog补上。如果是Innodb，恐怕不可能有这么快速度，别和我说让Innodb定期用导出xxx.sql机制备份，因为我平台上最小的一个数据<br />
+库实例的数据量基本都是几十G大小。</p>
+<p>4、从我接触的应用逻辑来说，select count(*) 和order by<br />
+是最频繁的，大概能占了整个sql总语句的60%以上的操作，而这种操作Innodb其实也是会锁表的，很多人以为Innodb是行级锁，那个只是<br />
+where对它主键是有效，非主键的都会锁全表的。</p>
+<p>5、还有就是经常有很多应用部门需要我给他们定期某些表的数据，MyISAM的话很方便，只要发给他们对应那表的frm.MYD,MYI的文件，让<br />
+他们自己在对应版本的数据库启动就行，而Innodb就需要导出xxx.sql了，因为光给别人文件，受字典数据文件的影响，对方是无法使用的。</p>
+<p>6、如果和MyISAM比insert写操作的话，Innodb还达不到MyISAM的写性能，如果是针对基于索引的update操作，虽然<br />
+MyISAM可能会逊色Innodb,但是那么高并发的写，从库能否追的上也是一个问题，还不如通过多实例分库分表架构来解决。</p>
+<p>7、如果是用MyISAM的话，merge引擎可以大大加快应用部门的开发速度，他们只要对这个merge表做一些select<br />
+count(*)操作，非常适合大项目总量约几亿的rows某一类型(如日志，调查统计)的业务表。</p>
+<p>当然Innodb也不是绝对不用，用事务的项目如模拟炒股项目，我就是用Innodb的，活跃用户20多万时候，也是很轻松应付了，因此我个人也是<br />
+很喜欢Innodb的，只是如果从数据库平台应用出发，我还是会首选MyISAM。</p>
+<p>另外，可能有人会说你MyISAM无法抗太多写操作，但是我可以通过架构来弥补，说个我现有用的数据库平台容量：主从数据总量在几百T以上，每天十 多亿<br />
+pv的动态页面，还有几个大项目是通过数据接口方式调用未算进pv总数，(其中包括一个大项目因为初期memcached没部署,导致单台数据库每天处理<br />
+9千万的查询)。而我的整体数据库服务器平均负载都在0.5-1左右。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2095,136 +2241,6 @@ n∏i=1xi:the product of x sub i where igoes from 1to n<br />
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/03/10/database/2010-03-10-use-c-language-to-connect-postgresql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/03/10/database/2010-03-10-use-c-language-to-connect-postgresql/" class="post-title-link" itemprop="url">Use C Language to Connect postgreSQL</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2010-03-10T00:00:00+08:00">2010-03-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 13:42:29" itemprop="dateModified" datetime="2023-10-07T13:42:29+08:00">2023-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>4.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>There is a small example copied from <span class="exturl" data-url="aHR0cDovL3d3dy5wb3N0Z3Jlc3FsLm9yZy9maWxlcy9kb2N1bWVudGF0aW9uL2Jvb2tzL2F3X3Bnc3FsL3dyaXRpbmdfYXBwcy9ub2RlMy5odG1s">postgreSQL.org<i class="fa fa-external-link-alt"></i></span></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*  libpq sample program</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;libpq-feh&quot;</span>                                   <span class="comment">/* libpq header file */</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span>        state_code[<span class="number">3</span>];                          <span class="comment">/* holds user state code */</span></span><br><span class="line">	<span class="type">char</span>        query_string[<span class="number">256</span>];                      <span class="comment">/* holds constructed SQL query */</span></span><br><span class="line">	PGconn     *conn;                                   <span class="comment">/* holds database connection */</span></span><br><span class="line">	PGresult   *res;                                    <span class="comment">/* holds query result */</span></span><br><span class="line">	<span class="type">int</span>         i;</span><br><span class="line"></span><br><span class="line">	conn = PQconnectdb(<span class="string">&quot;dbname=test&quot;</span>); <span class="comment">/* connect to the database */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (PQstatus(conn) == CONNECTION_BAD)               <span class="comment">/* did the connection fail? */</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;Connection to database failed.\n&quot;</span>);</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%s&quot;</span>, PQerrorMessage(conn));</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Enter a state code:  &quot;</span>);                    <span class="comment">/* prompt user for a state code */</span></span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%2s&quot;</span>, state_code);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">sprintf</span>(query_string,                               <span class="comment">/* create an SQL query string */</span></span><br><span class="line">	<span class="string">&quot;SELECT name \</span></span><br><span class="line"><span class="string">	FROM statename \</span></span><br><span class="line"><span class="string">	WHERE code = &#x27;%s&#x27;&quot;</span>, state_code);</span><br><span class="line"></span><br><span class="line">	res = PQexec(conn, query_string); <span class="comment">/* send the query */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (PQresultStatus(res) != PGRES_TUPLES_OK)         <span class="comment">/* did the query fail? */</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;SELECT query failed.\n&quot;</span>);</span><br><span class="line">		PQclear(res);</span><br><span class="line">		PQfinish(conn);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &amp;lt; PQntuples(res); i++)                <span class="comment">/* loop through all rows returned */</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, PQgetvalue(res, i, <span class="number">0</span>));          <span class="comment">/* print the value returned */</span></span><br><span class="line"></span><br><span class="line">	PQclear(res); <span class="comment">/* free result */</span></span><br><span class="line"></span><br><span class="line">	PQfinish(conn); <span class="comment">/* disconnect from the database */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>above is how to connect localhost database. If you want to connect with remote postgreSQL server. You will following those rules(copied from <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1s">vivek<i class="fa fa-external-link-alt"></i></span>):</p>
-<h2 id="step-1-login-over-ssh-if-server-is-outside-your-idc"><a class="markdownIt-Anchor" href="#step-1-login-over-ssh-if-server-is-outside-your-idc"></a> Step # 1: Login over ssh if server is outside your IDC</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh user@remote.pgsql.server.com</span><br></pre></td></tr></table></figure>
-<h2 id="step-2-enable-client-authentication"><a class="markdownIt-Anchor" href="#step-2-enable-client-authentication"></a> Step # 2: Enable client authentication</h2>
-<p>Once connected, you need edit the PostgreSQL configuration file, edit the PostgreSQL configuration file <strong>/var/lib/pgsql/data/pg_hba.conf</strong> (or <strong>/etc/postgresql/8.2/main/pg_hba.conf</strong> for latest 8.2 version) using a text editor such as vi.</p>
-<p>Login as postgres user using su / sudo command, enter:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ su - postgres</span><br><span class="line">Edit the file:</span><br><span class="line">$ vi /var/lib/pgsql/data/pg_hba.conf</span><br><span class="line">OR</span><br><span class="line">$ vi /etc/postgresql/8.2/main/pg_hba.conf</span><br><span class="line">Append the following configuration lines to give access to 10.10.29.0/24 network:</span><br><span class="line">host all all 10.10.29.0/24 trust</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>Save and close the file. Make sure you replace 10.10.29.0/24 with actual network IP address range of the clients system in your own network.</p>
-<h2 id="step-3-enable-networking-for-postgresql"><a class="markdownIt-Anchor" href="#step-3-enable-networking-for-postgresql"></a> Step # 3: Enable networking for PostgreSQL</h2>
-<p>You need to enable TCP / IP networking. Use either step #3 or #3a as per your PostgreSQL database server version.</p>
-<h2 id="step-4-allow-tcpip-socket"><a class="markdownIt-Anchor" href="#step-4-allow-tcpip-socket"></a> Step # 4: Allow TCP/IP socket</h2>
-<p>If you are using <strong>PostgreSQL version 8.x or newer</strong> use the following instructions or skip to <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1sIzNh">Step # 3a<i class="fa fa-external-link-alt"></i></span> for older version (7.x or older).</p>
-<p>You need to open PostgreSQL configuration file /var/lib/pgsql/data/postgresql.conf or /etc/postgresql/8.2/main/postgresql.conf.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi /etc/postgresql/8.2/main/postgresql.conf</span></span><br><span class="line">OR</span><br><span class="line"><span class="comment"># vi /var/lib/pgsql/data/postgresql.conf </span></span><br><span class="line">Find configuration line that <span class="built_in">read</span> as follows:</span><br><span class="line">listen_addresses=<span class="string">&#x27;localhost&#x27;</span></span><br><span class="line">Next <span class="built_in">set</span> IP address(es) to listen on; you can use comma-separated list of addresses; defaults to <span class="string">&#x27;localhost&#x27;</span>, and <span class="string">&#x27;*&#x27;</span> is all ip address:</span><br><span class="line">listen_addresses=<span class="string">&#x27;*&#x27;</span></span><br><span class="line">Or just <span class="built_in">bind</span> to 202.54.1.2 and 202.54.1.3 IP address</span><br><span class="line">listen_addresses=<span class="string">&#x27;202.54.1.2 202.54.1.3&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>Save and close the file. Skip to <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvcG9zdGdyZXMtYWxsb3ctcmVtb3RlLWFjY2Vzcy10Y3AtY29ubmVjdGlvbi5odG1sIzQ=">step # 4<i class="fa fa-external-link-alt"></i></span>.</p>
-<h3 id="step-4a-information-for-old-version-7x-or-older"><a class="markdownIt-Anchor" href="#step-4a-information-for-old-version-7x-or-older"></a> Step #4a - Information for old version 7.x  or older</h3>
-<p>Following configuration only required for <strong>PostgreSQL version 7.x or older</strong>. Open config file, enter:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi /var/lib/pgsql/data/postgresql.conf</span></span><br><span class="line">Bind and open TCP/IP port by setting tcpip_socket to <span class="literal">true</span>.  Set / modify tcpip_socket to <span class="literal">true</span>:</span><br><span class="line">tcpip_socket = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<p>Save and close the file.</p>
-<h2 id="step-5-restart-postgresql-server"><a class="markdownIt-Anchor" href="#step-5-restart-postgresql-server"></a> Step # 5: Restart PostgreSQL Server</h2>
-<p>Type the following command:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># /etc/init.d/postgresql restart</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="step-6-iptables-firewall-rules"><a class="markdownIt-Anchor" href="#step-6-iptables-firewall-rules"></a> Step # 6: Iptables firewall rules</h2>
-<p>Make sure iptables is not blocking communication, <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L3RpcHMvaG93dG8taXB0YWJsZXMtcG9zdGdyZXNxbC1vcGVuLXBvcnQuaHRtbA==">open port 5432<i class="fa fa-external-link-alt"></i></span> (append rules to your iptables scripts or file <span class="exturl" data-url="aHR0cDovL3d3dy5jeWJlcmNpdGkuYml6L2ZhcS9ob3d0by1ibG9jay1pcGFkZHJlc3Mtb2Ytc3BhbW1lcnMtd2l0aC1maXJld2FsbC8=">/etc/sysconfig/iptables<i class="fa fa-external-link-alt"></i></span>):</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p tcp -s 0/0 --sport 1024:65535 -d 10.10.29.50  --dport 5432\</span><br><span class="line"> -m state --state NEW,ESTABLISHED -j ACCEPT</span><br><span class="line">iptables -A OUTPUT -p tcp -s 10.10.29.50 --sport 5432 -d 0/0 --dport \</span><br><span class="line">1024:65535 -m state --state ESTABLISHED -j ACCEPT</span><br><span class="line">Restart firewall:</span><br><span class="line"># /etc/init.d/iptables restart</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="step-7-test-your-setup"><a class="markdownIt-Anchor" href="#step-7-test-your-setup"></a> Step # 7: Test your setup</h2>
-<p>Use psql command from client system. Connect to remote server using IP address 10.10.29.50 and login using vivek username and sales database, enter:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ psql -h 10.10.29.50 -U vivek -d sales</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="step-8-change-your-code"><a class="markdownIt-Anchor" href="#step-8-change-your-code"></a> Step #8: Change your code</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const char * connstr = &quot;host=&#x27;10.10.29.50&#x27; dbname=&#x27;my_database&#x27; user=&#x27;postgres&#x27; password=&#x27;secret&#x27;&quot;</span><br><span class="line">conn = PQconnectdb(connstr);                  /* connect to the database */</span><br><span class="line"> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/28/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/30/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2256,7 +2272,7 @@ n∏i=1xi:the product of x sub i where igoes from 1to n<br />
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

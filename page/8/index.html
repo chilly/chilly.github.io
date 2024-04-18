@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,107 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/17/17370121/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/12/17/17370121/" class="post-title-link" itemprop="url">使用Mysql遇到的问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-12-17 10:06:00" itemprop="dateCreated datePublished" datetime="2013-12-17T10:06:00+08:00">2013-12-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>844</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>1. 幻读。很多书和blog都提到mysql 的 tx_isolate （事务隔离）为repeatable read. 并且Mysql做了next-key lock的事情防止幻读。但是如果你直接在事务中使用</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>];</span><br></pre></td></tr></table></figure>
+<p>这还是会有幻读发生。只有你在SELECT语句中加入锁才能防止幻读。例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>] <span class="keyword">for</span> <span class="keyword">update</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>] lock <span class="keyword">in</span> share mode;</span><br></pre></td></tr></table></figure>
+<p>以上两句都可以防止幻读。第二句要优于第一句，因为加的是读锁而不是写锁。</p>
+<p>另外介绍一下幻读：</p>
+<p>幻读就是当一个事务进行查询时没有发现该记录，或者没有发现该记录被更改。结果在正在插入该记录或者真正要改该记录时，发现这条记录已经被其他事务改过了。</p>
+<p>例如</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">事务<span class="number">1</span>， <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>];</span><br><span class="line"></span><br><span class="line">这时进行事务<span class="number">2</span>， <span class="keyword">insert</span> <span class="keyword">into</span> [<span class="keyword">table</span>] <span class="keyword">select</span> xx; <span class="keyword">commit</span>;  </span><br><span class="line">事务<span class="number">1</span> 再执行 <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> [<span class="keyword">table</span>]; 这里是没有 事务<span class="number">2</span> 的数据的。</span><br><span class="line"></span><br><span class="line">这里只要事务<span class="number">1</span>再次执行 <span class="keyword">insert</span> <span class="keyword">into</span> [<span class="keyword">table</span>] <span class="keyword">select</span> xx; 这样就发现这个行已经存在了；这就是幻读。</span><br></pre></td></tr></table></figure>
+<p>2. 另外发现update的一个问题。如果使用事务， 首先select 数据然后再使用该数据进行update，有可能会有问题。一般使用 update [table] set col = col + value where …这种形式进行更新，比select col from [table]; 取到col然后再进行update [table] set col = 刚才select 出的col value + value; 这样更加正确，因为update自身可以加写锁。保证了不会幻读。</p>
+<p>3. 另外一个问题涉及到 limit. 例如 select * from [table] limit [len] offset [offset]; 如果这里offset比较小，那么这样做是可以的。如果这里offset很大，那么这样做类似于扫表。这里需要使用where子句来加速。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1161,118 +1262,6 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/" class="post-title-link" itemprop="url">微信公众平台开发中的安全问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-08-30 05:37:00" itemprop="dateCreated datePublished" datetime="2013-08-30T05:37:00+08:00">2013-08-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:20:29" itemprop="dateModified" datetime="2023-10-05T23:20:29+08:00">2023-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="0-我在开发中"><a class="markdownIt-Anchor" href="#0-我在开发中"></a> 0. 我在开发中</h2>
-<p>    近期一直在利用有道云笔记API在微信上开发一款应用。因为是服务器端与服务器端的交互。所以有很多安全问题值得考虑。</p>
-<h2 id="1-微信的认证"><a class="markdownIt-Anchor" href="#1-微信的认证"></a> 1. 微信的认证</h2>
-<p>    微信的认证很简单，标准的认证是这样子的：<br />
-<img src="http://mp.weixin.qq.com/wiki/images/9/90/Callbackprofile.jpg" alt="token 授权" /><br />
-    微信这种授权模式相当的山寨，如果只是单纯的靠这种token授权，服务器很容易被攻破。这里需要填写的url必须是使用80端口，而且url中也不能有很特殊的字符。不过token中可以有特殊字符。所以开发者需要尽量将自己的token设的复杂。微信首先认证连接时会将signature,echostr,nonce,timestamp这四个URL参数以GET请求的方式发送过来。数据则以POST请求的方式发送到同样的URL上，并且URL参数变为signature,echostr,nonce。nonce是和请求中的timestamp成对的。也就是说timestamp+nonce是唯一的。所以这里可以防止重放攻击。另外server与server通信之间,timestamp的单位是秒，一般误差也就是分钟级别的。这样可以从另外一个角度防止重放攻击。所以开发者应该在GET,POST请求中都加入这些参数的校验。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1304,7 +1293,7 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

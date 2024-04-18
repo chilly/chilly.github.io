@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,131 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/10/database/2010-05-10-debug-postgresql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/05/10/database/2010-05-10-debug-postgresql/" class="post-title-link" itemprop="url">How to Debug PostgreSQL</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-05-10 00:00:00" itemprop="dateCreated datePublished" datetime="2010-05-10T00:00:00+08:00">2010-05-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 22:54:03" itemprop="dateModified" datetime="2023-10-06T22:54:03+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="postgresql debug" />
+<meta name="_su_keywords" content="postgresql debug" />
+<meta name="_su_title" content="postgresql debug" />
+<meta name="views" content="1123" />
+First, compile the source code use ./configure --prefix=XXXX --enable-debug &amp;&amp; CFLAGS=-O0
+<p>then make and make install.</p>
+<h2><span style="color: #800000;">IF you want to RESTART PG</span></h2>
+Detected if there is an instance of Postgre server. If there is, kill it. use
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ps -e | grep postgre</span><br><span class="line">// find id of the process</span><br><span class="line">kill -9 $processid</span><br></pre></td></tr></table></figure>
+<p>to detect the pocess of postgresql and kill it.</p>
+<p>then use:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gdb postgresqlHomeDIR/bin/postgres -quiet</span><br><span class="line">// enter gdb then use</span><br><span class="line">set args -D DATADIR</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+<p>here DATADIR and postgresqlDIR are your own directory.</p>
+<h2><span style="color: #800000;">IF you don't want to RESTART PG</span></h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// find postgres pid</span><br><span class="line">pid = `ps auxww | \</span><br><span class="line">    grep postgres: | \</span><br><span class="line">    grep -v -e &#x27;grep postgres:&#x27; -e &#x27;postgres: stats&#x27; -e &#x27;postgres: writer&#x27; -e &#x27;postgres: archiver&#x27; -e &#x27;postgres: logger&#x27; -e &#x27;postgres: autovacuum&#x27; | \</span><br><span class="line">    tee /dev/tty | \</span><br><span class="line">    awk &#x27;&#123;print $2&#125;&#x27;`</span><br><span class="line">gdb pid</span><br></pre></td></tr></table></figure>
+<p>then use</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./psql test</span><br></pre></td></tr></table></figure>
+<p>to test. Here test is  your database name.</p>
+<p>IF you want to debug contrib</p>
+<p>make &amp;&amp; make install in contrib/yourdir</p>
+<p>then go to gdb to file your shard lib to load symbol. Here <span class="exturl" data-url="aHR0cDovL1hYWC5zbw==">XXX.so<i class="fa fa-external-link-alt"></i></span> is your contrib share lib.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) file XXX.so</span><br></pre></td></tr></table></figure>
+<p>if not, when you use break somefunction, it will report:</p>
+<p>No symbol table is loaded.  Use the “file” command.<br />
+Make breakpoint pending on future shared library load? (y or [n])</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1144,152 +1269,6 @@ cn, toplanguage 中做了些宣传。仅仅面向一个狭窄的群体，往往�
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/23/5518240/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/23/5518240/" class="post-title-link" itemprop="url">各种塑料制品</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-04-23 08:17:00" itemprop="dateCreated datePublished" datetime="2010-04-23T08:17:00+08:00">2010-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>** ** ** 图片由 WikiMedia 在 <span class="exturl" data-url="aHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnktc2EvMy4wL2RlZWQuemg="> 署名-相同方式共享 3.0 <i class="fa fa-external-link-alt"></i></span> 版权协议下提供 **</p>
-<p>** ** <span class="exturl" data-url="aHR0cDovL2FpZnJlZWRvbS5jb20v"> ** 转自:aifreedom.com ** <i class="fa fa-external-link-alt"></i></span></p>
-<p><img src="http://aifreedom.com/images/2009072901.png" alt="PET" /></p>
-<p>你有没有注意过平时使用的饮料瓶上都有一个这样的标志, 它表示什么?</p>
-<p>所有人都知道那个&quot;箭头围成的三角形&quot;表示它可以被回收再利用. 但圈里那个数字和下面的字母是什么呢?</p>
-<p>这个顺时针旋转的箭头形成的三角形和它里面的数字一起, 叫做 [ 塑 胶分类标志 ](<span class="exturl" data-url="aHR0cDovL3poLndpa2lwZWRpYS5vcmcvd2lraS8lRTUlQTElMjU=">http://zh.wikipedia.org/wiki/��%<i class="fa fa-external-link-alt"></i></span><br />
-91%E8%86%A0%E5%88%86%E9%A1%9E%E6%A8%99%E8%AA%8C) ( <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Resin_identification_code"> Resin identification code<br />
-</a> ).</p>
-<p>很多人误以为有这个标志就意味着这个塑料制品是可以回收的, 而这个数字表示这个材料被回收的难度或者频率. 其实这个数字只是一个编号,<br />
-是美国塑胶工业协会制订的分类编码方式, 不同的编号表示不同种类的塑料材料. 而且虽然绝大多数塑料都可以回收, 但需要根据它们是不同的聚合物种类来分类.<br />
-而且由于挑选, 分类, 清洁和再加工等工序的成本, 目前经济上只能应付回收聚对苯二甲酸乙二酯(PET)与高密度聚乙烯(HDPE). 看这个 “PET”<br />
-是不是很眼熟? 上面那个标志就是 “PET” 塑料的标志. 我们平时用的大多数矿泉水, 碳酸饮料的瓶子就是用它做的.</p>
-<p>不同种类的塑料制品的物理化学性质是有区别的. 例如除了PP塑料之外的大部分塑料都不耐热, 而不耐热的塑料制品遇热就容易释放出有毒的, 致癌的物质.</p>
-<p>下面的塑料性质介绍来自网络. 部分内容我在 Wikipedia 上找到了相关资料, 但我没有查证以下所有描述, 不保证它们完全准确.<br />
-如果有任何错误请留言指出.</p>
-<p><img src="http://aifreedom.com/images/2009072901.png" alt="PET" /></p>
-<p>1. PET [ 聚 对苯二甲酸乙二醇脂 ](<span class="exturl" data-url="aHR0cDovL3poLndpa2lwZWRpYS5vcmcvd2lraS8lRTglODElOUElRTUlQUYlQjklRTglOEIlMjU=">http://zh.wikipedia.org/wiki/聚对��%<i class="fa fa-external-link-alt"></i></span><br />
-AF%E4%BA%8C%E7%94%B2%E9%85%B8%E4%B9%99%E4%BA%8C%E9%85%AF)</p>
-<p>常见矿泉水瓶, 碳酸饮料瓶等. 耐热至70℃, 易变形, 有对人体有害的物质融出. PET塑料品用了10个月后, 可能释放出致癌物DEHP.<br />
-不能放在汽车内晒太阳; 不要装酒, 油等物质.</p>
-<p><img src="http://aifreedom.com/images/2009072902.png" alt="HDPE" /></p>
-<p>2. HDPE <span class="exturl" data-url="aHR0cDovL3poLndpa2lwZWRpYS5vcmcvd2lraS8lRTglODElOUElRTQlQjklOTklRTclODMlQUY="> 高 密度聚乙烯 <i class="fa fa-external-link-alt"></i></span></p>
-<p>常见白色药瓶, 清洁用品, 沐浴产品的塑料瓶. 不要再用来做为水杯或者用来做储物容器装其他物品. 不要循环使用.</p>
-<p><img src="http://aifreedom.com/images/2009072903.png" alt="PVC" /></p>
-<p>3. PVC <a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/%E8%81%9A%E6%B0%AF%E4%B9%99%E7%83%AF"> 聚 氯乙烯<br />
-</a></p>
-<p>常见雨衣, 建材, 塑料膜, 塑料盒等. 可塑性优良, 价钱便宜, 故使用很普遍, 只能耐热81℃. 高温时容易释放有毒物质, 很少被用于食品包装.<br />
-不要循环使用. 若装饮品不要购买.</p>
-<p><img src="http://aifreedom.com/images/2009072904.png" alt="PE" /></p>
-<p>4. PE <span class="exturl" data-url="aHR0cDovL3poLndpa2lwZWRpYS5vcmcvd2lraS8lRTglODElOUElRTQlQjklOTklRTclODMlQUY="> 聚 乙烯 <i class="fa fa-external-link-alt"></i></span></p>
-<p>常见保鲜膜, 塑料膜等都是用PE材料制作. 根据高中化学知识, PE本身是没有毒的. 但塑料制品在制作时会添加小分子的助剂, 它们通常是有毒的.<br />
-在高温下有毒的助剂容易迁移到塑料制品的表面. 如果用它来装高温的食物, 有毒物质随食物进入人体后, 可能引起乳腺癌, 新生儿先天缺陷等疾病.<br />
-所以别把保鲜膜放进微波炉.</p>
-<p><img src="http://aifreedom.com/images/2009072905.png" alt="PP" /></p>
-<p>5. PP <span class="exturl" data-url="aHR0cDovL3poLndpa2lwZWRpYS5vcmcvd2lraS8lRTglODElOUElRTQlQjglOTklRTclODMlQUY="> 聚 丙烯 <i class="fa fa-external-link-alt"></i></span></p>
-<p>常见豆浆瓶, 优酪乳瓶, 果汁饮料瓶, 微波炉餐盒. 熔点高达167℃, 是唯一可以放进微波炉的塑料盒, 可在小心清洁后重复使用. 需要注意,<br />
-有些微波炉餐盒, 盒体以5号PP塑料制造, 但盒盖却以1号PE塑料制造. 由于PE不能抵受高温, 故不能与盒体一并放进微波炉.</p>
-<p><img src="http://aifreedom.com/images/2009072906.png" alt="PS" /></p>
-<p>6. PS <a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/%E8%81%9A%E8%8B%AF%E4%B9%99%E7%83%AF"> 聚 苯乙烯<br />
-</a></p>
-<p>常见碗装泡面盒, 快餐盒. 不能放进微波炉中, 以免因温度过高而释出化学物. 装酸(如柳橙汁), 碱性物质后, 会分解出致癌物质. 别用微波炉煮碗装方便面,<br />
-或者干脆和我一样戒掉方便面.</p>
-<p><img src="http://aifreedom.com/images/2009072907.png" alt="PC" /></p>
-<p>7. OTHER 其它类 (包括 <a target="_blank" rel="noopener" href="http://zh.wikipedia.org/w/wiki/ABS%E6%A8%B9%E8%84%82"> ABS 树脂<br />
-</a> 、 [ 聚 甲基丙烯酸甲酯 ](http:/<br />
-/zh.wikipedia.org/wiki/%E8%81%9A%E7%94%B2%E5%9F%BA%E4%B8%99%E7%83%AF%E9%85%B8%<br />
-E7%94%B2%E9%85%AF) 、 <a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/%E8%81%9A%E7%A2%B3%E9%85%B8%E9%85%AF"> 聚 碳酸酯<br />
-</a> 、 <a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/%E8%81%9A%E4%B9%B3%E9%85%B8"> 聚 乳酸<br />
-</a> 、 <a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/%E5%B0%BC%E9%BE%8D"> 尼 龙<br />
-</a> 与 [ 玻 璃纤维强化塑胶 ](<span class="exturl" data-url="aHR0cDovL3poLnc=">http://zh.w<i class="fa fa-external-link-alt"></i></span><br />
-<span class="exturl" data-url="aHR0cDovL2lraXBlZGlhLm9yZy93aWtpLyVFNyU4RSVCQiVFNyU5MiU4MyVFNyVCQSU5NiVFNyVCNiVBRCVFNSVCQyVCNyVFNSU4QyU5NiVFNSVBMQ==">ikipedia.org/wiki/玻璃纖維強化��<i class="fa fa-external-link-alt"></i></span><br />
-%91%E8%86%A0) )</p>
-<p>常见水壶, 太空杯, 奶瓶, CD 光盘, 桶装水瓶都是用这一类里的 PC 塑料制作, 容易释放出双酚A. 关于双酚A对人类的影响, 说法不一.<br />
-但加拿大政府已宣布双酚A是一种危险的化学品, 并正式将双酚A列入有毒化学品名单, 禁止在制造婴儿奶瓶的过程中添加双酚A.[ <a target="_blank" rel="noopener" href="http://news.sina.com.cn/w/2008-10-19/114614597243s.shtml"> 1<br />
-</a> ] 使用时不要加热,<br />
-不要在阳光下直晒.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/25/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/27/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1321,7 +1300,7 @@ E7%94%B2%E9%85%AF) 、 <a target="_blank" rel="noopener" href="http://zh.wikiped
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

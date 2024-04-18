@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,189 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/21/5683238/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/06/21/5683238/" class="post-title-link" itemprop="url">Static 关键字用途</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-06-21 10:47:00" itemprop="dateCreated datePublished" datetime="2010-06-21T10:47:00+08:00">2010-06-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>copy from <span class="exturl" data-url="aHR0cDovL3d3dy5jbml0YmxvZy5jb20vaWN0Zmx5L2FyY2hpdmUvMjAwNi8xMS8yNS8xOTU5NC5odG1s">http://www.cnitblog.com/ictfly/archive/2006/11/25/19594.html<i class="fa fa-external-link-alt"></i></span></p>
+<p>本文只是本人对C++中关于静态类型的一个总结，如错误之处，请大家帮我改正。我分两个方面来总结，第一方面主要是相对于面向过程而言，即在这方面不涉及<br />
+到类，第二方面相对于面向对象而言，主要说明static在类中的作用。</p>
+<p>一、在面向过程设计中的static关键字</p>
+<p>1、 静态全局变量</p>
+<p>定义：在全局变量前，加上关键字 static 该变量就被定义成为了一个静态全局变量。</p>
+<p>特点：<br />
+A、该变量在全局数据区分配内存。<br />
+B、初始化：如果不显式初始化，那么将被隐式初始化为0。<br />
+C、访变量只在本源文件可见， 严格的讲应该为定义之处开始到本文件结束。</p>
+<p>例（摘于C++程序设计教程—钱能主编P103）： 　　　　　　　　<a target="_blank" rel="noopener" href="//file1.cpp">//file1.cpp</a><br />
+#include&lt;iostream.h&gt;<br />
+void fn();<br />
+extern int n;<br />
+void main()<br />
+{<br />
+n=20;<br />
+cout &lt;&lt; n &lt;&lt; endl;<br />
+fn();<br />
+}</p>
+<p><a target="_blank" rel="noopener" href="//file2.cpp">//file2.cpp</a><br />
+#include&lt;iostream.h&gt;</p>
+<p>static int n; //定义静态全局变量，初始化为0；<br />
+void fn()<br />
+{<br />
+n++;<br />
+cout &lt;&lt; n &lt;&lt; endl;<br />
+}</p>
+<p>文件 分别编译能通过，但连接时file1.cpp 中的变量n找不到定义，产生连接错误。</p>
+<p>D、文件作用域下声明的const的常量默认 为static存储类型。</p>
+<p>2、静态局部变量</p>
+<p>定义：在局部变量前加上static关键字时，就定义了静态局部变量。</p>
+<p>特 点：<br />
+A、该变量在全局数据区分配内存。<br />
+B、初始化：如果不显式初始化，那么将被隐式初始化为0。<br />
+C、它始终驻 留在全局数据区，直到程序运行结束。但其作用域为局部作用域，当定义它的函数或　语句块结束时，其作用域随之结束。</p>
+<p>3、静态函数（注意 与类的静态成员函数区别）</p>
+<p>定义：在函数的返回类型前加上static关键字，函数即被定义成静态函数。</p>
+<p>特点：<br />
+A、静态函数只能在本源文件中使用（这是与普通函数区别）<br />
+例（摘于C++程序设计教程—钱能主编P103）： 　　　　　　　　<a target="_blank" rel="noopener" href="//file1.cpp">//file1.cpp</a><br />
+void fn();<br />
+void staticFn()</p>
+<p>void main()<br />
+{</p>
+<p>fn();<br />
+staticFn();<br />
+}</p>
+<p><a target="_blank" rel="noopener" href="//file2.cpp">//file2.cpp</a><br />
+#include&lt;iostream.h&gt;</p>
+<p>static void staticFn();<br />
+void fn();</p>
+<p>void fn()<br />
+{<br />
+staticFn();<br />
+cout &lt;&lt; “this is fn() /n”;<br />
+}</p>
+<p>void staticFn()<br />
+{<br />
+cout &lt;&lt; “this is staticFn() /n”;<br />
+}<br />
+连接时，将产生找不到函数 staticFn()定义的错误。</p>
+<p>B、主意事项</p>
+<p>在文件作用域下声明的inline函数默认为static类 型。</p>
+<p>二、面象对象中的static关键字（主要指类中的static关键字）</p>
+<p>1、静态数据成员</p>
+<p>特 点：<br />
+A、内存分配：在程序的全局数据区分配。<br />
+B、初始化和定义：<br />
+a、静态数据成员定义时要分配空间，所以不 能在类声明中定义。<br />
+b、为了避免在多个使用该类的源文件中，对其重复定义，所在，不能在类的头文件中<br />
+定义。<br />
+c、静态数据成员因为程序一开始运行就必需存在，所以其初始化的最佳位置在类的内部实现。<br />
+C、特点<br />
+a、对相于 public,protected,private 关键字的影响它和普通数据成员一样，<br />
+b、因为其空间在全局数据区分配，属于所有本类<br />
+的对象共享，所以，它不属于特定的类对象，在没产生类对象时其作用域就可见，即在没有产生类的实例时，我们就可以操作它。</p>
+<p>D、访问 形式<br />
+a、 类对象名.静态数据成员名<br />
+b、 类类型名:: 静态数据成员名</p>
+<p>E、静态数据成员，主要 用在类的所有实例都拥有的属性上。比如，对于一个存款类，帐号相对<br />
+于每个实例都是不同的，但每个实例的利息是相同的。所以，应该把利息设为存款类的<br />
+静态数据成员。这有两个好处，第一，不管定义多少个存款类对象，利息数据成员都共享分配在全局区的内存，所以节省存贮空间。第二，一旦利息需要改变时，只<br />
+要改变一次，则所有存款类对象的利息全改变过来了，因为它们实际上是共用一个东西。</p>
+<p>2、静态成员函数</p>
+<p>特点：<br />
+A、静态成员函数与类相联系，不与类的对象相联系。<br />
+B、静态成员函数不能访问非静态数据成员。原因很简单，非静态数据成员属于特定的类实 例。</p>
+<p>作用：<br />
+主要用于对静态数据成员的操作。<br />
+调用形式：<br />
+A、类对象名.静态成员函数名（）<br />
+B、类类型名:: 静态成员函数名（）</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1267,131 +1450,6 @@ sec.并且90%几率发生在前,所以如果随机发生多个文件的随机访
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/10/database/2010-05-10-debug-postgresql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/05/10/database/2010-05-10-debug-postgresql/" class="post-title-link" itemprop="url">How to Debug PostgreSQL</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-05-10 00:00:00" itemprop="dateCreated datePublished" datetime="2010-05-10T00:00:00+08:00">2010-05-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:03" itemprop="dateModified" datetime="2023-10-06T22:54:03+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="postgresql debug" />
-<meta name="_su_keywords" content="postgresql debug" />
-<meta name="_su_title" content="postgresql debug" />
-<meta name="views" content="1123" />
-First, compile the source code use ./configure --prefix=XXXX --enable-debug &amp;&amp; CFLAGS=-O0
-<p>then make and make install.</p>
-<h2><span style="color: #800000;">IF you want to RESTART PG</span></h2>
-Detected if there is an instance of Postgre server. If there is, kill it. use
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ps -e | grep postgre</span><br><span class="line">// find id of the process</span><br><span class="line">kill -9 $processid</span><br></pre></td></tr></table></figure>
-<p>to detect the pocess of postgresql and kill it.</p>
-<p>then use:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gdb postgresqlHomeDIR/bin/postgres -quiet</span><br><span class="line">// enter gdb then use</span><br><span class="line">set args -D DATADIR</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-<p>here DATADIR and postgresqlDIR are your own directory.</p>
-<h2><span style="color: #800000;">IF you don't want to RESTART PG</span></h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// find postgres pid</span><br><span class="line">pid = `ps auxww | \</span><br><span class="line">    grep postgres: | \</span><br><span class="line">    grep -v -e &#x27;grep postgres:&#x27; -e &#x27;postgres: stats&#x27; -e &#x27;postgres: writer&#x27; -e &#x27;postgres: archiver&#x27; -e &#x27;postgres: logger&#x27; -e &#x27;postgres: autovacuum&#x27; | \</span><br><span class="line">    tee /dev/tty | \</span><br><span class="line">    awk &#x27;&#123;print $2&#125;&#x27;`</span><br><span class="line">gdb pid</span><br></pre></td></tr></table></figure>
-<p>then use</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./psql test</span><br></pre></td></tr></table></figure>
-<p>to test. Here test is  your database name.</p>
-<p>IF you want to debug contrib</p>
-<p>make &amp;&amp; make install in contrib/yourdir</p>
-<p>then go to gdb to file your shard lib to load symbol. Here <span class="exturl" data-url="aHR0cDovL1hYWC5zbw==">XXX.so<i class="fa fa-external-link-alt"></i></span> is your contrib share lib.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) file XXX.so</span><br></pre></td></tr></table></figure>
-<p>if not, when you use break somefunction, it will report:</p>
-<p>No symbol table is loaded.  Use the “file” command.<br />
-Make breakpoint pending on future shared library load? (y or [n])</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/24/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/26/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1423,7 +1481,7 @@ Make breakpoint pending on future shared library load? (y or [n])</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

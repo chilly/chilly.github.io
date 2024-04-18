@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,128 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/07/20/2681495/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/07/20/2681495/" class="post-title-link" itemprop="url">One编程组第六次题目</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-07-20 21:43:00" itemprop="dateCreated datePublished" datetime="2008-07-20T21:43:00+08:00">2008-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>788</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>将无序的数组成的一个集合  S  ，分成两个值相等的集合  A  和  B  。（  A+B=S  ）</p>
+<p>这个没有好的方法，组合找到一个  A==S/2  即可。</p>
+<p>组合相应的算法结构是：</p>
+<p>//src  是源数据集合  ,currentIndex  是在源集合里的当前下标  ,length  为源集合的大小  ,dest  是结果集合<br />
+,num  是结果集合的元素个数  ,  初始化时  ,  结果集合要和源集合的个数相等  .<br />
+void  match(  int  * src,  int  currentIndex,  int  length,  int  * dest,  int<br />
+num)<br />
+…  {<br />
+if  (currentIndex == length)<br />
+return  ;</p>
+<p>dest[num++] = src[currentIndex++];//  采用当前元素<br />
+for  (  int  i =0 ; i &lt; num; i++)<br />
+…  {<br />
+cout &lt;&lt; dest[i]&lt;&lt;&quot; &quot;;<br />
+}<br />
+cout &lt;&lt; endl;<br />
+match(src,currentIndex,length,dest,num);//  选用当前元素进行递归<br />
+match(src,currentIndex,length,dest,num-1);//  去除当前元素再进行递归<br />
+}</p>
+<p>无序的数组中找第  2  大的数</p>
+<p>因为只有两个数，所以先设两个变量，然后在数组中找一遍即可</p>
+<p>不过效率是找最大数的两倍。</p>
+<p>无序的数组中找第  K  大的数</p>
+<p>这个算法讲起来较为复杂。这个从快速排序中得到的结论。</p>
+<p>a)  随机在数组中选一个值  c  ，并将此值放到数组末端</p>
+<p>b)  从左边遍历数组，找到第一个比  c  小的值。停下，然后从右边遍历数组，找到第一个比  c  大的值然后停下。交换两个值所在的位置。直到<br />
+i==j,  交换  a[i]  与  c  的位置。</p>
+<p>c)  此时  c  所在的位置为  j  ，那么  c  就为第  j  大的数。</p>
+<p>d)  如果  k &gt; j  ，那么就在  j  后面的数组里用相同的方法找。</p>
+<p>e)  如果  k == j,  恭喜找到了</p>
+<p>f)  如果  k&lt;j,  那么就在前面找。</p>
+<p>g)  所以算法复杂度为  O(klogk)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1189,389 +1311,6 @@ site，虚拟目录和目录。那些东西至少要有Script访问级和Read的
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/05/25/2479934/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/05/25/2479934/" class="post-title-link" itemprop="url">VS2005 制作Web安装程序</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-05-25 14:53:00" itemprop="dateCreated datePublished" datetime="2008-05-25T14:53:00+08:00">2008-05-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>10k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>使用VS2005制作安装包<br />
-1．在“新建项目”对话框的左侧树状图中选择“Other Project Types”-&gt;“Setup and Deployment”节点，在右侧选择“Web<br />
-Setup Project”。</p>
-<p>2．在Solution Explorer中在Solution上点右键，选择“Add”-&gt;“Existing Web<br />
-Site”，将存放编译好的Web网站的文件夹加入Solution中。</p>
-<p>如果添加使用aspnet_compiler编译好的网站，有可能会出现下面的提示框，点击“是”就行。<br />
-3．再添加一个新的“Class Library”，名称“CreateDB”，用以创建数据库的操作。<br />
-删除默认生成的“class1.cs”，在这个项目上点右键，选择“Add”-&gt;“New Item”，在弹出的对话框中选择“Installer<br />
-Class”，点击OK。</p>
-<p>在类中添加如下代码：<br />
-private void ExecuteSql(string connectionString, string databaseName, string<br />
-sql)<br />
-{<br />
-SqlConnection sqlConnection = new SqlConnection(connectionString);<br />
-SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);<br />
-try<br />
-{<br />
-sqlCommand.Connection.Open();<br />
-sqlCommand.Connection.ChangeDatabase(databaseName);<br />
-sqlCommand.ExecuteNonQuery();<br />
-}<br />
-catch (Exception exception)<br />
-{<br />
-throw exception;<br />
-}<br />
-finally<br />
-{<br />
-sqlCommand.Connection.Close();<br />
-}<br />
-}</p>
-<p>public override void Install(System.Collections.IDictionary stateSaver)<br />
-{<br />
-string server = this.Context.Parameters[“server”];<br />
-string database = this.Context.Parameters[“dbname”];<br />
-string user = this.Context.Parameters[“user”];<br />
-string password = this.Context.Parameters[“pwd”];<br />
-string targetDir = this.Context.Parameters[“targetdir”];</p>
-<p>try<br />
-{<br />
-string connectionString = String.Format(“data source={0};user<br />
-id={1};password={2};persist security info=false;packet size=4096”,<br />
-server, user, password);</p>
-<p>//create db<br />
-ExecuteSql(connectionString, “master”, &quot;CREATE DATABASE &quot; + database);</p>
-<p>//set user<br />
-string setUserString = “sp_addlogin ‘PrinteryERP’, ‘PrinteryERP’,<br />
-‘PrinteryERP’”;<br />
-string setAccessString = “sp_grantdbaccess ‘PrinteryERP’”;<br />
-string setRole = “sp_addrolemember ‘db_owner’, ‘PrinteryERP’”;</p>
-<p>//create new user login<br />
-try<br />
-{<br />
-ExecuteSql(connectionString, “master”, setUserString);<br />
-}<br />
-catch { }</p>
-<p>//set default database<br />
-try<br />
-{<br />
-ExecuteSql(connectionString, “PrinteryERP”, setAccessString);<br />
-}<br />
-catch { }</p>
-<p>//set read role<br />
-try<br />
-{<br />
-ExecuteSql(connectionString, “PrinteryERP”, setRole);<br />
-}<br />
-catch { }</p>
-<p>//create table,store produce…<br />
-Process osqlProcess = new Process();<br />
-osqlProcess.StartInfo.FileName = targetDir + “osql.exe”;<br />
-osqlProcess.StartInfo.Arguments = String.Format(&quot; -U {0} -P {1} -S {2} -d {3}<br />
--i {4}createdb.sql&quot;,<br />
-user, password, server, database, targetDir);<br />
-osqlProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;<br />
-osqlProcess.Start();<br />
-osqlProcess.WaitForExit();<br />
-osqlProcess.Close();</p>
-<p>//add data<br />
-osqlProcess.StartInfo.Arguments = String.Format(&quot; -U {0} -P {1} -S {2} -d {3}<br />
--i {4}insertdata.sql&quot;,<br />
-user, password, server, database, targetDir);<br />
-osqlProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;<br />
-osqlProcess.Start();<br />
-osqlProcess.WaitForExit();<br />
-osqlProcess.Close();<br />
-}<br />
-catch (Exception exception)<br />
-{<br />
-throw exception;<br />
-}</p>
-<p>try<br />
-{<br />
-string configFile = targetDir + “/Web.config”;<br />
-if (!File.Exists(configFile))<br />
-{<br />
-throw new InstallException(“没有找到配置文件。”);<br />
-}</p>
-<p>XmlDocument xmlDoc = new XmlDocument();<br />
-xmlDoc.Load(configFile);</p>
-<p>GC.Collect();<br />
-File.Delete(configFile);<br />
-GC.Collect();</p>
-<p>foreach (XmlNode xmlNode in<br />
-xmlDoc[“configuration”][“connectionStrings”].ChildNodes)<br />
-{<br />
-if (<span class="exturl" data-url="aHR0cDovL3htbE5vZGUuTmFtZQ==">xmlNode.Name<i class="fa fa-external-link-alt"></i></span> == “add”)<br />
-{<br />
-if (xmlNode.Attributes[“name”].Value == “DBConnection”)<br />
-{<br />
-xmlNode.Attributes[“connectionString”].Value = String.Format(“Data<br />
-Source={0};Initial Catalog={1};Persist Security Info=True;User<br />
-ID=PrinteryERP;Password=PrinteryERP”,<br />
-server, database);<br />
-}<br />
-if (xmlNode.Attributes[“name”].Value == “UserManageServicesConnection”)<br />
-{<br />
-xmlNode.Attributes[“connectionString”].Value = String.Format(“Data<br />
-Source={0};Initial Catalog={1};Persist Security Info=True;User<br />
-ID=PrinteryERP;Password=PrinteryERP”,<br />
-server, database);<br />
-}<br />
-}<br />
-}<br />
-xmlDoc.Save(configFile);<br />
-}<br />
-catch (Exception exception)<br />
-{<br />
-throw exception;<br />
-}<br />
-}<br />
-4．在“Web Setup Project”项目上点右键，选择“Add”-&gt;“Project<br />
-Output”，选择Project“CreateDB”，选择“Primary Output”，点击OK。重复上述动作，将选择刚才添加的Web<br />
-Site，选择“Content Files”，点击OK。<br />
-5．在“Web Setup Project”项目上点右键，选择“Add”-&gt;“File”，将创建数据库表、存储过程和视图的脚本createdb.sql加入。<br />
-重复，将向数据表中添加基础数据的脚本insertdata.sql加入。重复，将程序osql.exe加入。<br />
-6．在“Web Setup Project”项目上点右键，选择“Add”-&gt;“Merge Module”，在弹出的对话框中选择“VC_User_CRT71_<br />
-RTL_X86_—.msm”，点击OK。添加这个VC运行库是因为在一台干净的机器上测试的时候发现osql.exe这个程序需要这个库。<br />
-7．在“Web Setup Project”项目上点右键，选择“Properties”，在弹出的对话框中可以设置一些安装程序的属性。点击按钮“Prerequ<br />
-isites”，在弹出的对话框中选中“.NET Framework 2.0”和“Windows Installer 3.1”，选中“Download<br />
-prerequisites from the same location as my application”。这样就可以把这些组件和应用程序打包在一起，安<br />
-装的时候自动检测并安装了。如果需要部署的计算机如果没有打过最新的补丁的话，是没有“Windows Installer<br />
-3.1”的，如果没有这个组件，“.NET Framework 2.0”是不能安装的。</p>
-<p>8．在“Web Setup Project”项目上点右键，选择“View”-&gt;“Custom<br />
-Actions”，在出现的树状图的节点“Install”上点右键，选择“Add Custom Actions”。在弹出的对话框中“Look<br />
-in”中选择“Web Application Folders”，在下面选择“Primary output from CreateDB<br />
-(Active)”，点击OK。<br />
-9．在“Web Setup Project”项目上点右键，选择“View”-&gt;“User<br />
-Interface”，在出现的树状图节点“Install”的子节点“Start”上点击右键，选择“Add<br />
-Dialog”，在弹出的对话框中选择“TextBoxes(A)”。</p>
-<p>在新添加的节点“TextBoxes (A)”上点击右键，选择“Properites Window”，依次设置Edit*Property属性为“CUSTOMT<br />
-EXTA1”，“CUSTOMTEXTA2”，“CUSTOMTEXTA3”和“CUSTOMTEXTA4”。</p>
-<p>10．在刚刚建立的“Primary output from CreateDB (Active)”节点上点右键，选择“Properties<br />
-Window”，设置“CustomActionData”属性为“/dbname=[CUSTOMTEXTA1] /server=[CUSTOMTEXTA2]<br />
-/user=[CUSTOMTEXTA3] /pwd=[CUSTOMTEXTA4] /targetdir=“[TARGETDIR]/””。</p>
-<p>接下来对整个解决方案进行编译，会在输出目录下生成两个文件夹和两个文件。<br />
-<span class="exturl" data-url="aHR0cDovL3huLS01aHFtajA3YXNzNzBtb2hpNmR2NGR1MXQ3MzZhLk5FVA==">两个文件夹中分别包含了.NET<i class="fa fa-external-link-alt"></i></span> Framework 2.0和Windows<br />
-Installer3.1的安装包。另外的两个文件分别是(项目名称).msi和setup.exe。如果要进行安装，请执行setup.exe。<br />
-如果你想在“干净”的机器上成功安装和使用水晶报表，请按照下列步骤：</p>
-<p>1)新建“安装和部署项目”–&gt;“安装向导”<br />
-(2)选择项目类型（这里选“创建用于windows应用程序的安装程序”）–&gt;下一步<br />
-(3)选择要包含的文件：要部署使用 Crystal Reports for Visual Studio .NET 2003<br />
-的程序，需要添加合并模块(在解决方案资源管理器中tree的顶端节点右键–&gt;添加).<br />
-Crystal_Database_Access2003.msm<br />
-Crystal_Database_Access2003_enu.msm<br />
-Crystal_Managed2003.msm<br />
-Crystal_regwiz2003.msm<br />
-VC_User_CRT71_RTL_X86_—.msm<br />
-VC_User_STL71_RTL_X86_—.msm<br />
-你可以 ‘C:/Program Files/Common Files/Merge Modules’ 文件夹下找到替换的合并模块。<br />
-(4)打开解决方案–&gt;右键点击Crystal_regwiz2003.msm 的属性，在“MergeMouduleProperties”里的“License<br />
-Key”填入：**************************<em>（这个是你生成Crystal Report是用到的注册号的密码！）<br />
-(5)生成解决方案<br />
-如果没有第四步，会产生在执行打印报表时提示keycodev2.dll或者无效密码的错误。<br />
-以上的步骤，如果你的“干净”的机器上装有水晶报表，那么到这里完全就可以了。<br />
-如果你不希望在“干净”的机器上装水晶报表，继续以下的步骤：<br />
-在“添加项目输出组”中，选择“主输出”，然后单击“确定”。<br />
-将自动添加所有依赖项，如 dotnetfxredist_x86_enu.msm和dotnetcrystalreports.msm。<br />
-2.需要将dotnetcrystalreports.msm排除在项目之外，在解决方案资源管理器中右击这个模块的右键，选择“排除”。<br />
-3.在解决方案资源管理器中，右击安装项目，指向“添加”，然后单击“合并模块”。<br />
-4.在“添加模块”对话框中，选择下列要添加到安装项目的合并模块，然后单击“打开”：<br />
-reportengine.msm,<br />
-crnetruntime.msm<br />
-license.msm<br />
-mapping.msm （可选，当在报表中使用了geographic maps时）<br />
-5.在解决方案资源管理器中，右击 license.msm 文件，然后选择“属性”。<br />
-6.在“属性”窗口中，展开 MergeModuleProperties，然后在“许可证密钥”属性框中输入一个有效的许可证密钥。<br />
-注意 :  每当部署 Crystal Reports 应用程序时，必须提供许可证密钥。<br />
-7.从“生成”菜单中，选择“生成解决方案”以生成应用程序<br />
-如果以上步骤没有的化，会提示“load crpe32.dll failed”的错误。<br />
-用到的模块下载地址： [ <span class="exturl" data-url="aHR0cDovL3N1cHBvcnQuYnVzaW5lc3NvYmplY3RzLmNvbS9jb21tdW5pdHlDUy9GaWxlc0FuZFVwZGF0ZXMvY3I=">http://support.businessobjects.com/communityCS/FilesAndUpdates/cr<i class="fa fa-external-link-alt"></i></span><br />
-9netmergemodules_chs.zip.asp  ](<span class="exturl" data-url="aHR0cDovL3N1cHBvcnQuYnVzaW5lc3NvYmplY3RzLmNvbS9jb21tdW5pdHlDUw==">http://support.businessobjects.com/communityCS<i class="fa fa-external-link-alt"></i></span><br />
-/FilesAndUpdates/cr9netmergemodules_chs.zip.asp)<br />
-[ <span class="exturl" data-url="aHR0cDovL3N1cHBvcnQuYnVzaW5lc3NvYmplY3RzLmNvbS9jb21tdW5pdHlDUy9GaWxlc0FuZFVwZGF0ZXMvY3I5bmV0cmVkaXN0Xw==">http://support.businessobjects.com/communityCS/FilesAndUpdates/cr9netredist_<i class="fa fa-external-link-alt"></i></span><br />
-chs.zip.asp  ](<span class="exturl" data-url="aHR0cDovL3N1cHBvcnQuYnVzaW5lc3NvYmplY3RzLmNvbS9jb21tdW5pdHlDUy9GaWxlc0FuZFVwZGF0ZXMv">http://support.businessobjects.com/communityCS/FilesAndUpdates/<i class="fa fa-external-link-alt"></i></span><br />
-cr9netredist_chs.zip.asp)<br />
-[ <span class="exturl" data-url="aHR0cDovL3N1cHBvcnQuYnVzaW5lc3NvYmplY3RzLmNvbS9jb21tdW5pdHlDUy9GaWxlc0FuZFVwZGF0ZXMvY3I5cmRjbWVyZ2Vtbw==">http://support.businessobjects.com/communityCS/FilesAndUpdates/cr9rdcmergemo<i class="fa fa-external-link-alt"></i></span><br />
-dules_chs.zip.asp  ](<span class="exturl" data-url="aHR0cDovL3N1cHBvcnQuYnVzaW5lc3NvYmplY3RzLmNvbS9jb21tdW5pdHlDUy9GaWxlc0FuZFVw">http://support.businessobjects.com/communityCS/FilesAndUp<i class="fa fa-external-link-alt"></i></span><br />
-dates/cr9rdcmergemodules_chs.zip.asp)<br />
-如果你的机器上装的是windows 98,不继续以下的步骤会产生&quot;Load Report Failed&quot; (CRQE.dll)的错误。<br />
-报表在部分Win98的客户端可以载入，在部分Win98的客户端载入报表时却提示&quot;Load Report Failed&quot;是因为水晶报表运行时所需的<br />
-CRQE.dll 在客户端的系统注册不正确，而原因又是ATL.dll 的版本不对（Windows 98/ME下的正确版本号应为3.0.8449）。<br />
-解决办法有两条：<br />
-1.在客户端安装 IE6.0，难怪有的客户端运行正常。<br />
-2.将 ATL.msm 模块添加到安装工程，ATL.msm 是 Visual Studio installer 1.1 的一部分，可以去微软的网站 <a target="_blank" rel="noopener" href="http://msdn.microsoft.com/vstudio/downloads/tools/vsi11/download.aspx"><br />
-http://msdn.microsoft.com/vstudio/downloads/tools/vsi11/download.aspx<br />
-</a> 下载，<br />
-添加办法同上。<br />
-至此，可以说打包基本完成。不过还要注意：<br />
-如果你用的是水晶报表的推模式，一般不用设置登陆信息，但是要这样写：obj.SetDataSource(this.ds.Tables[“tablename”]<br />
-);如果你写成了obj.SetDataSource(this.ds)就会有登陆框的。<br />
-如果你用的是水晶报表的拉模式，你就一定要写上登陆信息：<br />
-crReportDocument = new OracleReport();<br />
-//Set the crConnectionInfo with the current values stored in the report<br />
-crConnectionInfo =<br />
-crReportDocument.Database.Tables[0].LogOnInfo.ConnectionInfo;<br />
-/</em> Populate the ConnectionInfo Objects Properties with the appropriate values<br />
-for<br />
-the ServerName, User ID, Password and DatabaseName. However, since Oracle<br />
-works on Schemas, Crystal Reports does not recognize or store a DatabaseName.<br />
-Therefore, the DatabaseName property must be set to a BLANK string. */<br />
-crConnectionInfo.DatabaseName = “”;<br />
-crConnectionInfo.ServerName = “Your Server Name”;<br />
-crConnectionInfo.UserID = “Your User ID”;<br />
-crConnectionInfo.Password = “Your Password”;<br />
-//Set the CrDatabase Object to the Report’s Database<br />
-crDatabase = crReportDocument.Database;<br />
-//Set the CrTables object to the Tables collection of the Report’s dDtabase<br />
-crTables = crDatabase.Tables;<br />
-//Loop through each Table object in the Tables collection and apply the logon<br />
-info<br />
-//specified ealier. Note this sample only has one table so the loop will only<br />
-execute once<br />
-foreach (Table crTable in crTables)<br />
-{<br />
-crTableLogOnInfo = crTable.LogOnInfo;<br />
-crTableLogOnInfo.ConnectionInfo = crConnectionInfo;<br />
-crTable.ApplyLogOnInfo (crTableLogOnInfo);</p>
-<p>// if you wish to change the schema name as well, you will need to set<br />
-Location property as follows:<br />
-// crTable.Location = “<new schema name>.” + <span class="exturl" data-url="aHR0cDovL2NyVGFibGUuTmFtZQ==">crTable.Name<i class="fa fa-external-link-alt"></i></span>;<br />
-}<br />
-//Set the ReportSource of the CrystalReportViewer to the strongly typed Report<br />
-included in the project<br />
-crystalReportViewer1.ReportSource = crReportDocument;<br />
-还有一点要注意：<br />
-如果你用到了子报表，一定要处理：<br />
-//Go through each sections in the main report and identify the subreport by<br />
-name<br />
-crSections = crReportDocument.ReportDefinition.Sections;</p>
-<p>foreach(Section crSection in crSections)<br />
-{<br />
-crReportObjects = crSection.ReportObjects;<br />
-//loop through all the report objects to find all the subreports<br />
-foreach(ReportObject crReportObject in crReportObjects)<br />
-{<br />
-if (crReportObject.Kind == ReportObjectKind.SubreportObject)<br />
-{<br />
-//you will need to typecast the reportobject to a subreport<br />
-//object once you find it<br />
-crSubreportObject = (SubreportObject)crReportObject;</p>
-<p>//open the subreport object<br />
-crSubReportDoc =<br />
-crSubreportObject.OpenSubreport(crSubreportObject.SubreportName);<br />
-//Once the correct subreport has been located pass it the<br />
-//appropriate dataset<br />
-if(<span class="exturl" data-url="aHR0cDovL2NyU3ViUmVwb3J0RG9jLk5hbWU=">crSubReportDoc.Name<i class="fa fa-external-link-alt"></i></span> == “FirstSub”)<br />
-{<br />
-<a target="_blank" rel="noopener" href="//crSubReportDoc.Database.Tables">//crSubReportDoc.Database.Tables</a>[0].SetDataSource(ds);<br />
-crSubReportDoc.SetDataSource(ds);<br />
-}<br />
-}<br />
-}<br />
-}<br />
-crystalReportViewer1.ReportSource = crReportDocument;</p>
-<p>同样crSubReportDoc.SetDataSource(ds);改为：crSubReportDoc.SetDataSource(ds.Tables[&quot;<br />
-tablename&quot;]);</p>
-<hr />
-<p>按前面的方法打包后，运行生成的安装程序出现以下错误提示：<br />
-在建立与服务器连接时出错。在连接到SQL Server 2005 时，在默认的设置下SQL<br />
-Server不允许进行远程连接可能会导致此失败。（provider:命名管道提供程序，error:40 - 无法打开SQL Server的连接）</p>
-<p>是什么原因？</p>
-<p>在“Web Setup Project”项目上点右键，选择“Properties”，在弹出的对话框中可以设置一些安装程序的属性。点击按钮“Prerequis<br />
-ites”，在弹出的对话框中有“Crystal Reports for .Net Framework2.0”和“SQL Server 2005<br />
-Express Edittion”，选上这两个是不是就不用另外添加水晶报表和MSDE了呢？</p>
-<hr />
-<p>一在现有的WEB项目里新建一个安装部署项目,安装项目<br />
-二将需要 打包的文件按照特定的目录打包<br />
-如&quot;项目名.dll&quot;文件放到debug目录下<br />
-其他文件同样按照相应的目录放置,不要乱了<br />
-三/如果是发布程序则,把页面文件的aspx后缀的文件打包即可<br />
-如果只是打包源程序,则建议添加所有文件<br />
-四/最后生成,<br />
-五/运行新生成的,安装文件进行安装测试,看看是不是漏掉了什么文件</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/51/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/51/">51</a><span class="page-number current">52</span><a class="page-number" href="/page/53/">53</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/53/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1603,7 +1342,7 @@ Express Edittion”，选上这两个是不是就不用另外添加水晶报表�
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

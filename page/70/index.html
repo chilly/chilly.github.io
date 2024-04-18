@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,155 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/06/01/1633846/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/06/01/1633846/" class="post-title-link" itemprop="url">解决C++头文件结构类似嵌套问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-06-01 10:35:00" itemprop="dateCreated datePublished" datetime="2007-06-01T10:35:00+08:00">2007-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>有一个Road类，有一个Intersection类，Road类中要含有两个节点Intersection的信息，<br />
+Intersection要有相邻路的信息列表。</p>
+<p>于是Road.h中这样定义：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+class  Road<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+private  :<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+Intersection  *  from;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+Intersection  *  to;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+public  :<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+…<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }</p>
+<p>Intersection.h中这样定义：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+class  Intersection<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+private  :<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+list  &lt; Road  *&gt; roadNext;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+public  :<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+…<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }</p>
+<p>很可惜这样编译通不过，编译器会报找不到类型错误。</p>
+<p>于是在Intersection类中添加一行代码</p>
+<p>class Road;</p>
+<p>在Road.h中导入Intersection的文件#include&quot;Intersection.h&quot;</p>
+<p>这样编译应该没有问题。（如果函数中没有出现Road类型或者 Intersection类型的话）</p>
+<p>但如果函数中有Road类型或者 Intersection类型又怎么办呢？</p>
+<p>创建Road.cpp和Intersection.cpp文件</p>
+<p>在*.h中只是写函数的声明，在cpp文件中写函数定义，并导入两个.h文件。例如：</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &quot;  Road.h  &quot;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &quot;  Intersection.h  &quot;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+void  Intersection::InsertRoad(Road  *  r)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+roadNext.insert(roadNext.begin,r);<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }</p>
+<p>编译。。。通过</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1292,102 +1441,6 @@ END    程序结束.</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/05/17/1612748/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/05/17/1612748/" class="post-title-link" itemprop="url">实习机会</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-05-17 10:18:00" itemprop="dateCreated datePublished" datetime="2007-05-17T10:18:00+08:00">2007-05-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>255</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本以为搭上了微软的末班车，没有想到竟然是早班车。</p>
-<p>现在可好，IBM笔试 在院里考了第二，却不能被院里推荐。怕占名额。google的实习推荐又来了。结果怕占名额又不能去了。这年头想多经历些磨练，却常常不能得到<br />
-满足。明天金山的又来了…想哭！</p>
-<p>记起微软的一道面试题，每层楼都有一颗钻石，乘电梯上楼。每层都可以开门看，但是只能在一层取钻石，问怎样取法。（电梯从底到顶只一次）这是博弈论的题目。最好的取法<br />
-是前三分之一的层看钻石，中三分之一比钻石，后三分之一取钻石。</p>
-<p>当初实习的时候，就没有这样做。现在几乎全部的面试机会都没有了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/69/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/69/">69</a><span class="page-number current">70</span><a class="page-number" href="/page/71/">71</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/71/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1419,7 +1472,7 @@ END    程序结束.</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

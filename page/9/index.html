@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,118 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/" class="post-title-link" itemprop="url">微信公众平台开发中的安全问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-08-30 05:37:00" itemprop="dateCreated datePublished" datetime="2013-08-30T05:37:00+08:00">2013-08-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:20:29" itemprop="dateModified" datetime="2023-10-05T23:20:29+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="0-我在开发中"><a class="markdownIt-Anchor" href="#0-我在开发中"></a> 0. 我在开发中</h2>
+<p>    近期一直在利用有道云笔记API在微信上开发一款应用。因为是服务器端与服务器端的交互。所以有很多安全问题值得考虑。</p>
+<h2 id="1-微信的认证"><a class="markdownIt-Anchor" href="#1-微信的认证"></a> 1. 微信的认证</h2>
+<p>    微信的认证很简单，标准的认证是这样子的：<br />
+<img src="http://mp.weixin.qq.com/wiki/images/9/90/Callbackprofile.jpg" alt="token 授权" /><br />
+    微信这种授权模式相当的山寨，如果只是单纯的靠这种token授权，服务器很容易被攻破。这里需要填写的url必须是使用80端口，而且url中也不能有很特殊的字符。不过token中可以有特殊字符。所以开发者需要尽量将自己的token设的复杂。微信首先认证连接时会将signature,echostr,nonce,timestamp这四个URL参数以GET请求的方式发送过来。数据则以POST请求的方式发送到同样的URL上，并且URL参数变为signature,echostr,nonce。nonce是和请求中的timestamp成对的。也就是说timestamp+nonce是唯一的。所以这里可以防止重放攻击。另外server与server通信之间,timestamp的单位是秒，一般误差也就是分钟级别的。这样可以从另外一个角度防止重放攻击。所以开发者应该在GET,POST请求中都加入这些参数的校验。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2013/08/30/2013-08-30-wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1269,117 +1381,6 @@ epository中。查找StackOverFlow发现大多回答是这样的：</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/06/07/9051229/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/06/07/9051229/" class="post-title-link" itemprop="url">JAVA Mail MimeUtility.quote 函数抛出 NULL Pointer Exception.</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-06-07 21:52:00" itemprop="dateCreated datePublished" datetime="2013-06-07T21:52:00+08:00">2013-06-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>913</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>帐前卒今天遇到 JAVA mail MimeUtility.quote 函数抛出 NULL Pointer Exception问题。找这个问题的确废了一番功夫：看栈信息，看源码，debug.  然后终于发现了问题的原因：</p>
-<p>在Email里MimeBody中有这样一行：</p>
-<pre><code>Content-Type: application/octet-stream; name=&quot;&quot;
-
-这句话相当的神奇，让JavaMail抛出NPE. 
-但是这个问题是JavaMail这个库有问题，还是这封email没有遵循rfc规范？
-</code></pre>
-<p>于是 <a href="http://chillyc.info"> 帐前 卒 </a> 找了一下rfc文档，在 <span class="exturl" data-url="aHR0cDovL3d3dy5pZXRmLm9yZy9yZmMvcmZjMjA0NS50eHQ="> rfc 2045<i class="fa fa-external-link-alt"></i></span> 中找到了5.1章，发现如下内容：</p>
-<pre><code>value := token / quoted-string
-
-token := 1*&lt;any (US-ASCII) CHAR except SPACE, CTLs,
-                 or tspecials&gt;
-
-tspecials :=  &quot;(&quot; / &quot;)&quot; / &quot;&lt;&quot; / &quot;&gt;&quot; / &quot;@&quot; /
-                   &quot;,&quot; / &quot;;&quot; / &quot;:&quot; / &quot;\&quot; / &lt;&quot;&gt;
-                   &quot;/&quot; / &quot;[&quot; / &quot;]&quot; / &quot;?&quot; / &quot;=&quot;
-                   ; Must be in quoted-string,
-                   ; to use within parameter values
-</code></pre>
-<p>这是语法定义。这里说，对于Content-Type header域的词法定义中，明确写了，不应该为空。那么JavaMail在这里发现为空抛出Exception也是理所应当。所以错在发信方。看到这里，那封不能被很好解析的邮件该怎么丢弃就怎么丢弃吧。然后把这个bug反馈给发信方。所以软件开发…还是需要时不时的看看rfc呀…</p>
-<p>另外上面的问题是在获取Multipart p后，调用p.getContent(); 或者 p.getDataHandler()或者p.getInputStream()方法时，抛出的Null Pointer Exception.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1411,7 +1412,7 @@ tspecials :=  &quot;(&quot; / &quot;)&quot; / &quot;&lt;&quot; / &quot;&gt;&quot
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

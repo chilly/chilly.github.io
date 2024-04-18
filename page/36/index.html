@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,108 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/10/02/4628162/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/10/02/4628162/" class="post-title-link" itemprop="url">C++继续学习 Virtual Destruct Function (虚析构函数)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-10-02 22:21:00" itemprop="dateCreated datePublished" datetime="2009-10-02T22:21:00+08:00">2009-10-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>705</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>一般类是不写成虚析构函数的。除非你要使用多态的性质。对于一个没有多态性质的类结构而言。子类析构可能会导致父类析构。</p>
+<p>// TestRef.cpp : Defines the entry point for the console application. //<br />
+#include <iostream> #include <string> using namespace std; class A {<br />
+protected: string _name; public: A(string name):_name(name) { } ~A(){cout &lt;&lt;<br />
+_name &lt;&lt; “destruct A” &lt;&lt;endl;} }; class B: public A { public: B(string<br />
+name):A(name){} ~B(){cout &lt;&lt; _name &lt;&lt; “destruct B” &lt;&lt;endl;} }; int main(int<br />
+argc, char* argv[]) { // 这里bb析构时不光会调用<sub>B()也会调用</sub>A() // 因为这里没有使用到多态的性质。 B bb(&quot;I<br />
+am b &quot;); A aa(&quot;I am a &quot;); //以下两行函数使用到了多态性质。 A* x = new B(&quot;I am x &quot;); delete x;<br />
+return 0; }</p>
+<p>main中最下几行使用到多态性质，所以你运行上面的代码仅仅调用了~A()。因为A中的析构函数并不是virtual类型的。如果你将A中的析构函数前加上virt<br />
+ual关键字，delete时就会先调<sub>B(),再调</sub>A().</p>
+<p>析构虚函数和其他的虚函数的不一致的地方在于它不再参照相同的函数签名，而仅仅是每个类中唯一的析构函数。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1168,113 +1270,6 @@ euca-register ubuntu-image-bucket/ubuntu.9-04.x86-64.img.manifest.xml
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/17/4562908/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/09/17/4562908/" class="post-title-link" itemprop="url">Eucalyptus安装到centos5.3配置日志</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-09-17 14:49:00" itemprop="dateCreated datePublished" datetime="2009-09-17T14:49:00+08:00">2009-09-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-07 11:54:31" itemprop="dateModified" datetime="2023-10-07T11:54:31+08:00">2023-10-07</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>首先按照我过去的一篇 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/09/15/4553315.aspx"> 搭建云计算平台 Eucalyptus安装  centos5.3安装日志<br />
-</a> 应该可以启动云了。</p>
-<p>然后你可以使用命令： <code>ps aux | grep euca 来查看是否云真的启动了。如果你看到一大堆输出，那应该已经可以启动了。</code></p>
-<p>前端需要进行的配置需要添加cluster,添加node,然后生成加密用的keys.</p>
-<p>其命令为:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$EUCALYPTUS</span>/usr/sbin/euca_conf -addcluster &lt;clustername&gt; &lt;clusterhost&gt;</span><br><span class="line"><span class="variable">$EUCALYPTUS</span>/usr/sbin/euca_conf -addnode <span class="string">&quot;&lt;nodehost1&gt; ... &lt;nodehostN&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">//上面这一句也可以使用下面两句代替： <span class="variable">$EUCALYPTUS</span>/usr/sbin/euca_conf -nodes <span class="string">&quot;&lt;nodehost1&gt; ...</span></span><br><span class="line"><span class="string">&lt;nodehostN&gt;&quot;</span> <span class="variable">$EUCALYPTUS</span>/usr/sbin/euca_conf -synckeys</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>这里的$EUCALYPTUS就是你的安装目录。例如我使用的命令就是 /opt/eucalyptus/usr/sbin/euca_conf -XXXXXX,因<br />
-为我就在一台机器上部署，没有使用集群。clustername是你对自己集群的称呼,clusterhost是我的hostname,我就写localhost。然<br />
-后第二步添加node时，<nodehost1>可以是node的ip或者hostname，我这里还是写localhost（因为我就一台机器）.</p>
-<p>对于node也要做些配置。但是如果你是使用yum或者使用binary安装包进行安装的，那就没有必要了。但是如果是使用源代码进行安装的就要费些周折。据网上传言<br />
-说:首先要在建立一个/usr/local/instances目录，这个目录是用来临时存放vm<br />
-images的，并且传说移入此中的东西都会被删除。然后再执行以下类似的脚本（这里的xen可以改为kvm）:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> hostname1 hostname2 ... hostnameN ; <span class="keyword">do</span> / ssh <span class="variable">$x</span></span><br><span class="line"><span class="string">&quot;<span class="variable">$EUCALYPTUS</span>/usr/sbin/euca_conf -hypervisor kvm -instances</span></span><br><span class="line"><span class="string">/usr/local/instances&quot;</span> <span class="keyword">done</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>结束前端和node的配置之后，使用firefox敲一下地址: https://localhost:8443.是不是出来和open.Eucalyptus.co<br />
-m中apply相似的东东？不过没有apply,其用户名密码都为admin.进入后进行配置。可以改下用户名密码，然后填写下自己的email.然后配置下 URL<br />
-of the Walrus service,我这里配置这个URL的前缀还是localhost.然后保存之后就进入管理界面了…配置完成。可以让别人申请一个帐<br />
-户试试。你可以在users选项卡中Approve他们。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/35/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/37/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1306,7 +1301,7 @@ of the Walrus service,我这里配置这个URL的前缀还是localhost.然后保
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

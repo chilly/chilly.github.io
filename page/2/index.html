@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,221 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/09/13/Architect-week3-whatsapp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/09/13/Architect-week3-whatsapp/" class="post-title-link" itemprop="url">Architect:week3-Whatsapp</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-09-13 20:06:17" itemprop="dateCreated datePublished" datetime="2017-09-13T20:06:17+08:00">2017-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-06 20:55:07" itemprop="dateModified" datetime="2023-10-06T20:55:07+08:00">2023-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="origin"><a class="markdownIt-Anchor" href="#origin"></a> Origin</h1>
+<p>I joined leetcode system design group to discuss how to design software. This is week3 topic:</p>
+<p><strong>Messenger service like What’s App</strong> with the following functionalities</p>
+<ol>
+<li>One to One text messaging</li>
+<li>Group Chat, Storage</li>
+<li>Read/Delivery/Sent status</li>
+</ol>
+<p>Gist:</p>
+<ol>
+<li>We are having a conversation between two parties. A -&gt; B. Think of this process. What happens and how do you explain to interviewer</li>
+<li>Asynchronous - meaning, “You are on a flight and you receive messages once you land. So those messages were waiting some where!” (Hope you got it). How would you design it</li>
+<li>Horizontal scaling, Load Balancer</li>
+<li>For Read/Delivery/Sent status -&gt; 3 way handshake protocol can give you an idea.</li>
+</ol>
+<p>This is a good topic. I will try to design it.</p>
+<h1 id="scenario"><a class="markdownIt-Anchor" href="#scenario"></a> Scenario</h1>
+<p>First of all, what’s the scenarios? The scenarios will correct my design. The scenario is in which way people use our software. So let’s think scenario first. The scenario should be atomic, and can not split into two or more scenarios. The scenario is a completed interaction. For example, The scenario like:</p>
+<ol>
+<li>User A send message to the system.</li>
+<li>The system send message to User B.</li>
+</ol>
+<p>Step 1 or Step 2 is not a scenario. Step 1 with Step 2 is a completed scenario.<br />
+And our chat system will be like:</p>
+<div align=center>
+<p><img src="/images/Architect-week3-whatsapp/init-system.png" alt="init-system" /></p>
+<p><strong>Figure 2.1</strong> init system</p>
+</div>
+<p>Er…It’s too simple…So let’s write more scenarios:</p>
+<h2 id="scenario-1-send-and-get-message-in-realtime"><a class="markdownIt-Anchor" href="#scenario-1-send-and-get-message-in-realtime"></a> Scenario 1: send and get message in realtime</h2>
+<ol>
+<li>User A send message to the system.</li>
+<li>The system send message to user B.</li>
+</ol>
+<h2 id="scenario-2-send-message-and-get-it-after-a-while-because-user-is-offline"><a class="markdownIt-Anchor" href="#scenario-2-send-message-and-get-it-after-a-while-because-user-is-offline"></a> Scenario 2: send message and get it after a while, because user is offline.</h2>
+<ol>
+<li>User A send message to the system.</li>
+<li>At this time, user B is offline.</li>
+<li>User B is online.</li>
+<li>The system send message to User B.</li>
+</ol>
+<h3 id="scenario-3-read-old-messages"><a class="markdownIt-Anchor" href="#scenario-3-read-old-messages"></a> Scenario 3: read old messages</h3>
+<ol>
+<li>User can read old messages of chat in receive-time order.</li>
+</ol>
+<h2 id="scenario-4-group-chat-in-realtime"><a class="markdownIt-Anchor" href="#scenario-4-group-chat-in-realtime"></a> Scenario 4: group chat in realtime</h2>
+<ol>
+<li>User A, B, and C join a chat group</li>
+<li>A send message to the system</li>
+<li>B and C receive the message from system.</li>
+</ol>
+<h2 id="scenario-5-group-chat-when-someone-is-offline"><a class="markdownIt-Anchor" href="#scenario-5-group-chat-when-someone-is-offline"></a> Scenario 5: group chat when someone is offline</h2>
+<ol>
+<li>User A, B, and C join a chat group</li>
+<li>User A send message to the system.</li>
+<li>C will receive the message in realtime.</li>
+<li>At this time, user B is offline.</li>
+<li>When User B is online, the system send message to User B in create-time order.</li>
+</ol>
+<h2 id="scenario-6-chat-status-changing"><a class="markdownIt-Anchor" href="#scenario-6-chat-status-changing"></a> Scenario 6: chat status changing</h2>
+<ol>
+<li>User A chat with B</li>
+<li>When A is typing words, B will get “A is typing…” message from system.</li>
+<li>When A press “send” button, A will get “the message is sending” from system.</li>
+<li>When B’s app receive the message in background, A will get “the message is delivered”.</li>
+<li>When B open the chat with A, and scroll to the message, A will get “the message has been read.”</li>
+</ol>
+<p>Here, scenario 5 and 4 is similar to 2 and 1. So can we consider scenario 2 and 1 are group chat with only one person? Can I chat with myself? And there should be more scenarios be considered. For example:</p>
+<ol>
+<li>User sign in</li>
+<li>User sign up</li>
+<li>User quit</li>
+<li>Invite other user to use the app</li>
+<li>Find a user</li>
+<li>Add relationship with other user, family, friends, enemy, lover, couple, and so on. Others should comfire the relationship.</li>
+<li>Break the relationship.</li>
+<li>Rebuild the relationship with the same user. Er…Are you crazy? …Trust me, most of lovers will repeat break-rebuild relationship scenarios. If you don’t believe it, you must be younger than me.</li>
+<li>Build a chat group, or invite other user one by one to join chat/group chat.</li>
+<li>Exit a chat group, but can not exit one-one chat, unless breaking the relationship.</li>
+<li>Type message with emoji, gif, png, voice, and other rich text.</li>
+<li>Search old messages</li>
+<li>Delete old messages.</li>
+<li>Set/Show online/offline or other user status to one or more users.</li>
+<li>Can we chat face to face?</li>
+<li>Change user own info</li>
+</ol>
+<p>In this article, we can not talk all above. It’s too complicated. I will only focus on group chat and chat status changing scenarios.</p>
+<div align=center>
+<p><img src="/images/Architect-week3-whatsapp/scenarios.png" alt="scenarios" /></p>
+<p><strong>Figure 2.2</strong> scenarios relationship</p>
+</div>
+<p>Like Figure 2.2 describles, one-one chat is a special case of group chat. So here use inherit arrow. The interaction of scenario 6 will be included from group chat scenarios. But scenario 3 is alone. If scenario 3 is discarded, our message service will be like “Snapchat”. And I use “User” actor instead of “User A” or “User B”. Why I always write a rectangle as “Messager service”? Because the rectangle warns us, our service has its own boundary! We will not consider other scenarios. If those scenarios inside of rectangle do not be implemented, our service is useless. And if you want to add more functionalities, the rectangle will be bigger and bigger. So thinking about your limit time and money, can you add more functionalities? The correct thing is creating worked well service, notwriting piles and piles of functionalities. Mmmmm…sound like: I use your “Messager service”, will you add “beautify photo”? <strong>NO!!!</strong></p>
+<h1 id="how-to-design"><a class="markdownIt-Anchor" href="#how-to-design"></a> How to design?</h1>
+<p>Seems like we always talk about how user use our messager service. Er…Correct! So here I will write something about how to design it. I don’t know how to build the system. I only knows there should be a client and a server…So like that:</p>
+<div align=center>
+<p><img src="/images/Architect-week3-whatsapp/init-components.png" alt="init-components" /></p>
+<p><strong>Figure 3.1</strong> init components</p>
+</div>
+<p>Now, we have first components diagram. Let’s do more thinking. If we store data, we will have database. If we connect with others, there should have a channel mananger. My chat groups should be controlled by group manager. If some user is offline, can we send offline message to them by APNS? Adding schedule component for sending message to offline user is a good idea. There should have a component for transforming “chat message” to service data, and doing reverse. And another component called “chat service” controls all component to work togather.</p>
+<div align=center>
+<p><img src="/images/Architect-week3-whatsapp/more-components.png" alt="more-components" /></p>
+<p><strong>Figure 3.2</strong> decompose components</p>
+</div>
+<p>In Figure 3.2, I decompose “Client” into “Interface”, “Transform” and “Channel”, and decompose “Server” into other small components. How to use line to connect those components? The answer is if the connection between components exists, connecting them. It’s nosense!! And another way to deal with the connections is following data flows. In Message services, there exists at least two data flows.</p>
+<ol>
+<li>User -&gt; Client Interface -&gt; Transform message to bytes/data -&gt; send to Channel -&gt; Server Channel Mgr receive bytes/data -&gt; Transfrom into server data -&gt; according to data, pull group data from Group Mgr and store message into Database.</li>
+<li>According to group info, sending message to other group members -&gt;  Transfrom server data into bytes -&gt; send to Channel Mgr -&gt; delivery message to Client Channel -&gt; Transform bytes to message -&gt; display message to User.</li>
+<li>Schedule reading what cannot be deliveried -&gt; send message through Chat Service -&gt; Transfrom server data into bytes …</li>
+</ol>
+<p>Er…Can we connect Group Mgr with DAO? <strong>YES</strong>. One point is you can change all diagrams in any time. And another point is, if you don’t draw line between Group Mgr and DAO, you can implement the system as well. For example,</p>
+<ol>
+<li>we can store group info into files</li>
+<li>we use Chat Service as proxy to store group info. Chat Service will call DAO to store group info, if chat exist. If the group members are all silence, the group will be destroyed after a while.</li>
+</ol>
+<p>Is there a formal way to draw those components and lines? <strong>NO.</strong> This is why the software is attractive. <strong>Every software is artwork.</strong> Do you remember your first program? Always print: “Hello World!” It’s boring! Can we make the world different?</p>
+<p>End? No. I will write how to decompose conponent into classes later.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1509,110 +1724,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/03/24/52927656/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/03/24/52927656/" class="post-title-link" itemprop="url">NVIDIA GPU 2016</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-03-24 09:25:00" itemprop="dateCreated datePublished" datetime="2017-03-24T09:25:00+08:00">2017-03-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>668</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>是几月份去参加的来着？我已经忘记了。<br />
-我记得GPU就是用来做图形处理的。做着做着就变成并行计算了。虽然单线程的运算能力不及CPU，但是并发能力却胜CPU.</p>
-<p>对了这次大会没有看到Intel的人，唉，都没有人来砸场子。</p>
-<p>在下面参观了VR技术，现在做的还很有限。必须使用三点定位，也就是应该有有两个定位器在两个角上。然后再用头盔进行三点定位。手柄的感应做的也很好。以及头盔中视频<br />
-做的也不错。</p>
-<p>以后的发展方向是VR定位技术，VR头盔的太重。未来可能是眼镜而不是头盔，当然也可能是裸眼3D效果。未来手柄意义可能不大，可能就是一个架子用来对应虚拟化场景的<br />
-。</p>
-<p>VR这个的发展还是很迅猛，应该是未来发展的方向。不过未来还可以做的更好。因为现在场景基本上都是定点的。如果人移动起来可能仍然有各种问题。因为三点静止定位难度<br />
-系数还是比较低的。所以现在大部分游戏场景就是定在一个地点。不会让你到处走动。不过我相信未来应该有大的发展。</p>
-<p>超算或者并行计算最主要的问题在于程序能否并行化。以及并行化后能否有效的减少计算时间。这两个问题一个是涉及到基本的程序流程，一个是代价成本问题。一个运行时间不<br />
-长，并且使用次数不多的程序，将其修改为并行化的程序的代价可能远远超过了之前运行的总时间。所以事情总是要权衡考虑。</p>
-<p>超算对于计算量大的程序并不是万能灵药。需要你的程序适配超算才能真正的发挥效果。我曾见过某些程序运行在普通PC上效率是超算的数倍。因为超算重要的是核多，而不是<br />
-主频高。</p>
-<p>GPU vs CPU, 超算 vs 普通PC, 这个类比就是外包公司 vs 公司里自己养的开发团队.是否好用，是否成本低。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1644,7 +1755,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

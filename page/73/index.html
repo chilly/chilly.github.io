@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,444 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/03/29/1545379/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/03/29/1545379/" class="post-title-link" itemprop="url">RSA加密算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-03-29 15:11:00" itemprop="dateCreated datePublished" datetime="2007-03-29T15:11:00+08:00">2007-03-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>RSA 算法：<br />
+其中加密encode和解密decode中的效率可以提高的log（n）</p>
+<p>但是这个算法只是原型，只能对数字加密，对字符串加密时要将转换成AScII码的东东进行拆分才可以。要按位加密。当q，p过大时，将有溢出。改进的可以自己写一个大<br />
+数类。但没有时间了，暂时就做成这个样子吧。</p>
+<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &lt; iostream  &gt;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &lt; string  &gt;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &lt; ctime  &gt;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+#include  &quot;  math.h  &quot;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+using  namespace  std;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+bool  isPrime(  long  );  //  the number is prime and return true, else return<br />
+false;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  gcd(  long  a,  long  b);  //  find a number which the two number a and<br />
+b divide exactly.<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  publicKey(  long  p,  long  q);  //  using p, q to calculate the public<br />
+key e.<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  privateKey(  long  e,  long  Qn);  //  using e ,Qn to calculate the<br />
+private key d.<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  generKey(  const  long  p,  const  long  q,  long  *  pubKey,  long  *<br />
+priKey);  //  get the public key and private key. And return n = p<em>q.<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
+char</em> encode(char *,long n,long pubKey);  //  encode the Text<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
+char * decode(char *,long n,long priKey);  //  decode the Text which has been<br />
+encoded.<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  encode(  long  ,  long  n,  long  pubKey);  //  encode the Text<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  decode(  long  ,  long  n,  long  priKey);  //  decode the Text which<br />
+has been encoded.<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+int  main()<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  p,q;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  pubKey ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  priKey ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+bool  pass  =  true  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+while  (pass)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  input two prime numbers! and the two numbers are bigger than two<br />
+!!  &quot;  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cin  &gt;&gt; p  &gt;&gt; q;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+//  srand(time(0));<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+//  q = rand();<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+//  p = rand();<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (isPrime(p)  &amp;&amp; isPrime(q))<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+pass  =  false  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  p =  &quot;  &lt;&lt; p  &lt;&lt; &quot;  q =  &quot;  &lt;&lt; q  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  n  =  generKey(p,q,  &amp; pubKey,  &amp; priKey);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  n:  &quot;  &lt;&lt; n  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  input the number for encoding!  &quot;  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  num;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cin  &gt;&gt; num;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+//  cout &lt;&lt; decode(encode(txt,n,pubKey),n,priKey);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  enText  =  encode(num,n,pubKey);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  encode the Text:  &quot;  &lt;&lt; enText  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  decode the Text:  &quot;  &lt;&lt; decode(enText,n,priKey)  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  0  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+bool  isPrime(  long  a)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (a  &gt; 2  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+int  b  =  2  ,c  =  sqrt(a);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (; b  &lt; c; b  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (a  %  b  ==  0  )<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  false  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  true  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  false  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  gcd(  long  a,  long  b)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+int  x  =  a  %  b;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (x  ==  0  )<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  b;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+else<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  gcd(b,x);<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  publicKey(  const  long  p,  const  long  q,  const  long  Qn)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+srand(time(  0  ));<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  e  =  rand();<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (e  &gt;=  Qn)<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+e  =  3  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+while  (gcd(e,Qn)  !=  1  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+e  ++  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (e  &gt;=  Qn)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+e  =  3  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  e:  &quot;  &lt;&lt; e  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  e;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  privateKey(  const  long  e,  const  long  Qn)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+srand(time(  0  ));<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  d  =  rand();<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (d  &gt;=  Qn)<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+d  =  3  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+while  (e  *  d  %  Qn  !=  1  ||  e  ==  d)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+d  ++  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+if  (d  &gt;=  Qn)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+d  =  3  ;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+cout  &lt;&lt; &quot;  d:  &quot;  &lt;&lt; d  &lt;&lt; endl;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  d;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  generKey(  const  long  p,  const  long  q,  long  *  pubKey,  long  *<br />
+priKey)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  n  =  p  *  q;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  Qn  =  (p  -  1  )  *  (q  -  1  );<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></p>
+<ul>
+<li>pubKey  =  publicKey(p,q,Qn);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></li>
+<li>priKey  =  privateKey(  *  pubKey,Qn);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  n;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) /**/  /*<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+char * encode(char * txt,long n,long pubKey)<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+{<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+int length = strlen(txt);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+char* text = new char[length];<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+strcpy(text,txt);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for(int i = 0; i &lt; length; i++)<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+{<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+text[i] =(int) pow(text[i],pubKey) % n;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+}<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return text;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+}<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+char * decode(char * txt,long n,long priKey)<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+{<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+int length = strlen(txt);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+char* text = new char[length];<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+strcpy(text,txt);<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for(int i = 0; i &lt; length; i++)<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+{<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+text[i] = (int)pow(text[i],priKey) % n;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+}<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return text;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+}<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) */<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  encode(  long  num,  long  n,  long  pubKey)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  tmp  =  1  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  i  =  0  ; i  &lt; pubKey; i  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+tmp  *=  num ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+tmp  %=  n;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  tmp;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
+long  decode(  long  num,  long  n,  long  priKey)<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
+ContractedBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+long  tmp  =  1  ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+for  (  int  i  =  0  ; i  &lt; priKey; i  ++  )<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
+rs/ContractedSubBlock.gif) …  {<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+tmp  *=  num ;<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+tmp  %=  n;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
+lockEnd.gif) }<br />
+<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
+return  tmp;<br />
+![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
+kEnd.gif) }</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2542,102 +2980,6 @@ kEnd.gif) }<br />
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/03/04/1520512/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/03/04/1520512/" class="post-title-link" itemprop="url">回寝咯</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-03-04 19:40:00" itemprop="dateCreated datePublished" datetime="2007-03-04T19:40:00+08:00">2007-03-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>343</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨天坐了20个小时的火车。幸好是卧铺要不就有可能挂在车上了。袋子太重了，而且只能手提。只得全当锻炼身体。 今天又感受了一次什么叫肌肉拉伤。</p>
-<p>春运多少年了，铁路的状况也就没有缓解。也不知道铁路部门知不知道什么叫路由算法。如果让法学院的学生分析或者会说没有人道主义精神。如果让机械院的分析或许会说这火<br />
-车跑的很慢，再快些就有可能缓解。自己是学计算机的于是就想到了路由算法。</p>
-<p>在火车上碰到了几学生。有中南的有华东的。没有想到那华东的竟然还是同一所高中的，而且还和我同行。这一路也挺无聊，在车上打了几个小时的牌去消磨时光。</p>
-<p>在学校里不知道有没有机器用。sit的机房被封了，才开了两个月。。。不知道学院到底想干什么。至如今只得用小李子的机器上上网，写写blog了。不知道学生会能不能<br />
-分台机器让我上上网。。。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/72/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/72/">72</a><span class="page-number current">73</span><a class="page-number" href="/page/74/">74</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/74/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2669,7 +3011,7 @@ kEnd.gif) }<br />
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 

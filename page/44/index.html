@@ -166,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">795</span>
+          <span class="site-state-item-count">796</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -205,6 +205,142 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/03/3860277/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/02/03/3860277/" class="post-title-link" itemprop="url">链表类List</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-02-03 14:28:00" itemprop="dateCreated datePublished" datetime="2009-02-03T14:28:00+08:00">2009-02-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这个类是为了给GeneralTree提供Queue队列操作才创建的。</p>
+<p>因为GeneralTree使用层次遍历的时候，必须要使用这样一个队列。当然如果你没有这样一个队列，但是你在每个节点那里设置了计数器，那么你还是可以完成一个层<br />
+次遍历操作。</p>
+<p>这里为了保持GeneralTreeNode的最简单性，所以没有添加计数器属性。</p>
+<p>下面是List类的具体代码：</p>
+<p>/* * create by chico chen * date: 2009/02/02 <em>/ #ifndef <em>LIST_H</em> #define<br />
+<em>LIST_H</em> template<class T> class ListNode { public: T data; ListNode<T></em> next;<br />
+ListNode() { next = NULL; } ListNode(T &amp; data) { this-&gt;data = data; next =<br />
+NULL; } ListNode(T &amp; data, ListNode<T>* next) { this-&gt;data = data; this-&gt;next<br />
+= next; } ~ListNode() { next = NULL; } }; template<class T> class List {<br />
+private: int length; ListNode<T>* head; public: List() { head = NULL; length =<br />
+0; } List(ListNode<T>* head) { this-&gt;head = head; length = 1; } ~List() {<br />
+ListNode<T>* tempHead = head; while(NULL != head) { tempHead = head-&gt;next;<br />
+delete head; head = tempHead; } length = 0; } bool IsEmpty() { return 0 ==<br />
+length; } // the coral function to insert the node // pre : none // post: no<br />
+matter what kind of situation, the function can work. void Insert(ListNode<T>*<br />
+node, int index) { if(0 == index) { // insert in the front if(NULL == head) {<br />
+head = node; } else { node-&gt;next = head; head = node; } } else { if(NULL ==<br />
+head) { head = node; } else { if(index &gt;= length || index &lt; 0) { index =<br />
+length; } ListNode<T>* temp = head; while(NULL != temp-&gt;next &amp;&amp; index–) {<br />
+temp = temp-&gt;next; } temp-&gt;next = node; } } length ++; } ListNode<T>*<br />
+GetHead() { return this-&gt;head; } // pre: list is not empty // post: return the<br />
+last element. ListNode<T>* GetTail() { if(NULL == head) { return NULL; }<br />
+ListNode<T>* tempHead = head; while(NULL != tempHead-&gt;next) { tempHead =<br />
+tempHead-&gt;next; } return tempHead; } // pre: node is not NULL // post: return<br />
+the node’s next node ListNode<T>* GetNext(ListNode<T>* node) { if(NULL !=<br />
+node) { return node-&gt;next; } } // pre: begin at zero, and the index is less<br />
+than the length of the list // post: if index is -1, then return the last //<br />
+post: if index is not -1 and less than zer, or bigger than the length, throw<br />
+exception. ListNode<T>* GetAt(int index) { ListNode<T>* temp = NULL; if(-1 ==<br />
+index) { // get the last temp = GetTail(); } else if(0 &lt;= index &amp;&amp; index &lt;<br />
+length) { ListNode<T>* tempHead = head; while(tempHead &amp;&amp; index–) { tempHead<br />
+= tempHead-&gt;next; } temp = tempHead; } else { throw “out of list”; } return<br />
+temp; } void DeleteHead() { ListNode<T>* tempHead = head; head = head-&gt;next;<br />
+delete tempHead; this-&gt;length–; } // pre: head is not NULL // post: delete<br />
+the last one and length subtract 1 void DeleteTail() { if(NULL == head)<br />
+return; ListNode<T>* tempTail = head; while(NULL != tempTail-&gt;next) { tempTail<br />
+= tempTail-&gt;next; } delete tempTail; length–; } // pre: head may be not NULL<br />
+// post: if index is equal to -1, then delete tail element // post: if index<br />
+is equal to 0, then delete the head // post: if it is bigger than the length,<br />
+or less than 0, throw exception // post: delete one node at index and length<br />
+subtract 1 void DeleteAt(int index) { if(-1 == index) { DeleteTail(); } else<br />
+if(0 == index) { DeleteHead(); } else if(0 &lt; index &amp;&amp; index &lt; length) {<br />
+ListNode<T>* temp = GetAt(index-1); ListNode<T>* dNode = temp-&gt;next;<br />
+temp-&gt;next = dNode-&gt;next; delete dNode; length --; } else { throw “out of<br />
+List”; } } }; #endif</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1385,106 +1521,6 @@ Sean Donnellan …Penny’s Dad</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/01/18/3826296/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/01/18/3826296/" class="post-title-link" itemprop="url">形式化方法的问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-01-18 13:21:00" itemprop="dateCreated datePublished" datetime="2009-01-18T13:21:00+08:00">2009-01-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>451</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>学了形式化方法这么课，是有很大的启发的。不管对测试还是开发.但是也有不少问题.于是写了下面的感言：</p>
-<p>形式化是因规范化，拒绝二义性而产生的。形式化方法希望用技术的手段提高软件的可靠性，安全性,<br />
-减少程序设计中的错误。希望机器可以理解形式化语言，并可以自动的检测程序中的错误。<br />
-形式化语言是基于数学的语言，从而可以避免二义性，将语言严格化，规范化。<br />
-软件需求等自然语言的描述方法，常常造成软件设计，软件开发的不一致性和不正确性。<br />
-但是，形式化方法也不能够代替现有的测试方法，和其他工程学管理方法。<br />
-另外因为使用形式化方法也需要一定的技巧，所以使用形式化方法所做的规约的正确性可靠性有时只能靠经验和手工验证去保证。例如人羊过河问题。最后的SPEC是使用EF<br />
-还是使用 AF，究竟是模型错误还是规约错误，这样的问题很难让机器做出回答。<br />
-或许这是形式化方法学之外的范畴。我个人认为不应该使用一种高技巧的方法来保证程序的正确性和可靠性。<br />
-虽然它已经成功的运用在软件规约，协议验证和硬件设计等方面，但是距离像java那样普及，尚待时日。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/43/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/43/">43</a><span class="page-number current">44</span><a class="page-number" href="/page/45/">45</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/45/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1516,7 +1552,7 @@ Sean Donnellan …Penny’s Dad</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:16</span>
+    <span title="Reading time total">24:17</span>
   </span>
 </div>
 
