@@ -5,7 +5,7 @@ date: 2006-09-01 21:49
 comments: true
 tags: ['数据库','weblogic','ejb']
 categories:
-- [design]
+- [architect, design]
 ---
 
 下载文件一般有两种实现方法  

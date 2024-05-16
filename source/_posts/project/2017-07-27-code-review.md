@@ -3,7 +3,7 @@ title: Code Review工程实践
 date: 2017-07-27 21:07:24
 tags: ['code','review','工程实践','好处','推动']
 categories:
-- knowledge
+- [project]
 ---
 
 本文分三个部分：先讲Review代码的流程，再讲Review的技巧，以及如何推动公司层面Code Review. 

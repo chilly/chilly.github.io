@@ -3,7 +3,7 @@ title: 代码论千言：如何评价别人的代码
 date: 2017-08-05 09:56:02
 tags: ['code','review','comments','评论','代码']
 categories:
-- knowledge
+- [project]
 
 ---
 

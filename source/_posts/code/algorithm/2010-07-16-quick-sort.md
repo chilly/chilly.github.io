@@ -6,7 +6,7 @@ wordpress_id: 262
 comments: true
 tags: ["algorithm", "c", "cc", "optimiz", "quick", "see-hear", "sort"]
 categories:
-- code
+- [code,algorithm]
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />

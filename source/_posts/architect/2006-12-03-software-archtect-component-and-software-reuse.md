@@ -5,7 +5,7 @@ date: 2006-12-03 10:50
 comments: true
 tags: ['数据结构','算法','产品']
 categories:
-- [project]
+- [architect, thinking]
 ---
 
 # 一  

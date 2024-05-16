@@ -6,8 +6,7 @@ comments: true
 sumary: java mail api base64编码不能执行。图片看不到，以及html被当作正文
 tags: java, mail, email, API, problem, base64, mime, picture 
 categories:
-- knowledge
-- java
+- [code,java]
 ---
 
  * text/html mime 没有base64 编码问题

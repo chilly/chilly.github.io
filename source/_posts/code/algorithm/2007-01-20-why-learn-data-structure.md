@@ -4,6 +4,8 @@ title: '谈谈数据结构精髓－－为什么学数据结构'
 date: 2007-01-20 21:42
 comments: true
 tags: ['数据结构','算法','生活']
+categories:
+- [code,algorithm]
 ---
 
 现在感觉自己废话很多。 有些自觉经典，但却没有记录下来，可惜。
