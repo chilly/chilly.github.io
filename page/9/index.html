@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,100 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/09/05/11104803/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/09/05/11104803/" class="post-title-link" itemprop="url">安全问题二三事</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-09-05 09:34:00" itemprop="dateCreated datePublished" datetime="2013-09-05T09:34:00+08:00">2013-09-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:48" itemprop="dateModified" datetime="2023-10-05T12:34:48+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>815</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近开始关注安全问题。 同时也在关注由于关注了安全导致的性能问题。</p>
+<p>第一件事是 微信收藏。 详细的内容点击： <a href="http://chillyc.info/blog/2013/08/30/wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/"> 微信公众平台的安全问题。 </a>另外再原文的基础上补充几点：微信公众平台最不安全的地方就是它的内容是通过http方式传输的。只要能抓到包，内容都很容易知道。关键问题就是非常不容易抓到包。所以微信平台才不使用Https传输。而不使用https传输的第二个原因是因为 https ssl密钥交换协议很耗时。第三个原因，强求第三方内容供应商提供https支持的话，第三方供应商需要申请相应的域名证书，然后还需要配置，非常繁琐。所以微信客户端传输到微信服务器走的是https,而微信服务器到第三方服务器走的是http.</p>
+<p>第二件事是 https 传输时需要注意 连接重用和密钥重用。 http connection能开重用就重用吧。另外同时找到了windows 库中connection虽然重用，但是new request仍然不断的和server交换ssl密钥的问题。详见 <span class="exturl" data-url="aHR0cDovL2hpLmJhaWR1LmNvbS96enBwYWxsYXMvaXRlbS9hZDhkMzBjMzhmZmE5MjMxMDgzMWM2MDU="> 这篇blog（winInet对于https保持keep alive需要注意的地方）<i class="fa fa-external-link-alt"></i></span> 。大意就是HttpOpenRequest 这个函数中需要去掉INTERNET_FLAG_IGNORE_CERT_CN_INVALID这个 Flag，然后需要添加OnWinInetError代码。如果证书出错（ERROR_INTERNET_INVALID_CA），那么就重新试一次。这样就可以保证INTERNET_FLAG_KEEP_CONNECTION。</p>
+<p>第三件事是 https的请求中夹杂着http请求的问题。这个问题在FireFox 23.0.1中出现。其他各个浏览器都是成功的。详细原因在： <span class="exturl" data-url="aHR0cDovL3N1cGVyZmx5ODEuYmxvZy41MWN0by5jb20vNjMwMjMwMi8xMjg0Mzc2">火狐混合内容拦截 <i class="fa fa-external-link-alt"></i></span>。也就是说如果是https的页面，里面的任何请求都需要是Https的。否则请求是不能发送出去的。而在chrome下，显示的就是<strong>此网页包含不安全的内容</strong> 。该问题在IE10下面，会在最下面弹出一个小tab，问你是否继续。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1233,137 +1327,6 @@ epository中。查找StackOverFlow发现大多回答是这样的：</p>
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/07/15/2013-07-15-jie-zhu-you-dao-yun-bi-ji-xie-blog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/07/15/2013-07-15-jie-zhu-you-dao-yun-bi-ji-xie-blog/" class="post-title-link" itemprop="url">借助有道云笔记写Blog</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-07-15 22:12:00" itemprop="dateCreated datePublished" datetime="2013-07-15T22:12:00+08:00">2013-07-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:16" itemprop="dateModified" datetime="2023-10-06T22:54:16+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>731</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="0-前言"><a class="markdownIt-Anchor" href="#0-前言"></a> 0. 前言</h2>
-<p>       下面这个blog介绍一下如何借助有道云笔记来写blog. 这里的blog当然是公开的非私密的。帐前卒 的 blog是借助Octopress搭建在github上，使用的markdown写成。由于github对于免费的成员只提供400MB的空间。对于图文并茂的blog来说，这点空间有点相形见绌。所以急需找到一个能提供图片分享的地方。图片分享的地方很多：</p>
-<ol>
-<li>当然很多图床网站可以提供的(当然也有可能不小心被封了)</li>
-<li>小bbs站(游客身份也可以查看，同时这个小站提供上传图片功能)可以试试<span class="exturl" data-url="aHR0cDovL25vdGViYnMueW91ZGFvLmNvbQ==" title="有道云笔记论坛">有道云笔记官方论坛<i class="fa fa-external-link-alt"></i></span></li>
-<li>网易云相册啥的</li>
-<li>各种其他的blog站点，写一篇blog上传，里面加入图片。然后把图片地址放入markdown中</li>
-<li>本文重点要介绍<strong>使用有道云笔记 分享</strong>方式添加图片。不过这一种不如前面几种简单实用。但是可以分享25M以下的任意图片，并且没有数量限制，空间还在不断增长。</li>
-</ol>
-<h2 id="1-分享你的图片"><a class="markdownIt-Anchor" href="#1-分享你的图片"></a> 1. 分享你的图片</h2>
-<p>       首先打开有道云笔记的客户端，然后创建一篇新的笔记，然后点击**‘分享链接’**<br />
-<img src="https://photos.google.com/album/AF1QipO83FbqnkVdDXVs-hFs12xqxg6Myp1ec1vWf9M/photo/AF1QipM5pI75erNeSbyGdSKhsneXCMlYr6HUlchcR0E" alt="分享链接 图片" /></p>
-<h2 id="2-获取图片地址"><a class="markdownIt-Anchor" href="#2-获取图片地址"></a> 2. 获取图片地址</h2>
-<p>       打开浏览器(chrome, 火狐,IE均可) 这里只介绍firefox. 点击<span class="exturl" data-url="aHR0cDovL25vdGUueW91ZGFvLmNvbS9zaGFyZS8/aWQ9ZDU0ZTAxZmVjMjEyZjM3ZGYxNmI1YmNkMDMyYTgzZGQmdHlwZT1ub3Rl">分享链接<i class="fa fa-external-link-alt"></i></span>。然后在调出firebug. 使用它，选中你要获取的图片。然后就可以看到下面这段html. 注意其中的src属性。没错，这就是你的图片url了。<br />
-<img data-inited="true" src="http://note.youdao.com/yws/public/resource/d54e01fec212f37df16b5bcd032a83dd/25FBFC3EADAD4EDEB46F9AD6F147C0D9" data-media-type="image"><br />
-<img src="http://note.youdao.com/yws/public/resource/d54e01fec212f37df16b5bcd032a83dd/AB825A2093E648FC8210B144318EDDFA" alt="firebug界面" /></p>
-<h2 id="3-在markdown中编辑"><a class="markdownIt-Anchor" href="#3-在markdown中编辑"></a> 3. 在markdown中编辑</h2>
-<p>        接下来要做的就是在markdown中插入图片.<br />
-![图片名] (刚才从有道云笔记分享获取的url)</p>
-<h2 id="4-发布"><a class="markdownIt-Anchor" href="#4-发布"></a> 4. 发布</h2>
-<p>        这里就没有什么好说的了。<strong>Deploy it!</strong><br />
-另外编写markdown需要注意的:</p>
-<ol>
-<li>段首空格需要加 &amp;nbsp; 另外如果需要多个空格，那么每个&amp;nbsp之间都要有空格。</li>
-<li>如果写为段落列表那么需要在每个列表后加入一个空行</li>
-</ol>
-<blockquote>
-<pre><code>  [空行]
-  1.  aaa
-  1.  bbb 
-</code></pre>
-</blockquote>
-
       
     </div>
 

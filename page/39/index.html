@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,126 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/06/23/4291222/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/06/23/4291222/" class="post-title-link" itemprop="url">Python 中文分词——FMM 算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-06-23 12:04:00" itemprop="dateCreated datePublished" datetime="2009-06-23T12:04:00+08:00">2009-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>FMM算法的最简单思想是使用贪心算法向前找n个，如果这n个组成的词在词典中出现，就ok，如果没有出现，那么找n-<br />
+1个…然后继续下去。假如n个词在词典中出现，那么从n+1位置继续找下去，知道句子结束。</p>
+<p>import re def PreProcess(sentence,edcode=“utf-8”): sentence =<br />
+sentence.decode(edcode) sentence=re.sub(u&quot;[。，,！……!《》&lt;&gt;/“':：？/?、/|“”‘’；]”,&quot;<br />
+“,sentence) return sentence def FMM(sentence,diction,result = [],maxwordLength<br />
+= 4,edcode=“utf-8”): i = 0 sentence = PreProcess(sentence,edcode) length =<br />
+len(sentence) while i &lt; length: # find the ascii word tempi=i<br />
+tok=sentence[i:i+1] while re.search(”[0-9A-Za-z/-/+#@_/.]{1}“,tok)&lt;&gt;None: i=<br />
+i+1 tok=sentence[i:i+1] if i-tempi&gt;0:<br />
+result.append(sentence[tempi:i].lower().encode(edcode)) # find chinese word<br />
+left = len(sentence[i:]) if left == 1: “”“go to 4 step over the FMM””&quot;<br />
+“”“should we add the last one? Yes, if not blank”“” if sentence[i:] &lt;&gt; &quot; “:<br />
+result.append(sentence[i:].encode(edcode)) return result m =<br />
+min(left,maxwordLength) for j in xrange(m,0,-1): leftword =<br />
+sentence[i:j+i].encode(edcode) # print leftword.decode(edcode) if<br />
+LookUp(leftword,diction): # find the left word in dictionary # it’s the right<br />
+one i = j+i result.append(leftword) break elif j == 1: “”“only one word, add<br />
+into result, if not blank””&quot; if leftword.decode(edcode) &lt;&gt; &quot; &quot;:<br />
+result.append(leftword) i = i+1 else: continue return result def<br />
+LookUp(word,dictionary): if dictionary.has_key(word): return True return False<br />
+def ConvertGBKtoUTF(sentence): return sentence.decode(‘gbk’).encode(‘utf-8’)</p>
+<p>测试代码：</p>
+<p>dictions = {} dictions[“ab”] = 1 dictions[“cd”] = 2 dictions[“abc”] = 1<br />
+dictions[“ss”] = 1 dictions[ConvertGBKtoUTF(“好的”)] = 1<br />
+dictions[ConvertGBKtoUTF(“真的”)] = 1 sentence = “asdfa好的是这样吗vasdiw呀真的daf dasfiw<br />
+asid是吗？” s = FMM(ConvertGBKtoUTF(sentence),dictions) for i in s: print<br />
+i.decode(“utf-8”)</p>
+<p>文本测试代码：</p>
+<p>test = open(“test.txt”,“r”) for line in test: s =<br />
+FMM(CovertGBKtoUTF(line),dictions) for i in s: print i.decode(“utf-8”)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1560,101 +1680,6 @@ your choice, 三就应该是just do it. never give up.如果你确定自己是�
 痞流氓的事情。如果你选择高尚，那就先刻好墓志铭。</p>
 <p>当然我所说的：首先应该询问下自己是否有原则；然后询问下自己是否有所爱；最后询问下自己是否有所得。这可能是我自己的顺序，可能不是其他的人的顺序。这样选择取决于<br />
 性格。大家可以按着这样做，也可以换种顺序。So which is your choice?</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/05/09/4164019/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/05/09/4164019/" class="post-title-link" itemprop="url">黑客帝国赏析——What Do You Believe?</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-05-09 20:19:00" itemprop="dateCreated datePublished" datetime="2009-05-09T20:19:00+08:00">2009-05-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>301</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>你相信什么？你是相信命运还是相信自己？我们是否已经习惯自己设计的条条框框？我们是救世主，还是这世界根本就没有救世主？我们的世界是真实的，还<br />
-是被我们双眼蒙蔽的假象？我们相信奇迹，还是我们就是奇迹本身？是命运造就了自己的现在还是自己的努力才会让生活更加美好？还是自己的命运早已注定自己的 努力？</p>
-<p>只要你相信you are the one，那你注定就是。或许这是一种盲目，或许这只是狂热，或许这什么都不是。但是你至少会发现你已经改变了自己。</p>
-<p>Do something what you believe, and trust yourself!</p>
-<p>想想孔子老庄的思想。其实到头来还是探讨一个问题——我们可以人定胜天，还是这不过是宿命的假象？</p>
 
       
     </div>

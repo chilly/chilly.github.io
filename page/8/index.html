@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,107 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/12/18/17389153/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/12/18/17389153/" class="post-title-link" itemprop="url">Mysql存储过程加速</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-12-18 08:31:00" itemprop="dateCreated datePublished" datetime="2013-12-18T08:31:00+08:00">2013-12-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>首先看一个存储过程，这个存储过程是为了构造数据使用的。当然贴出来的存储过程简化了一些不必要的表结构。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> modifyRootEntry()</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DECLARE</span> done <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="literal">FALSE</span>;</span><br><span class="line">  <span class="keyword">DECLARE</span> userId <span class="type">INT</span>;  </span><br><span class="line">  <span class="keyword">DECLARE</span> userIdIter <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> user_id <span class="keyword">from</span> entries;</span><br><span class="line">  <span class="keyword">OPEN</span> userIdIter;</span><br><span class="line"></span><br><span class="line">  read_loop: LOOP</span><br><span class="line">    <span class="keyword">FETCH</span> userIdIter <span class="keyword">INTO</span> userId;   </span><br><span class="line">    IF done <span class="keyword">THEN</span></span><br><span class="line">      LEAVE read_loop;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line">	<span class="keyword">INSERT</span> <span class="keyword">INTO</span> entries (id, name, user_id, parent_id) <span class="keyword">VALUES</span>(<span class="number">0</span>, <span class="string">&#x27;root_parent&#x27;</span>, userId, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">UPDATE</span> entries <span class="keyword">SET</span> parent_id<span class="operator">=</span><span class="number">0</span> <span class="keyword">where</span> user_id<span class="operator">=</span>userId <span class="keyword">AND</span> name<span class="operator">=</span><span class="string">&#x27;file_root&#x27;</span> <span class="keyword">AND</span> parent_id <span class="keyword">is</span> <span class="keyword">NULL</span>;</span><br><span class="line">  <span class="keyword">END</span> LOOP;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">CLOSE</span> userIdIter;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+<p>这个存储过程运行了10分钟，好像仅插入了6w行记录。这个真是太慢了。首先一个问题，就是这里使用了隐式提交，所以这里需要写明transaction开始和commit.修改如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> modifyRootEntry()</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DECLARE</span> done <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="literal">FALSE</span>;</span><br><span class="line">  <span class="keyword">DECLARE</span> userId <span class="type">INT</span>;  </span><br><span class="line">  <span class="keyword">DECLARE</span> userIdIter <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> user_id <span class="keyword">from</span> entries;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">START</span> TRANSACTION; <span class="operator">/</span><span class="operator">/</span> here <span class="operator">!</span></span><br><span class="line">  <span class="keyword">OPEN</span> userIdIter;</span><br><span class="line">   	</span><br><span class="line">  read_loop: LOOP</span><br><span class="line">    <span class="keyword">FETCH</span> userIdIter <span class="keyword">INTO</span> userId;   </span><br><span class="line">    IF done <span class="keyword">THEN</span></span><br><span class="line">      LEAVE read_loop;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line">	<span class="keyword">INSERT</span> <span class="keyword">INTO</span> entries (id, name, user_id, parent_id) <span class="keyword">VALUES</span>(<span class="number">0</span>, <span class="string">&#x27;root_parent&#x27;</span>, userId, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">UPDATE</span> entries <span class="keyword">SET</span> parent_id<span class="operator">=</span><span class="number">0</span> <span class="keyword">where</span> user_id<span class="operator">=</span>userId <span class="keyword">AND</span> name<span class="operator">=</span><span class="string">&#x27;file_root&#x27;</span> <span class="keyword">AND</span> parent_id <span class="keyword">is</span> <span class="keyword">NULL</span>;</span><br><span class="line">  <span class="keyword">END</span> LOOP;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">CLOSE</span> userIdIter;</span><br><span class="line">  <span class="keyword">COMMIT</span>;<span class="operator">/</span><span class="operator">/</span> here <span class="operator">!</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+<p>还有一个问题，就是</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> entries <span class="keyword">SET</span> parent_id<span class="operator">=</span><span class="number">0</span> <span class="keyword">where</span> user_id<span class="operator">=</span>userId <span class="keyword">AND</span> name<span class="operator">=</span><span class="string">&#x27;file_root&#x27;</span> <span class="keyword">AND</span> parent_id <span class="keyword">is</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
+<p>这句话应该放在LOOP的外面。因为每次执行的都一样。修改为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> modifyRootEntry()</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DECLARE</span> done <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="literal">FALSE</span>;</span><br><span class="line">  <span class="keyword">DECLARE</span> userId <span class="type">INT</span>;  </span><br><span class="line">  <span class="keyword">DECLARE</span> userIdIter <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> user_id <span class="keyword">from</span> entries;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">START</span> TRANSACTION; <span class="operator">/</span><span class="operator">/</span> here <span class="operator">!</span></span><br><span class="line">  <span class="keyword">OPEN</span> userIdIter;</span><br><span class="line">   	</span><br><span class="line">  read_loop: LOOP</span><br><span class="line">    <span class="keyword">FETCH</span> userIdIter <span class="keyword">INTO</span> userId;   </span><br><span class="line">    IF done <span class="keyword">THEN</span></span><br><span class="line">      LEAVE read_loop;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line">	<span class="keyword">INSERT</span> <span class="keyword">INTO</span> entries (id, name, user_id, parent_id) <span class="keyword">VALUES</span>(<span class="number">0</span>, <span class="string">&#x27;root_parent&#x27;</span>, userId, <span class="number">0</span>);</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">END</span> LOOP;</span><br><span class="line">  <span class="keyword">UPDATE</span> entries <span class="keyword">SET</span> parent_id<span class="operator">=</span><span class="number">0</span> <span class="keyword">where</span> user_id<span class="operator">=</span>userId <span class="keyword">AND</span> name<span class="operator">=</span><span class="string">&#x27;file_root&#x27;</span> <span class="keyword">AND</span> parent_id <span class="keyword">is</span> <span class="keyword">NULL</span>; <span class="operator">/</span><span class="operator">/</span> here<span class="operator">!</span></span><br><span class="line">  <span class="keyword">CLOSE</span> userIdIter;</span><br><span class="line">  <span class="keyword">COMMIT</span>;<span class="operator">/</span><span class="operator">/</span> here <span class="operator">!</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+<p>其实上面的语句仍然不够快，原因在于这个是一行行插入的。可以使用辅助表进行加速。从网上直接copy过来的。这里因为每次插入的是2^n个行，所以速度大大提高。辅助表的写法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> pFastCreateNums (cnt <span class="type">INT</span> UNSIGNED)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">DECLARE</span> s <span class="type">INT</span> UNSIGNED <span class="keyword">DEFAULT</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> Nums;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> Nums <span class="keyword">SELECT</span> s;</span><br><span class="line">WHILE s<span class="operator">*</span><span class="number">2</span> <span class="operator">&lt;=</span> cnt DO</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> Nums <span class="keyword">SELECT</span> a<span class="operator">+</span>s <span class="keyword">FROM</span> Nums;</span><br><span class="line"><span class="keyword">SET</span> s <span class="operator">=</span> s<span class="operator">*</span><span class="number">2</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">END</span> WHILE;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上面的是生成一个数字列。当然我们没有必要生成这样一个数字列，但是思想完全可以通用。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1150,100 +1251,6 @@ ntext中。然后再用这个applicationContext作为父Context构造真正的Ap
 <p>第四个那就是使用client访问时，用wireshark抓个包。看看第100个请求和101个请求到底有什么不同。</p>
 <p>结果1，2，4都被排除了。只有nginx的问题。关键是没有做什么特殊设置。到底为什么只能收100个呢？扫了一下源代码，发现 keepalive_requests这个值被设置为了100，大于这个数值nginx就会发送RST包回来。和wireshark中看到的server端发送RST包的现象一致。然后改动了该值为1000，发现pipeline的请求就可以发送1000个了。</p>
 <p>另外这个100值，不知道是nginx看了tomcat,还是tomcat抄袭了nginx。反正这个设置出奇的诡异。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/09/05/11104803/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/09/05/11104803/" class="post-title-link" itemprop="url">安全问题二三事</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-09-05 09:34:00" itemprop="dateCreated datePublished" datetime="2013-09-05T09:34:00+08:00">2013-09-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:48" itemprop="dateModified" datetime="2023-10-05T12:34:48+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>815</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近开始关注安全问题。 同时也在关注由于关注了安全导致的性能问题。</p>
-<p>第一件事是 微信收藏。 详细的内容点击： <a href="http://chillyc.info/blog/2013/08/30/wei-xin-gong-zhong-ping-tai-kai-fa-zhong-de-an-quan-wen-ti/"> 微信公众平台的安全问题。 </a>另外再原文的基础上补充几点：微信公众平台最不安全的地方就是它的内容是通过http方式传输的。只要能抓到包，内容都很容易知道。关键问题就是非常不容易抓到包。所以微信平台才不使用Https传输。而不使用https传输的第二个原因是因为 https ssl密钥交换协议很耗时。第三个原因，强求第三方内容供应商提供https支持的话，第三方供应商需要申请相应的域名证书，然后还需要配置，非常繁琐。所以微信客户端传输到微信服务器走的是https,而微信服务器到第三方服务器走的是http.</p>
-<p>第二件事是 https 传输时需要注意 连接重用和密钥重用。 http connection能开重用就重用吧。另外同时找到了windows 库中connection虽然重用，但是new request仍然不断的和server交换ssl密钥的问题。详见 <span class="exturl" data-url="aHR0cDovL2hpLmJhaWR1LmNvbS96enBwYWxsYXMvaXRlbS9hZDhkMzBjMzhmZmE5MjMxMDgzMWM2MDU="> 这篇blog（winInet对于https保持keep alive需要注意的地方）<i class="fa fa-external-link-alt"></i></span> 。大意就是HttpOpenRequest 这个函数中需要去掉INTERNET_FLAG_IGNORE_CERT_CN_INVALID这个 Flag，然后需要添加OnWinInetError代码。如果证书出错（ERROR_INTERNET_INVALID_CA），那么就重新试一次。这样就可以保证INTERNET_FLAG_KEEP_CONNECTION。</p>
-<p>第三件事是 https的请求中夹杂着http请求的问题。这个问题在FireFox 23.0.1中出现。其他各个浏览器都是成功的。详细原因在： <span class="exturl" data-url="aHR0cDovL3N1cGVyZmx5ODEuYmxvZy41MWN0by5jb20vNjMwMjMwMi8xMjg0Mzc2">火狐混合内容拦截 <i class="fa fa-external-link-alt"></i></span>。也就是说如果是https的页面，里面的任何请求都需要是Https的。否则请求是不能发送出去的。而在chrome下，显示的就是<strong>此网页包含不安全的内容</strong> 。该问题在IE10下面，会在最下面弹出一个小tab，问你是否继续。</p>
 
       
     </div>

@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,114 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/06/28/5698822/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/06/28/5698822/" class="post-title-link" itemprop="url">Python 解析XML</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-06-28 10:58:00" itemprop="dateCreated datePublished" datetime="2010-06-28T10:58:00+08:00">2010-06-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:46" itemprop="dateModified" datetime="2023-10-05T12:41:46+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>763</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><root> <nodes> <node name="n1"> node1 </node> <node name="n2"> node2 </node><br />
+</nodes> <edge> nothing </edge> </root></p>
+<p>xml 格式如上.</p>
+<p>首先要得到root节点:</p>
+<p>from xml.etree.ElementTree import ElementTree tree = ElementTree()<br />
+tree.parse(filename) # 你想使用哪个文件作为输入? root = tree.getroot()<br />
+“”“如果你的输入的是一段content”“” from xml.etree.ElementTree import XML file =<br />
+open(filename) content = file.read(-1) root = XML(content) print(root.tag)<br />
+file.close() # or you can use from xml.etree.ElementTree import XMLID file =<br />
+open(filename) root = XMLID(file.read(-1)) print(root[0].tag) # root[0] is<br />
+<root></root> file.close()</p>
+<p>上面的root是class Element的object, 而tree 是ElementTree的object. 如果想得到某个节点的attribute,<br />
+例如<node name="name1"><br />
+则element.attrib[‘name’]即可.如果是<edge>text</edge>,就是element.text.</p>
+<p>如果想得到下一层节点,可以使用root.find(tag)得到,如果不知道具体的tag,那么可以使用root.getchildren().如果想使用某个ta<br />
+g作为迭代,例如nodes中有两个node.代码如下:</p>
+<p>element_nodes = root.find(‘nodes’) nodes_list =<br />
+element_nodes.getiterator(‘node’) for node in nodes_list: print(node.tag)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1317,121 +1425,6 @@ random_test_diff(filename,3,times); return 0; }</li>
 sec.并且90%几率发生在前,所以如果随机发生多个文件的随机访问,那么可能速度会更慢.这里慢的原因,是因为fopen.</p>
 <p>这也就是数据库为什么只有一个数据文件的原因.有时进行文件切分,反而不利于效率的提高.但是对于100G以上的大文件,是否这个结论又要改变了呢?我没有做过这个实<br />
 验.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/23/5617749/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/05/23/5617749/" class="post-title-link" itemprop="url">Csdn举办的云计算大会——总结思考篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-05-23 11:05:00" itemprop="dateCreated datePublished" datetime="2010-05-23T11:05:00+08:00">2010-05-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这次大会的演讲嘉宾的内容参差不齐，有好有坏。</p>
-<p>有时个人觉得听上面的人吹来吹去，不如听听各个展台的工程师是怎么做的。</p>
-<p>个人感觉csdn实在是没有钱。既然没有钱就不要打肿脸充胖子乱搞活动。中午就发个三明治。还不如不发餐卷，或者写自带午餐或者请到外面的成都小吃自己买饭吃。我实在<br />
-不知道处于什么目的，发一个精美的袋子，里面就一点点吃的。本以为是午餐前的餐点，后来才真的相信这就是午餐。</p>
-<p>传说第一届的午餐也是三明治，但是人家是不要钱的!另外第一、二天其实没有票也是可以去听的。当初实验室真不如把钱给我们算了。</p>
-<p>去那里发现许多人和我有同样的问题，有一部分解答了，有一部分还在思考研究中：</p>
-<p>１。服务器利用率的提高，是否是真正利用了？这部分利用率是用于虚拟化，还是用于真正的业务？VMware的工程师说，资源只用5%消耗在虚拟化上。这个5%并不随着<br />
-虚拟机的增多而线性增加。当然，我还是不信…</p>
-<p>２。当两台虚拟机在同一个机器中运行，是有公平的弹性机制(你不用时我用，我不用时你用，你我都用时对半分)，也就是balloom技术。至于这个技术是啥米，有待研<br />
-究，但是从xcp中看到了Memory Balloom,不知道是否是同样的东东。</p>
-<p>３。当应用需消耗大量资源的程序，如果在一台物理服务器上跑得很吃力，那么就别寻求云计算。</p>
-<p>４。程序必须有并发性。如果云计算平台能屏蔽分布式物理机带来的进程通信的影响，那么多进程的编程是必要的。如果云计算可以只把线程迁移到其他物理机器上，那就更好了<br />
-，不过我知道那是天方夜谭。</p>
-<p>５。如果我的物理机器都只是两核的，那么我也就不会虚拟出四核的机器。</p>
-<p>６。一台虚拟机器可以使用另外一台物理机器的存储资源(硬盘)？当时那个工程师说可以。那是因为那台物理机器开启了另外一个VM实例,还是没有开？</p>
-<p>７。chinaCache说Xen比vmware好，因为xen是os层虚拟化，vmware说vmware最好，因为vmware稳定。其实vmware传说也有自<br />
-己的os虚拟化技术。</p>
-<p>８。mysql在chinaCache中效率比EC2高３倍。因为它是一个机器中的本地存储，而EC2可以看作使用了存储网络，所以EC2会有线路传输带宽的消耗。我<br />
-个人认为chinaCache没有办法大量持续扩容的.否则性能会降低到EC2的水平。</p>
-<p>９。如果因为一台物理机中太多虚拟机共同消耗资源，而导致某些井喷业务不能响应，那么会将这些业务迁移到其他机器中。但是它的监控器都无法响应了，它怎么知道哪个业务<br />
-是井喷业务呢？</p>
-<p>10。以后会议别请高层了，乱忽悠。另外我不太清楚服务器是什么概念？如果是高级稳定机器来说，我们实验室就两台服务器。如果随便的pc机就可以做服务器，那归我管的<br />
-服务器就有4~5台。我觉得业界还没有统一服务器的概念。</p>
-<p>11。大云其实就是做了基于MapReduce的数据挖掘算法…</p>
-<p>12.中移动说现在已经可以支持5000台服务器，那是Yahoo的hadoop.其实我不太相信他有这么多机器。(他的服务器是啥概念？)</p>
 
       
     </div>

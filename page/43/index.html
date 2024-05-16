@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,130 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/06/3962294/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/03/06/3962294/" class="post-title-link" itemprop="url">C++ Template Template Parameter以及error C3201</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-03-06 10:47:00" itemprop="dateCreated datePublished" datetime="2009-03-06T10:47:00+08:00">2009-03-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近学c++ template,发现可以使用 template template parameter</p>
+<p>然后自己编了一段小代码…</p>
+<p>// template template parameter template &lt;typename T, template<typename X><br />
+class CONE = std::deque&gt; class MyClass { public: CONE<T> a; MyClass() { } };</p>
+<p>发现编译器报错为 error C3201: the template parameter list for class template<br />
+‘std::deque’ does not match the template parameter list for template parameter<br />
+‘CONE’</p>
+<p>这个错误查了一下，说: 不要本来没有模板的类你乱加模板…</p>
+<p>可是我这里使用的是标准STL deque，没有理由冒出这样一句话呀</p>
+<p>然后我又试了一下</p>
+<p>// template template parameter template &lt;typename T,class CONE = std::deque<T></p>
+<blockquote>
+<p>class MyClass { public: CONE a; MyClass() { } };</p>
+</blockquote>
+<p>哈哈，这样是可以编译通过的。没有问题，那么能不能用这段代码代替上面那段代码呢？找了一下…这里会有安全问题。一种情况 MyClass&lt;int, deque&lt;<br />
+int&gt;&gt;这样是可以的，另外一种情况MyClass&lt;double,deque<int>&gt;.如果我们可能会把第一个T类型的变量放入到CONE中，那么这里就不可<br />
+避免要有数值转换问题。这里丢掉了精度，并且可能导致一个bug。但是如果MyClass&lt;std::string,deque&lt;const char<br />
+*&gt;&gt;则会引发编译问题。那么我们怎么能避免这个问题呢？使用下面的代码：</p>
+<p>// template template parameter template &lt;typename T,template<typename X> class<br />
+CONE&gt; class MyClass { public: CONE<T> a; MyClass() { } };</p>
+<p>这样就可以保持变量类型 T与<br />
+CONE中的类型一致了。如果我还是希望有一个缺省的模板，让我不是每次非要加入std::deque.这样还不又回到了第一段代码？那么还是会引发error<br />
+C3201错误。后来我查了下standard STL库中deque的构造函数，deque需要两个参数例如： deque&lt;int , allocator<in
+t>&gt;,这样做的原因在于每次申请空间的时候，都是按照int的大小，当然STL允许你自己定义自己的allocator。下面这样写可以既有安全性，又有一定的灵活<br />
+性：</p>
+<p>// template template parameter template &lt;typename T,typename A,<br />
+template&lt;typename X,class Alloc&gt; class CONE = std::deque&gt; class MyClass {<br />
+public: CONE&lt;T,A&gt; a; MyClass() { } };</p>
+<p>同时模板使用有几点要多加注意：一个是template template parameter中 template&lt;template <typename T><br />
+class CONE&gt;记住这里一定是class.一般我们使用template，class<br />
+和typename是没有区别的。但是这里例外。typename是类型的名字(既可以为类名，也可以为 aribtrary type基本类型)，而class可能<br />
+是模板或者class和struct。举例：std::deque这个是模板名，而std::deque<int>这个是类名。所以两者还是有一定的区别。另外有些编<br />
+译可以将我的第一段代码编译成功，我使用的是vs2005.还有在第二个template中 typename X, 与 class<br />
+Alloc只是一个文档参数，就是没有实际作用。只是为了标记CONE的。可以认为和函数声明差不多。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1387,325 +1511,6 @@ Prince）自1943年在纽约问世以来，多次再版，经久不衰。它不�
 Ltd, 1962.</p>
 <p>[14]  Paul Webster.The Life and Death of The Little Prince.London:Macmillan<br />
 Press,1993.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/02/03/3860725/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/02/03/3860725/" class="post-title-link" itemprop="url">AI 决策树ID3 代码(C++)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-02-03 17:13:00" itemprop="dateCreated datePublished" datetime="2009-02-03T17:13:00+08:00">2009-02-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>10k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>源代码工程文件（vs2005） <a target="_blank" rel="noopener" href="http://d.download.csdn.net/down/1018461/cctt_1"> http://d.download.csdn.net/down/1018461/cctt_1<br />
-</a></p>
-<p>过去在网上找了段代码，发现写的代码要改些地方，而且也想顺便练习下自己的c++编码。</p>
-<p>首先我要建立一个真正的树形结构。于是使用了自己过去的 <a target="_blank" rel="noopener" href="http://blog.csdn.net/cctt_1/archive/2009/02/03/3860211.aspx"> GeneralTree.h<br />
-</a><br />
-(当然这里还是改动些GeneralTree的代码例如增添了些函数，另外把有些私有函数变成了公有函数)。</p>
-<p>训练文本格式如下：并命名为decision2.txt 并发在自己的工程目录下。当然你也可以改改相关源代码<br />
-概念  颜色 形状 轻重<br />
-苹果   红   球   一般<br />
-苹果   绿   球   一般<br />
-香蕉   黄   弯月  一般<br />
-草莓   红   球    轻<br />
-草莓   绿   球    轻<br />
-西瓜   绿   椭球  重<br />
-西瓜   绿   球    重<br />
-桔子   桔黄 椭球  轻</p>
-<p>测试格式文本格式如下：命名为test.txt并放在工程目录下(试试改改源代码)</p>
-<p>颜色 形状 轻重<br />
-红   球   一般<br />
-绿   球   一般<br />
-黄   弯月  一般</p>
-<p>这里应该考虑各个类分开的。不过为了看起来方便，就合在一起了。<br />
-下面是具体代码：</p>
-<p>/* created by chico chen * date 2009/02/02 * 如需转载注明出处 */ #include “stdafx.h”<br />
-#include <iostream> #include <fstream> #include <string> #include <sstream><br />
-#include <vector> #include <map> #include <cmath> #include “D://Tools//not<br />
-Finished//TreeTest//TreeTest//GeneralTree.h” using namespace std; // this<br />
-class is for computing attribute entropy class AttribDiff { public: string<br />
-attribName; // 属性名 map&lt;string,int&gt; attribNum; //具体属性和个数对<br />
-map&lt;string,map&lt;string,int&gt;&gt; typeNumber; // 第一个string为具体属性名,第二个为类型, //<br />
-int是类型在具体属性中的个数. // 例如：是否可见 类型 形状 // 1 西瓜 圆 // 1 冬瓜 扁 // 0 橘子 圆 //<br />
-其中具体属性为圆，类型为西瓜等个数为形状为圆的类型为西瓜的个数 AttribDiff(string&amp; attribName) {<br />
-this-&gt;attribName = attribName; } // in order to computer entropy of an<br />
-attribute double AttribDifferComputer(vector&lt;vector<string>&gt; infos,int<br />
-i_attrib,int i_types, vector<int>&amp; visible) { double probability = 0; double<br />
-entropy = 0; double attribG = 0; map&lt;string,int&gt; temp; int tempNum = 0;<br />
-for(int i =0 ; i &lt; infos.size(); i++) { if(visible[i] != 0 ) { tempNum =<br />
-attribNum[infos[i][i_attrib]]; attribNum[infos[i][i_attrib]] = <ins>tempNum; temp<br />
-= typeNumber[infos[i][i_attrib]]; tempNum = temp[infos[i][i_types]];<br />
-temp[infos[i][i_types]] = <ins>tempNum; typeNumber[infos[i][i_attrib]] = temp; }<br />
-} map&lt;string,int&gt;::iterator i_number; map&lt;string,int&gt;::iterator i_type;<br />
-for(i_number = attribNum.begin(); i_number != attribNum.end(); i_number</ins>) {<br />
-probability = (*i_number).second/(double)infos.size(); cout<br />
-&lt;&lt;(*i_number).first &lt;&lt;“概率为：”&lt;&lt; probability&lt;&lt;endl; entropy = 0; for(i_type =<br />
-typeNumber[(*i_number).first].begin(); i_type !=<br />
-typeNumber[(*i_number).first].end(); i_type</ins>) { entropy +=<br />
-ComputerEntropyHelp((*i_type).second/(double)(*i_number).second); } attribG +=<br />
-(-1)<em>probability * entropy; } return attribG; } // compute the entropy double<br />
-ComputerEntropyHelp(double pi) { return pi</em>log(pi)/log((double)2); } }; //<br />
-this class is create a data struct for general tree node class NodeInfo {<br />
-public: // 颜色 // 红 // 蓝 string attribName; // the attribute name, such as 颜色<br />
-vector<string> detailAttrib; // all of detail attributes under one of<br />
-attribute name, for example, 红 NodeInfo() { attribName = “”; } NodeInfo(string<br />
-&amp; attribName) { this-&gt;attribName = attribName; } NodeInfo(NodeInfo &amp; ni) {<br />
-this-&gt;attribName = ni.attribName; this-&gt;detailAttrib = ni.detailAttrib; } //<br />
-add detail attributes in NodeInfo void NodeDetailInfoAdd(string &amp; detailA) {<br />
-if(!CheckIsHas(detailA)) { this-&gt;detailAttrib.push_back(detailA); } } // If<br />
-detail attribute is in the detailAttrib list, return true; // else return<br />
-false; bool CheckIsHas(string &amp; name) { for(int i = 0; i &lt;<br />
-detailAttrib.size(); i++) { if(strcmp(name.c_str(),detailAttrib[i].c_str())<br />
-==0) { // the same attribute return true; } } return false; } // this is print<br />
-control for printing NodeInfo static void Print(NodeInfo&amp; info) { cout &lt;&lt;<br />
-info.attribName&lt;&lt; “(”; for(int i = 0; i &lt; info.detailAttrib.size() ; i++) {<br />
-cout &lt;&lt; info.detailAttrib[i]&lt;&lt;&quot; &quot;; } cout &lt;&lt; “)/n”; } }; // this class is<br />
-decision tree class DT { protected: const string filename; // the data file<br />
-name vector&lt;vector<string>&gt; infos; // the array for storing information<br />
-vector<string> attribs; // the array for storing the attributes<br />
-GeneralTree<NodeInfo>gt; // the general tree for storing the decision tree<br />
-const int START; // which column is the start attribute, except the type<br />
-column const int I_TYPE;// the column index of type const int MAX_ENTROPY; //<br />
-set an max entropy to find the minimal entropy private: // to help print void<br />
-PrintHelp(int helpPrint) { for(int i = 0; i &lt; helpPrint; i++) { cout &lt;&lt; “…”;<br />
-} } // to find the index of the attribName in attribs array int Find(string&amp;<br />
-attribName,vector<string>&amp; attribs) { for(int i = 0; i &lt; attribs.size(); i++)<br />
-{ if(strcmp(attribName.c_str(),attribs[i].c_str()) == 0) { // the same return<br />
-i; } } return -1; } // this function is used for detecting if the arithmetic<br />
-is over bool CheckOver(vector<int>&amp; visible,string&amp; type) { map&lt;string,int&gt;<br />
-types; int temp = 0; for(int i = 0; i &lt; infos.size(); i++) { if(visible[i] !=<br />
-0) { type = infos[i][I_TYPE]; temp = types[infos[i][I_TYPE]]; if(temp == 0) {<br />
-types[infos[i][I_TYPE]] = 1; } if(types.size() &gt; 1) { return false; // there<br />
-are more than one types } } } return true; // there is only one type } // to<br />
-create a Decision Tree void DTCreate(GeneralTreeNode<NodeInfo> *parent,<br />
-vector<int> visible,vector<int> visibleA, int i_attrib,string&amp; detailA, int<br />
-helpPrint) { if(i_attrib &gt;= START) { for(int i = 0; i &lt; infos.size(); i++) {<br />
-if(strcmp(infos[i][i_attrib].c_str(),detailA.c_str()) !=0) { // not same<br />
-detail attribute visible[i] = 0; } } } string type = “”;<br />
-if(CheckOver(visible,type)) { // the arithmetic is over and add the type node<br />
-into the general tree NodeInfo n(type); GeneralTreeNode<NodeInfo> * node = new<br />
-GeneralTreeNode<NodeInfo>(n); gt.Insert(node,parent); PrintHelp(helpPrint);<br />
-cout &lt;&lt; “decision type:”&lt;&lt;n.attribName&lt;&lt;endl; return; } map&lt;string,double&gt;<br />
-attribGs; // this is for deciding which attrib should be used for(int i =<br />
-START; i &lt; attribs.size(); i++) { // iterate attribs if(visibleA[i] != 0) {<br />
-AttribDiff ad(attribs[i]); attribGs[attribs[i]] =<br />
-ad.AttribDifferComputer(infos,i,I_TYPE,visible); cout &lt;&lt;attribs[i] &lt;&lt;“的G为：”&lt;&lt;<br />
-attribGs[attribs[i]]&lt;&lt;endl; } } // to find the decision attribute double min =<br />
-MAX_ENTROPY; string attributeName; for(map&lt;string,double&gt;::iterator i =<br />
-attribGs.begin(); i != attribGs.end(); i++) { if(min &gt;= (*i).second) {<br />
-attributeName = (*i).first; min = (*i).second; } } NodeInfo n(attributeName);<br />
-int i_max = Find(attributeName,attribs); for(int i = 0; i&lt;infos.size() ; i++)<br />
-{ n.NodeDetailInfoAdd(infos[i][i_max]); } GeneralTreeNode<NodeInfo> * node =<br />
-new GeneralTreeNode<NodeInfo>(n); gt.Insert(node,parent); visibleA[i_max] = 0;<br />
-PrintHelp(helpPrint); cout &lt;&lt; “choose attribute:”&lt;&lt; attributeName&lt;&lt;endl;<br />
-for(int i = 0; i &lt; node-&gt;data.detailAttrib.size(); i++) {<br />
-PrintHelp(helpPrint); cout &lt;&lt; “go into the<br />
-branch:”&lt;<node->data.detailAttrib[i]&lt;&lt;endl; // go to every branch to decision<br />
-DTCreate(node,visible,visibleA,i_max,node-&gt;data.detailAttrib[i],helpPrint+1);<br />
-} } public: // 要注意的一点是这里的decision2.txt要放在工程目录下。当然如果你愿意可以写绝对路径 // 注意文件的格式： //<br />
-首先一列为类别，然后是各个属性 // 例如： 类型 形状 // 西瓜 圆 // 冬瓜 扁 // 橘子 圆<br />
-DT():filename(“decision2.txt”),START(1),I_TYPE(0),MAX_ENTROPY(10000) {<br />
-GetInfo(attribs,infos,filename); DTCreate(); } // this function is used for<br />
-read data from the file // and create the attribute array and all information<br />
-array // post: attribs has at least one element // infos has at least one<br />
-element // pre: filename is not empty and the file is exist void<br />
-GetInfo(vector<string>&amp; attribs,vector&lt;vector<string>&gt;&amp; infos,const string&amp;<br />
-filename) { ifstream read(filename.c_str()); int start = 0; int end = 0;<br />
-string info = “”; getline(read,info); istringstream iss(info); string attrib;<br />
-while(iss &gt;&gt; attrib) { attribs.push_back(attrib); } while(true) { info = “”;<br />
-getline(read,info); if(info == “” || info.length() &lt;= 1) { break; }<br />
-vector<string> infoline; istringstream stream(info); while(stream &gt;&gt; attrib) {<br />
-infoline.push_back(attrib); } infos.push_back(infoline); } read.close(); } //<br />
-create the DT void DTCreate() { vector<int> visible(infos.size(),1);<br />
-vector<int> visibleA(attribs.size(),1); // to judge which attribute is useless<br />
-string temp = “”; DTCreate(NULL,visible,visibleA,START-1,temp,0); } // print<br />
-the DT void Print() { gt.LevelPrint(NodeInfo::Print); } void Judge(const<br />
-string&amp; testFilename,vector<string>&amp; types,const string&amp; testResultFileName) {<br />
-vector<string> attribs_test; vector&lt;vector<string>&gt; infos_test;<br />
-GetInfo(attribs_test,infos_test,testFilename);<br />
-if(!CheckFileFormat(attribs_test)) { throw “file format error”; }<br />
-GeneralTreeNode<NodeInfo> * root = gt.GetRoot(); for(int i = 0; i &lt;<br />
-infos_test.size(); i++) {<br />
-types.push_back(JudgeType(root,infos_test[i],attribs_test)); }<br />
-WriteTestTypesInfo(testResultFileName,types); } void WriteTestTypesInfo(const<br />
-string&amp; filename, vector<string>&amp; types) { ofstream out(filename.c_str()); out<br />
-&lt;&lt; “类别”&lt;&lt;endl; for(int i = 0 ; i &lt; types.size(); i++) { out &lt;&lt; types[i]&lt;&lt;endl;<br />
-} out.close(); } string JudgeType(GeneralTreeNode<NodeInfo> * node,<br />
-vector<string>&amp; info,vector<string>&amp; attribs_test) {<br />
-if(gt.GetChildNodeNum(node) == 0) { return node-&gt;getData().attribName; } int<br />
-index = Find(node-&gt;getData().attribName,attribs_test); int branch_index =<br />
-Find(info[index],node-&gt;getData().detailAttrib); if(branch_index == -1) { // is<br />
-not find this detail attribute in this node detailAttrib // there are two way<br />
-to deal with this situation // 1. every branch has possibility to choose // 2.<br />
-no such type and can not judge // the first solution make the correct ratio<br />
-low // the second solution has no fault-tolerance. // and here I choose the<br />
-second solution. // if I have more free time later, I will write the first<br />
-solution throw “no such type”; } GeneralTreeNode<NodeInfo> * childNode =<br />
-gt.GetAChild(node,branch_index); return JudgeType(childNode,<br />
-info,attribs_test); } bool CheckFileFormat(vector<string>&amp; attribs_test) {<br />
-bool isCorrect = true; for(int j = 0; j &lt; attribs_test.size(); j++) {<br />
-if(Find(attribs_test[j],attribs) == -1) { isCorrect = false; } }<br />
-if(attribs_test.size() == attribs.size() - 1) { isCorrect = isCorrect &amp;&amp; true;<br />
-} else { isCorrect = false; } return isCorrect; } };</p>
-<p>这里的main函数这样写（自己使用的VS2005）：</p>
-<p>int _tmain(int argc, _TCHAR* argv[]) { DT dt; <a target="_blank" rel="noopener" href="//dt.Print">//dt.Print</a>(); string testFile =<br />
-“test.txt”; string testResult = “testResult.txt”; vector<string>types;<br />
-dt.Judge(testFile,types,testResult); return 0; }</p>
-<p>自己感觉DT 的注释比较详细，所以在我的blog中就不再做太多的解释。另外这段代码会将测试结果放在工程目录下的testResult.txt中。</p>
-<p>另外在控制台上会有生成决策树ID3的相关相关的信息显示，例如：</p>
-<p>红概率为：0.25<br />
-黄概率为：0.125<br />
-桔黄概率为：0.125<br />
-绿概率为：0.5<br />
-颜色的G为：1<br />
-球概率为：0.625<br />
-椭球概率为：0.25<br />
-弯月概率为：0.125<br />
-形状的G为：1.20121<br />
-轻概率为：0.375<br />
-一般概率为：0.375<br />
-重概率为：0.25<br />
-轻重的G为：0.688722<br />
-choose attribute:轻重<br />
-go into the branch:一般<br />
-红概率为：0.125<br />
-黄概率为：0.125<br />
-绿概率为：0.125<br />
-颜色的G为：0<br />
-球概率为：0.25<br />
-弯月概率为：0.125<br />
-形状的G为：0<br />
-…choose attribute:颜色<br />
-…go into the branch:红<br />
-…decision type:苹果<br />
-…go into the branch:绿<br />
-…decision type:苹果<br />
-…go into the branch:黄<br />
-…decision type:香蕉<br />
-…go into the branch:桔黄<br />
-…decision type:<br />
-go into the branch:轻<br />
-红概率为：0.125<br />
-桔黄概率为：0.125<br />
-绿概率为：0.125<br />
-颜色的G为：0<br />
-球概率为：0.25<br />
-椭球概率为：0.125<br />
-形状的G为：0<br />
-…choose attribute:颜色<br />
-…go into the branch:红<br />
-…decision type:草莓<br />
-…go into the branch:绿<br />
-…decision type:草莓<br />
-…go into the branch:黄<br />
-…decision type:<br />
-…go into the branch:桔黄<br />
-…decision type:桔子<br />
-go into the branch:重<br />
-…decision type:西瓜</p>
-<p>这一段信息是什么意思呢？</p>
-<p>红概率为：0.25<br />
-黄概率为：0.125<br />
-桔黄概率为：0.125<br />
-绿概率为：0.5<br />
-颜色的G为：1</p>
-<p>红，黄，桔黄，绿的概率是颜色的具体属性。这里没有把entropy打印出来。如果此段代码被中科院的师弟师妹有幸看到，</p>
-<p>你们可以在AttribDifferComputer()函数中添加几行代码就可以把每一个entropy打印出来。反正老师也会让你们看代码，这里就当作作业题吧。<br />
-（另外老师第十章机器学习ppt上的决策树的这个例子计算结果有错误。如果你认真计算过的话）颜色G的含义是颜色G的决策值，决策值越小，选择此属性的概率就越大。</p>
-<p>那决策树是什么样子的呢？</p>
-<p>choose attribute:轻重<br />
-go into the branch:一般</p>
-<p>…choose attribute:颜色<br />
-…go into the branch:红</p>
-<p>…<br />
-看看上面的这些.这里代表根节点是“轻重”，然后进入“一般”分支，然后进入“一般”分支的节点为颜色…然后进入”红“分支.这里一定要注意”…“，相等的&quot;…<br />
-”代表树的相同的层次。</p>
-<p>做出这个Decision Tree 的ID3代码主要是为了学弟学妹们在考试中测试用的。因为我只是测试了老师ppt中的例子，不保证对于所有的例子都正确。而且老<br />
-师出的考试题比较变态（属性十个左右）…如果手工计算应该需要一个小时左右的时间。</p>
-<p>当初后悔没有先编一个程序。祝各位考试顺利…(我想我这段代码可能会在考试之前被搜到)。</p>
-<p>同时提醒大家一点， ID3也不是什么很好的算法。当两个属性的G值一致时，如果它并不能给出一个更好的判断标准。而且如果采用顺序选择很有可能生成一个非最小决策树<br />
-。这点还值得研究一下。</p>
 
       
     </div>

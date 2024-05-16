@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,133 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/09/17/4564023/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/09/17/4564023/" class="post-title-link" itemprop="url">Eucalyptus安装到centos5.3加载image日志</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-09-17 19:26:00" itemprop="dateCreated datePublished" datetime="2009-09-17T19:26:00+08:00">2009-09-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 11:55:23" itemprop="dateModified" datetime="2023-10-07T11:55:23+08:00">2023-10-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Eucalyptus配置篇参考我的blog: <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAwOS8wOS8xNy80NTYyOTA4LmFzcHg=">Eucalyptus安装到centos 5.3配置日志<i class="fa fa-external-link-alt"></i></span></p>
+<p>配置完Eucalyptus之后，下一步要做的就是加载image到VMs。image的下载可以使用这个路径： <span class="exturl" data-url="aHR0cDovL3d3dy5ldWNhbHlwdHVzc29mdHdhcmUuY29tL2Rvd25sb2Fkcy9ldWNhbHlwdHVzLWltYWdlcy9ldWNhLXVidW50dS05LjA0LXg4Nl82NC50YXIuZ3o=">Ubuntu-image<i class="fa fa-external-link-alt"></i></span></p>
+<p>然后去你自己搭建的云上: <code>https://localhost：8443</code> ，在证书选项卡出下载证书。过程和 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAwOS8wOS8xNC80NTUwMzMyLmFzcHg=">使用Eucalyptus<i class="fa fa-external-link-alt"></i></span> 一致 。</p>
+<p>然后先建一个目录,然后将你的admin的证书放入这个文件夹中，设置下证书和此文件夹的访问权限。在生成一个admin的privatekey。这几步可以参见 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8xL2FyY2hpdmUvMjAwOS8wOS8xNC80NTUwMzMyLmFzcHg=">安装Eucalyptus日志中的第4步(到 add key结束，后面的可以不做)<i class="fa fa-external-link-alt"></i></span> 。</p>
+<p>然后解压刚才下载的Ubuntu-image, cd到你的解压目录下开始敲命令:</p>
+<p>首先要加密image,然后制作manifest.xml：</p>
+<pre><code>euca-bundle-image -i xen-kernel/vmlinuz-2.6.27.21-0.1-xen --kernel true (这里xen可以改为kvm如果你装的是  
+
+kvm的虚拟机。另外vmlinuz的版本可能不一致，需要自己调整一下,kvm的好像是generic的).然后再执行下面的命令将kernel  
+
+添加到Walrus中:  
+
+euca-upload-bundle -b ubuntu-kernel-bucket -m /tmp/vmlinuz-2.6.27.21-0.1-xen.manifest.xml  
+
+下一步将kernel注册到Eucalyptus中:  
+
+euca-register ubuntu-kernel-bucket/vmlinuz-2.6.27.21-0.1-xen.manifest.xml  
+
+以上这两句中ubuntu-kernel-bucket并不在当前目录下。但是放心的敲好了..注册成功后会给你一个kenerlID（EKI  
+
+这个要记下）.下几步是加载和注册ramdisk,几乎和kenerl类似：  
+
+euca-bundle-image -i xen-kernel/initrd-2.6.27.21-0.1-xen --ramdisk true  
+
+euca-upload-bundle -b ubuntu-ramdisk-bucket -m /tmp/initrd-2.6.27.21-0.1-xen.manifest.xml  
+
+euca-register ubuntu-ramdisk-bucket/initrd-2.6.27.21-0.1-xen.manifest.xml  
+这里也会打印ramdiskID（\$ERI 这里也要记下）,然后加载并注册image，其中这里的\$EKI和\$ERI就是上一步打印出来  
+的语句:  
+euca-bundle-image -i euca-ubuntu-9.04-x86_64ubuntu.9-04.x86-64.img --kernel \$EKI --ramdisk \$ERI  
+euca-upload-bundle -b ubuntu-image-bucket -m /tmp/ubuntu.9-04.x86-64.img.manifest.xml  
+euca-register ubuntu-image-bucket/ubuntu.9-04.x86-64.img.manifest.xml  
+结束。这里你应该能看到一个emi,这个就是传说中的imageID.  
+下面你可以用另一台机器输入https://XXXIP:8443来访问了..并且可以[使用euca2ools](http://blog.csdn.net/cctt_1/archive/2009/09/14/4550332.aspx)
+
+来使用这个云了！  
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1713,123 +1840,6 @@ t_1/archive/2009/05/06/4153465.aspx”,“还是俺的blog”,“c:/a/b/c/”,�
 ThunderAgent.CommitTasks() Set ThunderAgent = Nothing</p>
 <p>这里可以看到为CommitTasks，而非CommitTasks2()</p>
 <p>看到这篇的各位，有没有提供更好的方法调用迅雷？既可以不弹出那个框框，又可以保存到相应地址的？先行谢过。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/08/23/4475288/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/08/23/4475288/" class="post-title-link" itemprop="url">虚拟主机配置Xampplite,mysql,apache,php</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-08-23 15:59:00" itemprop="dateCreated datePublished" datetime="2009-08-23T15:59:00+08:00">2009-08-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 01:40:39" itemprop="dateModified" datetime="2023-10-06T01:40:39+08:00">2023-10-06</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1.首先下载一个xampplite,这个是  <span class="exturl" data-url="aHR0cDovL3NvdXJjZWZvcmdlLm5ldA==">sourceforge.net<i class="fa fa-external-link-alt"></i></span><br />
-上的开源项目。主要是为了集成apache,mysql,php方便用的.解压到某个盘符的根目录下。点击xampp-<br />
-control.exe然后再弹出的小窗口中选择Setup.然后一直回车即可。然后选中apache,mysql前面的复选框。然后start<br />
-apache和mysql.之后在IE上输入127.0.0.1。如果看到XAMPP的网页。就代表安装成功。</p>
-<p>2.如果你是xp的系统，那么在C:/WINDOWS/system32/drivers/etc下有个hosts文件。里面有一行为 127.0.0.1<br />
-localhost，然后你可以再添加两行 127.0.0.1                <span class="exturl" data-url="aHR0cDovL25zLm5ldA==">ns.net<i class="fa fa-external-link-alt"></i></span>，和127.0.0.1<br />
-<span class="exturl" data-url="aHR0cDovL2FkbWluLm5zLm5ldA==">admin.ns.net<i class="fa fa-external-link-alt"></i></span>。那么下次你使用ns.net也就是127.0.0.1，使用admin.ns.net也一样。</p>
-<p>3.去你刚才安装apache的目录下找到 apache/conf/extra这个文件夹中的httpd-vhosts.conf，在其中添加几行。</p>
-<p>&lt;Directory “D:/eclipse/workspace/ns_admin”&gt; AllowOverride FileInfo Order<br />
-allow,deny Allow from all </Directory> &lt;VirtualHost *:80&gt; ServerAdmin<br />
-<span class="exturl" data-url="bWFpbHRvOndlYm1hc3RlckBlZmlsbS5jb20=">webmaster@efilm.com<i class="fa fa-external-link-alt"></i></span> DocumentRoot “D:/eclipse/workspace/ns_admin” ServerName<br />
-<span class="exturl" data-url="aHR0cDovL2FkbWluLm5zLm5ldA==">admin.ns.net<i class="fa fa-external-link-alt"></i></span> ServerAlias <span class="exturl" data-url="aHR0cDovL3N0YXRpYy5hZG1pbi5ucy5uZXQ=">static.admin.ns.net<i class="fa fa-external-link-alt"></i></span> CustomLog “logs/admin.ns.net-<br />
-access.log” common ErrorLog “logs/admin.ns.net-error.log” </VirtualHost></p>
-<p>Directory和你的DocumentRoot需要对应。必须为你的发布目录（含有index.html），servername就是刚才hosts文件中的某一<br />
-个。其他的照葫芦画瓢即可。</p>
-<p>如果你想使用多虚拟主机，并且使用同一个IP。</p>
-<p>那么就应该在hosts文件中再添上一句。127.0.0.1 <span class="exturl" data-url="aHR0cDovL3d3dy54eHguY29t">www.xxx.com<i class="fa fa-external-link-alt"></i></span>  <span class="exturl" data-url="aHR0cDovL3N0YXRpYy54eHguY29t">static.xxx.com<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cDovL3h4eC5jb20=">xxx.com<i class="fa fa-external-link-alt"></i></span></p>
-<p>在apache目录的apache/conf/extra中的httpd-vhosts.conf，添加如同上面一样的一段，如下面的样子：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory &quot;D:/eclipse/workspace/ns_shop&quot;&gt; AllowOverride FileInfo Order</span><br><span class="line">allow,deny Allow from all &lt;/Directory&gt; &lt;VirtualHost *:80&gt; ServerAdmin</span><br><span class="line">webmaster@efilm.com ##这里是你的一个虚拟主机的主页所在 DocumentRoot</span><br><span class="line">&quot;D:/eclipse/workspace/ns_shop&quot; ## serverName一般没有www,不过你真要想写也可以 ServerName</span><br><span class="line">xxx.com ServerAlias www.xxx.com static.xxx.com</span><br><span class="line">##以下这两句其实是在apache的log目录中多增加两个log文件。 CustomLog &quot;logs/www.xxx.com-access.log&quot;</span><br><span class="line">common ErrorLog &quot;logs/www.xxx.com-error.log&quot; &lt;/VirtualHost&gt; &lt;Directory</span><br><span class="line">&quot;D:/eclipse/workspace/ns_admin&quot;&gt; AllowOverride FileInfo Order allow,deny Allow</span><br><span class="line">from all &lt;/Directory&gt; &lt;VirtualHost *:80&gt; ServerAdmin webmaster@efilm.com</span><br><span class="line">##这里是你的另一个虚拟主机的主页所在 DocumentRoot &quot;D:/eclipse/workspace/ns_admin&quot; ServerName</span><br><span class="line">admin.ns.net ServerAlias static.admin.ns.net CustomLog &quot;logs/admin.ns.net-</span><br><span class="line">access.log&quot; common ErrorLog &quot;logs/admin.ns.net-error.log&quot; &lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
-<p>但是你可能会遇到输入<code>www.xxx.com</code>可以出来ns_shop目录中的内容。但是输入<code>admin.ns.net</code>却依旧是ns_shop中的内容。只是咋回事呢？<br />
-原因有两个。一个是apache会自动的将找不到的域名按照第一个域名匹配。如果是这个错误，你可以调整下上面配置的两块内容的位置，让ns_shop在下，ns_a<br />
-dmin在上。这里一定要重启apache，如果找到了<code>admin.ns.net</code>，这就说明你的<code>admin.ns.net</code>没有配错。l另外也可以看看你的apach<br />
-log.如果有log生成，那可能是第二个原因：</p>
-<h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
-<h1 id="use-name-based-virtual-hosting"><a class="markdownIt-Anchor" href="#use-name-based-virtual-hosting"></a> Use name-based virtual hosting.</h1>
-<h1 id="-2"><a class="markdownIt-Anchor" href="#-2"></a> </h1>
-<p>##NameVirtualHost *:80   把这里去掉##。因为使用的name-based,所以不能再有此注释。</p>
 
       
     </div>

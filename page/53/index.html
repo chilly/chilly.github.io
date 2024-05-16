@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,126 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/05/26/2483946/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/05/26/2483946/" class="post-title-link" itemprop="url">It   Is   an   Error   to   Use   a   Section   Registered   allowDefinition='MachineToApplication'   Beyond   Application   Level</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-05-26 20:49:00" itemprop="dateCreated datePublished" datetime="2008-05-26T20:49:00+08:00">2008-05-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天遇到了这个错误。Parser   Error   Message:   It   is   an   error   to   use   a<br />
+section   registered   allowDefinition=‘MachineToApplication’   beyond<br />
+application   level.   This   error   can   be   caused   by   a   virtual<br />
+directory   not   being   configured   as   an   application   in   IIS.”</p>
+<p>发现是在web.config中多定义了一个 <authentication mode="Windows"/></p>
+<p>将其蔽掉，ok。</p>
+<p>在msdn上的英文解释：</p>
+<p>Q:   We   have   a   fully   patched   IIS   5   server   and   are<br />
+receiving   the   following   error   “Parser   Error   Message:   It   is<br />
+an   error   to   use   a   section   registered<br />
+allowDefinition=‘MachineToApplication’   beyond   application   level.   This<br />
+error   can   be   caused   by   a   virtual   directory   not   being<br />
+configured   as   an   application   in   IIS.”   Can   you   explain   what<br />
+this   means?</p>
+<p>A:   I   love   these   verbose   <span class="exturl" data-url="aHR0cDovL0FzcC5uZXQ=">Asp.net<i class="fa fa-external-link-alt"></i></span>   error   messages!   They   often<br />
+direct   you   to   the   solution   as   well   as   describe   the<br />
+problem.   You’ll   see   this   error   when   your   <span class="exturl" data-url="aHR0cDovL0FzcC5uZXQ=">Asp.net<i class="fa fa-external-link-alt"></i></span>   application<br />
+is   configured   such   that   it   uses   a   feature   like<br />
+<authentication   mode../>   or   &lt;sessionState…&gt;   that   requires   an<br />
+“Application”   be   defined   in   the   metabase,   and   that   definition<br />
+is   missing.   You   can   correct   this   by   either   removing   such<br />
+settings   from   your   web.config   files,   or   by   clicking   “Create”<br />
+on   the   Home   Directory,   Virtual   Directory,   or   Directory<br />
+properties   tab   of   a   web   site,   virtual   directory,   or<br />
+directory,   respectively.   This   location   will   require   at   least<br />
+the   Scripts   Only   permission   and   Read   permissions   as   well.</p>
+<p>说 像<authentication   mode../>   or   &lt;sessionState…&gt;<br />
+这样的东东需要一个Application元数据。 但是你却没有定义。解决方案是：要不你就把你web.config中的这样的东西去掉，要不你就在  Home<br />
+Directory,   Virtual   Directory,   or   Directory   properties   那里创建一个对应的web<br />
+site，虚拟目录和目录。那些东西至少要有Script访问级和Read的权限。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1478,109 +1598,6 @@ believe.不管结果是什么，最重要的是自己相信什么。上帝有还
 <p>2.for循环到底是怎么执行的呢？能用你的程序证明for的执行步骤吗？</p>
 <p>3.现在有100个人进行某项比赛。每次两人比赛，胜者可晋级下一轮。败者不再比赛。下一轮再两两角逐。直到第一名产生为止。问如果想选出真正的第二名，那么总共要进<br />
 行多少次比赛?</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/04/20/2309839/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/04/20/2309839/" class="post-title-link" itemprop="url">One编程组第三次题目</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-04-20 20:45:00" itemprop="dateCreated datePublished" datetime="2008-04-20T20:45:00+08:00">2008-04-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>295</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1.如何将54张扑克以  最快速度  排好序。并用程序实现。</p>
-<p>DFGH四个字母发别代表红桃，黑桃，方片，梅花四色。大王为WW，小王为II</p>
-<p>例如：红桃K为 DK，红桃2为 D2。。。。</p>
-<p>随机产生</p>
-<p>最后的顺序为</p>
-<p>DA D2 …FA F2…GA G2…HA H2…II WW</p>
-<p>如果程序不能实现，写出你的想法。</p>
-<p>2.有一个乱序的字符串类似于“a2d.2,3,2b”</p>
-<p>现在编写一段程序将所有字母放在一起，数字一起，标点一起。（原来的顺序不能被改变）</p>
-<p>变为adb2232.,（标点为英文标点）</p>
-<p>ps.另外组长发给我一篇自己的心得体会。</p>
-<p>各组选好新的组长，然后对这个任务做拆分，将每个人的任务计划发给我。</p>
-<p>以上任务相对比较简短。希望集中两天的时间搞定。</p>
 
       
     </div>

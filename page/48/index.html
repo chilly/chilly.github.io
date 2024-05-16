@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,129 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/22/3127202/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/22/3127202/" class="post-title-link" itemprop="url">Compiler Error C2071</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-22 22:46:00" itemprop="dateCreated datePublished" datetime="2008-10-22T22:46:00+08:00">2008-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>831</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天在编程时遇到这个错误</p>
+<p>错误提示：error c2071::illegal storage class</p>
+<p>然后在msdn上查了下：</p>
+<p>Compiler Error C2071</p>
+<h4 id="error-message"><a class="markdownIt-Anchor" href="#error-message"></a> Error Message</h4>
+<p>‘identifier’ : illegal storage class<br />
+_ identifier _ was declared with an invalid storage class.</p>
+<h1 id="example"><a class="markdownIt-Anchor" href="#example"></a> Example</h1>
+<p>The following sample generates C2071.</p>
+<p>[ ![](<span class="exturl" data-url="aHR0cDovL2kubXNkbi5taWNyb3NvZnQuY29tL1BsYXRmb3JtL0NvbnRyb2xzL0NvZGVTbmlwcGV0L3Jlc291cmNlcy9jb3B5">http://i.msdn.microsoft.com/Platform/Controls/CodeSnippet/resources/copy<i class="fa fa-external-link-alt"></i></span><br />
+_off.gif) Copy Code<br />
+](javascript:CopyCode(‘ctl00_rs1_mainContentContainer_ctl01other’)😉</p>
+<pre><code>// C2071.cpp
+// compile with: /c
+struct C &#123;
+   extern int i;   // C2071
+&#125;;
+struct D &#123;
+   int i;   // OK
+&#125;;
+</code></pre>
+<p>The following sample generates C2071.</p>
+<p>[ ![](<span class="exturl" data-url="aHR0cDovL2kubXNkbi5taWNyb3NvZnQuY29tL1BsYXRmb3JtL0NvbnRyb2xzL0NvZGVTbmlwcGV0L3Jlc291cmNlcy9jb3B5">http://i.msdn.microsoft.com/Platform/Controls/CodeSnippet/resources/copy<i class="fa fa-external-link-alt"></i></span><br />
+_off.gif) Copy Code<br />
+](javascript:CopyCode(‘ctl00_rs1_mainContentContainer_ctl02other’)😉</p>
+<pre><code>// C2071_b.cpp
+// compile with: /c
+typedef int x(int i) &#123; return i; &#125;   // C2071
+typedef int x;   // OK
+发现原来是错用了那些关键字。
+后来检查了一下，发现是explicit使用错误。
+我将operator=()重载使用了explicit关键字。所以去掉后程序编译通过。
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1577,102 +1700,6 @@ echo...这个命令就是为了写文件显示方便点..
 含义，很有可能错误翻译。计算机的专业文章很多还要看懂代码后做翻译，与其看别人的二义性翻译还不如自己理解下英文原版好。</p>
 <p>另外也发现一个问题，很多专业词汇根本不知道中文对应的是什么。但是英文还是好理解的。所以很有可能翻译者会生造出一个词汇。当然看翻译版看久了就会知道这两个中文词<br />
 竟然是一个英文词…所以何苦呢？开始看英文不就好了？</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/07/3028275/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/10/07/3028275/" class="post-title-link" itemprop="url">7年前的互联网世界</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-10-07 14:13:00" itemprop="dateCreated datePublished" datetime="2008-10-07T14:13:00+08:00">2008-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>210</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>google 将7年前的索引拿了出来，现在大家可以输入各种关键字看看过去的互联网世界。</p>
-<p>不过google也有没有爬到的地方。不过Google的这个活动还是蛮新奇的。</p>
-<p>Hey!everybody, we are looking back the history!</p>
-<p>使用GOOGLE 2001的索引，发现7年前的网络是啥样的，来个今昔大对比，对比那可是真是相当惊人呐。<br />
-<a target="_blank" rel="noopener" href="http://www.google.com/search2001.html"> _ http://www.google.co  m/search2001.html  _<br />
-</a></p>
 
       
     </div>

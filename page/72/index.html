@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,216 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/04/22/1575016/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/04/22/1575016/" class="post-title-link" itemprop="url">网页乱码 UTF-8与GB2312 及 JSP中文问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-04-22 21:42:00" itemprop="dateCreated datePublished" datetime="2007-04-22T21:42:00+08:00">2007-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>转至 <span class="exturl" data-url="aHR0cDovL3d3dy5zdWNuLmNvbS9ibG9nL3VzZXIuYXNwP2FjdD12aWV3JmlkPTE="> sucn <i class="fa fa-external-link-alt"></i></span> .com</p>
+<p>研究好多天了，也试过好多办法了，总结出目前发现最好的方法：<br />
+先说一下基本的东西：<br />
+&lt;%@ codepage=936%&gt;简体中文<br />
+&lt;%@ codepage=950%&gt;繁体中文<br />
+&lt;%@ codepage=65001%&gt;UTF-8<br />
+codepage指定了IIS按什么编码读取传递过来的串串（表单提交，地址栏传递等）。</p>
+<p>出乱码的原因也就是网站要整合的时候模块编码不一样引起的。<br />
+就像我的博客一样，整合的时候都会出这个问题，因为BLOG是Utf-8的，<br />
+近来很多网友都在为这个问题咨询，我尝试了很多种方法。<br />
+最方便的方法如下：<br />
+不要转换任何模块网页的编码该utf-8的还是utf-8，该Gb22312的还是Gb2312<br />
+在Utf-8模块的包文件（如conn.asp，但是要注意conn.asp必须是在第一行调用）最前面加上<br />
+&lt;%@LANGUAGE=“VBSCRIPT” CODEPAGE=“65001”%&gt;<br />
+&lt;%Session.CodePage=65001%&gt;<br />
+在GB2312模块的包文件最前面加上<br />
+&lt;%@LANGUAGE=“VBSCRIPT” CODEPAGE=“936”%&gt;<br />
+&lt;%Session.CodePage=936%&gt;<br />
+其他编码的类推。再出问题，我也帮你了了，我现在是都没问题了^^</p>
+<p>JSP中文问题</p>
+<p>一、JSP页面显示乱码二、表单提交中文时出现乱码三、数据库连<br />
+大家在JSP的开发过程中，经常出现中文乱码的问题，可能一至困扰着您，我现在把我在JSP开发中遇到的中文乱码的问题及解决办法写出来供大家参考。</p>
+<p>一、JSP页面显示乱码<br />
+下面的显示页面(display.jsp)就出现乱码：</p>
+<html>  
+<head>  
+<title>JSP的中文处理</title>  
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">  
+</head>  
+<body>  
+<%  
+out.print("JSP的中文处理");  
+%>  
+</body>  
+</html>  
+对不同的WEB服务器和不同的JDK版本，处理结果就不一样。原因：服务器使用的编码方式不同和浏览器对不同的字符显示结果不同而导致的。解决办法：在JSP页面中指
+定编码方式(gb2312),即在页面的第一行加上：<%@ page contentType="text/html;
+charset=gb2312"%>，就可以消除乱码了。完整页面如下：  
+<%@ page contentType="text/html; charset=gb2312"%>  
+<html>  
+<head>  
+<title>JSP的中文处理</title>  
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">  
+</head>  
+<body>  
+<%  
+out.print("JSP的中文处理");  
+%>  
+</body>  
+</html>  
+<p>二、表单提交中文时出现乱码<br />
+下面是一个提交页面(submit.jsp)，代码如下：</p>
+<html>  
+<head>  
+<title>JSP的中文处理</title>  
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">  
+</head>  
+<body>  
+<form name="form1" method="post" action="process.jsp">  
+<div align="center">  
+<input type="text" name="name">  
+<input type="submit" name="Submit" value="Submit">  
+</div>  
+</form>  
+</body>  
+</html>  
+下面是处理页面(process.jsp)代码：  
+<%@ page contentType="text/html; charset=gb2312"%>  
+<html>  
+<head>  
+<title>JSP的中文处理</title>  
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">  
+</head>  
+<body>  
+<%=request.getParameter("name")%>  
+</body>  
+</html>  
+如果submit.jsp提交英文字符能正确显示，如果提交中文时就会出现乱码。原因：浏览器默认使用UTF-8编码方式来发送请求，而UTF-8和GB2312编码
+方式表示字符时不一样，这样就出现了不能识别字符。解决办法:通过request.setCharacterEncoding("gb2312")对请求进行统一编码
+，就实现了中文的正常显示。修改后的process.jsp代码如下：  
+<%@ page contentType="text/html; charset=gb2312"%>  
+<%  
+request.seCharacterEncoding("gb2312");  
+%>  
+<html>  
+<head>  
+<title>JSP的中文处理</title>  
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">  
+</head>  
+<body>  
+<%=request.getParameter("name")%>  
+</body>  
+</html>  
+<p>三、数据库连接出现乱码<br />
+只要涉及中文的地方全部是乱码，解决办法：在数据库的数据库URL中加上useUnicode=true&amp;characterEncoding=GBK就OK了。</p>
+<p>四、数据库的显示乱码<br />
+在mysql4.1.0中,varchar类型，text类型就会出现中文乱码，对于varchar类型把它设为binary属性就可以解决中文问题，对于text类<br />
+型就要用一个编码转换类来处理，实现如下：<br />
+public class Convert {<br />
+/** 把ISO-8859-1码转换成GB2312<br />
+*/<br />
+public static String ISOtoGB(String iso){<br />
+String gb;<br />
+try{<br />
+if(iso.equals(“”) || iso == null){<br />
+return “”;<br />
+}<br />
+else{<br />
+iso = iso.trim();<br />
+gb = new String(iso.getBytes(“ISO-8859-1”),“GB2312”);<br />
+return gb;<br />
+}<br />
+}<br />
+catch(Exception e){<br />
+System.err.print(“编码转换错误：”+e.getMessage());<br />
+return “”;<br />
+}<br />
+}<br />
+}<br />
+把它编译成class，就可以调用Convert类的静态方法ISOtoGB()来转换编码。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1339,188 +1549,6 @@ WAIT_ABANDONED代表操作失败。  ReleaseMutex(hMutex）相当于V（）操�
 参数是个void指针，一般用来传函数的参数。如果想传多个参数只要把那个指针指向一个结构体就可以。到函数那里再转换为相应的结构体指针就可以了。</p>
 <p>Sleep（5000L）；这个函数一般是用来让线程睡眠的。参数是unsigned long，现在是睡5秒。<br />
 这只是多线程的编程常用到的几个函数。对于多线程编程还要注意同步和死锁，在这篇文字就不讨论了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/03/29/1545814/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/03/29/1545814/" class="post-title-link" itemprop="url">jdk1.5+myeclipse+tomcat5.0+eclipse配置安装发布手册</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-03-29 21:02:00" itemprop="dateCreated datePublished" datetime="2007-03-29T21:02:00+08:00">2007-03-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>用Eclipse3.1 + Myeclipse4.0 + Tomcat5.0 + j2sdk1.5<br />
-搭建J2EE开发环境(转自<span class="exturl" data-url="aHR0cDovL2hkZnlxLmRpeS5teXJpY2UuY29tLw==">http://hdfyq.diy.myrice.com/<i class="fa fa-external-link-alt"></i></span>)</p>
-<p>一、安装j2sdk1.5，设定环境变量。</p>
-<p>我的安装目录是 ** D:/j2sdk ** 。 所以设定环境变量如下：</p>
-<p>操作： My Computer(右键) ----&gt; Properties ----&gt; Advanced ----&gt; Environment<br />
-Variables :</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/1.PNG" alt="" /></p>
-<p>设定环境变量为：<br />
-1. (新建)JAVA_HOME: D:/j2sdk<br />
-2. (新建)CLASSPATH: .;D:/j2sdk/lib/dt.jar;D:/j2sdk/lib/tools.jar<br />
-(注意：点号不能省略，表示当前目录)<br />
-3. 编辑PATH的变量值，在后面加上 ;%JAVA_HOME%/bin （注意：要有分号隔开）<br />
-到这里，j2sdk安装完毕，用命令简单测试一下: java -version</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/2.PNG" alt="" /></p>
-<p>二、安装Tomcat5.0</p>
-<p>去下载一个Tomcat的zip版， 我用的是 jakarta-tomcat-5.0.28.zip ， 不下安装版的目的是可以使用多个Tomcat。</p>
-<p>直接解压缩到 G 盘：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/3.PNG" alt="" /></p>
-<p>三、安装Eclipse3.1</p>
-<p>下载地址： <a target="_blank" rel="noopener" href="http://www.eclipse.org/downloads/index.php"> http://www.eclipse.org/downloads/index.php<br />
-</a> 找到下面的页面：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/4.PNG" alt="" /></p>
-<p>找个亚洲的服务器下载,速度会快一点。在flashget中如下：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/5.PNG" alt="" /></p>
-<p>直接解压缩就可以用了，我是解压缩在 G 盘：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/6.PNG" alt="" /></p>
-<p>到这里， Eclipse3.1 安装完毕。</p>
-<p>四、安装 Myeclipse4.0 (myeclipse不是免费的，所以我们先下载一个试用版，再去网上下载一个注册机)</p>
-<p>下载版本： MyEclipse Enterprise Workbench 4.0 GA for Windows 98/2000/XP (8/29/2005)<br />
-如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/7.PNG" alt="" /></p>
-<p>在flashget下载中显示如下：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/8.PNG" alt="" /></p>
-<p>下载完成后，开始安装：</p>
-<p>1. 选择你的eclipse所在目录，其它都点下一步，默认安装。</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/9.PNG" alt="" /></p>
-<p>2.安装完毕之后，找到myeclipse的安装目录， 如下图所示：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/10.PNG" alt="" /></p>
-<p>3. 将features和plugins这2个目录复制出来。这样做的目的是为了在一台电脑上可以使用多个独立的eclipse开发平台。如下图所示：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/11.PNG" alt="" /></p>
-<p>4. 将刚才安装的 myeclipse 删除（反安装）。</p>
-<p>5. 将第3步复制的features和plugins这2个目录, 覆盖到 G</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/12.PNG" alt="" /></p>
-<p>解释一下上面做的原因： 因为myeclipse是eclipse的插件，所以只要把features和plugins这2个目录覆盖在eclipse的相应目录，e<br />
-clipse会自动认出这些插件。</p>
-<p>到这一步，myeclipse算是安装完毕。 G 盘目录如下：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/13.PNG" alt="" /></p>
-<p>五、破解myeclipse4.0</p>
-<p>1.去google搜索下载一个注册机。如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/14.PNG" alt="" /></p>
-<p>2. 输入名字，算号，如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/15.PNG" alt="" /></p>
-<p>3.运行eclipse.exe, 设定同目录下的workspace， 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/16.PNG" alt="" /></p>
-<p>4.myeclipse插件已经被自动认出，如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/17.PNG" alt="" /></p>
-<p>5. 点击 Window ----&gt; Preferences ----&gt; Subscription ----&gt; Enter Subscription,<br />
-输入注册码，破解myeclipse，下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/18.PNG" alt="" /></p>
-<p>到这里，myeclipse破解完毕。</p>
-<p>六、设定myeclipse的 jdk 和 tomcat 服务器。</p>
-<p>1. 增加一个jre， 点击 Window ----&gt; Preferences ----&gt; Installed JREs ----&gt; Add<br />
-如下图：（找到自己的j2sdk安装目录）</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/19.PNG" alt="" /></p>
-<p>2. 指定Tomcat服务器，Window ----&gt; Preferences ----&gt; Tomcat5,<br />
-并设定该tomcat所用的jre为我们上一步新增的。如下面2个图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/20.PNG" alt="" /></p>
-<p><img src="http://hdfyq.diy.myrice.com/images/21.PNG" alt="" /></p>
-<p>到这一步，我们的开发环境就搭建完毕了。</p>
-<p>七、新建一个项目来试一试？</p>
-<p>1. 点击 File ----&gt; New ----&gt; Project , 选择Web Project， 再点下一步， 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/22.PNG" alt="" /></p>
-<p>2. 在 Project Name 中输入test， 点 finish。 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/23.PNG" alt="" /></p>
-<p>3. 开发工具自动生成了test项目。 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/24.PNG" alt="" /></p>
-<p>4.点击 WebRoot ----&gt; (右键)New ----&gt; JSP , 新建一个 JSP 页面 （hello.jsp）， 如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/25.PNG" alt="" /></p>
-<p>5. 编辑器生成的是jsp文件是按模板生成的， 简单修改一下， 代码如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/26.PNG" alt="" /></p>
-<p>6. 再用同样的方法， 新建一个叫 hello_result.jsp 的JSP文件， 代码如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/27.PNG" alt="" /></p>
-<p>7. deploy（部署）这个test项目。 如下图： （用黑线画了的按钮就是 deploy 的按钮） ， 在弹出窗口点 Add， 部署test项目。</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/28.PNG" alt="" /></p>
-<p>8. 启动Tomcat服务器。如下图： （用黑线画了的按钮就是 启动Tomcat 的按钮）</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/29.PNG" alt="" /></p>
-<p>9. Tomcat 启动输出信息如下图：</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/30.PNG" alt="" /></p>
-<p>10. 网页访问和结果图.</p>
-<p><img src="http://hdfyq.diy.myrice.com/images/31.PNG" alt="" /></p>
-<p><img src="http://hdfyq.diy.myrice.com/images/32.PNG" alt="" /></p>
-<p>大家可以去eclipse的workspace目录下看看test项目的代码，也可以去Tomcat的webapps目录下，看看部署之后的 test项目的结构。</p>
 
       
     </div>

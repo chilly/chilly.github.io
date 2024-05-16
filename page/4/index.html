@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">796</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-count">757</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,184 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/17/44357935/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2015/03/17/44357935/" class="post-title-link" itemprop="url">实现UML 序列图 -- Csdn MarkDown  第六篇 技术篇</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-03-17 23:06:00" itemprop="dateCreated datePublished" datetime="2015-03-17T23:06:00+08:00">2015-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这一篇开始讨论代码层面的问题。主要是markdown的功能的设计实现。</p>
+<p>这一篇先从markdown外围的代码开始讲起：<br />
+UML序列图是从 <a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams"> https://github.com/bramp/js-sequence-diagrams<br />
+</a> copy得到的。</p>
+<p>当如这个UML代码还用到了两个JS,功能库和画图.</p>
+<pre><code>&lt;script src=&quot;underscore-min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;raphael-min.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>首先讲讲这个JS最核心的类：<br />
+[ <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYy9zZXF1ZW5jZS0=">https://github.com/bramp/js-sequence-diagrams/blob/master/src/sequence-<i class="fa fa-external-link-alt"></i></span><br />
+diagram.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYw==">https://github.com/bramp/js-sequence-diagrams/blob/master/src<i class="fa fa-external-link-alt"></i></span><br />
+/sequence-diagram.js)</p>
+<p>首先这个类分为其实使用两种风格的。一种就是现在CSDN采用的风格，叫做simple. 另外一种是手绘风格，叫做hand。定义如下：</p>
+<pre><code>var themes = &#123;
+simple : RaphaelTheme,
+hand : HandRaphaelTheme
+&#125;;
+Diagram.prototype.drawSVG = function (container, options) &#123;
+var default_options = &#123;
+theme: 'hand'
+&#125;;
+options = _.defaults(options || &#123;&#125;, default_options);
+if (!(options.theme in themes))
+throw new Error(&quot;Unsupported theme: &quot; + options.theme);
+var drawing = new themes[options.theme](this);
+drawing.draw(container);
+&#125;; // end of drawSVG
+</code></pre>
+<p>drawSVG是最外层JS要画图调用的方法。例如：</p>
+<pre><code>&lt;div id=&quot;diagram&quot;&gt;Diagram will be placed here&lt;/div&gt;
+&lt;script src=&quot;sequence-diagram-min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt; 
+  var diagram = Diagram.parse(&quot;A-&gt;B: Does something&quot;);
+  diagram.drawSVG('diagram');
+&lt;/script&gt;
+</code></pre>
+<p>下面就可以画出图形。所以drawSVG是核心入口。</p>
+<p>drawSVG的实现过程中，最重要的一句：</p>
+<pre><code>drawing.draw(container);
+</code></pre>
+<p>这一句调用的draw function定义如下：</p>
+<pre><code>    draw : function(container) &#123;
+        var diagram = this.diagram;
+        this.init_paper(container);
+        this.init_font();
+        this.layout();
+        var title_height = this._title ? this._title.height : 0;
+        this._paper.setStart();
+        this._paper.setSize(diagram.width, diagram.height);
+        var y = DIAGRAM_MARGIN + title_height;
+        this.draw_title();
+        this.draw_actors(y);
+        this.draw_signals(y + this._actors_height);
+        this._paper.setFinish();
+&#125;,
+</code></pre>
+<p>这几句看起来平淡无奇，就是初始化背景，初始化字体，初始化各种，然后画标题，画角色（也就是序列图中的实体），画调用箭头。</p>
+<p>这里面看似简单，但是最为繁琐的就是:</p>
+<pre><code>this.layout();
+</code></pre>
+<p>布局：要遍历所有的要画到画布上的东西，要提前预知，各个东西的长宽，然后根据长宽，各个东西相距的距离，算出画布的尺寸。这段JS并没有做到固定长宽后，各个东西等<br />
+比缩放。</p>
+<p>这个做完之后，开始画角色（也就是实体）</p>
+<p>Created with Raphaël 2.1.2  A  A  这就是角色A  包括上下两个方块和中间的竖线</p>
+<p>再然后，两个角色之间是有间距的。例如：</p>
+<p>Created with Raphaël 2.1.2  距离是什么？  A  A  B  B  我们两个角色之间的间距  包括上下两个方块和中间的竖线</p>
+<p>间距的计算并不是很容易，首先确定每个角色的基本的高和宽，然后根据将信号signal计算在内（signal 包括两种，一种是 箭头关系，另外一种是 注释框）所<br />
+以大家可以看到注释框和箭头也是有从上到下的顺序的。signal的宽度和字的个数以及宽度均有关系(这里计算较为复杂，此处略去太多字…有兴趣的看源码)。</p>
+<p>然后顺序遍历，依次确定A,B,C…各个角色所在的绝对坐标。</p>
+<p>每一个signal都是有高度的，将所有的signal 高度加和，就得到了下端角色方框的坐标。然后连线就大功告成。</p>
+<p>看源码发现了许多没有的功能…</p>
+<p>例如 UML中增加title<br />
+以及UML中注释框除了Right, Left, 还有Over, 对于Over还可以置于多个角色之上。</p>
+<p>title 和 Over</p>
+<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">title: 距离是什么？</span><br><span class="line"></span><br><span class="line">A-&gt;B: 我们两个角色之间的间距</span><br><span class="line">Note Over A,B: 包括上下两个方块和中间的竖线</span><br><span class="line">Note Over A: I&#x27;m A</span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>表现：</p>
+<p>Created with Raphaël 2.1.2  距离是什么？  A  A  B  B  我们两个角色之间的间距  包括上下两个方块和中间的竖线<br />
+I’m A</p>
+<p>[ <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYy9qcXVlcnkt">https://github.com/bramp/js-sequence-diagrams/blob/master/src/jquery-<i class="fa fa-external-link-alt"></i></span><br />
+plugin.js ](<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JyYW1wL2pzLXNlcXVlbmNlLWRpYWdyYW1zL2Jsb2IvbWFzdGVyL3NyYw==">https://github.com/bramp/js-sequence-diagrams/blob/master/src<i class="fa fa-external-link-alt"></i></span><br />
+/jquery-plugin.js)</p>
+<p><img src="http://img.blog.csdn.net/20150317225017889" alt="这里写图片描述" /></p>
+<p>这个类中，如果没有定义option属性，那么就只能用simple的形式了。感觉CSDN的dev好像没有定义这个option. 我这边也无能为力。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/diagram.js%5D"> [ https://github.com/bramp/js-sequence-diagrams/blob/master/src/diagram.js]<br />
+</a><br />
+这个类没有什么好讲的，就是通过parser构造出来的实体类。</p>
+<p>剩下的两个gammar JS. 这种词法解析的放到后面一篇再说. 网络实在不好，啥都timeout, 另外也该睡觉了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1694,132 +1872,6 @@ svn版本代码写的搓。只好手工改代码：</p>
 <p>另外 git TAG和 svn开一个tag的性质不是很一致。 git tag依附于某一个commit. 而且是不变化的，从这个点开出来的所有分支，都从属于这<br />
 个TAG。svn的tag就是开了分支，可以从这个分支随意提交代码。从svn的这个TAG开出来的所有分支和这个svn TAG毛关系都没有。</p>
 <p>好吧。说了这么多，其实我们项目就像钉子，而svn/git都不是锤子。虽然是钉子，但是钉子数目很多。遇到以上坑的，看到这篇文章希望能很快的跳过坑去~~</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/11/14/41085013/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/11/14/41085013/" class="post-title-link" itemprop="url">CSA 第五届讨论会 畅想</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2014-11-14 23:02:00" itemprop="dateCreated datePublished" datetime="2014-11-14T23:02:00+08:00">2014-11-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>参加了第五届CSA云安全联盟讨论会。人实在是太多，所以又没有找到座位。站了很久，弥补了长时间坐着办公的不足，一次补了回来。首先先介绍一下信用云，其实是分开的<br />
-：</p>
-<h2 id="信-用-云"><a class="markdownIt-Anchor" href="#信-用-云"></a> 信-用-云</h2>
-<h3 id="1-信-用-云"><a class="markdownIt-Anchor" href="#1-信-用-云"></a> 1. 信-用-云</h3>
-<p>什么是信用云。就是可信，可用，云服务。可信是安全的子集，可用就是可用性，云计算就是弹性可伸缩。</p>
-<h3 id="2-信"><a class="markdownIt-Anchor" href="#2-信"></a> 2. 信</h3>
-<p>徐博士&amp;胡老师。各自对信做了解释。胡老师讲：信基于两种，经验 or TCG（Trust Computing Group）。而徐博也讲：信是一种依赖本身可信的<br />
-源头，由此源头推倒出来一切可信。我个人觉得对于可信计算模型的构建其实分两种：一种是乐观可信，包括胡老师讲的规则，TCG, 也包括徐博讲的公式定理。还有一种就<br />
-是以不信为基础构建的悲观信任模型，认为一切都是不可信的。包括自己的程序、规则、以及动态生成的程序。对于第一种模型，人定下的规则权重最高。对于第二种模型，人定<br />
-的规则和机器生成的规则权重一致，甚至比生成的权重更低。</p>
-<p>第一种模型是可控模型，而第二种模型是不可控模型，如果第二种模型能拥有智能，那终将成为无法攻破的模型。</p>
-<h3 id="3-用"><a class="markdownIt-Anchor" href="#3-用"></a> 3. 用</h3>
-<p>在可用性方面，各个云都做的不错。除了所谓的云震，可靠性等方面都比较正常。但是性能上，以虚拟机和OpenStack为代表的虚拟os云永远比单机性能差。这是必然<br />
-的。虚拟层做多了，就会和用360软件一样，把高性能都消耗在了自己身上。</p>
-<h3 id="4-云"><a class="markdownIt-Anchor" href="#4-云"></a> 4. 云</h3>
-<p>所谓云，水平扩展性好。当然可能和弹性无关，因为只能延展不能收缩。例如已经有上千台虚拟机部署了大量的应用的云平台，现在请缩减1/3的实体机器。可能资源上也够用<br />
-，但是CPU等开销绝对猛增。收缩后可能部分的虚拟机就挂掉了，因为资源不可能真正的平均分配，也因为云平台不能真正的预测到各个云服务的动态特征。</p>
-<p>根据上面的几点，我给出我心中的信用云的几点特征：</p>
-<p>1. APP之间的隔离。App A不应影响App B。</p>
-<p>2. 一切都是不可信的。一切也都是不可靠的。</p>
-<p>3. 资源量远超需求量时可以做到平均分配。</p>
-<p>4. 云自身损耗性能的代价远小于创造价值的利润。</p>
-<p>5. 系统的可靠性由异构的节点+备份的数据+迁移的能力保障。<br />
-6. 有良好的扩展性和较长的生命力。</p>
-<h2 id="云email安全问题"><a class="markdownIt-Anchor" href="#云email安全问题"></a> 云email安全问题</h2>
-<p>email加密群发，群转发，云中检索和反垃圾<br />
-其实关键点就在于 信息可以被加密的双方完全查看外，还可以被授权的第三方<br />
-完全或者部分查看。对称密钥解决不了这个问题，非对称密钥也解决不了。另外还应该让非用户授权的第三方通过某种方式部分查看，例如反垃圾等。</p>
-<h2 id="云对抗"><a class="markdownIt-Anchor" href="#云对抗"></a> 云对抗</h2>
-<p>大潘说数据都是有结构的，这观点我很赞同。数据也是没有结构的，这观点我也赞成。因为以现在人类的观点划分数据，可能并不科学。是混沌的，还是泾渭分明的。如果利用数<br />
-据特性进行优化和改造，就应该承认数据是有结构的。如果抽象数据以包容一切，那就应该是没有结构的。</p>
-<p>大潘看上去大太多。嗯，叫老潘比较合适。不过可能老这个词很不中听。所以还是大比较合适。<br />
-ADosA 这是一个抗DDos的联盟。就是希望集群的攻击能够狙击到发起的地方。用集群对抗集群，才是解决之道。头一次听说这个联盟的存在。</p>
-<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
-<p>这次云安全联盟会议，大都是讲的云平台的安全问题。而我个人更加关注云中系统的安全问题。不算是对路，所以前几个对于云网络的防御和云层次的安全没有细细琢磨。不过扩<br />
-大一下知识面也总没有坏处。想扩大知识面的可以抽空看一下GB/T27000安全协议簇和CCM 矩阵。</p>
 
       
     </div>
