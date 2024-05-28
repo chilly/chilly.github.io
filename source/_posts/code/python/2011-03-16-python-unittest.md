@@ -6,7 +6,7 @@ wordpress_id: 359
 comments: true
 tags: ["code", "python", "python", "test", "unit"]
 categories:
-- code
+- [code,python]
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />
@@ -17,7 +17,8 @@ first you should import unittest, and write a class inherit unittest.TestCase.
 this is an example:
 
 
-{% codeblock %}import unittest
+```python
+import unittest
 
 class TestFunctions(unittest.TestCase):    
     def test_range(self):
@@ -25,6 +26,13 @@ class TestFunctions(unittest.TestCase):
           self.assertEqual(i,i)
 
 if __name__ == "__main__":
-    TestFunctions.main(){% endcodeblock %}
+    TestFunctions.main()
 
-<div id="_mcePaste">In this example, TestFunctions.main() will call all functions like test_XXX between setUp() and tearDown(). The sequence is setUp()---&gt;test_XXX()---&gt;tearDown()---&gt;setUp()---&gt;test_XXX()---&gt;tearDown().....</div>
+```
+
+
+<div id="_mcePaste">In this example, TestFunctions.main() will call all functions like test_XXX between setUp() and tearDown(). The sequence is 
+```
+setUp()--->test_XXX()--->tearDown()--->setUp()--->test_XXX()--->tearDown().....
+```
+

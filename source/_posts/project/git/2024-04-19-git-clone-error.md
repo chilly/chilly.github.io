@@ -3,7 +3,7 @@ title: 2024-04-19-git-clone-error
 date: 2024-04-19 00:03:41
 tags: [git,network]
 category:
-- [knowledge, git]
+- [project, git]
 ---
 
 执行：

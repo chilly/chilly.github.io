@@ -6,7 +6,7 @@ wordpress_id: 389
 comments: true
 tags: ["connect", "error", "python", "python", "see-hear", "socket"]
 categories:
-- code
+- [code,python]
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />
@@ -21,7 +21,11 @@ for example.
 Your server socket listens host='localhost', port=7777, and your client want to connect host='192.168.12.XXX', port=7777. They are not same. 'localhost' is '127.0.0.1', and your client want to connect host='192.168.12.XXX'. Even there is only one net-adapter and one network configure. So change host which your server socket listened to '192.168.12.XXX'. 
 This error will occur in :
 
+```python
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(('192.168.12.XXX',7777)) # here you can not connect server
+
+```
+
 
 

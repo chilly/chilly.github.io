@@ -6,7 +6,7 @@ wordpress_id: 394
 comments: true
 tags: ["client", "code", "python", "python", "recv", "send", "server", "socket"]
 categories:
-- code
+- [code,python]
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_rich_snippet_type" content="none" />
@@ -18,9 +18,9 @@ categories:
 <meta name="_su_title" content="python,socket,server,client,send,recv" />
 <meta name="views" content="1808" />
 first we write simplest client and server.
-client:
 
 ## in client.py
+```python
 import socket
 class Client:
     def __init__(self, host , port, bufsize = 1024, timeout = 10):
@@ -39,9 +39,11 @@ class Client:
     def recv(self):
         return str(self.client.recv(self.bufsize),encoding="utf8")
 
-server:
+```
+
 
 ## in server.py
+```python
 import socket
 class Server:
     def __init__(self,port,listen = 5,timeout = 10, buf = 4096, queueSize = 10):
@@ -65,9 +67,13 @@ class Server:
             self.send(connection,'OK')
             connection.close()
 
+```
+
+
 next I will write some code to run client and server. Here is :
 
 ## in client_start.py
+```python
 from client import Client
 if __name__ == "__main__":
     c = Client('localhost',7777)
@@ -75,17 +81,24 @@ if __name__ == "__main__":
     c.send('hello')
     message = c.recv()
     print('message',message)
+```
+
 
 ## in server_start.py
+```python
+
 from server import Server
 if __name__ == "__main__":
     s = Server(7777, listen = 1000)
     s.run()
+```
+
 
 Run server_start.py firstly and then run client_start.py. You will find both client and server print messages. Then client is shut down, but server is still running. Yup. Server should not shut down in order to supply services. And shut client down to close socket connection and save resources of server. These code runs perfectly. But we still should make some improvement. Server can server many clients. When it servers one client connection, it should server other connections and not be held by the former connection. Now multi-thread is considered.
 
 ## in "run" function of Server in server.py
 ## change run function and add a new function called "serviceWaiting"
+```python
     def serviceWaiting(self, connection, address):
         print("connection:",id(connection),"address:",str(address)," connect...")
         message = self.recv(connection)
@@ -101,17 +114,24 @@ Run server_start.py firstly and then run client_start.py. You will find both cli
             connection, address = self.sock.accept()
             serverThread = Thread(target = self.serviceWaiting, args=(connection, address))
             serverThread.start()
+```
+
 
 Ok, done! Now server can server multi-clients in the same time. But only sending and receiving string is not enough for our applications.  Sending and receiving objects should be considered.
 Here we add two functions in client.py and server.py.
 
 ## we should change a function in our former code:
+```python
     def recv(self, n= -1):
         if n == -1:
             return str(self.client.recv(self.bufsize),encoding="utf8")
         else:
             return str(self.client.recv(n),encoding="utf8")
+
+```
+
 ## then we should add two function for sending and receive objects
+```python
     def recvObj(self):
         OK = 'Y'
         obj = None
@@ -166,12 +186,16 @@ Here we add two functions in client.py and server.py.
         except:
             print('client:send object Exception')
 
+
+```
+
 Here I will explain these code. 
-	<li>In sendObj(), first transform object to bytes and send the length of object. Then wait to receive "OK" message(string 'Y'). If get OK message, then use sendall() function to send all bytes out. Then wait to receive another OK message. Here we use recv(1) to only get one char in receiving queue. We should not use recv to get more information which may not be used by sendObj() function. </li>
-	<li>In recvObj(), first receive the length of object. Then send OK message back. Receive bytes by fixed buffer each time. And receiv many times until we received all bytes of object. Then transform bytes to objects and send OK message back.</li>
+- In sendObj(), first transform object to bytes and send the length of object. Then wait to receive "OK" message(string 'Y'). If get OK message, then use sendall() function to send all bytes out. Then wait to receive another OK message. Here we use recv(1) to only get one char in receiving queue. We should not use recv to get more information which may not be used by sendObj() function.
+- In recvObj(), first receive the length of object. Then send OK message back. Receive bytes by fixed buffer each time. And receiv many times until we received all bytes of object. Then transform bytes to objects and send OK message back.
 Ok. Now we should consider if the we can not connect server at first time. How do we solve this problem? The simplest idea is try many times until we connected server successfully.We should change connection() function.
 
 ## in connection function of Client in client.py
+```python
     def connect(self, count = -1):
         flag = True
         success = False
@@ -190,6 +214,10 @@ Ok. Now we should consider if the we can not connect server at first time. How d
                 else:
                     time.sleep(3)
         return success
+
+
+```
+
 
 OK. Here we solved many problems, such as multi-clients, sending and receiving objects, and connection failed.
 

@@ -4,6 +4,8 @@ title: '易中天品三国--要点记录'
 date: 2007-02-27 17:17
 comments: true
 tags: ['情感']
+categories:
+- daily
 ---
 
 失败检讨自己,成功感谢大家.  

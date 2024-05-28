@@ -4,6 +4,8 @@ title: 'csdn的评论计数器又有bug了?'
 date: 2007-02-03 08:28
 comments: true
 tags: ['']
+categories:
+- daily
 ---
 
 发现在我的主页上看到的评论数和在我登陆后后台管理的评论数不相同.

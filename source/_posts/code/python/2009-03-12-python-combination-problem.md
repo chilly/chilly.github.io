@@ -6,7 +6,7 @@ date: 2009-03-12 08:59
 comments: true
 tags: ['python','input']
 categories:
-- code
+- [code,python]
 ---
 
 改动一下排列的代码，迅速变成组合问题的求解：

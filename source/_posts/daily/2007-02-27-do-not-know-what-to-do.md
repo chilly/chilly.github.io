@@ -4,6 +4,8 @@ title: '不知道干些什么'
 date: 2007-02-27 11:39
 comments: true
 tags: ['blog']
+categories:
+- daily
 ---
 
 整天呆在家里,上网看看blog.竟也把James Gosling的blog找到了.但是还是没有把他的邮箱找到.算了以后再找吧. 在家里真的不能静下心去学英语

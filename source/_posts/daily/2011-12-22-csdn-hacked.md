@@ -6,7 +6,7 @@ wordpress_id: 527
 comments: true
 tags: ["csdn", "see-hear"]
 categories:
-- knowledge
+- daily
 ---
 <meta name="_edit_last" content="1" />
 <meta name="_su_description" content="csdn password" />
