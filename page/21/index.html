@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,138 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/03/17/2011-03-17-message-queue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2011/03/17/2011-03-17-message-queue/" class="post-title-link" itemprop="url">Use Message Queue and Message Status Table to Solute Distribute Transcation</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2011-03-17 00:00:00" itemprop="dateCreated datePublished" datetime="2011-03-17T00:00:00+08:00">2011-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 11:46:37" itemprop="dateModified" datetime="2023-10-07T11:46:37+08:00">2023-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_rich_snippet_type" content="none" />
+<meta name="_su_title" content="message,queue" />
+<meta name="views" content="362" />
+<meta name="_wp_old_slug" content="用消息队列和消息应用状态表来消除分布式事务" />
+copy from :<span class="exturl" data-url="aHR0cDovL3JkYy50YW9iYW8uY29tL2Jsb2cvY3MvP3A9Njcx">http://rdc.taobao.com/blog/cs/?p=671<i class="fa fa-external-link-alt"></i></span>
+<p><strong>用消息队列和消息应用状态表来消除分布式事务</strong></p>
+<p>由于数据量的巨大，大部分Web应用都需要部署很多个数据库实例。这样，有些用户操作就可能需要去修改多个数据库实例中的数据。传统的解决方法是使用分布式事务保证数据的全局一致性，经典的方法是使用两阶段提交协议。</p>
+<p>长期以来，分布式事务提供的优雅的全局ACID保证麻醉了应用开发者的心灵，很多人都不敢越雷池一步，想像没有分布式事务的世界会是怎样。如今就如MySQL和PostgreSQL这类面向低端用户的开源数据库都支持分布式事务了，开发者更是沉醉其中，不去考虑分布式事务是否给系统带来了伤害。</p>
+<p>事实上，有所得必有所失，分布式事务提供的ACID保证是以损害系统的可用性、性能与可伸缩性为代价的。只有在参与分布式事务的各个数据库实例都能够正常工作的前提下，分布式事务才能够顺利完成，只要有一个工作不正常，整个事务就不能完成。这样，系统的可用性就相当于参加分布式事务的各实例的可用性之积，实例越多，可用性下降越明显。从性能和可伸缩性角度看，首先是事务的总持续时间通常是各实例操作时间之和，因为一个事务中的各个操作通常是顺序执行的，这样事务的响应时间就会增加很多；其次是一般Web应用的事务都不大，单机操作时间也就几毫秒甚至不到1毫秒，一但涉及到分布式事务，提交时节点间的网络通信往返过程也为毫秒级别，对事务响应时间的影响也不可忽视。由于事务持续时间延长，事务对相关资源的锁定时间也相应增加，从而可能严重增加了并发冲突，影响到系统吞吐率和可伸缩性。</p>
+<p>正是由于分布式事务有以上问题，eBay在设计上就不采用分布式事务，而是通过其它途径来解决数据一致性问题。其中使用的最重要的技术就是消息队列和消息应用状态表。</p>
+<p>举个例子。假设系统中有以下两个表<br />
+user(id, name, amt_sold, amt_bought)<br />
+transaction(xid, seller_id, buyer_id, amount)<br />
+其中user表记录用户交易汇总信息，transaction表记录每个交易的详细信息。</p>
+<p>这样，在进行一笔交易时，若使用事务，就需要对数据库进行以下操作：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> transaction <span class="keyword">VALUES</span>(xid, $seller_id, $buyer_id, $amount);</span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> amt_sold <span class="operator">=</span> amt_sold <span class="operator">+</span> $amount <span class="keyword">WHERE</span> id <span class="operator">=</span> $seller_id;</span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> amt_bought <span class="operator">=</span> amt_bought <span class="operator">+</span> $amount <span class="keyword">WHERE</span> id <span class="operator">=</span> $buyer_id;</span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></table></figure>
+<p>即在transaction表中记录交易信息，然后更新卖家和买家的状态。</p>
+<p>假设transaction表和user表存储在不同的节点上，那么上述事务就是一个分布式事务。要消除这一分布式事务，将它拆分成两个子事务，一个更新transaction表，一个更新user表是不行的，因为有可能transaction表更新成功后，更新user失败，系统将不能恢复到一致状态。</p>
+<p>解决方案是使用消息队列。如下所示，先启动一个事务，更新transaction表后，并不直接去更新user表，而是将要对user表进行的更新插入到消息队列中。另外有一个异步任务轮询队列内容进行处理。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> transaction <span class="keyword">VALUES</span>(xid, $seller_id, $buyer_id, $amount);</span><br><span class="line">put_to_queue “<span class="keyword">update</span> <span class="keyword">user</span>(“seller”, $seller_id, amount);</span><br><span class="line">put_to_queue “<span class="keyword">update</span> <span class="keyword">user</span>(“buyer”, $buyer_id, amount);</span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> message <span class="keyword">in</span> queue</span><br><span class="line"><span class="keyword">begin</span>;</span><br><span class="line">dequeue message;</span><br><span class="line">if message.type <span class="operator">=</span> “seller” <span class="keyword">then</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> amt_sold <span class="operator">=</span> amt_sold <span class="operator">+</span> message.amount <span class="keyword">WHERE</span> id <span class="operator">=</span> message.user_id;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> amt_bought <span class="operator">=</span> amt_bought <span class="operator">+</span> message.amount <span class="keyword">WHERE</span> id <span class="operator">=</span> message.user_id;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>上述解决方案看似完美，实际上还没有解决分布式问题。为了使第一个事务不涉及分布式操作，消息队列必须与transaction表使用同一套存储资源，但为了使第二个事务是本地的，消息队列存储又必须与user表在一起。这两者是不可能同时满足的。</p>
+<p>如果消息具有操作幂等性，也就是一个消息被应用多次与应用一次产生的效果是一样的话，上述问题是很好解决的，只要将消息队列放到transaction表一起，然后在第二个事务中，先应用消息，再从消息队列中删除。由于消息队列存储与user表不在一起，应用消息后，可能还没来得及将应用过的消息从队列中删除时系统就出故障了。这时系统恢复后会重新应用一次这一消息，由于幂等性，应用多次也能产生正确的结果。</p>
+<p>但实际情况下，消息很难具有幂等性，比如上述的UPDATE操作，执行一次和执行多次的结束显然是不一样的。解决这一问题的方法是使用另一个表记录已经被成功应用的消息，并且这个表使用与user表相同的存储。假设增加以下表 message_applied(msg_id)记录被成功应用的消息，则产生最终的解决方案如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> transaction <span class="keyword">VALUES</span>(xid, $seller_id, $buyer_id, $amount);</span><br><span class="line">put_to_queue “<span class="keyword">update</span> <span class="keyword">user</span>(“seller”, $seller_id, amount);</span><br><span class="line">put_to_queue “<span class="keyword">update</span> <span class="keyword">user</span>(“buyer”, $buyer_id, amount);</span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> message <span class="keyword">in</span> queue</span><br><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> cnt <span class="keyword">FROM</span> message_applied <span class="keyword">WHERE</span> msg_id <span class="operator">=</span> message.id;</span><br><span class="line">if cnt <span class="operator">=</span> <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">if message.type <span class="operator">=</span> “seller” <span class="keyword">then</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> amt_sold <span class="operator">=</span> amt_sold <span class="operator">+</span> message.amount <span class="keyword">WHERE</span> id <span class="operator">=</span> message.user_id;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> amt_bought <span class="operator">=</span> amt_bought <span class="operator">+</span> message.amount <span class="keyword">WHERE</span> id <span class="operator">=</span> message.user_id;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> message_applied <span class="keyword">VALUES</span>(message.id);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line">if 上述事务成功</span><br><span class="line">dequeue message</span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> message_applied <span class="keyword">WHERE</span> msg_id <span class="operator">=</span> message.id;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>我们来仔细分析一下：<br />
+1、消息队列与transaction使用同一实例，因此第一个事务不涉及分布式操作；<br />
+2、message_applied与user表在同一个实例中，也能保证一致性；<br />
+3、第二个事务结束后，dequeue message之前系统可能出故障，出故障后系统会重新从消息队列中取出这一消息，但通过message_applied表可以检查出来这一消息已经被应用过，跳过这一消息实现正确的行为；<br />
+4、最后将已经成功应用，且已经从消息队列中删除的消息从message_applied表中删除，可以将message_applied表保证在很小的状态（不清除也是可以的，不影响系统正确性）。由于消息队列与message_applied在不同实例上，dequeue message之后，将对应message_applied记录删除之前可能出故障。一但这时出现故障，message_applied表中会留下一些垃圾内容，但不影响系统正确性，另外这些垃圾内容也是可以正确清理的。</p>
+<p>虽然由于没有分布式事务的强一致性保证，使用上述方案在系统发生故障时，系统将短时间内处于不一致状态。但基于消息队列和消息应用状态表，最终可以将系统恢复到一致。使用消息队列方案，解除了两个数据库实例之间的紧密耦合，其性能和可伸缩性是分布式事务不可比拟的。</p>
+<p>当然，使用分布式事务有助于简化应用开发，使用消息队列明显需要更多的工作量，两者各有优缺点。个人观点是，对于时间紧迫或者对性能要求不高的系统，应采用分布式事务加快开发效率，对于时间需求不是很紧，对性能要求很高的系统，应考虑使用消息队列方案。对于原使用分布式事务，且系统已趋于稳定，性能要求高的系统，则可以使用消息队列方案进行重构来优化性能。</p>
+<p>注: 本文主要取材于eBay的工程师Dan Pritchet写的这篇文章。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -432,7 +564,7 @@ Google search updating speed is so fast that it shows my blog new post in few se
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/03/16/2011-03-16-python-unittest/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/03/16/code/python/2011-03-16-python-unittest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -450,7 +582,7 @@ Google search updating speed is so fast that it shows my blog new post in few se
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/03/16/2011-03-16-python-unittest/" class="post-title-link" itemprop="url">Python Unittest</a>
+          <a href="/2011/03/16/code/python/2011-03-16-python-unittest/" class="post-title-link" itemprop="url">Python Unittest</a>
         </h2>
 
         <div class="post-meta-container">
@@ -468,7 +600,7 @@ Google search updating speed is so fast that it shows my blog new post in few se
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 22:54:09" itemprop="dateModified" datetime="2023-10-06T22:54:09+08:00">2023-10-06</time>
+      <time title="Modified: 2024-05-17 00:09:47" itemprop="dateModified" datetime="2024-05-17T00:09:47+08:00">2024-05-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -477,6 +609,10 @@ Google search updating speed is so fast that it shows my blog new post in few se
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
         </span>
     </span>
 
@@ -487,7 +623,7 @@ Google search updating speed is so fast that it shows my blog new post in few se
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>559</span>
+      <span>562</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -511,8 +647,9 @@ Google search updating speed is so fast that it shows my blog new post in few se
 <meta name="views" content="338" />
 first you should import unittest, and write a class inherit unittest.TestCase. Then write some function named test_XXX, which uses "test_" as its prefix. Then in main, call the class's main() function.
 <p>this is an example:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import unittest</span><br><span class="line"></span><br><span class="line">class TestFunctions(unittest.TestCase):    </span><br><span class="line">    def test_range(self):</span><br><span class="line">       for i in range(10):</span><br><span class="line">          self.assertEqual(i,i)</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    TestFunctions.main()</span><br></pre></td></tr></table></figure>
-<div id="_mcePaste">In this example, TestFunctions.main() will call all functions like test_XXX between setUp() and tearDown(). The sequence is setUp()---&gt;test_XXX()---&gt;tearDown()---&gt;setUp()---&gt;test_XXX()---&gt;tearDown().....</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestFunctions</span>(unittest.TestCase):    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_range</span>(<span class="params">self</span>):</span><br><span class="line">       <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">          self.assertEqual(i,i)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    TestFunctions.main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<div id="_mcePaste">In this example, TestFunctions.main() will call all functions like test_XXX between setUp() and tearDown(). The sequence is 
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setUp()---&gt;test_XXX()---&gt;tearDown()---&gt;setUp()---&gt;test_XXX()---&gt;tearDown().....</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1301,108 +1438,6 @@ Here, each document is split in words, and each word is counted initially with a
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2011/02/18/6193614/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/02/18/6193614/" class="post-title-link" itemprop="url">虚拟机Nat连接问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2011-02-18 16:13:00" itemprop="dateCreated datePublished" datetime="2011-02-18T16:13:00+08:00">2011-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>777</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>今天花了两个小时解决了Nat连接问题。（环境：vmware workstation 7.0，外部os是XP,虚拟机OS也是XP.<br />
-另外防火墙和安全卫士360将vmware.exe设置为例外，内部网络为DHCP。所以我的机器一旦重启ip地址一般会变化。虚拟机的网络设置为NAT）</p>
-<p>是用的vmware workstation 7.0,然后虚拟机里面的os是xp.之后xp就怎么都不可以访问外网。</p>
-<p>首先检查了下vmware nat服务是否已经启动了。然后虚拟机配置中Network Adapter是否是NAT模式。之后是用ipconfig<br />
-/all看看外面的xp是否有VMnet8 这个接口。这时发现VMnet8这个接口存在，就是它的ip实在是太诡异了：<span class="exturl" data-url="aHR0cDovLzE2Mi5YWFguWFhYLlhYWA==">162.XXX.XXX.XXX<i class="fa fa-external-link-alt"></i></span>,子网掩码是<br />
-255.255.0.0.另外看看虚拟机中的ip地址，<span class="exturl" data-url="aHR0cDovL3huLS0xNjIta2Q5ZHEyMGlzY2F3MTdsdnNlLlhYWC5YWFguWFhY">显示的也是162.XXX.XXX.XXX<i class="fa fa-external-link-alt"></i></span>,也有子网掩码，但是没有DNS和网关，并且虚拟机中的网络连接显示<br />
-受限连接。于是顺手把虚拟机中的ip地址从自动获取改为固定的ip,并且将网关ip写为外面os的VMnet8中的ip地址。这时网络连接不再受限，并且可以由虚拟机<br />
-ping通外部os的VMnet8 ip地址。但是依旧不能出外网。</p>
-<p>再后来索性看到vmware的工具栏菜单的编辑选项卡中有编辑虚拟网络。然后看到其中的NAT网络。这个网络的子网是192.168.128.0。外部os<br />
-VMnet8和虚拟os ip的地址根本就不在这个范围内。难怪有问题。所以解决方案为：</p>
-<p>在vmware中编辑-&gt;编辑虚拟网络-&gt;选中 VMnet8在下面的subnet IP 中将192.168.128.0改为192.168.127.0（这里只要<br />
-和其他的网络不冲突即可）,然后Apply.可以马上看到外部OS的VMnet8在连接中。之后将虚拟机中的网络连接重启，即可。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/22/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1434,7 +1469,7 @@ VMnet8和虚拟os ip的地址根本就不在这个范围内。难怪有问题。
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,139 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/11/20/41317419/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/11/20/41317419/" class="post-title-link" itemprop="url">坑死人不偿命，Svn 迁移到 Git</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-11-20 19:25:00" itemprop="dateCreated datePublished" datetime="2014-11-20T19:25:00+08:00">2014-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>用git的人非常鄙视用svn的。因为要不断的开分支。而且也没有本地的分支这个概念。</p>
+<p>但是git 作为一项技术，是一定可以被svn替代的。当然替代的方法是否繁琐另当别论，但一定是能被替代。svn同样也能被git替代。大概所有的技术都是一样。都<br />
+能相互替代，只是你要为替代本身花费多长时间。</p>
+<p>git作为一种同步工具好用吗？其实真不好用。我梦想的工具一定是可以帮我自动完成merge过程的，永远不用开分支，永远不用告诉我链表头在哪里，以及怎么rese<br />
+t， 什么时候rebase, 什么时候打tag.<br />
+一个工具让使用者一直在思考，那一定不是好工具。我那锤子砸钉子的时候也没有先按几个按钮。当然svn也不是啥好工具。</p>
+<p>所以本文的观点是站在我们开发的场景中从一种不好用的工具向着另外一种不好用的工具迁移。如同砸钉子的时候，始终没有找到锤子，只找到了瑞士军刀和扳手。没办法还是要<br />
+砸。</p>
+<p>svn 迁移到git上遇到非常多的坑。大家要是开发任务紧急，就等不急的时候再迁移吧。</p>
+<p>这里也不在意你到底使用的gerrit还是gitlab还是github. 反正都不好迁移。</p>
+<p>一般使用的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone [某分支] --authors-file=users.txt --no-metadata -s （这里的分支是/trunk的上一层）</span><br></pre></td></tr></table></figure>
+<p>另外还可以是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r383874:HEAD  [你的分支] --authors-file=users.txt --no-metadata --trunk=trunk --tags=milestones --branches=branches </span><br></pre></td></tr></table></figure>
+<p>第二条命令是带上版本号的。也可以指定什么分支会变成git的trunk,什么分支会变成git的tag等等。<br />
+这里的users.txt内容是：<br />
+[svn的名字] = [git上的名字] &lt;[git上的email]&gt;<br />
+例如：<br />
+aa=bb<span class="exturl" data-url="bWFpbHRvOnl5QG9vLmNvbQ==">yy@oo.com<i class="fa fa-external-link-alt"></i></span><br />
+tt=ee<span class="exturl" data-url="bWFpbHRvOm1tQG9vLmNvbQ==">mm@oo.com<i class="fa fa-external-link-alt"></i></span><br />
+细数一下我自己遇到的问题：</p>
+<p>1. ** Can’t locate Term/ReadKey.pm in @INC ** 。 不要听网上说的装什么cpan,<br />
+也不要装什么其他的软件。直接执行 svn co [一个分支]。 输入以下自己的用户名密码，然后这个问题就不存在了。</p>
+<p>1.1 如果输入密码后，还是不行。 删除这个文件 $HOME/.subversion/auth/svn.simple/* 。 然后再 svn co , 再<br />
+git svn clone.<br />
+2. ** Do not be alarmed at the above message git-svn is just searching<br />
+aggressively for old history. ** 遇到这个提示…这个提示是吓唬你的.</p>
+<p>3. ** Author: xx not defined in users.txt file **<br />
+这是你的users.txt里面没有某些用户。可能这些用户过于久远，你忘记加入了。</p>
+<p>4.系统文件没有找到条目。会有下面的错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Initializing parent: refs/remotes/origin/trunk@22086</span><br><span class="line">W: Ignoring error from SVN, path probably does not exist: (160013): 文件系统没有条目: 找不到路径 “/xxx/ooo/101”: 额外错误:: File not found: revision 101, path &#x27;/txx/slsl/&#x27;</span><br><span class="line">W: Do not be alarmed at the above message git-svn is just searching aggressively for old history.</span><br><span class="line">This may take a while on large repositories</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这说有些 svn 版本信息太古老了。实在没有找到对应的diff啥的。也可能被svn管理员早就删除了。所以执行 git svn clone的时候最好带上<br />
+-r[A version]:[B version]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r20202:HEAD [某分支] --authors-file=users.txt --no-metadata -s</span><br></pre></td></tr></table></figure>
+<p>5. ** Use of uninitialized value $u in substitution (s///) ** 某些git<br />
+svn版本代码写的搓。只好手工改代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vi  /usr/lib/perl5/vendor_perl/5.14/Git/SVN.pm</span><br><span class="line">修改 </span><br><span class="line">        $u =~ s!^\Q$url\E(/|$)!! or die</span><br><span class="line">        &quot;$refname: &#x27;$url&#x27; not found in &#x27;$u&#x27;\n&quot;;</span><br><span class="line"></span><br><span class="line">改成：</span><br><span class="line">if(!$u) &#123;</span><br><span class="line">        $u = $pathname;</span><br><span class="line">&#125;else &#123;</span><br><span class="line">        $u =~ s!^\Q$url\E(/|$)!! or die</span><br><span class="line">        &quot;$refname: &#x27;$url&#x27; not found in &#x27;$u&#x27;\n&quot;;</span><br><span class="line">&#125;</span><br><span class="line">然后重新运行。</span><br></pre></td></tr></table></figure>
+<p>6. git svn clone 结束后， 执行一下 git branch -a, 发现没有一些之前开的分支。例如我们的milestone分支都叫<br />
+/milestoneXXX. 是之前git svn clone的命令的问题。 应该改为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r383874:HEAD  [你的分支] --authors-file=users.txt --no-metadata --trunk=trunk --tags=milestones --branches=branches </span><br></pre></td></tr></table></figure>
+<p>另外 git TAG和 svn开一个tag的性质不是很一致。 git tag依附于某一个commit. 而且是不变化的，从这个点开出来的所有分支，都从属于这<br />
+个TAG。svn的tag就是开了分支，可以从这个分支随意提交代码。从svn的这个TAG开出来的所有分支和这个svn TAG毛关系都没有。</p>
+<p>好吧。说了这么多，其实我们项目就像钉子，而svn/git都不是锤子。虽然是钉子，但是钉子数目很多。遇到以上坑的，看到这篇文章希望能很快的跳过坑去~~</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1192,154 +1325,6 @@ xx算法都不知道原理、复杂度以及适用范围，我觉得还是不要
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/06/05/game-4096/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/06/05/game-4096/" class="post-title-link" itemprop="url">4096！——化简的2048游戏</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2014-06-05 08:53:00" itemprop="dateCreated datePublished" datetime="2014-06-05T08:53:00+08:00">2014-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-08 13:49:08" itemprop="dateModified" datetime="2023-10-08T13:49:08+08:00">2023-10-08</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="游戏介绍"><a class="markdownIt-Anchor" href="#游戏介绍"></a> 游戏介绍：</h2>
-<p>这个能轻松到达 4096. 所以取名为 4096了。</p>
-<p>github地址是： <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NoaWxseS80MDk2"> https://github.com/chilly/4096 <i class="fa fa-external-link-alt"></i></span></p>
-<p>如果想直接玩游戏访问 <span class="exturl" data-url="aHR0cDovLzQwOTYuY2hpbGx5Yy5pbmZv"> 4096.chillyc.info <i class="fa fa-external-link-alt"></i></span></p>
-<p>这个4096 是直接copy的2048。 这个游戏需要消耗比较多的脑力。当然费了脑力还要拼拼运气。原因在于生成随机方块的地方90%会生成2，10%会生成4.<br />
-最后一搏的那个方块很有可能会因为2，4生成的问题导致游戏失败。</p>
-<h2 id="为什么要做这个游戏"><a class="markdownIt-Anchor" href="#为什么要做这个游戏"></a> 为什么要做这个游戏</h2>
-<p>这个原因其实是为让LP打到更高的分数。当然还要有些难度，不能移动一个方块瞬间就变成8192。还得让LP不能因为运气不佳挂掉。戴着枷锁跳呀跳。所以直接改了20<br />
-48的源码。</p>
-<h2 id="2048这款游戏怎么做的"><a class="markdownIt-Anchor" href="#2048这款游戏怎么做的"></a> 2048这款游戏怎么做的？</h2>
-<p>其实非常细节的，我也没有仔细的研究。2048这个游戏代码量不大。最主要的两个类是game_manager.js 和 grid.js。游戏的主要流程：</p>
-<ol>
-<li>界面接收到keyboard的请求</li>
-<li>交给game_manager的move函数</li>
-<li>判断游戏是否失败</li>
-<li>merge tile(也就是merge 色块)</li>
-<li>move tile</li>
-<li>最后生成在随机的位置生成随机的 tile(2或者4)</li>
-<li>继续监听keyboard请求</li>
-</ol>
-<h2 id="怎么做4096这款游戏"><a class="markdownIt-Anchor" href="#怎么做4096这款游戏"></a> 怎么做4096这款游戏</h2>
-<p>做这款游戏的重点是要去除霉运，增加好运</p>
-<p>下面做了几点优化点：</p>
-<ol>
-<li>真没有什么可以优化的点时，对4产生的概率增加一下。提高到50%。简单暴力</li>
-<li>生成的2需要在2旁边，生成的4需要在4旁边：如下图：</li>
-</ol>
-<div align=center>
-<p><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/1.jpg" alt="" /></p>
-<p><strong>在2的旁边生成2</strong></p>
-</div>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/2.png" class="" alt="2.png"><br/><strong>在4旁边生成4</strong><br/></div>
-<p>3. 误操作导致最大值移动。在误操作时需要弹个框帮助用户确认。不过为了不要频繁的弹窗，在最大值大于512后才开始提示。这里的算法是判断最大值是否有移动，如<br />
-果移动，是否会移入到四个角。是否是在边界处移动。而非向内部移动。</p>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/3.png" class=""><br/><strong></strong><br/></div>
-<p>4. 随机生成的色块，可以帮助某些值merge.这里比较tricky的地方。如果某个比较大的两个值需要merge,<br />
-但是这两个值差了一个空格。那么就在相应的地方补上2、4，使得这两个比较大的值可以merge。例如下图中的两个32色块：</p>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/4.png" class=""><br/><strong></strong><br/></div>
-<p>这个图中向左移动后，32和32会移动到左边。那么第二行的32的右边出现小方块，那么下一次向右移动，32就有机会和32合并。如下图所示：</p>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/5.png" class=""><br/><strong></strong><br/></div>
-<p>然后继续右移，32可以和32合并了：</p>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/6.png" class=""><br/><strong></strong><br/></div>
-<p>5. 在最空旷的地方生成2/4. 这个比较简单就是找4联通最大的空白所在的点。然后将此点设置为2、4。如下图所示：</p>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/7.png" class=""><br/><strong></strong><br/></div>
-<h2 id="再次优化"><a class="markdownIt-Anchor" href="#再次优化"></a> 再次优化</h2>
-<p>当然，经过这系列优化之后，难度有所降低，但不意味着你不动脑筋可以玩到4096. 另外还有一些值得优化的点。</p>
-<ol>
-<li>例如第5点，在这一点中，需要生成的色块不应该和最大值在一条直线上。</li>
-<li>另外还需要做的优化就是：如果你一直左右移，很有可能有一个状态导致无法再左右移动。那么就需要上下移动。这样的带来的问题就是最大色块一定会脱离原有的边界。这样的移动极有可能导致整个游戏挂掉。所以需要对这一状态进行优化。</li>
-<li>在手机上玩这款游戏，其实灵敏度是个问题，总感觉慢了半拍（性能上还有值得优化的点）</li>
-<li>在某一个状态，最大值一定在边界上，但不是在四个角，那么最好的情况是可以将最大值移入到四个角中。假如一直是左右移动变为的这个状态，最大值和次大值都都在底线上。之后的步骤一定要让最大值所在的色块不能向上移动，而其他的底线色块可以向上移动。这样上移后，底线就只有最大值，然后再次左右移动就可以将最大值放入到边角中。如果这时随机生成色块，很有可能次大值等再也无法移回底线。所以这样的状态也需要优化。</li>
-</ol>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/8.png" class=""><br/><strong></strong><br/></div>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/9.png" class=""><br/><strong></strong><br/></div>
-<div align=center><br/><img src="https://cdn.jsdelivr.net/gh/chilly/blog_cdn@master/images/4096/10.png" class=""><br/><strong></strong><br/></div>
-<h2 id="结束了吗"><a class="markdownIt-Anchor" href="#结束了吗"></a> 结束了吗？</h2>
-<p>这些优化会在以后慢慢放出来。现在游戏中bug有些多。像这种游戏也不知道怎么做自动化测试的。。。。。。慢慢做吧。</p>
-<p>下面是黑PM的时间：PM们，你们能走查到 8192 这个状态吗？ 。。。。。。算了，你们努力走查到1024就可以发布了吧~</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1371,7 +1356,7 @@ xx算法都不知道原理、复杂度以及适用范围，我觉得还是不要
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,207 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/04/23/1576438/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/04/23/1576438/" class="post-title-link" itemprop="url">Linux 下 Socket编程</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-04-23 18:53:00" itemprop="dateCreated datePublished" datetime="2007-04-23T18:53:00+08:00">2007-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>计算机数据存储有两种字节优先顺序：高位字节优先和低位字节优先。Internet上数据以高位字节优先顺序在网络上传输，所以对于在内部是以低位字节优先方式存储数<br />
+据的机器，在Internet上传输数据时就需要进行转换。<br />
+我们要讨论的第一个结构类型是：struct sockaddr，该类型是用来保存socket信息的：<br />
+struct sockaddr {<br />
+unsigned short sa_family; /* 地址族， AF_xxx <em>/<br />
+char sa_data[14]; /</em> 14 字节的协议地址 <em>/ };<br />
+sa_family一般为AF_INET；sa_data则包含该socket的IP地址和端口号。<br />
+另外还有一种结构类型：<br />
+struct sockaddr_in {<br />
+short int sin_family; /</em> 地址族 <em>/<br />
+unsigned short int sin_port; /</em> 端口号 <em>/<br />
+struct in_addr sin_addr; /</em> IP地址 <em>/<br />
+unsigned char sin_zero[8]; /</em> 填充0 以保持与struct sockaddr同样大小 */<br />
+};<br />
+这个结构使用更为方便。sin_zero(它用来将sockaddr_in结构填充到与struct<br />
+sockaddr同样的长度)应该用bzero()或memset()函数将其置为零。指向sockaddr_in<br />
+的指针和指向sockaddr的指针可以相互转换，这意味着如果一个函数所需参数类型是sockaddr时，你可以在函数调用的时候将一个指向<br />
+sockaddr_in的指针转换为指向sockaddr的指针；或者相反。sin_family通常被赋AF_INET；sin_port和<br />
+sin_addr应该转换成为网络字节优先顺序；而sin_addr则不需要转换。<br />
+我们下面讨论几个字节顺序转换函数：<br />
+htons()–“Host to Network Short” ; htonl()–“Host to Network Long”<br />
+ntohs()–“Network to Host Short” ; ntohl()–“Network to Host Long”<br />
+在这里， h表示&quot;host&quot; ，n表示&quot;network&quot;，s 表示&quot;short&quot;，l表示 “long”。<br />
+打开socket 描述符、建立绑定并建立连接<br />
+socket函数原型为：<br />
+int socket(int domain, int type, int protocol);<br />
+domain参数指定socket的类型：SOCK_STREAM<br />
+或SOCK_DGRAM；protocol通常赋值&quot;0&quot;。Socket()调用返回一个整型socket描述符，你可以在后面的调用使用它。<br />
+一旦通过socket调用返回一个socket描述符，你应该将该socket与你本机上的一个端口相关联（往往当你在设计服务器端程序时需要调用该函数。随后你就可<br />
+以在该端口监听服务请求;而客户端一般无须调用该函数）。 Bind函数原型为：<br />
+int bind(int sockfd,struct sockaddr <em>my_addr, int addrlen);<br />
+Sockfd是一个socket描述符，my_addr是一个指向包含有本机IP地址及端口号等信息的sockaddr类型的指针;addrlen常被设置为size<br />
+of(struct sockaddr)。<br />
+最后，对于bind 函数要说明的一点是，你可以用下面的赋值实现自动获得本机IP地址和随机获取一个没有被占用的端口号：<br />
+my_addr.sin_port = 0; /</em> 系统随机选择一个未被使用的端口号 <em>/<br />
+my_addr.sin_addr.s_addr = INADDR_ANY; /</em> 填入本机IP地址 */<br />
+通过将my_addr.sin_port置为0，函数会自动为你选择一个未占用的端口来使用。同样，通过将 my_addr.sin_addr.s_addr置为IN<br />
+ADDR_ANY，系统会自动填入本机IP地址。Bind()函数在成功被调用时返回0；遇到错误时返回&quot;-1&quot;并将errno置为相应的错误号。另外要注意的是，当<br />
+调用函数时，一般不要将端口号置为小于1024的值，因为1~1024是保留端口号，你可以使用大于1024中任何一个没有被占用的端口号。<br />
+Connect()函数用来与远端服务器建立一个TCP连接，其函数原型为：<br />
+int connect(int sockfd, struct sockaddr <em>serv_addr, int addrlen);<br />
+Sockfd是目的服务器的sockt描述符；serv_addr是包含目的机IP地址和端口号的指针。遇到错误时返回-1，并且errno中包含相应的错误码。进行<br />
+客户端程序设计无须调用bind()，因为这种情况下只需知道目的机器的IP地址，而客户通过哪个端口与服务器建立连接并不需要关心，内核会自动选择一个未被占用的端<br />
+口供客户端来使用。<br />
+Listen()——监听是否有服务请求<br />
+在服务器端程序中，当socket与某一端口捆绑以后，就需要监听该端口，以便对到达的服务请求加以处理。<br />
+int listen(int sockfd， int backlog);<br />
+Sockfd是Socket系统调用返回的socket 描述符；backlog指定在请求队列中允许的最大请求数，进入的连接请求将在队列中等待accept()它<br />
+们（参考下文）。Backlog对队列中等待服务的请求的数目进行了限制，大多数系统缺省值为20。当listen遇到错误时返回-1，errno被置为相应的错误码<br />
+。<br />
+故服务器端程序通常按下列顺序进行函数调用：<br />
+socket(); bind(); listen(); /</em> accept() goes here */<br />
+accept()——连接端口的服务请求。<br />
+当某个客户端试图与服务器监听的端口连接时，该连接请求将排队等待服务器accept()它。通过调用accept()函数为其建立一个连接，<br />
+accept()函数将返回一个新的socket描述符，来供这个新连接来使用。而服务器可以继续在以前的那个<br />
+socket上监听，同时可以在新的socket描述符上进行数据send()（发送）和recv()（接收）操作：<br />
+int accept(int sockfd, void *addr, int *addrlen);<br />
+sockfd是被监听的socket描述符，addr通常是一个指向sockaddr_in变量的指针，该变量用来存放提出连接请求服务的主机的信息（某台主机从某个<br />
+端口发出该请求）；addrten通常为一个指向值为sizeof(struct sockaddr_in)的整型指针变量。错误发生时返回一个-<br />
+1并且设置相应的errno值。<br />
+Send()和recv()——数据传输<br />
+这两个函数是用于面向连接的socket上进行数据传输。<br />
+Send()函数原型为：<br />
+int send(int sockfd, const void *msg, int len, int flags);<br />
+Sockfd是你想用来传输数据的socket描述符，msg是一个指向要发送数据的指针。<br />
+Len是以字节为单位的数据的长度。flags一般情况下置为0（关于该参数的用法可参照man手册）。<br />
+char *msg = “Beej was here!”; int len， bytes_sent; … …<br />
+len = strlen(msg); bytes_sent = send(sockfd, msg,len,0); … …<br />
+Send()函数返回实际上发送出的字节数，可能会少于你希望发送的数据。所以需要对send()的返回值进行测量。当send()返回值与len不匹配时，应该对这<br />
+种情况进行处理。<br />
+recv()函数原型为：<br />
+int recv(int sockfd,void *buf,int len,unsigned int flags);<br />
+Sockfd是接受数据的socket描述符；buf<br />
+是存放接收数据的缓冲区；len是缓冲的长度。Flags也被置为0。Recv()返回实际上接收的字节数，或当出现错误时，返回-1并置相应的errno值。<br />
+Sendto()和recvfrom()——利用数据报方式进行数据传输<br />
+在无连接的数据报socket方式下，由于本地socket并没有与远端机器建立连接，所以在发送数据时应指明目的地址，sendto()函数原型为：<br />
+int sendto(int sockfd, const void *msg,int len,unsigned int flags,const struct<br />
+sockaddr *to, int tolen);<br />
+该函数比send()函数多了两个参数，to表示目地机的IP地址和端口号信息，而tolen常常被赋值为sizeof (struct<br />
+sockaddr)。Sendto 函数也返回实际发送的数据字节长度或在出现发送错误时返回-1。<br />
+Recvfrom()函数原型为：<br />
+int recvfrom(int sockfd,void *buf,int len,unsigned int flags,struct sockaddr<br />
+*from,int *fromlen);<br />
+from是一个struct sockaddr类型的变量，该变量保存源机的IP地址及端口号。fromlen常置为sizeof (struct sockaddr<br />
+)。当recvfrom()返回时，fromlen包含实际存入from中的数据字节数。Recvfrom()函数返回接收到的字节数或当出现错误时返回-1，并置相<br />
+应的errno。<br />
+应注意的一点是，当你对于数据报socket调用了connect()函数时，你也可以利用 send()和recv()进行数据传输，但该socket仍然是数据报<br />
+socket，并且利用传输层的UDP服务。但在发送或接收数据报时，内核会自动为之加上目地和源地址信息。<br />
+Close()和shutdown()——结束数据传输<br />
+当所有的数据操作结束以后，你可以调用close()函数来释放该socket，从而停止在该socket上的任何数据操作：close(sockfd);<br />
+你也可以调用shutdown()函数来关闭该socket。该函数允许你只停止在某个方向上的数据传输，而一个方向上的数据传输继续进行。如你可以关闭某socke<br />
+t的写操作而允许继续在该socket上接受数据，直至读入所有数据。<br />
+int shutdown(int sockfd,int how);<br />
+Sockfd的含义是显而易见的，而参数 how可以设为下列值：<br />
+·0-------不允许继续接收数据<br />
+·1-------不允许继续发送数据<br />
+·2-------不允许继续发送和接收数据，均为允许则调用close ()<br />
+shutdown在操作成功时返回0，在出现错误时返回-1（并置相应errno）。<br />
+DNS——域名服务相关函数<br />
+由于IP地址难以记忆和读写，所以为了读写记忆方便，人们常常用域名来表示主机，这就需要进行域名和IP地址的转换。函数gethostbyname()就是完成这种<br />
+转换的，函数原型为：<br />
+struct hostent *gethostbyname(const char *name);<br />
+函数返回一种名为hosten的结构类型，它的定义如下：<br />
+struct hostent {<br />
+char <em>h_name; /</em> 主机的官方域名 */<br />
+char *<em>h_aliases; /</em> 一个以NULL结尾的主机别名数组 <em>/<br />
+int h_addrtype; /</em> 返回的地址类型，在Internet环境下为AF-INET */<br />
+int h_length; /*地址的字节长度 */<br />
+char <em><em>h_addr_list; /</em> 一个以0结尾的数组，包含该主机的所有地址</em>/<br />
+};<br />
+#define h_addr h_addr_list[0] /<em>在h-addr-list中的第一个地址</em>/</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1385,188 +1586,6 @@ unsigned char szText[]= “12345你好”;</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/04/01/1548345/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/04/01/1548345/" class="post-title-link" itemprop="url">Vc++多线程编程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-04-01 14:51:00" itemprop="dateCreated datePublished" datetime="2007-04-01T14:51:00+08:00">2007-04-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>vc＋＋中的多线程编程：</p>
-<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-HANDLE hMutex;  //  Create a mutex with no initial owner. 必须要创建一个句柄<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-hMutex  =  CreateMutex( NULL,  //  no security attributes<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-FALSE,  //  initially not owned<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> &quot;<br />
-MutexToProtectDatabase  &quot;  );  //  name of mutex<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
-这个句柄只想信号量，第一个参数一半为NULL，第二个（初始化时是否被获得）false为现在可以被任何人使用<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
-第三个参数是为信号量起名，方便以后查找该信号量<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> if<br />
-(hMutex  ==  NULL)<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
-ContractedBlock.gif) …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-//  Check for error.一般不必这样用。<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kEnd.gif) }</p>
-<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-BOOL FunctionToWriteToDatabase(HANDLE hMutex)<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/<i class="fa fa-external-link-alt"></i></span><br />
-ContractedBlock.gif) …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-DWORD dwWaitResult;  //  Request ownership of mutex.<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-dwWaitResult  =  WaitForSingleObject(<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-hMutex,  //  handle to mutex<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-5000L  );  //  five-second time-out interval<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
-lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
-rs/ContractedSubBlock.gif) switch  (dwWaitResult)  …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-//  The thread got mutex ownership.<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-case  WAIT_OBJECT_0:<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
-lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
-rs/ContractedSubBlock.gif) __try  …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-//  Write to the database.<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
-lockEnd.gif) }<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
-lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
-rs/ContractedSubBlock.gif) __finally  …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-//  Release ownership of the mutex object.<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
-lockStart.gif) ![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG8=">http://images.csdn.net/syntaxhighlighting/OutliningIndicato<i class="fa fa-external-link-alt"></i></span><br />
-rs/ContractedSubBlock.gif) if  (  !  ReleaseMutex(hMutex))  …  {<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-//  Deal with error.<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
-lockEnd.gif) }<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
-lockEnd.gif) break  ; }<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-//  Cannot get mutex ownership due to time-out.<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-case  WAIT_TIMEOUT:<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-return  FALSE;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-//  Got ownership of the abandoned mutex object.<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-case  WAIT_ABANDONED:<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-return  FALSE;<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZFN1YkI=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubB<i class="fa fa-external-link-alt"></i></span><br />
-lockEnd.gif) }<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br />
-return  TRUE;<br />
-![](<span class="exturl" data-url="aHR0cDovL2ltYWdlcy5jc2RuLm5ldC9zeW50YXhoaWdobGlnaHRpbmcvT3V0bGluaW5nSW5kaWNhdG9ycy9FeHBhbmRlZEJsb2M=">http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBloc<i class="fa fa-external-link-alt"></i></span><br />
-kEnd.gif) }<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /></p>
-<p>DWORD dwWaitResult  只是为了判断信号量的归谁所有。  WaitForSingleObject() 相当与P（）操作，参数有两个：第一个是<br />
-信号量，第二个是等待时间。INFINITE代表无限等待。5000L代表等待5秒，如果5秒内获得信号量，dwWaitResult＝＝<br />
-WAIT_OBJECT_0，如果5秒没有得到信号量，则dwWaitResult＝＝  WAIT_TIMEOUT，而<br />
-WAIT_ABANDONED代表操作失败。  ReleaseMutex(hMutex）相当于V（）操作。参数为信号量。</p>
-<p>如果希望在一个函数中启动线程并调用该函数，应该这样写代码</p>
-<p>void reading(void* name)；这个函数一定要是void的返回类型。然后可以在调用函数中这样写：</p>
-<p>_beginthread(&amp;reading,0,(void*)english); 其中第一参数是要调用函数的函数指针。第二个函数是线程优先级一般为0。第三个<br />
-参数是个void指针，一般用来传函数的参数。如果想传多个参数只要把那个指针指向一个结构体就可以。到函数那里再转换为相应的结构体指针就可以了。</p>
-<p>Sleep（5000L）；这个函数一般是用来让线程睡眠的。参数是unsigned long，现在是睡5秒。<br />
-这只是多线程的编程常用到的几个函数。对于多线程编程还要注意同步和死锁，在这篇文字就不讨论了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/71/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/71/">71</a><span class="page-number current">72</span><a class="page-number" href="/page/73/">73</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/73/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1598,7 +1617,7 @@ WAIT_ABANDONED代表操作失败。  ReleaseMutex(hMutex）相当于V（）操�
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

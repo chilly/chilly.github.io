@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,166 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/23/5618652/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/05/23/5618652/" class="post-title-link" itemprop="url">在Ubuntu下生成大文件,并测试文件读写效率</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-05-23 21:40:00" itemprop="dateCreated datePublished" datetime="2010-05-23T21:40:00+08:00">2010-05-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在ubuntu或者其他的linux下生成大文件,必须使用编译参数  -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64.否<br />
+则生成的文件一定是2G左右的,原因是fseek,这个函数中的offset参数是一个long型的或者是size_t型的,在fseeko中是off_t,但是这个<br />
+off_t默认还是32位,只有加了  -D_FILE_OFFSET_BITS=64的宏定义才被作为64位对待.</p>
+<p>写了下面一段代码来生成大文件,传说有一种方法:直接跳转nG位置之后,然后写入一个字符.这种方法可能更快,不过我为了保守的生成文件,还是使用下面的一个写法:</p>
+<p>#include&lt;stdio.h&gt; #include&lt;stdlib.h&gt; #include&lt;unistd.h&gt; #include&lt;string.h&gt;<br />
+void gen_file(const char <em>filename, int block_size, int count){ int is_exist =<br />
+0; FILE</em> file = fopen(filename,“w+b”); char * buf = NULL; int i=0; long long<br />
+size = block_size; if(file == NULL){ printf(“fatal error in gen_file:<br />
+fopen/n”); exit(1); } buf = (char <em>)malloc(sizeof(char)<em>block_size);<br />
+memset(buf,‘1’,sizeof(char)<em>block_size); while(i++&lt;count){ if(i % 10 == 0){<br />
+printf(“count is %d, size is %lld/n”,i,size); } fwrite(buf,block_size,1,file);<br />
+size += block_size; fseeko(file,size,SEEK_SET); } fclose(file); free(buf); /</em><br />
+long long size = 1024</em>1024</em>1024; size <em>=10; fseeko(file,size,SEEK_SET);<br />
+fwrite(buf,block_size,1,file); fclose(file); free(buf); <em>/ } int main(){<br />
+printf(“size of char %d/n”,sizeof(char)); int block_size = 1024</em>1024</em>20; //<br />
+20M int count = 50; gen_file(“smallfile”,block_size,count*2);// gen 2G file<br />
+return 0; }</p>
+<p>int block_size = 1024<em>1024</em>20; // 20M</p>
+<p>这个是每次写入的数据大小,gen_file(“smallfile”,block_size,count*2);第三个参数可以调节生成文件的大小.</p>
+<p>下面写了一个测试大文件和小文件的随机读写和顺序读写.</p>
+<p>#include&lt;stdio.h&gt; #include&lt;time.h&gt; #include&lt;sys/stat.h&gt; #include&lt;sys/types.h&gt;<br />
+#include&lt;unistd.h&gt; #include&lt;stdlib.h&gt; #include&lt;sys/time.h&gt; #include&lt;string.h&gt;<br />
+const int block_size = 8092; struct timeval start; struct timeval end; struct<br />
+timezone tz; void start_time(){ gettimeofday(&amp;start,&amp;tz); } void end_time(){<br />
+gettimeofday(&amp;end,&amp;tz); } void print_time(){ printf(“%lf sec/n”,(end.tv_sec-<br />
+start.tv_sec)+(double)(end.tv_usec-start.tv_usec)/1000000); } size_t<br />
+look_size(const char * filename){ struct stat st; stat(filename,&amp;st); return<br />
+st.st_size; } void read_blocks(FILE* file, off_t offset,int block_size){ int<br />
+where = offset<em>block_size; fseeko(file,where,0); } FILE</em> fopen_safe(const char</p>
+<ul>
+<li>filename){ FILE* file = fopen(filename,“r”); if(file == NULL){ printf(“fatal<br />
+error in random_read, open file”); exit(1); } return file; } void<br />
+random_read(const char * filename){ int random; size_t size; FILE* file =<br />
+fopen_safe(filename); size = look_size(filename)/block_size; random =<br />
+rand()%size; read_blocks(file,random,block_size); fclose(file); } void<br />
+order_read(const char <em>filename,int order){ size_t size; FILE</em> file =<br />
+fopen_safe(filename); size = look_size(filename)/block_size;<br />
+read_blocks(file,order%size,block_size); fclose(file); } void<br />
+random_test(const char * filename,int times){ int count = 0; start_time();<br />
+while(count++&lt;times){ // access Big File random_read(filename); } end_time();<br />
+print_time(); } void order_test(const char * filename, int times){ int count =<br />
+0; start_time(); while(count++&lt;times){ order_read(filename,count); }<br />
+end_time(); print_time(); } void random_test_diff(const char * basename,int<br />
+num,int times){ int count = 0; char ** names = malloc(sizeof(char)*num); int<br />
+len = strlen(basename); int i = 0; while( i &lt; num){ names[i] =<br />
+malloc(sizeof(char)*len+4); sprintf(names[i],“%s_%d”,basename,i); i++; }<br />
+start_time(); while(count++&lt;times){ if(count &lt; 900){ random_read(names[0]); }<br />
+else { if(count &lt; 960){ random_read(names[count%num]);<br />
+random_read(names[(count+1)%num]); } if(count &lt; 1000){<br />
+random_read(names[count%num]); random_read(names[(count+1)%num]);<br />
+random_read(names[(count+2)%num]); } } } end_time(); print_time(); } int<br />
+main(){ int i,count; int times = 1000; count = 0; // clock_t start,end;<br />
+srand(time(NULL)); char * filename=“bigfile”; //printf(“time is %lf”,((double<br />
+)(end-start))/CLOCKS_PER_SEC); random_test(filename,times);<br />
+order_test(filename,times); times = times; filename = “smallfile”;<br />
+random_test(filename,times); order_test(filename,times);<br />
+random_test_diff(filename,3,times); return 0; }</li>
+</ul>
+<p>当然你这里做测试的时候可以把gettimeofday替换为clock()或者time()函数,其中clock()是程序实际运行的时间,你感觉可能执行了七八秒<br />
+,其实程序只占用cpu执行了1秒.如果是time()函数或者gettimeofday()函数就是真正的运行时间也就是你感觉执行的时间.所以各有千秋,前者是为<br />
+了排除各种运行环境中的软件或者os的不同,单独检测程序的效率.后者是在系统环境中程序的执行时间.</p>
+<p>下面是我得到的结论,创建1个10G文件,创建3个2G小文件.<br />
+大文件 随机访问7.199645 sec<br />
+大文件 顺序访问0.013617 sec<br />
+单个小文件 随机访问5.119245 sec<br />
+小文件 顺序访问0.014190 sec<br />
+多个小文件的随机访问测试:90%的几率访问同一个小文件，6%访问两个小文件，4%访问3个小文件 9.791248<br />
+sec.并且90%几率发生在前,所以如果随机发生多个文件的随机访问,那么可能速度会更慢.这里慢的原因,是因为fopen.</p>
+<p>这也就是数据库为什么只有一个数据文件的原因.有时进行文件切分,反而不利于效率的提高.但是对于100G以上的大文件,是否这个结论又要改变了呢?我没有做过这个实<br />
+验.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1184,99 +1344,6 @@ design pattern of facade" />
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/26/5528481/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/04/26/5528481/" class="post-title-link" itemprop="url">分类和标注</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-04-26 08:40:00" itemprop="dateCreated datePublished" datetime="2010-04-26T08:40:00+08:00">2010-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>195</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>突然想到某人的一句话：“自动化标注比人工标注的准确率还高。”这句话早已不知出处，但现在想来的确有些可笑。首先标准答案是谁给出的呢？是程序还是人类？是人类的话<br />
-就说明人工标注的准确率是100%，何来比人工标注准确率还高的说法？如果是程序，程序现在都没有没有100%的准确率，又怎么做标准答案?不过如果说某个程序在一定<br />
-语义下的准确率，比某一个普通人的准确率高，这倒是很可信。可惜原文不是那么说的。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/25/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/27/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1308,7 +1375,7 @@ design pattern of facade" />
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

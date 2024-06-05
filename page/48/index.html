@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,122 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/22/3127266/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/10/22/3127266/" class="post-title-link" itemprop="url">Error C2558\:no Copy Constructor Available or Copy Constructor Is Declared 'Explicit'</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-10-22 22:55:00" itemprop="dateCreated datePublished" datetime="2008-10-22T22:55:00+08:00">2008-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>901</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Error 3 error C2558: class ‘HuffmanCode’ : no copy constructor available or<br />
+copy constructor is declared ‘explicit’ d:/microsoft visual studio<br />
+8/vc/include/utility 37</p>
+<p>今天发现了这个错误,发现报错的地方是</p>
+<dl>
+<dt>pair(const _Ty1&amp; _Val1, const _Ty2&amp; _Val2)</dt>
+<dd>first(_Val1), second(_Val2)<br />
+{ // construct from specified values<br />
+}</dd>
+</dl>
+<p>但这里是std_utility里，这里根本不可能是编译器的错误。</p>
+<p>那哪里写错了？根据提示估计是’HuffmanCode’ 的拷贝构造函数错误。然后检查了下：</p>
+<p>explicit HuffmanCode(HuffmanCode &amp; codes):b(codes.b)</p>
+<p>感觉没有错呀。然后试着去掉了explicit 关键字，发现…还是报相同的错误。</p>
+<p>然后仔细看了下 pair(const _Ty1&amp; _Val1, const _Ty2&amp; _Val2)，然后<br />
+second(_Val2)，这里我使用了<map>然后将HuffmanCode作为value而不是作为key。这里看出在成员列表中<br />
+second(_Val2)是cosnt的。</p>
+<p>这就使得copy construct函数也必须使用const的参数…</p>
+<p>所以更改了下<br />
+explicit HuffmanCode(const HuffmanCode &amp; codes):b(codes.b)</p>
+<p>现在终于渐渐的知道为啥拷贝构造函数其参数是const的了。<br />
+修改完毕后在其他函数里写了这样一句代码</p>
+<p>HuffmanCode hc = Encode(…);</p>
+<p>这里Encode的返回值是Huffman.结果系统编译时提示相同的错误。</p>
+<p>explicit HuffmanCode(const HuffmanCode &amp; codes):b(codes.b)是这里的错误。</p>
+<p>因为写了explicit,所以返回值必须是const Huffman&amp;才可以.所以还是把explicit关键字去掉了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1621,103 +1737,6 @@ echo...这个命令就是为了写文件显示方便点..
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/10/3053452/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/10/10/3053452/" class="post-title-link" itemprop="url">英文书和中文翻译版</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-10-10 22:36:00" itemprop="dateCreated datePublished" datetime="2008-10-10T22:36:00+08:00">2008-10-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>433</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近帮朋友翻译书籍。朋友最后整合，我只是翻译其中一个章节。因为根本没有看前面的文章，所以难免字词把握不准。当然比Google翻译和金山翻译都强一些。但是难免<br />
-还能看出翻译的痕迹。因为时间紧迫，所以只用了2个小时不到的时间就完成了任务。</p>
-<p>后来接触到翻译的各种内幕，发现有很多本科生为了生计也接翻译的任务。辛苦而快速的翻译。当然这里不是说本科生翻译的就差。但是我认为看他们翻译的版本还不如自己看英<br />
-文版的舒服些。过去我还没有这种思想，现在自己翻译过书之后，发现还是英文版的好。因为如果翻译者像我这样为了完成任务草草的翻译，可能根本没有领悟到每一句话的真正<br />
-含义，很有可能错误翻译。计算机的专业文章很多还要看懂代码后做翻译，与其看别人的二义性翻译还不如自己理解下英文原版好。</p>
-<p>另外也发现一个问题，很多专业词汇根本不知道中文对应的是什么。但是英文还是好理解的。所以很有可能翻译者会生造出一个词汇。当然看翻译版看久了就会知道这两个中文词<br />
-竟然是一个英文词…所以何苦呢？开始看英文不就好了？</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/47/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><span class="page-number current">48</span><a class="page-number" href="/page/49/">49</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/49/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1749,7 +1768,7 @@ echo...这个命令就是为了写文件显示方便点..
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

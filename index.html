@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,117 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2024/06/05/code/java/2024-06-05-jad-decompile-error/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/06/05/code/java/2024-06-05-jad-decompile-error/" class="post-title-link" itemprop="url">Jad Decompile Error With Shift Operators.</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-06-05 21:17:26 / Modified: 21:43:20" itemprop="dateCreated datePublished" datetime="2024-06-05T21:17:26+08:00">2024-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>I found sometime jad has bug in decompile the code.  Like the following code:</p>
+<h1 id="code-frame-1-long2bytes"><a class="markdownIt-Anchor" href="#code-frame-1-long2bytes"></a> Code frame 1: long2Bytes</h1>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// this code is for convert long to bytes.</span></span><br><span class="line"><span class="comment">// long2Bytes(0x12345670, 1) =&gt; 0x1</span></span><br><span class="line"><span class="comment">// long2Bytes(0x12345670, 2) =&gt; 0x12</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">byte</span>[] long2Bytes(<span class="type">long</span> l, <span class="type">int</span> len) &#123;</span><br><span class="line">    <span class="keyword">if</span> (len &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (len &gt; <span class="number">8</span>) &#123;</span><br><span class="line">        len = <span class="number">8</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">byte</span>[] temp = <span class="keyword">new</span> <span class="title class_">byte</span>[len];</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> len - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; i &gt;= <span class="number">0</span>; ++j) &#123;</span><br><span class="line">        temp[j] = (<span class="type">byte</span>)((<span class="type">int</span>)(l &gt;&gt;&gt; (i &lt;&lt; <span class="number">3</span>)));</span><br><span class="line">        --i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="decompile-this-code-will-be"><a class="markdownIt-Anchor" href="#decompile-this-code-will-be"></a> Decompile this code will be:</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">byte</span>[] long2Bytes(<span class="type">long</span> l, <span class="type">int</span> len) &#123;</span><br><span class="line">    <span class="keyword">if</span> (len &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (len &gt; <span class="number">8</span>) &#123;</span><br><span class="line">        len = <span class="number">8</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">byte</span>[] temp = <span class="keyword">new</span> <span class="title class_">byte</span>[len];</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> len - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; i &gt;= <span class="number">0</span>; ++j) &#123;</span><br><span class="line">        temp[j] = (<span class="type">byte</span>)((<span class="type">int</span>)(l &gt;&gt;&gt; i &lt;&lt; <span class="number">3</span>));</span><br><span class="line">        --i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>You will see the byte shift operator<code>&gt;&gt;&gt; &lt;&lt;</code> are wrong.</p>
+<h1 id="code-frame-2-bytes2long"><a class="markdownIt-Anchor" href="#code-frame-2-bytes2long"></a> Code frame 2: bytes2Long</h1>
+<p>I find another mistake in Jad is:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="title function_">bytes2Long</span><span class="params">(<span class="type">byte</span>[] b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (b.length &lt;= <span class="number">0</span> || b.length &gt; <span class="number">8</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;byte length should be 1~8bytes.&quot;</span>); </span><br><span class="line">  <span class="type">long</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = b.length - <span class="number">1</span>; i &lt;= j; i++)</span><br><span class="line">    l |= (b[i] &amp; <span class="number">0xFF</span>) &lt;&lt; ((j - i) &lt;&lt; <span class="number">3</span>);</span><br><span class="line">  <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="decompile-this-code-will-be-2"><a class="markdownIt-Anchor" href="#decompile-this-code-will-be-2"></a> Decompile this code will be:</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="title function_">bytes2Long</span><span class="params">(<span class="type">byte</span>[] b)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (b.length &lt;= <span class="number">0</span> || b.length &gt; <span class="number">8</span>)</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;byte length should be 1~8bytes.&quot;</span>); </span><br><span class="line">    <span class="type">long</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = b.length - <span class="number">1</span>; i &lt;= j; i++)</span><br><span class="line">      l |= (b[i] &amp; <span class="number">0xFF</span>) &lt;&lt; j - i &lt;&lt; <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="conclusion"><a class="markdownIt-Anchor" href="#conclusion"></a> Conclusion</h1>
+<p>You will see the byte shift operator<code>&gt;&gt;&gt; &lt;&lt;</code> are wrong again.<br />
+So if you want decompile some code, be careful with shift operators.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -312,7 +423,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2024/04/19/2024-04-19-git-clone-error/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2024/04/19/project/git/2024-04-19-git-clone-error/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -330,7 +441,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/04/19/2024-04-19-git-clone-error/" class="post-title-link" itemprop="url">2024-04-19-Git-Clone-Error</a>
+          <a href="/2024/04/19/project/git/2024-04-19-git-clone-error/" class="post-title-link" itemprop="url">2024-04-19-Git-Clone-Error</a>
         </h2>
 
         <div class="post-meta-container">
@@ -340,9 +451,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2024-04-19 00:03:41 / Modified: 00:23:50" itemprop="dateCreated datePublished" datetime="2024-04-19T00:03:41+08:00">2024-04-19</time>
+      <time title="Created: 2024-04-19 00:03:41" itemprop="dateCreated datePublished" datetime="2024-04-19T00:03:41+08:00">2024-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-05-17 00:01:54" itemprop="dateModified" datetime="2024-05-17T00:01:54+08:00">2024-05-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -350,11 +467,11 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+          <a href="/categories/project/" itemprop="url" rel="index"><span itemprop="name">project</span></a>
         </span>
           , 
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+          <a href="/categories/project/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
         </span>
     </span>
 
@@ -969,7 +1086,7 @@ I found the changes in Hexo is quite big. I found images can not be displayed pr
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/10/18/Architect-week4-hashmap/hashmap-design/">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/10/18/architect/Architect-week4-hashmap/hashmap-design/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/icon.svg">
@@ -987,7 +1104,7 @@ I found the changes in Hexo is quite big. I found images can not be displayed pr
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/10/18/Architect-week4-hashmap/hashmap-design/" class="post-title-link" itemprop="url">HashMap Design (1)</a>
+          <a href="/2017/10/18/architect/Architect-week4-hashmap/hashmap-design/" class="post-title-link" itemprop="url">HashMap Design (1)</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1408,179 +1525,6 @@ and next is <em>containsValue</em></p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2017/09/29/jdk9/Java9-Flow-feature/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/09/29/jdk9/Java9-Flow-feature/" class="post-title-link" itemprop="url">Java9:Flow Feature</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-09-29 21:00:04" itemprop="dateCreated datePublished" datetime="2017-09-29T21:00:04+08:00">2017-09-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-06 12:12:17" itemprop="dateModified" datetime="2023-10-06T12:12:17+08:00">2023-10-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/knowledge/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>LP强烈要求用中文写。嗯，好吧，用中文写吧。</p>
-<h1 id="flow-简介"><a class="markdownIt-Anchor" href="#flow-简介"></a> Flow 简介</h1>
-<p>今天试用了一下jdk9, 最主要关注Flow这个新增的功能。结果发现，这个Flow其实是一个final class，构造函数还是private,没有任何正常方法将其实例化。这个是新功能？我抱着学习的心态看了一下java doc. 发现主要是几个interface. Interface…都是接口，到底有没有实现？</p>
-<p>然后不知道怎么查到了reactive-stream, 其实Java的JVM Flow就是按照reactive-stream的API规范写的。</p>
-<p>reactive-stream是什么？就是反向压力流（back pressure），其实你称其为反向控制流也行。官方说法是：一个异步非阻塞反向控制流处理的标准。嗯，相当拗口。</p>
-<p>什么是反向控制？这里还是抄袭一下别人的图吧。图的出处在<span class="exturl" data-url="aHR0cHM6Ly9jb21tdW5pdHkub3JhY2xlLmNvbS9kb2NzL0RPQy0xMDA2NzM4">这里<i class="fa fa-external-link-alt"></i></span>。</p>
-<div align=center>
-<p><img src="/images/jdk9/flow/flow1.png" alt="flow1.png" /></p>
-<p><strong>图 1</strong> 正常流处理</p>
-</div>
-<p>下面是反向的流处理：</p>
-<div align=center>
-<p><img src="/images/jdk9/flow/flow2.png" alt="flow2.png" /></p>
-<p><strong>图 2</strong> 反向流处理</p>
-</div>
-<p>看到了吧，反向的流处理<strong>图 2</strong>是Subcriber需要多少数据，就给多少数据。不要不给。正常的流处理<strong>图 1</strong>是管你要多少，我有多少给你多少。图1的问题就导致数据在管道里积压，或者在Subscriber里面积压。所以正常的流一般处理时要么数据就丢弃掉了，要么JVM就OOM了。所以反向的流好棒好棒的!</p>
-<p>嗯，感觉也不是，因为有可能反向的流在Publisher的地方挤压了…其实你的程序性能不行，处理不完，积压不可避免。所以这反向的鬼东西有什么用呢？除非你的Publisher是根据你处理的数据的性能来生产数据。这听起来很酷，这很像当年教务系统的排队选课，以及魔兽世界中的等等等…其实就是处理性能不行，只能反推给最初的生产者<strong>人</strong>。当然还有一种使用场景是消除峰值，当大量数据瞬间涌入时会造成整个系统崩溃。但如果你的系统在限定的时间内慢慢处理这些数据，还是完全没有问题的。这样就增加了系统的稳定性。</p>
-<p>Java9其实只是将这个标准写入了JVM中而已。我顺便看了一下Publisher以及Subscriber的实现类，很多都是incubate包的(即实验中)。只有一个类是特别的存在：SubmissionPublisher。</p>
-<h1 id="flow-使用"><a class="markdownIt-Anchor" href="#flow-使用"></a> Flow 使用</h1>
-<p>这个Flow使用起来，真的好麻烦。最初我知道Flow这个Feature的时候，我以为只需要将数据push到流里，然后有一个default的Consumer获取到数据。这个Flow自己给我搞定了反向控制。No,No,No. Java9啥都没有做。啥都需要你自己写。如果没有SubmissionPublisher，那你需要根据那几个Interface自己去实现。这是什么鬼，我是不是可以宣布我写了一个可以实现全世界所有功能的框架呢？我的框架就是下面这样的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Everything</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">doEverything</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>是不是非常棒?! Java9宣称的Flow就和我上面宣称的没有啥区别,只是它的接口更多而已。好了，它还是给出了一个SubmissionPublisher。 我就先原谅它吧… 可是怎么使用呢？我再次抄袭了<span class="exturl" data-url="aHR0cHM6Ly9jb21tdW5pdHkub3JhY2xlLmNvbS9kb2NzL0RPQy0xMDA2NzM4">这边的blog的代码<i class="fa fa-external-link-alt"></i></span>。我也不知道为啥变得这么厚颜无耻，不知脸红的抄袭，可能是跟腾讯阿里学的吧。</p>
-<h2 id="publisher和subscriber简单示例"><a class="markdownIt-Anchor" href="#publisher和subscriber简单示例"></a> Publisher和Subscriber简单示例</h2>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MySubscriber</span>&lt;T&gt; <span class="keyword">implements</span> <span class="title class_">Flow</span>.Subscriber&lt;T&gt; &#123;</span><br><span class="line">        <span class="keyword">private</span> Flow.Subscription subscription;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSubscribe</span><span class="params">(Flow.Subscription subscription)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.subscription = subscription;</span><br><span class="line">            subscription.request(<span class="number">1</span>); <span class="comment">//这里要使用Long.MAX_VALUE就会被认为获取无穷的数据。</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(T item)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Got : &quot;</span> + item);</span><br><span class="line">            subscription.request(<span class="number">1</span>); <span class="comment">//这里也可以使用Long.MAX_VALUE</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable t)</span> &#123;</span><br><span class="line">            t.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Done&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        SubmissionPublisher&lt;String&gt; publisher = <span class="keyword">new</span> <span class="title class_">SubmissionPublisher</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Register Subscriber</span></span><br><span class="line">        MySubscriber&lt;String&gt; subscriber = <span class="keyword">new</span> <span class="title class_">MySubscriber</span>&lt;&gt;();</span><br><span class="line">        publisher.subscribe(subscriber);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Publish items</span></span><br><span class="line">        System.out.println(<span class="string">&quot;Publishing Items...&quot;</span>);</span><br><span class="line">        String[] items = &#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;x&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;x&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;x&quot;</span>&#125;;</span><br><span class="line">        Arrays.asList(items).stream().forEach(i -&gt; publisher.submit(i));</span><br><span class="line">        publisher.close();</span><br><span class="line">        Thread.sleep(<span class="number">20000</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>主要的函数是：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 反向控制获取数据个数。</span></span><br><span class="line"><span class="comment">//代码里两处request(1)都不能丢，否则数据无法正常获取</span></span><br><span class="line">subscription.request(<span class="number">1</span>)</span><br><span class="line"><span class="comment">// 发布数据，相当于数据输入</span></span><br><span class="line">publisher.submit(i)</span><br><span class="line"><span class="comment">// 关闭publisher，没有该函数则Subscriber.onComplete()不会被调用。</span></span><br><span class="line">publisher.close()  </span><br><span class="line"><span class="comment">// 因为是异步的流处理</span></span><br><span class="line"><span class="comment">// 所以没能提供同步的接口，可以自己在Subcriber中加入同步策略</span></span><br><span class="line"><span class="comment">// 我这里简化了,如果你去掉这段代码，那你可能什么都看不到</span></span><br><span class="line">Thread.sleep(<span class="number">20000</span>);</span><br></pre></td></tr></table></figure>
-<p>运行结果如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Publishing Items...</span><br><span class="line">Got : 1</span><br><span class="line">Got : x</span><br><span class="line">Got : 2</span><br><span class="line">Got : x</span><br><span class="line">Got : 3</span><br><span class="line">Got : x</span><br><span class="line">Done</span><br></pre></td></tr></table></figure>
-<h2 id="flow的processor接口"><a class="markdownIt-Anchor" href="#flow的processor接口"></a> Flow的Processor接口</h2>
-<p>Flow还有一个重要的Processor接口，这个其实就是函数变换。其实一般的函数变换操作都可以在Subscriber中实现，Processor并没有什么卵用。不过如果让我去定义接口，我仍然会给出Processor. 为啥？这样会防止别人来喷我…嗯，其实给出了Processor接口，一样有人来喷，例如我…</p>
-<p>看下图就知道我在说什么了。竟然无图可盗了…</p>
-<div align=center>
-<p><img src="/images/jdk9/flow/withProcessor.png" alt="withProcessor.png" /></p>
-<p><strong>图 3</strong> 带有Processor的流</p>
-</div>
-<div align=center>
-<p><img src="/images/jdk9/flow/withoutProcessor.png" alt="withoutProcessor.png" /></p>
-<p><strong>图 4</strong> 没有Processor的流</p>
-</div>
-<p>如果增加另外一个流，就可以完全实现Processor的功能。所以表达流的<strong>最小原语</strong>不应该存在Processor这东西。但是Reactive-Stream说：我的这个就是规范。那好吧，就加一个吧。不过增加Processor的好处在于：你可以只写一个流，里面有很多Processor。而不是写很多流，将Subscriber和Publisher混在一起写。虽然你已经在Processor中将Publisher,Subscriber混在一起写了…嗯…呃…总而言之，你一定要相信规范，Processor存在一定有它的道理。</p>
-<p>下面也给一个Process的例子：是过滤用的Processor.(这段代码是我自己写的，在Oracle官方文档中本应存在这段代码，但是他们不小心忘记写了…忘记写了…我看到的官方文档最后由 Bob Rhubart-Oracle 于 2016-9-26 下午2:03修改,版本号为6)：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyFilterProcessor</span>&lt;T,K <span class="keyword">extends</span> <span class="title class_">T</span>&gt; <span class="keyword">extends</span> <span class="title class_">SubmissionPublisher</span>&lt;K&gt; <span class="keyword">implements</span> <span class="title class_">Flow</span></span><br><span class="line">            .Processor&lt;T, K&gt; &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Function&lt;? <span class="built_in">super</span> T, Boolean&gt; function;</span><br><span class="line">        <span class="keyword">private</span> Flow.Subscription subscription;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">MyFilterProcessor</span><span class="params">(Function&lt;? <span class="built_in">super</span> T, Boolean&gt; function)</span> &#123;</span><br><span class="line">            <span class="built_in">super</span>();</span><br><span class="line">            <span class="built_in">this</span>.function = function;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSubscribe</span><span class="params">(Flow.Subscription subscription)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.subscription = subscription;</span><br><span class="line">            subscription.request(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onNext</span><span class="params">(T item)</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!(<span class="type">boolean</span>) function.apply(item)) &#123;</span><br><span class="line"></span><br><span class="line">                submit((K)item);</span><br><span class="line">            &#125;</span><br><span class="line">            subscription.request(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable t)</span> &#123;</span><br><span class="line">            t.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onComplete</span><span class="params">()</span> &#123;</span><br><span class="line">            close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="comment">//Create Publisher</span></span><br><span class="line">        SubmissionPublisher&lt;String&gt; publisher = <span class="keyword">new</span> <span class="title class_">SubmissionPublisher</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Create Processor and Subscriber</span></span><br><span class="line">        MyFilterProcessor&lt;String, String&gt; filterProcessor = <span class="keyword">new</span> <span class="title class_">MyFilterProcessor</span>&lt;&gt;(s -&gt; s.equals(<span class="string">&quot;x&quot;</span>));</span><br><span class="line"></span><br><span class="line">        MySubscriber&lt;Integer&gt; subscriber = <span class="keyword">new</span> <span class="title class_">MySubscriber</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Chain Processor and Subscriber</span></span><br><span class="line">        publisher.subscribe(filterProcessor);</span><br><span class="line">        filterProcessor.subscribe(subscriber);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;Publishing Items...&quot;</span>);</span><br><span class="line"></span><br><span class="line">        String[] items = &#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;x&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;x&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;x&quot;</span>&#125;;</span><br><span class="line">        Arrays.asList(items).stream().forEach(i -&gt; publisher.submit(i));</span><br><span class="line">        publisher.close();</span><br><span class="line">        Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Publishing Items...</span><br><span class="line">Got : 1</span><br><span class="line">Got : 2</span><br><span class="line">Got : 3</span><br><span class="line">Done</span><br></pre></td></tr></table></figure>
-<p>重要的代码片段是：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!(<span class="type">boolean</span>) function.apply(item)) &#123;</span><br><span class="line">	submit((K)item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的submit就是数据再发布，相信大家都能看懂，不再叙述。</p>
-<h1 id="flow-性能测试"><a class="markdownIt-Anchor" href="#flow-性能测试"></a> Flow 性能测试</h1>
-<p>到底这个东西性能怎么样？我是不是随便写一个Flow的实现都比它快？如果它性能差，我按它这个规范写有什么意义？为了好看吗？<br />
-好吧。我自己用无锁队列实现了一下。功能就是简单的计数，看看各自的最强性能。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">无锁队列执行结果：</span><br><span class="line">class chillyc.info.speed.old.XFlow:27qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:171629qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:7586111qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:8095748qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:7640866qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:6845523qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:6516655qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:6191659qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:5742711qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:6657964qps</span><br><span class="line">class chillyc.info.speed.old.XFlow:5720992qps</span><br></pre></td></tr></table></figure>
-<p>JVM jdk9 Flow执行结果</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Concurrent.Flow 测试结果： 设置无穷索取, request(Long.MAX_VALUE)</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:39688qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6798618qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6556238qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6506791qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6545895qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:7129085qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:7005827qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:6818252qps</span><br></pre></td></tr></table></figure>
-<p>性能对比图：</p>
-<div align=center>
-<p><img src="/images/jdk9/flow/speed.png" alt="性能对比" /></p>
-<p><strong>图 5</strong> 性能对比图</p>
-</div>
-<p>个人感觉前两次都可以忽略不计，无锁队列的实现中，前两次线程还没有完全启动，数据还没有完全填充。不过从另外一个侧面反映出jdk9 Flow启动效率非常高。我们除去前两次计算一下平均值。看到两者相差不大:无锁队列比jdk9 Flow平均快了17000+qps.</p>
-<p>实验和数据量，buffer大小都有关系，变量太多，没有一一实验，并且两者的qps都是六七百万量级，所以我认为两者差别不大。JDK9的Flow实现的挺不错的，竟然能和我顺手写的性能差不多。我心中不由的赞叹一番。</p>
-<h1 id="flow-bug"><a class="markdownIt-Anchor" href="#flow-bug"></a> Flow bug</h1>
-<p>因为测试了jdk9 Flow的无限索取时的性能。我想再测测每次取一个导致的最差性能（request(1)）。结果就发现了bug.<br />
-测试输出如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:55296qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br><span class="line">class chillyc.info.speed.jdk9flow.Jdk9Flow:0qps</span><br></pre></td></tr></table></figure>
-<p>从结果上分析，经过一段时间之后，jdk9的Flow就无法处理数据了。这…真的能用吗？</p>
-<h1 id="结束语"><a class="markdownIt-Anchor" href="#结束语"></a> 结束语</h1>
-<p>本来应该带着虔诚敬畏的心态学习JDK9的…结果变成了吐槽大会了…罪过罪过，实在不该这样…顺便一提，jshell非常好用，tab功能提示很强大，就是我机器性能有点差，感觉很卡顿…</p>
-<p>对了，不要以为我只会讨论jdk9…那是因为ReactJS 16发布的比较晚。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1612,7 +1556,7 @@ and next is <em>containsValue</em></p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

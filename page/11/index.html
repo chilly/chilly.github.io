@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,105 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/03/29/8738477/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2013/03/29/8738477/" class="post-title-link" itemprop="url">学习一下Golang   练习70  Web Crawler (网络爬虫)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-03-29 22:01:00" itemprop="dateCreated datePublished" datetime="2013-03-29T22:01:00+08:00">2013-03-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>之前找了有下web crawler的练习答案. 貌似中文的不多。另外golang.org自从在外面之后， <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前卒<i class="fa fa-external-link-alt"></i></span> 每次上都需要到那里都要花些功夫。国内的也有一个移植的（ <span class="exturl" data-url="aHR0cDovL3d3dy5hcWVlLm5ldC9nby9hLXRvdXItb2YtZ28vIzE="> 猛击这里<i class="fa fa-external-link-alt"></i></span> ）。</p>
+<p>最近支付宝的页面也被爬虫爆出来了。不过这应该很久之前的事情了。因为看到了google的搜索，还有2012年8月份的。估计上支付宝那个shenghuo.alipay.com这个domain自从上线就没有加robots.txt. 有兴趣的可以在google上使用 site:shenghuo.alipay.com or 查看 <span class="exturl" data-url="aHR0cDovL3NoZW5naHVvLmFsaXBheS5jb20vcm9ib3RzLnR4dA==">shenghuo.alipay.com/robots.txt<i class="fa fa-external-link-alt"></i></span>.</p>
+<p>言归正传, golang的问题是这样的：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Fetcher <span class="keyword">interface</span> &#123;</span><br><span class="line">        <span class="comment">// Fetch 返回 URL 的 body 内容，并且将在这个页面上找到的 URL 放到一个 slice 中。</span></span><br><span class="line">	Fetch(url <span class="type">string</span>) (body <span class="type">string</span>, urls []<span class="type">string</span>, err <span class="type">error</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Crawl 使用 fetcher 从某个 URL 开始递归的爬取页面，直到达到最大深度。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Crawl</span><span class="params">(url <span class="type">string</span>, depth <span class="type">int</span>, fetcher Fetcher)</span></span> &#123;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> 并行的抓取 URL。</span></span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> 不重复抓取页面。</span></span><br><span class="line">        <span class="comment">// 下面并没有实现上面两种情况：</span></span><br><span class="line">	<span class="keyword">if</span> depth &lt;= <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	body, urls, err := fetcher.Fetch(url)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;found: %s %q\n&quot;</span>, url, body)</span><br><span class="line">	<span class="keyword">for</span> _, u := <span class="keyword">range</span> urls &#123;</span><br><span class="line">		Crawl(u, depth<span class="number">-1</span>, fetcher)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	Crawl(<span class="string">&quot;http://golang.org/&quot;</span>, <span class="number">4</span>, fetcher)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// fakeFetcher 是返回若干结果的 Fetcher。</span></span><br><span class="line"><span class="keyword">type</span> fakeFetcher <span class="keyword">map</span>[<span class="type">string</span>]*fakeResult</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> fakeResult <span class="keyword">struct</span> &#123;</span><br><span class="line">	body <span class="type">string</span></span><br><span class="line">	urls     []<span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *fakeFetcher)</span></span> Fetch(url <span class="type">string</span>) (<span class="type">string</span>, []<span class="type">string</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> res, ok := (*f)[url]; ok &#123;</span><br><span class="line">		<span class="keyword">return</span> res.body, res.urls, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, <span class="literal">nil</span>, fmt.Errorf(<span class="string">&quot;not found: %s&quot;</span>, url)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fetcher 是填充后的 fakeFetcher。</span></span><br><span class="line"><span class="keyword">var</span> fetcher = &amp;fakeFetcher&#123;</span><br><span class="line">	<span class="string">&quot;http://golang.org/&quot;</span>: &amp;fakeResult&#123;</span><br><span class="line">		<span class="string">&quot;The Go Programming Language&quot;</span>,</span><br><span class="line">		[]<span class="type">string</span>&#123;</span><br><span class="line">			<span class="string">&quot;http://golang.org/pkg/&quot;</span>,</span><br><span class="line">			<span class="string">&quot;http://golang.org/cmd/&quot;</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="string">&quot;http://golang.org/pkg/&quot;</span>: &amp;fakeResult&#123;</span><br><span class="line">		<span class="string">&quot;Packages&quot;</span>,</span><br><span class="line">		[]<span class="type">string</span>&#123;</span><br><span class="line">			<span class="string">&quot;http://golang.org/&quot;</span>,</span><br><span class="line">			<span class="string">&quot;http://golang.org/cmd/&quot;</span>,</span><br><span class="line">			<span class="string">&quot;http://golang.org/pkg/fmt/&quot;</span>,</span><br><span class="line">			<span class="string">&quot;http://golang.org/pkg/os/&quot;</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="string">&quot;http://golang.org/pkg/fmt/&quot;</span>: &amp;fakeResult&#123;</span><br><span class="line">		<span class="string">&quot;Package fmt&quot;</span>,</span><br><span class="line">		[]<span class="type">string</span>&#123;</span><br><span class="line">			<span class="string">&quot;http://golang.org/&quot;</span>,</span><br><span class="line">			<span class="string">&quot;http://golang.org/pkg/&quot;</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="string">&quot;http://golang.org/pkg/os/&quot;</span>: &amp;fakeResult&#123;</span><br><span class="line">		<span class="string">&quot;Package os&quot;</span>,</span><br><span class="line">		[]<span class="type">string</span>&#123;</span><br><span class="line">			<span class="string">&quot;http://golang.org/&quot;</span>,</span><br><span class="line">			<span class="string">&quot;http://golang.org/pkg/&quot;</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后下面是 <a href="http://chillyc.info"> 小卒 </a> 的解答。最主要的是改写原来的函数。同步map,然后父节点应在全部子节点退出后再退出。用channel当banner派上用场。当然golang还提供了锁和其他的同步机制。不过 <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2N0dF8x"> 帐前 卒<i class="fa fa-external-link-alt"></i></span> 还是先用channel吧。另外最好先看看golang的memory model.</p>
+<p>下面 <a href="http://chillyc.info"> 帐 前卒 </a> 的代码：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Fetcher <span class="keyword">interface</span> &#123;</span><br><span class="line">        <span class="comment">// Fetch 返回 URL 的 body 内容，并且将在这个页面上找到的 URL 放到一个 slice 中。</span></span><br><span class="line">  Fetch(url <span class="type">string</span>) (body <span class="type">string</span>, urls []<span class="type">string</span>, err <span class="type">error</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> lockx = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">// 同步通信使用</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">LockFun</span><span class="params">(f <span class="keyword">func</span>()</span></span>) &#123;</span><br><span class="line">  lockx&lt;<span class="number">-1</span></span><br><span class="line">  f()</span><br><span class="line">  &lt;-lockx</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> visited <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">bool</span> = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">bool</span>)</span><br><span class="line"><span class="comment">// Crawl 使用 fetcher 从某个 URL 开始递归的爬取页面，直到达到最大深度。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Crawl</span><span class="params">(url <span class="type">string</span>, depth <span class="type">int</span>, fetcher Fetcher, banner <span class="keyword">chan</span> <span class="type">int</span>)</span></span> &#123;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">if</span> depth &lt;= <span class="number">0</span> || visited[url] &#123;</span><br><span class="line">    banner&lt;<span class="number">-1</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  body, urls, err := fetcher.Fetch(url)</span><br><span class="line">  LockFun(<span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    visited[url]=<span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line">  fmt.Printf(<span class="string">&quot;found: %s %q\n&quot;</span>, url, body)</span><br><span class="line">  <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err)</span><br><span class="line">    banner&lt;<span class="number">-1</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  subBanner := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="built_in">len</span>(urls))</span><br><span class="line">  <span class="keyword">for</span> _, u := <span class="keyword">range</span> urls &#123;</span><br><span class="line">     <span class="comment">// 并行吧～～ </span></span><br><span class="line">      <span class="keyword">go</span> Crawl(u, depth<span class="number">-1</span>, fetcher, subBanner);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> i:=<span class="number">0</span>; i &lt; <span class="built_in">len</span>(urls); i++ &#123;</span><br><span class="line">    <span class="comment">// subBanner用来防止退出</span></span><br><span class="line">    &lt;-subBanner</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// banner用于让父节点退出</span></span><br><span class="line">  banner&lt;<span class="number">-1</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  mainBanner := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>,<span class="number">1</span>)</span><br><span class="line">  Crawl(<span class="string">&quot;http://golang.org/&quot;</span>, <span class="number">4</span>, fetcher, mainBanner)</span><br><span class="line">  &lt;-mainBanner</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// fakeFetcher 是返回若干结果的 Fetcher。</span></span><br><span class="line"><span class="keyword">type</span> fakeFetcher <span class="keyword">map</span>[<span class="type">string</span>]*fakeResult</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> fakeResult <span class="keyword">struct</span> &#123;</span><br><span class="line">  body <span class="type">string</span></span><br><span class="line">  urls     []<span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *fakeFetcher)</span></span> Fetch(url <span class="type">string</span>) (<span class="type">string</span>, []<span class="type">string</span>, <span class="type">error</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> res, ok := (*f)[url]; ok &#123;</span><br><span class="line">    <span class="keyword">return</span> res.body, res.urls, <span class="literal">nil</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;&quot;</span>, <span class="literal">nil</span>, fmt.Errorf(<span class="string">&quot;not found: %s&quot;</span>, url)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fetcher 是填充后的 fakeFetcher。</span></span><br><span class="line"><span class="keyword">var</span> fetcher = &amp;fakeFetcher&#123;</span><br><span class="line">  <span class="string">&quot;http://golang.org/&quot;</span>: &amp;fakeResult&#123;</span><br><span class="line">    <span class="string">&quot;The Go Programming Language&quot;</span>,</span><br><span class="line">    []<span class="type">string</span>&#123;</span><br><span class="line">      <span class="string">&quot;http://golang.org/pkg/&quot;</span>,</span><br><span class="line">      <span class="string">&quot;http://golang.org/cmd/&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;http://golang.org/pkg/&quot;</span>: &amp;fakeResult&#123;</span><br><span class="line">    <span class="string">&quot;Packages&quot;</span>,</span><br><span class="line">    []<span class="type">string</span>&#123;</span><br><span class="line">      <span class="string">&quot;http://golang.org/&quot;</span>,</span><br><span class="line">      <span class="string">&quot;http://golang.org/cmd/&quot;</span>,</span><br><span class="line">      <span class="string">&quot;http://golang.org/pkg/fmt/&quot;</span>,</span><br><span class="line">      <span class="string">&quot;http://golang.org/pkg/os/&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;http://golang.org/pkg/fmt/&quot;</span>: &amp;fakeResult&#123;</span><br><span class="line">    <span class="string">&quot;Package fmt&quot;</span>,</span><br><span class="line">    []<span class="type">string</span>&#123;</span><br><span class="line">      <span class="string">&quot;http://golang.org/&quot;</span>,</span><br><span class="line">      <span class="string">&quot;http://golang.org/pkg/&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;http://golang.org/pkg/os/&quot;</span>: &amp;fakeResult&#123;</span><br><span class="line">    <span class="string">&quot;Package os&quot;</span>,</span><br><span class="line">    []<span class="type">string</span>&#123;</span><br><span class="line">      <span class="string">&quot;http://golang.org/&quot;</span>,</span><br><span class="line">      <span class="string">&quot;http://golang.org/pkg/&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>觉得没有找到类似python的遍历list但是不需要获取值的方法例如 for _, _ := range urls {}这样就是错误的。另外golang也不能加入不需要的包，变量。帐 前 卒觉得这点…太洁癖了。</p>
+<p>暂时就这样吧。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1577,102 +1676,6 @@ kill掉。那么上面两种方法是无论如何都做不到的。只能只用s
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2013/02/20/8595796/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2013/02/20/8595796/" class="post-title-link" itemprop="url">Resin 4.0.8  升级到 Resin 4.0.14</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2013-02-20 19:35:00" itemprop="dateCreated datePublished" datetime="2013-02-20T19:35:00+08:00">2013-02-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:52" itemprop="dateModified" datetime="2023-10-05T12:34:52+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>193</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>之前发现4.0.8中可能存在milti-part的数据无法传递到service中。后来就迁移了。</p>
-<p>另外发现有时resin中webapp目录中有些文件会自动重建。即使删除了各种cache和数据，只要resin重启，必然，那个目录中的文件就出现了。</p>
-<p>解决这种情况的方式：</p>
-<p>1. 杀掉resin进程，删除掉xxx.war 和xxx那个文件夹。</p>
-<p>2. 将新的xxx.war放入到resin中</p>
-<p>3. 重启resin</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/12/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1704,7 +1707,7 @@ kill掉。那么上面两种方法是无论如何都做不到的。只能只用s
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

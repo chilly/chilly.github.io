@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,112 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/09/14/1785505/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2007/09/14/1785505/" class="post-title-link" itemprop="url">C#制作网页得用户名,用户域domain</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2007-09-14 18:10:00" itemprop="dateCreated datePublished" datetime="2007-09-14T18:10:00+08:00">2007-09-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:50" itemprop="dateModified" datetime="2023-10-05T12:34:50+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>721</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>string domainAndName =<br />
+<span class="exturl" data-url="aHR0cDovL0h0dHBDb250ZXh0LkN1cnJlbnQuVXNlci5JZGVudGl0eS5OYW1l">HttpContext.Current.User.Identity.Name<i class="fa fa-external-link-alt"></i></span>;//得到当前浏览网页的用户名（windows登录名一般网络上验证登录的话就像：<br />
+google/ss,这里google是域，ss是自己的用户名）<br />
+string[] infoes = domainAndName.Split(new char[1] { ‘//’ },<br />
+StringSplitOptions.RemoveEmptyEntries);//这里将用户名和域分离开了<br />
+string strDomain = infoes[0].ToLower() ;<br />
+string username = infoes[1];</p>
+<p>这个前提是以windows集成登录为前提。不能是匿名登录。</p>
+<p>还有几种方法：</p>
+<p>string domain = Environment.GetEnvironmentVariable(“USERDOMAIN”)；这样也是可行的。但是这个只<br />
+是在本机环境下，也就是不能是网页运行这段代码。必须是一个应用程序。</p>
+<p>System.Security.Principal.WindowsIdentity.GetCurrent().name;这个用于得到机器的用户名和域。但是对<br />
+于网站来说一样行不通。</p>
+<p>这是因为一般我们运行程序是以登录用户的用户名启动。而网站的运行是System用户。所以使用以上两个在网站发布的时候只能得到ASP.net这个域，因为IIS是<br />
+以System运行的。但是在.net调试的时候，.net2005启动是另一套debug的网站发布机制，并且是以当前登录的用户身份运行的。<br />
+所以这使得在调试时正确的网站，但是发布后去错误了。但是如果使用的.net2003这又另当别论。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1216,125 +1322,6 @@ return  bt;<br />
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2007/08/24/1757800/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2007/08/24/1757800/" class="post-title-link" itemprop="url">C#线程与线程池</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2007-08-24 17:08:00" itemprop="dateCreated datePublished" datetime="2007-08-24T17:08:00+08:00">2007-08-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:49" itemprop="dateModified" datetime="2023-10-05T12:34:49+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>580</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>线程的建立：（不同于java的是不用再继承Thread类）</p>
-<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-TcpClient tc  =  tListener.AcceptTcpClient();<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-CThreadServer ctserver  =  new  CThreadServer(tc);<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-Thread t  =  new  Thread(  new  ThreadStart(ctserver.AcceptImageFile));<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-t.IsBackground  =  true  ;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-t.Start();<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /></p>
-<p>线程池的建立</p>
-<p><img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-TcpClient tc  =  tListener.AcceptTcpClient();<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-CThreadServer ctserver  =  new  CThreadServer(tc);<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
-Thread t = new Thread(new ThreadStart(ctserver.AcceptImageFile));<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
-t.IsBackground = true;<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /> //<br />
-t.Start();<br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-<img src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><br />
-ThreadPool.QueueUserWorkItem(  new  WaitCallback(ctserver.AcceptImageFile));</p>
-<p>但这里的AcceptImageFile与线程建立中的AcceptImageFile有所不同</p>
-<p>在线程建立中为AcceptImageFile();</p>
-<p>在线程池建立中为AcceptImageFile(Object o);这里的Object o是必须要加入的。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/62/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><span class="page-number current">63</span><a class="page-number" href="/page/64/">64</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/64/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1366,7 +1353,7 @@ ThreadPool.QueueUserWorkItem(  new  WaitCallback(ctserver.AcceptImageFile));</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

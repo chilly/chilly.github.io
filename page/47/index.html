@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,229 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/11/14/3300789/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/11/14/3300789/" class="post-title-link" itemprop="url">java调用Dos命令</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-11-14 18:49:00" itemprop="dateCreated datePublished" datetime="2008-11-14T18:49:00+08:00">2008-11-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>比如我在工程文件夹下放了一个svm-train.exe的文件</p>
+<p>这个exe文件调用后有输出信息。我很想知道这个exe调用过程中到底发生了什么事情。</p>
+<p>在java中这样写</p>
+<p>Runtime run = Runtime.getRuntime();<br />
+Process child = null;<br />
+InputStream is = null;</p>
+<p>File env = new File(System.getProperty(“user.dir”));<br />
+child = run.exec(cmd,null,env);</p>
+<p>这个env是用于找到工程的当前目录，相当于进入Dos后先cd到目录，cmd就是你在dos窗口那里打的命令。</p>
+<p>run.exec(cmd,null,env);这句就开始执行了。并创建一个Process给child</p>
+<p>网上有很多代码有这句：</p>
+<p>while(true)<br />
+{<br />
+if(child.waitFor() == 0)<br />
+{<br />
+break;<br />
+}</p>
+<p>}</p>
+<p>但是注意如果进入 if(child.waitFor() == 0)<br />
+那这个程序就会卡死在这里，直到exe进程结束。这样如果你的exe会运行很长时间，那么在这段时间内就不能打印任何输出信息。</p>
+<p>全代码如下：</p>
+<ol>
+<li>private  static  boolean  CallSVM(String cmd)</li>
+<li>{</li>
+<li>Runtime run = Runtime.getRuntime();</li>
+<li>Process child =  null  ;</li>
+<li>InputStream is =  null  ;</li>
+<li>
+<ol start="7">
+<li>try</li>
+</ol>
+</li>
+<li>{</li>
+<li>File env =  new  File(System.getProperty(  “user.dir”  ));</li>
+<li>
+<ol start="11">
+<li>child = run.exec(cmd,  null  ,env);</li>
+</ol>
+</li>
+<li>
+<ol start="13">
+<li>String out =  null  ;</li>
+</ol>
+</li>
+<li>
+<ol start="15">
+<li>
+<ol start="16">
+<li>// nomal process</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>is = child.getInputStream();</li>
+<li>FileWriter fw =  new  FileWriter(env.getAbsolutePath()+  “<a target="_blank" rel="noopener" href="//log.txt">//log.txt</a>”  );</li>
+<li>BufferedReader br =  new  BufferedReader(  new  InputStreamReader(is));</li>
+<li>
+<ol start="21">
+<li>
+<ol start="22">
+<li>while  ((out = br.readLine())!=  null  )</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>fw.write(out+  “/r/n”  );</li>
+<li>System.out.println(out);</li>
+<li>}</li>
+<li>while  (  true  )</li>
+<li>{</li>
+<li>if  (child.waitFor() ==  0  )</li>
+<li>{</li>
+<li>break  ;</li>
+<li>}</li>
+<li>
+<ol start="34">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="36">
+<li>
+<ol start="37">
+<li>fw.write(  “-----------------/r/n”  );</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<ol start="39">
+<li>
+<ol start="40">
+<li>fw.close();</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>br.close();</li>
+<li>
+<ol start="43">
+<li>}</li>
+</ol>
+</li>
+<li>catch  (IOException ioe)</li>
+<li>{</li>
+<li>System.err.println(  “cmd error:”  +cmd);</li>
+<li>System.err.println(ioe.getMessage());</li>
+<li>return  false  ;</li>
+<li>}  catch  (InterruptedException e) {</li>
+<li>// TODO Auto-generated catch block</li>
+<li>if  (child !=  null  )</li>
+<li>child.destroy();</li>
+<li>e.printStackTrace();</li>
+<li>}</li>
+<li>return  true  ;</li>
+<li>}</li>
+</ol>
+<p>这里一定要输出放前，waitFor放后</p>
+<p>while((out = br.readLine())!=null)<br />
+{<br />
+fw.write(out+“/r/n”);<br />
+System.out.println(out);<br />
+}</p>
+<p>while(true)<br />
+{<br />
+if(child.waitFor() == 0)<br />
+{<br />
+break;<br />
+}</p>
+<p>}</p>
+<p>另外程序在执行过程中while((out =<br />
+br.readLine())!=null)这里也会卡住，所以不用担心，调用的dos程序还没有输出，就已经执行到waitFor()那里去了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2540,122 +2763,6 @@ set这个stl类，却发现这个是不可变的。无语。只得自己实现�
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/10/22/3127266/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/10/22/3127266/" class="post-title-link" itemprop="url">Error C2558\:no Copy Constructor Available or Copy Constructor Is Declared 'Explicit'</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-10-22 22:55:00" itemprop="dateCreated datePublished" datetime="2008-10-22T22:55:00+08:00">2008-10-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:44" itemprop="dateModified" datetime="2023-10-05T12:41:44+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>901</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Error 3 error C2558: class ‘HuffmanCode’ : no copy constructor available or<br />
-copy constructor is declared ‘explicit’ d:/microsoft visual studio<br />
-8/vc/include/utility 37</p>
-<p>今天发现了这个错误,发现报错的地方是</p>
-<dl>
-<dt>pair(const _Ty1&amp; _Val1, const _Ty2&amp; _Val2)</dt>
-<dd>first(_Val1), second(_Val2)<br />
-{ // construct from specified values<br />
-}</dd>
-</dl>
-<p>但这里是std_utility里，这里根本不可能是编译器的错误。</p>
-<p>那哪里写错了？根据提示估计是’HuffmanCode’ 的拷贝构造函数错误。然后检查了下：</p>
-<p>explicit HuffmanCode(HuffmanCode &amp; codes):b(codes.b)</p>
-<p>感觉没有错呀。然后试着去掉了explicit 关键字，发现…还是报相同的错误。</p>
-<p>然后仔细看了下 pair(const _Ty1&amp; _Val1, const _Ty2&amp; _Val2)，然后<br />
-second(_Val2)，这里我使用了<map>然后将HuffmanCode作为value而不是作为key。这里看出在成员列表中<br />
-second(_Val2)是cosnt的。</p>
-<p>这就使得copy construct函数也必须使用const的参数…</p>
-<p>所以更改了下<br />
-explicit HuffmanCode(const HuffmanCode &amp; codes):b(codes.b)</p>
-<p>现在终于渐渐的知道为啥拷贝构造函数其参数是const的了。<br />
-修改完毕后在其他函数里写了这样一句代码</p>
-<p>HuffmanCode hc = Encode(…);</p>
-<p>这里Encode的返回值是Huffman.结果系统编译时提示相同的错误。</p>
-<p>explicit HuffmanCode(const HuffmanCode &amp; codes):b(codes.b)是这里的错误。</p>
-<p>因为写了explicit,所以返回值必须是const Huffman&amp;才可以.所以还是把explicit关键字去掉了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/46/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><span class="page-number current">47</span><a class="page-number" href="/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/48/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2687,7 +2794,7 @@ explicit HuffmanCode(const HuffmanCode &amp; codes):b(codes.b)</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

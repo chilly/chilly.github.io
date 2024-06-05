@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,99 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/04/19/4091501/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2009/04/19/4091501/" class="post-title-link" itemprop="url">Ora-01033和ora-01219</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2009-04-19 11:08:00" itemprop="dateCreated datePublished" datetime="2009-04-19T11:08:00+08:00">2009-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-07 11:53:54" itemprop="dateModified" datetime="2023-10-07T11:53:54+08:00">2023-10-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>785</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>造成的原因是log被损坏。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">cmd <span class="operator">-</span><span class="operator">&gt;</span> sqlplus  </span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="keyword">group</span>#,sequence#,archived,status <span class="keyword">from</span> v$log;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">GROUP</span>#  SEQUENCE# ARC STATUS  </span><br><span class="line">\<span class="comment">---------- ---------- --- ----------------  </span></span><br><span class="line"><span class="number">1</span>         <span class="number">86</span> <span class="keyword">NO</span>  INACTIVE  </span><br><span class="line"><span class="number">2</span>         <span class="number">87</span> <span class="keyword">NO</span>  INVALIDATED  </span><br><span class="line"><span class="number">3</span>         <span class="number">85</span> <span class="keyword">NO</span>  INACTIVE  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">alter</span> database clear logfile <span class="keyword">group</span> <span class="number">1</span>;  </span><br><span class="line"><span class="keyword">alter</span> database clear logfile <span class="keyword">group</span> <span class="number">2</span>;  </span><br><span class="line"><span class="keyword">alter</span> database clear logfile <span class="keyword">group</span> <span class="number">3</span>;  </span><br><span class="line">shutdown immediate;  </span><br><span class="line">startup mount;  </span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="keyword">group</span>#,sequence#,archived,status <span class="keyword">from</span> v$log;  </span><br><span class="line"><span class="keyword">GROUP</span>#  SEQUENCE# ARC STATUS  </span><br><span class="line">\<span class="comment">---------- ---------- --- ----------------  </span></span><br><span class="line"><span class="number">1</span>         <span class="number">88</span> <span class="keyword">NO</span>  <span class="keyword">CURRENT</span>  </span><br><span class="line"><span class="number">2</span>          <span class="number">0</span> <span class="keyword">NO</span>  UNUSED  </span><br><span class="line"><span class="number">3</span>          <span class="number">0</span> <span class="keyword">NO</span>  UNUSED  </span><br><span class="line"><span class="keyword">alter</span> database clear logfile <span class="keyword">group</span> <span class="number">1</span>;  </span><br><span class="line"><span class="keyword">alter</span> database clear unarchived logfile <span class="keyword">group</span> <span class="number">1</span>;  </span><br><span class="line"><span class="keyword">alter</span> database clear logfile <span class="keyword">group</span> <span class="number">2</span>;  </span><br><span class="line"><span class="keyword">alter</span> database clear unarchived logfile <span class="keyword">group</span> <span class="number">2</span>;  </span><br><span class="line"><span class="keyword">alter</span> database clear logfile <span class="keyword">group</span> <span class="number">3</span>;  </span><br><span class="line"><span class="keyword">alter</span> database clear unarchived logfile <span class="keyword">group</span> <span class="number">3</span>;  </span><br><span class="line">shutdown;  </span><br><span class="line">startup mount;  </span><br><span class="line"><span class="keyword">alter</span> database <span class="keyword">open</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>done.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1236,221 +1329,6 @@ e.</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2009/03/27/4030309/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2009/03/27/4030309/" class="post-title-link" itemprop="url">在linux下开发常用命令..</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2009-03-27 16:44:00" itemprop="dateCreated datePublished" datetime="2009-03-27T16:44:00+08:00">2009-03-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>5.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这个可能不是大家常用的命令。但是这个是自己这几天常在用的命令。</p>
-<p>首先是找些国内的源：（将下面的一段复制粘贴到你的source.list中，你也可使用创建一个新文件然后再去覆盖的方法。注意这里要在命令前使用sudo ）</p>
-<h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
-<h1 id="deb-cdromxubuntu-804-hardy-heron-release-i386-200804221-hardy"><a class="markdownIt-Anchor" href="#deb-cdromxubuntu-804-hardy-heron-release-i386-200804221-hardy"></a> deb cdrom:[Xubuntu 8.04 <em>Hardy Heron</em> - Release i386 (20080422.1)]/ hardy</h1>
-<p>main multiverse restricted universe</p>
-<h1 id="deb-cdromxubuntu-804-hardy-heron-release-i386-200804221-hardy-2"><a class="markdownIt-Anchor" href="#deb-cdromxubuntu-804-hardy-heron-release-i386-200804221-hardy-2"></a> deb cdrom:[Xubuntu 8.04 <em>Hardy Heron</em> - Release i386 (20080422.1)]/ hardy</h1>
-<p>main multiverse restricted universe</p>
-<h1 id="see-httphelpubuntucomcommunityupgradenotes-for-how-to-upgrade-to"><a class="markdownIt-Anchor" href="#see-httphelpubuntucomcommunityupgradenotes-for-how-to-upgrade-to"></a> See <span class="exturl" data-url="aHR0cDovL2hlbHAudWJ1bnR1LmNvbS9jb21tdW5pdHkvVXBncmFkZU5vdGVz">http://help.ubuntu.com/community/UpgradeNotes<i class="fa fa-external-link-alt"></i></span> for how to upgrade to</h1>
-<h1 id="newer-versions-of-the-distribution"><a class="markdownIt-Anchor" href="#newer-versions-of-the-distribution"></a> newer versions of the distribution.</h1>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-main-restricted"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-main-restricted"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-main-restricted"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-main-restricted"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted</h1>
-<h2 id="major-bug-fix-updates-produced-after-the-final-release-of-the"><a class="markdownIt-Anchor" href="#major-bug-fix-updates-produced-after-the-final-release-of-the"></a> Major bug fix updates produced after the final release of the</h2>
-<h2 id="distribution"><a class="markdownIt-Anchor" href="#distribution"></a> distribution.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-updates-main-restricted"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-updates-main-restricted"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-main-restricted"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-main-restricted"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted</h1>
-<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu"><a class="markdownIt-Anchor" href="#nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu"></a> N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
-<h2 id="team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to"><a class="markdownIt-Anchor" href="#team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to"></a> team, and may not be under a free licence. Please satisfy yourself as to</h2>
-<h2 id="your-rights-to-use-the-software-also-please-note-that-software-in"><a class="markdownIt-Anchor" href="#your-rights-to-use-the-software-also-please-note-that-software-in"></a> your rights to use the software. Also, please note that software in</h2>
-<h2 id="universe-will-not-receive-any-review-or-updates-from-the-ubuntu-security"><a class="markdownIt-Anchor" href="#universe-will-not-receive-any-review-or-updates-from-the-ubuntu-security"></a> universe WILL NOT receive any review or updates from the Ubuntu security</h2>
-<h2 id="team"><a class="markdownIt-Anchor" href="#team"></a> team.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-universe"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-universe"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy universe</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-universe"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-universe"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy universe</h1>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-updates-universe"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-updates-universe"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates universe</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-universe"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-universe"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates universe</h1>
-<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu-2"><a class="markdownIt-Anchor" href="#nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu-2"></a> N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
-<h2 id="team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to-2"><a class="markdownIt-Anchor" href="#team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to-2"></a> team, and may not be under a free licence. Please satisfy yourself as to</h2>
-<h2 id="your-rights-to-use-the-software-also-please-note-that-software-in-2"><a class="markdownIt-Anchor" href="#your-rights-to-use-the-software-also-please-note-that-software-in-2"></a> your rights to use the software. Also, please note that software in</h2>
-<h2 id="multiverse-will-not-receive-any-review-or-updates-from-the-ubuntu"><a class="markdownIt-Anchor" href="#multiverse-will-not-receive-any-review-or-updates-from-the-ubuntu"></a> multiverse WILL NOT receive any review or updates from the Ubuntu</h2>
-<h2 id="security-team"><a class="markdownIt-Anchor" href="#security-team"></a> security team.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-multiverse"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-multiverse"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy multiverse</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-multiverse"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-multiverse"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy multiverse</h1>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-updates-multiverse"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-updates-multiverse"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates multiverse</h1>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-multiverse"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-updates-multiverse"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates multiverse</h1>
-<h2 id="uncomment-the-following-two-lines-to-add-software-from-the-backports"><a class="markdownIt-Anchor" href="#uncomment-the-following-two-lines-to-add-software-from-the-backports"></a> Uncomment the following two lines to add software from the ‘backports’</h2>
-<h2 id="repository"><a class="markdownIt-Anchor" href="#repository"></a> repository.</h2>
-<h2 id="nb-software-from-this-repository-may-not-have-been-tested-as"><a class="markdownIt-Anchor" href="#nb-software-from-this-repository-may-not-have-been-tested-as"></a> N.B. software from this repository may not have been tested as</h2>
-<h2 id="extensively-as-that-contained-in-the-main-release-although-it-includes"><a class="markdownIt-Anchor" href="#extensively-as-that-contained-in-the-main-release-although-it-includes"></a> extensively as that contained in the main release, although it includes</h2>
-<h2 id="newer-versions-of-some-applications-which-may-provide-useful-features"><a class="markdownIt-Anchor" href="#newer-versions-of-some-applications-which-may-provide-useful-features"></a> newer versions of some applications which may provide useful features.</h2>
-<h2 id="also-please-note-that-software-in-backports-will-not-receive-any-review"><a class="markdownIt-Anchor" href="#also-please-note-that-software-in-backports-will-not-receive-any-review"></a> Also, please note that software in backports WILL NOT receive any review</h2>
-<h2 id="or-updates-from-the-ubuntu-security-team"><a class="markdownIt-Anchor" href="#or-updates-from-the-ubuntu-security-team"></a> or updates from the Ubuntu security team.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-hardy-backports-main-restricted"><a class="markdownIt-Anchor" href="#deb-httpcnarchiveubuntucomubuntu-hardy-backports-main-restricted"></a> deb <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted</h1>
-<p>universe multiverse</p>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-hardy-backports-main-restricted"><a class="markdownIt-Anchor" href="#deb-src-httpcnarchiveubuntucomubuntu-hardy-backports-main-restricted"></a> deb-src <span class="exturl" data-url="aHR0cDovL2NuLmFyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://cn.archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted</h1>
-<p>universe multiverse</p>
-<h2 id="uncomment-the-following-two-lines-to-add-software-from-canonicals"><a class="markdownIt-Anchor" href="#uncomment-the-following-two-lines-to-add-software-from-canonicals"></a> Uncomment the following two lines to add software from Canonical’s</h2>
-<h2 id="partner-repository-this-software-is-not-part-of-ubuntu-but-is"><a class="markdownIt-Anchor" href="#partner-repository-this-software-is-not-part-of-ubuntu-but-is"></a> ‘partner’ repository. This software is not part of Ubuntu, but is</h2>
-<h2 id="offered-by-canonical-and-the-respective-vendors-as-a-service-to-ubuntu"><a class="markdownIt-Anchor" href="#offered-by-canonical-and-the-respective-vendors-as-a-service-to-ubuntu"></a> offered by Canonical and the respective vendors as a service to Ubuntu</h2>
-<h2 id="users"><a class="markdownIt-Anchor" href="#users"></a> users.</h2>
-<h1 id="deb-httparchivecanonicalcomubuntu-hardy-partner"><a class="markdownIt-Anchor" href="#deb-httparchivecanonicalcomubuntu-hardy-partner"></a> deb <span class="exturl" data-url="aHR0cDovL2FyY2hpdmUuY2Fub25pY2FsLmNvbS91YnVudHU=">http://archive.canonical.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy partner</h1>
-<h1 id="deb-src-httparchivecanonicalcomubuntu-hardy-partner"><a class="markdownIt-Anchor" href="#deb-src-httparchivecanonicalcomubuntu-hardy-partner"></a> deb-src <span class="exturl" data-url="aHR0cDovL2FyY2hpdmUuY2Fub25pY2FsLmNvbS91YnVudHU=">http://archive.canonical.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy partner</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-httpsecurityubuntucomubuntu-hardy-security-main-restricted"><a class="markdownIt-Anchor" href="#deb-httpsecurityubuntucomubuntu-hardy-security-main-restricted"></a> deb <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-2"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-2"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-src-httpsecurityubuntucomubuntu-hardy-security-main-restricted"><a class="markdownIt-Anchor" href="#deb-src-httpsecurityubuntucomubuntu-hardy-security-main-restricted"></a> deb-src <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-3"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-3"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-httpsecurityubuntucomubuntu-hardy-security-universe"><a class="markdownIt-Anchor" href="#deb-httpsecurityubuntucomubuntu-hardy-security-universe"></a> deb <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security universe</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-4"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-4"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-src-httpsecurityubuntucomubuntu-hardy-security-universe"><a class="markdownIt-Anchor" href="#deb-src-httpsecurityubuntucomubuntu-hardy-security-universe"></a> deb-src <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security universe</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-5"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-5"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-httpsecurityubuntucomubuntu-hardy-security-multiverse"><a class="markdownIt-Anchor" href="#deb-httpsecurityubuntucomubuntu-hardy-security-multiverse"></a> deb <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security multiverse</h1>
-<h1 id="line-commented-out-by-installer-because-it-failed-to-verify-6"><a class="markdownIt-Anchor" href="#line-commented-out-by-installer-because-it-failed-to-verify-6"></a> Line commented out by installer because it failed to verify:</h1>
-<h1 id="deb-src-httpsecurityubuntucomubuntu-hardy-security-multiverse"><a class="markdownIt-Anchor" href="#deb-src-httpsecurityubuntucomubuntu-hardy-security-multiverse"></a> deb-src <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnVidW50dS5jb20vdWJ1bnR1">http://security.ubuntu.com/ubuntu<i class="fa fa-external-link-alt"></i></span> hardy-security multiverse</h1>
-<h1 id="deb-httpmedibuntusos-stscomrepo-hardy-free-non-free"><a class="markdownIt-Anchor" href="#deb-httpmedibuntusos-stscomrepo-hardy-free-non-free"></a> deb <span class="exturl" data-url="aHR0cDovL21lZGlidW50dS5zb3Mtc3RzLmNvbS9yZXBvLw==">http://medibuntu.sos-sts.com/repo/<i class="fa fa-external-link-alt"></i></span> hardy free non-free</h1>
-<h1 id="deb-src-httpmedibuntusos-stscomrepo-hardy-free-non-free"><a class="markdownIt-Anchor" href="#deb-src-httpmedibuntusos-stscomrepo-hardy-free-non-free"></a> deb-src <span class="exturl" data-url="aHR0cDovL21lZGlidW50dS5zb3Mtc3RzLmNvbS9yZXBvLw==">http://medibuntu.sos-sts.com/repo/<i class="fa fa-external-link-alt"></i></span> hardy free non-free</h1>
-<p>deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted<br />
-universe multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted<br />
-universe multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted<br />
-universe multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-proposed main multiverse<br />
-restricted universe<br />
-deb-src <span class="exturl" data-url="aHR0cDovL3VidW50dS5jc2llLm50dS5lZHUudHcvdWJ1bnR1Lw==">http://ubuntu.csie.ntu.edu.tw/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse</p>
-<p>deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-proposed main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted universe<br />
-multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted universe<br />
-multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy main restricted universe<br />
-multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-backports main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-proposed main restricted<br />
-universe multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-security main restricted<br />
-universe multiverse<br />
-deb <span class="exturl" data-url="aHR0cDovL2FyY2hpdmUudWJ1bnR1LmNvbS91YnVudHUv">http://archive.ubuntu.com/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy multiverse<br />
-deb-src <span class="exturl" data-url="aHR0cDovL2RlYmlhbi51c3RjLmVkdS5jbi91YnVudHUv">http://debian.ustc.edu.cn/ubuntu/<i class="fa fa-external-link-alt"></i></span> hardy-updates main restricted<br />
-universe multiverse</p>
-<p>替换掉etc/apt/source.list, 然后使用 sudo apt-get update</p>
-<p>然后下个subversion,使用sudo apt-get apt-get install subversion</p>
-<p>首先从网上用svn checkout svn://URL [where to store]</p>
-<p>不过因为网络的原因，很有可能它会说没有这个URL</p>
-<p>其实你也可以用移动硬盘直接把别人checkout之后的代码copy过来。同样含有svn信息。</p>
-<p>然后如果代码有更新，到你的代码的顶级目录下使用：svn update.如果这里说你的client太old,那么就下个最新的svn.</p>
-<p>下面是改代码阶段。</p>
-<p>你改动了很多代码…你如果记得所有代码的位置，可以删除后再使用 svn update. 但是这个方法很笨。</p>
-<p>你也可以使用svn revert [foldername or filename]</p>
-<p>如果你svn update之后，发现突然编译失败了.那么可能有个小孩把错误的代码commit到了svn数据库中。</p>
-<p>你可以使用svn log | more 命令还看看你想恢复到那个版本。</p>
-<p>然后呢，再使用svn up -r 22323 比如这里版本为r22323那么svn就会回退到那个r22323版本</p>
-<p>如果你想打一个patch包或diff包。使用 svn diff [path] &gt; [filename]</p>
-<p>path 是你想diff的目录，filename是最后生成的patch包名字.</p>
-<p>如果你想快速的找一个代码文件在什么位置，使用</p>
-<p>find [folder] -name ‘filename’ 这里的filename可以使用正则表达。</p>
-<p>如果你不知道哪个变量或者函数在什么位置，或者那些文件使用了这个变量，那么使用</p>
-<p>grep -i ‘varialbe’ filename</p>
-<p>或者</p>
-<p>grep -i ‘variable’ ./*  (这里说查找当前文件夹下的所有文件)</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/40/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><span class="page-number current">41</span><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/42/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1482,7 +1360,7 @@ universe multiverse</p>
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 

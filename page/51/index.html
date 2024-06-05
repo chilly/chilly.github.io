@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">797</span>
+          <span class="site-state-item-count">798</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">757</span>
+        <span class="site-state-item-count">756</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -205,6 +205,248 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/08/19/2797586/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2008/08/19/2797586/" class="post-title-link" itemprop="url">创造练习——自适应树(Self-Adjusting Tree)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-08-19 19:06:00" itemprop="dateCreated datePublished" datetime="2008-08-19T19:06:00+08:00">2008-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这个树的定义的确很有问题。其实AVLTree和SplayTree以及RedBlackTree都是self-adjusting Tree</p>
+<p>因为如果是树做索引那么大部分的时间将用来查找。这个树在查找上可以将查找的节点提升到树根，插入时也是一样。这样提高了查找的效率。并且操作系统有一种说法是近来用<br />
+到的，将来用到的几率也会很大（LRU原理）。删除，既然删除对于此树来说再也没有什么，那就直接删除算了。</p>
+<p>根据这几点想法。自己做一个self-adjusting Tree。但是还没有验证是否能达到实际水平的O（nlogn）。虽然理论上这个树并不能达到这样一个时间<br />
+复杂度。但是对于实际数据来说，还是有可能达到的。不知道有没有这么lucky。</p>
+<p>因为对于这个树来说插入和查找操作其实差不多。</p>
+<p>所以下面只介绍插入操作。找到要插入的地方，反遍历单旋转（这里和SplayTree不同一点是只使用单旋转）</p>
+<p>TreeNode<T>* insertNode(TreeNode<T>* subroot,TreeNode<T>* prev,T&amp; data)</p>
+<p>返回值为当前子树根节点</p>
+<p>1.subroot是否为空,创建新的节点，并返回subroot</p>
+<p>2.如果不为空</p>
+<p>A.subroot中的值 &lt; data中的值,对subroot右子树调用insertNode()，subroot<br />
+与当前右子树根节点采用旋转操作。将两个节点位置对换。</p>
+<p>B.subroot中的值 &gt; data中的值，对subroot左子树调用insertNode()，subroot<br />
+与当前左子树根节点采用旋转操作。将两个节点位置对换。</p>
+<p>C.subroot中的值 == data中的值，do nothing</p>
+<p>3.查看该节点是否已成为根节点。如果是的话，调整根节点的值。</p>
+<p>下面给出代码。</p>
+<ol>
+<li>template  &lt; class  T&gt;</li>
+<li>class  SelfTree:  public  BinaryTree<T></li>
+<li>{</li>
+<li>private  :</li>
+<li>// return the sub tree root</li>
+<li>//        a               b</li>
+<li>//       /       -&gt;        /</li>
+<li>//      b                   a</li>
+<li>TreeNode<T>* sLeftRotate(TreeNode<T>* a,TreeNode<T>* b)</li>
+<li>{</li>
+<li>a-&gt;setLeft(b-&gt;getRight());</li>
+<li>b-&gt;setRight(a);</li>
+<li>return  b;</li>
+<li>}</li>
+<li>
+<ol start="16">
+<li>
+<ol start="17">
+<li>// return the sub tree root</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>//        a               b</li>
+<li>//         /     -&gt;      /</li>
+<li>//          b           a</li>
+<li>TreeNode<T>* sRightRotate(TreeNode<T>* a, TreeNode<T>* b)</li>
+<li>{</li>
+<li>a-&gt;setRight(b-&gt;getLeft());</li>
+<li>b-&gt;setLeft(a);</li>
+<li>return  b;</li>
+<li>}</li>
+<li>
+<ol start="28">
+<li>
+<ol start="29">
+<li>
+<ol start="30">
+<li>TreeNode<T>* insertNode(TreeNode<T>* subroot,TreeNode<T>* prev,T&amp; data)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>{</li>
+<li>if  (subroot == NULL)</li>
+<li>{</li>
+<li>subroot =  new  TreeNode<T>(data);</li>
+<li>return  subroot;</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>TreeNode<T>* tempNode = NULL;</li>
+<li>TreeNode<T>* tempRoot = NULL;</li>
+<li>if  (subroot-&gt;getData() &gt; data)</li>
+<li>{</li>
+<li>
+<ol start="44">
+<li>tempNode = insertNode(subroot-&gt;getLeft(),subroot,data);</li>
+</ol>
+</li>
+<li>tempRoot = sLeftRotate(subroot,tempNode);</li>
+<li>
+<ol start="47">
+<li>}</li>
+</ol>
+</li>
+<li>else  if  (subroot-&gt;getData() &lt; data)</li>
+<li>{</li>
+<li>tempNode = insertNode(subroot-&gt;getRight(),subroot,data);</li>
+<li>tempRoot = sRightRotate(subroot,tempNode);</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>throw  “the same key”  ;</li>
+<li>}</li>
+<li>
+<ol start="58">
+<li>if  (prev == NULL)</li>
+</ol>
+</li>
+<li>{</li>
+<li>this  -&gt;head = tempRoot;</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>if  (prev-&gt;getData() &gt; tempRoot-&gt;getData())</li>
+<li>{</li>
+<li>prev-&gt;setLeft(tempRoot);</li>
+<li>}</li>
+<li>else</li>
+<li>{</li>
+<li>prev-&gt;setRight(tempRoot);</li>
+<li>}</li>
+<li>}</li>
+<li>return  tempRoot;</li>
+<li>}</li>
+<li>}</li>
+<li>public  :</li>
+<li>SelfTree(T&amp; data):BinaryTree(data)</li>
+<li>{</li>
+<li>
+<ol start="80">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="82">
+<li>~SelfTree()</li>
+</ol>
+</li>
+<li>{</li>
+<li>
+<ol start="85">
+<li>}</li>
+</ol>
+</li>
+<li>
+<ol start="87">
+<li>void  insertNode(T&amp; data)</li>
+</ol>
+</li>
+<li>{</li>
+<li>insertNode(  this  -&gt;head,NULL,data);</li>
+<li>}</li>
+<li>
+<ol start="92">
+<li>};</li>
+</ol>
+</li>
+<li></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3236,102 +3478,6 @@ present.不要太注重过去和未来。太看重了反而约束了手脚，不
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2008/07/25/2711654/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2008/07/25/2711654/" class="post-title-link" itemprop="url">洋葱电影</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2008-07-25 20:13:00" itemprop="dateCreated datePublished" datetime="2008-07-25T20:13:00+08:00">2008-07-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:34:51" itemprop="dateModified" datetime="2023-10-05T12:34:51+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>321</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这片子集各种搞笑于一体，很好的反映了美国的文化。体现了美国社会中各个层面，经济、人文、种族、求职、性、音乐、反恐、文化差异、美国犯罪问题等。不失为很好的美国<br />
-文化快餐，不过里面加了很多“洋葱料”。不过洋葱一般是色拉中的料，这里取电影名为“the onion<br />
-movie”也是意为夸大了某些方面，才使得电影变得有滋有味。看后很能回忆起社会中得种种不良现象。</p>
-<p>有意思的地方还在于竟然也将影评一起拿来做笑料。</p>
-<p>美国，有意思的国家，有意思的电影。中国类似的电影就是“大电影”。不过大电影还是不敢像洋葱电影那样恶搞。</p>
-<p>看过电影之后，渐渐懂得一个道理。如果能将事情中某些方面夸大，或者通盘考虑某些事情，或许既不能让人高兴，也不会让人悲伤。就像洋葱一样，让人哭笑不得。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/50/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/50/">50</a><span class="page-number current">51</span><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/52/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -3363,7 +3509,7 @@ movie”也是意为夸大了某些方面，才使得电影变得有滋有味。
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">24:17</span>
+    <span title="Reading time total">24:23</span>
   </span>
 </div>
 
