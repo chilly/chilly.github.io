@@ -4,12 +4,14 @@ title: '项目完工'
 date: 2006-08-18 22:38
 comments: true
 tags: ['jboss','数据库','authentication']
+categories:
+- [project]
 ---
 
 今天项目完工。  
 做了个j2ee项目的移植，虽然没有写什么核心代码，不过也在项目移植的过程中学到不少东西。
 如怎样从oracle数据库迁移到mysql，怎样从weblogic迁移到jboss。虽然网上有很到的移植办法。但是很多都不好用。还有很多是错误的。例如jboss与mysql连接那一个地方，如果是使用一个数据源的话不如这样改：  
-将jboss-4.0.0/docs/examples/jca中的`mysql-ds.xml`复制到jboss-4.0.0/server/default/deploy  
+将`jboss-4.0.0/docs/examples/jca`中的`mysql-ds.xml`复制到`jboss-4.0.0/server/default/deploy`
 然后将下面的配置copy过去  
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>  
@@ -65,26 +67,26 @@ jboss.jca:service=LocalTxCM,name=MySqlDS
 
 try  
 {  
-Context context = new InitialContext();  
-ds = (DataSource)context.lookup("java:/MySqlDS");  
-conn = ds.getConnection();  
-conn.close();  
+    Context context = new InitialContext();  
+    ds = (DataSource)context.lookup("java:/MySqlDS");  
+    conn = ds.getConnection();  
+    conn.close();  
 }  
 catch(Exception e)//NamingException e)  
 {  
-ds =null;  
-conn = null;  
+    ds =null;  
+    conn = null;  
 }  
-而且（EJB）每一个执行sql的函数中都要这样写  
+//而且（EJB）每一个执行sql的函数中都要这样写  
 try  
 {  
-conn = ds.getConnection();  
-.............  
-conn.close();  
+    conn = ds.getConnection();  
+    .............  
+    conn.close();  
 }  
 ```
 
 因为jboss会自动关闭数据库的连接  
 所以调用一次EJB中的数据库操作就要打开一次数据库。虽然这样很费时间，但很节约资源。  
-否则就会有close a connection的jboss提示和sql语句执行异常。
+否则就会有`close a connection`的jboss提示和sql语句执行异常。
 

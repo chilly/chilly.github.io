@@ -6,7 +6,7 @@ wordpress_id: 1
 comments: true
 tags: ["first", "first"]
 categories:
-- prose
+- daily
 ---
 <meta name="_edit_last" content="1" />
 <meta name="views" content="5282" />

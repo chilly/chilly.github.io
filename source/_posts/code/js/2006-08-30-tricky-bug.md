@@ -5,8 +5,7 @@ date: 2006-08-30 09:58
 comments: true
 tags: ['jbuilder','javascript','编译器']
 categories:
-- [knowledge, js]
-- [code]
+- [code, js]
 ---
 
 几个星期前接到了一个系统。那个系统其实已经发布使用，只是要让我们改改系统环境。按道理来说也没有什么。
@@ -21,15 +20,15 @@ categories:
 <script language="JavaScript">  
 <!--  
     function verifyInput(){  
-    strUserName = document.adduserForm.name.value;  
-    if ((strUserName == ""))  
-    {  
-    alert("用户名不为空");  
-    
-    return false;  
-    }
+        strUserName = document.adduserForm.name.value;  
+        if ((strUserName == ""))  
+        {  
+            alert("用户名不为空");  
+            
+            return false;  
+        }
 
-    return true;
+        return true;
 
     }
 
@@ -37,8 +36,7 @@ categories:
 
 </script>
 
-<form method="get" name="adduserForm" action ="/userlogin/controller"
-onsubmit="return verifyInput()" >
+<form method="get" name="adduserForm" action ="/userlogin/controller" onsubmit="return verifyInput()" >
 
 
 ```

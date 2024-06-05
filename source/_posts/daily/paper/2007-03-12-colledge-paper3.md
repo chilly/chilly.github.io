@@ -3,13 +3,13 @@ layout: post
 title: '湖大软件学院电子院刊3'
 date: 2007-03-12 21:04
 comments: true
-tags: ['']
+categories:
+- [daily, paper]
 ---
 
 培训了半年，大一的终于可以自己办一期了。看来交接的时候快到了。期待那一天。。。。
 
-电子院刊下载地址： [ http://ss.hnu.cn/newweb/students/yuankan/download/
-](http://ss.hnu.cn/newweb/students/yuankan/download/) 青春缘代码3.rar
+电子院刊下载地址： [http://ss.hnu.cn/newweb/students/yuankan/download/](http://ss.hnu.cn/newweb/students/yuankan/download/) 青春缘代码3.rar
 
 直接把地址粘到迅雷上即可。
 

@@ -6,11 +6,10 @@ wordpress_id: 62
 comments: true
 tags: ["flash", "second", "see-hear", "war", "world"]
 categories:
-- prose
+- daily
 
 ---
-<meta name="_edit_last" content="1" />
-<meta name="views" content="1763" />
+
 there is a flash for you to know the detail of the second world war. And it shows the German attacked the Soviet Union. It is so interactive that you can click here and there to know the detail of information. But its drawback is it doesn't contain all of histories of the second world war.
 <a title="war" href="http://english.pobediteli.ru/flash.html?DR=0"> Here is the link! click here!</a>
 And the screen shot is the following:

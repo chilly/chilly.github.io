@@ -8,11 +8,7 @@ tags: ["funny", "game", "game"]
 categories:
 - game
 ---
-<meta name="_oembed_e98e7d3c2898c9d8800b645844a1a2e6" content="{{unknown}}" />
-<meta name="_edit_last" content="1" />
-<meta name="_oembed_8024b595793ed1eaf15515de7c3a074c" content="{{unknown}}" />
-<meta name="views" content="1360" />
-<meta name="_oembed_987d1bca828b09ebec319b758c1a1fa1" content="{{unknown}}" />
+
 <a href="http://www.miniclip.com/games/bloxorz/cn/bloxorz_miniclip.swf">use direction keys to rotate block into hole!</a>
 
 thinking harder!

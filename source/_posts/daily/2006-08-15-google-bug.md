@@ -1,9 +1,11 @@
 ---
 layout: post
-title: 'google 的BUG?'
+title: 'google的BUG?'
 date: 2006-08-15 13:42
 comments: true
 tags: ['google','oracle','mysql']
+categories:
+- [daily]
 ---
 
 在google中输入：oracle到mySql迁移  

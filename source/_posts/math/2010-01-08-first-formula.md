@@ -9,8 +9,7 @@ tags: ["first", "first", "formula", "formula"]
 categories:
 - math
 ---
-<meta name="_edit_last" content="1" />
-<meta name="views" content="1013" />
+
 Write first formula using latex here:
 
 $$\alpha+\beta=x^{\delta+3}/y $$
