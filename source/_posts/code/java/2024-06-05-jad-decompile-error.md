@@ -17,15 +17,15 @@ public static final byte[] long2Bytes(long l, int len) {
         return null;
     } else {
         if (len > 8) {
-        len = 8;
+            len = 8;
         }
 
         byte[] temp = new byte[len];
         int i = len - 1;
 
         for(int j = 0; i >= 0; ++j) {
-        temp[j] = (byte)((int)(l >>> (i << 3)));
-        --i;
+            temp[j] = (byte)((int)(l >>> (i << 3)));
+            --i;
         }
 
         return temp;
@@ -40,15 +40,15 @@ public static final byte[] long2Bytes(long l, int len) {
         return null;
     } else {
         if (len > 8) {
-        len = 8;
+            len = 8;
         }
 
         byte[] temp = new byte[len];
         int i = len - 1;
 
         for(int j = 0; i >= 0; ++j) {
-        temp[j] = (byte)((int)(l >>> i << 3));
-        --i;
+            temp[j] = (byte)((int)(l >>> i << 3));
+            --i;
         }
 
         return temp;
@@ -64,11 +64,15 @@ You will see the byte shift operator`>>> <<` are wrong.
 I find another mistake in Jad is:
 ```java
   public static final long bytes2Long(byte[] b) {
-    if (b.length <= 0 || b.length > 8)
-      throw new IllegalArgumentException("byte length should be 1~8bytes."); 
+    if (b.length <= 0 || b.length > 8) {
+        throw new IllegalArgumentException("byte length should be 1~8bytes.");
+    }
+       
     long l = 0L;
-    for (int i = 0, j = b.length - 1; i <= j; i++)
-      l |= (b[i] & 0xFF) << ((j - i) << 3);
+    for (int i = 0, j = b.length - 1; i <= j; i++) {
+        l |= (b[i] & 0xFF) << ((j - i) << 3);
+    }
+      
     return l;
   }
 ```
