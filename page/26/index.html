@@ -166,14 +166,19 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">798</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
@@ -200,166 +205,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/23/5618652/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/05/23/5618652/" class="post-title-link" itemprop="url">在Ubuntu下生成大文件,并测试文件读写效率</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-05-23 21:40:00" itemprop="dateCreated datePublished" datetime="2010-05-23T21:40:00+08:00">2010-05-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>4.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在ubuntu或者其他的linux下生成大文件,必须使用编译参数  -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64.否<br />
-则生成的文件一定是2G左右的,原因是fseek,这个函数中的offset参数是一个long型的或者是size_t型的,在fseeko中是off_t,但是这个<br />
-off_t默认还是32位,只有加了  -D_FILE_OFFSET_BITS=64的宏定义才被作为64位对待.</p>
-<p>写了下面一段代码来生成大文件,传说有一种方法:直接跳转nG位置之后,然后写入一个字符.这种方法可能更快,不过我为了保守的生成文件,还是使用下面的一个写法:</p>
-<p>#include&lt;stdio.h&gt; #include&lt;stdlib.h&gt; #include&lt;unistd.h&gt; #include&lt;string.h&gt;<br />
-void gen_file(const char <em>filename, int block_size, int count){ int is_exist =<br />
-0; FILE</em> file = fopen(filename,“w+b”); char * buf = NULL; int i=0; long long<br />
-size = block_size; if(file == NULL){ printf(“fatal error in gen_file:<br />
-fopen/n”); exit(1); } buf = (char <em>)malloc(sizeof(char)<em>block_size);<br />
-memset(buf,‘1’,sizeof(char)<em>block_size); while(i++&lt;count){ if(i % 10 == 0){<br />
-printf(“count is %d, size is %lld/n”,i,size); } fwrite(buf,block_size,1,file);<br />
-size += block_size; fseeko(file,size,SEEK_SET); } fclose(file); free(buf); /</em><br />
-long long size = 1024</em>1024</em>1024; size <em>=10; fseeko(file,size,SEEK_SET);<br />
-fwrite(buf,block_size,1,file); fclose(file); free(buf); <em>/ } int main(){<br />
-printf(“size of char %d/n”,sizeof(char)); int block_size = 1024</em>1024</em>20; //<br />
-20M int count = 50; gen_file(“smallfile”,block_size,count*2);// gen 2G file<br />
-return 0; }</p>
-<p>int block_size = 1024<em>1024</em>20; // 20M</p>
-<p>这个是每次写入的数据大小,gen_file(“smallfile”,block_size,count*2);第三个参数可以调节生成文件的大小.</p>
-<p>下面写了一个测试大文件和小文件的随机读写和顺序读写.</p>
-<p>#include&lt;stdio.h&gt; #include&lt;time.h&gt; #include&lt;sys/stat.h&gt; #include&lt;sys/types.h&gt;<br />
-#include&lt;unistd.h&gt; #include&lt;stdlib.h&gt; #include&lt;sys/time.h&gt; #include&lt;string.h&gt;<br />
-const int block_size = 8092; struct timeval start; struct timeval end; struct<br />
-timezone tz; void start_time(){ gettimeofday(&amp;start,&amp;tz); } void end_time(){<br />
-gettimeofday(&amp;end,&amp;tz); } void print_time(){ printf(“%lf sec/n”,(end.tv_sec-<br />
-start.tv_sec)+(double)(end.tv_usec-start.tv_usec)/1000000); } size_t<br />
-look_size(const char * filename){ struct stat st; stat(filename,&amp;st); return<br />
-st.st_size; } void read_blocks(FILE* file, off_t offset,int block_size){ int<br />
-where = offset<em>block_size; fseeko(file,where,0); } FILE</em> fopen_safe(const char</p>
-<ul>
-<li>filename){ FILE* file = fopen(filename,“r”); if(file == NULL){ printf(“fatal<br />
-error in random_read, open file”); exit(1); } return file; } void<br />
-random_read(const char * filename){ int random; size_t size; FILE* file =<br />
-fopen_safe(filename); size = look_size(filename)/block_size; random =<br />
-rand()%size; read_blocks(file,random,block_size); fclose(file); } void<br />
-order_read(const char <em>filename,int order){ size_t size; FILE</em> file =<br />
-fopen_safe(filename); size = look_size(filename)/block_size;<br />
-read_blocks(file,order%size,block_size); fclose(file); } void<br />
-random_test(const char * filename,int times){ int count = 0; start_time();<br />
-while(count++&lt;times){ // access Big File random_read(filename); } end_time();<br />
-print_time(); } void order_test(const char * filename, int times){ int count =<br />
-0; start_time(); while(count++&lt;times){ order_read(filename,count); }<br />
-end_time(); print_time(); } void random_test_diff(const char * basename,int<br />
-num,int times){ int count = 0; char ** names = malloc(sizeof(char)*num); int<br />
-len = strlen(basename); int i = 0; while( i &lt; num){ names[i] =<br />
-malloc(sizeof(char)*len+4); sprintf(names[i],“%s_%d”,basename,i); i++; }<br />
-start_time(); while(count++&lt;times){ if(count &lt; 900){ random_read(names[0]); }<br />
-else { if(count &lt; 960){ random_read(names[count%num]);<br />
-random_read(names[(count+1)%num]); } if(count &lt; 1000){<br />
-random_read(names[count%num]); random_read(names[(count+1)%num]);<br />
-random_read(names[(count+2)%num]); } } } end_time(); print_time(); } int<br />
-main(){ int i,count; int times = 1000; count = 0; // clock_t start,end;<br />
-srand(time(NULL)); char * filename=“bigfile”; //printf(“time is %lf”,((double<br />
-)(end-start))/CLOCKS_PER_SEC); random_test(filename,times);<br />
-order_test(filename,times); times = times; filename = “smallfile”;<br />
-random_test(filename,times); order_test(filename,times);<br />
-random_test_diff(filename,3,times); return 0; }</li>
-</ul>
-<p>当然你这里做测试的时候可以把gettimeofday替换为clock()或者time()函数,其中clock()是程序实际运行的时间,你感觉可能执行了七八秒<br />
-,其实程序只占用cpu执行了1秒.如果是time()函数或者gettimeofday()函数就是真正的运行时间也就是你感觉执行的时间.所以各有千秋,前者是为<br />
-了排除各种运行环境中的软件或者os的不同,单独检测程序的效率.后者是在系统环境中程序的执行时间.</p>
-<p>下面是我得到的结论,创建1个10G文件,创建3个2G小文件.<br />
-大文件 随机访问7.199645 sec<br />
-大文件 顺序访问0.013617 sec<br />
-单个小文件 随机访问5.119245 sec<br />
-小文件 顺序访问0.014190 sec<br />
-多个小文件的随机访问测试:90%的几率访问同一个小文件，6%访问两个小文件，4%访问3个小文件 9.791248<br />
-sec.并且90%几率发生在前,所以如果随机发生多个文件的随机访问,那么可能速度会更慢.这里慢的原因,是因为fopen.</p>
-<p>这也就是数据库为什么只有一个数据文件的原因.有时进行文件切分,反而不利于效率的提高.但是对于100G以上的大文件,是否这个结论又要改变了呢?我没有做过这个实<br />
-验.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -522,6 +367,15 @@ sec.并且90%几率发生在前,所以如果随机发生多个文件的随机访
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-06 22:54:03" itemprop="dateModified" datetime="2023-10-06T22:54:03+08:00">2023-10-06</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-break"></span>
@@ -637,6 +491,15 @@ Make breakpoint pending on future shared library load? (y or [n])</p>
       </span>
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-05 23:02:50" itemprop="dateModified" datetime="2023-10-05T23:02:50+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
     </span>
 
   
@@ -842,6 +705,15 @@ dows/system32下找到chkdsk.exe 然后执行chkdsk /r,结果它说不能在DOS�
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-06 22:54:02" itemprop="dateModified" datetime="2023-10-06T22:54:02+08:00">2023-10-06</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-break"></span>
@@ -874,199 +746,6 @@ dows/system32下找到chkdsk.exe 然后执行chkdsk /r,结果它说不能在DOS�
 <meta name="_su_title" content="design pattern adapter pattern" />
 <meta name="views" content="546" />
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">// Adapter.cpp : Defines the entry point for the console application.</span><br><span class="line">// author: chillyc</span><br><span class="line">// email: chillycreator @t gmail.com</span><br><span class="line"></span><br><span class="line">#include&amp;lt;iostream&amp;gt;</span><br><span class="line">#include&amp;lt;string&amp;gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">/// adapter pattern is used for combining two or more classes,</span><br><span class="line">/// which have the same behaviors but different interfaces.</span><br><span class="line">/// some classes is common used in future, and the other which are special will never used.</span><br><span class="line">/// common used classes should be public, and the other is private.</span><br><span class="line">/// some classes which inherit adapter class will never use the special ones. </span><br><span class="line">/// adapter pattern is divided into two patterns.</span><br><span class="line">/// one is belong to class structure, and the other is belong to object structure.</span><br><span class="line"></span><br><span class="line">#ifndef INTERFACEA_H</span><br><span class="line">#define INTERFACEA_H</span><br><span class="line">/// Interface A is a common interface!</span><br><span class="line">class Interface_A&#123;</span><br><span class="line">public :</span><br><span class="line">	virtual void connect_com();</span><br><span class="line">&#125;;</span><br><span class="line">#endif</span><br><span class="line">void Interface_A::connect_com()&#123;</span><br><span class="line">	cout&amp;lt;&amp;lt;&quot;connect a&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#ifndef INTERFACEB_H</span><br><span class="line">#define INTERFACEB_H</span><br><span class="line">/// Interface B is not a common interface, </span><br><span class="line">/// it will be used in some special area!</span><br><span class="line">class Interface_B&#123;</span><br><span class="line">public :</span><br><span class="line">	virtual void connect_B();</span><br><span class="line">&#125;;</span><br><span class="line">#endif</span><br><span class="line">void Interface_B::connect_B()&#123;</span><br><span class="line">	cout&amp;lt;&amp;lt; &quot;connect b&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#ifndef ADAPTERCLASS_H</span><br><span class="line">#define ADAPTERCLASS_H</span><br><span class="line">/// this class uses private inheritance to construct adapter.</span><br><span class="line">/// and it is a kind of class structure.</span><br><span class="line">class Adapter_Class: public Interface_A, private Interface_B&#123;</span><br><span class="line">public:</span><br><span class="line">	Adapter_Class();</span><br><span class="line">	~Adapter_Class();</span><br><span class="line">	virtual void connect();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/// this class uses private member variable to construct adapter.</span><br><span class="line">/// and it uses object relationship.</span><br><span class="line">class Adapter_Object: public Interface_A&#123;</span><br><span class="line">private:</span><br><span class="line">	Interface_B * b;</span><br><span class="line">public:</span><br><span class="line">	Adapter_Object();</span><br><span class="line">	~Adapter_Object();</span><br><span class="line"></span><br><span class="line">	virtual void connect();</span><br><span class="line">&#125;;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">Adapter_Class::Adapter_Class()&#123;</span><br><span class="line">	cout&amp;lt;&amp;lt; &quot;Adapter_Class construct&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">Adapter_Class::~Adapter_Class()&#123;&#125;</span><br><span class="line">void Adapter_Class::connect()&#123;</span><br><span class="line">	Interface_A::connect_com();</span><br><span class="line">	Interface_B::connect_B();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Adapter_Object::Adapter_Object()&#123;</span><br><span class="line">	cout&amp;lt;&amp;lt;&quot;Adapter_Object construct&quot;&amp;lt;&amp;lt;endl;</span><br><span class="line">	b = new Interface_B();</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">Adapter_Object::~Adapter_Object()&#123;</span><br><span class="line">	delete b;</span><br><span class="line">&#125;</span><br><span class="line">void Adapter_Object::connect()&#123;</span><br><span class="line">	Interface_A::connect_com();</span><br><span class="line">	b-&amp;gt;connect_B();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	Adapter_Class ac;</span><br><span class="line">	ac.connect();</span><br><span class="line">	Adapter_Object ao;</span><br><span class="line">	ao.connect();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/03/architect/design-patten/2010-05-03-design-pattern-composite-pattern/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/05/03/architect/design-patten/2010-05-03-design-pattern-composite-pattern/" class="post-title-link" itemprop="url">Design Pattern--Composite Pattern</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">2010-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:02:37" itemprop="dateModified" datetime="2023-10-05T23:02:37+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="this pattern is composite pattern.in this pattern, it like a tree to call the leaves function.so there is an entry of high level (Graph), and each class has a function called "Draw" ,the composite class is "Picture".and the leaves are "Line" and "Point"." />
-<meta name="_su_keywords" content="code,design,pattern,composite" />
-<meta name="_su_title" content="design pattern composite pattern" />
-<meta name="views" content="532" />
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">// composite.cpp : Defines the entry point for the console application.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#include&amp;lt;iostream&amp;gt;</span><br><span class="line">#include&amp;lt;string&amp;gt;</span><br><span class="line">#include&amp;lt;vector&amp;gt;</span><br><span class="line"></span><br><span class="line">namespace pattern&#123;</span><br><span class="line">	/// this pattern is composite pattern.</span><br><span class="line">	/// in this pattern, it like a tree to call the leaves function.</span><br><span class="line">	/// so there is an entry of high level (Graph), and each class has a function called &quot;Draw&quot; </span><br><span class="line">	/// the composite class is &quot;Picture&quot;.</span><br><span class="line">	/// and the leaves are &quot;Line&quot; and &quot;Point&quot;.</span><br><span class="line">	/// This pattern is combine many objects together which have same functions </span><br><span class="line">	/// and have level structures .</span><br><span class="line">	/// And the composite class is like a manager.</span><br><span class="line">	/// It has the same function also. </span><br><span class="line">	/// Benefits of this pattern is : outer class will never know the composite relationship;</span><br><span class="line">	/// outer class will deal the composite class only, not all of innerclass. and composite class</span><br><span class="line">	/// and inner class have same functions or level structures.</span><br><span class="line">	/// Do you think the composite class like a facade in facade pattern?</span><br><span class="line">#ifndef GRAPH_H</span><br><span class="line">#define GRAPH_H</span><br><span class="line"></span><br><span class="line">	class Graph&#123;</span><br><span class="line">	protected:</span><br><span class="line">		std::string name;</span><br><span class="line"></span><br><span class="line">	public:</span><br><span class="line">		Graph(std::string name):name(name)&#123;std::cout&amp;lt;&amp;lt;&quot;graph &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;&quot; construct&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line"></span><br><span class="line">		virtual void Draw()=0;</span><br><span class="line">		virtual ~Graph()&#123;std::cout&amp;lt;&amp;lt; &quot;graph &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt; &quot; destroy&quot;&amp;lt;&amp;lt;std::endl;&#125;;</span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifndef PICTURE_H</span><br><span class="line">#define PICTURE_H</span><br><span class="line">	class Picture:public Graph&#123;</span><br><span class="line">	private:</span><br><span class="line">		std::vector&amp;lt;Graph*&amp;gt; list;</span><br><span class="line">	public:</span><br><span class="line">		Picture(std::string name):Graph(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Picture &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;&quot; construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		virtual void Add(Graph*);</span><br><span class="line">		virtual void Remove(Graph*);</span><br><span class="line">		virtual void Draw();</span><br><span class="line">		~Picture();</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">#endif</span><br><span class="line">	Picture::~Picture()&#123;</span><br><span class="line">		list.clear();</span><br><span class="line">		std::cout&amp;lt;&amp;lt;&quot;Picture destroy!&quot;&amp;lt;&amp;lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">	void Picture::Add(pattern::Graph * g)&#123;</span><br><span class="line">		list.push_back(g);</span><br><span class="line">	&#125;</span><br><span class="line">	void Picture::Remove(pattern::Graph *g)&#123;</span><br><span class="line">		std::vector&amp;lt;Graph*&amp;gt;::iterator i=list.begin();</span><br><span class="line">		while(i!=list.end())&#123;</span><br><span class="line">			if(g==*i)&#123;</span><br><span class="line">				list.erase(i);</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	void Picture::Draw()&#123;</span><br><span class="line">		std::vector&amp;lt;Graph*&amp;gt;::iterator i=list.begin();</span><br><span class="line">		while(i != list.end())&#123;</span><br><span class="line">			(*i)-&amp;gt;Draw();</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">#ifndef SHAPE_H</span><br><span class="line">#define SHAPE_H</span><br><span class="line">	/// Shape class is parent class of &quot;Line&quot; and &quot;Point&quot;</span><br><span class="line">	class Shape:public Graph&#123;</span><br><span class="line">	public:</span><br><span class="line">		virtual void Draw()=0;</span><br><span class="line">		Shape(std::string name):Graph(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Shape construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		virtual ~Shape()&#123;std::cout&amp;lt;&amp;lt;&quot;Shape destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifndef POINT_H</span><br><span class="line">#define POINT_H</span><br><span class="line">	class Point:public Shape&#123;</span><br><span class="line">	public:</span><br><span class="line">		Point(std::string name):Shape(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Point construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		~Point()&#123;std::cout&amp;lt;&amp;lt;&quot;Point destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		virtual void Draw();</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line">	void Point::Draw()&#123;</span><br><span class="line">		std::cout&amp;lt;&amp;lt;&quot;Draw a point!&quot;&amp;lt;&amp;lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">#ifndef LINE_H</span><br><span class="line">#define LINE_H</span><br><span class="line">	class Line: public Shape&#123;</span><br><span class="line">	public:</span><br><span class="line">		Line(std::string name):Shape(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Line construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		~Line()&#123;std::cout&amp;lt;&amp;lt;&quot;Line destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		virtual void Draw();</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">#endif</span><br><span class="line">	void Line::Draw()&#123;</span><br><span class="line">		std::cout&amp;lt;&amp;lt;&quot;Draw a line!&quot;&amp;lt;&amp;lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	pattern::Line l (&quot;line&quot;);</span><br><span class="line">	pattern::Point p1 (&quot;point 1&quot;);</span><br><span class="line">	pattern::Point p2(&quot;point 2&quot;);</span><br><span class="line">	pattern::Picture pic(&quot;Picture&quot;);</span><br><span class="line">	pic.Add(&amp;amp;l);</span><br><span class="line">	pic.Add(&amp;amp;p1);</span><br><span class="line">	pic.Add(&amp;amp;p2);</span><br><span class="line"></span><br><span class="line">	pic.Draw();</span><br><span class="line">	// if you want destroy some shape, remove them first.</span><br><span class="line">	pic.Remove(&amp;amp;p1);</span><br><span class="line">	p1.~Point();</span><br><span class="line">	pic.Draw();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/03/architect/design-patten/2010-05-03-design-pattern-facade-pattern/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2010/05/03/architect/design-patten/2010-05-03-design-pattern-facade-pattern/" class="post-title-link" itemprop="url">Design Pattern -- Facade Pattern</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2010-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">2010-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 23:02:46" itemprop="dateModified" datetime="2023-10-05T23:02:46+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="_edit_last" content="1" />
-<meta name="_su_description" content="software architecture
-design pattern of facade" />
-<meta name="_su_keywords" content="facade,pattern,code,design" />
-<meta name="_su_title" content="facade,pattern,code,design" />
-<meta name="views" content="417" />
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">// Facade.cpp : Defines the entry point for the console application.</span><br><span class="line">// author: chillyc</span><br><span class="line">// email: chillycreator @t gmail.com</span><br><span class="line"></span><br><span class="line">#include&amp;lt;iostream&amp;gt;</span><br><span class="line"></span><br><span class="line">namespace pattern&#123;</span><br><span class="line">	/// this pattern is facade pattern</span><br><span class="line">	/// facade pattern is for hiding relationship and behavior of inner classes .</span><br><span class="line">	/// client or outer class should only connect with facade class.</span><br><span class="line">	/// But it will not forbid accessing inner classes.</span><br><span class="line">#ifndef INNERA_H</span><br><span class="line">#define INNERA_H</span><br><span class="line">	class Inner_A&#123;</span><br><span class="line">	public:</span><br><span class="line">		void Do()&#123;std::cout&amp;lt;&amp;lt;&quot;A&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line">#ifndef INNERB_H</span><br><span class="line">#define INNERB_H</span><br><span class="line">	class Inner_B&#123;</span><br><span class="line">	public:</span><br><span class="line">		void Do()&#123;std::cout&amp;lt;&amp;lt;&quot;B&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifndef FACADE_H</span><br><span class="line">#define FACADE_H</span><br><span class="line">	class Facade&#123;</span><br><span class="line">	private:</span><br><span class="line">		Inner_A* a;</span><br><span class="line">		Inner_B* b;</span><br><span class="line">	public:</span><br><span class="line">		Facade()&#123;</span><br><span class="line">			a = new Inner_A();</span><br><span class="line">			b = new Inner_B();</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		void Do()&#123;</span><br><span class="line">			a-&amp;gt;Do();</span><br><span class="line">			b-&amp;gt;Do();</span><br><span class="line">		&#125;</span><br><span class="line">		~Facade()&#123;</span><br><span class="line">			delete a;</span><br><span class="line">			delete b;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	pattern::Facade f;</span><br><span class="line">	f.Do();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1130,6 +809,15 @@ design pattern of facade" />
       </span>
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-05 23:02:33" itemprop="dateModified" datetime="2023-10-05T23:02:33+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
     </span>
 
   
@@ -1227,6 +915,15 @@ design pattern of facade" />
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-05 23:02:42" itemprop="dateModified" datetime="2023-10-05T23:02:42+08:00">2023-10-05</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-break"></span>
@@ -1276,6 +973,310 @@ design pattern of facade" />
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/03/architect/design-patten/2010-05-03-design-pattern-composite-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/05/03/architect/design-patten/2010-05-03-design-pattern-composite-pattern/" class="post-title-link" itemprop="url">Design Pattern--Composite Pattern</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">2010-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:02:37" itemprop="dateModified" datetime="2023-10-05T23:02:37+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="this pattern is composite pattern.in this pattern, it like a tree to call the leaves function.so there is an entry of high level (Graph), and each class has a function called "Draw" ,the composite class is "Picture".and the leaves are "Line" and "Point"." />
+<meta name="_su_keywords" content="code,design,pattern,composite" />
+<meta name="_su_title" content="design pattern composite pattern" />
+<meta name="views" content="532" />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">// composite.cpp : Defines the entry point for the console application.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#include&amp;lt;iostream&amp;gt;</span><br><span class="line">#include&amp;lt;string&amp;gt;</span><br><span class="line">#include&amp;lt;vector&amp;gt;</span><br><span class="line"></span><br><span class="line">namespace pattern&#123;</span><br><span class="line">	/// this pattern is composite pattern.</span><br><span class="line">	/// in this pattern, it like a tree to call the leaves function.</span><br><span class="line">	/// so there is an entry of high level (Graph), and each class has a function called &quot;Draw&quot; </span><br><span class="line">	/// the composite class is &quot;Picture&quot;.</span><br><span class="line">	/// and the leaves are &quot;Line&quot; and &quot;Point&quot;.</span><br><span class="line">	/// This pattern is combine many objects together which have same functions </span><br><span class="line">	/// and have level structures .</span><br><span class="line">	/// And the composite class is like a manager.</span><br><span class="line">	/// It has the same function also. </span><br><span class="line">	/// Benefits of this pattern is : outer class will never know the composite relationship;</span><br><span class="line">	/// outer class will deal the composite class only, not all of innerclass. and composite class</span><br><span class="line">	/// and inner class have same functions or level structures.</span><br><span class="line">	/// Do you think the composite class like a facade in facade pattern?</span><br><span class="line">#ifndef GRAPH_H</span><br><span class="line">#define GRAPH_H</span><br><span class="line"></span><br><span class="line">	class Graph&#123;</span><br><span class="line">	protected:</span><br><span class="line">		std::string name;</span><br><span class="line"></span><br><span class="line">	public:</span><br><span class="line">		Graph(std::string name):name(name)&#123;std::cout&amp;lt;&amp;lt;&quot;graph &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;&quot; construct&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line"></span><br><span class="line">		virtual void Draw()=0;</span><br><span class="line">		virtual ~Graph()&#123;std::cout&amp;lt;&amp;lt; &quot;graph &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt; &quot; destroy&quot;&amp;lt;&amp;lt;std::endl;&#125;;</span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifndef PICTURE_H</span><br><span class="line">#define PICTURE_H</span><br><span class="line">	class Picture:public Graph&#123;</span><br><span class="line">	private:</span><br><span class="line">		std::vector&amp;lt;Graph*&amp;gt; list;</span><br><span class="line">	public:</span><br><span class="line">		Picture(std::string name):Graph(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Picture &quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;&quot; construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		virtual void Add(Graph*);</span><br><span class="line">		virtual void Remove(Graph*);</span><br><span class="line">		virtual void Draw();</span><br><span class="line">		~Picture();</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">#endif</span><br><span class="line">	Picture::~Picture()&#123;</span><br><span class="line">		list.clear();</span><br><span class="line">		std::cout&amp;lt;&amp;lt;&quot;Picture destroy!&quot;&amp;lt;&amp;lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">	void Picture::Add(pattern::Graph * g)&#123;</span><br><span class="line">		list.push_back(g);</span><br><span class="line">	&#125;</span><br><span class="line">	void Picture::Remove(pattern::Graph *g)&#123;</span><br><span class="line">		std::vector&amp;lt;Graph*&amp;gt;::iterator i=list.begin();</span><br><span class="line">		while(i!=list.end())&#123;</span><br><span class="line">			if(g==*i)&#123;</span><br><span class="line">				list.erase(i);</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	void Picture::Draw()&#123;</span><br><span class="line">		std::vector&amp;lt;Graph*&amp;gt;::iterator i=list.begin();</span><br><span class="line">		while(i != list.end())&#123;</span><br><span class="line">			(*i)-&amp;gt;Draw();</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">#ifndef SHAPE_H</span><br><span class="line">#define SHAPE_H</span><br><span class="line">	/// Shape class is parent class of &quot;Line&quot; and &quot;Point&quot;</span><br><span class="line">	class Shape:public Graph&#123;</span><br><span class="line">	public:</span><br><span class="line">		virtual void Draw()=0;</span><br><span class="line">		Shape(std::string name):Graph(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Shape construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		virtual ~Shape()&#123;std::cout&amp;lt;&amp;lt;&quot;Shape destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifndef POINT_H</span><br><span class="line">#define POINT_H</span><br><span class="line">	class Point:public Shape&#123;</span><br><span class="line">	public:</span><br><span class="line">		Point(std::string name):Shape(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Point construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		~Point()&#123;std::cout&amp;lt;&amp;lt;&quot;Point destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		virtual void Draw();</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line">	void Point::Draw()&#123;</span><br><span class="line">		std::cout&amp;lt;&amp;lt;&quot;Draw a point!&quot;&amp;lt;&amp;lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">#ifndef LINE_H</span><br><span class="line">#define LINE_H</span><br><span class="line">	class Line: public Shape&#123;</span><br><span class="line">	public:</span><br><span class="line">		Line(std::string name):Shape(name)&#123;std::cout&amp;lt;&amp;lt;&quot;Line construct!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		~Line()&#123;std::cout&amp;lt;&amp;lt;&quot;Line destroy!&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">		virtual void Draw();</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">#endif</span><br><span class="line">	void Line::Draw()&#123;</span><br><span class="line">		std::cout&amp;lt;&amp;lt;&quot;Draw a line!&quot;&amp;lt;&amp;lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	pattern::Line l (&quot;line&quot;);</span><br><span class="line">	pattern::Point p1 (&quot;point 1&quot;);</span><br><span class="line">	pattern::Point p2(&quot;point 2&quot;);</span><br><span class="line">	pattern::Picture pic(&quot;Picture&quot;);</span><br><span class="line">	pic.Add(&amp;amp;l);</span><br><span class="line">	pic.Add(&amp;amp;p1);</span><br><span class="line">	pic.Add(&amp;amp;p2);</span><br><span class="line"></span><br><span class="line">	pic.Draw();</span><br><span class="line">	// if you want destroy some shape, remove them first.</span><br><span class="line">	pic.Remove(&amp;amp;p1);</span><br><span class="line">	p1.~Point();</span><br><span class="line">	pic.Draw();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/05/03/architect/design-patten/2010-05-03-design-pattern-facade-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/05/03/architect/design-patten/2010-05-03-design-pattern-facade-pattern/" class="post-title-link" itemprop="url">Design Pattern -- Facade Pattern</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2010-05-03T00:00:00+08:00">2010-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 23:02:46" itemprop="dateModified" datetime="2023-10-05T23:02:46+08:00">2023-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/architect/" itemprop="url" rel="index"><span itemprop="name">architect</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="_edit_last" content="1" />
+<meta name="_su_description" content="software architecture
+design pattern of facade" />
+<meta name="_su_keywords" content="facade,pattern,code,design" />
+<meta name="_su_title" content="facade,pattern,code,design" />
+<meta name="views" content="417" />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">// Facade.cpp : Defines the entry point for the console application.</span><br><span class="line">// author: chillyc</span><br><span class="line">// email: chillycreator @t gmail.com</span><br><span class="line"></span><br><span class="line">#include&amp;lt;iostream&amp;gt;</span><br><span class="line"></span><br><span class="line">namespace pattern&#123;</span><br><span class="line">	/// this pattern is facade pattern</span><br><span class="line">	/// facade pattern is for hiding relationship and behavior of inner classes .</span><br><span class="line">	/// client or outer class should only connect with facade class.</span><br><span class="line">	/// But it will not forbid accessing inner classes.</span><br><span class="line">#ifndef INNERA_H</span><br><span class="line">#define INNERA_H</span><br><span class="line">	class Inner_A&#123;</span><br><span class="line">	public:</span><br><span class="line">		void Do()&#123;std::cout&amp;lt;&amp;lt;&quot;A&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line">#ifndef INNERB_H</span><br><span class="line">#define INNERB_H</span><br><span class="line">	class Inner_B&#123;</span><br><span class="line">	public:</span><br><span class="line">		void Do()&#123;std::cout&amp;lt;&amp;lt;&quot;B&quot;&amp;lt;&amp;lt;std::endl;&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifndef FACADE_H</span><br><span class="line">#define FACADE_H</span><br><span class="line">	class Facade&#123;</span><br><span class="line">	private:</span><br><span class="line">		Inner_A* a;</span><br><span class="line">		Inner_B* b;</span><br><span class="line">	public:</span><br><span class="line">		Facade()&#123;</span><br><span class="line">			a = new Inner_A();</span><br><span class="line">			b = new Inner_B();</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		void Do()&#123;</span><br><span class="line">			a-&amp;gt;Do();</span><br><span class="line">			b-&amp;gt;Do();</span><br><span class="line">		&#125;</span><br><span class="line">		~Facade()&#123;</span><br><span class="line">			delete a;</span><br><span class="line">			delete b;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	pattern::Facade f;</span><br><span class="line">	f.Do();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2010/04/26/5528481/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2010/04/26/5528481/" class="post-title-link" itemprop="url">分类和标注</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-04-26 08:40:00" itemprop="dateCreated datePublished" datetime="2010-04-26T08:40:00+08:00">2010-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>195</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>突然想到某人的一句话：“自动化标注比人工标注的准确率还高。”这句话早已不知出处，但现在想来的确有些可笑。首先标准答案是谁给出的呢？是程序还是人类？是人类的话<br />
+就说明人工标注的准确率是100%，何来比人工标注准确率还高的说法？如果是程序，程序现在都没有没有100%的准确率，又怎么做标准答案?不过如果说某个程序在一定<br />
+语义下的准确率，比某一个普通人的准确率高，这倒是很可信。可惜原文不是那么说的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/25/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/27/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1288,7 +1289,7 @@ design pattern of facade" />
 
   <div class="copyright">
     &copy; 2017 – 
-    <span itemprop="copyrightYear">2024</span>
+    <span itemprop="copyrightYear">2025</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

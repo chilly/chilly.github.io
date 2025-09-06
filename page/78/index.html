@@ -166,14 +166,19 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">798</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
@@ -200,101 +205,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/08/30/database/2006-08-30-insert-fix-pattern-yyyy-MM-dd-HH-mm-ss-in-mysql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2006/08/30/database/2006-08-30-insert-fix-pattern-yyyy-MM-dd-HH-mm-ss-in-mysql/" class="post-title-link" itemprop="url">Mysql中插入固定格式的时间  Yyyy-MM-Dd  HH:mm:ss</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2006-08-30 09:26:00" itemprop="dateCreated datePublished" datetime="2006-08-30T09:26:00+08:00">2006-08-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-04-15 22:00:26" itemprop="dateModified" datetime="2024-04-15T22:00:26+08:00">2024-04-15</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>606</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>首先将mysql中要插入的表的列属性改为：TIMESTAMP类型</p>
-<p>在控制台上随便插入一两组数据，发现可以插入<code>2006－08－07</code>，并且在数据库中显示为：<code>2006-08-27 00:00:00</code>；想到程序中要做相应的改动，以便插入<code>2006-08-27 15:27:10</code>。下面采用java语言得到当前时间的固定格式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Date</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();  </span><br><span class="line"><span class="type">SimpleDateFormat</span> <span class="variable">df</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleDateFormat</span>(<span class="string">&quot;yyyy-MM-dd  HH:mm:ss&quot;</span>);  </span><br><span class="line"><span class="type">Calendar</span> <span class="variable">MyDate</span> <span class="operator">=</span> Calendar.getInstance();  </span><br><span class="line">MyDate.setTime(d);  </span><br><span class="line"><span class="type">String</span> <span class="variable">adddate</span> <span class="operator">=</span></span><br><span class="line">df.format(MyDate.getTime()).substring(<span class="number">0</span>);<span class="comment">//这里的adddate已经转换为固定的格式。</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>下面就是写一条sql语句进行插入即可：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">StringBuffer</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>(<span class="string">&quot;insert into &quot;</span>).append( table).append(<span class="string">&quot;</span></span><br><span class="line"><span class="string">values( &#x27;&quot;</span>).append(adddate).append(<span class="string">&quot;&#x27;&quot;</span>);</span><br><span class="line"></span><br><span class="line">dboperat.executeSQL(<span class="keyword">new</span> <span class="title class_">String</span>(sql));<span class="comment">//程序里要实现这个方法.......</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -341,6 +251,15 @@
       </span>
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2024-04-15 21:43:59" itemprop="dateModified" datetime="2024-04-15T21:43:59+08:00">2024-04-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/movie/" itemprop="url" rel="index"><span itemprop="name">movie</span></a>
+        </span>
     </span>
 
   
@@ -438,6 +357,15 @@
       </span>
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2024-05-28 21:33:13" itemprop="dateModified" datetime="2024-05-28T21:33:13+08:00">2024-05-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/project/" itemprop="url" rel="index"><span itemprop="name">project</span></a>
+        </span>
     </span>
 
   
@@ -543,6 +471,15 @@
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2024-05-28 21:31:44" itemprop="dateModified" datetime="2024-05-28T21:31:44+08:00">2024-05-28</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/daily/" itemprop="url" rel="index"><span itemprop="name">daily</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-break"></span>
@@ -637,6 +574,23 @@
       </span>
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2024-04-15 22:00:12" itemprop="dateModified" datetime="2024-04-15T22:00:12+08:00">2024-04-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">knowledge</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/knowledge/database/" itemprop="url" rel="index"><span itemprop="name">database</span></a>
+        </span>
     </span>
 
   
@@ -738,6 +692,23 @@
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-09 10:00:28" itemprop="dateModified" datetime="2023-10-09T10:00:28+08:00">2023-10-09</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/learn/" itemprop="url" rel="index"><span itemprop="name">learn</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/learn/javascript/" itemprop="url" rel="index"><span itemprop="name">javascript</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-break"></span>
@@ -835,6 +806,23 @@
       </span>
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-09 09:59:37" itemprop="dateModified" datetime="2023-10-09T09:59:37+08:00">2023-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/learn/" itemprop="url" rel="index"><span itemprop="name">learn</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/learn/javascript/" itemprop="url" rel="index"><span itemprop="name">javascript</span></a>
+        </span>
     </span>
 
   
@@ -968,6 +956,15 @@ this指的的是当前的控件句柄。所以form的name不能命名为this<br 
       </span>
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2024-05-28 21:30:17" itemprop="dateModified" datetime="2024-05-28T21:30:17+08:00">2024-05-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/project/" itemprop="url" rel="index"><span itemprop="name">project</span></a>
+        </span>
     </span>
 
   
@@ -1178,6 +1175,23 @@ this指的的是当前的控件句柄。所以form的name不能命名为this<br 
       <span class="post-meta-item-text">Edited on</span>
       <time title="Modified: 2023-10-09 09:58:05" itemprop="dateModified" datetime="2023-10-09T09:58:05+08:00">2023-10-09</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/learn/" itemprop="url" rel="index"><span itemprop="name">learn</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/learn/javascript/" itemprop="url" rel="index"><span itemprop="name">javascript</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-break"></span>
@@ -1226,6 +1240,126 @@ this指的的是当前的控件句柄。所以form的name不能命名为this<br 
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2006/07/26/code/js/learn-js/learn-js-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2006/07/26/code/js/learn-js/learn-js-5/" class="post-title-link" itemprop="url">5.javascript---第3天</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2006-07-26 22:07:00" itemprop="dateCreated datePublished" datetime="2006-07-26T22:07:00+08:00">2006-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-09 09:57:43" itemprop="dateModified" datetime="2023-10-09T09:57:43+08:00">2023-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/learn/" itemprop="url" rel="index"><span itemprop="name">learn</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/learn/javascript/" itemprop="url" rel="index"><span itemprop="name">javascript</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Q:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var rolledImage = new Image;  </span><br><span class="line">rolledImage.src = &quot;C:/Documents and Settings/Administrator/My Documents/壁纸/winxpaa12.jpg&quot;;  </span><br><span class="line">var thirdImage = new Image;  </span><br><span class="line">thirdImage.src = &quot;C:/Documents and Settings/Administrator/MyDocuments/壁纸/winxpaa10.jpg&quot;;  </span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span> = <span class="string">&quot;C:/Documents and Settings/Administrator/My Documents/壁纸/winxpaa13.jpg&quot;</span>  </span></span><br><span class="line"><span class="tag"><span class="attr">name</span> = <span class="string">&quot;myPicture&quot;</span> <span class="attr">onMouseOver</span> = <span class="string">&quot;document.myPicture.src = rolledImage.src&quot;</span>  </span></span><br><span class="line"><span class="tag"><span class="attr">onMouseOut</span> = <span class="string">&quot;document.myPicture.src = thirdImage.src&quot;</span> <span class="attr">width</span> = <span class="string">100</span> <span class="attr">height</span> =</span></span><br><span class="line"><span class="tag"><span class="string">100</span> <span class="attr">border</span> = <span class="string">0</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  </span><br></pre></td></tr></table></figure>
+<p>似乎不能这样写.虽然不知道那里错了.只能显示winxpaa13.jpg其他的图片都不能显示.<br />
+把<code>&lt;img&gt;</code>改为<code>&lt;a href = &quot;#&quot;&gt;</code>也不行…不知道出了什么问题…<br />
+A:<br />
+解决方案:<br />
+使用相对路径.把源html和各种图片放在一起即可…</p>
+<p>这个问题困扰我很长时间,在网上查没有找到,问了些人也没有人知道…最后还是用相对路径试了一下.竟然解决了</p>
+<p>不过我还是不知道怎么用绝对路径.可能是我绝对路径设错了吧.不过我后面又加了<code>file:///</code> 也不管用…</p>
+<p>不过我的这个路径对于静态的html来说是可以显示图片的.如这句:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span> = <span class="string">&quot;C:/Documents and Settings/Administrator/My</span></span></span><br><span class="line"><span class="string"><span class="tag">Documents/壁纸/winxpaa12.jpg&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>不知道为什么…</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span> = <span class="string">&quot;C:/Documents and Settings/Administrator/My</span></span></span><br><span class="line"><span class="string"><span class="tag">Documents/壁纸/winxpaa13.jpg&quot;</span>&gt;</span>  </span><br><span class="line">这里的&lt;img要写在一起,否则只是打印字符串...</span><br><span class="line"></span><br><span class="line">var imageChoice = Math.floor(Math.random()*imageList.length);  </span><br><span class="line">Math.random()产生[0,1)的随机数,Math.floor();用于取正(除掉小数点后面的部分)  </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/77/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/77/">77</a><span class="page-number current">78</span><a class="page-number" href="/page/79/">79</a><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/79/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1238,7 +1372,7 @@ this指的的是当前的控件句柄。所以form的name不能命名为this<br 
 
   <div class="copyright">
     &copy; 2017 – 
-    <span itemprop="copyrightYear">2024</span>
+    <span itemprop="copyrightYear">2025</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

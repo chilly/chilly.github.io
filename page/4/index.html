@@ -166,14 +166,19 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">798</span>
+          <span class="site-state-item-count">797</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">755</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
@@ -200,238 +205,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2015/03/28/44654639/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/icon.svg">
-      <meta itemprop="name" content="帐前卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 帐前卒专栏">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2015/03/28/44654639/" class="post-title-link" itemprop="url">JS 实现UML序列图 （二）-- Csdn MarkDown 第七篇 技术篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-03-28 21:10:00" itemprop="dateCreated datePublished" datetime="2015-03-28T21:10:00+08:00">2015-03-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>上一篇大概说了一下JS是怎么画UML 图形的。<br />
-这一篇简单介绍一下这个JS 解析 UML语法是怎么实现的。<br />
-<a target="_blank" rel="noopener" href="https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf"> https://github.com/bramp/js-sequence-diagrams/blob/master/src/grammar.ebnf<br />
-</a><br />
-这个是Markdown UML语言的语法结构。摘抄了部分：<br />
-这一部分是将词和词组成语句。而语句和语句就组成篇章。</p>
-<pre><code>document ::= statement*
-statement ::=
-( 'title' ':' message
-| 'participant' actor
-| 'note' ('left of' | 'right of' | 'over') actor ':' message
-| actor ( '-' | '--' ) ( '&gt;' | '&gt;&gt;' )? actor ':' message
-)
-</code></pre>
-<p>这里的意思是 UML是由 statement（语句）构成的。<br />
-statement有下面几种表示方法：<br />
-1. ‘title’ ‘:’ message 这里带上”的都是token,在编译原理中，token标识不能再被解释的词。<br />
-2. ‘participant’ actor<br />
-3. ‘note’ (‘left of’ | ‘right of’ | ‘over’) actor ‘:’ message<br />
-表示note与Actor之间的关系<br />
-4. actor ( ‘-’ | ‘–’ ) ( ‘&gt;’ | ‘&gt;&gt;’ )? actor ‘:’ message 标识actor之间的关系。</p>
-<p>下面的词法分析会将字符转换为UML中有含义的字。类似字符组成词。用正则式将字母变成有含义的词。</p>
-<pre><code>/** js sequence diagrams
- *  http://bramp.github.io/js-sequence-diagrams/
- *  (c) 2012-2013 Andrew Brampton (bramp.net)
- *  Simplified BSD license.
- */
-%lex
-
-%options case-insensitive
-
-%&#123;
-    // Pre-lexer code can go here
-%&#125;
-
-%%
-
-[\n]+             return 'NL';
-\s+               /* skip whitespace */
-\#[^\n]*          /* skip comments */
-&quot;participant&quot;     return 'participant';
-&quot;left of&quot;         return 'left_of';
-&quot;right of&quot;        return 'right_of';
-&quot;over&quot;            return 'over';
-&quot;note&quot;            return 'note';
-&quot;title&quot;           return 'title';
-&quot;,&quot;               return ',';
-[^\-&gt;:\n,]+       return 'ACTOR';
-&quot;--&quot;              return 'DOTLINE';
-&quot;-&quot;               return 'LINE';
-&quot;&gt;&gt;&quot;              return 'OPENARROW';
-&quot;&gt;&quot;               return 'ARROW';
-:[^#\n]+          return 'MESSAGE';
-&lt;&lt;EOF&gt;&gt;           return 'EOF';
-.                 return 'INVALID';
-
-/lex
-
-%start start
-
-%% /* language grammar */
-
-start
-    : document 'EOF' &#123; return yy; &#125;
-    ;
-
-document
-    : /* empty */
-    | document line
-    ;
-
-line
-    : statement &#123; &#125;
-    | 'NL'
-    ;
-
-statement
-    : 'participant' actor  &#123; $2; &#125;
-    | signal               &#123; yy.addSignal($1); &#125;
-    | note_statement       &#123; yy.addSignal($1); &#125;
-    | 'title' message      &#123; yy.setTitle($2);  &#125;
-    ;
-
-note_statement
-    : 'note' placement actor message   &#123; $$ = new Diagram.Note($3, $2, $4); &#125;
-	| 'note' 'over' actor_pair message &#123; $$ = new Diagram.Note($3, Diagram.PLACEMENT.OVER, $4); &#125;
-    ;
-
-actor_pair
-    : actor             &#123; $$ = $1; &#125;
-	| actor ',' actor   &#123; $$ = [$1, $3]; &#125;
-    ;
-
-placement
-    : 'left_of'   &#123; $$ = Diagram.PLACEMENT.LEFTOF; &#125;
-	| 'right_of'  &#123; $$ = Diagram.PLACEMENT.RIGHTOF; &#125;
-    ;
-
-signal
-    : actor signaltype actor message
-    &#123; $$ = new Diagram.Signal($1, $2, $3, $4); &#125;
-    ;
-
-actor
-    : ACTOR &#123; $$ = yy.getActor($1); &#125;
-    ;
-
-signaltype
-    : linetype arrowtype  &#123; $$ = $1 | ($2 &lt;&lt; 2); &#125;
-	| linetype            &#123; $$ = $1; &#125;
-    ;
-
-linetype
-    : LINE      &#123; $$ = Diagram.LINETYPE.SOLID; &#125;
-	| DOTLINE   &#123; $$ = Diagram.LINETYPE.DOTTED; &#125;
-    ;
-
-arrowtype
-    : ARROW     &#123; $$ = Diagram.ARROWTYPE.FILLED; &#125;
-	| OPENARROW &#123; $$ = Diagram.ARROWTYPE.OPEN; &#125;
-    ;
-
-message
-    : MESSAGE &#123; $$ = $1.substring(1).trim().replace(/\\n/gm, &quot;\n&quot;); &#125;
-    ;
-%%
-</code></pre>
-<p>例如下面这一句：</p>
-<pre><code>[^\-&gt;:\n,]+       return 'ACTOR';
-</code></pre>
-<p>就是将不是“-&gt;:\n,” 这些字符的多个字组成词，这个词叫做ACTOR.</p>
-<p>一般来说终结符也就是类似’note’ 这样的字符需要先被定义。否则 ‘note’这样的字符集合就变成了markdown UML的ACTOR.</p>
-<p>而下面的是将ACTOR词转成对象actor。</p>
-<pre><code>actor
-    : ACTOR &#123; $$ = yy.getActor($1); &#125;
-    ;
-    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A-&gt;B: 一句话证明你很寂寞。</span><br><span class="line">Note left of A: thinking</span><br><span class="line">B-&gt;B: counting</span><br><span class="line">B&gt;&gt;A: 这句话有一共六十九笔</span><br><span class="line">Note right of X: SB</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>Created with Raphaël 2.1.2  寂寞是什么  A  A  C  C  S  S  B  B  一句话证明你很寂寞。<br />
-thinking  counting  这句话有一共六十九笔  SB</p>
-<p>好吧上面就是UML的grammar. 其实用什么语言都可以写出来。不局限于JS. 具体grammar这块使用的是jison和ebnf.<br />
-有闲空的人可以看一下JS调用jison来做js parser以及EBNF表达式。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1984,6 +1757,139 @@ AWS免费套餐不适用于AWS中国（北京）区域。具体适用地区请�
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://chillyc.info/2014/11/20/41317419/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/icon.svg">
+      <meta itemprop="name" content="帐前卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 帐前卒专栏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/11/20/41317419/" class="post-title-link" itemprop="url">坑死人不偿命，Svn 迁移到 Git</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2014-11-20 19:25:00" itemprop="dateCreated datePublished" datetime="2014-11-20T19:25:00+08:00">2014-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-10-05 12:41:45" itemprop="dateModified" datetime="2023-10-05T12:41:45+08:00">2023-10-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>用git的人非常鄙视用svn的。因为要不断的开分支。而且也没有本地的分支这个概念。</p>
+<p>但是git 作为一项技术，是一定可以被svn替代的。当然替代的方法是否繁琐另当别论，但一定是能被替代。svn同样也能被git替代。大概所有的技术都是一样。都<br />
+能相互替代，只是你要为替代本身花费多长时间。</p>
+<p>git作为一种同步工具好用吗？其实真不好用。我梦想的工具一定是可以帮我自动完成merge过程的，永远不用开分支，永远不用告诉我链表头在哪里，以及怎么rese<br />
+t， 什么时候rebase, 什么时候打tag.<br />
+一个工具让使用者一直在思考，那一定不是好工具。我那锤子砸钉子的时候也没有先按几个按钮。当然svn也不是啥好工具。</p>
+<p>所以本文的观点是站在我们开发的场景中从一种不好用的工具向着另外一种不好用的工具迁移。如同砸钉子的时候，始终没有找到锤子，只找到了瑞士军刀和扳手。没办法还是要<br />
+砸。</p>
+<p>svn 迁移到git上遇到非常多的坑。大家要是开发任务紧急，就等不急的时候再迁移吧。</p>
+<p>这里也不在意你到底使用的gerrit还是gitlab还是github. 反正都不好迁移。</p>
+<p>一般使用的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone [某分支] --authors-file=users.txt --no-metadata -s （这里的分支是/trunk的上一层）</span><br></pre></td></tr></table></figure>
+<p>另外还可以是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r383874:HEAD  [你的分支] --authors-file=users.txt --no-metadata --trunk=trunk --tags=milestones --branches=branches </span><br></pre></td></tr></table></figure>
+<p>第二条命令是带上版本号的。也可以指定什么分支会变成git的trunk,什么分支会变成git的tag等等。<br />
+这里的users.txt内容是：<br />
+[svn的名字] = [git上的名字] &lt;[git上的email]&gt;<br />
+例如：<br />
+aa=bb<span class="exturl" data-url="bWFpbHRvOnl5QG9vLmNvbQ==">yy@oo.com<i class="fa fa-external-link-alt"></i></span><br />
+tt=ee<span class="exturl" data-url="bWFpbHRvOm1tQG9vLmNvbQ==">mm@oo.com<i class="fa fa-external-link-alt"></i></span><br />
+细数一下我自己遇到的问题：</p>
+<p>1. ** Can’t locate Term/ReadKey.pm in @INC ** 。 不要听网上说的装什么cpan,<br />
+也不要装什么其他的软件。直接执行 svn co [一个分支]。 输入以下自己的用户名密码，然后这个问题就不存在了。</p>
+<p>1.1 如果输入密码后，还是不行。 删除这个文件 $HOME/.subversion/auth/svn.simple/* 。 然后再 svn co , 再<br />
+git svn clone.<br />
+2. ** Do not be alarmed at the above message git-svn is just searching<br />
+aggressively for old history. ** 遇到这个提示…这个提示是吓唬你的.</p>
+<p>3. ** Author: xx not defined in users.txt file **<br />
+这是你的users.txt里面没有某些用户。可能这些用户过于久远，你忘记加入了。</p>
+<p>4.系统文件没有找到条目。会有下面的错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Initializing parent: refs/remotes/origin/trunk@22086</span><br><span class="line">W: Ignoring error from SVN, path probably does not exist: (160013): 文件系统没有条目: 找不到路径 “/xxx/ooo/101”: 额外错误:: File not found: revision 101, path &#x27;/txx/slsl/&#x27;</span><br><span class="line">W: Do not be alarmed at the above message git-svn is just searching aggressively for old history.</span><br><span class="line">This may take a while on large repositories</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这说有些 svn 版本信息太古老了。实在没有找到对应的diff啥的。也可能被svn管理员早就删除了。所以执行 git svn clone的时候最好带上<br />
+-r[A version]:[B version]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r20202:HEAD [某分支] --authors-file=users.txt --no-metadata -s</span><br></pre></td></tr></table></figure>
+<p>5. ** Use of uninitialized value $u in substitution (s///) ** 某些git<br />
+svn版本代码写的搓。只好手工改代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vi  /usr/lib/perl5/vendor_perl/5.14/Git/SVN.pm</span><br><span class="line">修改 </span><br><span class="line">        $u =~ s!^\Q$url\E(/|$)!! or die</span><br><span class="line">        &quot;$refname: &#x27;$url&#x27; not found in &#x27;$u&#x27;\n&quot;;</span><br><span class="line"></span><br><span class="line">改成：</span><br><span class="line">if(!$u) &#123;</span><br><span class="line">        $u = $pathname;</span><br><span class="line">&#125;else &#123;</span><br><span class="line">        $u =~ s!^\Q$url\E(/|$)!! or die</span><br><span class="line">        &quot;$refname: &#x27;$url&#x27; not found in &#x27;$u&#x27;\n&quot;;</span><br><span class="line">&#125;</span><br><span class="line">然后重新运行。</span><br></pre></td></tr></table></figure>
+<p>6. git svn clone 结束后， 执行一下 git branch -a, 发现没有一些之前开的分支。例如我们的milestone分支都叫<br />
+/milestoneXXX. 是之前git svn clone的命令的问题。 应该改为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git svn clone -r383874:HEAD  [你的分支] --authors-file=users.txt --no-metadata --trunk=trunk --tags=milestones --branches=branches </span><br></pre></td></tr></table></figure>
+<p>另外 git TAG和 svn开一个tag的性质不是很一致。 git tag依附于某一个commit. 而且是不变化的，从这个点开出来的所有分支，都从属于这<br />
+个TAG。svn的tag就是开了分支，可以从这个分支随意提交代码。从svn的这个TAG开出来的所有分支和这个svn TAG毛关系都没有。</p>
+<p>好吧。说了这么多，其实我们项目就像钉子，而svn/git都不是锤子。虽然是钉子，但是钉子数目很多。遇到以上坑的，看到这篇文章希望能很快的跳过坑去~~</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1996,7 +1902,7 @@ AWS免费套餐不适用于AWS中国（北京）区域。具体适用地区请�
 
   <div class="copyright">
     &copy; 2017 – 
-    <span itemprop="copyrightYear">2024</span>
+    <span itemprop="copyrightYear">2025</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
